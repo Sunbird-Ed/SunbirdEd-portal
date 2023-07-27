@@ -1,173 +1,87 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @use "layout/footer" as *;
 
-:host {
   .new-layout-footer{
     margin-top:calculateRem(24px);
     background-color: rgba(55,52,52, 1);
-    &.player-fullscreen-footer{
-      display: none;
+    color: rgba(255,255,255,0.95);
+    justify-content: center;
+    font-size: 14px;
     }
     .sbt-top-footer-container {
-      height: calculateRem(100px); //296px
-      width: 100%;
-      padding: 0% 2%;
-      margin-top:calculateRem(8px);
+      margin-top:30px;
+      height: calculateRem(116px);
+      width: 85%;
+      align-items: center;
+      margin: auto;
+      padding: 20px 0;
     }
+    .link{
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.25px;
+      text-align: left;
+      line-height: 20px;
+    }
+
+    a{
+      text-decoration: none;
+      color: rgba(255,255,255,0.95);
+    }
+
     .sbt-bottom-footer-container {
-      height: calculateRem(60px); //296px
-      width: 100%;
-      padding: 0% 2%;
+      width: 79%;
+      margin: auto;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .outer-container{
       background-color: rgba(255,255,255, 0.08);
+      display: flex;
+      flex-direction: column;
+      height: 72px;
+      width: 100%;
+      align-items: center;
     }
-    .sbt-page-content-area {
-      border-radius: 0rem 0 0 0;
+
+    .footer-text{
+      text-align: end;
+      width: 84%;
     }
-    .padding20{
-      padding: 20px;
+
+    .logo{
+      display: flex;
+      justify-content: left;
     }
-    .sbt-container{
-      width:calc(100% - 4%);
-      padding: 0;
-      margin: 0 auto;
-      padding-top: calculateRem(60px);
-      border-radius: calculateRem(40px) calculateRem(40px) 0 0;
-      background-color: var(--sbt-footer-bg);
-      box-shadow: var(--sbt-box-shadow-6px);
-      left:0;
-      position:absolute;
-      top:calculateRem(0px); //24px
-      bottom: 0;
-      right:0;
-      z-index:8;
-      @include respond-below(sm){
-        bottom: auto;
-      }
-      .sbt-skyline-path{
-        position: absolute;
-        bottom: 0%;
-        overflow: hidden;
-        width: 88%;
-        html[dir="rtl"] & {
-          -webkit-transform: scaleX(-1);
-          transform: scaleX(-1);
-        }
-        @include respond-below(sm){
-          display: none;
-        }
-      }
-      .sbt-footer-shade{
-        position: absolute;
-        bottom: 0;
-        left: calculateRem(40px);
-        html[dir="rtl"] & {
-          left: auto;
-          right: calculateRem(40px);
-          -webkit-transform: scaleX(-1);
-          transform: scaleX(-1);
-        }
-        @include respond-below(sm){
-          display: none;
-        }
-      }
-      .footerMenu {
-        .help-center{
-          margin-bottom: calculateRem(24px);
-          @include respond-below(sm) {
-            margin-bottom: calculateRem(16px);
-          }
-          a{
-            color: var(--primary-color);
-            font-size: calculateRem(14px);
-            font-weight: bold;
-          }
-        }
-        .contact-info{
-          @include respond-below(sm) {
-            margin-bottom: calculateRem(16px);
-          }
-          a{
-            color: var(--primary-color);
-            font-size: calculateRem(14px);
-          }
-          .contact-info-title{
-            color: var(--primary-color);
-            font-weight: bold;
-            font-size: calculateRem(14px);
-            margin-bottom: calculateRem(8px);
-            @include respond-below(sm){
-              margin-bottom: calculateRem(4px);
-            }
-          }
-        }
-      }
-      .footer-terms-info{
-        a{
-          color: var(--sbt-footer-info-links);
-          font-size: calculateRem(14px);
-          font-weight: bold;
-          &:hover{
-            color: var(--sbt-footer-info-links-hover);
-          }
-        }
-        color: var(--sbt-footer-info-links);
-        font-size: calculateRem(14px);
-        font-weight: bold
-      }
-      .sbt-footer-download-app{
-        justify-content: flex-end;
-        @include respond-below(sm){
-          justify-content: center;
-        }
-        .sbt-footer-bg{
-          padding-top: calculateRem(30px);
-          .sbt-footer-bg-img{
-            height: calculateRem(200px);
-            width: calculateRem(380px);
-            @include respond-below (sm){
-              height: calculateRem(180px);
-              width: calculateRem(320px);
-            }
-          }
-          .sbt-footer-title{
-            font-size: calculateRem(16px) !important;
-            color: var(--gray-800);
-            padding: 0 calculateRem(24px);
-            position: absolute;
-            width: calculateRem(130px);
-            bottom: calculateRem(95px);
-            left: 0;
-            right: 0;
-            margin: 0 auto;
-            @include respond-below (sm){
-              bottom: calculateRem(80px);
-            }
-          }
-          .playStore-img{
-            width: calculateRem(164px);
-            position: absolute;
-            bottom: calculateRem(30px);
-            left: 0;
-            right: 0;
-            margin: 0 auto;
-            @include respond-below(sm){
-              width: calculateRem(144px);
-              position: absolute;
-              bottom: calculateRem(20px);
-            }
-          }
-        }
-      }
-      .ui.grid.stackable{
-        @include respond-below(md){
-          padding: 0 calculateRem(32px) !important;
-        }
-      }
-      .ui.stackable.grid>.wide.column{
-        @include respond-below(md){
-          padding: 0 !important;
-        }
-      }
-    }   
+
+   @media only screen and (max-width:768px) {
+    .sbt-bottom-footer-container {
+      width: 65%;
+      margin: auto;
+      display: flex;
+      flex-direction: row;
+    }
+    .sbt-top-footer-container, .link{
+      font-size: 12px;
+    }
   }
-}
+
+  @media only screen and (max-width:518px) {
+    .new-layout-footer, .sbt-top-footer-container{
+      font-size: 12px;
+    }
+  }
+
+  @media only screen and (max-width:610px) {
+    .sbt-bottom-footer-container {
+      flex-direction: column;
+    }
+    .logo{
+      justify-content: center;
+    }
+    .footer-text{
+      width: 100%;
+      text-align: center;
+    }
+  }

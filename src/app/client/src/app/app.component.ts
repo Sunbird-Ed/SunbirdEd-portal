@@ -18,6 +18,7 @@ import { CacheService } from '../app/modules/shared/services/cache-service/cache
 import { DOCUMENT } from '@angular/common';
 import { image } from '../assets/images/tara-bot-icon';
 import { SBTagModule } from 'sb-tag-manager';
+import * as publicService from './modules/public/services';
 
 /**
  * main app component
@@ -30,6 +31,7 @@ import { SBTagModule } from 'sb-tag-manager';
 
 export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('frameWorkPopUp') frameWorkPopUp;
+  configContent: any = {}
   /**
    * user profile details.
    */
@@ -141,7 +143,8 @@ export class AppComponent implements OnInit, OnDestroy {
     public formService: FormService, @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
     public changeDetectorRef: ChangeDetectorRef, public layoutService: LayoutService,
     public generaliseLabelService: GeneraliseLabelService, private renderer: Renderer2, private zone: NgZone,
-    private connectionService: ConnectionService, public genericResourceService: GenericResourceService) {
+    private connectionService: ConnectionService, public genericResourceService: GenericResourceService,
+    private landingPageContentService: publicService.LandingPageContentService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
     const layoutType = localStorage.getItem('layoutType') || 'base';
@@ -152,7 +155,7 @@ export class AppComponent implements OnInit, OnDestroy {
       document.documentElement.setAttribute('layout', 'base');
     }
   }
-  
+
   /**
    * dispatch telemetry window unload event before browser closes
    * @param  event
@@ -410,6 +413,11 @@ export class AppComponent implements OnInit, OnDestroy {
         (document.activeElement as HTMLElement).click();
       }
     };
+
+    this.landingPageContentService.getPageContent().subscribe(res => {
+      this.configContent = res;
+      console.log(this.configContent);
+    })
   }
   setUserOptions() {
     const userStoredData = JSON.parse(localStorage.getItem('guestUserDetails'));
