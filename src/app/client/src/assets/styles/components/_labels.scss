@@ -89,7 +89,7 @@
 }
 .sb-label-primary-100,
 .sb-label-info-100 {
-    @include label-theme(var(--color-primary-100));
+    @include label-theme(var(--color-accent-100));
     color: var(--primary-color);
 } 
 .sb-label-text-primary-100,
@@ -192,7 +192,7 @@
         padding-right: calculateRem(4px);
     }
     .sb-label-value {
-        background-color: var(--color-primary-200);
+        background-color: var(--color-accent-200);
         padding: calculateRem(4px) calculateRem(8px);
         color: var(--white);
         display: inline-block;

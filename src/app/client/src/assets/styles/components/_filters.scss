@@ -113,7 +113,7 @@ $sb-prominent-filter-dropdown-item-active-font-weight: 700;
             font-weight: $sb-prominent-filter-dropdown-item-active-font-weight;
           }
           &:hover{
-            background: var(--primary-200);
+            background: var(--color-accent-200);
             color: var(--sb-filter-selected-dropdown-hover);
           }
           i.icon.square.outline{

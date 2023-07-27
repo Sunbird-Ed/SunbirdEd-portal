@@ -239,7 +239,7 @@ app-card[lang="ur"] {
 
 // Batch Card
 .ui.card.sb-batch-card {
-  border: calculateRem(1px) solid var(--color-primary-200);
+  border: calculateRem(1px) solid var(--color-accent-200);
   box-shadow: none;
 
   .item {

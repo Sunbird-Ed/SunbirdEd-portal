@@ -57,7 +57,7 @@
         }
         .sb-item.active{
             border: calculateRem(0.5px) solid var(--primary-300);
-            background: var(--primary-200);
+            background: var(--color-accent-200);
             color: var(--sb-pagination-item-active);
         }
         .no-border {

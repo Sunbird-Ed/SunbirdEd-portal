@@ -4,7 +4,7 @@
   max-width: calculateRem(448px);
   padding: calculateRem(24px) calculateRem(24px) calculateRem(24px) calculateRem(16px);
   border-radius: calculateRem(8px);
-  border: calculateRem(1px) solid var(--primary-300);
+  border: calculateRem(1px) solid var(--color-accent-300);
   border-left-width: calculateRem(8px);
   color: var(--gray);
   background: var(--white);
@@ -33,21 +33,21 @@
 
     &-info {
 
-      border-color: var(--primary-300);
-      background: var(--color-primary-100);
+      border-color: var(--color-accent-300);
+      background: var(--color-accent-100);
 
       .iziToast-close,
       .sb-toast-close-icon {
 
         &:before,
         &:after {
-          background: var(--primary-300);
+          background: var(--color-accent-300);
         }
       }
 
       .iziToast-icon,
       .sb-toast-icon {
-        color: var(--primary-300);
+        color: var(--color-accent-300);
       }
 
     }
@@ -181,7 +181,7 @@
 
         .iziToast-title,
         .sb-toast-title {
-          color: var(--primary-300);
+          color: var(--color-accent-300);
         }
       }
 
@@ -281,10 +281,10 @@
   height: calculateRem(-32px);
 
   &:before {
-    background: var(--primary-300);
+    background: var(--color-accent-300);
   }
 
   &:after {
-    background: var(--primary-300);
+    background: var(--color-accent-300);
   }
 }

@@ -117,17 +117,6 @@
   border-bottom: calculateRem(1px) solid var(--gray-200);
 }
 
-.sb-browse-btn {
-  position: relative;
-  overflow: hidden;
-  margin-top: calculateRem(3px);
-  cursor: pointer;
-  border-radius: calculateRem(24px);
-  border: calculateRem(2px) solid var(--primary-300);
-  color: var(--primary-300);
-  font-weight: bold;
-  background: var(--color-primary-100);
-}
 .svgContainer {
   width: 100%;
   height: 100%;

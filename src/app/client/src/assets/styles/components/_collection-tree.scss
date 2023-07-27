@@ -3,7 +3,7 @@
 @use "@project-sunbird/sb-styles/assets/varSass" as *;
 // TOC or Collection Tree
 $sb-collectionTree-border-radius: 0.25rem;
-$sb-collectionTree-border: calculateRem(1px) solid var(--color-primary-200);
+$sb-collectionTree-border: calculateRem(1px) solid var(--color-accent-200);
 $sb-collectionTree-padding: 1rem;
 $sb-collectionTree-margin: $base-block-space 0 0 0;
 $sb-collectionTree-background-color: var(--white);
@@ -30,7 +30,7 @@ $sb-collectionTree-disabled-title-icon-color: var(--gray-100);
 $sb-fancyTree-margin-ltr: 0 0 0 0.625rem;
 $sb-fancyTree-margin-rtl: 0 0.625rem 0 0;
 $sb-fancyTree-padding: 1rem 0 0 0;
-$sb-fancyTree-list-border-color: var(--color-primary-200);
+$sb-fancyTree-list-border-color: var(--color-accent-200);
 $sb-fancyTree-list-border-width: calculateRem(1px);
 $sb-fancyTree-list-item-margin: 0 0 (2 * $base-block-space) 0;
 $sb-fancyTree-list-item-padding-ltr: 0 0 0 ($base-block-space * 1.75);
