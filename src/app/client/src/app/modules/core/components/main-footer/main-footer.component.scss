@@ -1,21 +1,30 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @use "layout/footer" as *;
 
-:host ::ng-deep{
+:host {
   .new-layout-footer{
     margin-top:calculateRem(24px);
+    background-color: rgba(55,52,52, 1);
     &.player-fullscreen-footer{
       display: none;
     }
-    .sbt-footer-container {
-      height: calculateRem(272px); //296px
+    .sbt-top-footer-container {
+      height: calculateRem(100px); //296px
       width: 100%;
       padding: 0% 2%;
-      background: none;
       margin-top:calculateRem(8px);
+    }
+    .sbt-bottom-footer-container {
+      height: calculateRem(60px); //296px
+      width: 100%;
+      padding: 0% 2%;
+      background-color: rgba(255,255,255, 0.08);
     }
     .sbt-page-content-area {
       border-radius: 0rem 0 0 0;
+    }
+    .padding20{
+      padding: 20px;
     }
     .sbt-container{
       width:calc(100% - 4%);
