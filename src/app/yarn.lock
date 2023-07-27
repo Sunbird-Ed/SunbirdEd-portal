@@ -2148,19 +2148,6 @@ axios@^0.20.0:
   dependencies:
     follow-redirects "^1.10.0"
 
-azure-cloud-services@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/azure-cloud-services/-/azure-cloud-services-1.0.1.tgz#372c949a7abb72d41e25c44cb3e77a20fc96499c"
-  integrity sha512-89M30OZ1DFr3dtF4PQdKtzaQiXKyMr7R0vUyqSI7gNXk4H2iSQCEyj5Pq76O6s9/sGCwdowGNT0bWH+f4PM2vw==
-  dependencies:
-    "@project-sunbird/logger" "^0.0.9"
-    async "2.5.0"
-    azure-storage "2.10.2"
-    dateformat "2.0.0"
-    lodash "4.17.15"
-    multiparty "^4.2.1"
-    uuid "3.1.0"
-
 azure-storage@2.10.2:
   version "2.10.2"
   resolved "https://registry.yarnpkg.com/azure-storage/-/azure-storage-2.10.2.tgz#3bcabdbf10e72fd0990db81116e49023c4a675b6"
