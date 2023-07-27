@@ -3,7 +3,7 @@
 .sb-search-box {
   display: flex;
   align-items: center;
-  border: calculateRem(1px) solid var(--primary-300);
+  border: calculateRem(1px) solid var(--color-accent-300);
   border-radius: calculateRem(3px);
   max-width: 100%;
   width:100%;
@@ -21,7 +21,7 @@
   }
 
   &:focus-within {
-    box-shadow: 0px 0px calculateRem(2px) calculateRem(1px) var(--primary-300);
+    box-shadow: 0px 0px calculateRem(2px) calculateRem(1px) var(--color-accent-300);
     border-radius: calculateRem(3px);
   }
 
@@ -45,7 +45,7 @@
           pointer-events: none;
       }
      &:focus-within {
-         box-shadow: 0px 0px calculateRem(2px) calculateRem(1px) var(--primary-300);
+         box-shadow: 0px 0px calculateRem(2px) calculateRem(1px) var(--color-accent-300);
       }
   }
   .input-div {
@@ -57,7 +57,7 @@
     font-size: var(--font-size-sm);
     min-height: calculateRem(32px);
     border: 0;
-    border-right: calculateRem(0.5px) solid var(--primary-300);
+    border-right: calculateRem(0.5px) solid var(--color-accent-300);
     outline: 0;
     border-radius: 0px;
     padding: calculateRem(4px) calculateRem(4px) calculateRem(4px) calculateRem(32px);
@@ -124,7 +124,7 @@
   .sb-search-box {
     .sb-search-input {
       border-radius: 0 calculateRem(3px) calculateRem(3px) 0;
-      border-left: calculateRem(0.5px) solid var(--primary-300);
+      border-left: calculateRem(0.5px) solid var(--color-accent-300);
       border-right:0px;
       padding:  calculateRem(4px) calculateRem(32px) calculateRem(4px) calculateRem(4px);
     }
@@ -217,7 +217,7 @@
     }
 
     &:focus-within {
-      box-shadow: 0px 0px calculateRem(2px) calculateRem(1px) var(--primary-300);
+      box-shadow: 0px 0px calculateRem(2px) calculateRem(1px) var(--color-accent-300);
     }
   }
 

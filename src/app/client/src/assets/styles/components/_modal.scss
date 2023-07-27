@@ -146,7 +146,7 @@
 
   &.sb-warning .ui.modal {
     .sb-modal-header {
-      background-color: var(--tertiary-100);
+      background-color: var(--color-warn-400);
     }
 
     .sb-modal-actions {
@@ -162,7 +162,7 @@
 
   &.sb-success .ui.modal {
     .sb-modal-header {
-      background-color: var(--secondary-200);
+      background-color: var(--color-success-400);
     }
 
     .sb-modal-actions {
@@ -301,7 +301,7 @@
     display: inline;
     width: 2rem;
     height: 2rem;
-    background-color: var(--secondary-400);
+    background-color: var(--color-success);
     -webkit-mask-image: url(../../../assets/images/checkbox-icon.svg);
     mask-image: url(../../../assets/images/checkbox-icon.svg);
     -webkit-mask-size: contain;

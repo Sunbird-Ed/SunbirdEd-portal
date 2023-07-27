@@ -105,7 +105,7 @@
     background: var(--gray-0);
   }
   .sb-color-success {
-    color: var(--secondary-color);
+    color: var(--color-success);
   }
   .info-text {
     font-size: calculateRem(12px);
@@ -121,11 +121,11 @@
       color: var(--red-100);
     }
     &.success-icon {
-      color: var(--secondary-color);
+      color: var(--color-success);
       height: calculateRem(60px);
     }
     &.waiting-icon {
-      color: var(--tertiary-color);
+      color: var(--color-warn);
     }
     &.info-icon {
       color: var(--blue);
@@ -157,12 +157,12 @@
 }
 .success-text {
   font-size: calculateRem(14px);
-  color: var(--secondary-200);
+  color: var(--color-success-400);
   text-align: right;
 }
 .waiting-text {
   font-size: calculateRem(14px);
-  color: var(--tertiary-400);
+  color: var(--color-warn);
   text-align: right;
 }
 .info-text {
@@ -188,20 +188,20 @@
   border-radius: calculateRem(8px);
   width: 100%;
   border: calculateRem(1px) solid var(--white);
-  background: var(--secondary-0);
+  background: var(--color-success-50);
   margin-right: inherit;
 }
 .sb-single-pannel-accordion-list-item .ui.progress {
   &.error {
-    background-color: var(--tertiary-color);
+    background-color: var(--color-warn);
     .bar {
-      background: var(--tertiary-color);
+      background: var(--color-warn);
     }
   }
   .bar {
     height: calculateRem(7px) !important;
     border-radius: calculateRem(4px);
-    background: var(--secondary-color);
+    background: var(--color-success);
   }
 }
 

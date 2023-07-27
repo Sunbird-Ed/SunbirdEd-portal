@@ -14,18 +14,18 @@ $sb-input-padding: calculateRem(9px);
 $sb-input-color: var(--gray-800);
 $sb-input-border-radius: calculateRem(3px);
 $sb-input-border-normal: $input-border-width solid var(--gray-200);
-$sb-input-border-focus: $input-border-width solid var(--primary-600);
-$sb-input-border-hover: $input-border-width solid var(--primary-300);
+$sb-input-border-focus: $input-border-width solid var(--color-accent-600);
+$sb-input-border-hover: $input-border-width solid var(--color-accent-300);
 $sb-input-border-error: $input-border-width solid var(--red-400);
-$sb-input-border-success: $input-border-width solid var(--secondary-200);
+$sb-input-border-success: $input-border-width solid var(--color-success-400);
 
 /* sb-input label and text */
 $sb-error-text: var(--red-400);
 $sb-label-font-size: calculateRem(13px);
 // Dropdown
 $sb-dropdown-border-color: var(--gray-200);
-$sb-dropdown-border-focus: var(--primary-600);
-$sb-dropdown-border-hover: var(--primary-300);
+$sb-dropdown-border-focus: var(--color-accent-600);
+$sb-dropdown-border-hover: var(--color-accent-300);
 $sb-dropdown-min-height: calculateRem(39px);
 $sb-dropdown-border-radius: calculateRem(3px);
 $sb-dropdown-border: $input-border-width solid $sb-dropdown-border-color;

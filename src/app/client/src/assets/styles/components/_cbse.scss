@@ -154,7 +154,7 @@
       height: calc(100% - 2.75rem);
 
       .question-bg {
-        background-image: linear-gradient(-90deg, var(--secondary-100), var(--secondary-0));
+        background-image: linear-gradient(-90deg, var(--color-success-300), var(--color-success-50));
       }
 
       .page-section {
@@ -435,7 +435,7 @@
   }
 
   .ui.progress .bar {
-    background: var(--tertiary-100);
+    background: var(--color-warn-400);
     height: 0.5rem !important;
   }
 
@@ -446,7 +446,7 @@
   &.ui.styled.accordion {	
     background: inherit;	
     .active.title {	
-      border: calculateRem(1px) solid var(--color-accent-200); 
+      border: calculateRem(1px) solid var(--color-accent-100); 
       border-bottom: none;	
       background-color: var(--rc-F3F8FF);	
       font-weight: $font-weight-bold;	
@@ -480,7 +480,7 @@
     }	
     .sb-chapterlist-child {	
       .active.title {	
-        border-top: calculateRem(1px) solid var(--color-accent-200);	
+        border-top: calculateRem(1px) solid var(--color-accent-100);	
         border-radius: 0;	
         .chapter-status {	
           background: var(--rc-88B7E6);	
@@ -500,7 +500,7 @@
       }	
     }	
     .content {	
-      border: calculateRem(1px) solid var(--color-accent-200);
+      border: calculateRem(1px) solid var(--color-accent-100);
       border-top: none;	
       border-bottom-left-radius: calculateRem(4px);	
       border-bottom-right-radius: calculateRem(4px);	
@@ -521,13 +521,13 @@
     }	
     .accordion {	
       .active.title {	
-        border: calculateRem(1px) solid var(--color-accent-200);	
+        border: calculateRem(1px) solid var(--color-accent-100);	
         border-bottom: none;	
         background-color: var( --rc-F3F8FF);	
         font-weight: $font-weight-bold;	
       }	
       .content {	
-        border: calculateRem(1px) solid var(--color-accent-200); 
+        border: calculateRem(1px) solid var(--color-accent-100); 
         border-top: none;	
       }	
     }	

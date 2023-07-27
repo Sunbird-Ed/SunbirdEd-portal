@@ -150,7 +150,7 @@ ol.ui.list ol {
 
 .ui.selection.dropdown:focus,
 .ui.selection.dropdown:focus~label {
-  border: calculateRem(1px) solid var(--primary-300);
+  border: calculateRem(1px) solid var(--color-accent-300);
 }
 
 /* language selector */
@@ -777,7 +777,7 @@ quml-player {
 
       &:hover,
       &:active {
-        background: var(--tertiary-color);
+        background: var(--color-warn);
         color: var(--white);
         cursor: pointer;
       }
@@ -1308,7 +1308,7 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
   border-color: var(--primary-400) !important;
 }
 .ui.light-sea-green.button {
-  background: var(--secondary-400);
+  background: var(--color-success);
   color: var(--white);
   height: calculateRem(38px) !important;
 }

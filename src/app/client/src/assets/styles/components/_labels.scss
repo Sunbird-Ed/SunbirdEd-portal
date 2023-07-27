@@ -50,7 +50,7 @@
     .sb-live {
         height: calculateRem(8px);
         width:calculateRem(8px);
-        background: var(--secondary-200);
+        background: var(--color-success-400);
         display: inline-block;
         border-radius: 50%;
         margin-right: calculateRem(4px);
@@ -61,20 +61,20 @@
     @include label-theme-bgwhite(var(--primary-color));
 } 
 .sb-label-outline-secondary {
-    @include label-theme-bgwhite(var(--secondary-200));
+    @include label-theme-bgwhite(var(--color-success-400));
 } 
 .sb-label-outline-tertiary {
-    @include label-theme-bgwhite(var(--tertiary-color));
+    @include label-theme-bgwhite(var(--color-warn));
 }
 // status outline labels
 .sb-label-outline-info {
     @include label-theme-bgwhite(var(--primary-color));
 } 
 .sb-label-outline-success {
-    @include label-theme-bgwhite(var(--secondary-200));
+    @include label-theme-bgwhite(var(--color-success-400));
 } 
 .sb-label-outline-warning {
-    @include label-theme-bgwhite(var(--tertiary-color));
+    @include label-theme-bgwhite(var(--color-warn));
 }   
 .sb-label-outline-error {
     @include label-theme-bgwhite(var(--red));
@@ -98,38 +98,38 @@
 } 
 .sb-label-secondary,
 .sb-label-success {
-    @include label-theme(var(--secondary-200));
+    @include label-theme(var(--color-success-400));
 }
 .sb-label-secondary-0,
 .sb-label-success-0 {
-    @include label-theme(var(--secondary-0));
-    color: var(--secondary-200);
+    @include label-theme(var(--color-success-50));
+    color: var(--color-success-400);
 }
 .sb-label-text-secondary-200,
 .sb-label-text-success-200 {
-    color: var(--secondary-200);
+    color: var(--color-success-400);
 }
 .sb-label-tertiary,
 .sb-label-warning {
-    @include label-theme(var(--tertiary-color));
+    @include label-theme(var(--color-warn));
 }
 .sb-label-tertiary-0,
 .sb-label-warning-0 {
-    @include label-theme(var(--tertiary-0));
-    color: var(--tertiary-color);
+    @include label-theme(var(--color-warn-100));
+    color: var(--color-warn);
 }
 .sb-label-text-tertiary-0,
 .sb-label-text-warning-0 {
-    color: var(--tertiary-color);
+    color: var(--color-warn);
 }
 .sb-label-success {
-    @include label-theme(var(--secondary-200));
+    @include label-theme(var(--color-success-400));
 } 
 .sb-label-info {
     @include label-theme(var(--primary-400));
 }
 .sb-label-warning {
-    @include label-theme(var(--tertiary-400));
+    @include label-theme(var(--color-warn));
 } 
 .sb-label-error {
     @include label-theme(var(--red));
@@ -192,7 +192,7 @@
         padding-right: calculateRem(4px);
     }
     .sb-label-value {
-        background-color: var(--color-accent-200);
+        background-color: var(--color-accent-100);
         padding: calculateRem(4px) calculateRem(8px);
         color: var(--white);
         display: inline-block;
@@ -229,12 +229,12 @@
         border-bottom-right-radius: calculateRem(10px);
     }
     &.sb-label-status-success:before {
-        border-color: var(--secondary-0);
-        background-color: var(--secondary-0);
+        border-color: var(--color-success-50);
+        background-color: var(--color-success-50);
     }
     &.sb-label-status-error:before {
-        border-color: var(--tertiary-0); 
-        background-color: var(--tertiary-0);
+        border-color: var(--color-warn-100); 
+        background-color: var(--color-warn-100);
     }
     .sb-label-status-indicator {
         height: calculateRem(8px);
@@ -243,18 +243,18 @@
         border-radius: 50%;
         margin-right: calculateRem(4px);
         &.sb-label-status-indicator-error {
-            background: var(--tertiary-color);
+            background: var(--color-warn);
         }
         &.sb-label-status-indicator-success {
-            background: var(--secondary-color);
+            background: var(--color-success);
         }
     }
  }
 .sb-label-status-error {
-    color: var(--tertiary-color);  
+    color: var(--color-warn);  
 }
 .sb-label-status-success {
-    color: var(--secondary-color);
+    color: var(--color-success);
   }
 
 // cbse
@@ -266,10 +266,10 @@
     border-radius: 100%;
   }
   &.sb-bg-warning {
-    background: var(--tertiary-100);
+    background: var(--color-warn-400);
   }
   &.sb-bg-success {
-    background: var(--secondary-color);
+    background: var(--color-success);
   }
   &.sb-bg-error {
     background: var(--red);

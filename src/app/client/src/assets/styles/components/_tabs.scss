@@ -15,12 +15,12 @@
   }
 
   .active.item {
-    border-color: var(--primary--600);
-    color: var(--primary--600);
+    border-color: var(--color-accent-600);
+    color: var(--color-accent-600);
 
     &:hover {
-      border-color: var(--primary-600);
-      color: var(--primary--600);
+      border-color: var(--color-accent-600);
+      color: var(--color-accent-600);
     }
   }
 

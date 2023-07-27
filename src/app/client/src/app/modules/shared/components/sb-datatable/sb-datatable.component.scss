@@ -44,8 +44,8 @@
 padding: calculateRem(4px) calculateRem(8px) !important;
 border-radius: calculateRem(12px) !important;
 font-size: calculateRem(10px) !important;
-color: var(--tertiary-100) !important;
-border: calculateRem(1px) solid var(--tertiary-100) !important;
+color: var(--color-warn-400) !important;
+border: calculateRem(1px) solid var(--color-warn-400) !important;
 text-align: center !important;
 }
 .failed-label {

@@ -111,20 +111,12 @@
   $color-success-300: mat.get-color-from-palette($success, 300);
   $color-success-400: mat.get-color-from-palette($success, 400);
   $color-success-500: mat.get-color-from-palette($success, 500);
-  $color-success-600: mat.get-color-from-palette($success, 600);
-  $color-success-700: mat.get-color-from-palette($success, 700);
-  $color-success-800: mat.get-color-from-palette($success, 800);
-  $color-success-900: mat.get-color-from-palette($success, 900);
   --color-success-50:  #{$color-success-50};
   --color-success-100: #{$color-success-100};
   --color-success-200: #{$color-success-200};
   --color-success-300: #{$color-success-300};
   --color-success-400: #{$color-success-400};
   --color-success-500: #{$color-success-500};
-  --color-success-600: #{$color-success-600};
-  --color-success-700: #{$color-success-700};
-  --color-success-800: #{$color-success-800};
-  --color-success-900: #{$color-success-900};
 
   // Warning color variations
   $color-warn-50:  mat.get-color-from-palette($warn, 50);
@@ -133,20 +125,12 @@
   $color-warn-300: mat.get-color-from-palette($warn, 300);
   $color-warn-400: mat.get-color-from-palette($warn, 400);
   $color-warn-500: mat.get-color-from-palette($warn, 500);
-  $color-warn-600: mat.get-color-from-palette($warn, 600);
-  $color-warn-700: mat.get-color-from-palette($warn, 700);
-  $color-warn-800: mat.get-color-from-palette($warn, 800);
-  $color-warn-900: mat.get-color-from-palette($warn, 900);
   --color-warn-50:  #{$color-warn-50};
   --color-warn-100: #{$color-warn-100};
   --color-warn-200: #{$color-warn-200};
   --color-warn-300: #{$color-warn-300};
   --color-warn-400: #{$color-warn-400};
   --color-warn-500: #{$color-warn-500};
-  --color-warn-600: #{$color-warn-700};
-  --color-warn-700: #{$color-warn-700};
-  --color-warn-800: #{$color-warn-800};
-  --color-warn-900: #{$color-warn-900};
 
   // Error color variations
   $color-error-50:  mat.get-color-from-palette($error, 50);
@@ -155,20 +139,12 @@
   $color-error-300: mat.get-color-from-palette($error, 300);
   $color-error-400: mat.get-color-from-palette($error, 400);
   $color-error-500: mat.get-color-from-palette($error, 500);
-  $color-error-600: mat.get-color-from-palette($error, 600);
-  $color-error-700: mat.get-color-from-palette($error, 700);
-  $color-error-800: mat.get-color-from-palette($error, 800);
-  $color-error-900: mat.get-color-from-palette($error, 900);
   --color-error-50:  #{$color-error-50};
   --color-error-100: #{$color-error-100};
   --color-error-200: #{$color-error-200};
   --color-error-300: #{$color-error-300};
   --color-error-400: #{$color-error-400};
   --color-error-500: #{$color-error-500};
-  --color-error-600: #{$color-error-600};
-  --color-error-700: #{$color-error-700};
-  --color-error-800: #{$color-error-800};
-  --color-error-900: #{$color-error-900};
 
   /* color starts */
   .color-primary,
