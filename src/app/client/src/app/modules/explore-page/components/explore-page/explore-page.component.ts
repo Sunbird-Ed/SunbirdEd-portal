@@ -91,6 +91,13 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     Categorytheme: any;
     filterResponseData = {};
     refreshFilter: boolean = true;
+    bannerConfig = {
+        title: "Driving Government Success and Employee Fulfilment.",
+        description: "Goal-oriented HR helps governments to improve their performance, employee satisfaction, culture and thus deliver great citizen experiences.",
+        image: "/assets/images/banner.png",
+        showButtons: true
+    }
+
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     }
@@ -451,7 +458,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         }
                         const option = this.searchService.getSearchRequest(request, get(filters, 'primaryCategory'));
                         const params = _.get(this.activatedRoute, 'snapshot.queryParams');
-                        _.filter(Object.keys(params),filterValue => { 
+                        _.filter(Object.keys(params), filterValue => {
                             if (((_.get(currentPageData, 'metaData.filters').indexOf(filterValue) !== -1))) {
                                 let param = {};
                                 param[filterValue] = (typeof (params[filterValue]) === "string") ? params[filterValue].split(',') : params[filterValue];
@@ -1334,7 +1341,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         if (currentPageData) {
             const filterResponseData = _.get(currentPageData, 'metaData.searchFilterConfig');
             this.filterResponseData = filterResponseData;
-            this.userSelectedPreference=_.get(this, 'userPreference.framework');
+            this.userSelectedPreference = _.get(this, 'userPreference.framework');
             this.refreshFilter = false;
             this.cdr.detectChanges();
             this.refreshFilter = true;

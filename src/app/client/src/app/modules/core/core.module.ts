@@ -22,6 +22,7 @@ import { ContentTypeComponent } from './components/content-type/content-type.com
 import { LocationModule } from '../../plugins/location/location.module';
 import { NotificationModule } from '../notification/notification.module';
 import { TelemetryErrorModalComponent } from '../shared/components/telemetry-error-modal/telemetry-error-modal.component';
+import { BannerComponent } from './components/banner/banner.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -40,9 +41,9 @@ import { TelemetryErrorModalComponent } from '../shared/components/telemetry-err
   ],
   declarations: [MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent, PermissionDirective,
     BodyScrollDirective, OnlineOnlyDirective,
-    ErrorPageComponent, LanguageDropdownComponent, ContentTypeComponent, DesktopOnlyDirective, TelemetryErrorModalComponent],
+    ErrorPageComponent, LanguageDropdownComponent, ContentTypeComponent, DesktopOnlyDirective, TelemetryErrorModalComponent, BannerComponent],
   exports: [MainHeaderComponent, MainFooterComponent, PermissionDirective, BodyScrollDirective, OnlineOnlyDirective,
-    TelemetryModule, LanguageDropdownComponent, DesktopOnlyDirective, TelemetryErrorModalComponent],
+    TelemetryModule, LanguageDropdownComponent, DesktopOnlyDirective, TelemetryErrorModalComponent, BannerComponent],
   providers: [CacheService, AuthGuard, {
     provide: APP_BASE_HREF,
     useFactory: (s: PlatformLocation) => s.getBaseHrefFromDOM(),
