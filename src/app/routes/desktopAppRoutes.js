@@ -18,7 +18,7 @@ module.exports = function (app) {
             logger.info({ msg: 'desktop crash upload API ' + req.url + 'called' });
             next();
         },
-        StorageService.CLOUD_CLIENT.blockStreamUpload(envHelper.desktop_azure_crash_container_name)
+        StorageService.CLOUD_CLIENT.blockStreamUpload(envHelper.cloud_storage_desktopCrash_bucketname)
     );
 
     /**

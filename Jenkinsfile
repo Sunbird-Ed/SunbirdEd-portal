@@ -34,7 +34,7 @@ node('build-slave') {
                 }
 
                 stage('Build') {
-                    sh("bash ./build.sh  ${build_tag} ${env.NODE_NAME} ${hub_org} ${params.buildDockerImage} ${params.buildCdnAssests} ${params.cdnUrl}")
+                    sh("bash ./build.sh  ${build_tag} ${env.NODE_NAME} ${hub_org} ${params.buildDockerImage} ${params.buildCdnAssests} ${params.cdnUrl} ${params.cloudProvider}")
                 }
 
                 stage('ArchiveArtifacts') {
@@ -58,3 +58,4 @@ node('build-slave') {
         throw err
     }
 }
+
