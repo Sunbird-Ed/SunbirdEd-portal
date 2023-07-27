@@ -1,37 +1,17 @@
-<div *ngIf="showFooter">
-  <footer class="text-white new-layout-footer">
-    <div class="container">
-      <div class="sb-g sbt-top-footer-container">
-        <div class="sb-g-col-md-2 text-center">
-          <span><a href="#" class="text-white" title="Learn">Learn</a></span>
-        </div>
-        <div class="sb-g-col-md-2 text-center">
-          <span><a href="#" class="text-white" title="Connections">Connections</a></span>
-        </div>
-        <div class="sb-g-col-md-2 text-center">
-          <span><a href="#" class="text-white" title="Discussion">Discussion</a></span>
-        </div>
-        <div class="sb-g-col-md-2 text-center">
-          <span><a href="#" class="text-white" title="Jobs">Jobs</a></span>
-        </div>
-        <div class="sb-g-col-md-2 text-center">
-          <span><a href="#" class="text-white" title="Competencies">Competencies</a></span>
-        </div>
-        <div class="sb-g-col-md-2 text-center">
-          <span><a href="#" class="text-white" title="Events">Events</a></span>
-        </div>
+<footer class="new-layout-footer" *ngIf="footerData">
+  <div class="sb-g sbt-top-footer-container">
+    <div class="sb-g-col-md-2 sb-g-col-xs-4 text-center" *ngFor="let item of footerData.links">
+      <span><a href="#" class="link">{{item}}</a></span>
+    </div>
+  </div>
+  <div class="outer-container">
+    <div class="sb-g sbt-bottom-footer-container">
+      <div class="logo">
+        <img src="{{footerData.logoLink}}" />
       </div>
-
-      <div class="sb-g sbt-bottom-footer-container text-white">
-        <div class="text-left sb-g-col-xs-6 sb-g-col-md-3 ">
-          <span>COMPASS</span>
-        </div>
-        <div class="text-right sb-g-col-xs-6 sb-g-col-md-9 ">
-          <span>&copy; 2022 Copyright [Company Name]</span>
-        </div>
+      <div class="footer-text">
+        <span>&copy;{{footerData.footerText}}</span>
       </div>
     </div>
-  </footer>
-</div>
-
-<extension-point *appDesktopOnly [name]="'content-manager'"></extension-point>
+  </div>
+</footer>
