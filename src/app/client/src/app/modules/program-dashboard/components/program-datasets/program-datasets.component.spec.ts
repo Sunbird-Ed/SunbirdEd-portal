@@ -8,6 +8,7 @@ import { TelemetryService } from '@sunbird/telemetry';
 import { mockData } from './program-datasets.component.spec.data';
 import { ReportService } from '../../../dashboard';
 import { Location } from '@angular/common';
+import { ChangeDetectorRef } from '@angular/core';
 
 describe('DatasetsComponent', () => {
   let component: DatasetsComponent;
@@ -55,6 +56,9 @@ describe('DatasetsComponent', () => {
     downloadMultipleDataSources:jest.fn() as any,
     prepareChartData:jest.fn() as any
   };
+  const changeDetectorRef: Partial<ChangeDetectorRef> = {
+    detectChanges: jest.fn() as any
+  }
 
   beforeAll(() => {
     component = new DatasetsComponent(
@@ -70,7 +74,8 @@ describe('DatasetsComponent', () => {
       formService as FormService,
       router as Router,
       location as Location,
-      reportService as ReportService
+      reportService as ReportService,
+      changeDetectorRef as ChangeDetectorRef
     )
     component.layoutConfiguration = {};
     component.formData = mockData.FormData;
@@ -839,6 +844,31 @@ describe('DatasetsComponent', () => {
     jest.spyOn(component,'checkStatus');
     component.checkStatus();
     expect(component.checkStatus).toHaveBeenCalled();
+  });
+
+  it('should invalidate the end date', () => {
+    jest.spyOn(component,'dateChanged');
+    component.reportForm.controls.startDate.setValue('2023-07-10');
+    component.dateChanged({
+      value:{
+        _d:"2023-07-04T18:30:00.000Z"
+      },
+    },'endDate')
+    expect(component.dateChanged).toHaveBeenCalled();
+    expect(component.reportForm.controls.endDate.value).toBe(null);
+  });
+
+  it('should invalidate the start date', () => {
+    jest.spyOn(component,'dateChanged');
+    component.reportForm.controls.startDate.setValue(null)
+    component.reportForm.controls.endDate.setValue('2023-07-10');
+    component.dateChanged({
+      value:{
+        _d:"2023-07-14T18:30:00.000Z"
+      },
+    },'startDate')
+    expect(component.dateChanged).toHaveBeenCalled();
+    expect(component.reportForm.controls.startDate.value).toBe(null);
   });
 
   it('should call ngOnDestroy', () => {
