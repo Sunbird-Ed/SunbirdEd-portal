@@ -625,7 +625,8 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   districtSelection($event) {
     this.newData = false;
     this.showErrorForGraphs = false
-    this.appliedFilters = {...this.appliedFilters, district_externalId: $event.value}
+    this.appliedFilters = {...this.appliedFilters, district_externalId: $event.value};
+    if(_.has(this.appliedFilters,'block_externalId')) delete this.appliedFilters['block_externalId'];
     this.reportForm.controls.districtName.setValue($event.value);
     this.errorMessage = this.resourceService?.frmelmnts?.lbl?.resourceSelect;
     this.displayFilters['District'] = [$event?.source?.triggerValue];

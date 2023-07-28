@@ -143,9 +143,9 @@ let envVariables = {
   
   // ############# CSP Configuration #############
   // Common key for Uploading Desktop Crash logs
- // desktop_azure_crash_container_name: env.cloud_storage_desktopCrash_bucketname || 'desktopappcrashlogs',
+  cloud_storage_desktopCrash_bucketname: env.cloud_storage_desktopCrash_bucketname || 'desktopappcrashlogs',
 
-  // Azure
+  // // Azure
   // sunbird_azure_account_name: env.cloud_private_storage_accountname,
   // sunbird_azure_account_key: env.cloud_private_storage_secret,
   // sunbird_azure_report_container_name: env.cloud_storage_privatereports_bucketname || 'reports',
@@ -171,6 +171,7 @@ let envVariables = {
   // deprecated - Folder structure changed
   // sunbird_gcloud_bucket_name: env.sunbird_gcloud_bucket_name || 'sunbirded',
 
+  //Generalised cloud configuration
   cloud_private_storage_accountname: env.cloud_private_storage_accountname || '',
   cloud_private_storage_secret: env.cloud_private_storage_secret || '',
   cloud_private_storage_project: env.cloud_private_storage_project || '',
@@ -178,8 +179,6 @@ let envVariables = {
   cloud_storage_resourceBundle_bucketname: env.cloud_storage_resourceBundle_bucketname || 'label',
   cloud_private_storage_region: env.cloud_private_storage_region || '',
   cloud_private_storage_project: env.cloud_private_storage_project || '',
-
-  cloud_storage_desktopCrash_bucketname: env.cloud_storage_desktopCrash_bucketname || 'desktopappcrashlogs',
 
   // ############# End of CSP Configuration #############
 
