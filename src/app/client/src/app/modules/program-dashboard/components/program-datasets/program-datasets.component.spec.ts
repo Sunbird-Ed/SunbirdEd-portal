@@ -9,6 +9,7 @@ import { mockData } from './program-datasets.component.spec.data';
 import { ReportService } from '../../../dashboard';
 import { Location } from '@angular/common';
 import { ChangeDetectorRef } from '@angular/core';
+import dayjs from 'dayjs';
 
 describe('DatasetsComponent', () => {
   let component: DatasetsComponent;
@@ -777,22 +778,28 @@ describe('DatasetsComponent', () => {
 
   it('should set the startDate', () => {
     jest.spyOn(component,'dateChanged');
+    const isValidSpy = jest.spyOn(dayjs.prototype, 'isValid');
+    isValidSpy.mockReturnValue(true);
     component.dateChanged({
       value:{
         _d:"2022-07-04T18:30:00.000Z"
       },
     },'startDate')
     expect(component.dateChanged).toHaveBeenCalled();
+    isValidSpy.mockRestore();
   });
 
   it('should set the Date', () => {
     jest.spyOn(component,'dateChanged');
+    const isValidSpy = jest.spyOn(dayjs.prototype, 'isValid');
+    isValidSpy.mockReturnValue(true);
     component.dateChanged({
       value:{
         _d:"2022-07-04T18:30:00.000Z"
       },
     },'endDate')
     expect(component.dateChanged).toHaveBeenCalled();
+    isValidSpy.mockRestore();
   });
 
   it('should call the getTableData', () => {
@@ -846,22 +853,32 @@ describe('DatasetsComponent', () => {
     expect(component.checkStatus).toHaveBeenCalled();
   });
 
-  it('should invalidate the end date', () => {
-    jest.spyOn(component,'dateChanged');
-    component.reportForm.controls.startDate.setValue('2023-07-10');
-    component.dateChanged({
-      value:{
-        _d:"2023-07-04T18:30:00.000Z"
+  it("should invalidate the end date", () => {
+    jest.spyOn(component, "dateChanged");
+    component.reportForm.controls.endDate.setValue(null)
+    component.reportForm.controls.startDate.setValue("2023-07-10");
+    const isValidSpy = jest.spyOn(dayjs.prototype, 'isValid');
+    isValidSpy.mockReturnValue(true);
+
+    component.dateChanged(
+      {
+        value: {
+          _d: "2023-07-04T18:30:00.000Z",
+        },
       },
-    },'endDate')
+      "endDate"
+    );
     expect(component.dateChanged).toHaveBeenCalled();
     expect(component.reportForm.controls.endDate.value).toBe(null);
+    isValidSpy.mockRestore();
   });
 
   it('should invalidate the start date', () => {
     jest.spyOn(component,'dateChanged');
     component.reportForm.controls.startDate.setValue(null)
     component.reportForm.controls.endDate.setValue('2023-07-10');
+    const isValidSpy = jest.spyOn(dayjs.prototype, 'isValid');
+    isValidSpy.mockReturnValue(true);
     component.dateChanged({
       value:{
         _d:"2023-07-14T18:30:00.000Z"
@@ -869,6 +886,7 @@ describe('DatasetsComponent', () => {
     },'startDate')
     expect(component.dateChanged).toHaveBeenCalled();
     expect(component.reportForm.controls.startDate.value).toBe(null);
+    isValidSpy.mockRestore();
   });
 
   it('should call ngOnDestroy', () => {
