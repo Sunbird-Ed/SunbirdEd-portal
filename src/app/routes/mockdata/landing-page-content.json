@@ -19,5 +19,29 @@
                 }
               }
             ]
+    },
+    "summaryCardInfo": {
+      "cardData": [
+        {
+          "iconUrl":"/assets/images/courses.svg",
+          "title":"Courses",
+          "count":"1000+"
+        },
+        {
+          "iconUrl":"/assets/images/content.svg",
+          "title":"Available Content",
+          "count":"1500+"
+        },
+        {
+          "iconUrl":"/assets/images/active-users.svg",
+          "title":"Active users",
+          "count":"2 Million"
+        },
+        {
+          "iconUrl":"/assets/images/competencies.svg",
+          "title":"Competencies",
+          "count":"100+"
+        }
+      ]
     }
 }

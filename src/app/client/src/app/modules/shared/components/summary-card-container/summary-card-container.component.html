@@ -1,0 +1,3 @@
+<div class="summaryCardContainer" *ngIf="cardInfo">
+    <app-summary-card class="summaryCard" *ngFor="let info of cardInfo.cardData" [cardInfo]="info"></app-summary-card>
+</div>
