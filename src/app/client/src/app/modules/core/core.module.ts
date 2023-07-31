@@ -23,6 +23,7 @@ import { LocationModule } from '../../plugins/location/location.module';
 import { NotificationModule } from '../notification/notification.module';
 import { TelemetryErrorModalComponent } from '../shared/components/telemetry-error-modal/telemetry-error-modal.component';
 import { BannerComponent } from './components/banner/banner.component';
+import { GoalOrientedHrCardComponent } from './components/goal-oriented-hr-card/goal-oriented-hr-card.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -41,9 +42,9 @@ import { BannerComponent } from './components/banner/banner.component';
   ],
   declarations: [MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent, PermissionDirective,
     BodyScrollDirective, OnlineOnlyDirective,
-    ErrorPageComponent, LanguageDropdownComponent, ContentTypeComponent, DesktopOnlyDirective, TelemetryErrorModalComponent, BannerComponent],
+    ErrorPageComponent, LanguageDropdownComponent, ContentTypeComponent, DesktopOnlyDirective, TelemetryErrorModalComponent, BannerComponent, GoalOrientedHrCardComponent],
   exports: [MainHeaderComponent, MainFooterComponent, PermissionDirective, BodyScrollDirective, OnlineOnlyDirective,
-    TelemetryModule, LanguageDropdownComponent, DesktopOnlyDirective, TelemetryErrorModalComponent, BannerComponent],
+    TelemetryModule, LanguageDropdownComponent, DesktopOnlyDirective, TelemetryErrorModalComponent, BannerComponent, GoalOrientedHrCardComponent],
   providers: [CacheService, AuthGuard, {
     provide: APP_BASE_HREF,
     useFactory: (s: PlatformLocation) => s.getBaseHrefFromDOM(),

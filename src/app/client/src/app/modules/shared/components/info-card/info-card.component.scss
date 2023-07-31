@@ -1,0 +1,52 @@
+.info-card{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 2rem;
+    &__img{ 
+        border-radius: 4px;
+    }
+    &__text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 44%;
+        margin-left:24px;
+        h1 {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 1rem;
+            color:rgba(0, 0, 0, 0.6);
+        }
+
+    }
+    &.img-position{
+        flex-direction: row-reverse;
+        .info-card__text {
+            margin-right: 24px;
+            margin-left:0;
+        } 
+    }
+}
+
+@media only screen and (max-width:1024px) {
+    .info-card {
+        flex-direction: column;
+        
+        &__text{
+            width: 100%;
+            margin-bottom: 20px;
+            margin: 0;
+            h1{
+                font-size:1rem;
+            }
+        }
+        &.img-position {
+            flex-direction: column;
+        }
+    }
+   
+}

@@ -1,0 +1,41 @@
+.hr-card {
+    border: 1px solid RGBA(0, 0, 0, 0.16);
+    border-radius: 4px;
+    padding: 15px;
+
+    img {
+        height: 100px;
+    }
+
+    .title {
+        font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 0.12;
+        color: RGBA(0, 0, 0, 0.87);
+        text-align: center;
+    }
+
+    .description {
+        font-family: 'Lato', Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        letter-spacing: 0.25;
+        color: RGBA(0, 0, 0, 0.6);
+        text-align: center;
+    }
+
+    @media only screen and (min-width: 769px) and (max-width: 1201px) {
+
+        .text-section {
+            min-height: 180px;
+        }
+    }
+
+    @media only screen and (min-width: 1202px) and (max-width: 1400px) {
+
+        .text-section {
+            min-height: 120px;
+        }
+    }
+}

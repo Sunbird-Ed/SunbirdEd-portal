@@ -1,5 +1,5 @@
-<app-landing-section [textToDisplay]="" 
-[layoutConfiguration]="layoutConfiguration" [noTitle]="false"></app-landing-section>
+<app-landing-section [textToDisplay]="" [layoutConfiguration]="layoutConfiguration" [noTitle]="false">
+</app-landing-section>
 <!-- <div class="sbt-fluid-content-bg">
     <div class="landing-page-section mb-20 relative9">
         <div class="ui container">
@@ -118,5 +118,14 @@
     </div>
 </div> -->
 
-<app-banner></app-banner>
+<app-banner [config]="configContent.banner"></app-banner>
+<div class="container goal-oriented-hr-section">
+    <p class="heading">The Benefits of Goal-Oriented HR</p>
+    <div class="ui grid middle aligned stackable">
+        <div class="three wide column" *ngFor='let card of configContent.goalOrientedHrCards;'>
+            <app-goal-oriented-hr-card [data]="card"></app-goal-oriented-hr-card>
+        </div>
+    </div>
+</div>
+<info-card-container [cardInfo]="configContent.infoCard"></info-card-container>
 <router-outlet></router-outlet>

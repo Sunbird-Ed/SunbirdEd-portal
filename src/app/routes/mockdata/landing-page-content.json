@@ -1,0 +1,51 @@
+{
+  "infoCard": {
+    "title": "Empowering Government Success through Goal-Oriented HR",
+    "cardsData": [
+      {
+        "imageUrl": "/assets/images/info-card_1.jpg",
+        "data": {
+          "position": "right",
+          "title": "HR Drives Government Goal Achievement",
+          "text": "Aligned HR practices with government goals motivate and engage employees, resulting in improved performance. For quality education, HR hires qualified teachers, provides professional development, and fosters positive work environments."
+        }
+      },
+      {
+        "imageUrl": "/assets/images/info-card_2.jpg",
+        "data": {
+          "position": "left",
+          "title": "HR Supports Employee Goal Achievement",
+          "text": "Clear goals and understanding of their contribution to government objectives boost job satisfaction and achievement. For instance, HR practices can align with employees' goal to help people in need through volunteering or donation opportunities to charities."
+        }
+      }
+    ]
+  },
+  "banner": {
+    "title": "Driving Government Success and Employee Fulfilment.",
+    "description": "Goal-oriented HR helps governments to improve their performance, employee satisfaction, culture and thus deliver great citizen experiences.",
+    "image": "/assets/images/banner.png",
+    "showButtons": true
+  },
+  "goalOrientedHrCards": [
+    {
+      "title": "Increased efficiency",
+      "description": "Clear goals and government alignment boost employee efficiency.",
+      "image": "/assets/images/increased-efficiency.png"
+    },
+    {
+      "title": "Improved service delivery",
+      "description": "Engaged and motivated employees deliver high-quality services to citizens.",
+      "image": "/assets/images/improved-service-delivery.png"
+    },
+    {
+      "title": "Reduced costs",
+      "description": "Aligned HR practices lower costs, including recruitment and training.",
+      "image": "/assets/images/reduced-cost.png"
+    },
+    {
+      "title": "Improved public trust",
+      "description": "When employees are satisfied with their work, build public trust.",
+      "image": "/assets/images/improved-public-trust.png"
+    }
+  ]
+}

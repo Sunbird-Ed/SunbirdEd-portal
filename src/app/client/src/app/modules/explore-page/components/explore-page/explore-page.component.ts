@@ -91,12 +91,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     Categorytheme: any;
     filterResponseData = {};
     refreshFilter: boolean = true;
-    bannerConfig = {
-        title: "Driving Government Success and Employee Fulfilment.",
-        description: "Goal-oriented HR helps governments to improve their performance, employee satisfaction, culture and thus deliver great citizen experiences.",
-        image: "/assets/images/banner.png",
-        showButtons: true
-    }
 
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);

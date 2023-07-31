@@ -1,33 +1,54 @@
-@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "@project-sunbird/sb-styles/assets/mixins/mixins"as *;
 
 .landing-page-section {
-    background-color:var(--sb-landing-page-bg);
+    background-color: var(--sb-landing-page-bg);
     border-bottom: calculateRem(1px) solid rgba(var(--rc-rgba-gray), 0.79);
     -webkit-box-shadow: 0 calculateRem(1px) calculateRem(3px) rgba(var(--rc-rgba-black), 0.075);
     box-shadow: 0 calculateRem(1px) calculateRem(3px) rgba(var(--rc-rgba-black), 0.075);
 }
+
 .landing-page-image {
     margin: calculateRem(40px) 0 calculateRem(40px) 0;
 }
+
 .landing-page-image img {
     border-radius: 0.65em;
 }
+
 .landing-page-description {
     padding-top: 3em;
 }
+
 .landing-page-description p {
     margin: 0;
     font-size: calculateRem(14px);
 }
+
 .ui.card>.card-opacity {
     opacity: 0.2;
 }
+
 .ui.card .article-header-padding {
     padding: 0 0 1em 1em;
     font-weight: bold;
     font-size: 1.25em;
 }
+
 .ui.segment .segment-heading {
     font-weight: bold;
     font-size: 1.25em;
-  }
+}
+
+.goal-oriented-hr-section {
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 60px;
+    margin-bottom: 60px;
+
+    .heading {
+        font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+        font-size: 24px;
+        font-weight: 600;
+        color: RGBA(0, 0, 0, 0.87);
+    }
+}

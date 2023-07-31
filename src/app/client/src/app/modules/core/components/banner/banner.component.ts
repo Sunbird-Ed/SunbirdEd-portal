@@ -8,7 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class BannerComponent implements OnInit {
 
-  @Input() config: object; // decorate the property with @Input()
+  @Input() config: object; 
 
   constructor() { }
 
