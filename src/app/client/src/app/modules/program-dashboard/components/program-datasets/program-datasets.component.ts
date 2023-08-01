@@ -910,25 +910,27 @@ export class DatasetsComponent implements OnInit, OnDestroy {
       const year = new Date($event.value._d).getFullYear();
       const month = new Date($event.value._d).getMonth();
       const day = new Date($event.value._d).getDate();
-      const eventDateConverted = dayjs(_.get($event, 'value._d')).format('YYYY-MM-DD')
+      const eventDateConverted = dayjs(_.get($event, 'value._d')).format('YYYY-MM-DD');
       if(type === 'startDate'){
         if(this.reportForm.controls.endDate.value && ((eventDateConverted) > this.reportForm.controls.endDate.value)){
-          this.reportForm.controls.endDate.setErrors({matDatepickerMax:true});
+          this.reportForm.controls.startDate.setErrors({matDatepickerMax:true});
           this.cd.detectChanges();
-          return
+          return;
         }
         this.minEndDate = new Date(year, month, day + 1);
       }else{
         if(this.reportForm.controls.startDate.value && (eventDateConverted < this.reportForm.controls.startDate.value)){
           this.reportForm.controls.endDate.setErrors({matDatepickerMin:true});
           this.cd.detectChanges();
-          return
+          return;
         }
         this.maxStartDate = new Date(year, month, day - 1);
       }
-      this.cd.detectChanges();
       this.reportForm.controls[type].setValue(eventDateConverted);
+    }else{
+      this.reportForm.controls[type].setErrors({matDatepickerMax:true});
     }
+    this.cd.detectChanges();
   }
 
   closeDashboard(){
