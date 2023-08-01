@@ -350,6 +350,11 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       }
     })
   }
+
+  switchLayoutBlueSky(){
+    this.layoutService.switchLayoutBlueSky()
+  }
+  
   navigateToHome() {
     const formServiceInputParams = {
       formType: this.baseCategoryForm.formType,

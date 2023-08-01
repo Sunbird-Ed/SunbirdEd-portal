@@ -383,8 +383,8 @@ export class AppComponent implements OnInit, OnDestroy {
         this.logCdnStatus();
         this.setFingerPrintTelemetry();
         this.initApp = true;
-        localStorage.setItem('joyThemePopup', 'true');
-        this.joyThemePopup();
+        localStorage.setItem('joyThemePopup', 'false');
+      //  this.joyThemePopup();
         this.changeDetectorRef.detectChanges();
       }, error => {
         this.initApp = true;
