@@ -292,7 +292,7 @@
 }
 .qq-gallery .qq-upload-list li.qq-upload-fail {
     background-color: var(--gray-0);
-    box-shadow: 0 0 calculateRem(1px) 0 var(--red);
+    box-shadow: 0 0 calculateRem(1px) 0 var(--color-warn-500);
     border: 0;
 }
 .qq-gallery .qq-progress-bar {

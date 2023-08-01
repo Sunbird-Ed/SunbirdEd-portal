@@ -36,7 +36,7 @@
 
     &.ui.dropdown {
       .icon {
-        color: var(--primary-color);
+        color: var(--color-accent-500);
         font-size: calculateRem(12px);
       }
 
@@ -110,7 +110,7 @@
       top: 50%;
       position: absolute;
       width: 0;
-      border-bottom-color: var(--primary-color);
+      border-bottom-color: var(--color-accent-500);
       cursor: pointer;
     }
 
@@ -203,7 +203,7 @@
       }
 
       &-danger {
-        background: var(--red-0);
+        background: var(--color-warn-100);
       }
     }
   }

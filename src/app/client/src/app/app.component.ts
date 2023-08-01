@@ -19,6 +19,7 @@ import { DOCUMENT } from '@angular/common';
 import { image } from '../assets/images/tara-bot-icon';
 import { SBTagModule } from 'sb-tag-manager';
 import { OverlayContainer } from "@angular/cdk/overlay";
+import { Directionality } from '@angular/cdk/bidi';
 
 /* angular material theme  */
 const THEME_DARKNESS_SUFFIX = `-dark`;
@@ -34,20 +35,22 @@ const THEME_DARKNESS_SUFFIX = `-dark`;
 })
 
 export class AppComponent implements OnInit, OnDestroy {
-
+  direction = 'rtl';
   /* angular material theme  */
   themes: string[] = [
-    "deeppurple-amber",
-    "indigo-pink",
+    // "deeppurple-amber",
+    // "indigo-pink",
     "pink-bluegrey",
     // "purple-green",
     "joy",
+    "aquapurple",
     // "green-grey",
   ];
 
   @HostBinding('class') activeThemeCssClass: string;
   isThemeDark = false;
   activeTheme: string;
+  isRtl: boolean;
 
   setMatTheme(theme: string, darkness: boolean = null) {
     localStorage.setItem('selectedTheme', theme);
@@ -189,9 +192,13 @@ export class AppComponent implements OnInit, OnDestroy {
     public formService: FormService, @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
     public changeDetectorRef: ChangeDetectorRef, public layoutService: LayoutService,
     public generaliseLabelService: GeneraliseLabelService, private renderer: Renderer2, private zone: NgZone,
-    private connectionService: ConnectionService, public genericResourceService: GenericResourceService) {
+    private connectionService: ConnectionService, public genericResourceService: GenericResourceService, private dir: Directionality) {
 
-
+      this.isRtl = this.dir.value === 'rtl';
+      this.dir.change.subscribe(() => {
+        this.isRtl = !this.isRtl;
+      });
+    
     const selectedMatTheme = localStorage.getItem('selectedTheme');
     console.log(selectedMatTheme);
     if (selectedMatTheme) {
@@ -938,12 +945,15 @@ export class AppComponent implements OnInit, OnDestroy {
     this.showFrameWorkPopUp = false;
     this.cacheService.set('showFrameWorkPopUp', 'installApp');
   }
+
   changeLanguageAttribute() {
     this.resourceDataSubscription = this.resourceService.languageSelected$.subscribe(item => {
       if (item.value && item.dir) {
         this._document.documentElement.lang = item.value;
         this._document.documentElement.dir = item.dir;
+        console.log(this._document.documentElement.dir);
       } else {
+        console.log('else statement')
         this._document.documentElement.lang = 'en';
         this._document.documentElement.dir = 'ltr';
       }

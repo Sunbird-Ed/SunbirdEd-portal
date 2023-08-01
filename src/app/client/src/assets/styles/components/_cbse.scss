@@ -86,7 +86,7 @@
     .sb-mark {
       font-size: $font-size-sm;
       padding-right: 0.5rem;
-      color: var(--primary-400);
+      color: var(--color-accent-500);
     }
     &.sb-learning-outcome-header {
       align-items: center;
@@ -124,7 +124,7 @@
     .sb-question {
       margin-right: auto;
       font-size: $font-size-sm;
-      color: var(--primary-400);
+      color: var(--color-accent-500);
       margin-bottom: 1rem;
     }
 
@@ -297,7 +297,7 @@
         right: 0.25rem;
         z-index: 999;
         cursor: pointer;
-        background: var(--primary-color);
+        background: var(--color-accent-500);
         color: var(--white);
         width: 2rem;
         height: 2rem;
@@ -458,7 +458,7 @@
         border-left: none;	
       }	
       .chapter-status {	
-        background: var(--primary-color);
+        background: var(--color-accent-500);
       }	
     }	
     .title {	

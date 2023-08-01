@@ -351,15 +351,15 @@ h5.ui.header {
   border: calculateRem(1px) solid var(--rc-f9f9f9);
 }
 .ui.basic.label:hover {
-  border-color: var(--primary-color) !important;
+  border-color: var(--color-accent-500) !important;
 }
 .ui.list .list > .item a.header,
 .ui.list > .item a.header {
-  color: var(--primary-color) !important;
+  color: var(--color-accent-500) !important;
 }
 .ui.list .list > .item a.header:hover,
 .ui.list > .item a.header:hover {
-  color: var(--primary-color) !important;
+  color: var(--color-accent-500) !important;
   opacity: 0.8;
 }
 sui-multi-select.ui.selection.dropdown {

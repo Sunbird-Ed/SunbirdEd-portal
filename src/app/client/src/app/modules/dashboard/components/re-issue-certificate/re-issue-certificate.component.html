@@ -1,7 +1,7 @@
 <div class="sb-g re-issue-cert p-16" [appTelemetryImpression]="telemetryImpression">
   <div class="sb-g-col-xs-12 sb-g-col-md-7 sb-g-col-lg-7 sb-g-col-xxxl-9">
-    <div class="mat-title color-accent font-weight-bold mb-24">{{resourceService?.frmelmnts?.lbl?.cert}} </div>
-    <div class="certificate-id-content">
+    <div class="mat-title color-accent font-weight-bold mb-24 text-left">{{resourceService?.frmelmnts?.lbl?.cert}} </div>
+    <div class="certificate-id-content text-left">
       <label class="w-100 mb-16" for="id">
         <span>{{resourceService?.frmelmnts?.lbl?.enterInstanceId | interpolate:'{instance}': channelName}}
           {{resourceService?.frmelmnts?.lbl?.or}} {{resourceService?.frmelmnts?.lbl?.enterUUID}}
@@ -23,7 +23,7 @@
     </div>
   </div>
   <div class="sb-g-col-xs-12 sb-g-col-md-5 sb-g-col-lg-5 sb-g-col-xxxl-7">
-    <div class="mat-caption certificate-id-info">
+    <div class="mat-caption certificate-id-info text-left">
       <div> {{resourceService?.frmelmnts?.lbl?.whatInstanceId | interpolate:'{instance}': channelName}} </div>
       <div class="py-8">{{resourceService?.frmelmnts?.reissue?.lbl?.instructions | interpolate:'{instance}':
         channelName}}</div>

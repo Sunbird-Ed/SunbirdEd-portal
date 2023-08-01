@@ -1,7 +1,7 @@
 <div class="graph-filters" #chartRootElement>
 
   <div class="d-flex pb-10">
-    <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
+    <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0 text-left">
       <label class="mat-body-1 font-weight-bold"> {{ this.chartOptions?.title?.text }} </label>
       <p class="mat-caption font-weight-bold mb-0" *ngIf="showLastUpdatedOn && lastUpdatedOn">
         <span>{{resourceService?.frmelmnts?.lbl?.lastUpdatedOn}}&nbsp;: </span> &nbsp; {{lastUpdatedOn}}
@@ -84,8 +84,8 @@
     </div>
   </div>
 
-  <div class="dashboard-graph-statistics py-24" *ngIf="bigNumberCharts.length">
-    <div class="graph-stat-block" *ngFor="let bigNumberChart of bigNumberCharts">
+  <div class="dashboard-graph-statistics py-24 text-left" *ngIf="bigNumberCharts.length">
+    <div class="graph-stat-block pl-16" *ngFor="let bigNumberChart of bigNumberCharts">
       <p class="mat-title mb-8">{{bigNumberChart?.header}}</p>
       <p class="mat-display-1 font-weight-bold mb-8">{{bigNumberChart?.data}} </p>
       <p class="mat-title"> {{bigNumberChart?.footer}} </p>

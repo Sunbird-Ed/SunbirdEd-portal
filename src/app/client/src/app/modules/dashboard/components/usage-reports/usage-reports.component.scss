@@ -2,7 +2,7 @@
 
 .table-headerDashboard{
     width:calculateRem(200px);
-    color: var(--primary-color);
+    color: var(--color-accent-500);
   font-weight: bold;
 }
 
@@ -15,7 +15,11 @@
         transition: all ease-in .3s;
         &.active, &:hover {
             background: var(--sbt-body-bg);
-            border-left: 4px solid var(--primary-color);
+            border-left: 0.25rem solid var(--color-accent-500);
+            html[dir="rtl"] & {
+                border-right: 0.25rem solid var(--color-accent-500);
+                border-left: unset;
+            }
         }
     }
 

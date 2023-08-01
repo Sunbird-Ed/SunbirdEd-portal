@@ -5,12 +5,13 @@ import { mockTable } from "./sb-table.component.spec.data";
 
 describe("SbTableComponent", () => {
   let component: SbTableComponent;
+  let resourceService;
   let filterService:PdServiceService = {
     getFilteredData:jest.fn().mockReturnValue([mockTable.table.data[0]]) as any
   }
 
   beforeAll(() => {
-    component = new SbTableComponent(filterService);
+    component = new SbTableComponent(filterService,resourceService);
     component.table = mockTable.table;
     component.hideElements = false;
     component.tableData = mockTable.table.data;

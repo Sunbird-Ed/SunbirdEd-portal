@@ -91,21 +91,21 @@
     }
 
     &-danger, &-error {
-      border-color: var(--red-400);
-      background: var(--red-0);
+      border-color: var(--color-warn-500);
+      background: var(--color-warn-100);
 
       .iziToast-close,
       .sb-toast-close-icon {
 
         &:before,
         &:after {
-          background: var(--red-400);
+          background: var(--color-warn-500);
         }
       }
 
       .iziToast-icon,
       .sb-toast-icon {
-        color: var(--red-400);
+        color: var(--color-warn-500);
       }
     }
 
@@ -205,7 +205,7 @@
 
         .iziToast-title,
         .sb-toast-title {
-          color: var(--red-400);
+          color: var(--color-warn-500);
         }
       }
 

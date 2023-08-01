@@ -8,13 +8,13 @@
    width: 100%;
 }
 span.dashBoardMenuItem.active {
-    color: var(--primary-color);
+    color: var(--color-accent-500);
     font-weight: bold;
   }
 .dashBoardMenuItem {
     font-weight: 500;
     font-size: 0.9375em;
-    color: var(--primary-color);
+    color: var(--color-accent-500);
   }
 .ui.cards > .card .meta.dashBoardCardText {
     font-weight: 500;

@@ -2,7 +2,7 @@
 
 .header {
   padding: calculateRem(15px);
-  background: var(--sb-modal-content-bg);
+  background: var(--sbt-body-bg);
   color: var(--sb-linkmenu-text);
 }
 .edit-sub-input,
@@ -12,13 +12,13 @@ input.edit-sub-input:focus-visible {
   padding: calculateRem(10px);
   border: 0 !important;
   background: transparent;
-  border-bottom: calculateRem(2px) solid var(--primary-color) !important;
+  border-bottom: calculateRem(2px) solid var(--color-accent-500) !important;
   color: var(--body-color);
 }
 .footer {
   display: flex;
   border: none;
-  background: var(--sb-modal-content-bg);
+  background: var(--sbt-body-bg);
 }
 
 .ui.small.modal {

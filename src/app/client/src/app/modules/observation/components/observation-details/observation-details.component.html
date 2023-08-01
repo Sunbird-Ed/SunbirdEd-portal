@@ -32,7 +32,7 @@
               </div>
             </div>
             <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
-              <button class="sb-btn sb-btn-primary sb-btn-normal mr-8" tabindex="0" [disabled]="disableAddEntity" (click)="!this.programJoined ? joinProgramPopUp = true : addEntity()">
+              <button mat-raised-button class="button-rounded mr-8" tabindex="0" [disabled]="disableAddEntity" (click)="!programJoined ? joinProgramPopUp = true :  addEntity()">
                 {{resourceService.frmelmnts?.btn?.add}} {{entityType|titlecase}}
               </button>
             </div>
@@ -41,7 +41,7 @@
             <entity-list [entities]="entities?.entities" [selectedEntity]="selectedEntity"
               (onAction)="actionOnEntity($event)"> </entity-list>
           </div>
-          <div class="twelve wide column" *ngIf="entities?.length === 0 && !showLoader">
+          <div *ngIf="entities?.length === 0 && !showLoader">
             <app-no-result [data]="noResultMessageForEntity"></app-no-result>
           </div>
           <div class="observation-detail-box" *ngIf="entities?.entities?.length">
@@ -52,21 +52,21 @@
             </div>
             <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons"
               *ngIf="entities?.allowMultipleAssessemts">
-              <button class="sb-btn sb-btn-primary sb-btn-normal mr-8" tabindex="0" (click)="!this.programJoined ? joinProgramPopUp = true :observeAgainConfirm()">
+              <button class="sb-btn sb-btn-primary sb-btn-normal mr-8" tabindex="0" (click)="!programJoined ? joinProgramPopUp = true :observeAgainConfirm()">
                 {{resourceService.frmelmnts?.btn?.observeAgain}}
               </button>
             </div>
           </div>
 
           <div class="submissions">
-            <div class="twelve wide column margin-btm" *ngIf="showLoader">
+            <div class="mb-16" *ngIf="showLoader">
               <app-loader [data]='loaderMessage'></app-loader>
             </div>
             <div *ngFor="let submission of submissions">
               <!-- Observation With Rubric -->
               <submission [submission]="submission" [allowMultipleAssessemts]="entities?.allowMultipleAssessemts"
                 *ngIf="(submission?.evidencesStatus?.length > 1  || (submission.criteriaLevelReport && submission.isRubricDriven));else rubricCard"
-                (selectedSubmission)="!this.programJoined ? joinProgramPopUp = true : redirectToQuestions($event)" (onAction)="actionOnSubmission($event)">
+                (selectedSubmission)="!programJoined ? joinProgramPopUp = true :redirectToQuestions($event)" (onAction)="actionOnSubmission($event)">
               </submission>
               <!-- Observation Without Rubric -->
               <ng-template #rubricCard>

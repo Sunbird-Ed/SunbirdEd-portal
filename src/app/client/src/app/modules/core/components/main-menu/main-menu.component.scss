@@ -11,11 +11,11 @@
 
 .close {
   font-size: var(--h4-font-size);
-  color: var(--primary-color);
+  color: var(--color-accent-500);
 }
 
 .ui.text.menu .active.item, .ui.text.menu .item:hover {
-  color: var(--primary-color);
+  color: var(--color-accent-500);
   outline: none;
 }
 .ui.menu {  
@@ -23,13 +23,13 @@
     .item {
       color: var(--gray-400);
       &:hover {
-        color: var(--primary-color);
+        color: var(--color-accent-500);
         outline: none;
       }
 
       &.active {
         font-weight: bold;
-        color: var(--primary-color);
+        color: var(--color-accent-500);
 
         &:hover,
         &:focus {
@@ -40,7 +40,7 @@
   }
   &.vertical {
     .active.item {
-      color: var(--primary-color);
+      color: var(--color-accent-500);
       font-weight: var(--font-weight-bold);
       background: none;
     }
@@ -52,14 +52,14 @@
   bottom: 0;
   width: 100%;
   font-weight: var(--font-weight-bold) !important;
-  color: var(--primary-color) !important;
+  color: var(--color-accent-500) !important;
   background-color: var(--white);
   border-top: calculateRem(1px) solid var(--gray-100) !important;
 }
 
 .group__type {
   margin-left: 1.5rem;
-  background: var(--red-100);
+  background: var(--color-warn-300);
   position: relative;
   height: 1.25rem;
   padding: 0 .25rem 0 0.5rem;
@@ -76,7 +76,7 @@
   height: 0;
   border-width: .625rem .3125rem;
   border-style: solid;
-  border-color: var(--red-100) transparent var(--red-100) var(--red-100);
+  border-color: var(--color-warn-300) transparent var(--color-warn-300) var(--color-warn-300);
   position: absolute;
   right: -.625rem;
 }

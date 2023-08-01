@@ -9,7 +9,7 @@
 .ui.styled.accordion .active.title,
 .ui.styled.accordion .accordion .active.title {
   padding: calculateRem(16px);
-  color: var(--primary-400);
+  color: var(--color-accent-500);
 }
 .ui.styled.accordion .accordion .title,
 .ui.styled.accordion .title {
@@ -105,7 +105,7 @@
     background: var(--gray-0);
   }
   .sb-color-success {
-    color: var(--secondary-color);
+    color: var(--color-success-500);
   }
   .info-text {
     font-size: calculateRem(12px);
@@ -118,10 +118,10 @@
   i.icon {
     width: auto;
     &.error-icon {
-      color: var(--red-100);
+      color: var(--color-warn-300);
     }
     &.success-icon {
-      color: var(--secondary-color);
+      color: var(--color-success-500);
       height: calculateRem(60px);
     }
     &.waiting-icon {
@@ -152,7 +152,7 @@
 }
 .error-text {
   font-size: calculateRem(14px);
-  color: var(--red-100);
+  color: var(--color-warn-300);
   text-align: right;
 }
 .success-text {
@@ -201,7 +201,7 @@
   .bar {
     height: calculateRem(7px) !important;
     border-radius: calculateRem(4px);
-    background: var(--secondary-color);
+    background: var(--color-success-500);
   }
 }
 

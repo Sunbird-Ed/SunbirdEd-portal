@@ -300,7 +300,7 @@
     top: calculateRem(8px);
     right: calculateRem(8px);
     cursor: pointer;
-    background: var(--primary-color);
+    background: var(--color-accent-500);
     color: var(--white);
     border-radius: 50%;
     font-size: var(--font-size-sm);
@@ -332,7 +332,7 @@
 
 .sbt-search-box{
   .search-fill{
-    fill: var(--primary-color);
+    fill: var(--color-accent-500);
   }
 }
 
@@ -370,7 +370,7 @@
   background-color: var(--sbt-body-bg);
   box-shadow: calculateRem(6px) calculateRem(16px) calculateRem(24px) 0 rgb(0 0 0 / 10%);
   .search-title{
-    color: var(--primary-color);
+    color: var(--color-accent-500);
     font-size: calculateRem(12px);
     letter-spacing: 0;
     line-height: calculateRem(18px);
