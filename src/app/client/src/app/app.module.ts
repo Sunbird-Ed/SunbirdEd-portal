@@ -23,6 +23,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateStore } from '@ngx-translate/core';
 import { SbSearchFilterModule } from '@project-sunbird/common-form-elements';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { SbSearchFilterModule } from '@project-sunbird/common-form-elements';
     CoreModule,
     CommonModule,
     HttpClientModule,
+    ModalModule.forRoot(),
     SuiModalModule,
     SharedModule.forRoot(),
     WebExtensionModule.forRoot(),

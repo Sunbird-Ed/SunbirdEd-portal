@@ -17,3 +17,15 @@
 // @import '~@swimlane/ngx-datatable/src/themes/material';
 @import '~@swimlane/ngx-datatable/assets/icons.css';
 @import url( 'https://fonts.googleapis.com/css?family=Material+Icons');
+
+.modal-webview {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    z-index: 9999;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.854);
+}
