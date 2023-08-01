@@ -889,6 +889,23 @@ describe('DatasetsComponent', () => {
     isValidSpy.mockRestore();
   });
 
+  it('should invalidate the date for text input', () => {
+    jest.spyOn(component,'dateChanged');
+    component.reportForm.controls.startDate.setValue(null);
+    component.reportForm.controls.endDate.setValue(null);
+    const isValidSpy = jest.spyOn(dayjs.prototype, 'isValid');
+    isValidSpy.mockReturnValue(false);
+    component.dateChanged({
+      value:{
+        _d:"abc"
+      },
+    },'startDate')
+    expect(component.dateChanged).toHaveBeenCalled();
+    expect(component.reportForm.controls.startDate.value).toBe(null);
+    expect(component.reportForm.controls.endDate.value).toBe(null);
+    isValidSpy.mockRestore();
+  });
+
   it('should call ngOnDestroy', () => {
     component.userDataSubscription = of().subscribe();
     component.ngOnDestroy();
