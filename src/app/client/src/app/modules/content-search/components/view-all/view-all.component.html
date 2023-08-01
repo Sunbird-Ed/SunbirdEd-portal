@@ -51,7 +51,7 @@
                             attr.aria-label="{{resourceService?.frmelmnts?.lbl?.previous}}"
                             [ngClass]="{disabled:pager.currentPage===1 }" class="sb-item " tabindex="0"
                             (click)="navigateToPage(pager.currentPage - 1)">&lt;</a>
-                        <a role="button" aria-current="page" title="{{page}}" attr.aria-label="{{page}}"
+                        <a role="button" aria-current="page" attr.aria-label="{{page}}"
                             *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" tabindex="0"
                             (click)="navigateToPage(page)" class="sb-item">{{page}}</a>
                         <a role="button" title="{{resourceService?.frmelmnts?.lbl?.next}}"

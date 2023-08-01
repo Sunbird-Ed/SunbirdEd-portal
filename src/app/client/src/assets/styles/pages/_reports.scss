@@ -87,10 +87,10 @@
 }
 
 .ui.secondary.pointing.menu .active.item {
-  color: var(--primary-color) !important;
+  color: var(--color-accent-500) !important;
   opacity: 1 !important;
   border-bottom-width: calculateRem(4px) !important;
-  border-color: var(--primary-color) !important;
+  border-color: var(--color-accent-500) !important;
 }
 
 .ui.secondary.pointing.menu {
@@ -133,7 +133,7 @@
   padding-left: calculateRem(19px) !important;
   min-width: calculateRem(113px) !important;
 
-  background-color: var(--primary-color) !important;
+  background-color: var(--color-accent-500) !important;
   box-shadow: var(--sbt-box-shadow-6px) !important;
 
   ::ng-deep {

@@ -2,17 +2,17 @@
 @use "@project-sunbird/sb-styles/assets/varIndex" as *;
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
-// from portal
+/* from portal */
 @use "./vendors/vendors" as *;
 @use "./components/components" as *;
 @use "./layout/layout" as *;
-@use "./legacy" as *;
+// @use "./legacy" as *;
 @use "./global" as *;
 // @use "./pages/sbt-dropdown" as *;
 
-// from semantic
-@use "./semantic/semantic-overrides" as *;
-@use "./semantic/semantic-rtl" as *;
+/* from semantic */
+// @use "./semantic/semantic-overrides" as *;
+// @use "./semantic/semantic-rtl" as *;
 
 // @import '~@swimlane/ngx-datatable/src/themes/material';
 @import '~@swimlane/ngx-datatable/assets/icons.css';

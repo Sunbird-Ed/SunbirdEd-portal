@@ -10,37 +10,27 @@
         <div *ngIf="!isDesktopApp" [ngClass]="{ hide: isFullScreenView }" class="accessibility-toolbar mb-8">
           <mat-toolbar color="accent"
             class="d-flex flex-w-wrap flex-dc-below-xs flex-jc-center-below-xs py-4-max-xs h-auto-below-xs">
-            <!-- <div class="sb-secondary-btn"> flex-dc-column flex-jc-center  
-            <button mat-raised-button color="info" class="" (click)="drawer.toggle()">Toggle drawer</button>
-           </div> -->
             <div class="example-spacer d-none d-above-xs-block"></div>
             <div aria-label="accessibility links" class="d-flex flex-ai-center" *ngIf="showNavAccessibility === 'true'">
               <a *ngIf="!hideHeaderNFooter" mat-button href="javascript:void(0);" class="hover-color-primary px-8"
-                title="{{
-              resourceService?.frmelmnts?.lbl?.accessibilitytskip
-            }}" tabindex="0" (click)="skipToMainContent()">{{
+                title="" tabindex="0" (click)="skipToMainContent()">{{
                 resourceService?.frmelmnts?.lbl?.accessibilitytskip
                 }}</a>
               <!-- <span>|</span> -->
-              <a mat-button href="/screenreaderaccess.html" class="hover-color-primary px-8" tabindex="0" title="{{
-              resourceService?.frmelmnts?.lbl?.accessibility
-            }}">{{ resourceService?.frmelmnts?.lbl?.accessibility }}</a>
+              <a mat-button href="/screenreaderaccess.html" class="hover-color-primary px-8" tabindex="0" title="">{{ resourceService?.frmelmnts?.lbl?.accessibility }}</a>
               <!-- <span>|</span> -->
               <ng-container *ngIf="userService.loggedIn">
-                <a class="hover-color-primary px-0" mat-button title="{{
-                  resourceService?.frmelmnts?.lbl?.accessibilitytext
-                }}" tabindex="0" href="/sitemap.html?session=true">{{
+                <a class="hover-color-primary px-0" mat-button title="" tabindex="0" href="/sitemap.html?session=true">{{
                   resourceService?.frmelmnts?.lbl?.accessibilitytext
                   }}</a>
               </ng-container>
               <ng-container *ngIf="!userService.loggedIn">
-                <a class="hover-color-primary px-0" mat-button title="{{
-                  resourceService?.frmelmnts?.lbl?.accessibilitytext
-                }}" tabindex="0" href="/sitemap.html">{{
+                <a class="hover-color-primary px-0" mat-button title="" tabindex="0" href="/sitemap.html">{{
                   resourceService?.frmelmnts?.lbl?.accessibilitytext
                   }}</a>
               </ng-container>
             </div>
+            
             <div role="navigation" aria-label="Font Size" class="pl-4-min-xs d-flex flex-ai-center">
               <span class="opacity50 font-weight-normal mx-4">|</span>
               <button mat-icon-button type="button" [attr.aria-pressed]="false" tabindex="0" aria-label="{{
@@ -87,7 +77,7 @@
             </div>
           </mat-toolbar>
         </div>
-
+        <div class="sampleclass">text sample content updated here</div>
         <!-- onboarding stepper -->
         <app-onboarding-popup *ngIf="isStepperEnabled && !isStepperCompleted" [guestUserDetails]="guestUserDetails"
           [isGuestUser]="isGuestUser" [OnboardingFormConfig]="OnboardingFormConfig" [deviceProfile]="deviceProfile"
@@ -181,7 +171,7 @@
     </app-modal-wrapper>
   </mat-drawer-content>
 
-  <mat-drawer #drawer mode="side" position="end">
+  <!-- <mat-drawer #drawer mode="side" position="end">
     <mat-nav-list style="min-width: 200px;">
       <mat-list-item>
         <mat-icon mat-list-icon>person</mat-icon>
@@ -207,7 +197,7 @@
         </div>
       </mat-list-item>
     </mat-nav-list>
-  </mat-drawer>
+  </mat-drawer> -->
 </mat-drawer-container>
 
 <app-telemetry-error-modal></app-telemetry-error-modal>

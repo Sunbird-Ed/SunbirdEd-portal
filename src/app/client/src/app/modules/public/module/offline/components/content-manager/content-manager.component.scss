@@ -16,11 +16,11 @@
 }
 
 .sb-desktop-content-manager.sb-mat-accordion .mat-expansion-panel .mat-expansion-panel-header {
-  background: var(--primary-color);
+  background: var(--color-accent-500);
   border-radius: 0;
   height:3rem !important;
   &:hover {
-    background: var(--primary-color);
+    background: var(--color-accent-500);
   }
 }
 

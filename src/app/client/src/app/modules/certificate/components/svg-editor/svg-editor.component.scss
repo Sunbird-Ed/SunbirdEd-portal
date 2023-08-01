@@ -31,7 +31,7 @@
 
   &.active,
   &:hover {
-    border: calculateRem(2px) solid var(--primary-color);
+    border: calculateRem(2px) solid var(--color-accent-500);
   }
 
   &__content {
@@ -102,7 +102,7 @@
 }
 
 .asterik {
-  color: var(--red-400);
+  color: var(--color-warn-500);
 }
 
 .preview-title {

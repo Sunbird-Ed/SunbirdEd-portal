@@ -1,8 +1,8 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @use "@project-sunbird/sb-styles/assets/varSass" as *;
 // Checkbox
-$sb-checkbox-primary-background: var(--primary-color);
-$sb-radio-btn-primary-border: var(--primary-color);
+$sb-checkbox-primary-background: var(--color-accent-500);
+$sb-radio-btn-primary-border: var(--color-accent-500);
 $sb-checkbox-border-width: 0.0625rem;
 $sb-checkbox-label-font-size: 0.8571rem;
 $sb-checkbox-border-radius: 0.0625rem;
@@ -99,7 +99,7 @@ $sb-radio-btn-border-disabled-color: var(--gray-100);
     }
     &.sb-checkbox-rightaligned {
       input:checked~label {
-        color: var(--primary-color);
+        color: var(--color-accent-500);
       }
       label {
         padding: 0 1.5rem 0 0;

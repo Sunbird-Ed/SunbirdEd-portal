@@ -4,7 +4,7 @@
 $sb-circular-list-item-padding-ltr: 0.5rem 0 0.5rem 2rem;
 $sb-circular-list-item-padding-rtl: 0.5rem 2rem 0.5rem 0;
 $sb-circular-list-item-font-size: 1rem;
-$sb-circular-list-item-circle-color: var(--primary-color);
+$sb-circular-list-item-circle-color: var(--color-accent-500);
 $sb-circular-list-item-circle-border-radius: 50%;
 $sb-circular-list-item-circle-width: calculateRem(12px);
 $sb-circular-list-item-circle-height: calculateRem(12px);
@@ -34,7 +34,7 @@ $sb-bordered-list-item-padding: 1rem 1.5rem;
 $sb-bordered-list-item-border-bottom: calculateRem(1px) solid var(--gray-100);
 $sb-bordered-list-item-border-background: var(--gray-0);
 $sb-bordered-list-item-title-font-size: calculateRem(14px);
-$sb-bordered-list-item-title-color: var(--primary-color);
+$sb-bordered-list-item-title-color: var(--color-accent-500);
 $sb-bordered-list-item-title-extra-font-size: calculateRem(12px);
 $sb-bordered-list-item-title-extra-color: var(--gray-800);
 $sb-bordered-list-item-heading-font-size: calculateRem(14px);

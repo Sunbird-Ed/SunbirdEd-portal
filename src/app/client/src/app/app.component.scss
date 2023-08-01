@@ -1,5 +1,21 @@
-// @use "@angular/material" as mat;
-// @import './../assets/styles/mat-themes/themes.scss';
+@use "@angular/material" as mat;
+@use 'sass:map';
+// @use './../assets/styles/mat-themes/colors' as *;
+// @import './../assets/styles/mat-themes/themes';
+
+@mixin app-component-theme($theme) {
+  // Get the color config from the theme.
+  $color-config: mat.get-color-config($theme);
+  // Get the primary color palette from the color-config.
+  $background: map.get($color-config, 'background');
+  $foreground: map.get($color-config, 'foreground');
+  
+  .sampleclass {
+    padding:1rem;
+    background-color: mat.get-color-from-palette($background, background);
+    color: mat.get-color-from-palette($foreground, foreground);
+  }
+}
 
 .header-block {
   display: none;

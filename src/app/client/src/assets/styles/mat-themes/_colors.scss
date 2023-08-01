@@ -1,12 +1,12 @@
 @use 'sass:map';
 @use 'sass:meta';
-@use '@angular/material' as mat;
-@use "./palette" as *;
+@use '@angular/material'as mat;
+@use "./palette"as *;
 // @use './import-component-theme-config';
 
 @mixin color-success {
   $success: mat.define-palette(mat.$green-palette);
-  color: mat.get-color-from-palette($success, 500) !important;
+  color: mat.get-color-from-palette($success, 500-contrast) !important;
 }
 
 @mixin color-info {
@@ -18,9 +18,9 @@
   $error: mat.define-palette(mat.$orange-palette);
   color: mat.get-color-from-palette($error, 900) !important;
 }
-@mixin color-gray {
-  $gray: mat.define-palette(mat.$grey-palette);
-  color: mat.get-color-from-palette($gray, 500) !important;
+@mixin color-grey {
+  $grey: mat.define-palette(mat.$grey-palette);
+  color: mat.get-color-from-palette($grey, 500) !important;
 }
 
 @mixin theme-var-colors($theme) {
@@ -36,7 +36,7 @@
   $info: mat.define-palette(mat.$blue-palette);
   $success: mat.define-palette(mat.$green-palette);
   $error: mat.define-palette(mat.$orange-palette);
-  $gray: mat.define-palette(mat.$grey-palette);
+  $grey: mat.define-palette(mat.$grey-palette);
 
   $color-primary: mat.get-color-from-palette($primary);
   $color-accent: mat.get-color-from-palette($accent);
@@ -44,14 +44,14 @@
   $color-success: mat.get-color-from-palette($success);
   $color-info: mat.get-color-from-palette($info);
   $color-error: mat.get-color-from-palette($error);
-  $color-gray: mat.get-color-from-palette($gray);
+  $color-grey: mat.get-color-from-palette($grey);
   --color-primary: #{$color-primary};
   --color-accent: #{$color-accent};
   --color-warn: #{$color-warn};
   --color-success: #{$color-success};
   --color-info: #{$color-info};
   --color-error: #{$color-error};
-  --color-gray: #{$color-gray};
+  --color-grey: #{$color-grey};
 
   // $color-values: 50, 100, 200, 300, 400, 600, 800;
 
@@ -170,6 +170,28 @@
   --color-error-800: #{$color-error-800};
   --color-error-900: #{$color-error-900};
 
+  // // grey color variations
+  // $color-grey-50:  mat.get-color-from-palette($error, 50);
+  // $color-grey-100: mat.get-color-from-palette($grey, 100);
+  // $color-grey-200: mat.get-color-from-palette($grey, 200);
+  // $color-grey-300: mat.get-color-from-palette($grey, 300);
+  // $color-grey-400: mat.get-color-from-palette($grey, 400);
+  // $color-grey-500: mat.get-color-from-palette($grey, 500);
+  // $color-grey-600: mat.get-color-from-palette($grey, 600);
+  // $color-grey-700: mat.get-color-from-palette($grey, 700);
+  // $color-grey-800: mat.get-color-from-palette($grey, 800);
+  // $color-grey-900: mat.get-color-from-palette($grey, 900);
+  // --color-grey-50:  #{$color-grey-50};
+  // --color-grey-100: #{$color-grey-100};
+  // --color-grey-200: #{$color-grey-200};
+  // --color-grey-300: #{$color-grey-300};
+  // --color-grey-400: #{$color-grey-400};
+  // --color-grey-500: #{$color-grey-500};
+  // --color-grey-600: #{$color-grey-600};
+  // --color-grey-700: #{$color-grey-700};
+  // --color-grey-800: #{$color-grey-800};
+  // --color-grey-900: #{$color-grey-900};
+
   /* color starts */
   .color-primary,
   .hover-color-primary:hover {
@@ -203,8 +225,8 @@
   .color-white{
     color: mat.get-color-from-palette($background, background);
   }
-  .color-gray{
-    color:var(--color-gray)
+  .color-grey{
+    color:var(--color-grey)
   }
   /* color ends */
 
@@ -317,7 +339,7 @@ $_ripple-opacity: 0.1;
 
     &.mat-#{$variant} {
       &.mat-button-disabled {
-        $palette: if($property =='color', $foreground, $background);
+        $palette: if($property=='color', $foreground, $background);
         #{$property}: mat.get-color-from-palette($palette, disabled-button);
       }
     }
@@ -351,8 +373,7 @@ $theme-success: mat.define-palette(mat.$green-palette);
 $theme-info: mat.define-palette(mat.$blue-palette);
 $theme-error: mat.define-palette(mat.$orange-palette);
 $theme-black: mat.define-palette(mat.$grey-palette);
-$variants-theme: (
-  success: $theme-success,
+$variants-theme: (success: $theme-success,
   info: $theme-info,
   error: $theme-error,
 );
@@ -362,26 +383,184 @@ $variants-theme: (
 
 /* css variables */
 // border theme classes starts
-.border-primary, .border-primary:hover {
-  border-color: var(--color-primary) !important;
+@function generate-border-classes($color-names) {
+  $classes: ();
+
+  @each $color in $color-names {
+    $class-name: to-lower-case('#{$color}');
+    $hover-class-name: to-lower-case('#{$color}:hover');
+
+    $class: (#{$class-name},
+      #{$hover-class-name});
+
+    $classes: append($classes, $class);
+  }
+
+  @return $classes;
 }
 
-.border-accent, .border-accent:hover {
-  border-color: var(--color-accent) !important;
+$color-names: ("Primary",
+  "Accent",
+  "Warn",
+  "Success",
+  "Info",
+  "Error"
+);
+
+$border-classes: generate-border-classes($color-names);
+
+@each $class in $border-classes {
+
+  .border-#{nth($class, 1)},
+  .border-#{nth($class, 2)} {
+    border-color: var(--color-#{nth($class, 1)}) !important;
+  }
 }
 
-.border-warn, .border-warn:hover {
-  border-color: var(--color-warn) !important;
+/* grey color variable paletter */
+// $dark-primary-text: rgba(black, 0.87);
+// $light-primary-text: white;
+// $grey-palette: (
+//   50: (
+//     value: #fafafa,
+//   ),
+//   100: (
+//     value: #f5f5f5,
+//   ),
+//   200: (
+//     value: #eeeeee,
+//   ),
+//   300: (
+//     value: #e0e0e0,
+//   ),
+//   400: (
+//     value: #bdbdbd,
+//   ),
+//   500: (
+//     value: #9e9e9e,
+//   ),
+//   600: (
+//     value: #757575,
+//   ),
+//   700: (
+//     value: #616161,
+//   ),
+//   800: (
+//     value: #424242,
+//   ),
+//   900: (
+//     value: #212121,
+//   ),
+//   A100: (
+//     value: #ffffff,
+//   ),
+//   A200: (
+//     value: #eeeeee,
+//   ),
+//   A400: (
+//     value: #bdbdbd,
+//   ),
+//   A700: (
+//     value: #616161,
+//   ),
+//   contrast: (
+//     50: $dark-primary-text,
+//     100: $dark-primary-text,
+//     200: $dark-primary-text,
+//     300: $dark-primary-text,
+//     400: $dark-primary-text,
+//     500: $dark-primary-text,
+//     600: $light-primary-text,
+//     700: $light-primary-text,
+//     800: $light-primary-text,
+//     900: $light-primary-text,
+//     A100: $dark-primary-text,
+//     A200: $dark-primary-text,
+//     A400: $dark-primary-text,
+//     A700: $light-primary-text,
+//   )
+// );
+
+// @mixin apply-grey-colors($palette) {
+//   @each $shade, $color in $palette {
+//     $shade-color: map-get($color, 'value');
+//     .mat-grey-#{$shade} {
+//       color: $shade-color;
+//     }
+
+//     .mat-bg-grey-#{$shade} {
+//       background-color: $shade-color;
+      
+//       // Check if the shade has a contrast color defined in the 'contrast' map
+//       @if map-has-key($palette, 'contrast') {
+//         $contrast-color: map-get(map-get($palette, 'contrast'), $shade);
+//         @if $contrast-color {
+//           color: $contrast-color;
+//         }
+//       }
+//     }
+//   }
+// }
+
+// @include apply-grey-colors($grey-palette);
+
+
+
+$grey-palette: mat.$grey-palette;
+$error-palette: mat.$red-palette;
+$info-palette: mat.$blue-palette;
+$success-palette: mat.$green-palette;
+
+@mixin apply-color-palettes($palette, $prefix: 'mat-grey') {
+  @each $shade, $color in $palette {
+
+       // Generate CSS3 variables for the color
+       :root {
+        // --mat-grey-300: 300;
+        --#{$prefix}-#{$shade}: #{$shade};
+      }
+    
+    @if type-of($color) == color {
+      // If the color is directly provided, use it as is
+      .#{$prefix}-#{$shade} {
+        color: var(--#{$prefix}-#{$shade});
+      }
+
+      .#{$prefix}-bg-#{$shade} {
+        background-color: var(--#{$prefix}-#{$shade});
+        
+        // Check if the shade has a contrast color defined in the 'contrast' map
+        @if map-has-key($palette, 'contrast') {
+          $contrast-color: map-get(map-get($palette, 'contrast'), $shade);
+          @if $contrast-color {
+            color: $contrast-color;
+          }
+        }
+      }
+    } @else {
+      // If the color is provided as a nested map with 'value' key, extract the value
+      $shade-color: map-get($color, 'value');
+
+      .#{$prefix}-#{$shade} {
+        color: $shade-color;
+      }
+
+      .#{$prefix}-bg-#{$shade} {
+        background-color: $shade-color;
+        
+        // Check if the shade has a contrast color defined in the 'contrast' map
+        @if map-has-key($palette, 'contrast') {
+          $contrast-color: map-get(map-get($palette, 'contrast'), $shade);
+          @if $contrast-color {
+            color: $contrast-color;
+          }
+        }
+      }
+    }
+  }
 }
 
-.border-success, .border-success:hover {
-  border-color: var(--color-success) !important;
-}
-
-.border-info, .border-info:hover {
-  border-color: var(--color-info) !important;
-}
-
-.border-error, .border-error:hover {
-  border-color: var(--color-error) !important;
-}
+@include apply-color-palettes($grey-palette);
+@include apply-color-palettes($error-palette, 'mat-error');
+@include apply-color-palettes($info-palette, 'mat-info');
+@include apply-color-palettes($success-palette, 'mat-success');

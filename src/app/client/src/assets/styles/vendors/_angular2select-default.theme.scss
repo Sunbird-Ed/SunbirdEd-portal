@@ -6,7 +6,7 @@
     color: var(--gray-800); }
   
   .selected-list .c-list .c-token {
-    background: var(--primary-color); }
+    background: var(--color-accent-500); }
     .selected-list .c-list .c-token .c-label {
       color: var(--white); }
     .selected-list .c-list .c-token .c-remove svg {
@@ -40,18 +40,18 @@
       fill: var(--gray-200); }
   
   .pure-checkbox input[type="checkbox"]:focus + label:before, .pure-checkbox input[type="checkbox"]:hover + label:before {
-    border-color: var(--primary-color);
+    border-color: var(--color-accent-500);
     background-color: var(--gray-0); }
   
   .pure-checkbox input[type="checkbox"] + label {
     color: var(--black); }
   
   .pure-checkbox input[type="checkbox"] + label:before {
-    color: var(--primary-color);
-    border: calculateRem(2px) solid var(--primary-color); }
+    color: var(--color-accent-500);
+    border: calculateRem(2px) solid var(--color-accent-500); }
   
   .pure-checkbox input[type="checkbox"] + label:after {
-    background-color: var(--primary-color); }
+    background-color: var(--color-accent-500); }
   
   .pure-checkbox input[type="checkbox"]:disabled + label:before {
     border-color: var(--gray-100); }
@@ -66,7 +66,7 @@
     background-color: var(--white); }
   
   .pure-checkbox input[type="checkbox"]:checked + label:before {
-    background: var(--primary-color); }
+    background: var(--color-accent-500); }
   
   .selected-item {
     background: var(--primary-0); }

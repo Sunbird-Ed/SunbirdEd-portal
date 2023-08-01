@@ -76,7 +76,7 @@
   .sb-radio-btn-checkbox {
     width: 100%;
     background-color: var(--sb-card-bg);
-    color: var(--primary-color);
+    color: var(--color-accent-500);
   }
   label {
     color: var(--body-color);
@@ -114,6 +114,6 @@
     cursor: pointer;
   }
   a.selected {
-    color: var(--primary-color);
+    color: var(--color-accent-500);
   }
 }

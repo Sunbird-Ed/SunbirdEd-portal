@@ -16,11 +16,11 @@
   [appTelemetryImpression]="telemetryImpression">
   <div *ngIf="!noResult" class="sb-g us-report-grid">
     <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-6">
-      <h2 class="p-16">{{resourceService.frmelmnts?.lnk?.dashboard}}</h2>
+      <h2 class="p-16 text-left">{{resourceService.frmelmnts?.lnk?.dashboard}}</h2>
       <ul class="m-0">
         <li appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject(report.id)"
           [telemetryInteractEdata]="setTelemetryInteractEdata('report-view')" *ngFor="let report of reportMetaData"
-          (click)="renderReport(report)" tabindex="0" class="item m-0"
+          (click)="renderReport(report)" tabindex="0" class="item m-0 text-left"
           [ngClass]="{'active': currentReport.id === report.id}">
           {{report.label || report.title}}</li>
       </ul>

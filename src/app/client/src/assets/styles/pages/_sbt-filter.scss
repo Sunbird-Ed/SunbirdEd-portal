@@ -112,7 +112,7 @@
       justify-content: center;
       box-shadow: var(--sbt-box-shadow-3px);
       border-radius: calculateRem(20px);
-      color: var(--primary-400);
+      color: var(--color-accent-500);
 
       html[dir="rtl"] & {
         right: calculateRem(24px);

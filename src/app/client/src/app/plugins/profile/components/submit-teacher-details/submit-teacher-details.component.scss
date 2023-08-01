@@ -13,11 +13,11 @@
     }
     
     .is-invalid {
-      border-color: var(--red-400) !important;
+      border-color: var(--color-warn-500) !important;
     }
     
     .invalid-msg {
-      color: var(--red-400);
+      color: var(--color-warn-500);
     }
     
     .primary.text {

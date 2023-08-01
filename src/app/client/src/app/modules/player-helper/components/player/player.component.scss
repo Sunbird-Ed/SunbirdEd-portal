@@ -90,7 +90,7 @@
   transition: all ease .3s;
   iframe {
     height: calc(100vh - 4rem) !important;
-    border:calculateRem(10px) solid var(--primary-400);
+    border:calculateRem(10px) solid var(--color-accent-500);
   }
 } 
 
