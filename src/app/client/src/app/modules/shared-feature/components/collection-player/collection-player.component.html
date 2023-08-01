@@ -28,7 +28,7 @@
               <span *ngIf="collectionTreeNodes?.data?.gradeLevel">{{collectionTreeNodes?.data?.gradeLevel}}</span>
             </div>
           </div>
-          <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
+          <div class="d-flex flex-ai-end content-header__buttons">
             <div *ngIf="isDesktopApp">
               <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
                 *ngIf="isConnected && (checkStatus('DOWNLOADED')) && showUpdate" tabindex="0"
@@ -47,6 +47,16 @@
               <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
                 *ngIf="checkStatus('PAUSED')">{{resourceService.frmelmnts?.lbl?.downloadingPaused}}</button>
             </div>
+
+            <button type="button" *ngIf="collectionTreeNodes?.data?.subject == 'Mathematics' && ( 
+              collectionTreeNodes?.data?.gradeLevel.includes('Class 5') ||
+              collectionTreeNodes?.data?.gradeLevel.includes('Class 6') || 
+              collectionTreeNodes?.data?.gradeLevel.includes('Class 7') || 
+              collectionTreeNodes?.data?.gradeLevel.includes('Class 8') ||
+              collectionTreeNodes?.data?.gradeLevel.includes('Class 9')
+              )" (click)="openWebview()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
+                Use Geometry Tool
+              </button>
 
             <button type="button" *ngIf="!isCopyAsCourseClicked" tabindex="0"
               (click)="onShareLink();sharelinkModal=true;" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">

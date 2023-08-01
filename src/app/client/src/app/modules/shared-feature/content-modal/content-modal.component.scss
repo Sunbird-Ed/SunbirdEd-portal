@@ -1,0 +1,45 @@
+object, iframe {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+}
+.loading-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    span {
+        width: auto;
+        padding: 8px 16px;
+        color: #000;
+        font-weight: 600;
+        border-radius: 30px;
+        background: #fff;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 14px;
+    }   
+}
+
+.close-button {
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    position: absolute;
+    right: 25px;
+    top: 108px;
+    background: #dc3545;
+    color: #fff;
+    border: 1px solid #dc3545;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    z-index: 0;
+    @media screen and (max-width: 991px) {
+        right: 10px;
+        top: 92px;
+    }
+}

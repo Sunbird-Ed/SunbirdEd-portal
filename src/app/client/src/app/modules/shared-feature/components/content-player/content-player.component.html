@@ -24,6 +24,17 @@
         </div>
       </div>
         <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons ml-auto">
+
+          <a *ngIf="contentData?.subject == 'Mathematics' && (
+          contentData?.gradeLevel.includes('Class 5') ||
+          contentData?.gradeLevel.includes('Class 6') || 
+          contentData?.gradeLevel.includes('Class 7') || 
+          contentData?.gradeLevel.includes('Class 8') ||
+          contentData?.gradeLevel.includes('Class 9'))
+          " (click)="openWebview()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
+            Use Geometry Tool
+          </a>
+          
           <a href="javascript:void(0)" tabindex="0" (click)="onShareLink();sharelinkModal=true;" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
               <i class="blue share alternate icon"></i>
               {{resourceService?.frmelmnts?.lbl?.share}}

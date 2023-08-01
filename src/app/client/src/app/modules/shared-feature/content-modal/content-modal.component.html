@@ -1,0 +1,8 @@
+<div class="loading-wrapper" *ngIf="loading">
+    <span>
+        Loading Please wait...
+    </span>
+</div>
+
+<button (click)="closeModal()" class="close-button">x close</button>
+<object [data]="sanatizedUrl" allow-same-origin allowfullscreen frameborder="1"></object>

@@ -24,6 +24,7 @@ import { LocationModule } from '../../plugins/location';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { DashletModule } from  '@project-sunbird/sb-dashlet-v9';
 import { FrameworkCatLabelTranslatePipe } from './pipe/framework-label-translate/framework-label-translate.pipe';
+import { ContentModalComponent } from './content-modal/content-modal.component';
 
 export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
   if (!CsModule.instance.isInitialised) {
@@ -55,6 +56,7 @@ export const csNotificationServiceFactory = (csLibInitializerService: CsLibIniti
     LocationModule,
     DashletModule.forRoot()
   ],
+  entryComponents: [ContentModalComponent],
   providers:  [{ provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] },
   { provide: 'CS_NOTIFICATION_SERVICE', useFactory: csNotificationServiceFactory, deps: [CsLibInitializerService] }],
   declarations: [ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
@@ -63,7 +65,7 @@ export const csNotificationServiceFactory = (csLibInitializerService: CsLibIniti
     UserOnboardingComponent,
     OnboardingUserSelectionComponent,
     ConfirmationPopupComponent, CertPreviewPopupComponent, ContentPlayerComponent, GlobalConsentPiiComponent,
-     CollectionPlayerComponent, YearOfBirthComponent, DashboardComponent,FrameworkCatLabelTranslatePipe
+     CollectionPlayerComponent, YearOfBirthComponent, DashboardComponent,FrameworkCatLabelTranslatePipe, ContentModalComponent
   ],
   exports: [ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
     OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent,
