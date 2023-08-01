@@ -311,6 +311,9 @@
             <span *ngIf="layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToOldLayout}}</span>
             <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToJoyLayout}}</span>
           </li>
+          <li class="list-item" role="link" tabindex="0">
+            <a (click)="switchLayoutBlueSky('blueSky')">switch To blue sky theme</a>
+          </li>
           <li class="list-item" role="link" tabindex="0" (click)="toggleSideMenu(false);"
             routerLink="/desktop/telemetry" *appDesktopOnly>
             <i class="icon-svg icon-svg--sm icon-manage mr-8"><svg class="icon icon-svg--primary">
@@ -378,6 +381,9 @@
                 </svg></i>
               <span *ngIf="layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToOldLayout}}</span>
               <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToJoyLayout}}</span>
+            </li>
+            <li class="list-item" role="link" tabindex="0">
+              <a (click)="switchLayoutBlueSky('blueSky')">switch To blue sky theme</a>
             </li>
             <li class="list-item" tabindex="0" role="link" (click)="toggleSideMenu(false);"
               routerLink="/desktop/telemetry" *appDesktopOnly>
