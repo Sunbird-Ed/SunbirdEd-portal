@@ -116,7 +116,10 @@
         </div>
     </div>
     </div>
-    <app-summary-card-container [cardInfo]="configContent.summaryCardInfo"></app-summary-card-container>
+    <section class="sb-g" *ngIf="configContent.summaryCardInfo">
+        <summary-card *ngFor="let info of configContent.summaryCardInfo.cardData"
+            class="sb-g-col-lg-3 sb-g-col-md-5 sb-g-col-xs-10" [cardInfo]="info"></summary-card>
+    </section>
     <info-card-container [cardInfo]="configContent.infoCard"></info-card-container>
 </div>
 <router-outlet></router-outlet>

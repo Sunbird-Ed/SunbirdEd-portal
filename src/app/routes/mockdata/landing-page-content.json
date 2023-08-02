@@ -25,22 +25,26 @@
         {
           "iconUrl":"/assets/images/courses.svg",
           "title":"Courses",
-          "count":"1000+"
+          "count":"1000+",
+          "commonIconUrl": "assets/images/arrow.svg"
         },
         {
           "iconUrl":"/assets/images/content.svg",
           "title":"Available Content",
-          "count":"1500+"
+          "count":"1500+",
+          "commonIconUrl": "assets/images/arrow.svg"
         },
         {
           "iconUrl":"/assets/images/active-users.svg",
           "title":"Active Users",
-          "count":"2 Million"
+          "count":"2 Million",
+          "commonIconUrl": "assets/images/arrow.svg"
         },
         {
           "iconUrl":"/assets/images/competencies.svg",
           "title":"Competencies",
-          "count":"100+"
+          "count":"100+",
+          "commonIconUrl": "assets/images/arrow.svg"
         }
       ]
     }
