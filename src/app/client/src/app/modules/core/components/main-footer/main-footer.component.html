@@ -1,16 +1,18 @@
 <footer class="new-layout-footer" *ngIf="footerData">
-  <div class="sb-g sbt-top-footer-container">
-    <div class="sb-g-col-md-2 sb-g-col-xs-4 text-center" *ngFor="let item of footerData.links">
-      <span><a href="#" class="link">{{item}}</a></span>
-    </div>
-  </div>
-  <div class="outer-container">
-    <div class="sb-g sbt-bottom-footer-container">
-      <div class="logo">
-        <img src="{{footerData.logoLink}}" />
+  <div class="ui container">
+    <div class="sb-g sbt-top-footer-container">
+      <div class="sb-g-col-md-2 sb-g-col-xs-4 text-center" *ngFor="let item of footerData.links">
+        <span><a href="#" class="link">{{item}}</a></span>
       </div>
-      <div class="footer-text">
-        <span>&copy;{{footerData.footerText}}</span>
+    </div>
+    <div class="outer-container">
+      <div class="sb-g sbt-bottom-footer-container">
+        <div class="logo">
+          <img src="{{footerData.logoLink}}" />
+        </div>
+        <div class="footer-text">
+          <span>&copy;{{footerData.footerText}}</span>
+        </div>
       </div>
     </div>
   </div>
