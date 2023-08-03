@@ -115,7 +115,6 @@
             <button type="button" onclick="openModal()" class="ui basic fluid button mt-5">ORGANIZATIONS</button>
         </div>
     </div>
-    </div>
     <section class="sb-g marginVertical" *ngIf="configContent.summaryCardInfo">
         <summary-card *ngFor="let info of configContent.summaryCardInfo.cardData"
             class="sb-g-col-lg-3 sb-g-col-md-5 sb-g-col-xs-10" [cardInfo]="info"></summary-card>
@@ -125,5 +124,6 @@
         <explore-compass-card *ngFor="let info of configContent.exploreCardInfo.cardData"
             class="sb-g-col-lg-3 sb-g-col-md-5 sb-g-col-xs-10" [cardInfo]="info"></explore-compass-card>
     </section>
+    </div>
 </div>
 <router-outlet></router-outlet>
