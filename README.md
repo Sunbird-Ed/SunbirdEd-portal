@@ -54,7 +54,7 @@ Installing Sunbird requires two primary software components:
   </tr>
   <tr>
     <td><b>RAM</b></td>
-    <td>> 1.5 Gb</td>
+    <td>> 16 Gb (Minimum 8Gb)</td>
   </tr>
   <tr>
     <td><b>CPU</b></td>

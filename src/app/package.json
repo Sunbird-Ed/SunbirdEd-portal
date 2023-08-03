@@ -65,10 +65,6 @@
     ]
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.163.0",
-    "@aws-sdk/lib-storage": "^3.182.0",
-    "@aws-sdk/s3-request-presigner": "^3.173.0",
-    "@google-cloud/storage": "^6.5.2",
     "@project-sunbird/discussion-service": "0.0.6",
     "@project-sunbird/ext-framework-server": "0.1.28",
     "@project-sunbird/form-service": "0.0.15",
@@ -76,7 +72,6 @@
     "@project-sunbird/review-comment": "0.0.8",
     "async": "2.5.0",
     "axios": "^0.20.0",
-    "azure-storage": "2.10.2",
     "body-parser": "1.17.2",
     "cassandra-session-store": "1.0.6",
     "client-cloud-services": "2.0.3",
