@@ -22,12 +22,12 @@
     &.state-selection {
       &.active:hover {
         .menu {
-          border-color: var(--primary-color);
+          border-color: var(--color-accent-500);
         }
       }
       .menu {
         top: calc(100% + 4px);
-        border-color: var(--primary-color);
+        border-color: var(--color-accent-500);
         border-radius: calculateRem(2px);
         border-top-width: calculateRem(0.5px) !important;
         @include respond-below(sm) {
@@ -38,11 +38,11 @@
         }
         &::-webkit-scrollbar-track {
           background: var(--white);
-          border-top: calculateRem(.5px) solid var(--primary-color);
+          border-top: calculateRem(.5px) solid var(--color-accent-500);
         }
         >.item {
           &.active {
-            color: var(--primary-color);
+            color: var(--color-accent-500);
             background-color: var(--rc-E0F1FD);
           }
           padding: calculateRem(4px) calculateRem(8px) !important;

@@ -22,7 +22,7 @@ export class PdFiltersComponent implements OnInit {
     this.pdFiltersFormGroup = this.fb.group({});
     this.pdFiltersFormGroup.addControl(
       _.get(this.pdFilter, "reference"),
-      this.fb.control("")
+      this.fb.control(this.pdFilter?.defaultValue ? this.pdFilter.defaultValue:"")
     );
   }
 

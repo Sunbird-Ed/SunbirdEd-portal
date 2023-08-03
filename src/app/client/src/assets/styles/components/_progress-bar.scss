@@ -2,7 +2,7 @@
 
 .ui.progress {
   .bar {
-    background: var(--primary-color);
+    background: var(--color-accent-500);
     height: calculateRem(4px);
     min-width: 0;
 
@@ -13,7 +13,7 @@
 }
 
 .ui.progress.blue .bar {
-  background-color: var(--primary-color)!important;
+  background-color: var(--color-accent-500)!important;
 }
 
 .ui.progress.success .bar {

@@ -42,7 +42,10 @@ describe('ContentPlayerComponent', () => {
   const mockResourceService: Partial<ResourceService> = {
     messages: {
       imsg: { m0027: 'Something went wrong' },
-      stmsg: { m0009: 'error' }
+      stmsg: { m0009: 'error' },
+      smsg: { m0042: 'content copied successfully', m0067: "Question set successfully copied" },
+      emsg: { m0067:' Could not copy question set.Try again later', m0008: 'Could not copy content'}
+
     },
     frmelmnts: {
       btn: {
@@ -61,7 +64,10 @@ describe('ContentPlayerComponent', () => {
   const resourceServiceMockData = {
     messages: {
       imsg: { m0027: 'Something went wrong' },
-      stmsg: { m0009: 'error' }
+      stmsg: { m0009: 'error' },
+      smsg: { m0042: 'content copied successfully', m0067: "Question set successfully copied" },
+      emsg: { m0067:' Could not copy question set.Try again later', m0008: 'Could not copy content'}
+
     },
     frmelmnts: {
       btn: {

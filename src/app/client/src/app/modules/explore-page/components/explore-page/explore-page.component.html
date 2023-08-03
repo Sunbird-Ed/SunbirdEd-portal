@@ -44,9 +44,9 @@
           <div *ngIf="getSelectedTab() === 'home'" (click)="showEdit = !showEdit"
             class="sb-section-preference mat-typography mat-app-background mb-24" tabindex="0">
             <div class="preference">
-              <h4 class="mat-subheading-1 mb-4 text-left">{{resourceService?.frmelmnts?.lbl?.hi}} {{userProfile?.firstName
+              <h2 class="mat-subheading-1 mb-4 text-left">{{resourceService?.frmelmnts?.lbl?.hi}} {{userProfile?.firstName
                 | titlecase}} {{userProfile?.lastName |
-                titlecase}}</h4>
+                titlecase}}</h2>
               <p class="mat-body-2 d-flex flex-ai-center">{{resourceService?.frmelmnts?.lbl?.yourPreferences}} <mat-icon
                   class="ml-4">info</mat-icon></p>
               <p class="mat-body-2"><span class="mr-24">

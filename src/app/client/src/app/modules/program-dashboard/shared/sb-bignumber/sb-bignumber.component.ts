@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ResourceService } from '@sunbird/shared';
 import * as _ from "lodash-es";
 import { PdServiceService } from '../services/pd-service/pd-service.service';
+import dayjs from 'dayjs';
 @Component({
   selector: 'app-sb-bignumber',
   templateUrl: './sb-bignumber.component.html',
@@ -10,7 +11,7 @@ import { PdServiceService } from '../services/pd-service/pd-service.service';
 })
 export class SbBignumberComponent implements OnInit, OnChanges {
   @Input() chart;
-  @Input() lastUpdatedOn;
+  lastUpdatedOn;
   @Input() hideElements = false;
   @Input() appliedFilters;
   chartData;
@@ -20,6 +21,7 @@ export class SbBignumberComponent implements OnInit, OnChanges {
   globalData;
   @ViewChild('outlet', { read: ViewContainerRef }) outletRef: ViewContainerRef;
   @ViewChild('content', { read: TemplateRef }) contentRef: TemplateRef<any>;
+  showLastUpdatedOn: boolean = false;
   constructor(
     public resourceService: ResourceService,
     public dialog: MatDialog,
@@ -29,6 +31,12 @@ export class SbBignumberComponent implements OnInit, OnChanges {
   ngOnInit(){
     this.updatedData = this.chartData = _.compact(this.chart.chartData);
     this.chartConfig = this.chart.chartConfig;
+    if(_.get(this.chart,'lastUpdatedOn')){
+      this.lastUpdatedOn = dayjs(this.chart.lastUpdatedOn).format('DD-MMMM-YYYY');
+      if (_.get(this.chartConfig, 'options.showLastUpdatedOn') || this.lastUpdatedOn) {
+        this.showLastUpdatedOn = true;
+      }
+    }
   }
 
   ngOnChanges(_changes: SimpleChanges): void {

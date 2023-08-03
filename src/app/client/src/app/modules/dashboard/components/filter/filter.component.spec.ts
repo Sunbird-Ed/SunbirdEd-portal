@@ -2,7 +2,7 @@
 import { FilterComponent } from './filter.component';
 import { mockChartData } from './filter.component.spec.data';
 import { ChangeDetectorRef, NO_ERRORS_SCHEMA } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { of } from 'rxjs';
@@ -288,6 +288,18 @@ describe('FilterComponent', () => {
     });
     component.getDateRange({startDate:"2022-07-04T18:30:00.000Z", endDate:"2022-07-06T18:30:00.000Z"},'Date');
     expect(component.getDateRange).toHaveBeenCalled();
+  })
+
+  it('should call checkDependencyFilters', () => {
+    component.filtersFormGroup = new FormBuilder().group({
+      Organisation: new FormControl('xyz')
+    });
+    jest.spyOn(component,'checkDependencyFilters')
+    component.filters = mockChartData.dependencyFilters;
+    component.selectedFilters = mockChartData.selectedFiltersWithoutDependecy;
+    component.checkDependencyFilters();
+    expect(component.checkDependencyFilters).toHaveBeenCalled();
+    expect(component.selectedFilters).toEqual(mockChartData.resultedFilters);
   })
 
   it('should call ngOnDestroy', () => {

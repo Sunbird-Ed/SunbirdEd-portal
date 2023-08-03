@@ -1,6 +1,8 @@
-<div *ngIf="lastUpdatedOn !== 'Invalid date'"
-  class="sb-last-update-status mb-8">
-  <span class="mat-caption">{{ resourceService?.frmelmnts?.lbl?.lastUpdatedOn }}&nbsp;: </span>
+<div
+  *ngIf="showLastUpdatedOn && lastUpdatedOn"
+  class="sb-last-update-status mb-8"
+>
+  <span>{{ resourceService?.frmelmnts?.lbl?.lastUpdatedOn }}&nbsp;: </span>
   &nbsp; {{ lastUpdatedOn }}
 </div>
 <div class="d-flex flex-dr bigNumberCard py-24">

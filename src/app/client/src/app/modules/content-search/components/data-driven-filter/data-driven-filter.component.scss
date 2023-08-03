@@ -8,7 +8,7 @@
 }
 
 .ui.selection.dropdown.state-medium {
-  color: var(--primary-400);
+  color: var(--color-accent-500);
   display: flex;
   align-items: center;
   border: none;
@@ -26,7 +26,7 @@
 }
 
 .ui.selection.dropdown.state-selection {
-  color: var(--primary-400);
+  color: var(--color-accent-500);
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -37,17 +37,17 @@
   }
 
   border-radius: calculateRem(2px);
-  border: calculateRem(0.5px) solid var(--primary-400);
+  border: calculateRem(0.5px) solid var(--color-accent-500);
 
   &.active {
     background: var(--rc-E0F1FD) !important;
-    color: var(--primary-400) !important;
-    border-color: var(--primary-400);
+    color: var(--color-accent-500) !important;
+    border-color: var(--color-accent-500);
     box-shadow: none;
   }
 
   &:hover {
-    color: var(--primary-400) !important;
+    color: var(--color-accent-500) !important;
     box-sizing: border-box;
     border-radius: calculateRem(2px);
     background-color: var(--rc-E0F1FD);
@@ -62,11 +62,11 @@
 
 .ui.default.dropdown:not(.button)>.text,
 .ui.dropdown:not(.button)>.default.text {
-  color: var(--red-400);
+  color: var(--color-warn-500);
 }
 
 :host ::ng-deep .dropdown:not(.button)>.default.text {
-  color: var(--primary-400) !important;
+  color: var(--color-accent-500) !important;
 }
 
 :host ::ng-deep .sb-slider-pills-container .sb-pills-container {

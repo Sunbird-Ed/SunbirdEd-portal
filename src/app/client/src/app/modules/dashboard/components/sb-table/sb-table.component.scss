@@ -53,7 +53,7 @@
     }
     .export-btn {
         color: var(--white) !important;
-        background-color: var(--primary-400);
+        background-color: var(--color-accent-500);
     }
     .sb-btn-normal {
         font-weight: 500 !important;
@@ -91,5 +91,5 @@
 }
 .filter-label {
     font-size: calculateRem(24px);
-    color: var(--primary-400);
+    color: var(--color-accent-500);
 }

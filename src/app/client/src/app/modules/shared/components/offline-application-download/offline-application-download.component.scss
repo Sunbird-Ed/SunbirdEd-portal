@@ -12,7 +12,7 @@
     box-shadow: 0 calculateRem(10px) calculateRem(10px) 0 rgba(var(--rc-rgba-black), 0.1);
     padding: calculateRem(40px);
     &__heading {
-      color: var(--primary-color);
+      color: var(--color-accent-500);
       font-size: calculateRem(18px);
       font-weight: bold;
     }
@@ -21,7 +21,7 @@
       color:var(--gray-800);
     }
   &__extra {
-      color: var(--primary-color);
+      color: var(--color-accent-500);
       font-size: calculateRem(12px);
     }
   }

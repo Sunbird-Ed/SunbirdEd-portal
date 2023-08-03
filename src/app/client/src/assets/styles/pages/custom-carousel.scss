@@ -30,7 +30,7 @@
 
     .slick-dots li button:hover,
     .slick-dots li.slick-active button {
-      background: var(--primary-400) !important;
+      background: var(--color-accent-500) !important;
     }
 
     .slick-prev,
@@ -41,7 +41,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--primary-400);
+      color: var(--color-accent-500);
       cursor: pointer;
     }
 
@@ -68,7 +68,7 @@
       line-height: calculateRem(24px);
       height: calculateRem(24px);
       width: calculateRem(24px);
-      color: var(--primary-400);
+      color: var(--color-accent-500);
     }
 
     .slick-prev:before {

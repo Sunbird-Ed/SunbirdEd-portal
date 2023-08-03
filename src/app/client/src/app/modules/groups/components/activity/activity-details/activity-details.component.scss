@@ -63,12 +63,12 @@
 }
 
 .note-color {
-  color:var(--red-100);
+  color:var(--color-warn-300);
 }
 
 .download-text{
   font-size:calculateRem(12px);
-  color:var(--primary-400);
+  color:var(--color-accent-500);
   font-weight: bold;
 }
 

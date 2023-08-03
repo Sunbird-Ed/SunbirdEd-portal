@@ -13,7 +13,7 @@
     background: none;
 
     .sb-modal-header {
-      background-color: var(--primary-400);
+      background-color: var(--color-accent-500);
       color: var(--white);
       font-weight: 700;
       font-size: calculateRem(16px);
@@ -178,7 +178,7 @@
 
   &.sb-error .ui.modal {
     .sb-modal-header {
-      background-color: var(--red-400);
+      background-color: var(--color-warn-500);
     }
 
     .sb-modal-actions {
@@ -256,7 +256,7 @@
   .ui.modal>.close {
     top: 0rem;
     right: 0;
-    color: var(--primary-400);
+    color: var(--color-accent-500);
   }
 }
 
@@ -346,7 +346,7 @@
     outline: 0px;
     border: 0;
     margin: 1rem;
-    color: var(--red-400);
+    color: var(--color-warn-500);
     span{
       font-size: 1.6rem;
       position: relative;
@@ -385,7 +385,7 @@
     outline: 0px;
     border: 0;
     margin: 1rem;
-    color: var(--red-400);
+    color: var(--color-warn-500);
     span{
       font-size: 1.6rem;
       position: relative;

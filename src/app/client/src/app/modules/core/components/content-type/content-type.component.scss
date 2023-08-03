@@ -1,3 +1,8 @@
+@use "sass:map";
+@use "@angular/material" as mat;
+// @use "./../../../../../assets/styles/mat-themes/palette" as *;
+@use "./../../../../../assets/styles/mat-themes/colors" as *;
+// @use "./../../../../../assets/styles/mat-themes/themes" as *;
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 /* new styles */
@@ -9,7 +14,7 @@
   mask-repeat: no-repeat;
   display: inline-block;
   cursor: pointer;
-  background: var(--primary-color);
+  background: var(--color-accent-500);
   &--xxs {
     width: var(--icon-svg-xxs);
     height: var(--icon-svg-xxs);
@@ -100,4 +105,9 @@
     -webkit-mask-image: url(/assets/images/mask-image/question_set.svg);
     mask-image: url(/assets/images/mask-image/question_set.svg);
   }
+ .active & {
+  // background:mat.get-color-from-palette($accent, 50);
+  @extend .bgcolor-accent !optional;
+  // background-color: mat-color($accent, 500);
+ }
 }

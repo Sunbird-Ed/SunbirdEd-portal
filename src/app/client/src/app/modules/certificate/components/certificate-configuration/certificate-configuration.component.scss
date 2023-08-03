@@ -15,11 +15,11 @@
 
   &:active,
   &:hover {
-    color: var(--primary-color);
+    color: var(--color-accent-500);
     font-weight: bold;
 
     .border-right {
-      border-right: calculateRem(4px) solid var(--primary-color);
+      border-right: calculateRem(4px) solid var(--color-accent-500);
       height: calculateRem(20px);
       position: absolute;
       right: 0;

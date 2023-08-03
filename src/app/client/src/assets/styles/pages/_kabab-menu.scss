@@ -2,7 +2,7 @@
 // Course Player & My Groups kabab menu styles
 
 .kabab-menu {
-    color: var(--primary-400);
+    color: var(--color-accent-500);
     width: calculateRem(30px);
     height: calculateRem(30px);
     line-height: calculateRem(28px);
@@ -42,7 +42,7 @@
       }
       &:last-child{
         .sb-btn-normal{
-          color: var(--red-400);
+          color: var(--color-warn-500);
         }
       }
       .sb-btn-normal{

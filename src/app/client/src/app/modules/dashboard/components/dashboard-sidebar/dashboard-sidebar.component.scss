@@ -16,14 +16,14 @@
   }
 
   .sidebar a.active {
-    border-left: calculateRem(4px) solid var(--primary-400);
+    border-left: calculateRem(4px) solid var(--color-accent-500);
     background: var(--sbt-body-bg);
-    color: var(--primary-color) !important;
+    color: var(--color-accent-500) !important;
     font-weight: bold;
 
     [dir="rtl"] & {
       border-left: none;
-      border-right: calculateRem(4px) solid var(--primary-400);
+      border-right: calculateRem(4px) solid var(--color-accent-500);
     }
   }
 

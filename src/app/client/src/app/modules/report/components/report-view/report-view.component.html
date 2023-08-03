@@ -152,14 +152,10 @@
                                 <sl-reports-text [data]="data" [questionNumber]="i + 1" *ngSwitchDefault>
                                 </sl-reports-text>
                                 <div *ngSwitchCase="'radio'">
-                                  <strong>{{i+1}} {{ data?.question }}</strong>
-                                  <sb-dashlet [type]="'pie'" [data]="getData(data)" [config]="getconfig(data)"
-                                    class="chart-container" #lib></sb-dashlet>
+                                  <sl-pie-chart [data]="element" [questionNumber]="i + 1"></sl-pie-chart>
                                 </div>
                                 <div *ngSwitchCase="'pie'">
-                                  <strong>{{i+1}} {{ data?.question }}</strong>
-                                  <sb-dashlet [type]="'pie'" [data]="getData(data)" [config]="getconfig(data)"
-                                    class="chart-container" #lib></sb-dashlet>
+                                  <sl-pie-chart [data]="element" [questionNumber]="i + 1"></sl-pie-chart>
                                 </div>
                                 <div *ngSwitchCase="'column'">
                                   <strong>{{i+1}} {{ data?.question }}</strong>
@@ -170,8 +166,63 @@
                                   <sl-bar-chart [data]="data" class="bar-chart-container"></sl-bar-chart>
                                 </div>
                                 <div *ngSwitchCase="'multiselect'">
-                                  <strong>{{i+1}} {{ data?.question }}</strong>
-                                  <sl-bar-chart [data]="data" class="bar-chart-container"></sl-bar-chart>
+                                  <strong>{{i+1}}) {{ element?.question }}</strong>
+                                  <sl-bar-chart [data]="element" class="bar-chart-container"></sl-bar-chart>
+                                </div>
+                                <div *ngSwitchCase="'horizontalBar'">
+                                  <sl-percentage-column-charts [chartData]="element" class="bar-chart-container">
+                                  </sl-percentage-column-charts>
+                                </div>
+
+                                <sl-expansion-table [datas]="element" *ngSwitchCase="'expansion-table'">
+                                </sl-expansion-table>
+
+                                <sl-expansion-panel [datas]="element" *ngSwitchCase="'expansion'">
+                                </sl-expansion-panel>
+
+                                <div *ngSwitchCase="'matrix'">
+                                  <strong>{{i+1}}) {{ element?.question }}</strong>
+                                  <div ui bottom graph-section
+                                    *ngFor="let data of element?.instanceQuestions; let i = index">
+                                    <div class="sb-graph-section p-24 my-24" [ngSwitch]="data?.responseType">
+                                      <sl-reports-text [data]="data" [questionNumber]="i + 1" *ngSwitchCase="'text'">
+                                      </sl-reports-text>
+                                      <sl-reports-text [data]="data" [questionNumber]="i + 1" *ngSwitchCase="'number'">
+                                      </sl-reports-text>
+                                      <sl-reports-text [data]="data" [questionNumber]="i + 1" *ngSwitchCase="'date'">
+                                      </sl-reports-text>
+                                      <sl-reports-text [data]="data" [questionNumber]="i + 1" *ngSwitchDefault>
+                                      </sl-reports-text>
+                                      <div *ngSwitchCase="'radio'">
+                                        <sl-pie-chart [data]="data" [questionNumber]="i + 1"></sl-pie-chart>
+                                      </div>
+                                      <div *ngSwitchCase="'pie'">
+                                        <sl-pie-chart [data]="data" [questionNumber]="i + 1"></sl-pie-chart>
+                                      </div>
+                                      <div *ngSwitchCase="'column'">
+                                        <strong>{{i+1}}) {{ data?.question }}</strong>
+                                        <sl-bar-chart [data]="data" class="bar-chart-container"></sl-bar-chart>
+                                      </div>
+                                      <div *ngSwitchCase="'bar'">
+                                        <strong>{{i+1}}) {{ data?.question }}</strong>
+                                        <sl-bar-chart [data]="data" class="bar-chart-container"></sl-bar-chart>
+                                      </div>
+                                      <div *ngSwitchCase="'multiselect'">
+                                        <strong>{{i+1}}) {{ data?.question }}</strong>
+                                        <sl-bar-chart [data]="data" class="bar-chart-container"></sl-bar-chart>
+                                      </div>
+                                      <div class="card-align">
+                                        <div *ngFor="let e of data.evidences" class="thumbnail-card">
+                                          <sl-attachments [url]="e.url" [extension]="e.extension"></sl-attachments>
+                                        </div>
+                                        <button *ngIf="data.evidence_count > 3"
+                                          class="sb-btn sb-btn-normal sb-btn-outline-primary filter-btn filter-modal-button"
+                                          (click)="getAllEvidence(data)">
+                                          View More
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
                                 </div>
                                 <div class="card-align">
                                   <div *ngFor="let e of data.evidences" class="thumbnail-card">

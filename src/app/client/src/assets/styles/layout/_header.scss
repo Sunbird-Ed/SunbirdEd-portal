@@ -64,7 +64,7 @@
 
 }
 .sbt-header-menu-extension {
-  background: var(--sbt-header-bg);
+  background: var(--color-primary-500);
 }
 .sbt-header-menu {
   position: relative;
@@ -122,7 +122,7 @@
 }
 .ui.button.qr-code-btn {
   background: var(--sb-header-qrcode-btn-bg);;
-  color: var(--primary-color);
+  color: var(--color-accent-500);
   border-radius: calculateRem(4px);
   font-weight: normal;
   border: calculateRem(0.5px) solid var(--sb-header-qrcode-btn-border);
@@ -132,7 +132,7 @@
   font-size: calculateRem(12px);
   line-height: 1.15;
   .qrcode {
-    color: var(--primary-color) !important;
+    color: var(--color-accent-500) !important;
     font-size: 1.3em;
   }
 }
@@ -184,7 +184,7 @@
     }
     .ui.dropdown {
       border: calculateRem(1px) solid var(--gray-100);
-      color: var(--primary-color);
+      color: var(--color-accent-500);
       font-size: 0.86rem;
       border-radius: calculateRem(3px);
       font-weight: bold;
@@ -212,7 +212,7 @@
           }
         }
         & > .active.item {
-          color: var(--primary-color) !important;
+          color: var(--color-accent-500) !important;
           background: var(--sb-language-dropdown-item-active) !important;
         }
       }

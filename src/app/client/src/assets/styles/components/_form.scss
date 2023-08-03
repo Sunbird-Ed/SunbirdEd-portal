@@ -14,13 +14,13 @@ $sb-input-padding: calculateRem(9px);
 $sb-input-color: var(--gray-800);
 $sb-input-border-radius: calculateRem(3px);
 $sb-input-border-normal: $input-border-width solid var(--gray-200);
-$sb-input-border-focus: $input-border-width solid var(--color-accent-600);
-$sb-input-border-hover: $input-border-width solid var(--color-accent-300);
-$sb-input-border-error: $input-border-width solid var(--red-400);
-$sb-input-border-success: $input-border-width solid var(--color-success-400);
+$sb-input-border-focus: $input-border-width solid var(--primary-600);
+$sb-input-border-hover: $input-border-width solid var(--primary-300);
+$sb-input-border-error: $input-border-width solid var(--color-warn-500);
+$sb-input-border-success: $input-border-width solid var(--secondary-200);
 
 /* sb-input label and text */
-$sb-error-text: var(--red-400);
+$sb-error-text: var(--color-warn-500);
 $sb-label-font-size: calculateRem(13px);
 // Dropdown
 $sb-dropdown-border-color: var(--gray-200);
@@ -163,7 +163,7 @@ textarea {
 input[required],
 input.required {
   &:before {
-    color: var(--red);
+    color: var(--color-warn-500);
     content: "*";
     position: absolute;
     margin-left: calculateRem(-15px);
@@ -204,7 +204,7 @@ select:-internal-autofill-selected {
     .required::after {
       margin: -0.2em 0 0 0.2em;
       content: "*";
-      color: var(--red-100);
+      color: var(--color-warn-300);
     }
   }
   .sb-field.ui.left.icon.input {
@@ -222,15 +222,15 @@ select:-internal-autofill-selected {
 
 .sb-form .sb-field-group.error input,
 .sb-form .sb-field-group.error label {
-  color: var(--red-100)
+  color: var(--color-warn-300)
 }
 .sb-form .sb-field-group.error .ui {
   margin-bottom: calculateRem(4px) !important;
 }
 .sb-form .sb-field-group.error input {
   background: var(--gray-0);
-  border-color: var(--red-0);
-  color: var(--red-100);
+  border-color: var(--color-warn-100);
+  color: var(--color-warn-300);
   border-radius: "";
   box-shadow: none;
 }

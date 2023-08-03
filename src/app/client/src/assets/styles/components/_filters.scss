@@ -7,7 +7,7 @@ $sb-prominent-filter-padding: 1rem 1rem;
 $sb-prominent-filter-header-font-weight: bold;
 $sb-prominent-filter-header-margin: 0.5rem 0
   1rem 0;
-$sb-prominent-filter-header-color: var(--primary-color);
+$sb-prominent-filter-header-color: var(--color-accent-500);
 $sb-prominent-filter-field-width-below-sm: 50%;
 $sb-prominent-filter-field-width-above-sm: 33.3333%;
 $sb-prominent-filter-field-width-above-md: 25%;
@@ -27,7 +27,7 @@ $sb-prominent-filter-field-width: 100%;
 $sb-prominent-filter-field-input-padding: calculateRem(8px);
 $sb-prominent-filter-dropdown-font-size: calculateRem(12px);
 $sb-prominent-filter-dropdown-header-font-weight: 500;
-$sb-prominent-filter-dropdown-item-active-color: var(--primary-color);
+$sb-prominent-filter-dropdown-item-active-color: var(--color-accent-500);
 $sb-prominent-filter-dropdown-item-active-font-weight: 700;
 
 .sb-prominent-filter {
