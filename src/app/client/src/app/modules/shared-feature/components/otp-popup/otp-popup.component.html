@@ -1,13 +1,13 @@
 <!--Content-->
 <mat-dialog-content>
   <div class="text-center">
-    <img class="image centered" alt={{tenantName}} height="45" src="{{logo}}">
+    <img class="image centered" alt={{tenantName}} height="45" src="{{logo}}" tabindex="0">
       <div class="mt-20">
-        <p class="mat-body-2">{{otpData?.instructions}}</p>
-        <div class="mat-subheading-2">{{otpData?.retryMessage}}<br><span
+        <p class="mat-body-2" tabindex="0">{{otpData?.instructions}}</p>
+        <div class="mat-subheading-2" tabindex="0">{{otpData?.retryMessage}}<br><span
             (click)="redirectToParentComponent()" class="color-accent font-weight-bold" role="button" tabindex="0">{{resourceService?.frmelmnts?.lbl?.clickHere}}</span>
           {{resourceService?.frmelmnts?.lbl?.toTryAgain}}</div>
-        <form [formGroup]="otpForm" class="d-flex flex-dc">
+        <form [formGroup]="otpForm" class="d-flex flex-dc" tabindex="0">
           <label *ngIf="errorMessage" color="warn" class="mat-body-2 font-weight-bold">{{errorMessage  | interpolate: '{remainingAttempt}': remainingAttempt}}</label>
           <label *ngIf="infoMessage" class="mat-body-2 font-weight-bold">{{infoMessage}}</label>
           <mat-form-field class="otp-page-form-field" color="accent" appearance="fill">

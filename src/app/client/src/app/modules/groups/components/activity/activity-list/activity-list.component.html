@@ -1,6 +1,6 @@
 <div *ngFor="let list of groupData?.activitiesGrouped" class="activity-list-component">
   <div class="d-flex flex-ai-center flex-wrap my-16" *ngIf="activityList[list?.title]?.length && isSelectedType(list?.title)">
-    <h3 class="mb-0 mat-title">{{getTitle(list?.title)}}</h3>
+    <h3 class="mb-0 mat-title" tabindex="0">{{getTitle(list?.title)}}</h3>
     <button *ngIf="activityList[list?.title]?.length > 3 && disableViewAllMode && isSelectedType(list?.title)"
       mat-raised-button color="warn" class="button-rounded ml-auto" tabindex="0"
       (click)="toggleViewAll(false); addTelemetry('close-view-all', [], {type: list?.title})">{{resourceService?.frmelmnts?.btn?.close}}

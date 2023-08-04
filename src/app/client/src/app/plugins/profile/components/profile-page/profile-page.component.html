@@ -1,6 +1,6 @@
   <!--profile Content Header -->
   <mat-toolbar color="primary" class="toolbar-pageback">
-    <button mat-mini-fab color="accent" (click)="goBack()" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}" tabindex="0">
+    <button mat-mini-fab color="accent" (click)="goBack()" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}} to previous page" tabindex="0">
       <mat-icon>arrow_back</mat-icon>
     </button>
     <div class="toolbar-pageback__heading">
@@ -19,8 +19,8 @@
           [title]="userProfile?.firstName">
         </sb-avatar>
        </div>
-      <div class="mat-display-1 font-weight-bold mt-20 mb-16">{{userProfile.firstName | titlecase}} {{userProfile.lastName | titlecase}}</div>
-      <div class="d-flex flex-jc-center flex-ai-center">
+      <div class="mat-display-1 font-weight-bold mt-20 mb-16" tabindex="0">{{userProfile.firstName | titlecase}} {{userProfile.lastName | titlecase}}</div>
+      <div class="d-flex flex-jc-center flex-ai-center" tabindex="0">
         <div class="mat-body-1">{{resourceService?.frmelmnts?.lbl?.instacnceId | interpolate:'{instance}': instance}} :</div>
         <div class="mat-body-1 ml-4" id="copyUser">{{userProfile.userName}}</div>
         <button mat-button role="button" class="ml-8" color="accent" tabindex="0" (click)="copyToClipboard(userProfile.userName)"
@@ -45,42 +45,42 @@
           <mat-icon>keyboard_arrow_up</mat-icon>
         </span>
       </div>
-      <div class="mat-h1 font-weight-bold m-0" *ngIf="orgDetails && orgDetails.orgName">{{orgDetails.orgName}}</div>
+      <div class="mat-h1 font-weight-bold m-0" *ngIf="orgDetails && orgDetails.orgName" tabindex="0">{{orgDetails.orgName}}</div>
     </section>
   
     <section class="d-flex flex-ai-center flex-dc pb-24 content-preference">
-      <div class="mat-h1 font-weight-bold">{{resourceService.frmelmnts.lbl.profiledetails}}</div>
+      <div class="mat-h1 font-weight-bold" tabindex="0">{{resourceService.frmelmnts.lbl.profiledetails}}</div>
       <!-- add state and district -->
       <div class="content-preference__info mat-app-background py-24 w-100 br-32">
-        <div *ngIf="persona?.name" class="content-preference__details mb-12">
+        <div *ngIf="persona?.name" class="content-preference__details mb-12" tabindex="0">
           <div class="mat-subheading-1 m-0">{{resourceService.frmelmnts.lbl.role}} :</div>
           <div class="mat-subheading-1 ml-4 mb-0 font-weight-bold">{{persona.name}}</div>
         </div>
-        <div *ngIf="subPersona" class="content-preference__details mb-12">
+        <div *ngIf="subPersona" class="content-preference__details mb-12" tabindex="0">
           <div class="mat-subheading-1 white-space-nowrap m-0">{{resourceService.frmelmnts.lbl.subRole}} :</div>
           <div class="mat-subheading-1 ml-4 mb-0 font-weight-bold">{{subPersona.join(', ')}}</div>
         </div>
-        <div *ngIf="userLocation?.district && userLocation?.district?.name" class="content-preference__details mb-12">
+        <div *ngIf="userLocation?.district && userLocation?.district?.name" class="content-preference__details mb-12" tabindex="0">
           <div class="mat-subheading-1 m-0">{{resourceService.frmelmnts.lbl.district}} :</div>
           <div class="mat-subheading-1 ml-4 mb-0 font-weight-bold">
             {{userLocation.district.name}} </div>
         </div>
-        <div *ngIf="userLocation?.state && userLocation?.state?.name" class="content-preference__details mb-12">
+        <div *ngIf="userLocation?.state && userLocation?.state?.name" class="content-preference__details mb-12" tabindex="0">
           <div class="mat-subheading-1 m-0">{{resourceService.frmelmnts.lbl.state}} :</div>
           <div class="mat-subheading-1 ml-4 mb-0 font-weight-bold">
             {{userLocation.state.name}}</div>
         </div>
-        <div *ngIf="userLocation?.block && userLocation?.block?.name" class="content-preference__details mb-12">
+        <div *ngIf="userLocation?.block && userLocation?.block?.name" class="content-preference__details mb-12" tabindex="0">
           <div class="mat-subheading-1 m-0">{{resourceService.frmelmnts.lbl.block}} :</div>
           <div class="mat-subheading-1 ml-4 mb-0 font-weight-bold">
             {{userLocation.block.name}} </div>
         </div>
-        <div *ngIf="userLocation?.cluster && userLocation?.cluster?.name" class="content-preference__details mb-12">
+        <div *ngIf="userLocation?.cluster && userLocation?.cluster?.name" class="content-preference__details mb-12" tabindex="0">
           <div class="mat-subheading-1 m-0">{{resourceService.frmelmnts.lbl.cluster}} :</div>
           <div class="mat-subheading-1 ml-4 mb-0 font-weight-bold">
             {{userLocation.cluster.name}} </div>
         </div>
-        <div *ngIf="userLocation?.school && userLocation?.school?.name" class="content-preference__details mb-12">
+        <div *ngIf="userLocation?.school && userLocation?.school?.name" class="content-preference__details mb-12" tabindex="0">
           <div class="mat-subheading-1 m-0">{{resourceService.frmelmnts.lbl.school}} :</div>
           <div class="mat-subheading-1 ml-4 mb-0 font-weight-bold">
             {{userLocation.school.name}} </div>
@@ -102,23 +102,23 @@
     
     <section class="d-flex flex-ai-center flex-dc py-24 mat-app-background content-preference br-32">
       <!-- User info computer view starts-->
-      <div class="d-flex flex-jc-center flex-ai-center flex-dc max-w-400 computer only" *ngIf="userProfile && userProfile.framework ">
-        <div class="mb-12 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.board)">
+      <div class="d-flex flex-jc-center flex-ai-center flex-dc max-w-400 d-below-md-none d-above-md-block" *ngIf="userProfile && userProfile.framework ">
+        <div class="mb-12 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.board)" tabindex="0">
           <span class="mat-subheading-1 m-0 white-space-nowrap">{{resourceService.frmelmnts.lbl.boards | transposeTerms: 'frmelmnts.lbl.boards' : resourceService?.selectedLang}} :</span>
           <span class="mat-subheading-1 m-0 font-weight-bold pl-4"
             *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board)}}</span>
         </div>
-        <div class="mb-12 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.medium)">
+        <div class="mb-12 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.medium)" tabindex="0">
           <span class="mat-subheading-1 m-0 white-space-nowrap">{{resourceService.frmelmnts.lbl.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}} :</span>
           <span class="mat-subheading-1 m-0 font-weight-bold pl-4"
             *ngIf="userProfile.framework">{{convertToString(userProfile.framework.medium)}}</span>
         </div>
-        <div class="mb-12 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.gradeLevel)">
+        <div class="mb-12 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.gradeLevel)" tabindex="0">
           <span class="mat-subheading-1 m-0 white-space-nowrap">{{resourceService.frmelmnts.lbl.classes | transposeTerms: 'frmelmnts.lbl.classes' : resourceService?.selectedLang}} :</span>
           <span class="mat-subheading-1 m-0 font-weight-bold pl-4"
             *ngIf="userProfile.framework">{{convertToString(userProfile.framework.gradeLevel)}}</span>
         </div>
-        <div class="mb-12 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.subject)">
+        <div class="mb-12 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.subject)" tabindex="0">
           <span class="mat-subheading-1 m-0 white-space-nowrap">{{resourceService.frmelmnts.lbl.subjects | transposeTerms: 'frmelmnts.lbl.subjects' : resourceService?.selectedLang}} :</span>
           <span class="mat-subheading-1 m-0 font-weight-bold pl-4"
             *ngIf="userProfile.framework">{{convertToString(userProfile.framework.subject)}}</span>
@@ -132,22 +132,22 @@
       <!-- User info computer view ends-->
       <!-- User info mobile view starts-->
       <div class="max-w-300 mobile only">
-        <div class="mb-12 d-flex flex-ai-center flex-dc">
+        <div class="mb-12 d-flex flex-ai-center flex-dc" tabindex="0">
           <span class="mat-subheading-1 m-0 white-space-nowrap">{{resourceService.frmelmnts.lbl.boards | transposeTerms: 'frmelmnts.lbl.boards' : resourceService?.selectedLang}}:</span>
           <span class="mat-subheading-1 m-0 font-weight-bold"
             *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board)}}</span>
         </div>
-        <div class="mb-12 d-flex flex-ai-center flex-dc">
+        <div class="mb-12 d-flex flex-ai-center flex-dc" tabindex="0">
           <span class="mat-subheading-1 m-0 white-space-nowrap">{{resourceService.frmelmnts.lbl.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}} :</span>
           <span class="mat-subheading-1 m-0 font-weight-bold"
             *ngIf="userProfile.framework">{{convertToString(userProfile.framework.medium)}}</span>
         </div>
-        <div class="mb-12 d-flex flex-ai-center flex-dc">
+        <div class="mb-12 d-flex flex-ai-center flex-dc" tabindex="0">
           <span class="mat-subheading-1 m-0 white-space-nowrap">{{resourceService.frmelmnts.lbl.classes | transposeTerms: 'frmelmnts.lbl.classes' : resourceService?.selectedLang}} :</span>
           <span class="mat-subheading-1 m-0 font-weight-bold"
             *ngIf="userProfile.framework">{{convertToString(userProfile.framework.gradeLevel)}}</span>
         </div>
-        <div class="mb-12 d-flex flex-ai-center flex-dc">
+        <div class="mb-12 d-flex flex-ai-center flex-dc" tabindex="0">
           <span class="mat-subheading-1 m-0 white-space-nowrap">{{resourceService.frmelmnts.lbl.subjects | transposeTerms: 'frmelmnts.lbl.subjects' : resourceService?.selectedLang}} :</span>
           <span class="mat-subheading-1 m-0 font-weight-bold"
             *ngIf="userProfile.framework">{{convertToString(userProfile.framework.subject)}}</span>
@@ -164,7 +164,7 @@
     <section class="py-24 my-24 d-flex flex-jc-center flex-dc bgcolor-primary br-32" *ngIf="userProfile.email || userProfile.phone">
       <div class="d-flex flex-jc-center">
         <button role="button" mat-raised-button class="mb-16 button-rounded" appOnlineOnly (click)="showContactPopup=true;contactType='phone'" tabindex="0"
-          *ngIf="userProfile.phone"
+          *ngIf="userProfile.phone" attr.aria-label="{{resourceService.frmelmnts.lbl.edit}} phone number"
           appTelemetryInteract
           [telemetryInteractEdata]="editMobileInteractEdata">
           <mat-icon class="mr-4"> phone</mat-icon> &#x200E;+91 {{userProfile.phone}}
@@ -242,7 +242,7 @@
       <!-- tarainings attended computer view strats-->
       <div class="container my-16 sb-certificate-trained mat-bg-white" *ngIf="attendedTraining && attendedTraining.length">
           <div class="list-heading">
-            <label class="mat-h2 m-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.myLearning}}({{attendedTraining.length}})&#x200E;</label>
+            <div class="mat-h2 m-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.myLearning}}({{attendedTraining.length}})&#x200E;</div>
             <span class="mat-small mt-4 font-weight-bold">&nbsp;({{resourceService?.frmelmnts?.lbl?.refreshedDaily}})</span>
           </div>
           <div class="list-item-parent">
@@ -259,7 +259,7 @@
               <div class="list-items__item"><a tabindex="0" (click)="navigateToCourse(data)" class="color-accent sb__ellipsis mr-auto mb-0 text-left">{{data.courseName}}</a></div>
               <div class="list-items__item"><span class="sb__ellipsis mr-auto mb-0 text-left">{{data.batch.name}}</span></div>
               <div class="list-items__item list-date" *ngIf="data.completedOn">{{data.completedOn | date :'MMMM yyy' }}</div>
-              <div class="list-items__item list-items__bar computer only" *ngIf="!data.completedOn">
+              <div class="list-items__item list-items__bar d-below-md-none d-above-md-block" *ngIf="!data.completedOn">
                   <span class="bar mr-4"></span>
                   <span class="bar"></span>
               </div>
@@ -274,7 +274,7 @@
                   <mat-icon>download</mat-icon>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}
                 </a>
               </div>
-              <div class="list-items__item list-items__bar computer only" *ngIf="!data?.certificates?.length && !data?.issuedCertificates?.length">
+              <div class="list-items__item list-items__bar d-below-md-none d-above-md-block" *ngIf="!data?.certificates?.length && !data?.issuedCertificates?.length">
                   <span class="bar mr-4"></span>
                   <span class="bar"></span>
               </div>
@@ -298,29 +298,29 @@
         <!-- RC Certificates -->
         <div class="container my-16 sb-certificate-trained mat-bg-white" id="learner-passbook" *ngIf="otherCertificates && otherCertificates.length">
           <div class="list-heading">
-            <label class="mat-h2 m-0 font-weight-bold">{{resourceService.frmelmnts?.lbl?.learnerPassbook }}&#x200E;</label>
+            <div class="mat-h2 m-0 font-weight-bold">{{resourceService.frmelmnts?.lbl?.learnerPassbook }}&#x200E;</div>
           </div>
           <div class="list-item-parent">
             <div class="list-items sb-course-progress-status-label">
-              <label class="list-items__item mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.course}}</label>
-              <label class="list-items__item mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.certgivenby}}</label>
-              <label class="list-items__item mb-0 last-date">{{resourceService?.frmelmnts?.lbl?.certissuedon}}</label>
-              <label class="list-items__item mb-0 text-left"></label>
-              <label class="list-items__item mb-0 text-left"></label>
+              <span class="list-items__item mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.course}}</span>
+              <span class="list-items__item mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.certgivenby}}</span>
+              <span class="list-items__item mb-0 last-date">{{resourceService?.frmelmnts?.lbl?.certissuedon}}</span>
+              <span class="list-items__item mb-0 text-left"></span>
+              <span class="list-items__item mb-0 text-left"></span>
             </div>
           </div>
           <div class="list-item-parent" *ngFor="let data of otherCertificates | slice:0:otherCertificateLimit">
             <div class="list-items" *ngIf="data?.issuerName">
-              <label class="list-items__item mb-0 text-left">{{data.trainingName}}</label>
-              <label class="list-items__item mb-0 text-left">{{data?.issuerName}}</label>
-              <label class="list-items__item list-date" *ngIf="data.issuedOn">{{data.issuedOn | date :'dd MMMM yyy' }}</label>
+              <span class="list-items__item mb-0 text-left">{{data.trainingName}}</span>
+              <span class="list-items__item mb-0 text-left">{{data?.issuerName}}</span>
+              <span class="list-items__item list-date" *ngIf="data.issuedOn">{{data.issuedOn | date :'dd MMMM yyy' }}</span>
               <div class="list-items__item" *ngIf="data?.id">
                 <a mat-button color="accent" appOnlineOnly appTelemetryInteract [telemetryInteractEdata]="downloadOthersCertificateEData"
                   (click)="downloadOldAndRCCert(data)" tabindex="0" >
                   <mat-icon>download</mat-icon>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}
                 </a>
               </div>
-              <div class="list-items__item list-items__bar computer only" *ngIf="!data?.length">
+              <div class="list-items__item list-items__bar d-below-md-none d-above-md-block" *ngIf="!data?.length">
                 <span class="bar"></span>
                 <span class="bar"></span>
               </div>

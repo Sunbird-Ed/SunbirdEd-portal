@@ -9,7 +9,7 @@
   <div class="sb-g">
     <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
       <div class="d-flex flex-ai-center mat-app-background br-16 p-8">
-        <h4 class="mat-subheading-1 font-weight-bold mb-0">{{resourceService?.frmelmnts?.lbl?.activities}}</h4>
+        <h2 class="mat-subheading-1 font-weight-bold mb-0" tabindex="0">{{resourceService?.frmelmnts?.lbl?.activities}}</h2>
           <button type="button" mat-raised-button color="accent" class="button-rounded ml-auto" *ngIf="isAdmin && groupData?.active"
           tabindex="0" (click)="navigateToAddActivity(); addTelemetry('add-activity', '', {type: ADD_ACTIVTY})"><mat-icon>add</mat-icon>{{resourceService?.frmelmnts?.btn?.addActivity}}</button>
       </div>

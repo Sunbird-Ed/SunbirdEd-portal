@@ -2,11 +2,11 @@
     <!--Header-->
     <div *ngIf="section.name" class="d-flex flex-ai-center my-16">
         <!--Section Title-->
-        <h4 class="mat-title font-weight-bold m-0 mr-5"><span class="mr-8">{{sectionName}}</span>
+        <h3 class="mat-title font-weight-bold m-0 mr-5"><span class="mr-8">{{sectionName}}</span>
             <!--Count-->
             <span class="bgcolor-warn p-2 br-4 mat-subheading-2">{{section.count}}</span>
             <!--/Count-->
-        </h4>
+        </h3>
         <!--/Section Title-->
         <!--View all button-->
         <button mat-raised-button type="button" color="success" class="ml-auto button-rounded" *ngIf="section?.contents?.length >= 10"
