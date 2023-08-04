@@ -119,7 +119,7 @@
           <div *ngIf="tabIndex !== 1 && tabIndex !== 2  && tabIndex !== 3" class="d-flex flex-dc customDate">
             <label>{{resourceService?.frmelmnts?.lbl?.startdate | titlecase }}</label>
             <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd sb-color-primary">
-              <input [disabled]="!reportForm.controls.programName.value" matInput placeholder="dd/mm/yyyy" [min]="minStartDate" [max]="maxStartDate"  (dateChange)="dateChanged($event,'startDate')" formControlName="startDate" [matDatepicker]="picker">
+              <input appDateValidator [disabled]="!reportForm.controls.programName.value" matInput placeholder="dd/mm/yyyy" [min]="minStartDate" [max]="maxStartDate" (dateChange)="dateChanged($event,'startDate')" formControlName="startDate" [matDatepicker]="picker">
               <mat-datepicker-toggle matSuffix [for]="picker" class="sb-color-primary"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
@@ -130,7 +130,7 @@
           <div *ngIf="tabIndex !== 1 && tabIndex !== 2  && tabIndex !== 3" class="d-flex flex-dc customDate">
             <label>{{resourceService?.frmelmnts?.lbl?.enddate | titlecase }}</label>
             <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd sb-color-primary">
-              <input [disabled]="!reportForm.controls.programName.value"  matInput placeholder="dd/mm/yyyy" [min]="minEndDate" [max]="maxEndDate"  (dateChange)="dateChanged($event,'endDate')" formControlName="endDate" [matDatepicker]="picker">
+              <input appDateValidator [disabled]="!reportForm.controls.programName.value"  matInput placeholder="dd/mm/yyyy" [min]="minEndDate" [max]="maxEndDate"  (dateChange)="dateChanged($event,'endDate')" formControlName="endDate" [matDatepicker]="picker">
               <mat-datepicker-toggle matSuffix [for]="picker" class="sb-color-primary"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>            

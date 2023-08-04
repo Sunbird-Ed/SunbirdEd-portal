@@ -927,6 +927,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
         this.maxStartDate = new Date(year, month, day - 1);
       }
       this.reportForm.controls[type].setValue(eventDateConverted);
+      console.log('Form Date',this.reportForm.controls[type].value)
     }else{
       this.reportForm.controls[type].setErrors({matDatepickerMax:true});
     }
