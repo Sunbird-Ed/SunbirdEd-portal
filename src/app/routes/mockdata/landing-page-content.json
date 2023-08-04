@@ -49,6 +49,7 @@
       ]
     },
     "exploreCardInfo":{
+      "title":"Explore compass",
       "cardData":[
         {
           "iconUrl":"/assets/images/learn.png",
