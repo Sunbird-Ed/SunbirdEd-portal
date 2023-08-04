@@ -210,7 +210,10 @@ export class MainMenuComponent implements OnInit {
     this.generateInteractTelemetry();
   }
 
-
+  switchLayoutBlueSky(){
+    this.layoutService.switchLayoutBlueSky()
+  }
+  
   generateInteractTelemetry() {
     const interactData = {
       context: {

@@ -1,6 +1,6 @@
 @use '@angular/material' as mat;
-@use "@project-sunbird/sb-styles/assets/varIndex"as *;
-@use "@project-sunbird/sb-styles/assets/mixins/mixins"as *;
+@use "compass-sb-styles/assets/varIndex"as *;
+@use "compass-sb-styles/assets/mixins/mixins"as *;
 
 
 @include mat.core();
@@ -21,7 +21,7 @@ body {
 }
 
 body {
-  background: var(--sbt-body-bg) !important;
+  background: var(--white) !important;
   position: relative;
   font-family: var(--font-stack-en) !important;
   letter-spacing: calculateRem(0.2px);
@@ -1160,7 +1160,7 @@ a.ui.labels .label:hover {
 }
 
 // theme custom changes
-html[layout="joy"] {
+html[layout="joy"], html[layout="base"] {
   .sbt-sticky-topbar.sb-fontresizecontainer {
     position: sticky;
 

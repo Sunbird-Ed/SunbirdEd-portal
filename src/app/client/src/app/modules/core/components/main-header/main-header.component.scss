@@ -1,4 +1,4 @@
-@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "compass-sb-styles/assets/mixins/mixins" as *;
 @use "layout/header" as *;
 
 .sb-header-bg{
@@ -324,7 +324,7 @@ __textbooks {
 }
 
 .sbt-logo {
-  height: calculateRem(80px);
+  height: calculateRem(56px);
   display:flex;
   align-items: center;
   img {
@@ -351,4 +351,83 @@ __textbooks {
 .explore-title {
   font-weight: bold;
 }
+::ng-deep .profile-avtar .sb-avatar {
+  padding: 0 !important;
+}
 
+.compass-header {
+  position: sticky;
+  z-index: 10;
+  left: 0;
+  width: 100%;
+  // height: 3.5rem !important;
+  top: calculateRem(48px) !important;
+  @include respond-below(sm) {
+    position: initial;
+  }
+}
+.bs-1:hover {
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.29) !important;
+}
+.compass-entrymenu {
+  .compass-white-button {
+    background: var(--White);
+    padding: calculateRem(8px) calculateRem(16px);
+    border-radius: calculateRem(8px);
+    font-size: calculateRem(14px);
+    font-weight: bold;
+    margin-right: calculateRem(12px);
+    height: calculateRem(40px);
+    transition: all ease .3s;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    white-space: nowrap;
+    color: var(--primary-color);
+    border:calculateRem(1.5px) solid var(--primary-color);
+    width: calculateRem(87px);
+    justify-content: center;
+    // @include respond-above(md){
+    //   flex: 0 0 10%;
+    // }
+     &.active,
+    &:hover {
+      // color: var(--sb-linkmenu-text-hover);
+      text-decoration: none;
+      // background-color: var(--primary-color);
+      // .sb-icon {
+      //   background-color: var(--sb-linkmenu-text-hover);
+      // }
+    }
+  }
+  .compass-blue-button {
+    background: var(--primary-color);
+    padding: calculateRem(8px) calculateRem(16px);
+    border-radius: calculateRem(8px);
+    font-size: calculateRem(14px);
+    font-weight: bold;
+    // margin-right: calculateRem(12px);
+    height: calculateRem(40px);
+    transition: all ease .3s;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    white-space: nowrap;
+    color: var(--sb-linkmenu-bg);
+    border: 1px solid var(--sb-linkmenu-bg);
+    width: calculateRem(87px);
+    justify-content: center;
+    // @include respond-above(md){
+    //   flex: 0 0 10%;
+    // }
+    &.active,
+    &:hover {
+      // color: var(--sb-linkmenu-text);
+      text-decoration: none;
+      // background-color: var(--sb-linkmenu-text);
+      // .sb-icon {
+      //   background-color: var(--sb-linkmenu-text);
+      // }
+    }
+  }
+}
