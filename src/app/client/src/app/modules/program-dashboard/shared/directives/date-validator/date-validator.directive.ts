@@ -6,10 +6,6 @@ import { Directive, HostListener } from '@angular/core';
 export class DateValidatorDirective {
   private specialKeys: Array<string> = ['Backspace', 'Tab', 'End', 'Home', '/'];
 
-  constructor() {
-     // This is intentional
-  }
-
   @HostListener('keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {
     if (this.specialKeys.indexOf(event.key) !== -1) {
