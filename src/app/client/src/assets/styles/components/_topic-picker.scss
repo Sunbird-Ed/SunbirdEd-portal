@@ -38,7 +38,7 @@
             }
         }
         .sb-treePicker-selected-count {
-            color: var(--secondary-100);
+            color: var(--color-success-300);
         }
     }
 
@@ -90,23 +90,23 @@
                 font-size: calculateRem(10px);
                 line-height: calculateRem(11px);
                 border-radius: calculateRem(4px);
-                border: calculateRem(1px) solid var(--primary-200);
+                border: calculateRem(1px) solid var(--color-accent-100);
                 height: calculateRem(16px);
                 width: calculateRem(16px);
                 padding: calculateRem(2px);
-                color: var(--primary-200);
+                color: var(--color-accent-100);
                 display: inline-block;
                 vertical-align: middle;
             }
 
             .checkmark:before {
                 color: var(--white);
-                background: var(--secondary-100) !important;
-                border-color: var(--secondary-100);
+                background: var(--color-success-300) !important;
+                border-color: var(--color-success-300);
             }
 
             .square {
-                color: var(--primary-200);
+                color: var(--color-accent-100);
                 font-size: calculateRem(16px);
             }
 
@@ -162,7 +162,7 @@
     .tree {
         .picked {
             .name {
-                color: var(--secondary-100);
+                color: var(--color-success-400);
             }
         }
     }

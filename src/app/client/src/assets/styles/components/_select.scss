@@ -7,7 +7,7 @@
       padding: calculateRem(4px) calculateRem(8px);
       font-size: calculateRem(12px);
     &.active:hover {
-      border-color: var(--primary-300);
+      border-color: var(--color-accent-300);
     }
     .menu {
       width: calc(100%);

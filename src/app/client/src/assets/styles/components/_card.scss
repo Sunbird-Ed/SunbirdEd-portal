@@ -217,7 +217,7 @@ app-card[lang="ur"] {
       color: var(--blue);
     }
 
-    border-left: calculateRem(4px) solid var(--secondary-200);
+    border-left: calculateRem(4px) solid var(--color-success-400);
     cursor: pointer;
     box-shadow: calculateRem(2px) calculateRem(5px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.2);
   }
@@ -232,14 +232,14 @@ app-card[lang="ur"] {
 
   &:hover {
     .sb-btn {
-      background: var(--secondary-400);
+      background: var(--color-success);
     }
   }
 }
 
 // Batch Card
 .ui.card.sb-batch-card {
-  border: calculateRem(1px) solid var(--primary-200);
+  border: calculateRem(1px) solid var(--color-accent-100);
   box-shadow: none;
 
   .item {
@@ -268,8 +268,8 @@ app-card[lang="ur"] {
 }
 
 .sb-no-batch-found {
-  background-color: var(--tertiary-0);
-  border: calculateRem(1px) solid var(--tertiary-100);
+  background-color: var(--color-warn-100);
+  border: calculateRem(1px) solid var(--color-warn-400);
   padding: calculateRem(8px) calculateRem(16px);
   border-radius: calculateRem(4px);
   font-size: calculateRem(12px);

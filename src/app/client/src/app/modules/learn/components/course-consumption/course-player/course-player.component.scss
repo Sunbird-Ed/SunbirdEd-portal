@@ -67,7 +67,7 @@ $fontSize in $progressCircle {
     stroke-width: calculateRem(8px);
 
     &:nth-child(1) {
-      stroke: var(--secondary-200);
+      stroke: var(--color-success-400);
     }
 
     &:nth-child(2) {

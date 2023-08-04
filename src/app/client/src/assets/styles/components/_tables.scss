@@ -84,7 +84,7 @@
   /* Table on hover */
   &-hover {
     tbody tr:hover {
-      background: var(--secondary-0);
+      background: var(--color-success-50);
       color: rgba(var(--rc-rgba-gray), 0.95);
       cursor: pointer;
     }
@@ -195,11 +195,11 @@
       }
 
       &-success {
-        background: var(--secondary-0);
+        background: var(--color-success-50);
       }
 
       &-warning {
-        background: var(--tertiary-0);
+        background: var(--color-warn-100);
       }
 
       &-danger {

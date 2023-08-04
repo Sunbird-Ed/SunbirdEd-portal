@@ -31,13 +31,13 @@
 }
 .qq-upload-delete
 {
-    background-color: var(--tertiary-color);
+    background-color: var(--color-warn);
     color: var(--gray-0);
-    border-color: var(--tertiary-color);
+    border-color: var(--color-warn);
     text-shadow: 0 calculateRem(1px) calculateRem(1px) rgba(0, 0, 0, 0.55);
 }
 .qq-upload-delete:hover {
-    background-color: var(--tertiary-100);
+    background-color: var(--color-warn-400);
  }
 .qq-upload-cancel
 {
