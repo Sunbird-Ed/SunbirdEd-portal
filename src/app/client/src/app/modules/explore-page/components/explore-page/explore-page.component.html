@@ -44,12 +44,12 @@
           <div *ngIf="getSelectedTab() === 'home'" (click)="showEdit = !showEdit"
             class="sb-section-preference mat-typography mat-app-background mb-24" tabindex="0">
             <div class="preference">
-              <h2 class="mat-subheading-1 mb-4 text-left">{{resourceService?.frmelmnts?.lbl?.hi}} {{userProfile?.firstName
+              <h2 class="mat-subheading-1 mb-4 text-left" tabindex="0">{{resourceService?.frmelmnts?.lbl?.hi}} {{userProfile?.firstName
                 | titlecase}} {{userProfile?.lastName |
                 titlecase}}</h2>
-              <p class="mat-body-2 d-flex flex-ai-center">{{resourceService?.frmelmnts?.lbl?.yourPreferences}} <mat-icon
+              <p class="mat-body-2 d-flex flex-ai-center" tabindex="0">{{resourceService?.frmelmnts?.lbl?.yourPreferences}} <mat-icon
                   class="ml-4">info</mat-icon></p>
-              <p class="mat-body-2"><span class="mr-24">
+              <p class="mat-body-2"><span class="mr-24" tabindex="0">
                   <span *ngIf="userPreference?.framework?.board?.length">{{resourceService?.frmelmnts?.lbl?.boards |
                     transposeTerms: 'frmelmnts.lbl.boards': resourceService?.selectedLang}}:
                   </span>
@@ -57,7 +57,7 @@
                     class="font-weight-bold">{{convertToString(userPreference?.framework?.board) | interpolate:
                     'CBSE': 'CBSE/NCERT'}}</span>
                 </span>
-                <span class="mr-24">
+                <span class="mr-24" tabindex="0">
                   <span *ngIf="userPreference?.framework?.medium?.length">{{resourceService?.frmelmnts?.lbl?.medium |
                     transposeTerms: 'frmelmnts.lbl.medium': resourceService?.selectedLang}}:
                   </span>
@@ -67,7 +67,7 @@
                     ... + {{userPreference?.framework?.medium?.length-1}}
                   </span>
                 </span>
-                <span class="mr-24">
+                <span class="mr-24" tabindex="0">
                   <span *ngIf="userPreference?.framework?.gradeLevel?.length">{{resourceService?.frmelmnts?.lbl?.classes
                     |
                     transposeTerms: 'frmelmnts.lbl.classes': resourceService?.selectedLang}}:

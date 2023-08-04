@@ -22,7 +22,7 @@
                           [deviceProfile]="deviceProfile" [isClosable]="false" [isStepper]="true"
                           (close)="locationSubmit(stepper)">
                           <img [src]="tenantInfo?.logo" class="brand-logo" height="40"
-                              alt="{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}': tenantInfo?.titleName}}" />
+                              alt="{{tenantInfo.titleName}} logo" />
                           <h1 class="my-8 mat-headline color_accent">{{resourceService?.frmelmnts?.lbl?.welcomeToInstance |
                               interpolate:'{instance}': tenantInfo?.titleName}}</h1>
                       </app-location-selection>

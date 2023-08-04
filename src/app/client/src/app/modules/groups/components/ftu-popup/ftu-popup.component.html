@@ -2,7 +2,7 @@
   *ngIf="showWelcomePopup">
   <ng-template sbModalContent>
     <div mat-dialog-title class="flex-jc-center mb-0">
-      <h4 class="color-accent font-weight-bold mb-0">{{ resourceService?.frmelmnts?.lbl?.groupWelcomeTitle }}</h4>
+      <h1 class="color-accent font-weight-bold mb-0 mat-h3">{{ resourceService?.frmelmnts?.lbl?.groupWelcomeTitle }}</h1>
       <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog" mat-dialog-close
         (click)="closeModal();addTelemetry('ftu-close')"><mat-icon>close</mat-icon>
       </button>
@@ -10,7 +10,7 @@
     </div>
     <mat-dialog-content class="d-flex flex-dc flex-ai-center text-center">
       <img src="./assets/images/groups.png" class="sb-group-container__img" role="presentation" alt="" />
-      <p class="mt-24 mat-body-2">{{ resourceService?.frmelmnts?.lbl?.groupWelcomeMsg }}</p>
+      <p class="mt-24 mat-body-2" tabindex="0">{{ resourceService?.frmelmnts?.lbl?.groupWelcomeMsg }}</p>
     </mat-dialog-content>
   </ng-template>
 </app-modal-wrapper>

@@ -8,13 +8,13 @@
 <app-location-selection *ngIf="stage === Stage.LOCATION_SELECTION" [deviceProfile]="deviceProfile" [isClosable]="false"
   (close)="locationSubmit()">
   <div slot="popup-header" class="w-100 text-center">
-    <img [src]="tenantInfo?.logo" class="brand-logo" height="40" alt="{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}': tenantInfo?.titleName}}" />
+    <img [src]="tenantInfo?.logo" class="brand-logo" height="40" alt="{{tenantInfo.titleName}} logo" />
     <h1 class="my-8 mat-headline color_accent">{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}': tenantInfo?.titleName}}</h1>
   </div>
   <div slot="popup-sub-header">
     <p class="mat-subheading-2 mb-0" role="heading" aria-level="1">{{resourceService?.messages?.imsg?.m0075}}</p>
   </div>
-  <div slot="popup-footer">
+  <div slot="popup-footer" tabindex="0">
     <p class="text-left mb-0">{{resourceService?.messages?.imsg?.m0074}}</p>
   </div>
 </app-location-selection>

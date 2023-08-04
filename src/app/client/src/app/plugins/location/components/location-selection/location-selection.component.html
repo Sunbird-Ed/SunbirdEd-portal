@@ -11,7 +11,7 @@
     </div>
 
     <mat-dialog-content class="pt-0">
-      <p class="mat-subheading-2 mb-0 text-left"><ng-content select="[slot=popup-sub-header]" class="mt-8"></ng-content></p>
+      <p class="mat-subheading-2 mb-0 text-left" tabindex="0"><ng-content select="[slot=popup-sub-header]" class="mt-8"></ng-content></p>
       <div class="w-100" [appTelemetryImpression]="telemetryImpression">
         <sb-form
           *ngIf="sbFormLocationSelectionDelegate.locationFormConfig && sbFormLocationSelectionDelegate.locationFormConfig.length"
@@ -24,7 +24,7 @@
     </mat-dialog-content>
 
     <mat-dialog-actions align="end">
-      <ng-content select="[slot=popup-footer]" class="text-left mb-8"></ng-content>
+      <ng-content select="[slot=popup-footer]" class="text-left mb-8" tabindex="0"></ng-content>
       <button mat-raised-button type="button" class="button-rounded text-uppercase" type="button"
         [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading"
         [disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading" (click)="clearUserLocationSelections()"
@@ -53,7 +53,7 @@
     </sb-form>
   </mat-dialog-content>
   <mat-dialog-actions align="end" class="d-flex flex-ai-center flex-jc-center">
-    <ng-content select="[slot=popup-footer]" class="text-left mb-8"></ng-content>
+    <ng-content select="[slot=popup-footer]" class="text-left mb-8" tabindex="0"></ng-content>
       <button mat-raised-button class="button-rounded text-uppercase" type="button"
       [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading"
       [disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading" (click)="clearUserLocationSelections()"

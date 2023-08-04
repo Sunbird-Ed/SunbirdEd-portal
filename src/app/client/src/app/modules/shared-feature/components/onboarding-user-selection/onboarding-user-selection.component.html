@@ -2,7 +2,7 @@
 
   <div mat-dialog-title class="d-flex flex-jc-center flex-dc">
     <img [src]="tenantInfo?.logo" class="brand-logo" height="40"
-      alt="{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}': tenantInfo?.titleName}}" />
+      alt="{{tenantInfo.titleName}} logo" />
     <h1 class="my-8 color_accent">{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}':
       tenantInfo?.titleName}}
     </h1>
