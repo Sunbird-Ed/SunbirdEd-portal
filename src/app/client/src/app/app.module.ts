@@ -24,6 +24,8 @@ import { SbSearchFilterModule } from '@project-sunbird/common-form-elements-full
 import { UserOnboardingModule} from '../app/modules/user-onboarding';
 import { MatStepperModule} from '@angular/material/stepper';
 import { CdkStepperModule} from '@angular/cdk/stepper';
+import { FooterModule } from 'compass-common-consumption';
+import { CommonConsumptionModule } from 'compass-common-consumption';
 
 @NgModule({
     declarations: [
@@ -54,6 +56,8 @@ import { CdkStepperModule} from '@angular/cdk/stepper';
         ...PluginModules,
         // ngx-translate and the loader module
         HttpClientModule,
+      FooterModule,
+      CommonConsumptionModule,
         AppRoutingModule // don't add any module below this because it contains wildcard route
     ],
     bootstrap: [AppComponent],
