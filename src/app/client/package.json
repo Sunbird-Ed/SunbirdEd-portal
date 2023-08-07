@@ -91,7 +91,7 @@
     "common-form-elements-web-v9": "4.7.2",
     "compass-sb-styles": "^0.0.16",
     "compass-sb-themes": "^0.0.88",
-    "compass-common-consumption": "file:../../../../../common-consumption/SunbirdEd-consumption-ngcomponents/compass-common-consumption-6.0.0.tgz",
+    "compass-common-consumption": "^6.0.0",
     "core-js": "^2.4.1",
     "datatables.net-dt": "^1.10.20",
     "dayjs": "^1.8.26",
