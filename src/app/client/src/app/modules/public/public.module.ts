@@ -17,7 +17,8 @@ import { CardModule } from 'compass-common-consumption';
     CommonConsumptionModule,
     CardModule
   ],
-  declarations: [LandingPageComponent],
+  declarations: [LandingPageComponent,
+    ],
   providers: [PublicPlayerService, DeviceDetectorService, LandingpageGuard, PendingchangesGuard]
 })
 export class PublicModule { }

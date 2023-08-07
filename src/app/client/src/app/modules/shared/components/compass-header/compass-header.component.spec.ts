@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InfoCardComponent } from './info-card.component';
+import { CompassHeaderComponent } from './compass-header.component';
 
-describe('InfoCardComponent', () => {
-  let component: InfoCardComponent;
-  let fixture: ComponentFixture<InfoCardComponent>;
+describe('CompassHeaderComponent', () => {
+  let component: CompassHeaderComponent;
+  let fixture: ComponentFixture<CompassHeaderComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ InfoCardComponent ]
+      declarations: [ CompassHeaderComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(InfoCardComponent);
+    fixture = TestBed.createComponent(CompassHeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
