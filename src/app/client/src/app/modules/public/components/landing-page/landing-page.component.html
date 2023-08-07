@@ -119,7 +119,10 @@
         <summary-card *ngFor="let info of configContent.summaryCardInfo.cardData"
             class="sb-g-col-lg-3 sb-g-col-md-5 sb-g-col-xs-10" [cardInfo]="info"></summary-card>
     </section>
-    <info-card-container [cardInfo]="configContent.infoCard"></info-card-container>
+    <section class="ui container infor-card__wrap" *ngIf="configContent.infoCard">
+        <h1>{{configContent.infoCard.title}}</h1>
+        <info-card *ngFor="let info of configContent.infoCard.cardsData" [cardInfo]="info"></info-card>
+    </section>
     <section *ngIf="configContent.exploreCardInfo">
         <p class="exploreTitle">{{configContent.exploreCardInfo.title}}</p>
         <div class="sb-g marginVertical">

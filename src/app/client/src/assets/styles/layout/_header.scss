@@ -7,7 +7,7 @@
 .sbt-header-bar {
   width: 100%;
   @include respond-above(sm) {
-  height:calculateRem(56px);
+  height:calculateRem(72px);
   }
 }
 .sbt-header-tool-bar {

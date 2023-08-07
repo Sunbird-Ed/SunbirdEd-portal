@@ -50,6 +50,8 @@ import { InfoCardComponent } from './components/info-card/info-card.component';
 import { InfoCardContainerComponent } from './components/info-card-container/info-card-container.component';
 import { SummaryCardComponent } from './components/summary-card/summary-card.component';
 import { SummaryCardContainerComponent } from './components/summary-card-container/summary-card-container.component';
+import { CommonConsumptionModule } from 'compass-common-consumption';
+import { CompassHeaderComponent } from './components/compass-header/compass-header.component'
 // import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 
@@ -63,7 +65,8 @@ import { SummaryCardContainerComponent } from './components/summary-card-contain
         TranslateModule.forChild(),
         MatTooltipModule, MatTabsModule, MatDialogModule,
         MatAutocompleteModule, MatFormFieldModule, MatInputModule,
-        MatChipsModule, MatIconModule, MatSelectModule, MatListModule, MatButtonModule, MatCheckboxModule, MaterialModule
+        MatChipsModule, MatIconModule, MatSelectModule, MatListModule, MatButtonModule, MatCheckboxModule, MaterialModule,
+        CommonConsumptionModule
     ],
     declarations: [AppLoaderComponent, DateFormatPipe,
         BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe, InterpolatePipe,
@@ -73,7 +76,8 @@ import { SummaryCardContainerComponent } from './components/summary-card-contain
         ConfirmPopupComponent, AddToGroupDirective, SelectOptionGroupComponent, AppLandingSectionComponent, MarkdownDirective,
         SbDatatableComponent, OnDemandReportsComponent, SbDataTablePipe, NetworkStatusComponent, LoadOfflineContentComponent,
         TelemetryEventsDirective, DesktopAppUpdateComponent, AlertModalComponent, SystemWarningComponent, FullPageLoaderComponent, ModalWrapperComponent, ModalContentDirective,
-      AutocompletePipe, MaterialAutoCompleteComponent, TransposeTermsPipe, SlickComponent, InfoCardComponent, InfoCardContainerComponent, SummaryCardComponent, SummaryCardContainerComponent
+      AutocompletePipe, MaterialAutoCompleteComponent, TransposeTermsPipe, SlickComponent, InfoCardComponent, InfoCardContainerComponent, SummaryCardComponent, SummaryCardContainerComponent,
+                   CompassHeaderComponent
     ],
     exports: [AppLoaderComponent, DateFormatPipe, TranslateModule,
         BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
@@ -85,7 +89,7 @@ import { SummaryCardContainerComponent } from './components/summary-card-contain
         InterpolatePipe, NetworkStatusComponent, LoadOfflineContentComponent, DesktopAppUpdateComponent, SystemWarningComponent, TelemetryEventsDirective,
         AlertModalComponent, FullPageLoaderComponent, MatTooltipModule, MatTabsModule, MatDialogModule, ModalWrapperComponent, ModalContentDirective,
       AutocompletePipe, MaterialAutoCompleteComponent, MaterialModule, TransposeTermsPipe, SlickComponent, InfoCardComponent, InfoCardContainerComponent,
-      SummaryCardComponent, SummaryCardContainerComponent
+      SummaryCardComponent, SummaryCardContainerComponent, CompassHeaderComponent
     ]
 })
 export class SharedModule {
