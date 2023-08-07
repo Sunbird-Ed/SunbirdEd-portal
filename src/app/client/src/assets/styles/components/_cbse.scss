@@ -49,11 +49,11 @@
     height: 100vh;
 
     .question-bg {
-      background-image: linear-gradient(-90deg, var(--rc-add8e6), var(--white));
+      background-image: linear-gradient(-90deg, var(--color-accent-100), var(--white));
     }
 
     .answer-bg {
-      background-image: linear-gradient(-90deg, var(--rc-fcf2d6), var(--white));
+      background-image: linear-gradient(-90deg, var(--color-primary-200), var(--white));
     }
 
     .question-menu {
@@ -274,7 +274,7 @@
         padding-top: 100px;
         height: 100vh;
         overflow-y: auto;
-        background-image: linear-gradient(-90deg, var(--rc-add8e6), var(--rc-afd9e7));
+        background-image: linear-gradient(-90deg, var(--color-accent-100), var(--color-success-200));
 
         .mcq-option {
           margin-bottom: 1rem;
@@ -392,7 +392,7 @@
     background: var(--gray-0);
     padding: 1rem;
     display: flex;
-    border: calculateRem(1px) solid var(--rc-c4c4c4);
+    border: calculateRem(1px) solid var(--color-primary-50);
     border-top: none;
 
     label {
@@ -448,13 +448,13 @@
     .active.title {	
       border: calculateRem(1px) solid var(--color-accent-100); 
       border-bottom: none;	
-      background-color: var(--rc-F3F8FF);	
+      background-color: var(--color-accent-50);	
       font-weight: $font-weight-bold;	
       border-bottom-left-radius: 0;	
       border-bottom-right-radius: 0;	
       font-size: $font-size-sm;	
       .chevron-icon {	
-        background: var( --rc-E0F1FD);	
+        background: var( --color-accent-50);	
         border-left: none;	
       }	
       .chapter-status {	
@@ -483,7 +483,7 @@
         border-top: calculateRem(1px) solid var(--color-accent-100);	
         border-radius: 0;	
         .chapter-status {	
-          background: var(--rc-88B7E6);	
+          background: var(--color-accent-100);	
         }	
       }	
       .title {	
@@ -523,7 +523,7 @@
       .active.title {	
         border: calculateRem(1px) solid var(--color-accent-100);	
         border-bottom: none;	
-        background-color: var( --rc-F3F8FF);	
+        background-color: var(--color-accent-50);	
         font-weight: $font-weight-bold;	
       }	
       .content {	

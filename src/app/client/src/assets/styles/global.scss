@@ -28,7 +28,7 @@ body {
   text-rendering: optimizeLegibility;
 
   &.pushable {
-    background: var(--rc-E0F1FD) !important;
+    background: var(--color-accent-50) !important;
 
     &>.pusher {
       background: transparent !important;
@@ -168,7 +168,7 @@ ol.ui.list ol {
 .licenseTag {
   word-break: break-all;
   font-weight: normal !important;
-  color: var(--rc-7c7b7b) !important;
+  color: var(--color-grey) !important;
 }
 
 //workspace font fix
@@ -1382,7 +1382,7 @@ i.large.icon.limitedPublishingLinkIcon {
   padding: 0.5em 0;
 }
 .ui.basic.label {
-  border: calculateRem(1px) solid var(--rc-f9f9f9);
+  border: calculateRem(1px) solid var(--color-primary-50);
 }
 .ui.basic.label:hover {
   border-color: var(--color-accent-500) !important;

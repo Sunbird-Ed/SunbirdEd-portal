@@ -8,13 +8,13 @@
   ::ng-deep {
   
     .bigNumberCard {
-      border-bottom: 0.0625rem solid var(--rc-dddddd) !important;
+      border-bottom: 0.0625rem solid var(--color-primary-50) !important;
       display: grid !important;
       grid-template-columns: 1fr 1fr 1fr !important;
       gap: 1.5rem !important;
   
       sb-dashlet {
-        border-right: 0.0625rem solid var(--rc-dddddd) !important;
+        border-right: 0.0625rem solid var(--color-primary-50) !important;
   
         &:nth-child(3n + 3) {
           border-right: 0rem solid var(--gray-100) !important;
