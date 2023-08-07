@@ -47,5 +47,31 @@
       "description": "When employees are satisfied with their work, build public trust.",
       "image": "/assets/images/improved-public-trust.png"
     }
+  ],
+  "courses": [
+    {
+      "title": "How to use evidence in policymaking. ",
+      "category": "Health",
+      "image": "/assets/images/course-1.png",
+      "rating": "4.2",
+      "duration": "12hr",
+      "showDD": false
+    },
+    {
+      "title": "17th MCTP, Phase - lll (IAS officers).",
+      "category": "Training and Management",
+      "image": "/assets/images/course-2.png",
+      "rating": "4.5",
+      "duration": "8hr",
+      "showDD": false
+    },
+    {
+      "title": "Pre foundation program.",
+      "category": "Indian administrative service",
+      "image": "/assets/images/course-3.png",
+      "rating": "4.5",
+      "duration": "20hr",
+      "showDD": false
+    }
   ]
 }

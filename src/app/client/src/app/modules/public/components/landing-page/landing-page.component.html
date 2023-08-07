@@ -118,12 +118,23 @@
     </div>
 </div> -->
 
-<app-banner [config]="configContent.banner"></app-banner>
+<!-- <app-banner [config]="configContent.banner"></app-banner> -->
+<compass-banner [config]="configContent.banner"></compass-banner>
+<!-- Featured courses section -->
+<div class="container featured-courses-section">
+    <p class="heading">Featured Courses</p>
+    <div class="ui grid middle aligned stackable">
+        <div class="four wide column" *ngFor='let course of configContent.courses;'>
+            <compass-course-card [data]="course"></compass-course-card>
+        </div>
+    </div>
+</div>
+<!-- Goal oriented HR benefits section -->
 <div class="container goal-oriented-hr-section">
     <p class="heading">The Benefits of Goal-Oriented HR</p>
     <div class="ui grid middle aligned stackable">
         <div class="three wide column" *ngFor='let card of configContent.goalOrientedHrCards;'>
-            <app-goal-oriented-hr-card [data]="card"></app-goal-oriented-hr-card>
+            <goal-oriented-hr-card [data]="card"></goal-oriented-hr-card>
         </div>
     </div>
 </div>
