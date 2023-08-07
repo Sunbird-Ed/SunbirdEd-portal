@@ -24,12 +24,12 @@
 
   .user-details {
     padding: calculateRem(24px);
-    border-bottom: calculateRem(1px) solid var(--rc-e0e0e0);
+    border-bottom: calculateRem(1px) solid var(--color-primary-50);
 
     .user-img {
       height: calculateRem(48px);
       width: calculateRem(48px);
-      background-color: var(--rc-E0F1FD);
+      background-color: var(--color-accent-50);
       justify-content: center;
       border-radius: 50%;
       font-weight: bold;
@@ -72,7 +72,7 @@
     }
 
     .user-workexp {
-      border: calculateRem(1px) solid var(--rc-e2e3e5);
+      border: calculateRem(1px) solid var(--color-primary-50);
       border-radius: calculateRem(16px);
       height: calculateRem(120px);
       padding: calculateRem(16px);

@@ -16,7 +16,7 @@ sb-form.faq-sbforms {}
 ::ng-deep {
   sb-form.faq-sbforms .multi-select-container .list-border {
     background: var(--white);
-    border: 0px solid var(--rc-dddddd) !important;
+    border: 0px solid var(--color-primary-50) !important;
   }
 
   .sb-textarea {
@@ -24,7 +24,7 @@ sb-form.faq-sbforms {}
   }
 
   .sb-modal-dropdown-web ul {
-    border: 0 solid var(--rc-dddddd) !important;
+    border: 0 solid var(--color-primary-50) !important;
   }
 
   sb-form.faq-sbforms>div:first-child {

@@ -30,17 +30,17 @@
     padding: calculateRem(7px) calculateRem(10px);
     float: left;
     text-align: center;
-    background: var(--rc-00abc7);
-    color: var(--white);
+    background: var(--color-accent-200);
+    color: var(--color-accent-200-contrast);
     border-radius: calculateRem(2px);
-    border: calculateRem(1px) solid var(--rc-33B6CC);
+    border: calculateRem(1px) solid var(--color-accent-200);
     box-shadow: 0 calculateRem(1px) calculateRem(1px) rgba(var(--rc-rgba-white), 0.37) inset,
     calculateRem(1px) 0 calculateRem(1px) rgba(var(--rc-rgba-white), 0.07) inset,
     0 calculateRem(1px) 0 rgba(var(--rc-rgba-black), 0.36),
     0 calculateRem(-2px) calculateRem(12px) rgba(var(--rc-rgba-black), 0.08) inset
 }
 .qq-gallery .qq-upload-button-hover {
-    background: var(--rc-33B6CC);
+    background: var(--color-accent-200);
 }
 .qq-gallery .qq-upload-button-focus {
     outline: calculateRem(1px) dotted var(--black);
@@ -160,7 +160,7 @@
 .qq-gallery .qq-upload-continue {
     border:none;
     background: none;
-    color: var(--rc-00abc7);
+    color: var(--color-accent-200);
     font-size: calculateRem(12px);
     padding: 0;
 }
@@ -216,14 +216,14 @@
                 0 calculateRem(4px) calculateRem(4px) rgba(var(--rc-rgba-black), 0.5),
                 0 calculateRem(-2px) calculateRem(12px) rgba(var(--rc-rgba-black), 0.08) inset;
     padding: calculateRem(3px) calculateRem(4px);
-    border: calculateRem(1px) solid var(--rc-d2ddc7);
+    border: calculateRem(1px) solid var(--color-success-100);
     border-radius: calculateRem(2px);
     color: inherit;
-    background-color: var(--rc-EBF6E0);
+    background-color: var(--color-success-50);
     z-index: 1;
 }
 .qq-gallery .qq-upload-retry:hover {
-    background-color: var(--rc-F7FFF5);
+    background-color: var(--color-success-50);
 }
 
 .qq-gallery .qq-file-info {
@@ -297,7 +297,7 @@
 }
 .qq-gallery .qq-progress-bar {
     display: block;
-    background: var(--rc-00abc7);
+    background: var(--color-accent-200);
     width: 0%;
     height: calculateRem(15px);
     border-radius: calculateRem(6px);

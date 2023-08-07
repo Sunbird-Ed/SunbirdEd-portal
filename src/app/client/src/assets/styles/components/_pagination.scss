@@ -31,7 +31,7 @@
             color: var(--sb-pagination-item);
             cursor: pointer;
             background: var(--sb-pagination-item-bg);
-            border: calculateRem(1px) solid var(--rc-e2e3e5);
+            border: calculateRem(1px) solid var(--color-primary-50);
             border-right: none;
             display: inline-block;
             &:hover {
@@ -42,7 +42,7 @@
                 border-radius: calculateRem(4px) 0 0 calculateRem(4px);
             }
             &:last-child {
-                border: calculateRem(1px) solid var(--rc-e2e3e5);
+                border: calculateRem(1px) solid var(--color-primary-50);
                 border-radius: 0 calculateRem(4px) calculateRem(4px) 0;
                 &:hover{
                     border: calculateRem(0.5px) solid var(--color-accent-300);
@@ -62,7 +62,7 @@
         }
         .no-border {
             border: none;
-            border-left: calculateRem(1px) solid var(--rc-e2e3e5);
+            border-left: calculateRem(1px) solid var(--color-primary-50);
         }
     }
 }

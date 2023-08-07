@@ -1,6 +1,12 @@
+@use '@angular/material' as mat;
+
 .training-info {
     word-break: break-word;
     .info {
         border-radius: 1.5rem;
     }
+}
+
+.info-course {
+    background-color: var(--color-accent-100);
 }

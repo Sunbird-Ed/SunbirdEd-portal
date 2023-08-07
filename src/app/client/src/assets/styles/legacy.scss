@@ -66,7 +66,7 @@ ol.ui.list ol li:before {
 }
 .workspaceinstuction {
   text-align: center;
-  color: var(--rc-7c7b7b);
+  color: var(--color-grey);
   font-size: calculateRem(12px);
 }
 .textcontent {
@@ -190,7 +190,7 @@ span.icon.folder.outline:before {
 .ShowFilterSubTitle {
   font-weight: 500;
   font-size: 0.9375em;
-  color: var(--rc-7c7b7b);
+  color: var(--color-grey);
 }
 
 /*semantic ui modal form field changes*/
@@ -243,7 +243,7 @@ span.icon.folder.outline:before {
   background-color: var(--gray-0);
 }
 .UpForReviewStatusOrange {
-  color: var(--rc-ffb300);
+  color: var(--color-primary-900);
   font-size: 1.1em;
   font-weight: 500;
 }
@@ -255,7 +255,7 @@ h5.ui.header {
 }
 .searchicon.ui.icon.input input.upForReviewSearchBox {
   width: calculateRem(450px);
-  background: var(--rc-f9f9f9);
+  background: var(--color-primary-50);
   border: none;
   border-bottom: calculateRem(1px) solid rgba(var(--rc-rgba-gray), 0.33);
   border-radius: 0;
@@ -312,7 +312,7 @@ h5.ui.header {
   padding: 0 0 0 calculateRem(4px);
 }
 .publicmenusection.ui.secondary.vertical.menu > .item {
-  color: var(--rc-7c7b7b);
+  color: var(--color-grey);
   text-transform: uppercase;
   font-weight: bold;
 }
@@ -348,7 +348,7 @@ h5.ui.header {
   padding: 0.5em 0;
 }
 .ui.basic.label {
-  border: calculateRem(1px) solid var(--rc-f9f9f9);
+  border: calculateRem(1px) solid var(--color-primary-50);
 }
 .ui.basic.label:hover {
   border-color: var(--color-accent-500) !important;

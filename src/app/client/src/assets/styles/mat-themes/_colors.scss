@@ -86,6 +86,7 @@
   $color-accent-50: mat.get-color-from-palette($accent, 50);
   $color-accent-100: mat.get-color-from-palette($accent, 100);
   $color-accent-200: mat.get-color-from-palette($accent, 200);
+  $color-accent-200-contrast: mat.get-color-from-palette($accent, 200-contrast);
   $color-accent-300: mat.get-color-from-palette($accent, 300);
   $color-accent-400: mat.get-color-from-palette($accent, 400);
   $color-accent-500: mat.get-color-from-palette($accent, 500);
@@ -96,6 +97,7 @@
   --color-accent-50: #{$color-accent-50};
   --color-accent-100: #{$color-accent-100};
   --color-accent-200: #{$color-accent-200};
+  --color-accent-200-contrast: #{$color-accent-200-contrast};
   --color-accent-300: #{$color-accent-300};
   --color-accent-400: #{$color-accent-400};
   --color-accent-500: #{$color-accent-500};
