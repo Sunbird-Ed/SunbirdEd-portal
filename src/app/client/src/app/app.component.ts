@@ -151,6 +151,7 @@ export class AppComponent implements OnInit, OnDestroy {
     } else {
       document.documentElement.setAttribute('layout', this.configService.appConfig.layoutConfiguration.name);
       // this.layoutService.initiateSwitchLayout(this.configService.appConfig.layoutConfiguration);
+      this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
     }
   }
   

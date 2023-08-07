@@ -23,7 +23,7 @@
                       tabindex="0"
                       (click)="clearCache()"
                       href={{hrefPath}} appOnlineOnly
-                      class="compass-white-button" appTelemetryInteract
+                      class="com-secondary-btn" appTelemetryInteract
                       [telemetryInteractEdata]="signInIntractEdata">
                       {{resourceService.frmelmnts?.btn?.login}}
     
@@ -31,7 +31,7 @@
     
                     <a aria-current="page"
                     tabindex="1" routerLink="signup"
-                    class="compass-blue-button" appTelemetryInteract
+                    class="com-primary-btn" appTelemetryInteract
                     [telemetryInteractEdata]="signUpInteractEdata">
                     {{resourceService.frmelmnts?.lbl?.register}}
                   </a>
