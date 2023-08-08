@@ -72,6 +72,22 @@
       "rating": "4.5",
       "duration": "20hr",
       "showDD": false
+    },
+    {
+      "title": "17th MCTP, Phase - lll (IAS officers).",
+      "category": "Training and Management",
+      "image": "/assets/images/course-2.png",
+      "rating": "4.5",
+      "duration": "8hr",
+      "showDD": false
+    },
+    {
+      "title": "Pre foundation program.",
+      "category": "Indian administrative service",
+      "image": "/assets/images/course-3.png",
+      "rating": "4.5",
+      "duration": "20hr",
+      "showDD": false
     }
   ]
 }

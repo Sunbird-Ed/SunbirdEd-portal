@@ -25,6 +25,7 @@ import { UserOnboardingModule} from '../app/modules/user-onboarding';
 import { MatStepperModule} from '@angular/material/stepper';
 import { CdkStepperModule} from '@angular/cdk/stepper';
 
+
 @NgModule({
     declarations: [
         AppComponent
@@ -45,6 +46,7 @@ import { CdkStepperModule} from '@angular/cdk/stepper';
                 deps: [HttpClient]
             }
         }),
+        
         SbSearchFilterModule.forRoot('web'),
         ChatLibModule,
         SharedFeatureModule,

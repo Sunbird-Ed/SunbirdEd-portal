@@ -144,12 +144,14 @@ export class AppComponent implements OnInit, OnDestroy {
     private connectionService: ConnectionService, public genericResourceService: GenericResourceService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
-    const layoutType = localStorage.getItem('layoutType') || 'base';
+    const layoutType = localStorage.getItem('layoutType') || this.configService.appConfig.layoutConfiguration.name;
     if (layoutType === 'base' || layoutType === 'joy') {
       this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
-      document.documentElement.setAttribute('layout', 'joy');
+      this.layoutConfiguration.name === 'blueSky'?document.documentElement.setAttribute('layout', this.layoutConfiguration.name):document.documentElement.setAttribute('layout', 'joy');
     } else {
-      document.documentElement.setAttribute('layout', 'base');
+      document.documentElement.setAttribute('layout', this.configService.appConfig.layoutConfiguration.name);
+      // this.layoutService.initiateSwitchLayout(this.configService.appConfig.layoutConfiguration);
+      this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
     }
   }
   
@@ -383,8 +385,8 @@ export class AppComponent implements OnInit, OnDestroy {
         this.logCdnStatus();
         this.setFingerPrintTelemetry();
         this.initApp = true;
-        localStorage.setItem('joyThemePopup', 'true');
-        this.joyThemePopup();
+        localStorage.setItem('joyThemePopup', 'false');
+      //  this.joyThemePopup();
         this.changeDetectorRef.detectChanges();
       }, error => {
         this.initApp = true;

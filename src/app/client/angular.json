@@ -67,6 +67,7 @@
               "src/assets/styles/semantic/semantic.min.css",
               "node_modules/font-awesome/css/font-awesome.css",
               "./node_modules/@project-sunbird/sb-styles/assets/styles.scss",
+              "./node_modules/compass-sb-styles/assets/styles.scss",
               "./node_modules/leaflet/dist/leaflet.css",
               "src/assets/styles/styles.scss",
               "node_modules/video.js/dist/video-js.min.css",
@@ -99,7 +100,7 @@
               "node_modules/videojs-contrib-quality-levels/dist/videojs-contrib-quality-levels.min.js",
               "node_modules/videojs-http-source-selector/dist/videojs-http-source-selector.min.js",
               "node_modules/@project-sunbird/sunbird-video-player-v9/lib/assets/videojs-markers.js",
-              
+              "node_modules/slick-carousel/slick/slick.min.js",
               {
                 "inject": false,
                 "input": "src/assets/libs/semantic-ui/transition.min.js",
