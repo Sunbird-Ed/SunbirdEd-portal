@@ -6,7 +6,7 @@ import { OfflineApplicationDownloadComponent } from '@sunbird/shared';
 
 const routes: Routes = [
   {
-    path: 'public', component: LandingPageComponent,
+    path: '', component: LandingPageComponent, canActivate: [LandingpageGuard],
     data: { telemetry: { env: 'public', pageid: 'landing-page', type: 'edit', subtype: 'paginate' } }
   },
   {
