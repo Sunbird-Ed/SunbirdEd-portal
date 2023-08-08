@@ -123,7 +123,7 @@
         <h1>{{configContent.infoCard.title}}</h1>
         <info-card *ngFor="let info of configContent.infoCard.cardsData" [cardInfo]="info"></info-card>
     </section>
-    <section *ngIf="configContent.exploreCardInfo">
+    <section class="ui container" *ngIf="configContent.exploreCardInfo">
         <p class="exploreTitle">{{configContent.exploreCardInfo.title}}</p>
         <div class="sb-g marginVertical">
             <explore-compass-card *ngFor="let info of configContent.exploreCardInfo.cardData"
