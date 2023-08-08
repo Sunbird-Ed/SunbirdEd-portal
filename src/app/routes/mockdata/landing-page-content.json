@@ -20,6 +20,11 @@
               }
             ]
     },
+    "footerData" : {
+          "links" : ["Learn", "Connections", "Discussion","Jobs", "Competencies", "Events"],
+                "logoLink":"/assets/images/Logo-ss-white.png",
+                "footerText":"2022 Copyright [Company Name]"
+              }
     "summaryCardInfo": {
       "cardData": [
         {
