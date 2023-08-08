@@ -31,3 +31,45 @@
     font-weight: bold;
     font-size: 1.25em;
   }
+.marginVertical{
+    margin: 3% 0;
+}
+.exploreTitle{
+    opacity: 1;
+    color: rgba(0,0,0,0.87);
+    font-size: 24px;
+    font-weight: 600;
+    font-style: normal;
+    letter-spacing: 0px;
+    text-align: left;
+    line-height: 36px;
+    margin-top: 3%;
+}
+.infor-card {
+    &__wrap {
+        background:rgba(0, 0, 0, 0.04);
+        padding:80px 0;
+        margin:2rem 0;
+        h1 {
+            font-size: 1.5rem;
+            margin-left: 8.2%;
+            padding-bottom: 32px;
+            font-weight: 600;
+            text-align: left;
+            line-height: 1.5rem;
+        }
+    }
+}
+
+@media only screen and (max-width:1024px) {
+    .infor-card {
+        &__wrap {
+            padding:20px 0;
+            h1 {
+                font-size: 1.2rem;
+                margin-left: 0%;
+                text-align: center;
+            }
+        }
+    }
+}

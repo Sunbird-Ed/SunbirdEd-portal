@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="35px" height="20px" viewBox="0 0 35 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group 6</title>
+    <g id="V1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="01-Landing-page" transform="translate(-337, -658)" stroke="#FFFFFF" stroke-width="3">
+            <g id="Group-53" transform="translate(145, 650)">
+                <g id="Group-48" transform="translate(177, 0)">
+                    <g id="Group-6" transform="translate(17, 10)">
+                        <polyline id="Path-2" points="0 16.1506441 6.74074074 5.1506441 18.2962963 16.1506441 26 5.1506441"></polyline>
+                        <polyline id="Path-3" transform="translate(25.5885, 4.3253) rotate(22) translate(-25.5885, -4.3253)" points="21.2686802 5.88224003 27.009754 1.40562617 29.9082888 7.24501793"></polyline>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
