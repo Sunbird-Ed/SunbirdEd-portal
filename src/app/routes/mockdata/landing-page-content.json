@@ -19,5 +19,58 @@
                 }
               }
             ]
+    },
+    "summaryCardInfo": {
+      "cardData": [
+        {
+          "iconUrl":"/assets/images/courses.svg",
+          "title":"Courses",
+          "count":"1000+",
+          "commonIconUrl": "assets/images/arrow.svg"
+        },
+        {
+          "iconUrl":"/assets/images/content.svg",
+          "title":"Available Content",
+          "count":"1500+",
+          "commonIconUrl": "assets/images/arrow.svg"
+        },
+        {
+          "iconUrl":"/assets/images/active-users.svg",
+          "title":"Active Users",
+          "count":"2 Million",
+          "commonIconUrl": "assets/images/arrow.svg"
+        },
+        {
+          "iconUrl":"/assets/images/competencies.svg",
+          "title":"Competencies",
+          "count":"100+",
+          "commonIconUrl": "assets/images/arrow.svg"
+        }
+      ]
+    },
+    "exploreCardInfo":{
+      "title":"Explore compass",
+      "cardData":[
+        {
+          "iconUrl":"/assets/images/learn.png",
+          "title":"Learn",
+          "content":"Sharpen your skills with hundreds-of online courses"
+        },
+        {
+          "iconUrl":"/assets/images/connections.png",
+          "title":"Connections",
+          "content":"Connect with interesting people, see what they are upto."
+        },
+        {
+          "iconUrl":"/assets/images/discussion.png",
+          "title":"Discussion forum",
+          "content":"Have a question? Have an idea? Discuss it with your peers!"
+        },
+        {
+          "iconUrl":"/assets/images/competencies.png",
+          "title":"Competencies",
+          "content":"Add your competencies, see what others are adding."
+        }
+      ]
     }
 }

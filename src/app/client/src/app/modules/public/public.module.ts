@@ -6,6 +6,7 @@ import { PublicPlayerService, LandingpageGuard, PendingchangesGuard } from './se
 import { SharedModule } from '@sunbird/shared';
 import { PublicRoutingModule } from './public-routing.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { CommonConsumptionModule } from 'compass-common-consumption';
 import { CardModule } from 'compass-common-consumption';
 @NgModule({
   imports: [
@@ -13,6 +14,7 @@ import { CardModule } from 'compass-common-consumption';
     CoreModule,
     SharedModule,
     PublicRoutingModule,
+    CommonConsumptionModule,
     CardModule
   ],
   declarations: [LandingPageComponent,
