@@ -172,7 +172,6 @@ Installing Sunbird requires two primary software components:
     ├── Sunbirded-portal                                            
     |   ├── /.circleci                           # 
     │   |   └── config.yml                       # Circleci Configuration file
-    |   ├── /experiments                         # -|-
     |   ├── /src/app                             # Sunbird portal or web application
     │   |   ├── /client                          # -|-
     │   |   |    └── src                         # -|-
