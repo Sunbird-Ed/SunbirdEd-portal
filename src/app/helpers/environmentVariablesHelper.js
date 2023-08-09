@@ -137,7 +137,7 @@ let envVariables = {
   sunbird_cloud_storage_provider: env.sunbird_cloud_storage_provider || 'azure',
   PORTAL_SESSION_STORE_TYPE: env.sunbird_session_store_type || 'in-memory',
   CLOUD_STORAGE_URLS: env.sunbird_cloud_storage_urls,
-  SUNBIRD_PUBLIC_STORAGE_ACCOUNT_NAME: env.sunbird_azure_storage_account_name,
+  SUNBIRD_PUBLIC_STORAGE_ACCOUNT_NAME: env.sunbird_public_storage_account_name,
   PORTAL_CASSANDRA_CONSISTENCY_LEVEL: env.sunbird_cassandra_consistency_level || 'one',
   PORTAL_CASSANDRA_REPLICATION_STRATEGY: env.sunbird_cassandra_replication_strategy || '{"class":"SimpleStrategy","replication_factor":1}',
   
