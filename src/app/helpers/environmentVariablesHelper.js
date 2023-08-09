@@ -143,33 +143,16 @@ let envVariables = {
   
   // ############# CSP Configuration #############
   // Common key for Uploading Desktop Crash logs
-  desktop_azure_crash_container_name: env.cloud_storage_desktopCrash_bucketname || 'desktopappcrashlogs',
+  cloud_storage_desktopCrash_bucketname: env.cloud_storage_desktopCrash_bucketname || 'desktopappcrashlogs',
 
-  // Azure
-  sunbird_azure_account_name: env.cloud_private_storage_accountname,
-  sunbird_azure_account_key: env.cloud_private_storage_secret,
-  sunbird_azure_report_container_name: env.cloud_storage_privatereports_bucketname || 'reports',
-  sunbird_azure_resourceBundle_container_name: env.cloud_storage_resourceBundle_bucketname || 'label',
-
-  // AWS
-  sunbird_aws_access_key: env.cloud_private_storage_accountname || '',
-  sunbird_aws_secret_key: env.cloud_private_storage_secret || '',
-  sunbird_aws_region: env.cloud_private_storage_region || '',
-  sunbird_aws_reports: env.cloud_storage_privatereports_bucketname || 'reports',
-  sunbird_aws_labels: env.cloud_storage_resourceBundle_bucketname || 'label',
-
-  // deprecated - Folder structure changed
-  // sunbird_aws_bucket_name: env.sunbird_aws_bucket_name || 'sunbirded',
-
-  // GCP - gcloud
-  sunbird_gcloud_client_email: env.cloud_private_storage_accountname || '',
-  sunbird_gcloud_private_key: env.cloud_private_storage_secret || '',
-  sunbird_gcloud_projectId: env.cloud_private_storage_project || '',
-  sunbird_gcloud_reports: env.cloud_storage_privatereports_bucketname || 'reports',
-  sunbird_gcloud_labels: env.cloud_storage_resourceBundle_bucketname || 'label',
-
-  // deprecated - Folder structure changed
-  // sunbird_gcloud_bucket_name: env.sunbird_gcloud_bucket_name || 'sunbirded',
+  //Generalised cloud configuration
+  cloud_private_storage_accountname: env.cloud_private_storage_accountname || '',
+  cloud_private_storage_secret: env.cloud_private_storage_secret || '',
+  cloud_storage_privatereports_bucketname: env.cloud_storage_privatereports_bucketname || 'reports',
+  cloud_storage_resourceBundle_bucketname: env.cloud_storage_resourceBundle_bucketname || 'label',
+  cloud_private_storage_region: env.cloud_private_storage_region || '',
+  cloud_private_storage_project: env.cloud_private_storage_project || '',
+  cloud_private_storage_endpoint:env.cloud_private_storage_endpoint||'',
 
   // ############# End of CSP Configuration #############
 
