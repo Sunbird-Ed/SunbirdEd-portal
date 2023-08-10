@@ -210,6 +210,7 @@ function getLocals(req) {
   locals.sunbirdDefaultFileSize = envHelper.SUNBIRD_DEFAULT_FILE_SIZE;
   locals.baseUrl = null;
   locals.defaultBoard = envHelper.DEFAULT_BOARD;
+  locals.cloudProvider = envHelper.sunbird_cloud_storage_provider;
   locals.blobUrl = envHelper.sunbird_portal_cdn_blob_url;
   locals.uciBotPhoneNumber = envHelper.sunbird_portal_uci_bot_phone_number;
   return locals

@@ -111,6 +111,7 @@ export default (app, contentFilesPath, ecarsFolderPath ) => {
     locals.buildNumber = process.env.APP_VERSION;
     locals.apiCacheTtl = "300";
     locals.cloudStorageUrls = null;
+    locals.cloudProvider = null;
     locals.userUploadRefLink = null;
     locals.googleCaptchaSiteKey = null;
     locals.videoMaxSize = null;
