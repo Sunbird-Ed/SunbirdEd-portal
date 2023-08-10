@@ -73,3 +73,44 @@
         }
     }
 }
+
+.goal-oriented-hr-section,
+.featured-courses-section {
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 80px;
+    margin-bottom: 80px;
+
+    .heading {
+        font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+        font-size: 24px;
+        font-weight: 600;
+        color: RGBA(0, 0, 0, 0.87);
+        margin-bottom: 40px;
+    }
+}
+
+.slide {
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+}
+
+.slick-slider {
+    // width: 88%;
+    margin: auto;
+    // background: rgb(14, 13, 13);
+}
+
+.slick-slider > .slick-next::before, .slick-slider > .slick-next::before {
+    background: rgb(28, 29, 31) !important;
+    color: #ffffff !important;
+}
+
+
+body .slick-prev,
+body .slick-next {
+    height: 45px;
+    width: 40px;
+    background: rgb(28, 29, 31) !important;
+    z-index: 100;
+}
