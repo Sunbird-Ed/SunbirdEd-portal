@@ -225,6 +225,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
     window.config.videoMaxSize = this.videoMaxSize;
     window.config.defaultContentFileSize = this.defaultContentFileSize; // making configurable upload limit in workspace for content upload
+    window.config.cloudStorage.provider = (<HTMLInputElement>document.getElementById('cloudProvider')).value;
   }
   /**
   * Re directed to the workspace on close of modal

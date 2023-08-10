@@ -211,6 +211,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
     window.config.lock = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     window.config.videoMaxSize = this.videoMaxSize;
+    window.config.cloudStorage.provider = (<HTMLInputElement>document.getElementById('cloudProvider')).value;
   }
   /**
    * checks the permission using state, status and userId
