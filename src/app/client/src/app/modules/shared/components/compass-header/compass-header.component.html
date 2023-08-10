@@ -4,13 +4,22 @@
         <header>
           <div class="sb-g">
             <div class="sb-g-col-xs-6 sb-g-col-md-6 sb-g-col-lg-6 sb-g-col-xxxl-8 sbt-header-logo">
-              <div class="d-flex flex-ai-center flex-jc-space-between w-100">
+              <div [ngClass]="!userService.loggedIn ? 'flex-jc-space-between' : 'flex-jc-flex-start'"
+                class="d-flex flex-ai-center w-100">
                 <!--Logo-->
                 <a class="logo sbt-logo" tabindex="0" title="Compass" role="link"
                   aria-label="Navigate to Homepage">
                   <img (click)="navigateToHomepage()" class="cursor-pointer" alt={{tenantInfo.titleName}}
                     src="{{tenantInfo.logo}}">
                 </a>
+                <ng-container *ngIf="userService.loggedIn">
+                  <!-- menu -->
+                  <mat-icon class="menuIcon" [matMenuTriggerFor]="menu">menu</mat-icon>
+                  <span>Spaces</span>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item>Learn</button>
+                  </mat-menu>
+                </ng-container>
                 <!--/Logo-->
               </div>
   
@@ -58,7 +67,6 @@
                   <!--/Avtar Dropdown-->
                   </div>
                 </ng-container>
-  
               </div>
             </div>
           </div>
