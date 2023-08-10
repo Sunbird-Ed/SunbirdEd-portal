@@ -24,7 +24,7 @@
           "links" : ["Learn", "Connections", "Discussion","Jobs", "Competencies", "Events"],
                 "logoLink":"/assets/images/Logo-ss-white.png",
                 "footerText":"2022 Copyright [Company Name]"
-              }
+              },
     "summaryCardInfo": {
       "cardData": [
         {
@@ -77,5 +77,75 @@
           "content":"Add your competencies, see what others are adding."
         }
       ]
-    }
-}
+    },
+    "banner": {
+      "title": "Driving Government Success and Employee Fulfilment.",
+      "description": "Goal-oriented HR helps governments to improve their performance, employee satisfaction, culture and thus deliver great citizen experiences.",
+      "image": "/assets/images/banner.png",
+      "showButtons": true
+    },
+    "goalOrientedHrCards": [
+      {
+        "title": "Increased efficiency",
+        "description": "Clear goals and government alignment boost employee efficiency.",
+        "image": "/assets/images/increased-efficiency.png"
+      },
+      {
+        "title": "Improved service delivery",
+        "description": "Engaged and motivated employees deliver high-quality services to citizens.",
+        "image": "/assets/images/improved-service-delivery.png"
+      },
+      {
+        "title": "Reduced costs",
+        "description": "Aligned HR practices lower costs, including recruitment and training.",
+        "image": "/assets/images/reduced-cost.png"
+      },
+      {
+        "title": "Improved public trust",
+        "description": "When employees are satisfied with their work, build public trust.",
+        "image": "/assets/images/improved-public-trust.png"
+      }
+    ],
+    "courses": [
+      {
+        "title": "How to use evidence in policymaking. ",
+        "category": "Health",
+        "image": "/assets/images/course-1.png",
+        "rating": "4.2",
+        "duration": "12hr",
+        "showDD": false
+      },
+      {
+        "title": "17th MCTP, Phase - lll (IAS officers).",
+        "category": "Training and Management",
+        "image": "/assets/images/course-2.png",
+        "rating": "4.5",
+        "duration": "8hr",
+        "showDD": false
+      },
+      {
+        "title": "Pre foundation program.",
+        "category": "Indian administrative service",
+        "image": "/assets/images/course-3.png",
+        "rating": "4.5",
+        "duration": "20hr",
+        "showDD": false
+      },
+      {
+        "title": "17th MCTP, Phase - lll (IAS officers).",
+        "category": "Training and Management",
+        "image": "/assets/images/course-2.png",
+        "rating": "4.5",
+        "duration": "8hr",
+        "showDD": false
+      },
+      {
+        "title": "Pre foundation program.",
+        "category": "Indian administrative service",
+        "image": "/assets/images/course-3.png",
+        "rating": "4.5",
+        "duration": "20hr",
+        "showDD": false
+      }
+    ]
+  }
