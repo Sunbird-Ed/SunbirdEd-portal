@@ -41,5 +41,18 @@ object, iframe {
     @media screen and (max-width: 991px) {
         right: 10px;
         top: 92px;
+        padding-top: 6px;
+        padding-bottom: 6px;
+        font-size: 11px;
+    }
+}
+
+.webview-logo {
+    position: absolute;
+    top: 0;
+    height: 50px;
+    left: 226px;
+    @media screen and (max-width: 991px) {
+        left: 10px;
     }
 }
