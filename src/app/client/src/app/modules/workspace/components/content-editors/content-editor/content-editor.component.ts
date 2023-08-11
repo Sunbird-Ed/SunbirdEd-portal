@@ -35,6 +35,9 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   public videoMaxSize: any;
   contentEditorURL: string = (<HTMLInputElement>document.getElementById('contentEditorURL')) ?
   (<HTMLInputElement>document.getElementById('contentEditorURL')).value : '';
+  cloudProvider: string = (<HTMLInputElement>document.getElementById('cloudProvider')) ?
+  (<HTMLInputElement>document.getElementById('cloudProvider')).value : '';
+
 
   /**
   * Default method of class ContentEditorComponent
@@ -211,6 +214,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
     window.config.lock = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     window.config.videoMaxSize = this.videoMaxSize;
+    window.config.cloudStorage.provider = this.cloudProvider;
   }
   /**
    * checks the permission using state, status and userId
