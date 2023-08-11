@@ -1,28 +1,45 @@
-<app-landing-section [textToDisplay]="" [layoutConfiguration]="layoutConfiguration" [noTitle]="false">
-</app-landing-section>
-<compass-banner [config]="configContent.banner"></compass-banner>
-<div class="featured-courses-section">
-    <p class="heading">Featured Courses</p>
-    <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig" (init)="slickInit($event)"
-        (breakpoint)="breakpoint($event)" (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
-        <div ngxSlickItem class="slide" *ngFor='let course of configContent.courses;'>
-            <compass-course-card [data]="course"></compass-course-card>
-        </div>
-    </ngx-slick-carousel>
-</div>
-
-<!-- Goal oriented HR benefits section -->
-<div class="container goal-oriented-hr-section">
-    <p class="heading">The Benefits of Goal-Oriented HR</p>
-    <div class="ui grid middle aligned stackable">
-        <div class="three wide column" *ngFor='let card of configContent.goalOrientedHrCards;'>
-            <goal-oriented-hr-card [data]="card"></goal-oriented-hr-card>
+    <app-landing-section [textToDisplay]="" [layoutConfiguration]="layoutConfiguration" [noTitle]="false">
+    </app-landing-section>
+    <div class="container ui" *ngIf="configContent">
+        <compass-banner [config]="configContent.banner"></compass-banner>
+    </div>
+    <div class="ui container">
+        <section class="sb-g marginVertical" *ngIf="configContent.summaryCardInfo">
+            <summary-card *ngFor="let info of configContent.summaryCardInfo.cardData"
+                class="sb-g-col-lg-4 sb-g-col-md-6 sb-g-col-xs-12" [cardInfo]="info"></summary-card>
+        </section>
+    </div>
+    <div class="container ui featured-courses-section">
+        <p class="heading">Featured Courses</p>
+        <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig" (init)="slickInit($event)"
+            (breakpoint)="breakpoint($event)" (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
+            <div ngxSlickItem class="slide" *ngFor='let course of configContent.courses;'>
+                <compass-course-card [data]="course"></compass-course-card>
+            </div>
+        </ngx-slick-carousel>
+    </div>
+    <!-- Goal oriented HR benefits section -->
+    <div class="container ui goal-oriented-hr-section">
+        <p class="heading">The Benefits of Goal-Oriented HR</p>
+        <div class="ui grid middle aligned stackable">
+            <div class="three wide column" *ngFor='let card of configContent.goalOrientedHrCards;'>
+                <goal-oriented-hr-card [data]="card"></goal-oriented-hr-card>
+            </div>
         </div>
     </div>
-</div>
-<!-- <info-card-container [cardInfo]="configContent.infoCard"></info-card-container> -->
-
-<section class="ui container infor-card__wrap" *ngIf="configContent.infoCard">
-    <h1>{{configContent.infoCard.title}}</h1>
-    <info-card *ngFor="let info of configContent.infoCard.cardsData" [cardInfo]="info"></info-card>
-</section>
+    <!-- <info-card-container [cardInfo]="configContent.infoCard"></info-card-container> -->
+  
+    <section class="ui container infor-card__wrap" *ngIf="configContent.infoCard">
+        <h1>{{configContent.infoCard.title}}</h1>
+        <info-card *ngFor="let info of configContent.infoCard.cardsData" [cardInfo]="info"></info-card>
+    </section>
+    <section class="ui container">
+        <register-btn-card [regCardData]="configContent.regCardsData"></register-btn-card>
+    </section>
+    <section class="ui container" *ngIf="configContent.exploreCardInfo">
+        <p class="exploreTitle">{{configContent.exploreCardInfo.title}}</p>
+        <div class="sb-g marginVertical">
+            <explore-compass-card *ngFor="let info of configContent.exploreCardInfo.cardData"
+                class="sb-g-col-lg-4 sb-g-col-md-5 sb-g-col-xs-10" [cardInfo]="info"></explore-compass-card>
+        </div>
+    </section>
