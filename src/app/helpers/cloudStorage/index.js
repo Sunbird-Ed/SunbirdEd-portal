@@ -22,8 +22,8 @@ let cloudConfig = {
   provider: envHelper.sunbird_cloud_storage_provider,
   identity: envHelper.cloud_private_storage_accountname,
   credential: envHelper.cloud_private_storage_secret,
-  reportsContainer: envHelper.cloud_storage_privatereports_bucketname,
-  labelsContainer: envHelper.cloud_storage_resourceBundle_bucketname,
+  privateObjectStorage: envHelper.cloud_storage_privatereports_bucketname,
+  publicObjectStorage: envHelper.cloud_storage_resourceBundle_bucketname,
   region: envHelper.cloud_private_storage_region,
   projectId: envHelper.cloud_private_storage_project,
   endpoint:envHelper.cloud_private_storage_endpoint
