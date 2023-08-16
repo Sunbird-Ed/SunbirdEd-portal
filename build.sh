@@ -50,7 +50,7 @@ build_client(){
     nvm use $NODE_VERSION
     cd client
     echo "starting client yarn install"
-    npm install --legacy-peer-deps --no-progress --production=true
+    yarn install --no-progress --production=true
     echo "completed client yarn install"
     if [ $buildDockerImage == true ]
     then
