@@ -15,6 +15,7 @@ import { ContentSearchModule } from '@sunbird/content-search';
 import { ExplorePageComponent } from './components';
 import { ContentSectionModule } from '@project-sunbird/sb-content-section';
 import {ObservationModule} from '../observation/observation.module';
+import { CardModule } from 'compass-common-consumption'
 
 @NgModule({
   declarations: [ExplorePageComponent],
@@ -27,7 +28,8 @@ import {ObservationModule} from '../observation/observation.module';
     SharedFeatureModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
     SuiRatingModule, SuiCollapseModule, SuiDimmerModule, WebExtensionModule,
-    CommonConsumptionModule, ContentSearchModule, ContentSectionModule, ObservationModule
+    CommonConsumptionModule, ContentSearchModule, ContentSectionModule, ObservationModule,
+    CardModule
   ]
 })
 export class ExplorePageModule { }

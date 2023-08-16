@@ -1,6 +1,6 @@
 <div
   [ngClass]="[layoutConfiguration ? 'sbt-fluid-content-bg':'', (getSelectedTab() === 'home' || getSelectedTab() === 'explore') ? '': '']">
-  <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'"
+  <div *ngIf="false" class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'"
     [appTelemetryImpression]="telemetryImpression">
     <!-- Filter for web version -->
     <!-- `isFilterEnabled` reference from current page data -->
@@ -199,6 +199,30 @@
             [showExploreContentButton]="noResultMessage?.showExploreContentButton"
             [telemetryInteractEdataObject]="exploreMoreButtonEdata"></app-no-result-found>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui container mt-32">
+    <div class="popular-card">
+      <div class="popular-card-title">Popular topics</div>
+      <div><button class="com-secondary-btn">All topics</button></div>
+    </div>
+    <div class="ui grid middle aligned stackable">
+      <div class="three wide column" *ngFor="let data of topicsData;let i=index">
+        <sb-popular-card [pillName]="'Topic'" [data]="data"></sb-popular-card>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui container mt-32">
+    <div class="popular-card">
+      <div class="popular-card-title">Popular competencies</div>
+      <div><button class="com-secondary-btn">All competencies</button></div>
+    </div>
+    <div class="ui grid middle aligned stackable">
+      <div class="three wide column" *ngFor="let data of competencyData;let i=index">
+        <sb-popular-card [pillName]="'Competency'" [data]="data"></sb-popular-card>
       </div>
     </div>
   </div>

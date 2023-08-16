@@ -16,6 +16,7 @@ import * as _ from 'lodash-es';
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { ProfileService } from '@sunbird/profile';
 import { SegmentationTagService } from '../../../core/services/segmentation-tag/segmentation-tag.service';
+import { LearnPageContentService } from "../../../learn/services/learn-page-content.service"
 
 @Component({
     selector: 'app-explore-page-component',
@@ -91,6 +92,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     Categorytheme: any;
     filterResponseData = {};
     refreshFilter: boolean = true;
+    competencyData: any;
+    topicsData: any;
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     }
@@ -121,7 +124,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         public contentManagerService: ContentManagerService, private cacheService: CacheService,
         private browserCacheTtlService: BrowserCacheTtlService, private profileService: ProfileService,
         private segmentationTagService: SegmentationTagService, private observationUtil: ObservationUtilService,
-        private genericResourceService: GenericResourceService, private cdr: ChangeDetectorRef) {
+        private genericResourceService: GenericResourceService, private cdr: ChangeDetectorRef, private learnPageContentService: LearnPageContentService) {
         this.genericResourceService.initialize();
         this.instance = (<HTMLInputElement>document.getElementById('instance'))
             ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
@@ -245,6 +248,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.contentManagerService.contentDownloadStatus$.subscribe(contentDownloadStatus => {
             this.contentDownloadStatus = contentDownloadStatus;
             this.addHoverData();
+        });
+
+        this.learnPageContentService.getLearnPageContent().subscribe((res:any) => {
+            this.competencyData = res.competencyData.data;
+            this.topicsData = res.topicsData.data
         });
     }
 
