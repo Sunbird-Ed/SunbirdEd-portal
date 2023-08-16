@@ -50,6 +50,7 @@ build_client(){
     nvm use $NODE_VERSION
     cd client
     echo "starting client yarn install"
+    yarn cache clean
     yarn install --no-progress --production=true
     echo "completed client yarn install"
     if [ $buildDockerImage == true ]
