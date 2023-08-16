@@ -6,7 +6,7 @@
     <div class="ui container">
         <section class="sb-g marginVertical" *ngIf="configContent.summaryCardInfo">
             <summary-card *ngFor="let info of configContent.summaryCardInfo.cardData"
-                class="sb-g-col-lg-3 sb-g-col-md-6 sb-g-col-xs-12" [cardInfo]="info"></summary-card>
+                class="sb-g-col-xxl-4 sb-g-col-xl-4 sb-g-col-lg-3 sb-g-col-md-6 sb-g-col-xs-12" [cardInfo]="info"></summary-card>
         </section>
     </div>
     <div class="container ui featured-courses-section">
@@ -42,6 +42,6 @@
         <p class="exploreTitle">{{configContent.exploreCardInfo.title}}</p>
         <div class="sb-g marginVertical">
             <explore-compass-card *ngFor="let info of configContent.exploreCardInfo.cardData"
-                class="sb-g-col-lg-3 sb-g-col-md-5 sb-g-col-xs-10" [cardInfo]="info"></explore-compass-card>
+                class="sb-g-col-xxl-4 sb-g-col-xl-4 sb-g-col-lg-3 sb-g-col-md-5 sb-g-col-xs-10" [cardInfo]="info"></explore-compass-card>
         </div>
     </section>
