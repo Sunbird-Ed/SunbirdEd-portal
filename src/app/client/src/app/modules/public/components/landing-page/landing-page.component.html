@@ -5,7 +5,7 @@
     <p class="heading">Featured Courses</p>
     <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig" (init)="slickInit($event)"
         (breakpoint)="breakpoint($event)" (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
-        <div ngxSlickItem class="slide" *ngFor='let course of configContent.courses;'>
+        <div ngxSlickItem class="slide" *ngFor='let course of courses;'>
             <compass-course-card [data]="course"></compass-course-card>
         </div>
     </ngx-slick-carousel>
