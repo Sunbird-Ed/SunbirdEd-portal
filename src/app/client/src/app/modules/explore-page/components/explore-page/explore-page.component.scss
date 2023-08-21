@@ -116,3 +116,14 @@
     box-shadow: var(--sbt-box-shadow-6px);
   }
 }
+.cardContainer{
+  display: flex;
+  justify-content: space-between;
+}
+.browseByCard{
+  width: 30%;
+}
+.browseTitle{
+  font-weight: 600;
+  font-size: 20px;
+}

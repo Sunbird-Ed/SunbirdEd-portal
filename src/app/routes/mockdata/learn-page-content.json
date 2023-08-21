@@ -1,0 +1,8 @@
+{
+    "browseByCardInfo" : {
+        "title" : "Browse by",
+        "cardData" : [{"iconUrl" : "assets/images/topic.png", "title" : "Topic"},
+                    {"iconUrl" : "assets/images/comp.png", "title" : "Competency"},
+                    {"iconUrl" : "assets/images/provider.png", "title" : "Providers"}]
+    }
+}
