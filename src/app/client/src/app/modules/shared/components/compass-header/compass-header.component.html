@@ -17,7 +17,7 @@
                   <mat-icon class="menuIcon" [matMenuTriggerFor]="menu">menu</mat-icon>
                   <span>Spaces</span>
                   <mat-menu #menu="matMenu">
-                    <button mat-menu-item>Learn</button>
+                    <button (click)="navigateToHomepage()" mat-menu-item>Learn</button>
                   </mat-menu>
                 </ng-container>
                 <!--/Logo-->
