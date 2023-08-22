@@ -12,14 +12,6 @@
                   <img (click)="navigateToHomepage()" class="cursor-pointer" alt={{tenantInfo.titleName}}
                     src="{{tenantInfo.logo}}">
                 </a>
-                <ng-container *ngIf="userService.loggedIn">
-                  <!-- menu -->
-                  <mat-icon class="menuIcon" [matMenuTriggerFor]="menu">menu</mat-icon>
-                  <span>Spaces</span>
-                  <mat-menu #menu="matMenu">
-                    <button (click)="navigateToHomepage()" mat-menu-item>Learn</button>
-                  </mat-menu>
-                </ng-container>
                 <!--/Logo-->
               </div>
   
