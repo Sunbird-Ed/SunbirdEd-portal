@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { INoResultMessage, ToasterService, IUserData, IUserProfile, LayoutService, ResourceService, ConfigService, OnDemandReportService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
 import { Subject, Subscription, throwError ,Observable, of, combineLatest, queueScheduler} from 'rxjs';
@@ -16,6 +16,10 @@ import { Md5 } from 'ts-md5';
 import { HttpErrorResponse } from '@angular/common/http';
 
 const PRE_DEFINED_PARAMETERS = ['$slug', 'hawk-eye'];
+
+// Minimum Date for Time Range Filters
+const ALL_REPORTS_MIN_START_DATE = '2020-01-01';
+const ALL_REPORTS_MIN_END_DATE = '2020-01-02';
 export interface ConfigFilter{
     label: string,
     controlType: string,
@@ -117,6 +121,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   errorMessage = this.resourceService?.frmelmnts?.lbl?.resourceSelect;
   solutionType: any;
   showErrorForGraphs: boolean = false;
+  minStartDate: Date;
   constructor(
     activatedRoute: ActivatedRoute,
     public layoutService: LayoutService,
@@ -130,7 +135,8 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     public formService: FormService,
     public router: Router,
     public location: Location,
-    public reportService: ReportService
+    public reportService: ReportService,
+    private cd:ChangeDetectorRef
   ) {
     this.config = config;
     this.activatedRoute = activatedRoute;
@@ -249,9 +255,12 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
     const today = new Date().getDate();
-    this.minEndDate = new Date(currentYear - 100, 0, 1);
+    this.minEndDate = new Date(ALL_REPORTS_MIN_END_DATE);
     this.maxEndDate = new Date(currentYear + 0, currentMonth, today);
     this.maxStartDate = new Date(currentYear + 0, currentMonth, today - 1);
+    this.minStartDate = new Date(ALL_REPORTS_MIN_START_DATE);
+    this.reportForm.controls?.startDate.reset();
+    this.reportForm.controls?.endDate.reset();
   }
 
   public resolveParameterizedPath(path: string, explicitValue?: string): string {
@@ -287,6 +296,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.reportTypes = [];
     this.onDemandReportData = [];
     this.resetConfigFilters();
+    this.timeRangeInit();
     this.getSolutionList(program[0]);
     this.displayFilters['Program'] = [program[0].name]
     this.reportForm.controls.programName.setValue($event.value);
@@ -318,6 +328,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.districts = this.organisations = []
     this.userAccess = true;
     this.resetConfigFilters();
+    this.timeRangeInit();
     delete this.displayFilters['District'];
     delete this.displayFilters['Organisation'];
     this.errorMessage = this.resourceService?.frmelmnts?.lbl?.resourceSelect;
@@ -626,6 +637,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.newData = false;
     this.showErrorForGraphs = false
     this.appliedFilters = {...this.appliedFilters, district_externalId: $event.value};
+    this.timeRangeInit();
     if(_.has(this.appliedFilters,'block_externalId')) delete this.appliedFilters['block_externalId'];
     this.reportForm.controls.districtName.setValue($event.value);
     this.errorMessage = this.resourceService?.frmelmnts?.lbl?.resourceSelect;
@@ -639,7 +651,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
 
     }
     this.getDistritAndOrganisationList(requestBody);
-    const tagBasedOnUserAccess = (this.userAccess ? _.get(this.reportForm, 'controls.programName.value') : _.get(this.reportForm, 'controls.solution.value'))
+    const tagBasedOnUserAccess = ((this.userAccess  && !(_.get(this.reportForm, 'controls.solution.value')))? _.get(this.reportForm, 'controls.programName.value') : _.get(this.reportForm, 'controls.solution.value'));
     this.tag = tagBasedOnUserAccess + '_' + this.userId+'_'+ _.toLower(_.trim([$event?.source?.triggerValue]," "));
     this.hashedTag = this.hashTheTag( tagBasedOnUserAccess + '_' + this.userId+'_'+ $event.value);
     this.loadReports();
@@ -898,13 +910,27 @@ export class DatasetsComponent implements OnInit, OnDestroy {
       const year = new Date($event.value._d).getFullYear();
       const month = new Date($event.value._d).getMonth();
       const day = new Date($event.value._d).getDate();
+      const eventDateConverted = dayjs(_.get($event, 'value._d')).format('YYYY-MM-DD');
       if(type === 'startDate'){
+        if(this.reportForm.controls.endDate.value && ((eventDateConverted) > this.reportForm.controls.endDate.value)){
+          this.reportForm.controls.startDate.setErrors({matDatepickerMax:true});
+          this.cd.detectChanges();
+          return;
+        }
         this.minEndDate = new Date(year, month, day + 1);
       }else{
+        if(this.reportForm.controls.startDate.value && (eventDateConverted < this.reportForm.controls.startDate.value)){
+          this.reportForm.controls.endDate.setErrors({matDatepickerMin:true});
+          this.cd.detectChanges();
+          return;
+        }
         this.maxStartDate = new Date(year, month, day - 1);
       }
-      this.reportForm.controls[type].setValue(dayjs(_.get($event, 'value._d')).format('YYYY-MM-DD'));
+      this.reportForm.controls[type].setValue(eventDateConverted);
+    }else{
+      this.reportForm.controls[type].setErrors({matDatepickerMax:true});
     }
+    this.cd.detectChanges();
   }
 
   closeDashboard(){

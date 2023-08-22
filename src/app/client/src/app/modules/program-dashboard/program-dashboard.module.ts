@@ -27,6 +27,7 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { PdFiltersComponent } from './shared/pd-filters/pd-filters.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { DateValidatorDirective } from './shared/directives/date-validator/date-validator.directive';
 
 const TIME_RANGE_DATE_FORMAT = {
   parse: {
@@ -48,7 +49,8 @@ const TIME_RANGE_DATE_FORMAT = {
   FilterChartPipe,
   SbBignumberComponent,
   SbTableComponent,
-  PdFiltersComponent
+  PdFiltersComponent,
+  DateValidatorDirective
   ],
   imports: [
     CommonModule,
