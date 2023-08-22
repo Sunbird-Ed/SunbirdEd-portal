@@ -26,8 +26,9 @@
             </div>
             <div class="sb-g-col-xs-6 sb-g-col-md-6 sb-g-col-lg-6 sb-g-col-xxxl-8 sbt-header-tool-bar">
               <div class="d-flex flex-ai-center">
-                <ng-container *ngIf="!userService.loggedIn">
+                
                   <div class="compass-entrymenu m-0 d-flex flex-ai-center" role="navigation">
+                    <ng-container *ngIf="!userService.loggedIn">
                     <a aria-current="page"
                       tabindex="0"
                       (click)="clearCache()"
@@ -44,6 +45,8 @@
                     [telemetryInteractEdata]="signUpInteractEdata">
                     {{resourceService.frmelmnts?.lbl?.register}}
                   </a>
+                </ng-container>
+                <ng-container *ngIf="userService.loggedIn">
                   <a class="profile-avtar p-0 ml-16">
                     <div class="ui dropdown right top pointing">
                       <div class="sbt-guest-profile" aria-haspopup="true" aria-controls="overlaySidebarID"
@@ -64,9 +67,9 @@
                       </sb-avatar>
                     </div>
                   </a>  
+                </ng-container>
                   <!--/Avtar Dropdown-->
                   </div>
-                </ng-container>
               </div>
             </div>
           </div>
