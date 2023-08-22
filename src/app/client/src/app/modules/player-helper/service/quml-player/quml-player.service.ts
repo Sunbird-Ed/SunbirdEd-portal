@@ -46,6 +46,9 @@ export class QumlPlayerService implements QuestionCursor,EditorCursor {
   clearQuestionMap() {
     this.questionMap.clear();
   }
+  removeQuestionMap(key: string): void {
+    console.log("key",key);
+  }
 
   getQuestionSet(identifier: string) {
     const hierarchy = this.playerService.getQuestionSetHierarchy(identifier);
