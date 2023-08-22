@@ -100,7 +100,8 @@ cd app_dist
 # 20230519 change cp to a fixed path - after building the customized client cloud services, remember
 #   cp /var/lib/jenkins/jobs/Build/jobs/build-local/jobs/NodeJS-Client-Cloud-Service/builds/[build_number]/archive/dist/bundle.js
 #      /var/lib/jenkins/custom-artifacts/client-cloud-services/
-cp /var/lib/jenkins/custom-artifacts/client-cloud-services/bundle.js node_modules/client-cloud-services/dist/
+# cp /var/lib/jenkins/custom-artifacts/client-cloud-services/bundle.js node_modules/client-cloud-services/dist/
+cp -p -r -f  /var/lib/jenkins/workspace/client-cloud-services/dist /var/lib/jenkins/workspace/Build/Core/Player/src/app/client/node_modules/client-cloud-services/dist
 sed -i "/version/a\  \"buildHash\": \"${commit_hash}\"," package.json
 echo "starting docker build"
 docker build --no-cache --label commitHash=$(git rev-parse --short HEAD) -t ${org}/${name}:${build_tag} .
