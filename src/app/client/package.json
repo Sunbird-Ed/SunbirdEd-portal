@@ -89,7 +89,7 @@
     "chart.js": "2.9.4",
     "common-form-elements-v9": "4.5.0",
     "common-form-elements-web-v9": "4.7.2",
-    "compass-common-consumption": "^0.0.1",
+    "compass-common-consumption": "^0.0.2",
     "compass-sb-styles": "^0.0.4",
     "compass-sb-themes": "^0.0.88",
     "core-js": "^2.4.1",
