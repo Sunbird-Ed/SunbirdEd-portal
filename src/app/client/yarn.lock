@@ -2495,10 +2495,10 @@
     "@angular-devkit/schematics" "14.2.12"
     jsonc-parser "3.1.0"
 
-"@shikshalokam/sl-questionnaire@2.3.0":
-  version "2.3.0"
-  resolved "https://registry.npmjs.org/@shikshalokam/sl-questionnaire/-/sl-questionnaire-2.3.0.tgz#e4115787c6d13e9c35083b9b059caccc88230c4a"
-  integrity sha512-3B7esfrTpHsYAomsicpEsCTVo2/rBwNStJ8H/rH0OR2DFUMJInq97SAB6pSFrZamVVIAI4QBE3gtx0eFchVhYg==
+"@shikshalokam/sl-questionnaire@2.3.1":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-questionnaire/-/sl-questionnaire-2.3.1.tgz#d1dbaa5fc02afe1e573bc0f1b3fb9902f4548143"
+  integrity sha512-N/EBwIHWxFTSUApSweZ4ZC26l7AWknBDHmpynB+EjgW2wsw5VXSpXRnzptcwGwl3B0fv0/N/oYK2qk4ZoOaQSg==
   dependencies:
     "@angular-slider/ngx-slider" "^2.0.3"
     tslib "^2.0.0"

@@ -64,4 +64,8 @@
     display: flex;
     align-items: inherit;
   }
+
+  html[data-mode="darkmode"] .customBackBtnBar{
+    color:var(--gray-800);
+  }
 }
