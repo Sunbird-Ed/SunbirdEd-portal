@@ -91,7 +91,8 @@ echo "Client and Server Build complete Took $[$BUILD_ENDTIME - $STARTTIME] secon
 if [ $buildDockerImage == true ]
 then
 cd app_dist
-
+mkdir -p node_modules/client-cloud-services/dist
+cp /var/lib/jenkins/custombuild/client-cloud-services/bundle.js node_modules/client-cloud-services/dist/
 
 # you will need to inject the custom client-cloud-service bundle.js to the player build
 # the actual file location will depends on your bundle.js location
