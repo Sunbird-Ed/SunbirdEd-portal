@@ -64,7 +64,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public enrolledCourses: Array<any>;
     public enrolledSection: any;
     public selectedCourseBatches: any;
-    configContent:any = {}
+    public configContent:any = {}
+    public coursesByCompetencies:any = {}
     private myCoursesSearchQuery = JSON.stringify({
         'request': { 'filters': { 'contentType': ['Course'], 'objectType': ['Content'], 'status': ['Live'] }, 'sort_by': { 'lastPublishedOn': 'desc' }, 'limit': 10, 'organisationId': _.get(this.userService.userProfile, 'organisationIds') }
     });
@@ -252,6 +253,72 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             this.configContent = res;
             console.log(this.configContent);
           })
+    }
+
+    public getBrowseByData(title : string){
+        if(title.toLowerCase() == "competency"){
+            let competencyRequestData = {
+                "request": {
+                    "filters": {
+                        "se_boards": [
+                            "general nursing midwifery"
+                        ],
+                        "se_mediums": [
+                            "midwifery and gynaecological nursing",
+                            "sociology"
+                        ],
+                        "se_gradeLevels": [
+                            "describes about social groups social change control stratification and social problems"
+                        ],
+                        "se_subjects": "micro-organisms",
+                        "primaryCategory": [
+                            "Course",
+                            "Course Assessment",
+                            "Self Assessment"
+                        ],
+                        "visibility": [
+                            "Default",
+                            "Parent"
+                        ]
+                    },
+                    "limit": 100,
+                    "sort_by": {
+                        "lastPublishedOn": "desc"
+                    },
+                    "fields": [
+                        "name",
+                        "appIcon",
+                        "mimeType",
+                        "gradeLevel",
+                        "identifier",
+                        "medium",
+                        "pkgVersion",
+                        "board",
+                        "subject",
+                        "resourceType",
+                        "primaryCategory",
+                        "contentType",
+                        "channel",
+                        "organisation",
+                        "trackable",
+                        "difficultyLevel",
+                        "se_difficultyLevels"
+                    ],
+                    "facets": [
+                        "se_boards",
+                        "se_gradeLevels",
+                        "se_subjects",
+                        "se_mediums",
+                        "se_difficultyLevels"
+                    ],
+                    "offset": 0
+                }
+            };
+            this.learnPageContentService.getBrowseByCompetencyData(competencyRequestData).subscribe(res => {
+                this.coursesByCompetencies = res["result"]["content"];
+                console.log("coursesByCompetencies ",this.coursesByCompetencies);
+              })
+        }
     }
 
     public fetchEnrolledCoursesSection() {
