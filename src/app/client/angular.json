@@ -58,11 +58,6 @@
                 "glob": "**/*.*",
                 "input": "./node_modules/@samagra-x/uci-console/assets/",
                 "output": "/assets/uci-console"
-              },
-              {
-                "glob": "**/*",
-                "input": "./node_modules/compass-collection-editor/lib/assets",
-                "output": "/assets/"
               }
             ],
             "styles": [
