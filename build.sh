@@ -91,6 +91,9 @@ echo "Client and Server Build complete Took $[$BUILD_ENDTIME - $STARTTIME] secon
 if [ $buildDockerImage == true ]
 then
 cd app_dist
+mkdir -p node_modules/client-cloud-services/dist
+cp /var/lib/jenkins/custombuild/client-cloud-services/bundle.js node_modules/client-cloud-services/dist/
+
 # you will need to inject the custom client-cloud-service bundle.js to the player build
 # the actual file location will depends on your bundle.js location
 #    1. build the custom client-cloud-services from https://github.com/ocisunbird/client-cloud-services/tree/oci-5.1.0
@@ -100,7 +103,7 @@ cd app_dist
 # 20230519 change cp to a fixed path - after building the customized client cloud services, remember
 #   cp /var/lib/jenkins/jobs/Build/jobs/build-local/jobs/NodeJS-Client-Cloud-Service/builds/[build_number]/archive/dist/bundle.js
 #      /var/lib/jenkins/custom-artifacts/client-cloud-services/
-cp /var/lib/jenkins/custombuild/client-cloud-services/bundle.js node_modules/client-cloud-services/dist/
+#cp /var/lib/jenkins/custombuild/client-cloud-services/bundle.js node_modules/client-cloud-services/dist/
 #cp -p -r -f  /var/lib/jenkins/workspace/client-cloud-services/dist /var/lib/jenkins/workspace/Build/Core/Player/src/app/client/node_modules/client-cloud-services/dist
 sed -i "/version/a\  \"buildHash\": \"${commit_hash}\"," package.json
 echo "starting docker build"
