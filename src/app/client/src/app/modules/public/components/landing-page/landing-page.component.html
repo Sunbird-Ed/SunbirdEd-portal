@@ -19,10 +19,21 @@
             <goal-oriented-hr-card [data]="card"></goal-oriented-hr-card>
         </div>
     </div>
-</div>
-<!-- <info-card-container [cardInfo]="configContent.infoCard"></info-card-container> -->
-
-<section class="ui container infor-card__wrap" *ngIf="configContent.infoCard">
-    <h1>{{configContent.infoCard.title}}</h1>
-    <info-card *ngFor="let info of configContent.infoCard.cardsData" [cardInfo]="info"></info-card>
-</section>
+    <!-- <info-card-container [cardInfo]="configContent.infoCard"></info-card-container> -->
+  
+    <section class="infor-card__wrap" *ngIf="configContent.infoCard">
+        <div class="ui container">
+                <h1>{{configContent.infoCard.title}}</h1>
+                <info-card *ngFor="let info of configContent.infoCard.cardsData" [cardInfo]="info"></info-card>
+        </div>
+    </section>
+    <section class="ui container">
+        <register-btn-card [regCardData]="configContent.regCardsData"></register-btn-card>
+    </section>
+    <section class="ui container" *ngIf="configContent.exploreCardInfo">
+        <p class="exploreTitle">{{configContent.exploreCardInfo.title}}</p>
+        <div class="sb-g marginVertical">
+            <explore-compass-card *ngFor="let info of configContent.exploreCardInfo.cardData"
+                class="sb-g-col-xxl-4 sb-g-col-xl-4 sb-g-col-lg-3 sb-g-col-md-5 sb-g-col-xs-10" [cardInfo]="info"></explore-compass-card>
+        </div>
+    </section>
