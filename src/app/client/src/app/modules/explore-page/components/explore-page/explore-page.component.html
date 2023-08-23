@@ -169,8 +169,12 @@
           <section class="ui container" *ngIf="configContent.browseByCardInfo">
             <p class="browseTitle">{{configContent.browseByCardInfo.title}}</p>
             <div class="cardContainer">
-                <browse-by-card *ngFor="let info of configContent.browseByCardInfo.cardData"
-                    class="browseByCard" [cardInfo]="info"></browse-by-card>
+                <browse-by-card
+                  *ngFor="let info of configContent.browseByCardInfo.cardData"
+                  class="browseByCard"
+                  [cardInfo]="info"
+                  (click)="getBrowseByData(info.title)"
+                ></browse-by-card>
             </div>
         </section>
 
