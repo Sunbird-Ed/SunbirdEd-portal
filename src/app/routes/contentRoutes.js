@@ -18,7 +18,7 @@ const isAPIWhitelisted = require('../helpers/apiWhiteList');
 const courseSearchURI = '/content/course/v1/search';
 const assetUploadURI = '/content/asset/v1/upload/:id';
 const contentAllURI = '/content/*';
-const copyQuestionSetURI = '/content/questionset/v1/copy/:id';
+const copyQuestionSetURI = '/content/questionset/v2/copy/:id';
 
 module.exports = (app) => {
     app.all(courseSearchURI,

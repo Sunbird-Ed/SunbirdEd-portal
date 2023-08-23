@@ -343,10 +343,10 @@
       "READ": "org/v2/preferences/read"
     },
     "QUESTIONSET": {
-      "CREATE": "questionset/v1/create",
-      "READ": "questionset/v1/read",
-      "HIERARCHY_READ": "questionset/v1/hierarchy",
-      "COPY": "questionset/v1/copy"
+      "CREATE": "questionset/v2/create",
+      "READ": "questionset/v2/read",
+      "HIERARCHY_READ": "questionset/v2/hierarchy",
+      "COPY": "questionset/v2/copy"
     },
     "OBJECTCATEGORY": {
       "READ": "object/category/definition/v1/read"
