@@ -21,7 +21,7 @@
       <div [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-16'">
   <div class="content-grid relative9" >
     <div class="sb-pageSection" *ngIf="!showLoader && contentList?.length && !showBackButton">
-        <div  class="sb-pageSection-header mb-10">
+        <div  class="sb-pageSection-header mb-10 hidden">
                 <h4 class="sb-pageSection-title mb-10 mr-5"> {{resourceService.frmelmnts?.lbl?.showingResults | translate}}
                     <span class="text-lowercase" *ngIf="this.queryParams.key" appHighlightText [config]="{'resourcePath': 'frmelmnts.lbl.forSearch', 'key': '{searchString}', 'value': queryParams?.key}"></span>
                       {{resourceService.frmelmnts?.lbl?.inAll | translate}}
@@ -30,7 +30,7 @@
               {{resourceService?.frmelmnts?.btn?.close | translate}} <i class="close icon"></i></button>
         </div>
     </div>
-    <div class="twelve wide column">
+    <div class="twelve wide column hidden">
       <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"
               *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="handleFilterChange($event)"></app-global-search-selected-filter>
       <div [appTelemetryImpression]="telemetryImpression"  *ngIf="!showLoader && contentList?.length"
@@ -79,18 +79,33 @@
         </div> -->
       </div>
     </div>
+    <!-- popular competencies -->
+    <section class="ui container mt-60" *ngIf="competencyInfo">
+      <p class="allCompetencyTitle w-100">{{competencyInfo.popularTitle}}</p>
+      <div class="w-100 d-flex flex-jc-space-around popular-comp-container">
+          <sb-popular-card
+            *ngFor="let info of competencyInfo.popularData"
+            [pillName]="'Competency'" [data]="info"
+            class="w-30 mb-32"
+            (click)="getBrowseByData(info.title)"
+          ></sb-popular-card>
+      </div>
+  </section>
+    <!-- popular competencies -->
 
-    <section class="ui container mt-60" *ngIf="allCompetencyInfo">
-      <p class="allCompetencyTitle w-80">{{allCompetencyInfo.title}}</p>
+    <!-- all competencies -->
+    <section class="ui container mt-60" *ngIf="competencyInfo">
+      <p class="allCompetencyTitle w-80">{{competencyInfo.title}}</p>
       <div class="w-80 d-flex all-comp-container">
           <sb-popular-card
-            *ngFor="let info of allCompetencyInfo.data"
+            *ngFor="let info of competencyInfo.data"
             [pillName]="'Competency'" [data]="info"
             class="w-100 mb-32"
             (click)="getBrowseByData(info.title)"
           ></sb-popular-card>
       </div>
   </section>
+  <!-- all competencies -->
 
     <div class="twelve wide column" [appTelemetryImpression]="telemetryImpression" *ngIf="contentList?.length === 0 && !showLoader">
       <app-no-result [data]="noResultMessage"></app-no-result>
