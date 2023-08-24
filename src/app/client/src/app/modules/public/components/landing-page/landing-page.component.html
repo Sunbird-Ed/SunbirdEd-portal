@@ -1,6 +1,6 @@
 <app-landing-section [textToDisplay]="" [layoutConfiguration]="layoutConfiguration" [noTitle]="false">
 </app-landing-section>
-<compass-banner [config]="configContent.banner"></compass-banner>
+<compass-banner [loginCallback]="loginClick" [registerCallback]="registerClick" [config]="configContent.banner"></compass-banner>
 <div class="featured-courses-section">
     <p class="heading">Featured Courses</p>
     <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig" (init)="slickInit($event)"
