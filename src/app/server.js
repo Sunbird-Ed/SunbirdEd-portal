@@ -47,7 +47,7 @@ const { frameworkAPI } = require('@project-sunbird/ext-framework-server/api');
 const frameworkConfig = require('./framework.config.js');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
-const kidTokenPublicKeyBasePath = envHelper.sunbird_kid_public_key_base_path;
+const kidTokenPublicKeyBasePath = envHelper?.sunbird_kid_public_key_base_path;
 const { loadTokenPublicKeys } = require('sb_api_interceptor');
 const { getGeneralisedResourcesBundles } = require('./helpers/resourceBundleHelper.js')
 const { apiWhiteListLogger, isAllowed } = require('./helpers/apiWhiteList');
@@ -104,7 +104,7 @@ app.all([
   '/uci/*'
 ],
   session({
-    secret: envHelper.PORTAL_SESSION_SECRET_KEY,
+    secret: envHelper?.PORTAL_SESSION_SECRET_KEY,
     resave: false,
     cookie: {
       maxAge: envHelper.sunbird_session_ttl 
@@ -382,7 +382,7 @@ telemetry.init({
   method: 'POST',
   batchsize: process.env.sunbird_telemetry_sync_batch_size || 200,
   endpoint: telemetryEventConfig.endpoint,
-  host: envHelper.TELEMETRY_SERVICE_LOCAL_URL,
+  host: envHelper?.TELEMETRY_SERVICE_LOCAL_URL,
   authtoken: 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
 })
 

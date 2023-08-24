@@ -2,7 +2,7 @@
 const crypto = require('crypto');
 const algorithm = 'aes-256-cbc';
 const envHelper = require('./environmentVariablesHelper');
-let key = envHelper.CRYPTO_ENCRYPTION_KEY;
+let key = envHelper?.CRYPTO_ENCRYPTION_KEY;
 const iv = crypto.randomBytes(16);
 
 /**

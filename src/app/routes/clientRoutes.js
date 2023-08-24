@@ -107,7 +107,7 @@ module.exports = (app, keycloak) => {
     '/resources/*', '/myActivity', '/myActivity/*', '/org/*', '/manage/*', '/contribute', '/contribute/*', '/groups', '/groups/*', '/my-groups', '/my-groups/*', '/certs/configure/*',
     '/observation', '/observation/*', '/solution', '/solution/*', '/questionnaire', '/questionnaire/*', '/uci-admin', '/uci-admin/*', '/program'],
     session({
-      secret: envHelper.PORTAL_SESSION_SECRET_KEY,
+      secret: envHelper?.PORTAL_SESSION_SECRET_KEY,
       resave: false,
       cookie: {
         maxAge: envHelper.sunbird_session_ttl
@@ -123,7 +123,7 @@ module.exports = (app, keycloak) => {
     '/sign-in/*', '/download/*', '/accountMerge/*', '/:slug/accountMerge/*', '/:slug/download/*', '/certs/*', '/:slug/certs/*', '/recover/*', '/:slug/recover/*', '/explore-groups',
     '/guest-profile'],
     session({
-      secret: envHelper.PORTAL_SESSION_SECRET_KEY,
+      secret: envHelper?.PORTAL_SESSION_SECRET_KEY,
       resave: false,
       cookie: {
         maxAge: envHelper.sunbird_session_ttl
@@ -189,7 +189,7 @@ function getLocals(req) {
   locals.offlineDesktopAppSupportedLanguage = envHelper.sunbird_portal_offline_supported_languages,
   locals.offlineDesktopAppDownloadUrl = envHelper.SUNBIRD_PORTAL_BASE_URL
   locals.logFingerprintDetails = envHelper.LOG_FINGERPRINT_DETAILS,
-  locals.slugForProminentFilter = envHelper.sunbird_portal_slugForProminentFilter,
+  locals.slugForProminentFilter = envHelper?.sunbird_portal_slugForProminentFilter,
   locals.deviceId = '';
   locals.deviceProfileApi = envHelper.DEVICE_PROFILE_API;
   locals.slug = slug ? slug : '';
@@ -198,7 +198,7 @@ function getLocals(req) {
   locals.genericEditorURL = envHelper?.CONTENT_EDITORS_URL?.GENERIC_EDITOR;
   locals.botConfigured = envHelper.sunbird_bot_configured;
   locals.botServiceURL = envHelper.sunbird_bot_service_URL;
-  locals.superAdminSlug = envHelper.sunbird_super_admin_slug;
+  locals.superAdminSlug = envHelper?.sunbird_super_admin_slug;
   locals.p1reCaptchaEnabled = envHelper.sunbird_p1_reCaptcha_enabled;
   locals.p2reCaptchaEnabled = envHelper.sunbird_p2_reCaptcha_enabled;
   locals.p3reCaptchaEnabled = envHelper.sunbird_p3_reCaptcha_enabled;
@@ -206,7 +206,7 @@ function getLocals(req) {
   locals.sunbirdCollectionChildrenLimit = envHelper.sunbird_collection_children_limit,
   locals.sunbirdNavAccessibility = envHelper.sunbird_portal_nav_accessibility,
   locals.enableSSO = envHelper.sunbird_enable_sso;
-  locals.reportsListVersion = envHelper.reportsListVersion;
+  locals.reportsListVersion = envHelper?.reportsListVersion;
   locals.sunbirdDefaultFileSize = envHelper.SUNBIRD_DEFAULT_FILE_SIZE;
   locals.baseUrl = null;
   locals.defaultBoard = envHelper.DEFAULT_BOARD;
