@@ -24,6 +24,7 @@ export enum SignUpStage {
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss','./signup_form.component.scss']
 })
+
 export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
   public unsubscribe = new Subject<void>();
@@ -42,6 +43,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   signupStage: SignUpStage;
   routeParams: any;
   get Stage() { return SignUpStage; }
+  slideIndex = 1;
 
   constructor(public resourceService: ResourceService, public tenantService: TenantService, public deviceDetectorService: DeviceDetectorService,
     public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
@@ -67,8 +69,39 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     this.initializeFormFields();
     this.setInteractEventData();
 
+    this.showSlides(this.slideIndex);
+    setInterval(() => { this.plusSlides(1) }, 3000);
+    let element = document.getElementsByTagName('body')[0];
+    element.style.overflow = "hidden";
+
     // Telemetry Start
     this.signUpTelemetryStart();
+  }
+
+   // Next/previous controls
+   plusSlides(n: any) {
+    this.showSlides(this.slideIndex += n);
+  }
+
+  // Thumbnail image controls
+  currentSlide(n: any) {
+    this.showSlides(this.slideIndex = n);
+  }
+
+  showSlides(n: any) {
+    let i: any;
+    let slides: any = document.getElementsByClassName("mySlides");
+    let dots: any = document.getElementsByClassName("dot");
+    if (n > slides.length) { this.slideIndex = 1 }
+    if (n < 1) { this.slideIndex = slides.length }
+    for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+    }
+    for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[this.slideIndex - 1].style.display = "block";
+    dots[this.slideIndex - 1].className += " active";
   }
 
   signUpTelemetryStart() {
