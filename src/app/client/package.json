@@ -36,6 +36,7 @@
   "private": true,
   "dependencies": {
     "@angular-devkit/build-angular": "0.1102.19",
+    "client-cloud-services": "https://github.com/dicdiksha/client-cloud-services.git#5cd4e1208308627e00ec9df7a0e77c94045960fa",
     "@angular/animations": "^11.2.14",
     "@angular/cdk": "11.2.13",
     "@angular/cli": "^11.2.19",
