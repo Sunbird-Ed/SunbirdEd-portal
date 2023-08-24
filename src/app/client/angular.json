@@ -76,7 +76,7 @@
               "./node_modules/@project-sunbird/sb-themes/themes/themes-portal.scss",
               "node_modules/videojs-http-source-selector/dist/videojs-http-source-selector.css",
               "node_modules/@project-sunbird/sunbird-video-player-v9/lib/assets/videojs.markers.min.css",
-              "./node_modules/@project-sunbird/discussions-ui/assets/styles/global.scss",
+              "./node_modules/@project-sunbird/discussions-ui/assets/styles/global.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
