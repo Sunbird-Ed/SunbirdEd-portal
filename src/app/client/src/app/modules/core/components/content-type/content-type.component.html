@@ -2,7 +2,6 @@
   <mat-toolbar color="primary" class="toolbar-menu content-type-component">
     <ng-container *ngFor="let contentType of contentTypes">
       <button mat-raised-button class="mr-8" aria-current="page"
-        [attr.aria-selected]="selectedContentType === contentType.contentType ? true : false"
         *ngIf="contentType.isEnabled && contentType?.isOnlineOnly" tabindex="0" (click)="showContentType(contentType)"
         (keyup.enter)="showContentType(contentType)" appOnlineOnly
         [ngClass]="{'active': selectedContentType === contentType.contentType}"
@@ -14,7 +13,6 @@
 
       <!-- For desktop -->
       <button mat-raised-button class="mr-8" aria-current="page"
-        [attr.aria-selected]="selectedContentType === contentType.contentType ? true : false"
         *ngIf="contentType.isEnabled && !contentType?.isOnlineOnly && isDesktopApp" tabindex="0"
         (keyup.enter)="showContentType(contentType)" (click)="showContentType(contentType)"
         [ngClass]="{'active': selectedContentType === contentType.contentType}"

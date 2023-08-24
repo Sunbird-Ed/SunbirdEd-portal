@@ -27,10 +27,10 @@
           </div>
           <div class="sb-g-col-xs-12 sb-g-col-md-6 sb-g-col-lg-6 sb-g-col-xxxl-6 d-flex sbt-footer-download-app">
             <div class="sbt-footer-bg relative pt-32">
-              <img [attr.aria-label]="resourceService.frmelmnts?.lnk?.footerAppDownload | interpolate:'{instance}':  instance" class="sbt-footer-bg-img cursor-pointer" tabindex="0" src="/assets/images/footer-flower-set.svg" alt="">
+              <img class="sbt-footer-bg-img cursor-pointer" src="/assets/images/footer-flower-set.svg" alt="">
               <div class="text-center font-weight-bold sbt-footer-title mat-subheading-2 px-24">{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile | interpolate:'{instance}':  instance}}</div>
               <a class="d-block app-download" (click)="redirectToMobileApp()">
-                <img tabindex="0" class="playStore-img cursor-pointer" src="/assets/images/google_playstore.png"
+                <img [attr.aria-label]="resourceService.frmelmnts?.lnk?.footerAppDownload | interpolate:'{instance}':  instance" tabindex="0" class="playStore-img cursor-pointer" src="/assets/images/google_playstore.png"
                   alt="{{ resourceService?.frmelmnts?.lbl?.altGoogleplay }}">
               </a>
             </div>

@@ -2,7 +2,7 @@
   <mat-form-field color="success" appearance="fill" class="w-100 sb-mat-form-field-custom border-radius">
     <mat-icon class="mr-8" matPrefix>language</mat-icon>
     <mat-label>{{resourceService.frmelmnts?.btn?.selectLanguage}}</mat-label>
-    <mat-select role="listbox" aria-label="Select Language" [(value)]="selectedLanguage" class="selection" [(ngModel)]="selectedLanguage" (selectionChange)="onLanguageChange($event?.value)">
+    <mat-select role="group" aria-label="Select Language" [(value)]="selectedLanguage" class="selection" [(ngModel)]="selectedLanguage" (selectionChange)="onLanguageChange($event?.value)">
       <mat-option class="mat-dropdown__options mat-dropdown__options--language" role="option" *ngFor="let option of languageRange" [value]="option.value" appTelemetryInteract
       [telemetryInteractEdata]="getTelemetryInteractEdata(option.value)" attr.aria-label="{{option.accessibleText}}">{{option.label}}</mat-option>
     </mat-select>

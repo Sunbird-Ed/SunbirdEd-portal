@@ -11,7 +11,7 @@
           <mat-toolbar color="accent"
             class="d-flex flex-w-wrap flex-dc-below-xs flex-jc-center-below-xs py-4-max-xs h-auto-below-xs">
             <div class="example-spacer d-none d-above-xs-block"></div>
-            <div aria-label="accessibility links" class="d-flex flex-ai-center" *ngIf="showNavAccessibility === 'true'">
+            <div aria-label="accessibility links" role="navigation" class="d-flex flex-ai-center" *ngIf="showNavAccessibility === 'true'">
               <a *ngIf="!hideHeaderNFooter" mat-button href="javascript:void(0);" class="hover-color-primary px-8"
                 title="" tabindex="0" (click)="skipToMainContent()">{{
                 resourceService?.frmelmnts?.lbl?.accessibilitytskip
@@ -42,8 +42,8 @@
               <button mat-icon-button [attr.aria-pressed]="false" type="button" tabindex="0" aria-label="{{
               resourceService?.frmelmnts?.lbl?.accessibilitytextsize}}" class="mat-body-2 mb-0 hover-bgcolor-primary" title="{{resourceService?.frmelmnts?.lbl?.accessibilitytextsize}}" (click)="changeFontSize('increase')" #increaseFontSize>A+</button>
               <span class="opacity50 font-weight-normal mx-4">|</span>
-              <button mat-icon-button id="theme-selector" class="hover-bgcolor-primary" [mat-menu-trigger-for]="themeMenu"
-                matTooltip="Select a theme!" tabindex="0">
+              <button mat-icon-button id="theme-selector" aria-label="Select a theme from the list" class="hover-bgcolor-primary" [mat-menu-trigger-for]="themeMenu"
+                matTooltip="Select a theme" tabindex="0">
                 <mat-icon class="auto-flip">format_color_fill</mat-icon>
               </button>
               <mat-menu #themeMenu="matMenu" class="themeMenuDropdown">

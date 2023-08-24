@@ -2,18 +2,114 @@
 @use "@angular/material" as mat;
 @use './fonts' as * ;
 
-// $indigo-palette: (
-//   100: #e6e9fb,
-//   200: #d9ddf0,
-//   contrast: ( 
-//   100:black,
-//   200: black,
-//   )
-// );
-// $deep-purple-palette: (
-//   100: #f0e9fb,
-//   200: #e3dbee,
-// );
+// Define your custom color value for "50"
+$custom-red-palette-50: red;
+
+// Overwrite the "50" value in the $red-palette map
+$indigo-palette: (
+  500: $custom-red-palette-50,
+  // ... (keep the rest of the shades as needed)
+);
+
+$sbmat-lemongreen: (
+    50 : #f9fbe7,
+    100 : #f0f5c4,
+    200 : #e6ee9c,
+    300 : #dce774,
+    400 : #d5e157,
+    500 : #cddc39,
+    600 : #c8d833,
+    700 : #c1d32c,
+    800 : #bace24,
+    900 : #aec517,
+    A100 : #fefff7,
+    A200 : #f7ffc4,
+    A400 : #f0ff91,
+    A700 : #ecff78,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #000000,
+        900 : #000000,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+$sbmat-aqua: (
+  50 : #e2f4f3,
+  100 : #b6e3e1,
+  200 : #86d1cd,
+  300 : #56bfb8,
+  400 : #31b1a9,
+  500 : #0da39a,
+  600 : #0b9b92,
+  700 : #099188,
+  800 : #07887e,
+  900 : #03776c,
+  A100 : #a5fff5,
+  A200 : #72fff0,
+  A400 : #3fffeb,
+  A700 : #25ffe8,
+  contrast: (
+      50 : #000000,
+      100 : #000000,
+      200 : #000000,
+      300 : #000000,
+      400 : #000000,
+      500 : #ffffff,
+      600 : #ffffff,
+      700 : #ffffff,
+      800 : #ffffff,
+      900 : #ffffff,
+      A100 : #000000,
+      A200 : #000000,
+      A400 : #000000,
+      A700 : #000000,
+  )
+);
+
+$sbmat-purple: (
+  50 : #e8eaf6,
+    100 : #c5cbe9,
+    200 : #9fa8da,
+    300 : #7985cb,
+    400 : #5c6bc0,
+    500 : #3f51b5,
+    600 : #394aae,
+    700 : #3140a5,
+    800 : #29379d,
+    900 : #1b278d,
+    A100 : #c6cbff,
+    A200 : #939dff,
+    A400 : #606eff,
+    A700 : #4757ff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);
+
+
 $sb-mat-joy-accent: (
   50: #e1eaf3,
   100: #b3cae2,
@@ -160,35 +256,35 @@ $sb-mat-green: (
 */
 
 $app-themes: (
-  deeppurple-amber: (
-    primary-base: mat.$deep-purple-palette,
-    accent-base: mat.$amber-palette,
-    success: mat.$green-palette,
-    is-dark: false,
-    foreground: mat.$light-theme-foreground-palette,
-    background: mat.$light-theme-background-palette,
-    typography:
-      mat.define-typography-config(
-        $font-family: "Arimo",
-      ),
-  ),
-  indigo-pink: (
-    primary-base: mat.$indigo-palette,
-    accent-base: mat.$pink-palette,
-    success: mat.$green-palette,
-    is-dark: false,
-    foreground: mat.$light-theme-foreground-palette,
-    background: mat.$light-theme-background-palette,
-    typography:
-      mat.define-typography-config(
-        $font-family: "Cabin",
+  // deeppurple-amber: (
+  //   primary-base: mat.$deep-purple-palette,
+  //   accent-base: mat.$amber-palette,
+  //   success: mat.$green-palette,
+  //   is-dark: false,
+  //   foreground: mat.$light-theme-foreground-palette,
+  //   background: mat.$light-theme-background-palette,
+  //   typography:
+  //     mat.define-typography-config(
+  //       $font-family: "Arimo",
+  //     ),
+  // ),
+  // indigo-pink: (
+  //   primary-base: mat.$indigo-palette,
+  //   accent-base: mat.$pink-palette,
+  //   success: mat.$green-palette,
+  //   is-dark: false,
+  //   foreground: mat.$light-theme-foreground-palette,
+  //   background: mat.$light-theme-background-palette,
+  //   typography:
+  //     mat.define-typography-config(
+  //       $font-family: "Cabin",
 
-      ),
-  ),
+  //     ),
+  // ),
   pink-bluegrey: (
     primary-base: mat.$pink-palette,
-    accent-base: mat.$blue-gray-palette,
-    success: mat.$green-palette,
+    accent-base: $sbmat-lemongreen,
+    success: mat.$red-palette,
     is-dark: true,
     foreground: mat.$dark-theme-foreground-palette,
     background: mat.$dark-theme-background-palette,
@@ -221,6 +317,30 @@ $app-themes: (
         $font-family: var(--font-stack-en),
       ),
   ),
+  aquapurple: (
+    primary-base: $sbmat-aqua,
+    accent-base: $sbmat-purple,
+    success: mat.$green-palette,
+    is-dark: false,
+    foreground: mat.$light-theme-foreground-palette,
+    background: mat.$light-theme-background-palette,
+    typography:
+      mat.define-typography-config(
+        $font-family: var(--font-stack-en),
+      ),
+  ),  
+  // aquagun: (
+  //   primary-base: $sbmat-gunmetal,
+  //   accent-base: $sbmat-aqua,
+  //   success: mat.$green-palette,
+  //   is-dark: true,
+  //   foreground: mat.$dark-theme-foreground-palette,
+  //   background: mat.$dark-theme-background-palette,
+  //   typography:
+  //     mat.define-typography-config(
+  //       $font-family: var(--font-stack-en),
+  //     ),
+  // ),
   // green-grey: (
   //   primary-base: $sb-mat-green,
   //   accent-base: mat.$orange-palette,
