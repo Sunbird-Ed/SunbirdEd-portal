@@ -79,6 +79,19 @@
         </div> -->
       </div>
     </div>
+
+    <section class="ui container mt-60" *ngIf="allCompetencyInfo">
+      <p class="allCompetencyTitle w-80">{{allCompetencyInfo.title}}</p>
+      <div class="w-80 d-flex all-comp-container">
+          <sb-popular-card
+            *ngFor="let info of allCompetencyInfo.data"
+            [pillName]="'Competency'" [data]="info"
+            class="w-100 mb-32"
+            (click)="getBrowseByData(info.title)"
+          ></sb-popular-card>
+      </div>
+  </section>
+
     <div class="twelve wide column" [appTelemetryImpression]="telemetryImpression" *ngIf="contentList?.length === 0 && !showLoader">
       <app-no-result [data]="noResultMessage"></app-no-result>
     </div>
