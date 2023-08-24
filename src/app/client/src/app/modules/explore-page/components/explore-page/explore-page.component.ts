@@ -270,7 +270,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         "se_gradeLevels": [
                             "describes about social groups social change control stratification and social problems"
                         ],
-                        "se_subjects": "micro-organisms",
+                        "se_subjects": [],
                         "primaryCategory": [
                             "Course",
                             "Course Assessment",
