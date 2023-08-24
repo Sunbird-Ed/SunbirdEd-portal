@@ -2390,10 +2390,10 @@
   dependencies:
     "@project-sunbird/sb-styles" "0.0.14"
 
-"@project-sunbird/sunbird-collection-editor@5.4.3":
-  version "5.4.3"
-  resolved "https://registry.npmjs.org/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-5.4.3.tgz#4ae139254611ddf8c4c195b037e03bbc2f681bb8"
-  integrity sha512-ob/hIf8QqrFIGPtCsmzE22IsR1LTUxFEaaoRM6Gr8wJgzTkgY2n9EgOHzgGTlivbbiL0dvJFih/u/I7D0mLPsg==
+"@project-sunbird/sunbird-collection-editor@5.4.8":
+  version "5.4.8"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-5.4.8.tgz#6f76f7c7662f70d95d77bb9939866214375d69c9"
+  integrity sha512-ZabuKgmO6nFnjl7no1pV3XUYtNvNNDujrBzR3ZVpbbCdHO6ymT00wg75Zk2rLZnUdx3cgZPjegq6zc0JjYXWkQ==
   dependencies:
     tslib "^2.0.0"
 
@@ -2404,6 +2404,13 @@
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
     tslib "^2.0.0"
+
+"@project-sunbird/sunbird-file-upload-library@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-file-upload-library/-/sunbird-file-upload-library-1.0.2.tgz#331465c478d4df45cdbaa813c597296609892517"
+  integrity sha512-oqbyAECe9ejyGac4vQK9lkkXNOdP3fnK+QXMeoZOZn5rAnStcWgAxyK+tdgoC8FDBFC5JOyWGjM9UfntUMsRaA==
+  dependencies:
+    axios "^1.4.0"
 
 "@project-sunbird/sunbird-pdf-player-v9@5.5.0":
   version "5.5.0"
@@ -2495,10 +2502,10 @@
     "@angular-devkit/schematics" "14.2.12"
     jsonc-parser "3.1.0"
 
-"@shikshalokam/sl-questionnaire@2.3.0":
-  version "2.3.0"
-  resolved "https://registry.npmjs.org/@shikshalokam/sl-questionnaire/-/sl-questionnaire-2.3.0.tgz#e4115787c6d13e9c35083b9b059caccc88230c4a"
-  integrity sha512-3B7esfrTpHsYAomsicpEsCTVo2/rBwNStJ8H/rH0OR2DFUMJInq97SAB6pSFrZamVVIAI4QBE3gtx0eFchVhYg==
+"@shikshalokam/sl-questionnaire@2.3.1":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-questionnaire/-/sl-questionnaire-2.3.1.tgz#d1dbaa5fc02afe1e573bc0f1b3fb9902f4548143"
+  integrity sha512-N/EBwIHWxFTSUApSweZ4ZC26l7AWknBDHmpynB+EjgW2wsw5VXSpXRnzptcwGwl3B0fv0/N/oYK2qk4ZoOaQSg==
   dependencies:
     "@angular-slider/ngx-slider" "^2.0.3"
     tslib "^2.0.0"
@@ -3764,6 +3771,15 @@ aws4@^1.8.0:
   version "1.12.0"
   resolved "https://registry.npmjs.org/aws4/-/aws4-1.12.0.tgz#ce1c9d143389679e253b314241ea9aa5cec980d3"
   integrity sha512-NmWvPnx0F1SfrQbYwOi7OeaNGokp9XhzNioJ/CSBs8Qa4vxug81mhJEAVZwxXuBmYB5KDRfMq/F3RR0BIU7sWg==
+
+axios@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.4.0.tgz#38a7bf1224cd308de271146038b551d725f0be1f"
+  integrity sha512-S4XCWMEmzvo64T9GfvQDOXgYRDJ/wsSZc7Jvdgx5u1sd0JwsuPLqb3SYmusag+edF6ziyMensPVqLTSc1PiSEA==
+  dependencies:
+    follow-redirects "^1.15.0"
+    form-data "^4.0.0"
+    proxy-from-env "^1.1.0"
 
 axobject-query@2.0.2:
   version "2.0.2"
@@ -6576,7 +6592,7 @@ flush-write-stream@^1.0.2:
     inherits "^2.0.3"
     readable-stream "^2.3.6"
 
-follow-redirects@^1.0.0:
+follow-redirects@^1.0.0, follow-redirects@^1.15.0:
   version "1.15.2"
   resolved "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.15.2.tgz#b460864144ba63f2681096f274c4e57026da2c13"
   integrity sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==
@@ -11133,6 +11149,11 @@ proxy-addr@~2.0.7:
   dependencies:
     forwarded "0.2.0"
     ipaddr.js "1.9.1"
+
+proxy-from-env@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/proxy-from-env/-/proxy-from-env-1.1.0.tgz#e102f16ca355424865755d2c9e8ea4f24d58c3e2"
+  integrity sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==
 
 prr@~1.0.1:
   version "1.0.1"

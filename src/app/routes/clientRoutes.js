@@ -181,7 +181,7 @@ function getLocals(req) {
   locals.deviceApi = envHelper.sunbird_device_api
   locals.googleCaptchaSiteKey = envHelper.sunbird_google_captcha_site_key
   locals.videoMaxSize = envHelper.sunbird_portal_video_max_size
-  locals.reportsLocation = envHelper.sunbird_azure_report_container_name
+  locals.reportsLocation = envHelper.cloud_storage_privatereports_bucketname
   locals.previewCdnUrl = envHelper.sunbird_portal_preview_cdn_url
   locals.offlineDesktopAppTenant = envHelper.sunbird_portal_offline_tenant
   locals.offlineDesktopAppVersion = envHelper.sunbird_portal_offline_app_version
@@ -210,6 +210,7 @@ function getLocals(req) {
   locals.sunbirdDefaultFileSize = envHelper.SUNBIRD_DEFAULT_FILE_SIZE;
   locals.baseUrl = null;
   locals.defaultBoard = envHelper.DEFAULT_BOARD;
+  locals.cloudProvider = envHelper.sunbird_cloud_storage_provider;
   locals.blobUrl = envHelper.sunbird_portal_cdn_blob_url;
   locals.uciBotPhoneNumber = envHelper.sunbird_portal_uci_bot_phone_number;
   return locals

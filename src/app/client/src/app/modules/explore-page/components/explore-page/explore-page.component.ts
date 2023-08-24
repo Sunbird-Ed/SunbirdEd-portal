@@ -1133,11 +1133,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             return;
         }
         if (this.isUserLoggedIn()) {
-            if (pillData.name === 'observation') {
+            if (pillData.name === 'observations') {
                 this.router.navigate(['observation']);
             }
         } else {
-            window.location.href = pillData.name === 'observation' ? '/observation' : '/resources'
+            window.location.href = pillData.name === 'observations' ? '/observation' : '/resources'
         }
     }
 

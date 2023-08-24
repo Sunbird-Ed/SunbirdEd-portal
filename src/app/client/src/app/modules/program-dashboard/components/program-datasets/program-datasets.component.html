@@ -56,7 +56,7 @@
 
 <ng-template #globalFilters>
   <ng-container *ngIf="!hideElements">
-    <form class="sb-form" [formGroup]="reportForm">
+    <form class="sb-form" autocomplete="off" [formGroup]="reportForm">
       <div class="d-flex">
         <div class="d-flex flex-w-wrap flex-ai-center ml-32 col-gap">
           <div class="d-flex flex-dc">
@@ -119,20 +119,26 @@
           <div *ngIf="tabIndex !== 1 && tabIndex !== 2  && tabIndex !== 3" class="d-flex flex-dc customDate">
             <label>{{resourceService?.frmelmnts?.lbl?.startdate | titlecase }}</label>
             <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd sb-color-primary">
-              <input [disabled]="!reportForm.controls.programName.value" matInput placeholder="dd/mm/yyyy" [max]="maxStartDate" (dateInput)="dateChanged($event,'startDate')" (dateChange)="dateChanged($event,'startDate')" formControlName="startDate" [matDatepicker]="picker">
+              <input appDateValidator [disabled]="!reportForm.controls.programName.value" matInput placeholder="dd/mm/yyyy" [min]="minStartDate" [max]="maxStartDate" (dateChange)="dateChanged($event,'startDate')" formControlName="startDate" [matDatepicker]="picker">
               <mat-datepicker-toggle matSuffix [for]="picker" class="sb-color-primary"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>            
+            </mat-form-field>
+            <mat-error *ngIf="reportForm.get('startDate').hasError('matDatepickerMax') || reportForm.get('startDate').hasError('matDatepickerMin')">
+              *{{this.resourceService?.frmelmnts?.msg?.invalidDateMsg | interpolate:'{type}': (resourceService?.frmelmnts?.lbl?.startdate | lowercase)}}
+            </mat-error>            
           </div>
           <div *ngIf="tabIndex !== 1 && tabIndex !== 2  && tabIndex !== 3" class="d-flex flex-dc customDate">
             <label>{{resourceService?.frmelmnts?.lbl?.enddate | titlecase }}</label>
             <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd sb-color-primary">
-              <input [disabled]="!reportForm.controls.programName.value"  matInput placeholder="dd/mm/yyyy" [min]="minEndDate" [max]="maxEndDate"  (dateInput)="dateChanged($event,'endDate')" (dateChange)="dateChanged($event,'endDate')" formControlName="endDate" [matDatepicker]="picker">
+              <input appDateValidator [disabled]="!reportForm.controls.programName.value"  matInput placeholder="dd/mm/yyyy" [min]="minEndDate" [max]="maxEndDate"  (dateChange)="dateChanged($event,'endDate')" formControlName="endDate" [matDatepicker]="picker">
               <mat-datepicker-toggle matSuffix [for]="picker" class="sb-color-primary"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>            
+            <mat-error *ngIf="reportForm.get('endDate').hasError('matDatepickerMax') || reportForm.get('endDate').hasError('matDatepickerMin')">
+              *{{this.resourceService?.frmelmnts?.msg?.invalidDateMsg | interpolate:'{type}': (resourceService?.frmelmnts?.lbl?.enddate | lowercase)}}
+            </mat-error> 
           </div>
-          <ng-container *ngIf="pdFilters.length && tabIndex !== 1 && tabIndex !== 2">
+          <ng-container *ngIf="pdFilters.length && tabIndex !== 1 && tabIndex !== 2 && tabIndex !== 3">
             <ng-container *ngFor="let filter of pdFilters">
               <app-pd-filters [pdFilter]="filter" (filterChanged)="pdFilterChanged($event)"></app-pd-filters>
             </ng-container>
@@ -142,7 +148,7 @@
         </div>
         <div class="d-flex flex-dc ml-auto btn-col">
           <button type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary reset-filter flex-as-flex-end" (click)="resetFilter()">{{resourceService?.frmelmnts?.btn?.resetFilters}}</button>
-          <mat-form-field *ngIf="!noResult && (tabIndex == 1)" appearance="fill" class="sb-mat__dropdown custom_mat_dd">
+          <mat-form-field *ngIf="!noResult && (tabIndex == 1)" appearance="fill" class="sb-mat__dropdown custom_mat_dd exportBtn">
             <mat-select role="radio" class="selection" placeholder="Export as" (selectionChange)="downloadReport($event)" >
             <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of exportOptions" [value]="option"
             attr.aria-label="{{option}}">{{option}}</mat-option>
@@ -162,7 +168,7 @@
 </ng-template>
 <ng-template #programDataset>
   <ng-container *ngTemplateOutlet="globalFilters"></ng-container>
-  <div *ngIf="reportForm.controls.programName.value && (!userAccess|| (oldProgram && !reportForm.controls.solution.value) || newData)"class="newData">*{{errorMessage}}</div>
+  <div *ngIf="programSelected && (!userAccess|| (oldProgram && !reportForm.controls.solution.value) || newData)"class="newData">*{{errorMessage}}</div>
   <div class="sbt-inside-page-container relative position mt-32">
     <div>
       <div>
@@ -207,7 +213,7 @@
 </ng-template>
 <ng-template #graphs let-currentReport>
   <ng-container *ngTemplateOutlet="globalFilters" ></ng-container>
-  <div *ngIf="(oldProgram && newData) || (!oldProgram && showErrorForGraphs)" class="newData">*{{errorMessage}}</div>
+  <div *ngIf="programSelected && ((oldProgram && newData) || (!oldProgram && showErrorForGraphs))" class="newData">*{{errorMessage}}</div>
   <ng-container *ngIf="(oldProgram && reportForm.controls.solution.value && currentReport.charts.length) || (!oldProgram && currentReport.charts.length)">
     <div class="sb-graph-section p-24 my-24"
         *ngFor="let chart of currentReport.charts;">
@@ -238,7 +244,7 @@
 
   <ng-template #tables let-table>
     <ng-container *ngTemplateOutlet="globalFilters"></ng-container>
-    <div *ngIf="(oldProgram && newData) || (!oldProgram && !reportForm.controls.solution.value) || newData"class="newData">*{{errorMessage}}</div>
+    <div *ngIf="programSelected && ((oldProgram && newData) || (!oldProgram && !reportForm.controls.solution.value) || newData)"class="newData">*{{errorMessage}}</div>
       <div *ngIf="table?.data" class="sb-graph-section p-24 my-24">
             <div class="customTable">
               <app-sb-table [tableToCsv]="tableToCsv" [table]="table" [hideElements]="hideElements" [appliedFilters]="appliedFilters"></app-sb-table>

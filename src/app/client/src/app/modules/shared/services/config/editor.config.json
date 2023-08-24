@@ -1206,7 +1206,10 @@
                 },
                 "showEndPage": false
             },
-            "pluginsRepoUrl": "/plugins/v1/search"
+            "pluginsRepoUrl": "/plugins/v1/search",
+            "cloudStorage": {
+                "provider": ""
+            }
         }
     },
     "GENERIC_EDITOR": {
@@ -1256,6 +1259,9 @@
                     "showUser": false
                 },
                 "showEndPage": false
+            },
+            "cloudStorage": {
+                "provider": ""
             }
         },
         "contentState": [
