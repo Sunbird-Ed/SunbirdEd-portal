@@ -25,8 +25,8 @@ module.exports = function (app) {
   // Helper route to enable enable admin to update user fields
   app.patch('/learner/portal/user/v1/update',
     proxyUtils.verifyToken(),
-    proxy(envHelper.learner_Service_Local_BaseUrl, {
-      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(envHelper.learner_Service_Local_BaseUrl),
+    proxy(envHelper?.learner_Service_Local_BaseUrl, {
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(envHelper?.learner_Service_Local_BaseUrl),
       proxyReqPathResolver: (req) => {
         return '/private/user/v3/update';
       },

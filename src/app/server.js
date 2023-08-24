@@ -273,10 +273,10 @@ require('./routes/mlRoutes.js')(app) // observation api routes
 //cert-reg routes
 require('./routes/certRegRoutes.js')(app);
 
-app.all(['/content/data/v1/telemetry', '/action/data/v3/telemetry'], proxy(envHelper.TELEMETRY_SERVICE_LOCAL_URL, {
+app.all(['/content/data/v1/telemetry', '/action/data/v3/telemetry'], proxy(envHelper?.TELEMETRY_SERVICE_LOCAL_URL, {
   limit: '50mb',
-  proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(envHelper.TELEMETRY_SERVICE_LOCAL_URL),
-  proxyReqPathResolver: req => require('url').parse(envHelper.TELEMETRY_SERVICE_LOCAL_URL + telemetryEventConfig.endpoint).path
+  proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(envHelper?.TELEMETRY_SERVICE_LOCAL_URL),
+  proxyReqPathResolver: req => require('url').parse(envHelper?.TELEMETRY_SERVICE_LOCAL_URL + telemetryEventConfig.endpoint).path
 }))
 
 app.get(['/v1/tenant/info', '/v1/tenant/info/:tenantId'], proxyUtils.addCorsHeaders, tenantHelper.getInfo) // tenant api

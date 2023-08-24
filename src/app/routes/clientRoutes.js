@@ -193,9 +193,9 @@ function getLocals(req) {
   locals.deviceId = '';
   locals.deviceProfileApi = envHelper.DEVICE_PROFILE_API;
   locals.slug = slug ? slug : '';
-  locals.collectionEditorURL = envHelper.CONTENT_EDITORS_URL.COLLECTION_EDITOR;
-  locals.contentEditorURL = envHelper.CONTENT_EDITORS_URL.CONTENT_EDITOR;
-  locals.genericEditorURL = envHelper.CONTENT_EDITORS_URL.GENERIC_EDITOR;
+  locals.collectionEditorURL = envHelper?.CONTENT_EDITORS_URL?.COLLECTION_EDITOR;
+  locals.contentEditorURL = envHelper?.CONTENT_EDITORS_URL?.CONTENT_EDITOR;
+  locals.genericEditorURL = envHelper?.CONTENT_EDITORS_URL?.GENERIC_EDITOR;
   locals.botConfigured = envHelper.sunbird_bot_configured;
   locals.botServiceURL = envHelper.sunbird_bot_service_URL;
   locals.superAdminSlug = envHelper.sunbird_super_admin_slug;
@@ -233,14 +233,14 @@ const indexPage = (loggedInRoute) => {
 const renderDefaultIndexPage = (req, res) => {
   const mobileDetect = new MobileDetect(req.headers['user-agent'])
   if ((req.path == '/get' || req.path == `/${req.params.slug}/get`) && mobileDetect.os() == 'AndroidOS') {
-    res.redirect(envHelper.ANDROID_APP_URL)
+    res.redirect(envHelper?.ANDROID_APP_URL)
   } else {
     res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
     res.locals = getLocals(req);
     logger.info({
       msg: 'cdn parameters:',
       additionalInfo: {
-        PORTAL_CDN_URL: envHelper.PORTAL_CDN_URL,
+        PORTAL_CDN_URL: envHelper?.PORTAL_CDN_URL,
         cdnIndexFileExist: cdnIndexFileExist,
         cdnFailedCookies: req.cookies.cdnFailed
       }

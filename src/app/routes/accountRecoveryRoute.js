@@ -14,8 +14,8 @@ module.exports = (app) => {
 
   app.post('/learner/user/v1/fuzzy/search',
   googleService.validateRecaptcha,
-  proxy(envHelper.learner_Service_Local_BaseUrl, {
-    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(envHelper.learner_Service_Local_BaseUrl),
+  proxy(envHelper?.learner_Service_Local_BaseUrl, {
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(envHelper?.learner_Service_Local_BaseUrl),
     proxyReqPathResolver: (req) => {
       logger.info({ msg: `${req.url} called`});
     return '/private/user/v1/search';
@@ -50,8 +50,8 @@ module.exports = (app) => {
         });
       }
     },
-    proxy(envHelper.learner_Service_Local_BaseUrl, {
-      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(envHelper.learner_Service_Local_BaseUrl),
+    proxy(envHelper?.learner_Service_Local_BaseUrl, {
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(envHelper?.learner_Service_Local_BaseUrl),
       proxyReqPathResolver: (req) => {
         return '/private/user/v1/password/reset'; // /private/user/v1/reset/password
       }

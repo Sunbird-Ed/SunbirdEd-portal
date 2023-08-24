@@ -4,11 +4,11 @@ const bodyParser = require('body-parser')
 const envHelper = require('./../helpers/environmentVariablesHelper.js')
 const contentProxyUrl = envHelper.CONTENT_PROXY_URL
 const learnerServiceBaseUrl = envHelper.LEARNER_URL
-const learner_Service_Local_BaseUrl = envHelper.learner_Service_Local_BaseUrl
-const contentServiceBaseUrl = envHelper.CONTENT_URL
+const learner_Service_Local_BaseUrl = envHelper?.learner_Service_Local_BaseUrl
+const contentServiceBaseUrl = envHelper?.CONTENT_URL
 const reqDataLimitOfContentUpload = '30mb'
 const telemetryHelper = require('../helpers/telemetryHelper')
-const learnerURL = envHelper.LEARNER_URL
+const learnerURL = envHelper?.LEARNER_URL
 const isAPIWhitelisted = require('../helpers/apiWhiteList');
 
 module.exports = function (app) {
@@ -105,7 +105,7 @@ module.exports = function (app) {
   app.all('/action/review/comment/*',
   isAPIWhitelisted.isAllowed(),
   addCorsHeaders,
-  proxy(envHelper.PORTAL_EXT_PLUGIN_URL, {
+  proxy(envHelper?.PORTAL_EXT_PLUGIN_URL, {
     proxyReqPathResolver: req => {
       return req.originalUrl.replace('/action', '/plugin')
     },
