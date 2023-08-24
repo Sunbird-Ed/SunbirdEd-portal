@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Icons/content/course</title>
+    <g id="Icons/content/course" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Size" fill="#D8D8D8" opacity="0" x="0" y="0" width="24" height="24"></rect>
+        <path d="M3,6 C2.45,6 2,6.45 2,7 L2,20 C2,21.1 2.9,22 4,22 L17,22 C17.55,22 18,21.55 18,21 C18,20.45 17.55,20 17,20 L5,20 C4.45,20 4,19.55 4,19 L4,7 C4,6.45 3.55,6 3,6 Z M20,2 L8,2 C6.9,2 6,2.9 6,4 L6,16 C6,17.1 6.9,18 8,18 L20,18 C21.1,18 22,17.1 22,16 L22,4 C22,2.9 21.1,2 20,2 Z M12,14.5 L12,5.5 L17.47,9.6 C17.74,9.8 17.74,10.2 17.47,10.4 L12,14.5 Z" id="Shape" fill-opacity="0.6" fill="#000000"></path>
+    </g>
+</svg>
