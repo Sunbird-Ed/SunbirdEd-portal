@@ -19,8 +19,8 @@ export class ContentDownloadManager {
   private systemSDK;
   private ContentReadUrl = `${process.env.APP_BASE_URL}/api/content/v1/read/`;
   private ContentSearchUrl = `${process.env.APP_BASE_URL}/api/content/v1/search`;
-  private QuestionSetReadUrl = `${process.env.APP_BASE_URL}/learner/questionset/v1/hierarchy/`;
-  private QuestionListUrl = `${process.env.APP_BASE_URL}/api/question/v1/list`;
+  private QuestionSetReadUrl = `${process.env.APP_BASE_URL}/learner/questionset/v2/hierarchy/`;
+  private QuestionListUrl = `${process.env.APP_BASE_URL}/api/question/v2/list`;
   @Inject private standardLog = containerAPI.getStandardLoggerInstance();
   public async initialize() {
     this.systemQueue = containerAPI.getSystemQueueInstance(manifest.id);

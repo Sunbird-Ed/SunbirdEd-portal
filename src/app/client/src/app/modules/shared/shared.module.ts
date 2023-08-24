@@ -46,6 +46,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MaterialModule } from './modules/material/material.module';
+import { MatMenuModule } from '@angular/material/menu';
 import { SummaryCardComponent } from './components/summary-card/summary-card.component';
 import { SummaryCardContainerComponent } from './components/summary-card-container/summary-card-container.component';
 import { CommonConsumptionModule } from 'compass-common-consumption';
@@ -64,7 +65,7 @@ import { CompassHeaderComponent } from './components/compass-header/compass-head
         MatTooltipModule, MatTabsModule, MatDialogModule,
         MatAutocompleteModule, MatFormFieldModule, MatInputModule,
         MatChipsModule, MatIconModule, MatSelectModule, MatListModule, MatButtonModule, MatCheckboxModule, MaterialModule,
-        CommonConsumptionModule
+    CommonConsumptionModule, MatMenuModule
     ],
     declarations: [AppLoaderComponent, DateFormatPipe,
         BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe, InterpolatePipe,

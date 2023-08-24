@@ -12,16 +12,15 @@ export class CompassHeaderComponent implements OnInit {
   @Input() userProfile: any;
   @Input() guestUser: any;
   @Input() hrefPath: any;
-  
+  @Input() avatarConfig: any;
+
   @Output() clearFilters = new EventEmitter();
   @Output() navigateToHome = new EventEmitter();
   @Output() toggleSidebar = new EventEmitter<any>();
 
   constructor() { }
 
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void { }
 
   navigateToHomepage(){
     this.navigateToHome.emit('');
