@@ -68,8 +68,9 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   contentName: string;
   showModal = false;
   showBackButton = false;
-  public allCompetencyInfo : any = {};
-  public competencyList : Array<Competency> = [];
+  public competencyInfo : any = {};
+  public allCompetencyList : Array<Competency> = [];
+  public popularCompetencyList : Array<Competency> = [];
   public coursesByCompetencies:any = {}
 
 
@@ -193,14 +194,17 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
                   competency.title=value.name;
                   competency.type="type";
                   competency.noOfCourses=value.count;
-                  competency.icon="icon";
+                  competency.icon="../../../../../assets/images/courseIcon.svg";
+                  this.popularCompetencyList.push(competency);
                   competency.description="Planning vigilance activities in accordance with procedures that balance the needs of maintaining a fraud free environment and business objectives";
-                  this.competencyList.push(competency);
+                  this.allCompetencyList.push(competency);
                 }
               }
             }
-            this.allCompetencyInfo.title="All competencies";
-            this.allCompetencyInfo.data=this.competencyList;
+            this.competencyInfo.title="All competencies";
+            this.competencyInfo.popularTitle="Popular competencies";
+            this.competencyInfo.data=this.allCompetencyList;
+            this.competencyInfo.popularData=this.popularCompetencyList;
           })
     }
 }
