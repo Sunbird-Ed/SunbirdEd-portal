@@ -1,4 +1,5 @@
 import { Component, OnInit, HostListener } from '@angular/core';
+import { Router } from '@angular/router';
 import { LayoutService } from '@sunbird/shared';
 import * as publicService from '../../services';
 import { SearchService } from './../../../core/services/search/search.service';
@@ -17,7 +18,7 @@ export class LandingPageComponent implements OnInit {
 
   layoutConfiguration;
 
-  constructor(public layoutService: LayoutService, private landingPageContentService: publicService.LandingPageContentService, public search: SearchService) { }
+  constructor(public layoutService: LayoutService, private landingPageContentService: publicService.LandingPageContentService, public search: SearchService, private router: Router) { }
 
   ngOnInit() {
     // alert()
@@ -110,14 +111,25 @@ export class LandingPageComponent implements OnInit {
   slickInit(e: any) {
     // console.log('slick initialized');
   }
+
   breakpoint(e: any) {
     // console.log('breakpoint');
   }
+
   afterChange(e: any) {
     // console.log('afterChange');
   }
+  
   beforeChange(e: any) {
     // console.log('beforeChange');
+  }
+
+  loginClick = () => {
+    window.location.href = '/resources';
+  }
+
+  registerClick = () => {
+    this.router.navigateByUrl('/signup')
   }
 
 }
