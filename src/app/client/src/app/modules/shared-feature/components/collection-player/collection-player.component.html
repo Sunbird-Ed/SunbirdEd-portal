@@ -158,7 +158,7 @@
             </sb-library-filters>
           </div>
 
-          <div [hidden]="isSelectChapter" class="main-side-toc-content">
+          <div [hidden]="isSelectChapter" class="main-side-toc-content add-scroll">
             <sb-toc-item [selectAll]="selectAll" [selectMode]="isCopyAsCourseClicked"
               [activeMimeTypeFilter]="activeMimeTypeFilter" [tocData]="collectionData"
               [noContentMessage]="noContentMessage" (tocCardClick)="tocCardClickHandler($event)"
@@ -168,13 +168,13 @@
               [platform]="PlatformType.PORTAL" [type]="TocCardType.TRACKABLE"
               [trackableDefaultImage]="'assets/images/mask-image/courses.svg'"></sb-toc-item>
           </div>
-          <div [hidden]="!isSelectChapter">
+          <div [hidden]="!isSelectChapter" class="mt-20">
             <span>
               <app-content-chapterlist [activeContent]="activeContent" [contentDetails]="collectionData"
                 (tocChapterClick)="tocChapterClickHandler($event)"></app-content-chapterlist>
             </span>
           </div>
-          <div>
+          <div class="mt-20">
             <app-content-licence [content]="collectionData"></app-content-licence>
           </div>
         </section>
