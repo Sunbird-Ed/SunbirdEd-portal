@@ -196,8 +196,9 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
                   competency.noOfCourses=value.count;
                   competency.icon="../../../../../assets/images/courseIcon.svg";
                   this.popularCompetencyList.push(competency);
-                  competency.description="Planning vigilance activities in accordance with procedures that balance the needs of maintaining a fraud free environment and business objectives";
-                  this.allCompetencyList.push(competency);
+                  let allComp: any = {...competency};
+                  allComp.description="Planning vigilance activities in accordance with procedures that balance the needs of maintaining a fraud free environment and business objectives";
+                  this.allCompetencyList.push(allComp);
                 }
               }
             }
@@ -205,6 +206,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
             this.competencyInfo.popularTitle="Popular competencies";
             this.competencyInfo.data=this.allCompetencyList;
             this.competencyInfo.popularData=this.popularCompetencyList;
+            console.log("popular data",this.competencyInfo.popularData);
           })
     }
 }

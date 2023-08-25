@@ -82,11 +82,11 @@
     <!-- popular competencies -->
     <section class="ui container mt-60" *ngIf="competencyInfo">
       <p class="allCompetencyTitle w-100">{{competencyInfo.popularTitle}}</p>
-      <div class="w-100 d-flex flex-jc-space-around popular-comp-container">
+      <div class="w-100 d-flex flex-jc-flex-start popular-comp-container">
           <sb-popular-card
             *ngFor="let info of competencyInfo.popularData"
             [pillName]="'Competency'" [data]="info"
-            class="w-30 mb-32"
+            class="w-20 mb-32 mr-24"
             (click)="getBrowseByData(info.title)"
           ></sb-popular-card>
       </div>
