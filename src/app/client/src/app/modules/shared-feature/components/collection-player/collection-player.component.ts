@@ -553,9 +553,10 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
           event.data.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
           this.playerService.playContent(event.data, { textbook: this.collectionData.identifier });
         }
-
+        window.scroll(0,0); // to scroll up when clicked on chapter
       } else {
         this.publicPlayerService.playContent(event, { textbook: this.collectionData.identifier });
+        window.scroll(0,0); // to scroll up when clicked on chapter
       }
     } else {
       this.callinitPlayer(event);
