@@ -1,4 +1,4 @@
-<app-landing-section [textToDisplay]="" [layoutConfiguration]="layoutConfiguration" [noTitle]="true">
+<!-- <app-landing-section [textToDisplay]="" [layoutConfiguration]="layoutConfiguration" [noTitle]="true">
 </app-landing-section>
 <app-course-consumption-header *ngIf="!showLoader && !showError && showAddGroup !== null"
     [courseHierarchy]="courseHierarchy" [enrolledBatchInfo]="enrolledBatchInfo" [groupId]="groupId"
@@ -15,4 +15,15 @@
 </div>
 <app-batch-info *ngIf="showBatchInfo" [enrolledBatchInfo]="selectedCourseBatches"
     (routeChanged)="refreshComponent($event)">
-</app-batch-info>
+</app-batch-info> -->
+
+<div class="courseTab">
+    <mat-tab-group animationDuration="0ms">
+        <mat-tab label="Overview">
+            <app-course-player></app-course-player>
+        </mat-tab>
+        <mat-tab label="Course content">Course content</mat-tab>
+        <mat-tab label="Discussion forum"> Discussion forum</mat-tab>
+        <mat-tab label="Course members"> Course members</mat-tab>
+    </mat-tab-group>
+</div>
