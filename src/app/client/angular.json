@@ -37,7 +37,7 @@
               },
               {
                 "glob": "**/*",
-                "input": "./node_modules/@project-sunbird/sunbird-pdf-player-v9/lib/assets/",
+                "input": "./node_modules/@dictrigyn/pdf-player/lib/assets/",
                 "output": "/assets/"
               },
               {
