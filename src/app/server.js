@@ -4,7 +4,8 @@ const envHelper = require('./helpers/environmentVariablesHelper.js');
 const path = require('path');
 const fs = require('fs');
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-
+const utils = require('./helpers/utils.js');
+const LEARNER_URL = utils.defaultHost(utils.envVariables.LEARNER_URL);
 enableLogger({
   logBasePath: path.join(__dirname, 'logs'),
   logLevel: envHelper.sunbird_portal_log_level,
@@ -359,7 +360,7 @@ async function runApp() {
 const fetchDefaultChannelDetails = (callback) => {
   const options = {
     method: 'POST',
-    url: envHelper.LEARNER_URL + 'org/v2/search',
+    url: LEARNER_URL + 'org/v2/search',
     headers: {
       'x-msgid': uuid(),
       'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),

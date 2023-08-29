@@ -5,7 +5,8 @@
  */
 const proxyUtils = require('../proxy/proxyUtils.js')
 const envHelper = require('../helpers/environmentVariablesHelper.js')
-const contentURL = envHelper.CONTENT_URL
+const utils = require('../helpers/utils.js');
+const contentURL  = utils.defaultHost(utils.envVariables.CONTENT_URL);
 const telemetryHelper = require('../helpers/telemetryHelper.js')
 const orgAdminHelper = require('../helpers/orgAdminHelper.js')
 const reqDataLimitOfContentUpload = '50mb'

@@ -1,8 +1,13 @@
+const utils = require('../helpers/utils');
 const proxyUtils = require('../proxy/proxyUtils.js')
 const reportHelper = require('../helpers/reportHelper.js')
 const BASE_REPORT_URL = "/report";
 const proxy = require('express-http-proxy');
-const {REPORT_SERVICE_URL, sunbird_api_request_timeout, DATASERVICE_URL,CONTENT_URL, sunbird_data_product_service} = require('../helpers/environmentVariablesHelper.js');
+const REPORT_SERVICE_URL = utils.defaultHost(utils.envVariables.REPORT_SERVICE_URL);
+const CONTENT_URL = utils.defaultHost(utils.envVariables.CONTENT_URL);
+const sunbird_data_product_service = utils.defaultHost(utils.envVariables.sunbird_data_product_service);
+const DATASERVICE_URL = utils.defaultHost(utils.envVariables.DATASERVICE_URL);
+
 const reqDataLimitOfContentUpload = '50mb';
 const _ = require('lodash');
 const {getUserDetailsV2} = require('../helpers/userHelper');

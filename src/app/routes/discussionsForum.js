@@ -1,7 +1,8 @@
 const proxyUtils = require('../proxy/proxyUtils.js');
 const BASE_REPORT_URL = "/discussion";
 const proxy = require('express-http-proxy');
-const { discussions_middleware } = require('../helpers/environmentVariablesHelper.js');
+const utils = require('../helpers/utils.js');
+const  discussions_middleware = utils.defaultHost(utils.envVariables.discussions_middleware);
 const jwt = require('jsonwebtoken');
 const _ = require('lodash')
 const bodyParser = require('body-parser');
