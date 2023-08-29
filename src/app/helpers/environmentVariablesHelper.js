@@ -29,7 +29,7 @@ let envVariables = {
   PORTAL_SESSION_SECRET_KEY: (env.sunbird_portal_session_secret && env.sunbird_portal_session_secret !== '')
     ? env.sunbird_portal_session_secret.split(',') : 'sunbird,ed48b0ce-5a92-11ed-9b6a-0242ac120002'.split(','),
   // Application Start-up - Hosts and PORT Configuration
-  PORTAL_PORT: env.sunbird_port || 3200,
+  PORTAL_PORT: env.sunbird_port || 3000,
   LEARNER_URL: env.sunbird_learner_player_url || SB_DOMAIN + '/api/',
   CONTENT_URL: env.sunbird_content_player_url || SB_DOMAIN + '/api/',
   CONTENT_PROXY_URL: env.sunbird_content_proxy_url || SB_DOMAIN,
