@@ -6,17 +6,11 @@ const SB_DOMAIN = 'https://staging.sunbirded.org' // mandatory
 let envVariables = {
   // Environment variables
   //mandatory
-  KONG_DEVICE_REGISTER_AUTH_TOKEN:
-    env.sunbird_kong_device_register_token ||
-    "token1",
+  KONG_DEVICE_REGISTER_AUTH_TOKEN: env.sunbird_kong_device_register_token || '',
   // Device register API for anonymous users
-  sunbird_anonymous_register_token:
-    env.sunbird_anonymous_register_token ||
-    "token2",
+  sunbird_anonymous_register_token: env.sunbird_anonymous_register_token || '',
   // Fallback token for device register API for `anonymous` users
-  sunbird_anonymous_default_token:
-    env.sunbird_anonymous_default_token ||
-    "token3",
+  sunbird_anonymous_default_token: env.sunbird_anonymous_default_token || '',
   //Generalised cloud configuration // 
   cloud_private_storage_accountname: env.cloud_private_storage_accountname || 'azure', //default 
   sunbird_cloud_storage_provider: env.sunbird_cloud_storage_provider || 'azure',
