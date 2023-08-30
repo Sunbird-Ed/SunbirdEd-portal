@@ -10,12 +10,12 @@ import {
   SuiRatingModule, SuiCollapseModule, SuiDimmerModule
 } from 'ng2-semantic-ui-v9';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { ContentSearchModule } from '@sunbird/content-search';
 import { ExplorePageComponent } from './components';
 import { ContentSectionModule } from '@project-sunbird/sb-content-section';
 import {ObservationModule} from '../observation/observation.module';
-import { CardModule } from 'compass-common-consumption'
+import { CommonConsumptionModule } from 'compass-common-consumption';
+import { CardModule } from 'compass-common-consumption';
 
 @NgModule({
   declarations: [ExplorePageComponent],

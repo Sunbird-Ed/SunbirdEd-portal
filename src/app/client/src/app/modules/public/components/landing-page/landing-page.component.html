@@ -1,22 +1,23 @@
-<app-landing-section [textToDisplay]="" [layoutConfiguration]="layoutConfiguration" [noTitle]="false">
-</app-landing-section>
-<compass-banner [loginCallback]="loginClick" [registerCallback]="registerClick" [config]="configContent.banner"></compass-banner>
-<div class="featured-courses-section">
-    <p class="heading">Featured Courses</p>
-    <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig" (init)="slickInit($event)"
-        (breakpoint)="breakpoint($event)" (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
-        <div ngxSlickItem class="slide" *ngFor='let course of courses;'>
-            <compass-course-card [data]="course"></compass-course-card>
-        </div>
-    </ngx-slick-carousel>
-</div>
-
-<!-- Goal oriented HR benefits section -->
-<div class="container goal-oriented-hr-section">
-    <p class="heading">The Benefits of Goal-Oriented HR</p>
-    <div class="ui grid middle aligned stackable">
-        <div class="three wide column" *ngFor='let card of configContent.goalOrientedHrCards;'>
-            <goal-oriented-hr-card [data]="card"></goal-oriented-hr-card>
+    <app-landing-section [textToDisplay]="" [layoutConfiguration]="layoutConfiguration" [noTitle]="false">
+    </app-landing-section>
+   
+    <compass-banner [loginCallback]="loginClick" [registerCallback]="registerClick" [config]="configContent.banner"></compass-banner>
+    <div class="featured-courses-section container ui">
+        <p class="heading">Featured Courses</p>
+        <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig" (init)="slickInit($event)"
+            (breakpoint)="breakpoint($event)" (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
+            <div ngxSlickItem class="slide" *ngFor='let course of courses;'>
+                <compass-course-card [data]="course"></compass-course-card>
+            </div>
+        </ngx-slick-carousel>
+    </div>
+    <!-- Goal oriented HR benefits section -->
+    <div class="container ui goal-oriented-hr-section">
+        <p class="heading">The Benefits of Goal-Oriented HR</p>
+        <div class="ui grid middle aligned stackable">
+            <div class="three wide column" *ngFor='let card of configContent.goalOrientedHrCards;'>
+                <goal-oriented-hr-card [data]="card"></goal-oriented-hr-card>
+            </div>
         </div>
     </div>
     <!-- <info-card-container [cardInfo]="configContent.infoCard"></info-card-container> -->

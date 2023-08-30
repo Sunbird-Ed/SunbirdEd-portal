@@ -6,7 +6,7 @@ module.exports = (app) => {
             res.send(landingPageContent);
     });
 
-    app.get('/learnPageContent', (req, res) => {
+    app.get('/learnLandingPageContent', (req, res) => {
         res.send(learnPageContent);
     })
 }
