@@ -212,11 +212,11 @@
 
   <div class="ui container mt-32">
     <div class="popular-card">
-      <div class="popular-card-title">Popular topics</div>
-      <div><button class="com-secondary-btn">All topics</button></div>
+      <div class="popular-card-title">{{topicsData.title}}</div>
+      <div><button class="com-secondary-btn">{{topicsData.button}}</button></div>
     </div>
     <div class="ui grid middle aligned stackable">
-      <div class="three wide column" *ngFor="let data of topicsData;let i=index">
+      <div class="three wide column" *ngFor="let data of topicsData.data;let i=index">
         <sb-popular-card [pillName]="'Topic'" [data]="data"></sb-popular-card>
       </div>
     </div>
@@ -224,11 +224,11 @@
 
   <div class="ui container mt-32">
     <div class="popular-card">
-      <div class="popular-card-title">Popular competencies</div>
-      <div><button class="com-secondary-btn">All competencies</button></div>
+      <div class="popular-card-title">{{competencyData.title}}</div>
+      <div><button class="com-secondary-btn">{{competencyData.button}}</button></div>
     </div>
     <div class="ui grid middle aligned stackable">
-      <div class="three wide column" *ngFor="let data of competencyData;let i=index">
+      <div class="three wide column" *ngFor="let data of competencyData.data;let i=index">
         <sb-popular-card [pillName]="'Competency'" [data]="data"></sb-popular-card>
       </div>
     </div>

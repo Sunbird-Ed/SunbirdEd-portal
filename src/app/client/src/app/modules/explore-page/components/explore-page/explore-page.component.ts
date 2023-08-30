@@ -251,8 +251,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             this.addHoverData();
         });
         this.learnPageContentService.getPageContent().subscribe((res:any) => {
-            this.competencyData = res.competencyData.data;
-            this.topicsData = res.topicsData.data
+            this.competencyData = res.competencyData;
+            this.topicsData = res.topicsData;
             this.configContent = res;
           })
     }
