@@ -20,6 +20,7 @@ import { SunbirdEpubPlayerModule } from '@project-sunbird/sunbird-epub-player-v9
 import { QumlPlayerService } from './service/quml-player/quml-player.service';
 import { QumlLibraryModule, QuestionCursor } from '@project-sunbird/sunbird-quml-player-v9';
 import { EditorCursor } from '@project-sunbird/sunbird-collection-editor-v9';
+import { WidgetComponent } from './components/widget/widget.component';
 
 
 
@@ -47,7 +48,8 @@ import { EditorCursor } from '@project-sunbird/sunbird-collection-editor-v9';
     ContentPlayerComponent, ContentPlayerPageComponent, ContentChapterlistComponent,
     ContentLicenceComponent,
     CurriculumInfoComponent,
-    CourseInfoComponent],
+    CourseInfoComponent,
+    WidgetComponent],
   exports: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
     FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent,
     CommingSoonComponent, CreditsAndLicenceComponent, ContentActionsComponent,

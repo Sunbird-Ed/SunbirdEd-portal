@@ -1,9 +1,9 @@
 <div class="content-video">
   <section class="" id="player-area-height">
     <div class="aspectratio sbt-shadow-radius" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio [ngClass]="{'player-fullscreen': isFullScreenView}">
-      <app-player class="content-player" [playerOption]="playerOption" [playerConfig]="playerConfig"
+      <app-widget class="content-player" [playerOption]="playerOption" [playerConfig]="playerConfig"
         [contentProgressEvents$]="contentProgressEvents$" (assessmentEvents)="onAssessmentEvents($event)"
-        (questionScoreSubmitEvents)="onQuestionScoreSubmitEvents($event)" (questionScoreReviewEvents)="onQuestionScoreReviewEvents($event)"[isContentDeleted]="contentDeleted" ></app-player>
+        (questionScoreSubmitEvents)="onQuestionScoreSubmitEvents($event)" (questionScoreReviewEvents)="onQuestionScoreReviewEvents($event)"[isContentDeleted]="contentDeleted" ></app-widget>
       
       <app-content-actions [assessmentEvents]="assessmentEvents" *ngIf="isFullScreenView" class="player-fullscreen-action-items" [isFullScreen]="true" [contentData]="contentData" [objectRollUp]="objectRollUp">
       </app-content-actions>
