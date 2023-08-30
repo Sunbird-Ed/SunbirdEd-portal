@@ -1,5 +1,4 @@
 const proxy = require('express-http-proxy')
-const envHelper = require('./../helpers/environmentVariablesHelper.js')
 const utils = require('../helpers/utils.js');
 const learnerBaseUrl  = utils.defaultHost(utils.envVariables.LEARNER_SERVICE_UPSTREAM_URL);
 const contentBaseUrl  = utils.defaultHost(utils.envVariables.CONTENT_SERVICE_UPSTREAM_URL);

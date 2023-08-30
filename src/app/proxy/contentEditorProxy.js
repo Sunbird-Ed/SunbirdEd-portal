@@ -2,7 +2,6 @@ const utils = require('../helpers/utils.js');
 const proxyUtils = require('./proxyUtils.js')
 const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')
-const envHelper = require('./../helpers/environmentVariablesHelper.js')
 const contentProxyUrl  = utils.defaultHost(utils.envVariables.CONTENT_PROXY_URL);
 const learnerServiceBaseUrl  = utils.defaultHost(utils.envVariables.LEARNER_URL);
 const learner_Service_Local_BaseUrl = utils.defaultHost(utils.envVariables.learner_Service_Local_BaseUrl);
