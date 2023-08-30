@@ -25,6 +25,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   @Output() submit = new EventEmitter<any>();
   @Output() close = new EventEmitter<any>();
   @Input() dialogProps;
+  @Input() hashId;
   @Input() isStepper: boolean = false;
   public allowedFields = ['board', 'medium', 'gradeLevel', 'subject'];
   private _formFieldProperties: any;
@@ -60,6 +61,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       this.orgDetailsService.getOrgDetails(this.userService.slug).subscribe((data: any) => {
         this.guestUserHashTagId = data.hashTagId;
       });
+      this.guestUserHashTagId =this.guestUserHashTagId || this.hashId;
       this.allowedFields = ['board', 'medium', 'gradeLevel'];
     }
     if (this.isGuestUser && this.isStepper) {
