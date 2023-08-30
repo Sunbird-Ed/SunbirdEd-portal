@@ -92,6 +92,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     Categorytheme: any;
     filterResponseData = {};
     refreshFilter: boolean = true;
+    competencyData: any;
+    topicsData: any;
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     }
@@ -248,9 +250,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             this.contentDownloadStatus = contentDownloadStatus;
             this.addHoverData();
         });
-        this.learnPageContentService.getPageContent().subscribe(res => {
+        this.learnPageContentService.getPageContent().subscribe((res:any) => {
+            this.competencyData = res.competencyData;
+            this.topicsData = res.topicsData;
             this.configContent = res;
-            console.log(this.configContent);
           })
     }
 

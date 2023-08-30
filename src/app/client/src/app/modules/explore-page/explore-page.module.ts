@@ -28,7 +28,8 @@ import { CardModule } from 'compass-common-consumption';
     SharedFeatureModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
     SuiRatingModule, SuiCollapseModule, SuiDimmerModule, WebExtensionModule,
-    CommonConsumptionModule, ContentSearchModule, ContentSectionModule, ObservationModule
+    CommonConsumptionModule, ContentSearchModule, ContentSectionModule, ObservationModule,
+    CardModule
   ]
 })
 export class ExplorePageModule { }

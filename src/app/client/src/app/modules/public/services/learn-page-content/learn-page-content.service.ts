@@ -9,7 +9,6 @@ export class LearnPageContentService {
   constructor(private http: HttpClient) { }
 
   getPageContent(){
-    console.log("hi");
     return this.http.get('/learnLandingPageContent');
   }
 }
