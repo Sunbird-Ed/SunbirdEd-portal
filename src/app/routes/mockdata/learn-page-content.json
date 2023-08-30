@@ -1,5 +1,7 @@
 {
     "competencyData": {
+        "title": "Popular competencies",
+        "button": "All competencies",
         "data": [
             {
                 "title": "Communication",
@@ -52,6 +54,8 @@
         ]
     },
     "topicsData": {
+        "title": "Popular topics",
+        "button": "All topics",
         "data": [
             {
                 "name": "COVID 19"

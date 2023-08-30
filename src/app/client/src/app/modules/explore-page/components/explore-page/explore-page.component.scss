@@ -125,6 +125,7 @@
   margin-bottom: calculateRem(26px);
   &-title {
     @include typography(var(--font-com-en), 24px, 600, 0px, 36px);
+    text-transform: initial !important;
     opacity: 1;
     color: var(--black);
     font-style: normal;
