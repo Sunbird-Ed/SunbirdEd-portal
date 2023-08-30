@@ -1,19 +1,12 @@
     <app-landing-section [textToDisplay]="" [layoutConfiguration]="layoutConfiguration" [noTitle]="false">
     </app-landing-section>
-    <ng-container *ngIf="configContent">
-        <compass-banner [config]="configContent.banner"></compass-banner>
-    </ng-container>
-    <div class="ui container">
-        <section class="sb-g marginVertical" *ngIf="configContent.summaryCardInfo">
-            <summary-card *ngFor="let info of configContent.summaryCardInfo.cardData"
-                class="sb-g-col-xxl-4 sb-g-col-xl-4 sb-g-col-lg-3 sb-g-col-md-6 sb-g-col-xs-12" [cardInfo]="info"></summary-card>
-        </section>
-    </div>
-    <div class="container ui featured-courses-section">
+   
+    <compass-banner [loginCallback]="loginClick" [registerCallback]="registerClick" [config]="configContent.banner"></compass-banner>
+    <div class="featured-courses-section container ui">
         <p class="heading">Featured Courses</p>
         <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig" (init)="slickInit($event)"
             (breakpoint)="breakpoint($event)" (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
-            <div ngxSlickItem class="slide" *ngFor='let course of configContent.courses;'>
+            <div ngxSlickItem class="slide" *ngFor='let course of courses;'>
                 <compass-course-card [data]="course"></compass-course-card>
             </div>
         </ngx-slick-carousel>

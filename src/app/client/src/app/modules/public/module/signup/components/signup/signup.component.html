@@ -1,6 +1,94 @@
-<!-- New Design code for Registration page -->
+<div class="ui grid">
+  <div class="two column row padded equal height grid login">
+    <div class="column login-left">
+      <div class="logo">
+        <img src="/assets/images/sunbird_logo.png" />
+      </div>
+      <!-- Slideshow container -->
+      <div class="slideshow-container">
 
-<div class="layout">
+        <!-- Full-width images with number and caption text -->
+        <div class="mySlides fade">
+          <div class="slide">
+            <p class="heading">1. Track your goal, perform better!</p>
+            <p class="sub-heading">Et quidem rerum hic tenetur a se esse fugiendum itaque turbent, ut enim
+              ad minima veniam, quis nostrum exercitationem ullam corporis.</p>
+          </div>
+        </div>
+
+        <div class="mySlides fade">
+          <div class="slide">
+            <p class="heading">2. Track your goal, perform better!</p>
+            <p class="sub-heading">Et quidem rerum hic tenetur a se esse fugiendum itaque turbent, ut enim
+              ad minima veniam, quis nostrum exercitationem ullam corporis.</p>
+          </div>
+        </div>
+
+        <div class="mySlides fade">
+          <div class="slide">
+            <p class="heading">3. Track your goal, perform better!</p>
+            <p class="sub-heading">Et quidem rerum hic tenetur a se esse fugiendum itaque turbent, ut enim
+              ad minima veniam, quis nostrum exercitationem ullam corporis.</p>
+          </div>
+        </div>
+
+        <!-- Next and previous buttons -->
+        <!-- <span class="prev" (click)="plusSlides(-1)">&#10094;</span>
+              <span class="next" (click)="plusSlides(1)">&#10095;</span> -->
+      </div>
+      <br>
+
+      <!-- The dots/circles -->
+      <div class="slider-dots">
+        <span class="dot" (click)="currentSlide(1)"></span>
+        <span class="dot" (click)="currentSlide(2)"></span>
+        <span class="dot" (click)="currentSlide(3)"></span>
+      </div>
+    </div>
+    <div class="column login-right ui grid middle aligned">
+      <div class="login-container">
+        <div class="content-center-container">
+          <div class="logo-content">
+            <!-- <div class="text-center mb-8">
+              <img class="image centered" tabindex="0" aria-label="" alt={{tenantName}} height="56" src="{{logo}}">
+            </div> -->
+            <h3 tabindex="0" class="sb-color-primary text-center font-weight-bold mb-8" *ngIf="!routeParams?.loginMode">
+              {{resourceService.frmelmnts.lbl.welcomeToInstance | interpolate:'{instance}': instance}}</h3>
+          </div>
+
+          <ng-container [ngSwitch]="signupStage">
+            <app-signup-basic-info [isIOSDevice]="isIOSDevice" [telemetryImpression]="telemetryImpression"
+              [submitInteractEdata]="submitInteractEdata" [telemetryCdata]="telemetryCdata"
+              *ngSwitchCase="Stage.BASIC_INFO" [startingForm]="signUpForm" [routeParams]="routeParams"
+              (subformInitialized)="subformInitialized('basicInfo', $event)" (triggerNext)="changeStep()">
+            </app-signup-basic-info>
+            <app-signup-onboarding-info *ngSwitchCase="Stage.ONBOARDING_INFO" [startingForm]="signUpForm"
+              (subformInitialized)="subformInitialized('onboardingInfo', $event)" (triggerNext)="changeStep()">
+            </app-signup-onboarding-info>
+            <app-signup-email-password *ngSwitchCase="Stage.EMAIL_PASSWORD" [startingForm]="signUpForm"
+              (subformInitialized)="subformInitialized('emailPassInfo', $event)" (triggerNext)="changeStep()">
+            </app-signup-email-password>
+            <app-otp class="w-100" *ngSwitchCase="Stage.OTP" [startingForm]="signUpForm" (triggerNext)="changeStep()">
+            </app-otp>
+          </ng-container>
+
+          <div *ngIf="!routeParams?.loginMode" class="login-content w-100 fix-bottom">
+            <div class="center aligned"></div>
+            <label class="mb-0 mx-8">{{resourceService.frmelmnts?.lbl?.haveaccount}}</label>
+            <button class="sb-btn sb-btn-normal sb-btn-outline-primary text-uppercase" (click)="redirectToLogin()"
+              aria-label="Already have an account? Login here" tabindex="0"
+              type="submit">{{resourceService.frmelmnts?.btn?.login}}</button>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- New Design code for Registration page -->
+
+  <!--<div class="layout">
   <div class="left-panel">
     <div class="image"><img alt={{tenantName}} src="{{logo}}">
     </div>
@@ -42,3 +130,4 @@
   </div>
 
 </div>
+-->
