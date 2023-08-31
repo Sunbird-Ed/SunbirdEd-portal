@@ -906,15 +906,20 @@
       "TVLesson"
     ],
     "primaryCategory": [
-      "Course",
-      "Digital Textbook",
-      "Content Playlist",
+      "Course Assessment",
+      "eTextbook",
       "Explanation Content",
       "Learning Resource",
-      "Practice Question Set",
-      "eTextbook",
       "Teacher Resource",
-      "Course Assessment"
+      "Exam Question",
+      "PIAA Question Set",
+      "Self Question Set",
+      "PIAA Assessment",
+      "Course",
+      "PIAA Assessment",
+      "Self Assessment",
+      "PIAA Question Set",
+      "Self Question Set"
     ],
     "adminHandledContentType" :[
       "TextBook"
