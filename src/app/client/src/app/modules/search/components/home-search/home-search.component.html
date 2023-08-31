@@ -20,8 +20,8 @@
     <div [ngClass]="SECOND_PANEL_LAYOUT">
       <div [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-16'">
   <div class="content-grid relative9" >
-    <div class="sb-pageSection" *ngIf="!showLoader && contentList?.length && !showBackButton">
-        <div  class="sb-pageSection-header mb-10 hidden">
+    <div class="sb-pageSection hidden" *ngIf="!showLoader && contentList?.length && !showBackButton">
+        <div  class="sb-pageSection-header mb-10">
                 <h4 class="sb-pageSection-title mb-10 mr-5"> {{resourceService.frmelmnts?.lbl?.showingResults | translate}}
                     <span class="text-lowercase" *ngIf="this.queryParams.key" appHighlightText [config]="{'resourcePath': 'frmelmnts.lbl.forSearch', 'key': '{searchString}', 'value': queryParams?.key}"></span>
                       {{resourceService.frmelmnts?.lbl?.inAll | translate}}
@@ -30,7 +30,20 @@
               {{resourceService?.frmelmnts?.btn?.close | translate}} <i class="close icon"></i></button>
         </div>
     </div>
-    <div class="twelve wide column hidden">
+    <!-- popular competencies -->
+    <section class="ui container mt-60" *ngIf="competencyInfo">
+      <p class="allCompetencyTitle w-100">{{competencyInfo.popularTitle}}</p>
+      <div class="w-100 d-flex flex-jc-flex-start popular-comp-container">
+          <sb-popular-card
+            *ngFor="let info of competencyInfo.popularData"
+            [pillName]="'Competency'" [data]="info"
+            class="w-20 mb-32 mr-24"
+            (click)="getBrowseByData(info.title)"
+          ></sb-popular-card>
+      </div>
+  </section>
+    <!-- popular competencies -->
+    <div class="twelve wide column ui container hidden">
       <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"
               *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="handleFilterChange($event)"></app-global-search-selected-filter>
       <div [appTelemetryImpression]="telemetryImpression"  *ngIf="!showLoader && contentList?.length"
@@ -79,19 +92,6 @@
         </div> -->
       </div>
     </div>
-    <!-- popular competencies -->
-    <section class="ui container mt-60" *ngIf="competencyInfo">
-      <p class="allCompetencyTitle w-100">{{competencyInfo.popularTitle}}</p>
-      <div class="w-100 d-flex flex-jc-flex-start popular-comp-container">
-          <sb-popular-card
-            *ngFor="let info of competencyInfo.popularData"
-            [pillName]="'Competency'" [data]="info"
-            class="w-20 mb-32 mr-24"
-            (click)="getBrowseByData(info.title)"
-          ></sb-popular-card>
-      </div>
-  </section>
-    <!-- popular competencies -->
 
     <!-- all competencies -->
     <section class="ui container mt-60" *ngIf="competencyInfo">

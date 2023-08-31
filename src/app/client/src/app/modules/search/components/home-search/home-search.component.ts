@@ -19,7 +19,10 @@ interface Competency {
   icon?: any,
   description?: string,
   noOfCourses?: number,
-  name?: string
+  name?: string,
+  btnText?: string,
+  expand?: boolean,
+  expandData?: any
 }
 
 @Component({
@@ -191,6 +194,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
               if(item.name.toLowerCase() == "se_subjects"){
                 for (let value of item.values){
                   let competency : Competency = {};
+                  let dataList : any[] = [];
                   competency.title=value.name;
                   competency.type="type";
                   competency.noOfCourses=value.count;
@@ -198,6 +202,15 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
                   this.popularCompetencyList.push(competency);
                   let allComp: any = {...competency};
                   allComp.description="Planning vigilance activities in accordance with procedures that balance the needs of maintaining a fraud free environment and business objectives";
+                  allComp.btnText="View courses";
+                  allComp.expand=true;
+                  for(let i of this.coursesByCompetencies.content){
+                    const lowerCaseSubject = i.subject.map(subject => subject.toLowerCase());
+                    if(lowerCaseSubject.includes(value.name)){
+                      dataList.push(i);
+                    }
+                  }
+                  allComp.expandData = dataList;
                   this.allCompetencyList.push(allComp);
                 }
               }
@@ -207,6 +220,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
             this.competencyInfo.data=this.allCompetencyList;
             this.competencyInfo.popularData=this.popularCompetencyList;
             console.log("popular data",this.competencyInfo.popularData);
+            console.log("all comp",this.competencyInfo.data);
           })
     }
 }
