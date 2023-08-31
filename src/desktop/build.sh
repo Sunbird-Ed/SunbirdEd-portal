@@ -106,7 +106,7 @@ done
   cp ./modules/sdk/database/schema_1.0.json ./app_dist/modules/sdk/database/schema_1.0.json
   cp ./OpenRAP/dist/project-sunbird-OpenRAP-1.0.2.tgz ./app_dist/OpenRAP/dist/project-sunbird-OpenRAP-1.0.2.tgz
   cp ./logo.png ./app_dist/logo.png
-  cp -r ../app/resourcebundles/json/ ./app_dist/openrap-sunbirded-plugin/data/resourceBundles/
+  cp -r ../app/resourcebundles/json/* ./app_dist/openrap-sunbirded-plugin/data/resourceBundles/
   cp ./helper/appconfig.desktop ./app_dist/helper/appconfig.desktop
   echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
   # node scripts/copy.js
