@@ -91,6 +91,7 @@
     "common-form-elements-web-v9": "4.7.2",
     "compass-collection-editor": "^0.0.2",
     "compass-common-consumption": "^0.0.3",
+    "compass-quml-player-web-component": "^0.0.1",
     "compass-sb-styles": "^0.0.5",
     "compass-sb-themes": "^0.0.88",
     "compass-sunbird-quml-player": "^0.0.1",
