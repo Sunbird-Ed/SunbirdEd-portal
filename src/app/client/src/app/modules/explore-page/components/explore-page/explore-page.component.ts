@@ -64,7 +64,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public enrolledCourses: Array<any>;
     public enrolledSection: any;
     public selectedCourseBatches: any;
-    configContent:any = {}
+    public configContent:any = {}
     private myCoursesSearchQuery = JSON.stringify({
         'request': { 'filters': { 'contentType': ['Course'], 'objectType': ['Content'], 'status': ['Live'] }, 'sort_by': { 'lastPublishedOn': 'desc' }, 'limit': 10, 'organisationId': _.get(this.userService.userProfile, 'organisationIds') }
     });
@@ -250,11 +250,18 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             this.contentDownloadStatus = contentDownloadStatus;
             this.addHoverData();
         });
-        this.learnPageContentService.getPageContent().subscribe((res:any) => {
+        this.learnPageContentService.getPageContent().subscribe(res => {
             this.competencyData = res.competencyData;
             this.topicsData = res.topicsData;
             this.configContent = res;
+            console.log(this.configContent);
           })
+    }
+
+    public getBrowseByData(title : string){
+        if(title.toLowerCase() == "competency"){
+            this.router.navigate(['search/Library', 1]);
+        }
     }
 
     public fetchEnrolledCoursesSection() {

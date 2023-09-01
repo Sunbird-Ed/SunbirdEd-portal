@@ -11,9 +11,11 @@ import { UserFilterComponent, UserEditComponent, UserDeleteComponent, HomeSearch
 import { TelemetryModule } from '@sunbird/telemetry';
 import {SharedFeatureModule} from '@sunbird/shared-feature';
 // import { Angular2CsvModule } from 'angular2-csv'; Angular2CsvModule removed TODO: use Blob object to generate csv file
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
+// import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { ContentSearchModule } from '@sunbird/content-search';
 import { TranslateModule } from '@ngx-translate/core';
+import { CommonConsumptionModule } from 'compass-common-consumption';
+import { CardModule } from 'compass-common-consumption';
 
 @NgModule({
   imports: [
@@ -29,6 +31,7 @@ import { TranslateModule } from '@ngx-translate/core';
     ReactiveFormsModule,
     CommonConsumptionModule,
     ContentSearchModule,
+    CardModule
   ],
   declarations: [ UserSearchComponent,
   UserFilterComponent, UserEditComponent, UserDeleteComponent,

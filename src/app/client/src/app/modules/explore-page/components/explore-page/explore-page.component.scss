@@ -116,7 +116,6 @@
     box-shadow: var(--sbt-box-shadow-6px);
   }
 }
-
 .popular-card {
   display: flex;
   flex-direction: row;
@@ -142,6 +141,7 @@
 .cardContainer{
   display: flex;
   justify-content: space-between;
+  cursor: pointer;
 }
 .browseByCard{
   width: 30%;
