@@ -58,9 +58,15 @@
                 "glob": "**/*.*",
                 "input": "./node_modules/@samagra-x/uci-console/assets/",
                 "output": "/assets/uci-console"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/compass-quml-player-web-component/assets/",
+                "output": "/assets/"
               }
             ],
             "styles": [
+              "node_modules/compass-quml-player-web-component/styles.css",
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/assets/quml-styles/quml-carousel.css",
               "node_modules/datatables.net-dt/css/jquery.dataTables.min.css",
@@ -87,6 +93,7 @@
               ]
             },
             "scripts": [
+              "node_modules/compass-quml-player-web-component/sunbird-quml-player.js",
               "node_modules/epubjs/dist/epub.js",
               "src/assets/libs/iziToast/iziToast.min.js",
               "node_modules/jquery/dist/jquery.min.js",
