@@ -23,7 +23,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { ReviewCommentsComponent } from './components/review-comments/review-comments.component';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { ContentSearchModule } from '@sunbird/content-search';
-// import { CollectionEditorLibraryModule } from '@project-sunbird/sunbird-collection-editor'; //commented for infinite-scroll
+import { CollectionEditorLibraryModule } from '@project-sunbird/sunbird-collection-editor'; //commented for infinite-scroll
 import { QuestionsetEditorLibraryModule } from 'compass-collection-editor';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
@@ -39,6 +39,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     TelemetryModule,
     PlayerHelperModule,
     ContentSearchModule,
+    CollectionEditorLibraryModule,
     QuestionsetEditorLibraryModule, //commented for infinte-scroll
     MatTooltipModule
   ],
