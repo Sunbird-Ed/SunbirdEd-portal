@@ -1,8 +1,8 @@
 <ng-container *ngIf="!showLoader && editorConfig">
-  <ng-container *ngIf="editorConfig.config.objectType !== 'QuestionSet'; else showQuestionSetEditor">
+  <ng-container *ngIf="editorConfig.config.objectType !== 'QuestionSet'>
       <lib-editor [editorConfig]="editorConfig" (editorEmitter)="editorEventListener($event)" ></lib-editor>
   </ng-container>
-  <ng-container #showQuestionSetEditor>
+  <ng-container *ngIf="editorConfig.config.objectType === 'QuestionSet'>
     <lib-questionset-editor [editorConfig]="editorConfig" (editorEmitter)="editorEventListener($event)" ></lib-questionset-editor>
   </ng-container>
 </ng-container>
