@@ -58,15 +58,22 @@
                 "glob": "**/*.*",
                 "input": "./node_modules/@samagra-x/uci-console/assets/",
                 "output": "/assets/uci-console"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/compass-quml-player-web-component/assets/",
+                "output": "/assets/"
               }
             ],
             "styles": [
+              "node_modules/compass-quml-player-web-component/styles.css",
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/assets/quml-styles/quml-carousel.css",
               "node_modules/datatables.net-dt/css/jquery.dataTables.min.css",
               "src/assets/styles/semantic/semantic.min.css",
               "node_modules/font-awesome/css/font-awesome.css",
               "./node_modules/@project-sunbird/sb-styles/assets/styles.scss",
+              "./node_modules/compass-sb-styles/assets/styles.scss",
               "./node_modules/leaflet/dist/leaflet.css",
               "src/assets/styles/styles.scss",
               "node_modules/video.js/dist/video-js.min.css",
@@ -74,6 +81,7 @@
               "./node_modules/@project-sunbird/sb-themes/themes/themes-material_UI.scss",
               "./node_modules/@project-sunbird/sb-themes/themes/themes-df.scss",
               "./node_modules/@project-sunbird/sb-themes/themes/themes-portal.scss",
+              "./node_modules/compass-sb-themes/themes/themes-portal.scss",
               "node_modules/videojs-http-source-selector/dist/videojs-http-source-selector.css",
               "node_modules/@project-sunbird/sunbird-video-player-v9/lib/assets/videojs.markers.min.css",
               "./node_modules/@project-sunbird/discussions-ui/assets/styles/global.scss"
@@ -85,6 +93,7 @@
               ]
             },
             "scripts": [
+              "node_modules/compass-quml-player-web-component/sunbird-quml-player.js",
               "node_modules/epubjs/dist/epub.js",
               "src/assets/libs/iziToast/iziToast.min.js",
               "node_modules/jquery/dist/jquery.min.js",
@@ -99,7 +108,7 @@
               "node_modules/videojs-contrib-quality-levels/dist/videojs-contrib-quality-levels.min.js",
               "node_modules/videojs-http-source-selector/dist/videojs-http-source-selector.min.js",
               "node_modules/@project-sunbird/sunbird-video-player-v9/lib/assets/videojs-markers.js",
-              
+              "node_modules/slick-carousel/slick/slick.min.js",
               {
                 "inject": false,
                 "input": "src/assets/libs/semantic-ui/transition.min.js",

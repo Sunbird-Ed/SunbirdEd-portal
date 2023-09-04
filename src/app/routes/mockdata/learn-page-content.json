@@ -1,0 +1,103 @@
+{
+    "competencyData": {
+        "title": "Popular competencies",
+        "button": "All competencies",
+        "data": [
+            {
+                "title": "Communication",
+                "type": "Behavioural",
+                "icon": "/assets/images/course-icon.png",
+                "noOfCourses": 4
+            },
+            {
+                "title": "Palnning",
+                "type": "Domain",
+                "icon": "/assets/images/course-icon.png",
+                "noOfCourses": 4
+            },
+            {
+                "title": "Design thinking",
+                "type": "Behavioural",
+                "icon": "/assets/images/course-icon.png",
+                "noOfCourses": 4
+            },
+            {
+                "title": "Functional",
+                "type": "Domain",
+                "icon": "/assets/images/course-icon.png",
+                "noOfCourses": 4
+            },
+            {
+                "title": "Competency label",
+                "type": "Behavioural",
+                "icon": "/assets/images/course-icon.png",
+                "noOfCourses": 4
+            },
+            {
+                "title": "Competency label",
+                "type": "Domain",
+                "icon": "/assets/images/course-icon.png",
+                "noOfCourses": 4
+            },
+            {
+                "title": "Competency label",
+                "type": "Behavioural",
+                "icon": "/assets/images/course-icon.png",
+                "noOfCourses": 4
+            },
+            {
+                "title": "Competency label",
+                "type": "Behavioural",
+                "icon": "/assets/images/course-icon.png",
+                "noOfCourses": 4
+            }
+        ]
+    },
+    "topicsData": {
+        "title": "Popular topics",
+        "button": "All topics",
+        "data": [
+            {
+                "name": "COVID 19"
+            },
+            {
+                "name": "Social Science"
+            },
+            {
+                "name": "Politics"
+            },
+            {
+                "name": "Economics"
+            },
+            {
+                "name": "Administrative Law"
+            },
+            {
+                "name": "Healthcare"
+            },
+            {
+                "name": "Onboarding"
+            },
+            {
+                "name": "Training and Management"
+            }
+        ]
+    },
+    "browseByCardInfo": {
+        "title": "Browse by",
+        "cardData": [
+            {
+                "iconUrl": "assets/images/topic.png",
+                "title": "Topic"
+            },
+            {
+                "iconUrl": "assets/images/comp.png",
+                "title": "Competency"
+            },
+            {
+                "iconUrl": "assets/images/provider.png",
+                "title": "Providers"
+            }
+        ]
+    }
+}

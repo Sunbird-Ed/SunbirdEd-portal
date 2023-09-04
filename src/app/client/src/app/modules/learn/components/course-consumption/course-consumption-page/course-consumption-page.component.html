@@ -16,3 +16,14 @@
 <app-batch-info *ngIf="showBatchInfo" [enrolledBatchInfo]="selectedCourseBatches"
     (routeChanged)="refreshComponent($event)">
 </app-batch-info>
+
+<!-- <div *ngIf="courseTabs.length>0" class="courseTab">
+    <mat-tab-group animationDuration="0ms">
+        <mat-tab label={{courseTabs[0]}}>
+            <app-course-player></app-course-player>
+        </mat-tab>
+        <mat-tab label={{courseTabs[1]}}>{{courseTabs[1]}}</mat-tab>
+        <mat-tab label={{courseTabs[2]}}>{{courseTabs[2]}}</mat-tab>
+        <mat-tab label={{courseTabs[3]}}>{{courseTabs[3]}}</mat-tab>
+    </mat-tab-group>
+</div> -->

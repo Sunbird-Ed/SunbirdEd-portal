@@ -166,6 +166,17 @@
               [showExploreContentButton]="noResultMessage?.showExploreContentButton"
               [telemetryInteractEdataObject]="exploreMoreButtonEdata"></app-no-result-found>
           </div>
+          <section class="ui container" *ngIf="configContent.browseByCardInfo">
+            <p class="browseTitle">{{configContent.browseByCardInfo.title}}</p>
+            <div class="cardContainer">
+                <browse-by-card
+                  *ngFor="let info of configContent.browseByCardInfo.cardData"
+                  class="browseByCard"
+                  [cardInfo]="info"
+                  (click)="getBrowseByData(info.title)"
+                ></browse-by-card>
+            </div>
+        </section>
 
         </div>
         <!-- Template for displaying page sections -->
@@ -199,6 +210,30 @@
             [showExploreContentButton]="noResultMessage?.showExploreContentButton"
             [telemetryInteractEdataObject]="exploreMoreButtonEdata"></app-no-result-found>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui container mt-32">
+    <div class="popular-card">
+      <div class="popular-card-title">{{topicsData.title}}</div>
+      <div><button class="com-secondary-btn">{{topicsData.button}}</button></div>
+    </div>
+    <div class="ui grid middle aligned stackable">
+      <div class="three wide column" *ngFor="let data of topicsData.data;let i=index">
+        <sb-popular-card [pillName]="'Topic'" [data]="data"></sb-popular-card>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui container mt-32">
+    <div class="popular-card">
+      <div class="popular-card-title">{{competencyData.title}}</div>
+      <div><button class="com-secondary-btn">{{competencyData.button}}</button></div>
+    </div>
+    <div class="ui grid middle aligned stackable">
+      <div class="three wide column" *ngFor="let data of competencyData.data;let i=index">
+        <sb-popular-card [pillName]="'Competency'" [data]="data"></sb-popular-card>
       </div>
     </div>
   </div>

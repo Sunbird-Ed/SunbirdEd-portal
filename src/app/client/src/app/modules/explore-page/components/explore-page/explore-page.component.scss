@@ -1,4 +1,4 @@
-@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "compass-sb-styles/assets/mixins/mixins" as *;
 .course-card-width {
   width: calculateRem(280px) !important;
 }
@@ -115,4 +115,38 @@
     width:16rem !important;
     box-shadow: var(--sbt-box-shadow-6px);
   }
+}
+.popular-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: calculateRem(26px);
+  &-title {
+    @include typography(var(--font-com-en), 24px, 600, 0px, 36px);
+    text-transform: initial !important;
+    opacity: 1;
+    color: var(--black);
+    font-style: normal;
+    text-align: left;
+  }
+  .com-secondary-btn {
+    border: 1px solid var(--com-grey-border);
+    border-radius: 0.5rem;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+.cardContainer{
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
+.browseByCard{
+  width: 30%;
+}
+.browseTitle{
+  font-weight: 600;
+  font-size: 20px;
 }

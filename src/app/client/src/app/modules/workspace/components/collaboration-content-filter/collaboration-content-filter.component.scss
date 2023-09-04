@@ -1,6 +1,5 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
-
->>>.ui.dropdown:not(.button)>.default.text {
+.ui.dropdown:not(.button)>.default.text {
     display: none;
      }
      

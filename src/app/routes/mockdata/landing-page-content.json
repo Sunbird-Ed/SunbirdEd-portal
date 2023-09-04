@@ -19,5 +19,142 @@
                 }
               }
             ]
+    },
+    "footerData" : {
+          "links" : ["Learn", "Connections", "Discussion","Jobs", "Competencies", "Events"],
+                "logoLink":"/assets/images/Logo-ss-white.png",
+                "footerText":"2022 Copyright [Company Name]"
+    },
+    "summaryCardInfo": {
+      "cardData": [
+        {
+          "iconUrl":"/assets/images/courses.svg",
+          "title":"Courses",
+          "count":"1000+",
+          "commonIconUrl": "assets/images/arrow.svg"
+        },
+        {
+          "iconUrl":"/assets/images/content.svg",
+          "title":"Available Content",
+          "count":"1500+",
+          "commonIconUrl": "assets/images/arrow.svg"
+        },
+        {
+          "iconUrl":"/assets/images/active-users.svg",
+          "title":"Active Users",
+          "count":"2 Million",
+          "commonIconUrl": "assets/images/arrow.svg"
+        },
+        {
+          "iconUrl":"/assets/images/competencies.svg",
+          "title":"Competencies",
+          "count":"100+",
+          "commonIconUrl": "assets/images/arrow.svg"
+        }
+      ]
+    },
+    "exploreCardInfo":{
+      "title":"Explore compass",
+      "cardData":[
+        {
+          "iconUrl":"/assets/images/learn.png",
+          "title":"Learn",
+          "content":"Sharpen your skills with hundreds-of online courses"
+        },
+        {
+          "iconUrl":"/assets/images/connections.png",
+          "title":"Connections",
+          "content":"Connect with interesting people, see what they are upto."
+        },
+        {
+          "iconUrl":"/assets/images/discussion.png",
+          "title":"Discussion forum",
+          "content":"Have a question? Have an idea? Discuss it with your peers!"
+        },
+        {
+          "iconUrl":"/assets/images/competencies.png",
+          "title":"Competencies",
+          "content":"Add your competencies, see what others are adding."
+        }
+      ]
+    },
+    "banner": {
+      "title": "Driving Government Success and Employee Fulfilment.",
+      "description": "Goal-oriented HR helps governments to improve their performance, employee satisfaction, culture and thus deliver great citizen experiences.",
+      "image": "/assets/images/banner.png",
+      "showButtons": true
+    },
+    "goalOrientedHrCards": [
+      {
+        "title": "Increased efficiency",
+        "description": "Clear goals and government alignment boost employee efficiency.",
+        "image": "/assets/images/increased-efficiency.png"
+      },
+      {
+        "title": "Improved service delivery",
+        "description": "Engaged and motivated employees deliver high-quality services to citizens.",
+        "image": "/assets/images/improved-service-delivery.png"
+      },
+      {
+        "title": "Reduced costs",
+        "description": "Aligned HR practices lower costs, including recruitment and training.",
+        "image": "/assets/images/reduced-cost.png"
+      },
+      {
+        "title": "Improved public trust",
+        "description": "When employees are satisfied with their work, build public trust.",
+        "image": "/assets/images/improved-public-trust.png"
+      }
+    ],
+    "courses": [
+      {
+        "title": "How to use evidence in policymaking. ",
+        "category": "Health",
+        "image": "/assets/images/course-1.png",
+        "rating": "4.2",
+        "duration": "12hr",
+        "showDD": false
+      },
+      {
+        "title": "17th MCTP, Phase - lll (IAS officers).",
+        "category": "Training and Management",
+        "image": "/assets/images/course-2.png",
+        "rating": "4.5",
+        "duration": "8hr",
+        "showDD": false
+      },
+      {
+        "title": "Pre foundation program.",
+        "category": "Indian administrative service",
+        "image": "/assets/images/course-3.png",
+        "rating": "4.5",
+        "duration": "20hr",
+        "showDD": false
+      },
+      {
+        "title": "17th MCTP, Phase - lll (IAS officers).",
+        "category": "Training and Management",
+        "image": "/assets/images/course-2.png",
+        "rating": "4.5",
+        "duration": "8hr",
+        "showDD": false
+      },
+      {
+        "title": "Pre foundation program.",
+        "category": "Indian administrative service",
+        "image": "/assets/images/course-3.png",
+        "rating": "4.5",
+        "duration": "20hr",
+        "showDD": false
+      }
+    ],
+    "regCardsData": {
+      "imgUrl": "/assets/images/reg-button-bg.svg",
+      "title":"Register for a Successful Government Experience",
+      "content": "Register now for a successful government experience. Join a community driving positive change.",
+      "button": {
+        "type":"com-primary-btn",
+        "text":"Register"
+       }
     }
-}
+  }

@@ -15,7 +15,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { combineLatest as observableCombineLatest, Subject } from 'rxjs';
 import * as _ from 'lodash-es';
-import {UserService, TenantService} from './../../services';
+import { UserService, TenantService } from './../../services';
 import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-footer',
@@ -52,9 +52,9 @@ export class MainFooterComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(resourceService: ResourceService, public router: Router, public activatedRoute: ActivatedRoute,
     public configService: ConfigService, private renderer: Renderer2, private cdr: ChangeDetectorRef, public userService: UserService,
-      public tenantService: TenantService, public layoutService: LayoutService,
-      public navigationHelperService: NavigationHelperService, private utilService: UtilService
-    ) {
+    public tenantService: TenantService, public layoutService: LayoutService,
+    public navigationHelperService: NavigationHelperService, private utilService: UtilService
+  ) {
     this.resourceService = resourceService;
   }
 
@@ -91,7 +91,7 @@ export class MainFooterComponent implements OnInit, AfterViewInit, OnDestroy {
     this.redoLayout();
   }
 
- ngAfterViewInit() {
+  ngAfterViewInit() {
     // this.footerAlign();
   }
   @HostListener('window:resize', ['$event'])

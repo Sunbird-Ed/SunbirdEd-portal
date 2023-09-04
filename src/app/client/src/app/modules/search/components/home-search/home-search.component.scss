@@ -1,0 +1,14 @@
+@import "compass-sb-styles/assets/mixins/mixins";
+
+.all-comp-container{
+    flex-direction: column;
+}
+.popular-comp-container{
+    flex-direction: row;
+}
+.allCompetencyTitle{
+    @include typography(var(--font-com-en), 24px, 600, 0.25px, 36px);
+}
+.hidden{
+    display: none;
+}

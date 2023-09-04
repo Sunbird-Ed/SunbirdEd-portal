@@ -12,10 +12,22 @@ import { takeUntil, map, delay, debounceTime, tap, mergeMap } from 'rxjs/operato
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
 import {omit, groupBy, get, uniqBy, toLower, find, map as _map, forEach, each} from 'lodash-es';
-
+import * as publicService from '../../../public/services';
+interface Competency {
+  title?: string,
+  type?: string,
+  icon?: any,
+  description?: string,
+  noOfCourses?: number,
+  name?: string,
+  btnText?: string,
+  expand?: boolean,
+  expandData?: any
+}
 
 @Component({
-  templateUrl: './home-search.component.html'
+  templateUrl: './home-search.component.html',
+  styleUrls: ['./home-search.component.scss']
 })
 export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
 
@@ -59,6 +71,11 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   contentName: string;
   showModal = false;
   showBackButton = false;
+  public competencyInfo : any = {};
+  public allCompetencyList : Array<Competency> = [];
+  public popularCompetencyList : Array<Competency> = [];
+  public coursesByCompetencies:any = {}
+
 
   constructor(public searchService: SearchService, public router: Router,
     public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
@@ -68,7 +85,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     public browserCacheTtlService: BrowserCacheTtlService, public orgDetailsService: OrgDetailsService,
     public navigationhelperService: NavigationHelperService, public layoutService: LayoutService, private schemaService: SchemaService,
     public contentManagerService: ContentManagerService, public telemetryService: TelemetryService,
-    private offlineCardService: OfflineCardService) {
+    private offlineCardService: OfflineCardService, private learnPageContentService : publicService.LearnPageContentService) {
     this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
     this.filterType = this.configService.appConfig.home.filterType;
     // this.redirectUrl = this.configService.appConfig.courses.searchPageredirectUrl;
@@ -108,7 +125,106 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         });
         this.checkForBack();
         this.moveToTop();
+        this.getBrowseByData("competency");
   }
+
+  public getBrowseByData(title : string){
+    if(title.toLowerCase() == "competency"){
+        let competencyRequestData = {
+            "request": {
+                "filters": {
+                    "se_boards": [
+                        "general nursing midwifery"
+                    ],
+                    "se_mediums": [
+                        "midwifery and gynaecological nursing",
+                        "sociology"
+                    ],
+                    "se_gradeLevels": [
+                        "describes about social groups social change control stratification and social problems"
+                    ],
+                    "se_subjects": [],
+                    "primaryCategory": [
+                        "Course",
+                        "Course Assessment",
+                        "Self Assessment"
+                    ],
+                    "visibility": [
+                        "Default",
+                        "Parent"
+                    ]
+                },
+                "limit": 100,
+                "sort_by": {
+                    "lastPublishedOn": "desc"
+                },
+                "fields": [
+                    "name",
+                    "appIcon",
+                    "mimeType",
+                    "gradeLevel",
+                    "identifier",
+                    "medium",
+                    "pkgVersion",
+                    "board",
+                    "subject",
+                    "resourceType",
+                    "primaryCategory",
+                    "contentType",
+                    "channel",
+                    "organisation",
+                    "trackable",
+                    "difficultyLevel",
+                    "se_difficultyLevels"
+                ],
+                "facets": [
+                    "se_boards",
+                    "se_gradeLevels",
+                    "se_subjects",
+                    "se_mediums",
+                    "se_difficultyLevels"
+                ],
+                "offset": 0
+            }
+        };
+        this.learnPageContentService.getBrowseByCompetencyData(competencyRequestData).subscribe(res => {
+            this.coursesByCompetencies = res["result"];
+            console.log("coursesByCompetencies ",this.coursesByCompetencies);
+            for(let item of this.coursesByCompetencies.facets){
+              if(item.name.toLowerCase() == "se_subjects"){
+                for (let value of item.values){
+                  let competency : Competency = {};
+                  let dataList : any[] = [];
+                  competency.title=value.name;
+                  competency.type="type";
+                  competency.noOfCourses=value.count;
+                  competency.icon="../../../../../assets/images/courseIcon.svg";
+                  this.popularCompetencyList.push(competency);
+                  let allComp: any = {...competency};
+                  allComp.description="Planning vigilance activities in accordance with procedures that balance the needs of maintaining a fraud free environment and business objectives";
+                  allComp.btnText="View courses";
+                  allComp.expand=true;
+                  for(let i of this.coursesByCompetencies.content){
+                    const lowerCaseSubject = i.subject.map(subject => subject.toLowerCase());
+                    if(lowerCaseSubject.includes(value.name)){
+                      dataList.push(i);
+                    }
+                  }
+                  allComp.expandData = dataList;
+                  this.allCompetencyList.push(allComp);
+                }
+              }
+            }
+            this.competencyInfo.title="All competencies";
+            this.competencyInfo.popularTitle="Popular competencies";
+            this.competencyInfo.data=this.allCompetencyList;
+            this.competencyInfo.popularData=this.popularCompetencyList;
+            console.log("popular data",this.competencyInfo.popularData);
+            console.log("all comp",this.competencyInfo.data);
+          })
+    }
+}
+
   checkForBack() {
     if (_.get(this.activatedRoute, 'snapshot.queryParams["showClose"]') === 'true') {
       this.showBackButton = true;

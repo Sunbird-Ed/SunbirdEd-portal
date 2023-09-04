@@ -18,6 +18,7 @@ import { CacheService } from '../app/modules/shared/services/cache-service/cache
 import { DOCUMENT } from '@angular/common';
 import { image } from '../assets/images/tara-bot-icon';
 import { SBTagModule } from 'sb-tag-manager';
+import * as publicService from './modules/public/services';
 
 /**
  * main app component
@@ -30,6 +31,7 @@ import { SBTagModule } from 'sb-tag-manager';
 
 export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('frameWorkPopUp') frameWorkPopUp;
+  configContent: any = {}
   /**
    * user profile details.
    */
@@ -141,18 +143,21 @@ export class AppComponent implements OnInit, OnDestroy {
     public formService: FormService, @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
     public changeDetectorRef: ChangeDetectorRef, public layoutService: LayoutService,
     public generaliseLabelService: GeneraliseLabelService, private renderer: Renderer2, private zone: NgZone,
-    private connectionService: ConnectionService, public genericResourceService: GenericResourceService) {
+    private connectionService: ConnectionService, public genericResourceService: GenericResourceService,
+    private landingPageContentService: publicService.LandingPageContentService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
-    const layoutType = localStorage.getItem('layoutType') || 'base';
+    const layoutType = localStorage.getItem('layoutType') || this.configService.appConfig.layoutConfiguration.name;
     if (layoutType === 'base' || layoutType === 'joy') {
       this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
-      document.documentElement.setAttribute('layout', 'joy');
+      this.layoutConfiguration.name === 'blueSky'?document.documentElement.setAttribute('layout', this.layoutConfiguration.name):document.documentElement.setAttribute('layout', 'joy');
     } else {
-      document.documentElement.setAttribute('layout', 'base');
+      document.documentElement.setAttribute('layout', this.configService.appConfig.layoutConfiguration.name);
+      // this.layoutService.initiateSwitchLayout(this.configService.appConfig.layoutConfiguration);
+      this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
     }
   }
-  
+
   /**
    * dispatch telemetry window unload event before browser closes
    * @param  event
@@ -410,6 +415,11 @@ export class AppComponent implements OnInit, OnDestroy {
         (document.activeElement as HTMLElement).click();
       }
     };
+
+    this.landingPageContentService.getPageContent().subscribe(res => {
+      this.configContent = res;
+      console.log(this.configContent);
+    })
   }
   setUserOptions() {
     const userStoredData = JSON.parse(localStorage.getItem('guestUserDetails'));

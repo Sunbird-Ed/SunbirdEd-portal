@@ -1,10 +1,11 @@
 <div *ngIf="showFooter">
-  <footer class="footer old-footer" #footerFix *ngIf="!layoutConfiguration" [ngClass]="{'player-fullscreen-footer': isFullScreenView}">
-    <div  class="ui container">
+  <footer class="footer old-footer" #footerFix *ngIf="!layoutConfiguration"
+    [ngClass]="{'player-fullscreen-footer': isFullScreenView}">
+    <div class="ui container">
       <div class="ui grid stackable">
         <div class="four wide column footerMenu mr-auto">
         </div>
-  
+
         <div class="download-mobile-app">
           <div class="download-mobile-app-logo p-16">
             <div class="mobile-circles">
@@ -14,7 +15,8 @@
               <div class="small-box border-round border-r50"></div>
             </div>
             <label
-              class="d-block text-center font-weight-bold">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile | interpolate:'{instance}': instance}}</label>
+              class="d-block text-center font-weight-bold">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile |
+              interpolate:'{instance}': instance}}</label>
             <a class="d-block app-download" (click)="redirectToMobileApp()" tabindex="0">
               <img class="playStore-img cursor-pointer" src="/assets/images/google_playstore.png"
                 alt="{{ resourceService?.frmelmnts?.lbl?.altGoogleplay }}">
@@ -25,23 +27,29 @@
         <div class="four wide column contantDetails">
           <label class="d-flex flex-w-wrap mb-16 flex-jc-center">
             <ul class="d-flex flex-ai-center fsmall sb-color-white mb-0 mobile only pl-0">
-              <li class="mb-0"><a href="/screenreaderaccess.html" class="cursor-pointer sb-color-white">Screen Reader Access</a></li><li class="mx-4 mb-0">|</li>
-              <li class="mb-0"><a href="/sitemap.html" class="cursor-pointer sb-color-white">Sitemap</a></li><li class="mx-4 mb-0">|</li>
+              <li class="mb-0"><a href="/screenreaderaccess.html" class="cursor-pointer sb-color-white">Screen Reader
+                  Access</a></li>
+              <li class="mx-4 mb-0">|</li>
+              <li class="mb-0"><a href="/sitemap.html" class="cursor-pointer sb-color-white">Sitemap</a></li>
+              <li class="mx-4 mb-0">|</li>
             </ul>
-            <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')" href="/term-of-use.html">
+            <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
+              href="/term-of-use.html">
               {{resourceService.frmelmnts?.lnk?.footerTnC}}
             </a>
             <span>| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
           </label>
           <label class="sb-footer-license">
-           <span><img alt="{{resourceService.frmelmnts?.lbl?.CCbyLicense}}" src="/assets/images/CCby.svg">&nbsp;&nbsp;{{resourceService.frmelmnts?.lbl?.CCbyLicense}}</span>
+            <span><img alt="{{resourceService.frmelmnts?.lbl?.CCbyLicense}}"
+                src="/assets/images/CCby.svg">&nbsp;&nbsp;{{resourceService.frmelmnts?.lbl?.CCbyLicense}}</span>
           </label>
         </div>
       </div>
     </div>
   </footer>
-  
-  <footer class="new-layout-footer" #footerFix *ngIf="layoutConfiguration" [ngClass]="{'player-fullscreen-footer': isFullScreenView}">
+
+  <footer class="new-layout-footer" #footerFix *ngIf="layoutConfiguration"
+    [ngClass]="{'player-fullscreen-footer': isFullScreenView}">
     <div class="sb-g sbt-fluid-content-bg sbt-footer-container relative">
       <div [ngClass]="FIRST_PANEL_LAYOUT"></div>
       <div [ngClass]="SECOND_PANEL_LAYOUT"></div>
@@ -53,36 +61,45 @@
         <div class="ui grid stackable px-72">
           <div class="six wide column contantDetails px-0">
             <div>
-            <label class="d-flex footer-terms-info text-left font-weight-normal flex-w-wrap">
-              <ul class="d-flex flex-ai-center fsmall mb-0 mobile only pl-0">
-                <li class="mb-0" tabindex="0"><a href="/screenreaderaccess.html" class="cursor-pointer">Screen Reader Access</a></li><li class="mx-4 mb-0">|</li>
-                <li class="mb-0" tabindex="0"><a href="/sitemap.html" class="cursor-pointer">Sitemap</a></li><li class="mx-4 mb-0">|</li>
-              </ul>
-              <a *ngIf="!isDesktopApp" [attr.aria-label]="resourceService.frmelmnts?.lnk?.footerTnC" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
-                href="/term-of-use.html">{{resourceService.frmelmnts?.lnk?.footerTnC}}</a>
-              <a *ngIf="isDesktopApp" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
-                href="{{appBaseUrl}}/term-of-use.html" target="_blank">{{resourceService.frmelmnts?.lnk?.footerTnC}}</a>
-              <span [attr.aria-label]="instance" tabindex="0">| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
-            </label>
-            <label class="d-block text-left fsmall" tabindex="0">
-              <span>{{resourceService.frmelmnts?.lbl?.CCbyLicense}}&nbsp;&nbsp;<img alt="{{resourceService.frmelmnts?.lbl?.CCbyLicense}}" src="/assets/images/CCby.svg"></span>
-            </label>
-          </div>
+              <label class="d-flex footer-terms-info text-left font-weight-normal flex-w-wrap">
+                <ul class="d-flex flex-ai-center fsmall mb-0 mobile only pl-0">
+                  <li class="mb-0" tabindex="0"><a href="/screenreaderaccess.html" class="cursor-pointer">Screen Reader
+                      Access</a></li>
+                  <li class="mx-4 mb-0">|</li>
+                  <li class="mb-0" tabindex="0"><a href="/sitemap.html" class="cursor-pointer">Sitemap</a></li>
+                  <li class="mx-4 mb-0">|</li>
+                </ul>
+                <a *ngIf="!isDesktopApp" [attr.aria-label]="resourceService.frmelmnts?.lnk?.footerTnC" tabindex="0"
+                  appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
+                  href="/term-of-use.html">{{resourceService.frmelmnts?.lnk?.footerTnC}}</a>
+                <a *ngIf="isDesktopApp" tabindex="0" appTelemetryInteract
+                  [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')" href="{{appBaseUrl}}/term-of-use.html"
+                  target="_blank">{{resourceService.frmelmnts?.lnk?.footerTnC}}</a>
+                <span [attr.aria-label]="instance" tabindex="0">| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
+              </label>
+              <label class="d-block text-left fsmall" tabindex="0">
+                <span>{{resourceService.frmelmnts?.lbl?.CCbyLicense}}&nbsp;&nbsp;<img
+                    alt="{{resourceService.frmelmnts?.lbl?.CCbyLicense}}" src="/assets/images/CCby.svg"></span>
+              </label>
+            </div>
           </div>
           <div class="six wide column p-0 d-flex sbt-footer-download-app">
             <div class="sbt-footer-bg relative">
-              <img [attr.aria-label]="resourceService.frmelmnts?.lnk?.footerAppDownload | interpolate:'{instance}':  instance" class="sbt-footer-bg-img cursor-pointer" tabindex="0" src="/assets/images/footer-flower-set.svg" alt="">
-              <label class="d-block text-center font-weight-bold sbt-footer-title">{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile | interpolate:'{instance}':  instance}}</label>
+              <img [attr.aria-label]="resourceService.frmelmnts?.lnk?.footerAppDownload | interpolate:'{instance}':  instance"
+                class="sbt-footer-bg-img cursor-pointer" tabindex="0" src="/assets/images/footer-flower-set.svg" alt="">
+              <label
+                class="d-block text-center font-weight-bold sbt-footer-title">{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile
+                | interpolate:'{instance}': instance}}</label>
               <a class="d-block app-download" (click)="redirectToMobileApp()">
                 <img tabindex="0" class="playStore-img cursor-pointer" src="/assets/images/google_playstore.png"
                   alt="{{ resourceService?.frmelmnts?.lbl?.altGoogleplay }}">
               </a>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </footer>
+          </div>
+          </div>
+          </div>
+          </footer>
   </div>
-
+  
   <extension-point *appDesktopOnly [name]="'content-manager'"></extension-point>

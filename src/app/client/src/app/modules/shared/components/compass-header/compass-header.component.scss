@@ -1,0 +1,36 @@
+@use "compass-sb-styles/assets/mixins/mixins" as *;
+@use "/src/assets/styles/layout/_header.scss";
+
+.compass-header {
+    position: sticky;
+    z-index: 10;
+    left: 0;
+    width: 100%;
+    // height: 3.5rem !important;
+    top: calculateRem(48px) !important;
+    @include respond-below(sm) {
+      position: initial;
+    }
+  }
+  .menuIcon{
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  .bs-1:hover {
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.29) !important;
+  }
+
+  .logo {
+    padding-left:0;
+    width: 25%;
+    img {
+        width: calculateRem(98px);
+    }
+  }
+  
+  .compass-entrymenu {
+    .com-primary-btn {
+      margin-left:calculateRem(12px);
+    }
+}
+  

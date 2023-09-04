@@ -18,3 +18,33 @@
   }
 
 }
+
+input {
+  // width: 300px !important;
+  // border-radius: 8px;
+  font-family: 'Lato', Arial, Helvetica, sans-serif;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+input:focus {
+  border-color: #85b7d9 !important;
+}
+
+label {
+  font-family: 'Lato', Arial, Helvetica, sans-serif;
+  font-size: 14px !important;
+  // margin-bottom: 0.3em !important;
+}
+
+::placeholder {
+  font-family: 'Lato', Arial, Helvetica, sans-serif;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: rgba(0, 0, 0, 0.4) !important;
+}
+
+.mat-input-element {
+  border: 0px !important;
+}

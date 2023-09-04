@@ -8,8 +8,10 @@ import * as _ from 'lodash-es';
 import { CoursesService, PermissionService, GeneraliseLabelService } from '@sunbird/core';
 import dayjs from 'dayjs';
 import { GroupsService } from '../../../../groups/services/groups/groups.service';
+import { CoursePageContentService } from "../../../services/course-page-content.service"
 @Component({
-  templateUrl: './course-consumption-page.component.html'
+  templateUrl: './course-consumption-page.component.html',
+  styleUrls: ['./course-consumption-page.component.scss']
 })
 export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   public courseId: string;
@@ -23,6 +25,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   public showAddGroup = null;
   layoutConfiguration;
   showBatchInfo: boolean;
+  courseTabs: any;
   selectedCourseBatches: { onGoingBatchCount: any; expiredBatchCount: any; openBatch: any; inviteOnlyBatch: any; courseId: any; };
   obs$;
   private fetchEnrolledCourses$ = new BehaviorSubject<boolean>(true);
@@ -31,7 +34,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
     public toasterService: ToasterService, public courseBatchService: CourseBatchService,
     private resourceService: ResourceService, public router: Router, private groupsService: GroupsService,
     public navigationHelperService: NavigationHelperService, public permissionService: PermissionService,
-    public layoutService: LayoutService, public generaliseLabelService: GeneraliseLabelService) {
+    public layoutService: LayoutService, public generaliseLabelService: GeneraliseLabelService, public coursePageContentService: CoursePageContentService) {
   }
   ngOnInit() {
     this.initLayout();
@@ -52,6 +55,9 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
         }
         this.navigationHelperService.navigateToResource('/learn');
       });
+      this.coursePageContentService.getCoursePageContent().subscribe((res:any) => {
+        this.courseTabs = res.courseTabs.data;
+    })
   }
 
   private handleEnrolledCourses() {
