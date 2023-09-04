@@ -695,7 +695,6 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
-
     // Groups related APIs
     '/learner/group/v1/create': {
       checksNeeded: ['ROLE_CHECK'],
@@ -2056,6 +2055,7 @@ const API_LIST = {
     '/kendra/resource/mlreports/v1/filtervalues',
     '/assessment/programs/mlcore/v1/join/:id',
     '/assessment/users/mlcore/v1/solutions/:id',
+    '/api/questionset/v2/retire/:QuestionSet_Id'
   ]
 };
 module.exports = API_LIST;

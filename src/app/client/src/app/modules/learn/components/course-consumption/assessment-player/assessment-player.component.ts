@@ -114,6 +114,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   isStatusChange = false;
   lastActiveContentBeforeModuleChange;
   contentRatingModal = false;
+  attemptID: any;
+  courseEvaluable: any;
+  questionSetEvaluable: any;
   @HostListener('window:beforeunload')
   canDeactivate() {
     // returning true will navigate without confirmation
@@ -802,6 +805,28 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     }
   }
 
+  updatePlayerWithResponse(response, id) {
+    const serveiceRef = this.userService.loggedIn ? this.playerService : this.publicPlayerService;
+    const objectRollup = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, id);
+    this.objectRollUp = objectRollup ? this.courseConsumptionService.getRollUp(objectRollup) : {};
+    if (response && response.context) {
+      response.context.objectRollup = this.objectRollUp;
+    }
+    const contentDetails = {contentId: id, contentData: response.questionSet };
+    this.playerConfig = serveiceRef.getConfig(contentDetails);
+    this.publicPlayerService.getQuestionSetRead(id).subscribe((data: any) => {
+      this.playerConfig['metadata']['instructions'] = _.get(data, 'result.questionset.instructions');
+      this.showPlayer = true;
+    }, (error) => {
+      this.showPlayer = true;
+    });
+    const _contentIndex = _.findIndex(this.contentStatus, { contentId: _.get(this.playerConfig, 'context.contentId') });
+    this.playerConfig['metadata']['maxAttempt'] = _.get(this.activeContent, 'maxAttempts');
+    const _currentAttempt = _.get(this.contentStatus[_contentIndex], 'score.length') || 0;
+    this.playerConfig['metadata']['currentAttempt'] = _currentAttempt == undefined ? 0 : _currentAttempt;
+    this.playerConfig['context']['objectRollup'] = this.objectRollUp;
+  }
+
   private initPlayer(id: string) {
     let maxAttemptsExceeded = false;
     this.showMaxAttemptsModal = false;
@@ -834,32 +859,44 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
       }
       if (this.activeContent.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
         const serveiceRef = this.userService.loggedIn ? this.playerService : this.publicPlayerService;
-        this.publicPlayerService.getQuestionSetHierarchy(id).pipe(
-          takeUntil(this.unsubscribe))
-          .subscribe((response) => {
-            const objectRollup = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, id);
-            this.objectRollUp = objectRollup ? this.courseConsumptionService.getRollUp(objectRollup) : {};
-            if (response && response.context) {
-              response.context.objectRollup = this.objectRollUp;
+        this.courseEvaluable = this.serverValidationCheck(this.activeContent?.eval);
+        if(this.courseEvaluable){
+          this.attemptID = this.assessmentScoreService.generateHash();
+          const requestBody = {
+            request: {
+              questionset: {
+                contentID: id,
+                collectionID: this.courseHierarchy.identifier, 
+                userID: this.userService._userid,
+                attemptID: this.attemptID
+              }
             }
-            const contentDetails = {contentId: id, contentData: response.questionSet };
-            this.playerConfig = serveiceRef.getConfig(contentDetails);
-            this.publicPlayerService.getQuestionSetRead(id).subscribe((data: any) => {
-              this.playerConfig['metadata']['instructions'] = _.get(data, 'result.questionset.instructions');
-              this.showPlayer = true;
-            }, (error) => {
-              this.showPlayer = true;
+          }
+          this.publicPlayerService.getQuestionSetHierarchyByPost(requestBody).pipe(
+            takeUntil(this.unsubscribe))
+            .subscribe((response) => {             
+              //Call below method for sending questionSetToken in content state update api if eval mode is server
+              this.questionSetEvaluable = this.serverValidationCheck(response.questionSet?.eval);
+              this.assessmentScoreService.setServerEvaluableFields(this.questionSetEvaluable, response.questionSet.questionSetToken, this.attemptID);
+             this.updatePlayerWithResponse(response,id);
+             this.showLoader = false;
+            }, (err) => {
+              this.toasterService.error(this.resourceService.messages.stmsg.m0009);
+              this.showLoader = false;
             });
-            const _contentIndex = _.findIndex(this.contentStatus, { contentId: _.get(this.playerConfig, 'context.contentId') });
-            this.playerConfig['metadata']['maxAttempt'] = _.get(this.activeContent, 'maxAttempts');
-            const _currentAttempt = _.get(this.contentStatus[_contentIndex], 'score.length') || 0;
-            this.playerConfig['metadata']['currentAttempt'] = _currentAttempt == undefined ? 0 : _currentAttempt;
-            this.playerConfig['context']['objectRollup'] = this.objectRollUp; 
-            this.showLoader = false;
-          }, (err) => {
-            this.toasterService.error(this.resourceService.messages.stmsg.m0009);
-            this.showLoader = false;
-          });
+        } else {
+          this.publicPlayerService.getQuestionSetHierarchy(id).pipe(
+            takeUntil(this.unsubscribe))
+            .subscribe((response) => {
+               this.questionSetEvaluable = this.serverValidationCheck(response.questionSet?.eval);
+               this.assessmentScoreService.setServerEvaluableFields(this.questionSetEvaluable, response.questionSet?.questionSetToken, '');
+               this.updatePlayerWithResponse(response,id);
+              this.showLoader = false;
+            }, (err) => {
+              this.toasterService.error(this.resourceService.messages.stmsg.m0009);
+              this.showLoader = false;
+            });
+        }
       } else {
       this.courseConsumptionService.getConfigByContent(id, options)
         .pipe(first(), takeUntil(this.unsubscribe))
@@ -883,6 +920,16 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
         });
       }
     }
+  }
+
+  serverValidationCheck(obj: any) {
+    if(typeof obj == 'string') {
+      this.questionSetEvaluable = JSON.parse(obj);
+      this.questionSetEvaluable = this.questionSetEvaluable?.mode?.toLowerCase() == 'server'
+    } else {
+      this.questionSetEvaluable = obj?.mode?.toLowerCase() == 'server'
+    }
+    return this.questionSetEvaluable;
   }
 
   onSelfAssessLastAttempt(event) {

@@ -10,6 +10,7 @@ import {
 import * as _ from 'lodash-es';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
+import { HttpClient } from '@angular/common/http';
 
 
 @Injectable({
@@ -33,7 +34,7 @@ export class PublicPlayerService {
   constructor(private csLibInitializerService: CsLibInitializerService, public userService: UserService, private orgDetailsService: OrgDetailsService,
     public configService: ConfigService, public router: Router,
     public publicDataService: PublicDataService, public navigationHelperService: NavigationHelperService,
-    public resourceService: ResourceService, private utilService: UtilService) {
+    public resourceService: ResourceService, private utilService: UtilService, private http: HttpClient) {
       this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
       ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
       this.sessionId = (<HTMLInputElement>document.getElementById('sessionId'))
@@ -214,6 +215,13 @@ export class PublicPlayerService {
       this.contentData = response.questionSet;
       return response;
     }));
+  }
+
+  getQuestionSetHierarchyByPost(req){
+      return this.http.post(`${this.configService.urlConFig.URLS.LEARNER_PREFIX}${this.configService.urlConFig.URLS.QUESTIONSET.HIERARCHY_READ}/${req.request.questionset.contentID}`, req).pipe(map((response: any) => {
+      this.contentData = response.result.questionSet;
+      return response.result;
+    }))
   }
 
   getQuestionSetRead(contentId: string, option: any = { params: {} }): Observable<ServerResponse> {
