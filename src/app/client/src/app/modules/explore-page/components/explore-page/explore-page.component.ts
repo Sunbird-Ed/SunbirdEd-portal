@@ -639,11 +639,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             const preferences = _.pick(searchOptions.filters, requiredProps);
             section.apiConfig.req.request.filters = { ...section.apiConfig.req.request.filters, ...preferences };
         }
-
         return {
             isEnabled: Boolean(_.get(section, 'isEnabled')),
             searchRequest: _.get(section, 'apiConfig.req'),
-            title: get(this.resourceService, section.title) || section.defaultTitle
+            title: get(this.resourceService, section.title) ? section.title : section.defaultTitle
         };
     }
 
@@ -1146,6 +1145,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         let _sectionTitle = this.utilService.transposeTerms(get(this.resourceService, title), get(this.resourceService, title) || '', this.resourceService.selectedLang);
         return get(this.resourceService, 'frmelmnts.lbl.browseBy') + ' ' + _sectionTitle;
 
+    }
+
+    getContentSectionTitle(title) {
+        let _sectionTitle = this.utilService.transposeTerms(get(this.resourceService, title), get(this.resourceService, title) || '', this.resourceService.selectedLang) || title;
+        return _sectionTitle;
     }
 
     getSectionCategoryTitle(title) {
