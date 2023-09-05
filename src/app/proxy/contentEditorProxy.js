@@ -1,14 +1,15 @@
+const utils = require('../helpers/utils.js');
 const proxyUtils = require('./proxyUtils.js')
 const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')
-const envHelper = require('./../helpers/environmentVariablesHelper.js')
-const contentProxyUrl = envHelper.CONTENT_PROXY_URL
-const learnerServiceBaseUrl = envHelper.LEARNER_URL
-const learner_Service_Local_BaseUrl = envHelper.learner_Service_Local_BaseUrl
-const contentServiceBaseUrl = envHelper.CONTENT_URL
+const contentProxyUrl  = utils.defaultHost(utils.envVariables.CONTENT_PROXY_URL);
+const learnerServiceBaseUrl  = utils.defaultHost(utils.envVariables.LEARNER_URL);
+const learner_Service_Local_BaseUrl = utils.defaultHost(utils.envVariables.learner_Service_Local_BaseUrl);
+const PORTAL_EXT_PLUGIN_URL = utils.defaultHost(utils.envVariables.PORTAL_EXT_PLUGIN_URL);
+const contentServiceBaseUrl = utils.defaultHost(utils.envVariables.CONTENT_URL);
 const reqDataLimitOfContentUpload = '30mb'
 const telemetryHelper = require('../helpers/telemetryHelper')
-const learnerURL = envHelper.LEARNER_URL
+const learnerURL  = utils.defaultHost(utils.envVariables.LEARNER_URL);
 const isAPIWhitelisted = require('../helpers/apiWhiteList');
 
 module.exports = function (app) {
@@ -105,7 +106,7 @@ module.exports = function (app) {
   app.all('/action/review/comment/*',
   isAPIWhitelisted.isAllowed(),
   addCorsHeaders,
-  proxy(envHelper.PORTAL_EXT_PLUGIN_URL, {
+  proxy(PORTAL_EXT_PLUGIN_URL, {
     proxyReqPathResolver: req => {
       return req.originalUrl.replace('/action', '/plugin')
     },

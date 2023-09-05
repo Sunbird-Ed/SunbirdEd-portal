@@ -1,8 +1,13 @@
+const utils = require('../helpers/utils');
 const proxyUtils = require('../proxy/proxyUtils.js')
 const reportHelper = require('../helpers/reportHelper.js')
 const BASE_REPORT_URL = "/report";
 const proxy = require('express-http-proxy');
-const {REPORT_SERVICE_URL, sunbird_api_request_timeout, DATASERVICE_URL,CONTENT_URL, sunbird_data_product_service} = require('../helpers/environmentVariablesHelper.js');
+const REPORT_SERVICE_URL = utils.defaultHost(utils.envVariables.REPORT_SERVICE_URL);
+const CONTENT_URL = utils.defaultHost(utils.envVariables.CONTENT_URL);
+const sunbird_data_product_service = utils.defaultHost(utils.envVariables.sunbird_data_product_service);
+const DATASERVICE_URL = utils.defaultHost(utils.envVariables.DATASERVICE_URL);
+
 const reqDataLimitOfContentUpload = '50mb';
 const _ = require('lodash');
 const {getUserDetailsV2} = require('../helpers/userHelper');
@@ -134,31 +139,31 @@ module.exports = function (app) {
     app.get('/courseReports/:slug/:filename',
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['CONTENT_CREATOR']),
-        StorageService.CLOUD_CLIENT.fileReadStream(envHelper.cloud_storage_privatereports_bucketname));
+        StorageService.CLOUD_CLIENT.fileReadStream(envHelper?.cloud_storage_privatereports_bucketname));
 
     app.get('/course-reports/metadata',
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['CONTENT_CREATOR', 'REPORT_VIEWER', 'REPORT_ADMIN', 'ORG_ADMIN','PROGRAM_DESIGNER','PROGRAM_MANAGER']),
-        StorageService.CLOUD_CLIENT.getFileProperties(envHelper.cloud_storage_privatereports_bucketname)
+        StorageService.CLOUD_CLIENT.getFileProperties(envHelper?.cloud_storage_privatereports_bucketname)
         );
 
     app.get(`/reports/fetch/:slug/:filename`,
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN','PROGRAM_DESIGNER','PROGRAM_MANAGER']),
-        StorageService.CLOUD_CLIENT.fileReadStream(envHelper.cloud_storage_privatereports_bucketname));
+        StorageService.CLOUD_CLIENT.fileReadStream(envHelper?.cloud_storage_privatereports_bucketname));
 
     app.get('/reports/:slug/:filename',
         proxyUtils.verifyToken(),
         reportHelper.validateSlug(['public']),
         reportHelper.validateRoles(['ORG_ADMIN', 'REPORT_VIEWER', 'REPORT_ADMIN','PROGRAM_DESIGNER','PROGRAM_MANAGER']),
-        StorageService.CLOUD_CLIENT.fileReadStream(envHelper.cloud_storage_privatereports_bucketname));
+        StorageService.CLOUD_CLIENT.fileReadStream(envHelper?.cloud_storage_privatereports_bucketname));
 
     app.get('/admin-reports/:slug/:filename',
         proxyUtils.verifyToken(),
         reportHelper.validateSlug(['geo-summary', 'geo-detail', 'geo-summary-district', 'user-summary', 'user-detail',
             'validated-user-summary', 'validated-user-summary-district', 'validated-user-detail', 'declared_user_detail']),
         reportHelper.validateRoles(['ORG_ADMIN']),
-        StorageService.CLOUD_CLIENT.fileReadStream(envHelper.cloud_storage_privatereports_bucketname));
+        StorageService.CLOUD_CLIENT.fileReadStream(envHelper?.cloud_storage_privatereports_bucketname));
 
     app.get(`${BASE_REPORT_URL}/dataset/get/:datasetId`,
         proxyUtils.verifyToken(),
