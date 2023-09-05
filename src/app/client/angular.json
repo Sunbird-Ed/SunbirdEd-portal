@@ -98,8 +98,8 @@
               "node_modules/video.js/dist/video.js",
               "node_modules/videojs-contrib-quality-levels/dist/videojs-contrib-quality-levels.min.js",
               "node_modules/videojs-http-source-selector/dist/videojs-http-source-selector.min.js",
+              "node_modules/@project-sunbird/sunbird-file-upload-library/sunbird-file-upload-library.js",
               "node_modules/@project-sunbird/sunbird-video-player-v9/lib/assets/videojs-markers.js",
-              
               {
                 "inject": false,
                 "input": "src/assets/libs/semantic-ui/transition.min.js",
