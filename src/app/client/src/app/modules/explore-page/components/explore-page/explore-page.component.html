@@ -153,7 +153,7 @@
           <div *ngIf="getSelectedTab() === 'home'">
             <div *ngFor="let section of contentSections" class="pl-16">
               <sb-content-section *ngIf="section?.isEnabled" (cardClick)="playContent($event, section?.title)"
-                [sortBy]="section?.apiConfig?.sortBy" [searchRequest]="section?.searchRequest" [title]="section?.title"
+                [sortBy]="section?.apiConfig?.sortBy" [searchRequest]="section?.searchRequest" [title]="getContentSectionTitle(section?.title)"
                 [layoutConfig]="layoutConfiguration" (viewMoreClick)="viewAll($event, section)"
                 [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall">
               </sb-content-section>
