@@ -345,6 +345,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.contentStatus = _parsedResponse.content || [];
         this._routerStateContentStatus = _parsedResponse;
         this.calculateProgress();
+        // calculate progress with mandatory course only instead of all content 
         this.progressToDisplay = Math.floor((this.consumedModule / this.totalModule) * 100);
       }, error => {
         console.log('Content state read CSL API failed ', error);
@@ -580,8 +581,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           }
 
           unit.consumedContent = consumedContents.length;
+          // count mandatory content in module
           this.totalModule +=flattenDeepContents.length;
           this.consumedModule +=consumedContents.length;
+          
           unit.contentCount = flattenDeepContents.length;
           unit.isUnitConsumed = consumedContents.length === flattenDeepContents.length;
           unit.isUnitConsumptionStart = false;
