@@ -1,5 +1,9 @@
 const env = process.env;
+// For Staging Environment
 const SB_DOMAIN = 'https://staging.sunbirded.org';
+
+// For Dev Environment
+// const SB_DOMAIN = 'https://dev.sunbirded.org'
 const fs = require('fs')
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'))
 let optionalEnvVariables = {
@@ -31,8 +35,15 @@ let optionalEnvVariables = {
     LOG_FINGERPRINT_DETAILS: env.sunbird_log_fingerprint_details || 'true',
     SUNBIRD_PORTAL_BASE_URL: env.sunbird_portal_base_url,
 
-    //Configuration for device register and profile
+    // Configuration for device register and profile
+    KONG_DEVICE_REGISTER_AUTH_TOKEN: env.sunbird_kong_device_register_token || '',
+
+    // For Staging Environment
     sunbird_device_api: env.sunbird_device_api || 'https://staging.ntp.net.in/api/',
+
+    // For Dev Environment
+    // sunbird_device_api: env.sunbird_device_api || "https://dev.sunbirded.org/api/",
+
     sunbird_portal_slugForProminentFilter: env.sunbird_portal_slugForProminentFilter,
     sunbird_super_admin_slug: env.sunbird_super_admin_slug || 'sunbird',
     sunbird_data_product_service: env.sunbird_data_product_service || 'https://staging.ntp.net.in/',
@@ -49,7 +60,7 @@ let optionalEnvVariables = {
     SUNBIRD_PUBLIC_STORAGE_ACCOUNT_NAME: env.sunbird_public_storage_account_name,
 
     // Keycloak Login - Portal
-    // The env variable is used for keycloak configuration 
+    // The env variable is used for keycloak configuration
     KEY_CLOAK_PUBLIC: env.sunbird_keycloak_public || 'true',
     KEY_CLOAK_REALM: env.sunbird_keycloak_realm || 'sunbird',
     PORTAL_TRAMPOLINE_CLIENT_ID: env.sunbird_trampoline_client_id || 'trampoline',
@@ -57,18 +68,12 @@ let optionalEnvVariables = {
     PORTAL_AUTOCREATE_TRAMPOLINE_USER: env.sunbird_autocreate_trampoline_user || 'true',
     KEY_CLOAK_PUBLIC_KEY: env.sunbird_keycloak_public_key,
 
-    // Kong 
+    // Kong
     // The env variable is used to set the config of kong to enable the  logged-in feature
     // Kong Device Token
     sunbird_default_device_token: env.sunbird_default_device_token || '',
-    //   Kong endpoints
-    sunbird_loggedin_device_register_api: env.sunbird_loggedin_device_register_api || '',
-    // Device register API for logged-in users
-    sunbird_loggedin_register_token: env.sunbird_loggedin_register_token || "token",
-    // Fallback token for device register API for `logged-in` users
-    sunbird_logged_default_token: env.sunbird_logged_default_token || "token",
 
-    // Editors 
+    // Editors
     // Editor urls to launch while creation
     CONTENT_EDITORS_URL: {
         COLLECTION_EDITOR: env.sunbird_collectionEditorURL || '',
@@ -229,7 +234,7 @@ let optionalEnvVariables = {
     sunbird_p3_reCaptcha_enabled: env.sunbird_p3_reCaptcha_enabled,
 
     // TTL and Intervals
-    // The env variable is used to set  portal api cache time to live(ttl) , response , session cache ttl 
+    // The env variable is used to set  portal api cache time to live(ttl) , response , session cache ttl
     CONFIG_REFRESH_INTERVAL: env.config_refresh_interval || 10,
     PORTAL_API_CACHE_TTL: env.sunbird_api_response_cache_ttl || '600',
     CACHE_TTL: env.sunbird_cache_ttl || 1800,

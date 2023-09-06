@@ -1,17 +1,30 @@
 const env = process.env;
+// For Staging Environment
 const SB_DOMAIN = 'https://staging.sunbirded.org';
+
+// For Dev Environment
+// const SB_DOMAIN = 'https://dev.sunbirded.org'
+
 let mandEnvVariables = {
-    // Environment variables
-    //mandatory
-    KONG_DEVICE_REGISTER_AUTH_TOKEN: env.sunbird_kong_device_register_token || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodEsyTUNWb1hNdjZPeFY0UE1RWnBia3MzNmlXY1d5aCJ9.oLpRBmf6u_2oqcrS3cxL9zr8pBQd62EtVORDOqvNfEU',
+    // Mandatory Environment variables
+
     // Device register API for anonymous users
     sunbird_anonymous_register_token: env.sunbird_anonymous_register_token || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJNZXI4RWplMW0yMFB5cXpISWljM2tUM3FraVZoWmZXRSJ9.3M23YKULRjFWW9NkbZQQgq1-_BaIVcsUh-Cr3PkHG54',
     // Fallback token for device register API for `anonymous` users
     sunbird_anonymous_default_token: env.sunbird_anonymous_default_token || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI3N21wRElZcEZuemZQaUsxZmdwaGpCZWVGdXF1T1RZMSJ9.v8nl17oKQ0sbQAfw1QEoXyY1fG2Ib4hRB0FyPrjYQp0',
-    //Generalised cloud configuration // 
+    //Generalised cloud configuration
     cloud_private_storage_accountname: env.cloud_private_storage_accountname || 'azure',
     sunbird_cloud_storage_provider: env.sunbird_cloud_storage_provider || 'azure',
     cloud_private_storage_secret: env.cloud_private_storage_secret || 'private_storage_secret',
+
+    // Kong End Points for Logged Users
+    sunbird_loggedin_device_register_api: env.sunbird_loggedin_device_register_api || '',
+
+    // Fallback token for device register API for `logged-in` users
+    sunbird_logged_default_token: env.sunbird_logged_default_token || "token",
+
+    // Device register API for logged-in users
+    sunbird_loggedin_register_token: env.sunbird_loggedin_register_token || "token",
 
     // default value present
     sunbird_anonymous_session_ttl: env.sunbird_anonymous_session_ttl ? parseInt(env.sunbird_anonymous_session_ttl) : 10 * 60 * 1000,
