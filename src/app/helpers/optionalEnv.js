@@ -1,13 +1,39 @@
 const env = process.env;
-// For Staging Environment
+// Environment
 const SB_DOMAIN = 'https://staging.sunbirded.org';
 
-// For Dev Environment
-// const SB_DOMAIN = 'https://dev.sunbirded.org'
 const fs = require('fs')
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'))
 let optionalEnvVariables = {
-    //Application Start-up - Hosts  Configuration
+    // Default Mandatory values
+    // Portal and Session Configuration
+    APPID: process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.portal',
+    sunbird_instance_name: env.sunbird_instance || 'Sunbird',
+    DEFAULT_CHANNEL: env.sunbird_default_channel,
+    PORTAL_SESSION_SECRET_KEY: (env.sunbird_portal_session_secret && env.sunbird_portal_session_secret !== '')
+        ? env.sunbird_portal_session_secret.split(',') : 'sunbird,ed48b0ce-5a92-11ed-9b6a-0242ac120002'.split(','),
+    sunbird_anonymous_session_ttl: env.sunbird_anonymous_session_ttl ? parseInt(env.sunbird_anonymous_session_ttl) : 10 * 60 * 1000,
+
+    // Telemetry Configuration
+    TELEMETRY_SERVICE_LOCAL_URL: env.sunbird_telemetry_service_local_url || 'http://telemetry-service:9001/',
+
+    // BLOB and Storage Configuration
+    PORTAL_SESSION_STORE_TYPE: env.sunbird_session_store_type || 'in-memory',
+    PORTAL_CASSANDRA_REPLICATION_STRATEGY: env.sunbird_cassandra_replication_strategy || '{"class":"SimpleStrategy","replication_factor":1}',
+
+    // Health Checks Configuration
+    sunbird_portal_health_check_enabled: env.sunbird_health_check_enable || 'true',
+    sunbird_learner_service_health_status: 'true',
+    sunbird_content_service_health_status: 'true',
+    sunbird_portal_cassandra_db_health_status: 'true',
+
+    // Application Start-up - Hosts  Default Configuration
+    PORTAL_PORT: env.sunbird_port || 3000,
+    LEARNER_URL: env.sunbird_learner_player_url || SB_DOMAIN + '/api/',
+    CONTENT_URL: env.sunbird_content_player_url || SB_DOMAIN + '/api/',
+    CONTENT_PROXY_URL: env.sunbird_content_proxy_url || SB_DOMAIN,
+    sunbird_kid_public_key_base_path: env.sunbird_kid_public_key_base_path || '/keys/',
+    SUNBIRD_PROTO: env.sunbird_base_proto,
     CACHE_STORE: env.sunbird_cache_store || 'memory',
     PORTAL_SESSION_STORE_TYPE: env.sunbird_session_store_type || 'in-memory',
     DEFAULT_BOARD: env.sunbird_default_board || 'CBSE',
@@ -36,21 +62,22 @@ let optionalEnvVariables = {
     SUNBIRD_PORTAL_BASE_URL: env.sunbird_portal_base_url,
 
     // Configuration for device register and profile
-    KONG_DEVICE_REGISTER_AUTH_TOKEN: env.sunbird_kong_device_register_token || '',
-
-    // For Staging Environment
     sunbird_device_api: env.sunbird_device_api || 'https://staging.ntp.net.in/api/',
-
-    // For Dev Environment
-    // sunbird_device_api: env.sunbird_device_api || "https://dev.sunbirded.org/api/",
 
     sunbird_portal_slugForProminentFilter: env.sunbird_portal_slugForProminentFilter,
     sunbird_super_admin_slug: env.sunbird_super_admin_slug || 'sunbird',
     sunbird_data_product_service: env.sunbird_data_product_service || 'https://staging.ntp.net.in/',
     PORTAL_CASSANDRA_CONSISTENCY_LEVEL: env.sunbird_cassandra_consistency_level || 'one',
 
-    // CSP Configuration: Generalised cloud configuration
-    // The env variable is used to set the  configuration of Cloud service provider
+    // Mandatory Configuration of Cloud Service Provider
+    // Cloud Account Name
+    cloud_private_storage_accountname: env.cloud_private_storage_accountname || 'azure',
+    // Cloud Account Provider            |
+    sunbird_cloud_storage_provider: env.sunbird_cloud_storage_provider || 'azure',
+    // Cloud Account Key            |
+    cloud_private_storage_secret: env.cloud_private_storage_secret || 'private_storage_secret',
+
+    // Optional Configuration of Cloud Service Provider
     cloud_storage_privatereports_bucketname: env.cloud_storage_privatereports_bucketname || 'reports',
     cloud_storage_resourceBundle_bucketname: env.cloud_storage_resourceBundle_bucketname || 'label',
     cloud_private_storage_region: env.cloud_private_storage_region || '',
@@ -58,6 +85,8 @@ let optionalEnvVariables = {
     cloud_private_storage_endpoint: env.cloud_private_storage_endpoint || '',
     CLOUD_STORAGE_URLS: env.sunbird_cloud_storage_urls,
     SUNBIRD_PUBLIC_STORAGE_ACCOUNT_NAME: env.sunbird_public_storage_account_name,
+    //Common key for Uploading Desktop Crash logs
+    cloud_storage_desktopCrash_bucketname: env.cloud_storage_desktopCrash_bucketname || 'desktopappcrashlogs',
 
     // Keycloak Login - Portal
     // The env variable is used for keycloak configuration
@@ -71,7 +100,16 @@ let optionalEnvVariables = {
     // Kong
     // The env variable is used to set the config of kong to enable the  logged-in feature
     // Kong Device Token
+    KONG_DEVICE_REGISTER_AUTH_TOKEN: env.sunbird_kong_device_register_token || '',
     sunbird_default_device_token: env.sunbird_default_device_token || '',
+
+    // Kong endpoints
+    sunbird_anonymous_device_register_api: env.sunbird_anonymous_device_register_api || '',
+    sunbird_kong_refresh_token_api: env.sunbird_kong_refresh_token_api || '',
+
+    // Kong - Mandatory device registration and refresh token keys
+    KONG_DEVICE_REGISTER_TOKEN: env.sunbird_kong_device_register || 'false',
+    KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN: env.sunbird_kong_device_register_anonymous || 'false',
 
     // Editors
     // Editor urls to launch while creation
@@ -140,6 +178,7 @@ let optionalEnvVariables = {
     CONTENT_SERVICE_UPSTREAM_URL: env.sunbird_content_service_upstream_url || 'http://localhost:5000/',
     LEARNER_SERVICE_UPSTREAM_URL: env.sunbird_learner_service_upstream_url || 'http://localhost:9000/',
     PORTAL_EXT_PLUGIN_URL: process.env.sunbird_ext_plugin_url || 'http://player_player: 3000/plugin/',
+    DATASERVICE_URL: env.sunbird_dataservice_url || SB_DOMAIN + '/api/',
     sunbird_data_product_service: env.sunbird_data_product_service || 'https://staging.ntp.net.in/',
 
     // UCI / Chatbot
@@ -246,6 +285,7 @@ let optionalEnvVariables = {
     // CDN Configuration
     // The env variable is used to set the config of CDN
     PORTAL_CDN_URL: env.sunbird_portal_cdn_url || '',
+    TENANT_CDN_URL: env.sunbird_tenant_cdn_url || '',
     sunbird_portal_preview_cdn_url: env.sunbird_portal_preview_cdn_url,
     sunbird_portal_cdn_blob_url: env.sunbird_portal_cdn_blob_url || '',
 }
