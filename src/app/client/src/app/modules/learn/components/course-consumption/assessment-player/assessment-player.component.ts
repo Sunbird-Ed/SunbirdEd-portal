@@ -546,7 +546,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
           unit.isUnitConsumptionStart = Boolean(consumedContent.length);
 
           // exclude optional material in both consumed content and total content in order to calculate course progress
-          if(unit?.relationalMetadata?.optional=== false) {  
+          if(unit?.relationalMetadata?.optional === false) {  
             this.consumedContents = this.consumedContents + unit.consumedContent;
             this.totalContents = this.totalContents + unit.contentCount;
           }

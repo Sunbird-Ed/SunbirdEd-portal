@@ -571,7 +571,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
           /* istanbul ignore else */
           if (_.get(unit, 'children.length')) {
-            flattenDeepContents = this.courseConsumptionService.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection' && item.mimeType !== 'application/vnd.sunbird.question' && item?.relationalMetadata?.optional === false);
+            flattenDeepContents = this.courseConsumptionService.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection' && item.mimeType !== 'application/vnd.sunbird.question' && !(item?.relationalMetadata?.optional));
             /* istanbul ignore else */
             if (this.contentStatus.length) {
               consumedContents = flattenDeepContents.filter(o => {
@@ -582,9 +582,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
           unit.consumedContent = consumedContents.length;
           // count mandatory content in module
-          this.totalModule +=flattenDeepContents.length;
-          this.consumedModule +=consumedContents.length;
-          
+          this.totalModule = this.totalModule + flattenDeepContents.length;
+          this.consumedModule = this.consumedModule + consumedContents.length;
           unit.contentCount = flattenDeepContents.length;
           unit.isUnitConsumed = consumedContents.length === flattenDeepContents.length;
           unit.isUnitConsumptionStart = false;
@@ -604,7 +603,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           unit.isUnitConsumed = consumedContent.length === 1;
           unit.progress = consumedContent.length ? 100 : 0;
           unit.isUnitConsumptionStart = Boolean(consumedContent.length);
-          if(unit?.relationalMetadata?.optional=== false) {
+          if(unit?.relationalMetadata?.optional === false) {
             this.totalModule = this.totalModule + unit.consumedContent;
             this.consumedModule = this.consumedModule + unit.contentCount;
           }
