@@ -94,6 +94,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   isConnected = false;
   dropdownContent = true;
   showForceSync = true;
+  totalModule=0;
+  consumedModule =0;
   constructor(
     public activatedRoute: ActivatedRoute,
     private configService: ConfigService,
@@ -340,10 +342,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((res) => {
         const _parsedResponse = this.courseProgressService.getContentProgressState(req, res);
-        this.progressToDisplay = Math.floor((_parsedResponse.completedCount / this.courseHierarchy.leafNodesCount) * 100);
         this.contentStatus = _parsedResponse.content || [];
         this._routerStateContentStatus = _parsedResponse;
         this.calculateProgress();
+        this.progressToDisplay = Math.floor((this.consumedModule / this.totalModule) * 100);
       }, error => {
         console.log('Content state read CSL API failed ', error);
       });
@@ -558,6 +560,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   calculateProgress() {
     /* istanbul ignore else */
+    this.totalModule =0;
+    this.consumedModule =0;
     if (_.get(this.courseHierarchy, 'children')) {
       this.courseHierarchy.children.forEach(unit => {
         if (unit.mimeType === 'application/vnd.ekstep.content-collection') {
@@ -566,7 +570,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
           /* istanbul ignore else */
           if (_.get(unit, 'children.length')) {
-            flattenDeepContents = this.courseConsumptionService.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection' && item.mimeType !== 'application/vnd.sunbird.question');
+            flattenDeepContents = this.courseConsumptionService.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection' && item.mimeType !== 'application/vnd.sunbird.question' && item?.relationalMetadata?.optional === false);
             /* istanbul ignore else */
             if (this.contentStatus.length) {
               consumedContents = flattenDeepContents.filter(o => {
@@ -576,6 +580,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           }
 
           unit.consumedContent = consumedContents.length;
+          this.totalModule +=flattenDeepContents.length;
+          this.consumedModule +=consumedContents.length;
           unit.contentCount = flattenDeepContents.length;
           unit.isUnitConsumed = consumedContents.length === flattenDeepContents.length;
           unit.isUnitConsumptionStart = false;
@@ -595,6 +601,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           unit.isUnitConsumed = consumedContent.length === 1;
           unit.progress = consumedContent.length ? 100 : 0;
           unit.isUnitConsumptionStart = Boolean(consumedContent.length);
+          if(unit?.relationalMetadata?.optional=== false) {
+            this.totalModule = this.totalModule + unit.consumedContent;
+            this.consumedModule = this.consumedModule + unit.contentCount;
+          }
         }
       });
     }

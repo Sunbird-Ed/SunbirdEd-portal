@@ -512,7 +512,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
 
           /* istanbul ignore else */
           if (_.get(unit, 'children.length')) {
-            flattenDeepContents = this.courseConsumptionService.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection');
+            flattenDeepContents = this.courseConsumptionService.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection' && item?.relationalMetadata?.optional === false);
             /* istanbul ignore else */
             if (this.contentStatus && this.contentStatus.length) {
               consumedContents = flattenDeepContents.filter(o => {
@@ -533,6 +533,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
             unit.progress = 0;
             unit.isUnitConsumptionStart = false;
           }
+          this.consumedContents = this.consumedContents + unit.consumedContent;
+          this.totalContents = this.totalContents + unit.contentCount;
 
         } else {
           const consumedContent = this.contentStatus.filter(({ contentId, status }) => unit.identifier === contentId && status === 2);
@@ -541,10 +543,11 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
           unit.isUnitConsumed = consumedContent.length === 1;
           unit.progress = consumedContent.length ? 100 : 0;
           unit.isUnitConsumptionStart = Boolean(consumedContent.length);
+          if(unit?.relationalMetadata?.optional=== false) {
+            this.consumedContents = this.consumedContents + unit.consumedContent;
+            this.totalContents = this.totalContents + unit.contentCount;
+          }
         }
-
-        this.consumedContents = this.consumedContents + unit.consumedContent;
-        this.totalContents = this.totalContents + unit.contentCount;
         this.courseHierarchy.progress = 0;
         /* istanbul ignore else */
         if (this.consumedContents) {
