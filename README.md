@@ -219,3 +219,13 @@ Installing Sunbird requires two primary software components:
 | [@project-sunbird/sb-notification](https://www.npmjs.com/package/@project-sunbird/sb-notification)           	| https://github.com/Sunbird-Ed/sb-notification                    	| 6.0.0       	| NG 14      	|
 | [@shikshalokam/sl-questionnaire](https://www.npmjs.com/package/@shikshalokam/sl-questionnaire)           	    | https://github.com/shikshalokam/sl-questionnaire-components       | 2.3.0       	| NG 12      	|
 | [@shikshalokam/sl-reports-library](https://www.npmjs.com/package/@shikshalokam/sl-reports-library)           	| https://github.com/shikshalokam/sl-reports-library                | 3.0.1       	| NG 14      	|
+
+### Mandatory Environmental Variables to be added
+
+| Variable Name                                          | Usage of the variable                                                              | 	
+|--------------------------------------------------------|------------------------------------------------------------------------------------|
+|  sunbird_loggedin_device_register_api                  | Register and manage devices that are logged in or authenticated to a user's account|                                                                                 |  sunbird_logged_default_token                          | Fallback token for device register API for logged in users                         |
+|  sunbird_loggedin_register_token                       | Device register API for logged-in users                                            |
+ ---------------------------------------------------------------------------------------------------------------------------------------------  
+
+
