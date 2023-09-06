@@ -812,7 +812,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     if (response && response.context) {
       response.context.objectRollup = this.objectRollUp;
     }
-    const contentDetails = {contentId: id, contentData: response.questionSet };
+    const contentDetails = {contentId: id, contentData: response.questionset };
     this.playerConfig = serveiceRef.getConfig(contentDetails);
     this.publicPlayerService.getQuestionSetRead(id).subscribe((data: any) => {
       this.playerConfig['metadata']['instructions'] = _.get(data, 'result.questionset.instructions');
@@ -876,8 +876,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
             takeUntil(this.unsubscribe))
             .subscribe((response) => {             
               //Call below method for sending questionSetToken in content state update api if eval mode is server
-              this.questionSetEvaluable = this.serverValidationCheck(response.questionSet?.eval);
-              this.assessmentScoreService.setServerEvaluableFields(this.questionSetEvaluable, response.questionSet.questionSetToken, this.attemptID);
+              this.questionSetEvaluable = this.serverValidationCheck(response.questionset?.eval);
+              this.assessmentScoreService.setServerEvaluableFields(this.questionSetEvaluable, response.questionset.questionSetToken, this.attemptID);
              this.updatePlayerWithResponse(response,id);
              this.showLoader = false;
             }, (err) => {
@@ -888,8 +888,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
           this.publicPlayerService.getQuestionSetHierarchy(id).pipe(
             takeUntil(this.unsubscribe))
             .subscribe((response) => {
-               this.questionSetEvaluable = this.serverValidationCheck(response.questionSet?.eval);
-               this.assessmentScoreService.setServerEvaluableFields(this.questionSetEvaluable, response.questionSet?.questionSetToken, '');
+               this.questionSetEvaluable = this.serverValidationCheck(response.questionset?.eval);
+               this.assessmentScoreService.setServerEvaluableFields(this.questionSetEvaluable, response.questionset?.questionSetToken, '');
                this.updatePlayerWithResponse(response,id);
               this.showLoader = false;
             }, (err) => {

@@ -219,7 +219,7 @@ export class PublicPlayerService {
 
   getQuestionSetHierarchyByPost(req){
       return this.http.post(`${this.configService.urlConFig.URLS.LEARNER_PREFIX}${this.configService.urlConFig.URLS.QUESTIONSET.HIERARCHY_READ}/${req.request.questionset.contentID}`, req).pipe(map((response: any) => {
-      this.contentData = response.result.questionSet;
+      this.contentData = response.result.questionset;
       return response.result;
     }))
   }
