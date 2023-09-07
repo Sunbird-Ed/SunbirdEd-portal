@@ -1,8 +1,10 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+
 .entity-list{
     background: var(--sb-card-bg);
-    padding: 10px 24px;;
-    border-radius: 30px;
-    margin: 15px 0px;
+    padding: calculateRem(10px) calculateRem(24px);
+    border-radius: calculateRem(30px);
+    margin: calculateRem(15px) 0px;
     label{
         margin-bottom:0px;
     }

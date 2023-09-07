@@ -1,3 +1,5 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+
 .sb-modal-actions {
   display: flex;
   align-items: center;
@@ -83,13 +85,13 @@
 }
 
 .sb-label-value {
-  border-radius: 24px;
-  padding: 7px;
-  padding-right: 9px;
-  padding-left: 9px;
-  background-color: #E9E8D9 !important;
-  box-shadow: 4px 4px 3px 0 #C2C2C2 !important;
-  color: #333;
+  border-radius: calculateRem(24px);
+  padding: calculateRem(7px);
+  padding-right: calculateRem(9px);
+  padding-left: calculateRem(9px);
+  background-color: var(---rc-e9e8d9) !important;
+  box-shadow: calculateRem(4px) calculateRem(4px) calculateRem(3px) 0 var(--gray-100) !important;
+  color: var(--gray-800);
   margin-bottom: 0.25rem;
   margin-right: 0.25rem;
 
@@ -98,8 +100,8 @@
 ::ng-deep {
   
   .cdk-overlay-container{
-    z-index: 1 !important;
-}
+    z-index: 9 !important;
+  }
 
   .customTable{
     sb-dashlets-filters{

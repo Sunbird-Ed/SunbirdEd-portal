@@ -140,7 +140,6 @@ function verifyToken() {
         let reqSession = Object.assign({}, req.session);
         delete reqSession['auth_redirect_uri'];
         delete reqSession['keycloak-token']
-        console.log('Discussion forum let:', reqSession);
         await proxyUtils.validateUserTokenForDF(req, res, next);
         next();
     }

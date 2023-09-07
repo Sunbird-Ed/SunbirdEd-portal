@@ -1,23 +1,25 @@
 
+@use "~@project-sunbird/sb-styles/assets/varSass" as *;
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 // Filters
-$sb-prominent-filter-background-color: $white-color;
-$sb-prominent-filter-padding: $base-block-space * 2 $base-block-space * 2;
+$sb-prominent-filter-background-color: var(--white);
+$sb-prominent-filter-padding: 1rem 1rem;
 $sb-prominent-filter-header-font-weight: bold;
-$sb-prominent-filter-header-margin: ($base-block-space) 0
-  ($base-block-space * 2) 0;
-$sb-prominent-filter-header-color: $primary-color;
+$sb-prominent-filter-header-margin: 0.5rem 0
+  1rem 0;
+$sb-prominent-filter-header-color: var(--primary-color);
 $sb-prominent-filter-field-width-below-sm: 50%;
 $sb-prominent-filter-field-width-above-sm: 33.3333%;
 $sb-prominent-filter-field-width-above-md: 25%;
 $sb-prominent-filter-field-width-above-lg: 20%;
-$sb-prominent-filter-field-bottom-spacing: ($base-block-space * 2);
-$sb-prominent-filter-field-side-spacing: ($base-block-space * 2);
+$sb-prominent-filter-field-bottom-spacing: 1rem;
+$sb-prominent-filter-field-side-spacing: 1rem;
 $sb-prominent-filter-field-label-font-size: calculateRem(14px);
 $sb-prominent-filter-field-label-font-weight: normal;
-$sb-prominent-filter-field-label-color: $gray-800;
-$sb-prominent-filter-field-label-margin: 0 0 $base-block-space 0;
+$sb-prominent-filter-field-label-color: var(--gray-800);
+$sb-prominent-filter-field-label-margin: 0 0 0.5rem 0;
 $sb-prominent-filter-field-font-size: calculateRem(12px);
-$sb-prominent-filter-field-color: var(--rc-4a4a4a);
+$sb-prominent-filter-field-color: var(--gray-800);
 $sb-prominent-filter-field-border: calculateRem(1px) solid var(--gray-200);
 $sb-prominent-filter-field-border-radius: calculateRem(3px);
 $sb-prominent-filter-field-height: calculateRem(32px);
@@ -25,7 +27,7 @@ $sb-prominent-filter-field-width: 100%;
 $sb-prominent-filter-field-input-padding: calculateRem(8px);
 $sb-prominent-filter-dropdown-font-size: calculateRem(12px);
 $sb-prominent-filter-dropdown-header-font-weight: 500;
-$sb-prominent-filter-dropdown-item-active-color: $primary-color;
+$sb-prominent-filter-dropdown-item-active-color: var(--primary-color);
 $sb-prominent-filter-dropdown-item-active-font-weight: 700;
 
 .sb-prominent-filter {
@@ -111,13 +113,13 @@ $sb-prominent-filter-dropdown-item-active-font-weight: 700;
             font-weight: $sb-prominent-filter-dropdown-item-active-font-weight;
           }
           &:hover{
-            background: $primary-250;
+            background: var(--primary-250);
             color: var(--sb-filter-selected-dropdown-hover);
           }
           i.icon.square.outline{
-            height: ($base-block-space * 2);
-            width:  ($base-block-space * 2);
-            border: calculateRem(1px) solid $primary-300;
+            height: 1rem;
+            width:  1rem;
+            border: calculateRem(1px) solid var(--primary-300);
             border-radius: calculateRem(5px);
             &::before{
               content: "\f14a";
@@ -129,7 +131,7 @@ $sb-prominent-filter-dropdown-item-active-font-weight: 700;
               color: $sb-prominent-filter-background-color;
               &::before{
                 content: "\2713";
-                line-height: ($base-block-space * 2);
+                line-height: 1rem;
                 visibility: visible;
               }
             }
@@ -156,7 +158,7 @@ $sb-prominent-filter-dropdown-item-active-font-weight: 700;
   }
 }
 .sb-prominent-filter.sb-bg-color-gray-0 .sb-prominent-filter-container .sb-prominent-filter-field .ui.selection.dropdown{
-    background: $white;
+    background: var(--white);
     border: calculateRem(0.5px) solid var(--gray-200);
 }
 

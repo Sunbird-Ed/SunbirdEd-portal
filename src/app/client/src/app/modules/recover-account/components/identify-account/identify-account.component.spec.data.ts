@@ -225,6 +225,7 @@ export const identifyAcountMockResponse = {
             'errmsg': 'NAME-NOT-MATCH'
         },
         'responseCode': 'PARTIAL_SUCCESS_RESPONSE',
+        'status':206,
         'result': {
 
         }

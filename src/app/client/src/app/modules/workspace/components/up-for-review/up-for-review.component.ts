@@ -126,6 +126,10 @@ export class UpForReviewComponent extends WorkSpace implements OnInit, AfterView
 	*/
   inviewLogs = [];
   /**
+   * To check if questionSet enabled
+   */
+   public isQuestionSetEnabled: boolean;
+  /**
     * Constructor to create injected service(s) object
     Default method of Draft Component class
     * @param {SearchService} SearchService Reference of SearchService
@@ -160,6 +164,11 @@ export class UpForReviewComponent extends WorkSpace implements OnInit, AfterView
   }
 
   ngOnInit() {
+    this.workSpaceService.questionSetEnabled$.subscribe(
+      (response: any) => {
+          this.isQuestionSetEnabled = response?.questionSetEnablement;
+        }
+    );
     combineLatest(
       this.activatedRoute.params,
       this.activatedRoute.queryParams,
@@ -200,7 +209,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit, AfterView
           rolesMap['BOOK_REVIEWER'],
           rolesMap['CONTENT_REVIEW'])),
         createdBy: { '!=': this.userService.userid },
-        objectType: this.config.appConfig.WORKSPACE.objectType,
+        objectType: this.isQuestionSetEnabled ? this.config.appConfig.WORKSPACE.allowedObjectType : this.config.appConfig.WORKSPACE.objectType,
         board: bothParams.queryParams.board,
         subject: bothParams.queryParams.subject,
         medium: bothParams.queryParams.medium,
@@ -214,8 +223,9 @@ export class UpForReviewComponent extends WorkSpace implements OnInit, AfterView
     searchParams.filters['primaryCategory'] = _.get(bothParams, 'queryParams.primaryCategory') || this.getContentType();
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {
-        if (data.result.count && data.result.content.length > 0) {
-          this.upForReviewContentData = data.result.content;
+        const allContent= this.workSpaceService.getAllContent(data, this.isQuestionSetEnabled);
+        if (allContent.length > 0) {
+          this.upForReviewContentData = allContent;
           this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, pageNumber, limit);
           this.showLoader = false;

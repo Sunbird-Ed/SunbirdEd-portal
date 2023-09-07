@@ -1,5 +1,4 @@
-@import "variables";
-@import 'mixins/mixins';
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .ui.raised.shadow.container.segment {
     margin-left: auto !important;
@@ -34,18 +33,11 @@
     padding: 0.8em 0 0.8em 1em;
     border-radius: calculateRem(4px);
 }
-.ui.form.borderd input:focus {
-    border-color: var(--primary-400) !important;
-}
 .ui.light-sea-green.button {
     background: var(--secondary-400);
     color: var(--white);
 }
 .ui.grey.button {
-    background: var(--gray-200);
-    color: var(--white);
-    pointer-events: none !important;
-    cursor: not-allowed !important; 
     font-size: var(--font-size-sm);
     height: calculateRem(32px);
 }
@@ -66,33 +58,7 @@
     cursor: not-allowed !important;
     font-size: calculateRem(14px);
 }
-.orange.text {
-    color: #A30010;
-}
-.orange-border {
-    border-color: #A30010 !important;
-}
-.blue.text {
-    color: var(--primary-color);
-}
-.ui.basic.blue.navigation.label {
-    background: var(--white) !important;
-    color: var(--primary-color) !important;
-    border: 0  !important;
-    padding-left: 0;
-    font-size: 1rem;
-    font-weight: normal;
-    padding: calculateRem(10px) 0;
-}
-.ui.basic.error.label {
-    background: none !important;
-    color: #A30010 !important;
-    border: 0 !important;
-    padding-left: 0;
-    font-size: 1rem;
-    font-weight: normal;
-    padding: calculateRem(10px) 0;
-}
+
 .fullpage {
     ::ng-deep {
         .ui.fullscreen.modal>.close {
@@ -182,13 +148,13 @@ input[type=number]::-webkit-inner-spin-button {
     color: var(--gray-200) !important;
 }
 .sb-btn-disabled {
-    color: #555;
+    color: var(--gray-400);
   }
 
   // user-details gray box new design css
 .user-detail-container{
     border-radius: 1.5rem;
-    background: var(--rc-e9e5e5);
+    background: var(--rc-dddddd);
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 0.5rem;

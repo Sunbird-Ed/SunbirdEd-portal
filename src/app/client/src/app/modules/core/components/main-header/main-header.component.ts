@@ -123,6 +123,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     view: this.config.constants.VIEW.HORIZONTAL,
     isBold: true
   };
+  isLanguageDropdown:boolean = true
   totalUsersCount: number;
   libraryMenuIntractEdata: IInteractEventEdata;
   learnMenuIntractEdata: IInteractEventEdata;
@@ -317,6 +318,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     };
     this.formService.getFormConfig(formServiceInputParams, channelId).subscribe((data: any) => {
       this.languages = data[0].range;
+      this.isLanguageDropdown = data[0].visible
     }, (err: any) => {
       this.languages = [{ 'value': 'en', 'label': 'English', 'dir': 'ltr', 'accessibleText': 'English' }];
     });
@@ -332,7 +334,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       contentType: this.baseCategoryForm.filterEnv
     };
     this.formService.getFormConfig(formServiceInputParams).subscribe((data: any) => {
-      const layoutType = localStorage.getItem('layoutType') || '';
+      const layoutType = localStorage.getItem('layoutType') || 'base';
       const contentTypes = _.sortBy(data, 'index');
       const defaultTab = _.find(contentTypes, ['default', true]);
       const isOldThemeDisabled = _.get(defaultTab, 'isOldThemeDisabled');

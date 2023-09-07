@@ -26,25 +26,26 @@
         <mat-form-field *ngIf="!isIOSDevice" aria-required="true" appearance="fill" class="sb-mat__dropdown sb-mat__dropdown--autocmp w-100">
             <!-- <mat-label>{{resourceService.frmelmnts?.lbl?.yearOfBirth}}<span class="sb-color-red">*</span>
             </mat-label> -->
-            <input type="text" (keypress)="isNumber(event)" formControlName="yearOfBirth" tabindex="0"
+            <input type="text" (keypress)="isNumber(event)" formControlName="yearOfBirth" tabindex="0" 
             placeholder="Select year" [attr.aria-label]="resourceService.frmelmnts?.lbl?.yearOfBirth" matInput
-            [matAutocomplete]="auto">
+            [matAutocomplete]="auto" maxlength="4">
             <mat-autocomplete (optionSelected)="changeBirthYear($event)" role="combobox" #auto="matAutocomplete">
                 <mat-option class="mat-dropdown__options" role="listbox" *ngFor="let option of filteredYOB | async" [value]="option">
                     {{option}}
                 </mat-option>
             </mat-autocomplete>
         </mat-form-field>
-
+        
         <label *ngIf="isIOSDevice">
             <select name="birthYearOptions" id="birthYearOptions" class="sb-form-control birthYearOptions"
             (change)="changeBirthYear($event, true)">
             <option value="" disabled selected>{{resourceService.frmelmnts?.lbl?.year}}</option>
             <option *ngFor="let option of birthYearOptions" [value]="option">{{option}}</option>
             </select>
-        </label>    
-        <div class="sb-color-red pt-0" aria-describedby="signup-form-yearofbirth" tabindex="0" [attr.aria-label]="resourceService.frmelmnts?.lbl?.yearOfBirth" *ngIf="personalInfoForm.controls.yearOfBirth.touched && personalInfoForm.controls['yearOfBirth'].errors && personalInfoForm.controls['yearOfBirth'].errors.required">{{resourceService.frmelmnts?.lbl?.yearOfBirth}}</div>
+        </label> 
+        <div class="sb-color-red pt-0" aria-describedby="signup-form-yearofbirth" tabindex="0" [attr.aria-label]="resourceService.frmelmnts?.lbl?.yearOfBirth" *ngIf="personalInfoForm.controls.yearOfBirth.touched  && personalInfoForm.controls['yearOfBirth'].errors && personalInfoForm.controls['yearOfBirth'].errors.required">{{resourceService.frmelmnts?.lbl?.yearOfBirth}}</div>
         <div class="sb-color-red pt-0" aria-describedby="signup-form-yearofbirth" tabindex="0" [attr.aria-label]="resourceService.frmelmnts?.lbl?.yearOfBirth" *ngIf="personalInfoForm.controls.yearOfBirth.touched && personalInfoForm.controls['yearOfBirth'].errors && personalInfoForm.controls['yearOfBirth'].errors.pattern">{{resourceService.frmelmnts.lbl.yearOfBirth}}</div>
+        <div class="sb-color-red pt-0" aria-describedby="signup-form-yearofbirth" tabindex="0" [attr.aria-label]="resourceService.frmelmnts?.lbl?.validYearOfBirth" *ngIf="personalInfoForm.controls.yearOfBirth.touched  && personalInfoForm.controls['yearOfBirth'].errors && (personalInfoForm.controls['yearOfBirth'].errors.min  ||  personalInfoForm.controls['yearOfBirth'].errors.max) && !(personalInfoForm.controls.yearOfBirth.touched && personalInfoForm.controls['yearOfBirth'].errors && (personalInfoForm.controls['yearOfBirth'].errors.pattern  || personalInfoForm.controls['yearOfBirth'].errors.required))">{{resourceService.frmelmnts?.lbl?.validYearOfBirth}}</div>
     </div>
     <button [attr.aria-disabled]="!personalInfoForm.valid" [disabled]="!personalInfoForm.valid" type="biutton" appTelemetryInteract
         [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractCdata]="telemetryCdata"

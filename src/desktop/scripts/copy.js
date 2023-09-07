@@ -1,8 +1,8 @@
 const fse = require("fs-extra")
 
 Promise.all([
-    fse.copy('./loading', './app_dist/loading'),
-    fse.copy('./scripts', './app_dist/scripts'),
+    fse.copy('./loading', './app_dist/loading', err => {logError(err)}),
+    fse.copy('./scripts', './app_dist/scripts', err => {logError(err)}),
     fse.copy('./public', './app_dist/public'),
     fse.copyFile('./package.json', './app_dist/package.json'),
     fse.copyFile('./modules/sdk/database/schema_1.0.json', './app_dist/modules/sdk/database/schema_1.0.json'),
@@ -10,4 +10,10 @@ Promise.all([
     fse.copy('./logo.png', 'app_dist/logo.png'),
     fse.copy('./../app/resourcebundles/json/', './app_dist/openrap-sunbirded-plugin/data/resourceBundles'),
     fse.copy('./helper/appconfig.desktop', './app_dist/helper/appconfig.desktop')
-])
+]).catch(err => {
+  console.log(err);
+});
+
+function logError(err) {
+  console.log(err);
+}

@@ -212,11 +212,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       }
     });
 
-    // Replacing cbse/ncert value with cbse
-    const cbseNcertExists = [_.get(filters, 'board[0]'), _.get(filters, 'board'), _.get(filters, 'se_boards[0]'), _.get(filters, 'se_boards')].some(board => _.toLower(board) === 'cbse/ncert');
-    if (cbseNcertExists) {
-      filters.se_boards = ['cbse'];
-    }
+    
 
     _.forEach(this.formData, (form, key) => {
       const pageTitle = _.get(this.resourceService, form.title);
@@ -241,6 +237,13 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       facets: this.globalSearchFacets,
       params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
     };
+    _.filter(Object.keys(this.queryParams),filterValue => { 
+      if(((_.get(this.allTabData , 'search.facets').indexOf(filterValue) !== -1)))
+      {
+          option.filters[filterValue] = (typeof(this.queryParams[filterValue]) === "string" ) ? this.queryParams[filterValue].split(',') : this.queryParams[filterValue];
+
+      }
+  });
     if (this.queryParams.softConstraints) {
       try {
         option.softConstraints = JSON.parse(this.queryParams.softConstraints);
@@ -250,6 +253,11 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     }
     if (this.frameworkId) {
       option.params.framework = this.frameworkId;
+    }
+    // Replacing cbse/ncert value with cbse
+    const cbseNcertExists = [_.get(filters, 'board[0]'), _.get(filters, 'board'), _.get(filters, 'se_boards[0]'), _.get(filters, 'se_boards')].some(board => _.toLower(board) === 'cbse/ncert');
+    if (cbseNcertExists) {
+      option.filters.se_boards = ['CBSE'];
     }
     this.searchService.contentSearch(option)
       .pipe(

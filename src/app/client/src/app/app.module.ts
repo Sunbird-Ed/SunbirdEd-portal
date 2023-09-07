@@ -15,14 +15,17 @@ import { CacheStorageAbstract } from 'ng2-cache-service/dist/src/services/storag
 import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage/session-storage/cache-session-storage.service';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { PluginModules } from './framework.config';
-import {ChatLibModule, ChatLibService} from '@project-sunbird/chatbot-client-v8';
+import {ChatLibModule, ChatLibService} from '@project-sunbird/chatbot-client';
 import { RouteReuseStrategy } from '@angular/router';
 import { CustomRouteReuseStrategy } from './service/CustomRouteReuseStrategy/CustomRouteReuseStrategy';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateStore } from '@ngx-translate/core';
-import { SbSearchFilterModule } from '@project-sunbird/common-form-elements-v9';
+import { SbSearchFilterModule } from '@project-sunbird/common-form-elements';
+import { UserOnboardingModule} from '../app/modules/user-onboarding';
+import { MatStepperModule} from '@angular/material/stepper';
+import { CdkStepperModule} from '@angular/cdk/stepper';
 
 @NgModule({
   declarations: [
@@ -48,6 +51,9 @@ import { SbSearchFilterModule } from '@project-sunbird/common-form-elements-v9';
     SbSearchFilterModule.forRoot('web'),
     ChatLibModule,
     SharedFeatureModule,
+    UserOnboardingModule,
+    MatStepperModule,
+    CdkStepperModule,
     ...PluginModules,
      // ngx-translate and the loader module
      HttpClientModule,

@@ -27,7 +27,7 @@ import {CacheService} from 'ng2-cache-service';
 import {takeUntil} from 'rxjs/operators';
 import { CertificateDownloadAsPdfService } from 'sb-svg2pdf';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
-import { FieldConfig, FieldConfigOption } from '@project-sunbird/common-form-elements-v9';
+import { FieldConfig, FieldConfigOption } from '@project-sunbird/common-form-elements';
 import { CsCertificateService } from '@project-sunbird/client-services/services/certificate/interface';
 
 @Component({

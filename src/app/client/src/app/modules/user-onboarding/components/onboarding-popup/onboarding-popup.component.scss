@@ -1,0 +1,67 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "components/video" as *;
+
+::ng-deep .mat-step-header .mat-step-icon-selected {
+    border-color: #024f9d;
+    background-color: #024f9d;
+}
+
+::ng-deep .mat-step-header .mat-step-icon {
+    border-color: #024f9d;
+    background-color: #024f9d;
+}
+
+button {
+    float: right;
+}
+// to disable the stepper tab
+::ng-deep .mat-horizontal-stepper-header{
+    pointer-events: none !important;
+  }
+
+    // user-details gray box new design css
+.user-detail-container{
+    border-radius: 1.5rem;
+    background: var(--rc-e9e5e5);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 0.5rem;
+    text-transform: capitalize;
+    width: 100%;
+    max-width: 36rem;
+    margin: 1rem auto;
+
+    .user-detail-list{
+        display: flex;
+        @include respond-below(sm){
+            flex-direction: column;
+        }
+        .label-values{
+            word-break: break-word;
+        }
+    }
+
+    .user-detail-list:nth-child(1){ order: 1; }
+    .user-detail-list:nth-child(2) { order: 2; }
+    .user-detail-list:nth-child(3) { order: 3; }
+    .user-detail-list:nth-child(4){ order: 4; }
+    .user-detail-list:nth-child(5){ order: 1; }
+    .user-detail-list:nth-child(6) { order: 2; }
+    .user-detail-list:nth-child(7) { order: 3; }
+  }
+  
+  @include respond-below(sm){
+    .user-detail-container {
+      grid-template-columns: 1fr;
+      border-radius:0;
+
+      .user-detail-list:nth-child(1){ order: 1; }
+      .user-detail-list:nth-child(2) { order: 2; }
+      .user-detail-list:nth-child(3) { order: 3; }
+      .user-detail-list:nth-child(4){ order: 4; }
+      .user-detail-list:nth-child(5){ order: 5; }
+      .user-detail-list:nth-child(6) { order: 6; }
+      .user-detail-list:nth-child(7) { order: 7; }
+  
+   }
+  }

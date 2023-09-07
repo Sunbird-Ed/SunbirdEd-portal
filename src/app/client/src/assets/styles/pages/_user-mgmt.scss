@@ -1,9 +1,11 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+
 /* user create and choose user page UI styles */
 
 .user-profile-box {
   margin: calculateRem(32px) auto;
-  max-width: 480px;
-  width: calc(100% - 32px);
+  max-width: calculateRem(480px);
+  width: calc(100% - 2rem);
   background: var(--white);
   border-radius: calculateRem(8px);
 

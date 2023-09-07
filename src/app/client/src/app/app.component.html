@@ -11,11 +11,12 @@
           <div class="d-flex flex-ai-center head-tail-right-side">
             <div class="dk-top-head-ul">
               <nav title="accessibility_links" class="d-flex flex-ai-center">
-                <ul role="navigation" aria-label="accessibility links">
-                  <li class="mb-0" *ngIf="!hideHeaderNFooter"><a href="javascript:void(0);"
-                      title="{{resourceService?.frmelmnts?.lbl?.accessibilitytskip}}" tabindex="0"
-                      (click)="skipToMainContent()"
-                      class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.accessibilitytskip}}</a></li>
+                <ul role="navigation" aria-label="accessibility links" *ngIf="showNavAccessibility === 'true'">
+                  <li class="mb-0" *ngIf="!hideHeaderNFooter">
+                    <a href="javascript:void(0);" title="{{resourceService?.frmelmnts?.lbl?.accessibilitytskip}}"
+                      tabindex="0" (click)="skipToMainContent()"
+                      class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.accessibilitytskip}}</a>
+                  </li>
                   <li aria-hidden="true" *ngIf="!hideHeaderNFooter" class="mx-4 mb-0">|</li>
                   <li class="screen-reader-link"><a href="/screenreaderaccess.html" tabindex="0"
                       title="{{resourceService?.frmelmnts?.lbl?.accessibility}}">{{resourceService?.frmelmnts?.lbl?.accessibility}}</a>
@@ -55,15 +56,17 @@
                       (click)="changeFontSize('increase');" #increaseFontSize>A+</button>
                   </li>
                   <li aria-hidden="true" class="mx-4">|</li>
-                  <li><button id="dark-mode-toggle" class="dark-mode-toggle" tabindex="0"
-                      title="{{resourceService?.frmelmnts?.lbl?.accessibilitytheme}}" (click)="changeTheme()"
-                      (keydown.enter)="changeTheme();" #darkModeToggle>
+                  <li>
+                    <button id="dark-mode-toggle" class="dark-mode-toggle" tabindex="0"
+                      title="{{resourceService?.frmelmnts?.lbl?.accessibilitytheme}}" (click)="toggleLightDarkMode()"
+                      (keydown.enter)="toggleLightDarkMode();" #darkModeToggle>
                       <svg width="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 496">
                         <path fill="var(--white)"
                           d="M8,256C8,393,119,504,256,504S504,393,504,256,393,8,256,8,8,119,8,256ZM256,440V72a184,184,0,0,1,0,368Z"
                           transform="translate(-8 -8)" />
                       </svg>
-                    </button></li>
+                    </button>
+                  </li>
                 </ul>
               </nav>
             </div>
@@ -71,7 +74,15 @@
         </div>
       </div>
     </div>
-    <div *ngIf="loadPopUps">
+    <!-- onboarding stepper -->
+    <app-onboarding-popup *ngIf="isStepperEnabled && !isStepperCompleted" [guestUserDetails]="guestUserDetails"
+      [isGuestUser]="isGuestUser" [OnboardingFormConfig]="OnboardingFormConfig" [deviceProfile]="deviceProfile"
+      (isStepperCompleted)="isStepper($event)">
+    </app-onboarding-popup>
+
+    <!-- popup disabled  -->
+    <div *ngIf="loadPopUps && isPopupEnabled">
+      <!-- 2nd popup BMGS  -->
       <app-modal-wrapper #frameWorkPopUp *ngIf="showFrameWorkPopUp"
         [config]="{disableClose: true, panelClass: ['overflow-visible', 'material-modal'], autoFocus: false}">
         <ng-template sbModalContent let-data>
@@ -81,6 +92,7 @@
       </app-modal-wrapper>
       <app-validate-teacher-identifier-popup *ngIf="showUserVerificationPopup && labels" [labels]="labels"
         [userFeedData]="userFeed"> </app-validate-teacher-identifier-popup>
+      <!-- 1 & 3rd popup User Type & location -->
       <app-user-onboarding (close)="onLocationSubmit()"
         *ngIf="isGuestUser ? showUserTypePopup :(showUserTypePopup || !isLocationConfirmed)"
         [isCustodianOrgUser]="isCustodianOrgUser" [deviceProfile]="deviceProfile"></app-user-onboarding>
@@ -160,5 +172,3 @@
 </ng-container>
 
 <app-telemetry-error-modal></app-telemetry-error-modal>
-
-

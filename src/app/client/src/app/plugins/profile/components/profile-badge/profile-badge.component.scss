@@ -1,4 +1,4 @@
-@import 'mixins/mixins';
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .ui.small.custom.badge.image {
   height: calculateRem(75px);
@@ -8,5 +8,5 @@
 }
 
 .badges-container {
-  max-width: calc(195px * 4);
+  max-width: calc(calculateRem(195px) * 4);
 }

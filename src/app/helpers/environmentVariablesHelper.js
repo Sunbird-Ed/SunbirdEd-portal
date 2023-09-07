@@ -2,6 +2,7 @@
 const env = process.env
 const fs = require('fs')
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'))
+const SB_DOMAIN = 'https://staging.open-sunbird.org'
 
 let envVariables = {
 
@@ -11,7 +12,7 @@ let envVariables = {
   DEFAULT_CHANNEL: env.sunbird_default_channel,
   PORTAL_API_WHITELIST_CHECK: env.sunbird_enable_api_whitelist || 'true',
   PORTAL_SESSION_SECRET_KEY: (env.sunbird_portal_session_secret && env.sunbird_portal_session_secret !== '')
-  ? env.sunbird_portal_session_secret.split(',') : '',
+  ? env.sunbird_portal_session_secret.split(',') : 'sunbird,ed48b0ce-5a92-11ed-9b6a-0242ac120002'.split(','),
 
   // discussion forum
   discussions_middleware: env.discussions_middleware || 'http://discussionsmw-service:3002',
@@ -19,18 +20,18 @@ let envVariables = {
 
   // Application Start-up - Hosts and PORT Configuration
   PORTAL_PORT: env.sunbird_port || 3000,
-  LEARNER_URL: env.sunbird_learner_player_url || 'https://staging.open-sunbird.org/api/',
-  CONTENT_URL: env.sunbird_content_player_url || 'https://staging.open-sunbird.org/api/',
-  CONTENT_PROXY_URL: env.sunbird_content_proxy_url || 'https://staging.open-sunbird.org',
+  LEARNER_URL: env.sunbird_learner_player_url || SB_DOMAIN + '/api/',
+  CONTENT_URL: env.sunbird_content_player_url || SB_DOMAIN + '/api/',
+  CONTENT_PROXY_URL: env.sunbird_content_proxy_url || SB_DOMAIN,
   PORTAL_REALM: env.sunbird_portal_realm || 'sunbird',
-  PORTAL_AUTH_SERVER_URL: env.sunbird_portal_auth_server_url || 'https://staging.open-sunbird.org/auth',
+  PORTAL_AUTH_SERVER_URL: env.sunbird_portal_auth_server_url || SB_DOMAIN + '/auth',
   PORTAL_AUTH_SERVER_CLIENT: env.sunbird_portal_auth_server_client || 'portal',
   PORTAL_API_AUTH_TOKEN: env.sunbird_api_auth_token,
-  PORTAL_ECHO_API_URL: env.sunbird_echo_api_url || 'https://staging.open-sunbird.org/api/echo/',
-  CONFIG_URL: env.sunbird_config_service_url || 'https://staging.open-sunbird.org/api/config/',
+  PORTAL_ECHO_API_URL: env.sunbird_echo_api_url || SB_DOMAIN + '/api/echo/',
+  CONFIG_URL: env.sunbird_config_service_url || SB_DOMAIN + '/api/config/',
   EKSTEP_ENV: env.ekstep_env || 'qa',
   DEVICE_REGISTER_API: process.env.sunbird_device_register_api || 'https://api.open-sunbird.org/v3/device/register/',
-  DEVICE_PROFILE_API: process.env.sunbird_device_profile_api || 'https://staging.open-sunbird.org/api/v3/device/profile/',
+  DEVICE_PROFILE_API: process.env.sunbird_device_profile_api || SB_DOMAIN + '/api/v3/device/profile/',
   sunbird_theme: env.sunbird_theme || 'default',
   BUILD_NUMBER: packageObj.version + '.' + packageObj.buildHash,
   sunbird_portal_log_level: env.sunbird_portal_log_level || 'debug',
@@ -43,7 +44,7 @@ let envVariables = {
   CRYPTO_ENCRYPTION_KEY: env.crypto_encryption_key || '030702bc8696b8ee2aa71b9f13e4251e',
   CRYPTO_ENCRYPTION_KEY_EXTERNAL:env.crypto_encryption_key_external || '030702me8696b8ee2aa71x9n13l4251e',
   LOG_FINGERPRINT_DETAILS: env.sunbird_log_fingerprint_details || 'true',
-  REPORT_SERVICE_URL: env.sunbird_report_service_url || 'https://staging.open-sunbird.org/api/data/v1/report-service',
+  REPORT_SERVICE_URL: env.sunbird_report_service_url || SB_DOMAIN + '/api/data/v1/report-service',
   SUNBIRD_PORTAL_BASE_URL: env.sunbird_portal_base_url,
   sunbird_device_api: env.sunbird_device_api || 'https://staging.ntp.net.in/api/',
   sunbird_portal_slugForProminentFilter: env.sunbird_portal_slugForProminentFilter,
@@ -132,18 +133,47 @@ let envVariables = {
 
   // BLOB and Storage Configuration
   CACHE_STORE: env.sunbird_cache_store || 'memory',
+  sunbird_cloud_storage_provider: env.sunbird_cloud_storage_provider || 'azure',
   PORTAL_SESSION_STORE_TYPE: env.sunbird_session_store_type || 'in-memory',
   CLOUD_STORAGE_URLS: env.sunbird_cloud_storage_urls,
   SUNBIRD_PUBLIC_STORAGE_ACCOUNT_NAME: env.sunbird_azure_storage_account_name,
   PORTAL_CASSANDRA_CONSISTENCY_LEVEL: env.sunbird_cassandra_consistency_level || 'one',
   PORTAL_CASSANDRA_REPLICATION_STRATEGY: env.sunbird_cassandra_replication_strategy || '{"class":"SimpleStrategy","replication_factor":1}',
-  sunbird_azure_report_container_name: env.sunbird_azure_report_container_name || 'reports',
-  sunbird_azure_account_name: env.sunbird_azure_account_name,
-  sunbird_azure_account_key: env.sunbird_azure_account_key,
-  desktop_azure_crash_container_name: env.desktop_crash_container_name || 'desktopappcrashlogs',
+  
+  // ############# CSP Configuration #############
+  // Common key for Uploading Desktop Crash logs
+  desktop_azure_crash_container_name: env.cloud_storage_desktopCrash_bucketname || 'desktopappcrashlogs',
+
+  // Azure
+  sunbird_azure_account_name: env.cloud_private_storage_accountname,
+  sunbird_azure_account_key: env.cloud_private_storage_secret,
+  sunbird_azure_report_container_name: env.cloud_storage_privatereports_bucketname || 'reports',
+  sunbird_azure_resourceBundle_container_name: env.cloud_storage_resourceBundle_bucketname || 'label',
+
+  // AWS
+  sunbird_aws_access_key: env.cloud_private_storage_accountname || '',
+  sunbird_aws_secret_key: env.cloud_private_storage_secret || '',
+  sunbird_aws_region: env.cloud_private_storage_region || '',
+  sunbird_aws_reports: env.cloud_storage_privatereports_bucketname || 'reports',
+  sunbird_aws_labels: env.cloud_storage_resourceBundle_bucketname || 'label',
+
+  // deprecated - Folder structure changed
+  // sunbird_aws_bucket_name: env.sunbird_aws_bucket_name || 'sunbirded',
+
+  // GCP - gcloud
+  sunbird_gcloud_client_email: env.cloud_private_storage_accountname || '',
+  sunbird_gcloud_private_key: env.cloud_private_storage_secret || '',
+  sunbird_gcloud_projectId: env.cloud_private_storage_project || '',
+  sunbird_gcloud_reports: env.cloud_storage_privatereports_bucketname || 'reports',
+  sunbird_gcloud_labels: env.cloud_storage_resourceBundle_bucketname || 'label',
+
+  // deprecated - Folder structure changed
+  // sunbird_gcloud_bucket_name: env.sunbird_gcloud_bucket_name || 'sunbirded',
+
+  // ############# End of CSP Configuration #############
+
   sunbird_portal_cdn_blob_url: env.sunbird_portal_cdn_blob_url || '',
   sunbird_portal_video_max_size: env.sunbird_portal_video_max_size || '50',
-  sunbird_azure_resourceBundle_container_name: env.sunbird_azure_resourceBundle_container_name || 'label',
 
   // generic editor question set and coleections children contents limit
   SUNBIRD_QUESTIONSET_CHILDREN_LIMIT: env.sunbird_questionset_children_limit || 500,
@@ -159,7 +189,7 @@ let envVariables = {
   content_Service_Local_BaseUrl: env.sunbird_content_service_local_base_url || 'http://content-service:5000',
   CONTENT_SERVICE_UPSTREAM_URL: env.sunbird_content_service_upstream_url || 'http://localhost:5000/',
   LEARNER_SERVICE_UPSTREAM_URL: env.sunbird_learner_service_upstream_url || 'http://localhost:9000/',
-  DATASERVICE_URL: env.sunbird_dataservice_url || 'https://staging.open-sunbird.org/api/',
+  DATASERVICE_URL: env.sunbird_dataservice_url || SB_DOMAIN + '/api/',
   PORTAL_EXT_PLUGIN_URL: process.env.sunbird_ext_plugin_url || 'http://player_player:3000/plugin/',
   sunbird_data_product_service: env.sunbird_data_product_service || 'https://staging.ntp.net.in/',
 
@@ -256,6 +286,9 @@ let envVariables = {
 
   // UCI
   sunbird_portal_uci_bot_phone_number: env.sunbird_portal_uci_bot_phone_number || '',
+
+  // Accessibility links (from NAV) configuration
+  sunbird_portal_nav_accessibility: env.sunbird_portal_nav_accessibility || 'true',
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')

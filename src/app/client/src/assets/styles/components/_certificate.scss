@@ -1,3 +1,5 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "~@project-sunbird/sb-styles/assets/varSass" as *;
 /* Certificate */
 $sb-certificatePage-bg-color: var(--white);
 $sb-certificatePage-padding: calculateRem(16px);
@@ -5,7 +7,7 @@ $sb-certificatePage-max-width: calculateRem(320px);
 $sb-certificatePage-min-height: calculateRem(560px);
 $sb-certificatePage-margin: 0 auto calculateRem(48px) auto;
 $sb-certificatePage-logo-height: calculateRem(56px);
-$sb-certificatePage-desc-background:  var(--rc-E5EDF5);
+$sb-certificatePage-desc-background:  var(--rc-E0F1FD);
 $sb-certificatePage-desc-padding: calculateRem(24px);
 $sb-certificatePage-desc-margin-mobile: 0;
 $sb-certificatePage-desc-margin-desktop: 0 calculateRem(16px);

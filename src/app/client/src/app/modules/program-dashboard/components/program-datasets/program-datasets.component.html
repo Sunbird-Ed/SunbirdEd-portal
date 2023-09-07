@@ -7,9 +7,7 @@
     <div class="py-0 d-flex flex-ai-center w-100">
       <!-- /* Back button */ -->
        <div class="mr-12">
-        <button type="button" [ngClass]="layoutConfiguration ? 'sb-btn-round' : ''"
-      class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0" tabindex="0"
-      (click)="closeDashboard()" id="goBack" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
+        <button type="button" [ngClass]="layoutConfiguration ? 'sb-btn-primary sb-btn-round' : 'sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0'" class="sb-btn sb-btn-normal" tabindex="0" (click)="closeDashboard()" id="goBack" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
       <em class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
           <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
         </svg></em>
@@ -57,7 +55,7 @@
 <ng-template #globalFilters>
   <ng-container *ngIf="!hideElements">
     <form class="sb-form" [formGroup]="reportForm">
-      <div>
+      <div class="d-flex">
         <div class="d-flex flex-w-wrap flex-ai-center ml-32 col-gap">
           <div class="d-flex flex-dc">
             <label>{{resourceService?.frmelmnts?.lbl?.programLbl }}</label>
@@ -108,17 +106,17 @@
           <div *ngIf="tabIndex !== 1 && tabIndex !== 2" class="d-flex flex-dc customDate">
             <label>{{resourceService?.frmelmnts?.lbl?.startdate | titlecase }}</label>
             <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd sb-color-primary">
-              <input matInput placeholder="dd/mm/yyyy" [max]="maxStartDate" (dateInput)="dateChanged($event,'startDate')" (dateChange)="dateChanged($event,'startDate')" formControlName="startDate" [matDatepicker]="picker">
+              <input matInput [readonly]="!reportForm.controls.solution.value" placeholder="dd/mm/yyyy" [max]="maxStartDate" (dateInput)="dateChanged($event,'startDate')" (dateChange)="dateChanged($event,'startDate')" formControlName="startDate" [matDatepicker]="picker">
               <mat-datepicker-toggle matSuffix [for]="picker" class="sb-color-primary"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
+              <mat-datepicker [disabled]="!reportForm.controls.solution.value" #picker></mat-datepicker>
             </mat-form-field>            
           </div>
           <div *ngIf="tabIndex !== 1 && tabIndex !== 2" class="d-flex flex-dc customDate">
             <label>{{resourceService?.frmelmnts?.lbl?.enddate | titlecase }}</label>
             <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd sb-color-primary">
-              <input matInput placeholder="dd/mm/yyyy" [min]="minEndDate" [max]="maxEndDate"  (dateInput)="dateChanged($event,'endDate')" (dateChange)="dateChanged($event,'endDate')" formControlName="endDate" [matDatepicker]="picker">
+              <input matInput [readonly]="!reportForm.controls.solution.value" placeholder="dd/mm/yyyy" [min]="minEndDate" [max]="maxEndDate"  (dateInput)="dateChanged($event,'endDate')" (dateChange)="dateChanged($event,'endDate')" formControlName="endDate" [matDatepicker]="picker">
               <mat-datepicker-toggle matSuffix [for]="picker" class="sb-color-primary"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
+              <mat-datepicker [disabled]="!reportForm.controls.solution.value" #picker></mat-datepicker>
             </mat-form-field>            
           </div>
           <ng-container *ngIf="pdFilters.length && tabIndex !== 1 && tabIndex !== 2">
@@ -127,17 +125,18 @@
             </ng-container>
           </ng-container>
 
-          <div class="d-flex flex-dc ml-auto mt-12">
-            <button type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary reset-filter flex-as-flex-end" (click)="resetFilter()">{{resourceService?.frmelmnts?.btn?.resetFilters}}</button>
-            <mat-form-field *ngIf="!noResult && (tabIndex == 1)" appearance="fill" class="sb-mat__dropdown custom_mat_dd">
-              <mat-select role="radio" class="selection" placeholder="Export as" (selectionChange)="downloadReport($event)" >
-              <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of exportOptions" [value]="option"
-              attr.aria-label="{{option}}">{{option}}</mat-option>
-              </mat-select>
-              </mat-form-field>
-              <button  *ngIf="!noResult && hideTableToCsv && (tabIndex == 2)" type="button" class="sb-btn sb-btn-normal sb-btn-primary export-btn flex-as-flex-end"
-              (click)="tableToCsv = !tableToCsv"><i class="download icon"></i>{{resourceService?.frmelmnts?.lbl?.exportCsv}}</button>    
-          </div>
+          
+        </div>
+        <div class="d-flex flex-dc ml-auto">
+          <button type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary reset-filter flex-as-flex-end" (click)="resetFilter()">{{resourceService?.frmelmnts?.btn?.resetFilters}}</button>
+          <mat-form-field *ngIf="!noResult && (tabIndex == 1)" appearance="fill" class="sb-mat__dropdown custom_mat_dd">
+            <mat-select role="radio" class="selection" placeholder="Export as" (selectionChange)="downloadReport($event)" >
+            <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of exportOptions" [value]="option"
+            attr.aria-label="{{option}}">{{option}}</mat-option>
+            </mat-select>
+            </mat-form-field>
+            <button  *ngIf="!noResult && hideTableToCsv && (tabIndex == 2)" type="button" class="sb-btn sb-btn-normal sb-btn-primary export-btn flex-as-flex-end"
+            (click)="tableToCsv = !tableToCsv"><i class="download icon"></i>{{resourceService?.frmelmnts?.lbl?.exportCsv}}</button>    
         </div>
       </div>
     </form>
@@ -207,7 +206,7 @@
       <app-sb-chart [chart]="chart" [lastUpdatedOn]="lastUpdatedOn" [hideElements]="hideElements" [globalDistrict]="globalDistrict" [globalOrg]="globalOrg"></app-sb-chart>
     </ng-container>
       </div>
-      <div class="ui warning message" *ngIf="!currentReport.charts.length">
+      <div class="ui warning message mt-16" *ngIf="!currentReport.charts.length">
         {{resourceService?.frmelmnts?.lbl?.graphNotAvailable}}
       </div>
   </div>

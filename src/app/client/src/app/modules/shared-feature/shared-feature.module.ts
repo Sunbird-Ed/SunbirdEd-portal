@@ -18,8 +18,8 @@ import { GlobalConsentPiiComponent } from './components/global-consent-pii/globa
 import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
 import { PlayerHelperModule } from '@sunbird/player-helper';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v9';
-import { CommonFormElementsModule } from '@project-sunbird/common-form-elements-v9';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
+import { CommonFormElementsModule } from '@project-sunbird/common-form-elements';
 import { LocationModule } from '../../plugins/location';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { DashletModule } from  '@project-sunbird/sb-dashlet-v9';

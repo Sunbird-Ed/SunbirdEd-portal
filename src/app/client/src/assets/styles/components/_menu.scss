@@ -1,4 +1,4 @@
-
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .sb-sidebar-menu {
   h5 {
@@ -16,7 +16,7 @@
       cursor: pointer;
       &.active {
         background: var(--sb-sidebar-menu-bg-active);
-        border-left: calculateRem(2px) solid var(--sb-sidebar-menu-border-bg);
+        border-left: calculateRem(2px) solid var(--primary-color);
         color: var(--sb-sidebar-menu-text);
         font-weight: var(--font-weight-bold);
       }

@@ -1,18 +1,20 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+
 .observation-detail-box{
     display: inline-flex;
     max-width: 100%;
     min-width: 100%;
-    margin: 15px 0px;
+    margin: calculateRem(15px) 0px;
 }
 .submissions{
     h5{
         font-weight: 600;
     }
     .evidences-list{
-        margin: 5px 0px;
+        margin: calculateRem(5px) 0px;
         background:  var(--sb-card-bg) !important;
         border-radius: var(--sbt-bradius-24);
-        padding: 8px 24px;
+        padding: calculateRem(8px) calculateRem(24px);
     }
 }
 .icon-svg{
@@ -42,8 +44,19 @@
 .center-align {
   align-self: center;
   justify-self: center;
-  padding: 5px 0;
+  padding: calculateRem(5px) 0;
 }
 .white-space-wrap {
   text-overflow: ellipsis;
+}
+
+::ng-deep{
+  .sb-mat-accordion__title span{
+    line-break: anywhere;
+  }
+  
+  .sb-mat-accordion__title div{
+    display: flex;
+    align-items: inherit;
+  }
 }

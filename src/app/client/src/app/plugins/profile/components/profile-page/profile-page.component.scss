@@ -1,10 +1,5 @@
-@import "variables";
-@import "../../../../../assets/styles/mixins/mixins";
-
-.content-header__title {
-  color: var(--primary-400);
-  font-size: 1.125rem;
-}
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use 'pages/content-header' as *;
 /* fonts */
 .font-w-bold {
   font-weight: bold !important;
@@ -45,7 +40,7 @@
   max-width: calculateRem(600px) !important;
 
   .ui.basic.label:hover {
-    border: calculateRem(1px) solid var(--rc-fdfdfd) !important;
+    border: calculateRem(1px) solid var(--rc-f9f9f9) !important;
   }
 }
 
@@ -64,7 +59,7 @@
 }
 
 .text-warm-grey {
-  color: var(--rc-9b9b9b);
+  color: var(--gray-300);
 }
 
 .name-info {
@@ -111,16 +106,16 @@
 
 .ui.semi-circular.update.basic.label,
 .ui.semi-circular.basic.label {
-  border: 1px solid var(--primary-color);
+  border: calculateRem(1px) solid var(--primary-color);
   border-radius: calculateRem(18.5px);
   font-size: 1.16rem;
   padding: calculateRem(8px) calculateRem(16px);
-  color: var(--rc-9b9b9b);
+  color: var(--gray-300);
   background: var(--sb-profile-page-basic-label-bg);
 }
 
 .ui.label>.recovery-img {
-  background-color: var(--rc-9b9b9b);
+  background-color: var(--gray-300);
   -webkit-mask-image: url(/assets/images/Recovery.svg) no-repeat 50% 50%;
   -webkit-mask: url(/assets/images/Recovery.svg) no-repeat 50% 50%;
   mask: url(/assets/images/Recovery.svg) no-repeat 50% 50%;
@@ -203,20 +198,15 @@
       position: relative;
       padding-right: calculateRem(8px);
       flex-direction: column;
-      // align-items: flex-start !important;
     }
   }
 }
 .sb-course-progress-status-label{
-  // background: var(--primary-100);
   width: 100%;
   border-radius:calculateRem(8px) calculateRem(8px) 0 0;
   justify-content: space-between;
   display: flex;
   padding: calculateRem(8px) calculateRem(16px);
-  .list-items__item{
-    // color: var(--sb-course-progress-status-label);
-  }
 }
 .sb-profile-page-container{
   .ui.segment{

@@ -1,3 +1,5 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+
 @include respond-above(lg) {
   .ui.container,.ui.grid.container {
     width: calculateRem(1216px) !important;

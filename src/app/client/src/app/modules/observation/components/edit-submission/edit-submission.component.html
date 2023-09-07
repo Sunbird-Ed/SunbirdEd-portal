@@ -16,12 +16,12 @@
             </mat-dialog-content>
             <mat-dialog-actions class="mb-0 sb-mat__modal__actions flex-jc-center">
                 <div class="sb-onboard__footer d-flex">
-                    <button type="button" class=" ui sb-btn sb-btn-sm sb-btn-white text-uppercase flex-basis-1" type="submit"
+                    <button type="button" class=" ui sb-btn sb-btn-sm sb-btn-white flex-basis-1" type="submit"
                         (click)="closeModal()">
                         {{editData?.leftBtnText}}
                     </button>
                     <div class="w-10"></div>
-                    <button type="button" class="ui sb-btn sb-btn-sm sb-btn-primary text-uppercase flex-basis-1" type="submit"
+                    <button type="button" class="ui sb-btn sb-btn-sm sb-btn-primary flex-basis-1" type="submit"
                         (click)="submit()" [disabled]="!updatedValue" [ngClass]="{'sb-btn-disabled' : !updatedValue}">
                         {{editData?.rightBtnText}}
                     </button>
