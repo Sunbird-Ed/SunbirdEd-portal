@@ -21,5 +21,8 @@ let mandEnvVariables = {
     // Device register API for logged-in users
     sunbird_loggedin_register_token: env.sunbird_loggedin_register_token || '',
 
+    // Configuration of Cloud Service Provider          |
+    // Cloud Account Key
+    cloud_private_storage_secret: env.cloud_private_storage_secret || '',
 }
 module.exports = mandEnvVariables;

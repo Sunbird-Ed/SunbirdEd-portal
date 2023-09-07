@@ -61,7 +61,7 @@ let optionalEnvVariables = {
     LOG_FINGERPRINT_DETAILS: env.sunbird_log_fingerprint_details || 'true',
     SUNBIRD_PORTAL_BASE_URL: env.sunbird_portal_base_url,
 
-    // Configuration for device register and profile
+    // Mandatory Configuration for device register and profile
     sunbird_device_api: env.sunbird_device_api || 'https://staging.ntp.net.in/api/',
 
     sunbird_portal_slugForProminentFilter: env.sunbird_portal_slugForProminentFilter,
@@ -74,8 +74,6 @@ let optionalEnvVariables = {
     cloud_private_storage_accountname: env.cloud_private_storage_accountname || 'azure',
     // Cloud Account Provider            |
     sunbird_cloud_storage_provider: env.sunbird_cloud_storage_provider || 'azure',
-    // Cloud Account Key            |
-    cloud_private_storage_secret: env.cloud_private_storage_secret || 'private_storage_secret',
 
     // Optional Configuration of Cloud Service Provider
     cloud_storage_privatereports_bucketname: env.cloud_storage_privatereports_bucketname || 'reports',
@@ -177,9 +175,10 @@ let optionalEnvVariables = {
     learner_Service_Local_BaseUrl: env.sunbird_learner_service_local_base_url || 'http://learner-service:9000',
     CONTENT_SERVICE_UPSTREAM_URL: env.sunbird_content_service_upstream_url || 'http://localhost:5000/',
     LEARNER_SERVICE_UPSTREAM_URL: env.sunbird_learner_service_upstream_url || 'http://localhost:9000/',
-    PORTAL_EXT_PLUGIN_URL: process.env.sunbird_ext_plugin_url || 'http://player_player: 3000/plugin/',
-    DATASERVICE_URL: env.sunbird_dataservice_url || SB_DOMAIN + '/api/',
+    PORTAL_EXT_PLUGIN_URL: process.env.sunbird_ext_plugin_url || 'http://player_player:3000/plugin/',
     sunbird_data_product_service: env.sunbird_data_product_service || 'https://staging.ntp.net.in/',
+    //Mandatory Service Base URL
+    DATASERVICE_URL: env.sunbird_dataservice_url || SB_DOMAIN + '/api/',
 
     // UCI / Chatbot
     // The env variable is used to set the config of chat bot.
@@ -285,8 +284,9 @@ let optionalEnvVariables = {
     // CDN Configuration
     // The env variable is used to set the config of CDN
     PORTAL_CDN_URL: env.sunbird_portal_cdn_url || '',
-    TENANT_CDN_URL: env.sunbird_tenant_cdn_url || '',
     sunbird_portal_preview_cdn_url: env.sunbird_portal_preview_cdn_url,
     sunbird_portal_cdn_blob_url: env.sunbird_portal_cdn_blob_url || '',
+    //Mandatory CDN Configuration
+    TENANT_CDN_URL: env.sunbird_tenant_cdn_url || '',
 }
 module.exports = optionalEnvVariables;
