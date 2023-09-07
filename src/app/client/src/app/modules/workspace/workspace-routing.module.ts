@@ -9,6 +9,7 @@ import {
   FlagConentplayerComponent, PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
   AllContentComponent, FlagReviewerComponent, CollaboratingOnComponent, AllTextbooksComponent, NewCollectionEditorComponent } from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
+import { TaxonomyViewWrapComponent } from './components/taxonomy-view-wrap/taxonomy-view-wrap.component';
 const telemetryEnv = 'workspace';
 const objectType = 'workspace';
 const routes: Routes = [
@@ -337,6 +338,12 @@ const routes: Routes = [
         breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
       }
     }]
+  },
+  {
+    path:'taxonomy-editor',
+    component:TaxonomyViewWrapComponent,
+    canActivate: [AuthGuard],
+    data: { roles: 'createRole' }
   }
 ];
 
