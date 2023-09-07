@@ -1,0 +1,8 @@
+.item{
+    display: inline-flex;
+    padding-top:15px;
+    font-weight: 600;
+    &:hover{
+        text-decoration: none;
+    }
+}

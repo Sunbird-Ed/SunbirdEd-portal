@@ -9,7 +9,7 @@ import { SharedModule } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { BootstrapFramework, WebExtensionModule } from '@project-sunbird/web-extensions';
-import { WebExtensionsConfig } from './framework.config';
+import { taxonomyConfig, taxonomyEnvironment, WebExtensionsConfig } from './framework.config';
 import { CacheService } from '../app/modules/shared/services/cache-service/cache.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { PluginModules } from './framework.config';
@@ -26,6 +26,7 @@ import { MatStepperModule} from '@angular/material/stepper';
 import { CdkStepperModule} from '@angular/cdk/stepper';
 import { FooterModule } from 'compass-common-consumption';
 import { CommonConsumptionModule } from 'compass-common-consumption';
+import { SbTaxonomyEditorModule } from 'sb-taxonomy-editor';
 
 @NgModule({
     declarations: [
@@ -73,6 +74,8 @@ import { CommonConsumptionModule } from 'compass-common-consumption';
 export class AppModule {
   constructor(bootstrapFramework: BootstrapFramework) {
     bootstrapFramework.initialize(WebExtensionsConfig);
+    localStorage.setItem('environment', JSON.stringify(taxonomyEnvironment));
+    localStorage.setItem('taxonomyConfig', JSON.stringify(taxonomyConfig));
   }
 }
 // required for AOT compilation
