@@ -603,7 +603,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           unit.isUnitConsumed = consumedContent.length === 1;
           unit.progress = consumedContent.length ? 100 : 0;
           unit.isUnitConsumptionStart = Boolean(consumedContent.length);
-          if(unit?.relationalMetadata?.optional === false) {
+          if(!unit?.relationalMetadata?.optional) {
             this.totalModule = this.totalModule + unit.consumedContent;
             this.consumedModule = this.consumedModule + unit.contentCount;
           }

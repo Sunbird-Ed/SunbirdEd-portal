@@ -513,7 +513,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
           /* istanbul ignore else */
           if (_.get(unit, 'children.length')) {
             // exclude optional material in content list of course module
-            flattenDeepContents = this.courseConsumptionService.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection' && item?.relationalMetadata?.optional === false);
+            flattenDeepContents = this.courseConsumptionService.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection' && !(item?.relationalMetadata?.optional));
             /* istanbul ignore else */
             if (this.contentStatus && this.contentStatus.length) {
               consumedContents = flattenDeepContents.filter(o => {
@@ -546,7 +546,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
           unit.isUnitConsumptionStart = Boolean(consumedContent.length);
 
           // exclude optional material in both consumed content and total content in order to calculate course progress
-          if(unit?.relationalMetadata?.optional === false) {  
+          if(!unit?.relationalMetadata?.optional) {  
             this.consumedContents = this.consumedContents + unit.consumedContent;
             this.totalContents = this.totalContents + unit.contentCount;
           }
