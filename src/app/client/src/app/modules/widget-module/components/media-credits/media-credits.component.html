@@ -1,0 +1,52 @@
+
+  
+  <mat-accordion class="sb-mat-accordion mb-16">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header class="sb-mat-accordion__title fnormal" role="button" tabindex="0">
+        <mat-panel-title>
+          {{resourceService?.frmelmnts?.lbl?.aboutTheContent}}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+    
+      <div content class="sb-mat-accordion__content" role="region" id="aboutTheContent"
+        aria-labelledby="aboutTheContent">
+  
+        <div class="py-8" *ngIf="contentData?.transcripts" (click)="showDownloadTranscript()">
+          <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn download-scripts-btn">
+            {{resourceService?.frmelmnts?.lbl?.DownloadTranscript}}
+            <i class="icon-svg icon-svg--sm icon-download-transcripts icon-svg--primary ml-16">
+              <svg>
+                <use xlink:href="./assets/images/sprite.svg#file_download" ></use>
+              </svg>
+            </i>
+          </button>
+        </div>
+  
+        <div class="py-8" *ngIf="contentData?.author">
+          <div class="content-metadeta__title fsmall mb-4">{{resourceService?.frmelmnts?.lbl?.author}}</div>
+          <div class="content-metadeta__text fnormal">{{contentData?.author}}</div>
+        </div>
+        <div class="py-8" *ngIf="contentData?.attributions">
+          <div class="content-metadeta__title fsmall mb-4">{{resourceService?.frmelmnts?.lbl?.attributions}}</div>
+          <div class="content-metadeta__text fnormal">{{contentData?.attributions}}</div>
+        </div>
+        <div class="py-8" *ngIf="contentData?.license">
+          <div class="content-metadeta__title fsmall mb-4">{{resourceService?.frmelmnts?.lbl?.licenseTerms}}</div>
+          <div class="content-metadeta__text fnormal">{{contentData.license}}</div>
+        </div>
+        <div class="py-8" *ngIf="contentData?.licenseDetails?.name">
+          <div class="content-metadeta__title fsmall mb-4"></div>
+          <div class="content-metadeta__text fnormal" *ngIf="contentData?.licenseDetails?.name">
+            {{contentData.licenseDetails['name']}} {{contentData.licenseDetails['description']}}&#x200E; <br />
+           
+          </div>
+        </div>
+        <div class="py-8" *ngIf="contentData?.copyright">
+          <div class="content-metadeta__title fsmall mb-4">{{resourceService?.frmelmnts?.lbl?.copyRight}}</div>
+          <div class="content-metadeta__text fnormal">{{contentData?.copyright}}<span
+              *ngIf="contentData?.copyrightYear">,&nbsp;{{contentData?.copyrightYear}}</span></div>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+  

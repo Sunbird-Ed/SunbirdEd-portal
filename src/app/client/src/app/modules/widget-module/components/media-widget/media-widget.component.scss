@@ -1,0 +1,21 @@
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr; /* Stacked vertically by default */
+  gap: 0; /* No gap by default */
+}
+
+@media screen and (min-width: 786px) {
+  .grid-container {
+    grid-template-columns: 60% 35%; /* Content page: 60%, Chapter list: 35% */
+    gap: 5%; /* 5% gap between content page and chapter list */
+  }
+}
+.media__player{
+    min-width: 500px !important;
+    min-height: 200px !important; /* Minimum height of 100px for both components */
+  }
+.content__page{
+  height:732px;
+  
+}

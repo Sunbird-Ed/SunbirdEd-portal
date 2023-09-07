@@ -1,0 +1,17 @@
+<div class="media__player" id="widget__container">
+  <section class="player__section">
+    <div class="grid-container">
+      <app-media-contentpage class="content__page" [playerConfig]="playerConfiguration" [tocPage]="true" [isContentPresent]="isContentPresent"
+        [contentDetails]="activeCon" [collectionData]="collData" [objectRollUp]="rollup">
+      </app-media-contentpage>
+      <app-media-chapterlist class="chapter__list" [selectAll]="select" [selectMode]="selectmode" 
+        [activeMimeTypeFilter]="activeMimeType" [tocData]="collData"
+        [noContentMessage]="noContentMessage" (clickedcard)="ClickHandler($event)"
+        [activeContent]="activeCon" (nocon)="ShowContentorNot($event)"
+        (ItemieSelected)="ItemThatIsSelected($event)" appTelemetryInteract="telemetryInt"
+        [telemetryInteractEdata]="tie" [telemetryInteractCdata]="tic"
+        [platform]="platform" [type]="type" [image]="ImageDefault">
+      </app-media-chapterlist>
+    </div>
+  </section>
+</div>

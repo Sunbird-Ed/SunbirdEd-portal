@@ -1,0 +1,22 @@
+<div *ngIf="tocData.description" class="content-metadeta sb-bg-color-white mt-8 text-left">
+    <div class="mx-16 py-16 content-metadeta__content" tabindex="0">
+      <div class="content-metadeta__title fnormal font-weight-bold" role="heading" aria-level="2">
+        {{resourceService?.frmelmnts?.lbl?.description}}</div>
+    <p class="content-metadeta__text fnormal pt-8">
+      {{tocData?.description}}
+      </p>
+    </div>
+  
+</div>
+
+<div class="main-side-toc-content">
+    <sb-toc-item [selectAll]="selectAll" [selectMode]="selectMode"
+    [activeMimeTypeFilter]="activeMimeTypeFilter" [tocData]="tocData"
+    [noContentMessage]="noContentMessage" (tocCardClick)="tocCardClick($event)"
+    [activeContent]="activeContent" (noContent)="nocontent($event)"
+    (selectedItem)="selectedItem($event)" appTelemetryInteract
+    [telemetryInteractEdata]="telemetryInteractEdata" [telemetryInteractCdata]="telemetryInteractCdata"
+    [platform]="platform" [type]="type"
+    [trackableDefaultImage]="image"></sb-toc-item>
+  </div>
+  
