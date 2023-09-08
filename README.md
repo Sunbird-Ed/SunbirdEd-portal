@@ -232,3 +232,14 @@ Installing Sunbird requires two primary software components:
         2. $ npm run backend-test
         3. With Coverage $ npm run backend-test-with-coverage
 
+### Mandatory Environmental variables
+ ---------------------------------------------------------------------------------------------------------------------
+|     ##Variable name                                            ##Description                                        |
+|---------------------------------------------------------------------------------------------------------------------|
+| sunbird_anonymous_register_token                        Token to register anonymous device                          |
+| sunbird_anonymous_default_token                         Fallback token for device register API for`anonymous` users |
+| sunbird_loggedin_device_register_api                    Kong End Point for Logged Users                             |
+| sunbird_logged_default_token                            Fallback token for device register API for `logged-in` users|
+| sunbird_loggedin_register_token                         Device register API for logged-in users                     |
+| cloud_private_storage_secret                            To set the Cloud Account Key                                |
+----------------------------------------------------------------------------------------------------------------------
