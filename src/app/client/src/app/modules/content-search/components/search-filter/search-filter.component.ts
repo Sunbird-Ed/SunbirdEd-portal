@@ -51,7 +51,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     {
       category: 'board',
       type: 'dropdown',
-      labelText: _.get(this.resourceService, 'frmelmnts.lbl.boards'),
+      labelText: _.get(this.resourceService, 'frmelmnts.lbl.boardsFilter'),
       placeholderText: _.get(this.resourceService, 'frmelmnts.lbl.selectBoard'),
       multiple: false
     },
