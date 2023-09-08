@@ -1700,6 +1700,14 @@ const API_LIST = {
         ROLE.CONTENT_CREATOR
       ]
     },
+    '/action/question/v2/list': {
+      description: 'Question list',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.PUBLIC,
+        ROLE.CONTENT_CREATOR
+      ]
+    },
     '/action/object/category/definition/v1/read': {
       description: 'Object category read',
       checksNeeded: ['ROLE_CHECK'],
@@ -2055,7 +2063,8 @@ const API_LIST = {
     '/kendra/resource/mlreports/v1/filtervalues',
     '/assessment/programs/mlcore/v1/join/:id',
     '/assessment/users/mlcore/v1/solutions/:id',
-    '/api/questionset/v2/retire/:QuestionSet_Id'
+    '/api/questionset/v2/retire/:QuestionSet_Id',
+    '/action/question/v2/list'
   ]
 };
 module.exports = API_LIST;
