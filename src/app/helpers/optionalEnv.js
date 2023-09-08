@@ -19,6 +19,7 @@ let optionalEnvVariables = {
 
     // BLOB and Storage Configuration
     PORTAL_SESSION_STORE_TYPE: env.sunbird_session_store_type || 'in-memory',
+    // To set replication stratergy
     PORTAL_CASSANDRA_REPLICATION_STRATEGY: env.sunbird_cassandra_replication_strategy || '{"class":"SimpleStrategy","replication_factor":1}',
 
     // Health Checks Configuration
@@ -27,20 +28,25 @@ let optionalEnvVariables = {
     sunbird_content_service_health_status: 'true',
     sunbird_portal_cassandra_db_health_status: 'true',
 
-    // Application Start-up - Hosts  Default Configuration
+    // Setting public key base path(keys folder)
+    sunbird_kid_public_key_base_path: env.sunbird_kid_public_key_base_path || '/keys/',
+
+    // To set protocol for oauth2
+    SUNBIRD_PROTO: env.sunbird_base_proto,
+
+    // Application Start-up - Hosts Mandatory Default Configuration
     PORTAL_PORT: env.sunbird_port || 3000,
     LEARNER_URL: env.sunbird_learner_player_url || SB_DOMAIN + '/api/',
     CONTENT_URL: env.sunbird_content_player_url || SB_DOMAIN + '/api/',
     CONTENT_PROXY_URL: env.sunbird_content_proxy_url || SB_DOMAIN,
-    sunbird_kid_public_key_base_path: env.sunbird_kid_public_key_base_path || '/keys/',
-    SUNBIRD_PROTO: env.sunbird_base_proto,
+    PORTAL_REALM: env.sunbird_portal_realm || 'sunbird',
+    PORTAL_AUTH_SERVER_URL: env.sunbird_portal_auth_server_url || SB_DOMAIN + '/auth',
+    PORTAL_AUTH_SERVER_CLIENT: env.sunbird_portal_auth_server_client || 'portal',
+    // Application Start-up - Hosts Default Configuration
     CACHE_STORE: env.sunbird_cache_store || 'memory',
     PORTAL_SESSION_STORE_TYPE: env.sunbird_session_store_type || 'in-memory',
     DEFAULT_BOARD: env.sunbird_default_board || 'CBSE',
     PORTAL_API_WHITELIST_CHECK: env.sunbird_enable_api_whitelist || 'true',
-    PORTAL_REALM: env.sunbird_portal_realm || 'sunbird',
-    PORTAL_AUTH_SERVER_URL: env.sunbird_portal_auth_server_url || SB_DOMAIN + '/auth',
-    PORTAL_AUTH_SERVER_CLIENT: env.sunbird_portal_auth_server_client || 'portal',
     PORTAL_API_AUTH_TOKEN: env.sunbird_api_auth_token,
     PORTAL_ECHO_API_URL: env.sunbird_echo_api_url || SB_DOMAIN + '/api/echo/',
     CONFIG_URL: env.sunbird_config_service_url || SB_DOMAIN + '/api/config/',
@@ -61,7 +67,7 @@ let optionalEnvVariables = {
     LOG_FINGERPRINT_DETAILS: env.sunbird_log_fingerprint_details || 'true',
     SUNBIRD_PORTAL_BASE_URL: env.sunbird_portal_base_url,
 
-    // Mandatory Configuration for device register and profile
+    // Configuration for device register and profile
     sunbird_device_api: env.sunbird_device_api || 'https://staging.ntp.net.in/api/',
 
     sunbird_portal_slugForProminentFilter: env.sunbird_portal_slugForProminentFilter,
@@ -105,8 +111,10 @@ let optionalEnvVariables = {
     sunbird_anonymous_device_register_api: env.sunbird_anonymous_device_register_api || '',
     sunbird_kong_refresh_token_api: env.sunbird_kong_refresh_token_api || '',
 
-    // Kong - Mandatory device registration and refresh token keys
+    // Kong - Mandatory
+    //Kong - Device registration and refresh token keys
     KONG_DEVICE_REGISTER_TOKEN: env.sunbird_kong_device_register || 'false',
+    //Kong - Registering For anonymous devices
     KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN: env.sunbird_kong_device_register_anonymous || 'false',
 
     // Editors
