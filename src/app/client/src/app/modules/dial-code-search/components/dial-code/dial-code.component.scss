@@ -1,54 +1,6 @@
-@import "variables";
-
-@import "./mixins/mixins";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 /*get dial code page responsive css*/
-.ui.footer.segment {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background-color: var(--white);
-  z-index: 989898;
-}
-.bars.icon.tablet.sunbird-hamburger-menu {
-  cursor: pointer;
-  position: absolute;
-  margin: 0;
-  padding-top: 0.5em;
-  opacity: 0.7;
-  -webkit-transition: opacity 0.1s ease;
-  transition: opacity 0.1s ease;
-}
-.get-page-background {
-  background: linear-gradient(-90deg, var(--rc-5c8db7), var(--rc-91aecc));
-  height: 100vh;
-}
-.dailcode-page-background {
-  background: var(--rc-f9f9f9);
-  height: 100vh;
-}
-.bars.icon.mobile.sunbird-hamburger-menu {
-  cursor: pointer;
-  position: absolute;
-  margin: 0;
-  padding-top: 1.5em;
-}
-.dial-section-header {
-  margin-top: 3em;
-}
-.dail-section-meta {
-  color: var(--white);
-}
-.ui.header.dial-section-header-text {
-  color: var(--white);
-}
-.ui.header .sub.header.dial-section-subheader-text {
-  color: var(--white);
-  font-size: calculateRem(16px);
-}
-.dial-section-input {
-  margin-top: 10em;
-}
 .mobile-popup-dimmer {
   background: rgba(var(--rc-rgba-black), 0.5);
   display: none;
@@ -103,8 +55,6 @@
         background: var(--white);
         color: var(--black);
         border-radius: calculateRem(8px) calculateRem(8px) 0 0;
-      }
-      .download-mobile-app-logo {
         p {
           font-size: calculateRem(12px);
           line-height: calculateRem(16px);
@@ -115,26 +65,6 @@
       }
       label {
         font-weight: bold;
-      }
-      .close-mobile-div {
-        position: absolute;
-        top: calculateRem(-10px);
-        right: calculateRem(-10px);
-        height: calculateRem(30px);
-        width: calculateRem(30px);
-        justify-content: center;
-        align-items: center;
-        background: var(--white);
-        border-radius: 50%;
-        color: var(--black);
-        border: calculateRem(2px) solid var(--black);
-        padding: 0;
-        margin: 0;
-        outline: 0;
-      }
-      .close-mobile-div:hover,
-      .download-mobile-app .close-mobile-div:focus {
-        background: var(--white);
       }
       .close {
         line-height: normal;
@@ -189,37 +119,7 @@
     font-size: calculateRem(12px);
   }
 }
-@media screen and (min-width: 240px) and (max-width: 768px) {
-  .dial-section-input {
-    margin-top: 2em;
-  }
-}
-@media screen and (min-width: 320px) and (max-width: 768px) {
-  .ui.header.dial-section-header-text {
-    padding-top: 4em !important;
-  }
-}
-.dial-code-section-bg {
-  //background: var(--white);
-}
-@media only screen and (max-width: 767px) {
-  .ui.container.public-responvive-container {
-    margin-right: 0 !important;
-  }
-}
-@media only screen and (min-width: 768px) {
-  .closeBtn-dial-code {
-    float: right;
-  }
-}
-@media screen and (min-width: 320px) and (max-width: 768px) {
-  .ui.small.header.popUp-dial-code-header {
-    font-size: 1.2em;
-  }
-}
-.menu-public-header {
-  border-top: calculateRem(2px) solid rgba(var(--rc-rgba-black), 0.13);
-}
+
 @media screen and (min-width: 240px) and (max-width: 767px) {
   .mobile-popup-dimmer {
     display: block;
@@ -252,8 +152,6 @@
   grid-template-columns: repeat(auto-fill, minmax(252px, 1fr));
   grid-gap: 1rem;
   grid-row-gap: 1.5rem;
-  &--item {
-  }
 }
 
 .section-header {
@@ -265,7 +163,7 @@
 .header {
   display: flex;
   flex-direction: row;
-  @include margin(1rem 0 0 0);
+  margin:1rem 0 0 0;
   padding: 0px 0;
   align-items: center;
 
@@ -286,7 +184,7 @@
     .badge {
       display: inline-block;
       background: var(--sbt-badge-bg);
-      color: var(--sbt-badge-text);
+      color: var(--gray-800);
       text-align: center;
       padding: calculateRem(0px) calculateRem(12px);
       border-radius: calculateRem(4px);

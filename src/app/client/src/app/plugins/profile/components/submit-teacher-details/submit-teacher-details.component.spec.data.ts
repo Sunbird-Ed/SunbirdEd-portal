@@ -1,4 +1,4 @@
-import { FieldConfigInputType } from '@project-sunbird/common-form-elements-v9';
+import { FieldConfigInputType } from '@project-sunbird/common-form-elements';
 
 export const mockRes = {
   orgSearch: {
@@ -475,7 +475,9 @@ export const mockRes = {
               'declared-phone': '8867003222',
               'declared-school-name': 'Ekstep dev school',
               'declared-school-udise-code': '12312312311',
-              'type': 'Kendria Vidhyalaya 1'
+              'type': 'Kendria Vidhyalaya 1',
+              'location':'test',
+              'district':'test'
             }
           }
         ],
@@ -834,6 +836,36 @@ export const mockRes = {
           'templateOptions': {
             'label': 'SCHOOL_UDISE_ID_OR_ORG_ID',
             'placeHolder': 'ENTER_UDISE_ID'
+          }
+        },
+        {
+          'code': 'location',
+          'fieldName': 'School location',
+          'type': 'input',
+          'templateOptions': {
+            'dataSrc':{
+                  'marker':'LOCATION_LIST',
+                  'params':{
+                    'id':'state'
+                  }
+            },
+            'label': 'LOCATION',
+            'placeHolder': 'ENTER_LOCATION'
+          }
+        },
+        {
+          'code': 'district',
+          'fieldName': 'School district',
+          'type': 'input',
+          'templateOptions': {
+            'dataSrc':{
+                  'marker':'LOCATION_LIST',
+                  'params':{
+                    'id':'district'
+                  }
+            },
+            'label': 'LOCATION',
+            'placeHolder': 'ENTER_LOCATION'
           }
         },
         {

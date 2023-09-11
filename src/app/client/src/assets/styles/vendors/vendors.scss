@@ -1,7 +1,6 @@
-// @import "./angular2select-default.theme";
-// @import "./fine-uploader-gallery";
-@import "./fine-uploader-new";
-// @import "./slick-theme";
-@import "./slick";
-@import "./iziToast";
+// @forward "./angular2select-default.theme";
+// @forward "./fine-uploader-gallery";
+@forward "./fine-uploader-new";
+@forward "./slick";
+@forward "./iziToast";
 

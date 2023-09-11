@@ -371,7 +371,7 @@
     },
     "DHITI":{
       "GENERIC_REPORTS": "reports/mlreports/v1/fetch",
-      "ALL_EVIDENCE":"observations/mlsurvey/v1/listAllEvidences"
+      "ALL_EVIDENCE":"observations/mlreports/v1/listAllEvidences"
     },
     "UCI": "/uci"
 

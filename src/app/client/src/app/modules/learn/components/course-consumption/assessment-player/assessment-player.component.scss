@@ -1,11 +1,10 @@
-@import "variables";
-@import "mixins/mixins";
-@import "components/video";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "components/video" as *;
 
 :host {
   .header-shadow {
     min-height: calculateRem(80px);
-    background-color: var(--rc-FAFAFA);
+    background-color: var(--gray-0);
     box-shadow: 0 calculateRem(10px) calculateRem(10px) calculateRem(-10px) rgba(var(--rc-rgba-black), 0.25);
     z-index: 99;
     position: relative;
@@ -18,7 +17,7 @@
     }
   }
   .side-toc-content {
-    max-height: calc(100vh - 320px);
+    max-height: calc(100vh - 20rem);
     overflow-y: auto;
     padding-bottom: calculateRem(24px);
   }
@@ -93,14 +92,6 @@
 
 .back-btn-container {
   z-index: 1;
-
-  .modulebtn-divider {
-      width: calculateRem(1px);
-      height: calculateRem(24px);
-      background: var(--gray-200);
-      display: inline-block;
-      margin: 0 calculateRem(8px);
-  }
 }
 
 
@@ -108,7 +99,7 @@
   &-container {
       box-shadow: 0 0 calculateRem(10px) 0 rgba(var(--black), 0.25);
       position: relative;
-      background-color: var(--rc-FAFAFA);
+      background-color: var(--gray-0);
   }
 
   &__details {

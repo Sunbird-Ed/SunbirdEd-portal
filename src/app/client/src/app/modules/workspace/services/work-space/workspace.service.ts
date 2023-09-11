@@ -390,4 +390,24 @@ export class WorkSpaceService {
     }
   }
 
+  /**
+   * To get contents of all objectTypes (content, questionsert etc)
+   * @param {ServerResponse} contentData response data from search api call
+   *  @param {boolean} contentData response data from search api call
+   */
+  getAllContent(contentData: ServerResponse, isQuestionSetEnabled: boolean) {
+    let contentList= [];
+    if(contentData?.result?.count) {
+      if(isQuestionSetEnabled) {
+        let objectTypes = _.keys(contentData.result);
+        objectTypes= _.filter(objectTypes, function(objectType) { return objectType !== 'count'; });
+        _.forEach(objectTypes, function(objectType){
+          contentList = _.concat(contentList, contentData.result[objectType]);
+        });
+      } else {
+        contentList= contentData.result.content;
+      }
+    }
+    return contentList;
+  }
 }

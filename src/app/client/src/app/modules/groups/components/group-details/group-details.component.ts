@@ -10,7 +10,7 @@ import { GroupsService } from '../../services';
 import { IGroupMemberConfig, IGroupCard, IGroupMember, ADD_ACTIVITY_CONTENT_TYPES } from '../../interfaces';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { ADD_ACTIVITY, PAGE_LOADED} from '../../interfaces/telemetryConstants';
-import { sessionKeys } from '../../../../modules/groups';
+import { sessionKeys } from '../../../../modules/groups/interfaces/group';
 
 @Component({
   selector: 'app-group-details',

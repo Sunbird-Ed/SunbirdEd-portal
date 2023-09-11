@@ -62,7 +62,7 @@ export const actionsData = {
         artifactUrl: 'do_31275241153060864018150/1556698449702_do_31275241153060864018150.zip',
         audience: ['Learner'],
         baseDir: 'content/do_31275241153060864018150',
-        board: 'State (Karnataka)',
+        board: 'cbse',
         channel: 'in.ekstep',
         contentType: 'Resource',
         desktopAppMetadata: {
@@ -72,6 +72,7 @@ export const actionsData = {
             updateAvailable: true
         },
         downloadStatus: 'DOWNLOADED',
+        itemSetPreviewUrl: 'https://demo-pdf',
         downloadUrl: 'do_31275241153060864018150/1556698449702_do_31275241153060864018150.zip',
         gradeLevel: ['Class 10'],
         identifier: 'do_31275241153060864018150',
@@ -199,13 +200,35 @@ export const actionsData = {
     },
     exportContent: {
         success: {
-            destFolder: '/Users/icoblr/Downloads',
-            message: 'SUCCESS',
-            responseCode: 'OK',
+            'destFolder': '/Users/icoblr/Downloads',
+            'message': 'SUCCESS',
+            'responseCode': 'OK',
+            'id': 'api.content.Downloads',
+            'params': {
+                'err': null,
+                'errmsg': null,
+                'msgid': '43a0b86b-9078-4f3d-89bd-7d163914eef3',
+                'resmsgid': '7c91d2ba-e3da-4ec8-9617-869ce15b733c',
+                'status': 'successful'
+            },
+            'result': 'c30bb48c-d838-42fd-9a4c-fd802d7fbaf7',
+            'ts': '2020-01-09T13:28:39.797Z',
+            'ver': '1.0'
         },
         error: {
-            message: 'Ecar dest folder not selected',
-            responseCode: 'NO_DEST_FOLDER'
+            'message': 'Ecar dest folder not selected',
+            'responseCode': 'CLIENT_ERROR',
+            'id': 'api.content.delete',
+            'ver': '1.0',
+            'ts': '2020-01-09T16:18:38.060Z',
+            'params': {
+                'resmsgid': '17d08cb1-c600-44a5-a553-40febf7b7a74',
+                'msgid': '4eeef24c-bcc5-4402-b4cf-6cb9f49a1ab0',
+                'status': 'failed',
+                'err': 'ERR_BAD_REQUEST',
+                'errmsg': 'MISSING_CONTENTS'
+            },
+            'result': {}
         }
     },
     actionButtonEvents: {
@@ -234,6 +257,21 @@ export const actionsData = {
                 name: 'share'
             }
         },
+        PRINT: {
+            data: {
+                name: 'print'
+            }
+        },
+        FULLSCREEN: {
+            data: {
+                name: 'fullscreen'
+            }
+        },
+        MINIMIZE: {
+            data: {
+                name: 'minimize'
+            }
+        }
     },
     param: {
         identifier: 'do_31275241153060864018150',

@@ -1,4 +1,4 @@
-@import "mixins/mixins";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .ui.image {
   height: calculateRem(150px);
@@ -36,7 +36,7 @@
 }
 
 .ui.card:hover {
-  box-shadow: 0 calculateRem(1px) calculateRem(3px) 0 var(--rc-d4d4d5), 0 0 0 calculateRem(1px) var(--rc-d4d4d5);
+  box-shadow: 0 calculateRem(1px) calculateRem(3px) 0 var(--gray-100), 0 0 0 calculateRem(1px) var(--gray-100);
 }
 
 .disable {

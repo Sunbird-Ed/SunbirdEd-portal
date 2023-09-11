@@ -1,5 +1,5 @@
-@import 'mixins/mixins';
-@import './pages/content-header';
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use 'pages/content-header' as *;
 
 .sb-dashlet-table {
     z-index: 2;

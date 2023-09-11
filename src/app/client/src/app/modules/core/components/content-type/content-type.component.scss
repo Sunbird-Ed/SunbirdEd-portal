@@ -1,6 +1,5 @@
-@import "variables";
-@import "mixins/mixins";
-@import "../main-header/main-header.component.scss";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "../main-header/main-header.component.scss" as *;
 
 :host ::ng-deep {
   .sb-linkmenu {
@@ -46,9 +45,9 @@
     &:hover {
       color: var(--sb-linkmenu-text-hover);
       text-decoration: none;
-      background-color: var(--sb-linkmenu-bg-hover);
+      background-color: var(--primary-color);
       .sb-icon {
-        background-color: var(--sb-linkmenu-icon-bg-hover);
+        background-color: var(--sb-linkmenu-text-hover);
       }
     }
 /*

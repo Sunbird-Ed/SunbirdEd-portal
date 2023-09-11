@@ -1,6 +1,5 @@
-@import "variables";
-@import "mixins/mixins";
-@import "pages/sign_in_up";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use 'pages/sign_in_up' as *;
 
 .ui.raised.shadow.container.segment {
     margin: calculateRem(20px) auto !important;
@@ -35,51 +34,6 @@
     border: calculateRem(1px) solid var(--gray-300);
     padding: 0.8em 0 0.8em 1em;
     border-radius: calculateRem(4px);
-}
-.ui.form.borderd input:focus {
-    border-color: var(--primary-400) !important;
-}
-.ui.light-sea-green.button {
-    background: var(--secondary-400);
-    color: var(--white);
-    height: calculateRem(38px) !important;
-}
-.ui.grey.button {
-    background: var(--gray-200);
-    color: var(--white);
-    pointer-events: none !important;
-    cursor: not-allowed !important; 
-    height: calculateRem(38px) !important;
-}
-.grey.text {
-    color: var(--gray-400);
-}
-.orange.text {
-    color: #A30010;
-}
-.orange-border {
-    border-color: #A30010 !important;
-}
-.blue.text {
-    color: var(--primary-color);
-}
-.ui.basic.blue.navigation.label {
-    background: var(--white) !important;
-    color: var(--primary-color) !important;
-    border: 0  !important;
-    padding-left: 0;
-    font-size: 1rem;
-    font-weight: normal;
-    padding:calculateRem(10px) 0;
-}
-.ui.basic.error.label {
-    background: none !important;
-    color: #A30010 !important;
-    border: 0 !important;
-    padding-left: 0;
-    font-size: 1rem;
-    font-weight: normal;
-    padding:calculateRem(10px) 0;
 }
 .fullpage {
     ::ng-deep {

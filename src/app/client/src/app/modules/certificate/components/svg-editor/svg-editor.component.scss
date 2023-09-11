@@ -1,5 +1,4 @@
-@import "mixins/mixins";
-@import 'variables';
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .certificate-content {
   height: 100%;
@@ -32,7 +31,7 @@
 
   &.active,
   &:hover {
-    border: 2px solid var(--primary-color);
+    border: calculateRem(2px) solid var(--primary-color);
   }
 
   &__content {
@@ -123,8 +122,8 @@
   overflow: hidden;
   margin-top: calculateRem(3px);
   cursor: pointer;
-  border-radius: 24px;
-  border: 2px solid var(--primary-300);
+  border-radius: calculateRem(24px);
+  border: calculateRem(2px) solid var(--primary-300);
   color: var(--primary-300);
   font-weight: bold;
   background: var(--primary-100);

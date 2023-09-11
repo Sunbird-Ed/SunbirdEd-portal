@@ -1,6 +1,6 @@
-@import "variables";
-@import "mixins/mixins";
-@import "pages/course-player";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "pages/course-player" as *;
+@use 'pages/content-header' as *;
 
 .course-list_title {
   color: var(--gray-800);
@@ -8,26 +8,6 @@
   font-weight: bold;
   line-height: calculateRem(24px);
 }
-
-// content header bar
-.content-header {
-  &__img {
-    overflow: hidden;
-    img {
-      width: calculateRem(48px);
-    }
-  }
-  &__title {
-    color: var(--primary-color);
-    font-size: calculateRem(18px);
-    font-weight: bold;
-  }
-  &__info {
-    color: var(--gray-800);
-    font-size: calculateRem(14px);
-  }
-}
-
 .course-list-progress {
   padding: calculateRem(16px);
   &__title {
@@ -57,14 +37,13 @@
 
 .header-shadow {
   min-height: calculateRem(80px);
-  background-color: var(--rc-FAFAFA);
+  background-color: var(--gray-0);
   box-shadow: 0 calculateRem(10px) calculateRem(10px) calculateRem(-10px) rgba(var(--rc-rgba-black), 0.025);
   z-index: 99;
 }
 
 .chapter-box {
   border-bottom: .0625rem solid var(--gray-100);
-  // padding: calculateRem(16px);
   border-radius: calculateRem(2px);
   &:last-child{
     border-bottom: 0px solid var(--gray-100);
@@ -73,5 +52,5 @@
 }
 
 .certified-course__certificate {
-  background-color: var(--rc-E5EDF5);
+  background-color: var(--rc-E0F1FD);
 }

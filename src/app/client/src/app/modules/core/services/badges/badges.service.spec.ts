@@ -30,9 +30,6 @@ describe('BadgesService', () => {
       }
     }
   };
-  const mockHttpClient: Partial<HttpClient> = {
-  };
-  const mockDataService: Partial<DataService> = {};
   const mockLearnerService: Partial<LearnerService> = {
     post: jest.fn().mockImplementation(() => { })
   };
@@ -81,26 +78,7 @@ describe('BadgesService', () => {
       });
     });
   });
-  xdescribe('getDetailedBadgeAssertions', () => {
-    it('should return detailed badge Assertions', (done) => {
-      jest.spyOn(badgesService.learner, 'post').mockReturnValue(of({
-        id: 'id',
-        params: {
-          resmsgid: '',
-          status: 'staus'
-        },
-        responseCode: 'OK',
-        result: {},
-        ts: '',
-        ver: ''
-      }));
-      const assertions = {};
-      // act
-      badgesService.getDetailedBadgeAssertions(req, assertions).subscribe(() => {
-        done();
-      });
-    });
-
+  describe('getDetailedBadgeAssertions', () => {
     it('should not return detailed badge Assertions', () => {
       // arrange
       jest.spyOn(badgesService.learner, 'post').mockImplementation(() => {
@@ -108,9 +86,35 @@ describe('BadgesService', () => {
       });
       const assertions = {};
       // act
-      badgesService.getDetailedBadgeAssertions(req, assertions).subscribe(() => {
+      badgesService.getDetailedBadgeAssertions(req, assertions).subscribe((data) => {
+        expect(badgesService['learner'].post).toBeCalled();
       });
     });
   });
-
+  it('should return detailed badge Assertions', () => {
+    jest.spyOn(badgesService.learner, 'post').mockReturnValue(of({
+      id: 'id',
+      params: {
+        resmsgid: '',
+        status: 'staus'
+      },
+      responseCode: 'OK',
+      result: {
+        badges: [{
+          badgeName: 'test',
+          badgeId: '12345',
+          badgeStatus: 'Issued'
+        }]
+      },
+      ts: '',
+      ver: ''
+    }));
+    const assertions = [{
+      badgeId: '12345'
+    }];
+    // act
+    badgesService.getDetailedBadgeAssertions(req, assertions).subscribe((data) => {
+      expect(badgesService['learner'].post).toBeCalled();
+    });
+  });
 });

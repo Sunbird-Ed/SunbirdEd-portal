@@ -1,10 +1,6 @@
-@import "variables";
-@import "mixins/mixins";
-@import './pages/content-header';
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use 'pages/content-header' as *;
 
-.devided-line {
-  border-bottom: calculateRem(0.5px) solid var(--gray-100);
-}
 .member-no-result {
   .no-result-text {
     font-size: calculateRem(14px);
@@ -18,7 +14,6 @@
 //nested group css
 .nested-group-content {
   border-radius: calculateRem(8px);
-  // box-shadow: 0 calculateRem(3px) calculateRem(5px) calculateRem(4px) rgba(0, 0, 0, 0.05);
   position: relative;
   .nested-course-area {
     border-bottom: calculateRem(1px) solid var(--gray-100);
@@ -72,10 +67,9 @@
 }
 
 .download-text{
-  font-size:12px;
+  font-size:calculateRem(12px);
   color:var(--primary-400);
-  font-weight:normal;
-  font-family: 'Noto Sans Bold';
+  font-weight: bold;
 }
 
 .dt-disabled-btn:disabled, .disabled[disabled]{

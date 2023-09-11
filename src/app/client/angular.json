@@ -27,7 +27,7 @@
               "src/favicon.png",
               {
                 "glob": "**/*.*",
-                "input": "./node_modules/@project-sunbird/common-consumption-v9/assets",
+                "input": "./node_modules/@project-sunbird/common-consumption/assets",
                 "output": "./assets/common-consumption"
               },
               {
@@ -47,12 +47,12 @@
               },
               {
                 "glob": "**/*",
-                "input": "./node_modules/@project-sunbird/sunbird-collection-editor-v9/lib/assets/",
+                "input": "./node_modules/@project-sunbird/sunbird-collection-editor/lib/assets/",
                 "output": "/assets/"
               },
               {
                 "glob": "**/*",
-                "input": "./node_modules/@project-sunbird/sunbird-quml-player-v9/lib/assets/",
+                "input": "./node_modules/@project-sunbird/sunbird-quml-player/lib/assets/",
                 "output": "/assets/"
               },
               {
@@ -67,14 +67,14 @@
               "node_modules/datatables.net-dt/css/jquery.dataTables.min.css",
               "src/assets/styles/semantic/semantic.min.css",
               "node_modules/font-awesome/css/font-awesome.css",
-              "./node_modules/@project-sunbird/sb-styles/assets/_styles.scss",
+              "./node_modules/@project-sunbird/sb-styles/assets/styles.scss",
               "./node_modules/leaflet/dist/leaflet.css",
               "src/assets/styles/styles.scss",
               "node_modules/video.js/dist/video-js.min.css",
               "node_modules/katex/dist/katex.min.css",
               "./node_modules/@project-sunbird/sb-themes/themes/themes-material_UI.scss",
-              "./node_modules/@project-sunbird/sb-themes/themes/themes-portal.scss",
               "./node_modules/@project-sunbird/sb-themes/themes/themes-df.scss",
+              "./node_modules/@project-sunbird/sb-themes/themes/themes-portal.scss",
               "./node_modules/@project-sunbird/discussions-ui-v8/assets/styles/global.scss",
               "node_modules/@project-sunbird/sunbird-video-player-v9/lib/assets/videojs.markers.min.css",
               "node_modules/videojs-http-source-selector/dist/videojs-http-source-selector.css"

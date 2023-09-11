@@ -18,6 +18,7 @@ import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/common';
 import { image } from '../assets/images/tara-bot-icon';
 import { SBTagModule } from 'sb-tag-manager';
+
 /**
  * main app component
  */
@@ -26,6 +27,7 @@ import { SBTagModule } from 'sb-tag-manager';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
+
 export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('frameWorkPopUp') frameWorkPopUp;
   /**
@@ -99,6 +101,8 @@ export class AppComponent implements OnInit, OnDestroy {
   public botObject: any = {};
   isBotEnabled = (<HTMLInputElement>document.getElementById('isBotConfigured'))
     ? (<HTMLInputElement>document.getElementById('isBotConfigured')).value : 'false';
+  showNavAccessibility: any = (<HTMLInputElement>document.getElementById('sunbirdNavAccessibility'))
+    ? (<HTMLInputElement>document.getElementById('sunbirdNavAccessibility')).value : 'true';
   botServiceURL = (<HTMLInputElement>document.getElementById('botServiceURL'))
     ? (<HTMLInputElement>document.getElementById('botServiceURL')).value : '';
   baseUrl = (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl'))
@@ -117,6 +121,11 @@ export class AppComponent implements OnInit, OnDestroy {
   showYearOfBirthPopup = false;
   public isIOS = false;
   loadPopUps = true;
+  FORM_CONFIG_ENABLED = false;
+  isStepperCompleted = false;
+  OnboardingFormConfig: any;
+  isStepperEnabled = false;
+  isPopupEnabled = false;
   @ViewChild('increaseFontSize') increaseFontSize: ElementRef;
   @ViewChild('decreaseFontSize') decreaseFontSize: ElementRef;
   @ViewChild('resetFontSize') resetFontSize: ElementRef;
@@ -135,14 +144,15 @@ export class AppComponent implements OnInit, OnDestroy {
     private connectionService: ConnectionService, public genericResourceService: GenericResourceService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
-    const layoutType = localStorage.getItem('layoutType') || '';
-    if (layoutType === '' || layoutType === 'joy') {
+    const layoutType = localStorage.getItem('layoutType') || 'base';
+    if (layoutType === 'base' || layoutType === 'joy') {
       this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
       document.documentElement.setAttribute('layout', 'joy');
     } else {
-      document.documentElement.setAttribute('layout', 'old');
+      document.documentElement.setAttribute('layout', 'base');
     }
   }
+  
   /**
    * dispatch telemetry window unload event before browser closes
    * @param  event
@@ -236,7 +246,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   setTheme() {
-    const themeColour = localStorage.getItem('layoutColour') || 'Default';
+    const themeColour = localStorage.getItem('layoutColour') || 'default';
     if (this.darkModeToggle && this.darkModeToggle.nativeElement) {
       this.renderer.setAttribute(this.darkModeToggle.nativeElement, 'aria-label', `Selected theme ${themeColour}`);
     }
@@ -263,9 +273,53 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     );
   }
-  
+  checkFormData(): Observable<any> {
+    const formReadInputParams = {
+      formType: 'newUserOnboarding',
+      formAction: 'onboarding',
+      contentType: 'global',
+      component: 'portal'
+    };
+    return of(this.formService.getFormConfig(formReadInputParams).subscribe(
+      (formResponsedata) => {
+        console.log('userOnboarding Form is called and we are trying to get the update', formResponsedata);
+        if (_.get(formResponsedata, 'shownewUserOnboarding') === 'false') {
+          this.FORM_CONFIG_ENABLED = true;
+        }
+      }
+    ));
+  }
+  /**
+   * @description - get the stepper flag from localstorage to check weather stepper process completes or not
+   */
+  getStepperInfo() {
+    const isStepperCompleted = localStorage.getItem('isStepperCompleted');
+    this.isStepperCompleted = isStepperCompleted ? true : false;
+  }
+  /**
+   * @description -  to fetch all form config data list for onboarding stepper flow
+   */
+  getOnboardingList() {
+    // const formReadInputParams = {
+    //   formType: 'useronboardingsteps',
+    //   formAction: 'onboarding',
+    //   contentType: 'global',
+    //   component: 'portal'
+    // };
+    // this.formService.getFormConfig(formReadInputParams).subscribe(
+    //   (formResponsedata) => {
+    //     if (formResponsedata) {
+    //       this.OnboardingFormConfig = formResponsedata;
+    //       this.isStepperEnabled = true;
+    //     }
+    //     else { this.isPopupEnabled = true; }
+    //   }, error => { this.isPopupEnabled = true; });
+    this.isPopupEnabled = true;
+  }
   ngOnInit() {
+    this.getOnboardingList();
     this.checkToShowPopups();
+    this.getStepperInfo();
     this.isIOS = this.utilService.isIos;
     this.isDesktopApp = this.utilService.isDesktopApp;
     if (this.isDesktopApp) {
@@ -295,19 +349,21 @@ export class AppComponent implements OnInit, OnDestroy {
     this.handleHeaderNFooter();
     this.resourceService.initialize();
     this.genericResourceService.initialize();
-    combineLatest(queryParams$, this.setDeviceId())
+    combineLatest(queryParams$, this.setDeviceId(), this.checkFormData())
       .pipe(
         mergeMap(data => {
           this.navigationHelperService.initialize();
           this.userService.initialize(this.userService.loggedIn);
           this.getOrgDetails();
-          if (this.userService.loggedIn) {
+          if (this.userService.loggedIn && !this.FORM_CONFIG_ENABLED) {
             this.isGuestUser = false;
             this.permissionService.initialize();
             this.courseService.initialize();
             this.userService.startSession();
             this.checkForCustodianUser();
             return this.setUserDetails();
+          } else if (this.userService.loggedIn && this.FORM_CONFIG_ENABLED) {
+            this.setUserOptions();
           } else {
             this.isGuestUser = true;
             this.userService.getGuestUser().subscribe((response) => {
@@ -347,15 +403,32 @@ export class AppComponent implements OnInit, OnDestroy {
     this.botObject['imageUrl'] = image.imageUrl;
     this.botObject['title'] = this.botObject['header'] = this.title;
     this.generaliseLabelService.getGeneraliseResourceBundle();
-  // keyboard accessibility enter key click event
-    document.onkeydown = function(e) {
+    // keyboard accessibility enter key click event
+    document.onkeydown = function (e) {
       const element = document.getElementById('overlay-button') as HTMLElement;
       if (e.keyCode === 13 && document.activeElement !== element) { // The Enter/Return key
-        (document.activeElement  as HTMLElement).click();
+        (document.activeElement as HTMLElement).click();
       }
     };
   }
-
+  setUserOptions() {
+    const userStoredData = JSON.parse(localStorage.getItem('guestUserDetails'));
+    if (userStoredData) {
+      const userFrameworkData = _.get(userStoredData, 'framework');
+      if (userFrameworkData && !(_.get(this.userService.userProfile, 'framework'))) {
+        const req = {
+          framework: userFrameworkData
+        };
+        this.profileService.updateProfile(req).subscribe(res => {
+          console.log('user data updated---->', req);
+        }, err => {
+          this.toasterService.warning(this.resourceService.messages.emsg.m0012);
+          this.closeFrameworkPopup();
+          this.checkLocationStatus();
+        });
+      }
+    }
+  }
   onCloseJoyThemePopup() {
     this.showJoyThemePopUp = false;
     this.checkTncAndFrameWorkSelected();
@@ -442,24 +515,24 @@ export class AppComponent implements OnInit, OnDestroy {
           const orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
           // if (_.get(orgDetailsFromSlug, 'slug') !== this.tenantService.slugForIgot) {
 
-            let userType;
-            if (this.isDesktopApp && this.isGuestUser) {
-               userType = _.get(this.guestUserDetails, 'role') ? this.guestUserDetails.role : undefined;
-               this.showUserTypePopup = userType ? false : true;
-            } else if(this.isGuestUser) {
-              userType = localStorage.getItem('userType');
-              if(!this.showUserTypePopup && this.isLocationConfirmed){
-                this.checkFrameworkSelected();
-              }
-              if(!this.isLocationConfirmed){
-                this.zone.run(() => {
-                  this.showUserTypePopup = true
-                  })              
-                }
-            } else {
-              userType = localStorage.getItem('userType');
+          let userType;
+          if (this.isDesktopApp && this.isGuestUser) {
+            userType = _.get(this.guestUserDetails, 'role') ? this.guestUserDetails.role : undefined;
+            this.showUserTypePopup = userType ? false : true;
+          } else if (this.isGuestUser) {
+            userType = localStorage.getItem('userType');
+            if (!this.showUserTypePopup && this.isLocationConfirmed) {
+              this.checkFrameworkSelected();
             }
-            this.showUserTypePopup = _.get(this.userService, 'loggedIn') ? (!_.get(this.userService, 'userProfile.profileUserType.type') || !userType) : this.showUserTypePopup;
+            if (!this.isLocationConfirmed) {
+              this.zone.run(() => {
+                this.showUserTypePopup = true
+              })
+            }
+          } else {
+            userType = localStorage.getItem('userType');
+          }
+          this.showUserTypePopup = _.get(this.userService, 'loggedIn') ? (!_.get(this.userService, 'userProfile.profileUserType.type') || !userType) : this.showUserTypePopup;
           // }
         }
       });
@@ -758,7 +831,7 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
-  closeFrameworkPopup () {
+  closeFrameworkPopup() {
     this.frameWorkPopUp && this.frameWorkPopUp.deny();
     this.showFrameWorkPopUp = false;
   }
@@ -767,7 +840,7 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   public updateFrameWork(event) {
     if (this.isGuestUser && !this.guestUserDetails) {
-      const user:any = { name: 'guest', formatedName: 'Guest', framework: event };
+      const user: any = { name: 'guest', formatedName: 'Guest', framework: event };
       const userType = localStorage.getItem('userType');
       if (userType) {
         user.role = userType;
@@ -834,8 +907,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   /** will be triggered once location popup gets closed */
   onLocationSubmit() {
-    if( this.isGuestUser){
-      this.showUserTypePopup=false;
+    if (this.isGuestUser) {
+      this.showUserTypePopup = false;
       this.checkFrameworkSelected();
     }
     this.showYearOfBirthPopup = true;
@@ -954,12 +1027,12 @@ export class AppComponent implements OnInit, OnDestroy {
       if (headerElement.length > 0) {
         const headerHeight = headerElement[headerElement.length - 1].clientHeight;
         if (typeof window.orientation !== 'undefined') {
-          this.scrollHeight =  headerElement[0].clientHeight + 150;
+          this.scrollHeight = headerElement[0].clientHeight + 150;
         } else {
-          this.scrollHeight =  headerHeight * 2;
+          this.scrollHeight = headerHeight * 2;
         }
         this.scrollTo(this.scrollHeight);
-       }
+      }
     } else {
       const header = document.getElementsByTagName('app-header');
       const headerElement = header[0].children[0].children[0].clientHeight;
@@ -986,20 +1059,20 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
   getLocalTheme() {
-    const localDataThemeAttribute = localStorage.getItem('data-theme');
+    const localDataThemeAttribute = localStorage.getItem('data-mode');
     if (localDataThemeAttribute) {
       this.setLocalTheme(localDataThemeAttribute);
     }
   }
-  changeTheme() {
-    this.dataThemeAttribute = document.documentElement.getAttribute('data-theme');
-    this.dataThemeAttribute = this.dataThemeAttribute === 'Default' ? 'Darkmode' : 'Default';
+  toggleLightDarkMode() {
+    this.dataThemeAttribute = document.documentElement.getAttribute('data-mode');
+    this.dataThemeAttribute = this.dataThemeAttribute === 'light' ? 'darkmode' : 'light';
     this.renderer.setAttribute(this.darkModeToggle.nativeElement, 'aria-label', `Selected theme ${this.dataThemeAttribute}`);
     this.setLocalTheme(this.dataThemeAttribute);
-    localStorage.setItem('data-theme', this.dataThemeAttribute);
+    localStorage.setItem('data-mode', this.dataThemeAttribute);
   }
   setLocalTheme(value: string) {
-    document.documentElement.setAttribute('data-theme', value);
+    document.documentElement.setAttribute('data-mode', value);
   }
   notifyNetworkChange() {
     this.connectionService.monitor().pipe(debounceTime(5000)).subscribe((status: boolean) => {
@@ -1012,5 +1085,13 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   onActivate(event) {
     this.layoutService.scrollTop();
+  }
+  /**
+   * @param  {boolean} event
+   * @description  - set the flag in localstorage when stepper process completes
+   */
+  isStepper(event) {
+    this.isStepperCompleted = event;
+    localStorage.setItem('isStepperCompleted', JSON.stringify(this.isStepperCompleted));
   }
 }

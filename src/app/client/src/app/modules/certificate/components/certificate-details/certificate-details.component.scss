@@ -1,5 +1,4 @@
-@import 'variables';
-@import "mixins/mixins";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 
 .sb-mobileDevice {
@@ -25,13 +24,13 @@
         .sb-mobileDevice-sensor {
           width: calculateRem(8px);
           height: calculateRem(8px);
-          background: var(--rc-252525);
+          background: var(--black);
           border-radius: 50%;
         }
         .sb-mobileDevice-speaker {
           width: calculateRem(5px);
           height: calculateRem(74px);
-          background: var(--rc-252525);
+          background: var(--black);
           border-radius: calculateRem(10px);
           margin: calculateRem(10px) 0 calculateRem(10px) calculateRem(1px);
         }

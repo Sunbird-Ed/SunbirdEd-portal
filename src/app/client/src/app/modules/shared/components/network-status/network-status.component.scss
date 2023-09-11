@@ -1,5 +1,4 @@
-@import "variables";
-@import "mixins/mixins";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 .status-container{
     border-radius: calculateRem(24px);
     background-color: var(--sbt-filter-bar-bg);

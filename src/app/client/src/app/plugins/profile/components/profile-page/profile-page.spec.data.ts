@@ -12,6 +12,7 @@ export const Response = {
             'Gujarati',
             'Hindi'
         ],
+        'profileUserTypes': [{type:'teacher',subType:'sampleType'}],
         'updatedDate': '2018-11-09 09:07:00:418+0000',
         'completeness': 94,
         'id': '95e4942d-cbe8-477d-aebd-ad8e6de4bfc8',
@@ -159,27 +160,27 @@ export const Response = {
                 'hashTagId': '0123653943740170242',
                 'isRejected': null,
                 'locations': [
-                    {
-                        'code': '102401',
-                        'name': 'MUNGER SADAR',
-                        'id': '1ffce31c-a1d0-4842-9592-aff4264dc521',
-                        'type': 'block',
-                        'parentId': '53c6e193-1805-4487-9b8d-453d2f08f03e'
-                    },
-                    {
-                        'code': '1024',
-                        'name': 'MUNGER',
-                        'id': '53c6e193-1805-4487-9b8d-453d2f08f03e',
-                        'type': 'district',
-                        'parentId': '81f85372-618e-46b9-b700-bcf3b8df6e6f'
-                    },
-                    {
-                        'code': '10',
-                        'name': 'Bihar',
-                        'id': '81f85372-618e-46b9-b700-bcf3b8df6e6f',
-                        'type': 'state'
-                    }
-                ],
+                  {
+                      'code': '102401',
+                      'name': 'MUNGER SADAR',
+                      'id': '1ffce31c-a1d0-4842-9592-aff4264dc521',
+                      'type': 'block',
+                      'parentId': '53c6e193-1805-4487-9b8d-453d2f08f03e'
+                  },
+                  {
+                      'code': '1024',
+                      'name': 'MUNGER',
+                      'id': '53c6e193-1805-4487-9b8d-453d2f08f03e',
+                      'type': 'district',
+                      'parentId': '81f85372-618e-46b9-b700-bcf3b8df6e6f'
+                  },
+                  {
+                      'code': '10',
+                      'name': 'Bihar',
+                      'id': '81f85372-618e-46b9-b700-bcf3b8df6e6f',
+                      'type': 'state'
+                  }
+              ],
                 'id': '01236538964903526421',
                 'position': 'ASD',
                 'isApproved': null,
@@ -206,7 +207,8 @@ export const Response = {
                 'isDeleted': false,
                 'hashTagId': '0123653943740170242',
                 'isRejected': null,
-                'locations': [],
+                'locations': [
+              ],
                 'id': '01236538964903526421',
                 'position': 'ASD',
                 'isApproved': null,

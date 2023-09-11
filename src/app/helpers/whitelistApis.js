@@ -601,7 +601,7 @@ const API_LIST = {
       checksNeeded: [],
       description: 'RC API to validate scanned certificate'
     },
-    
+
     //Admin related APIs
     '/learner/data/v1/upload/status': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1250,7 +1250,9 @@ const API_LIST = {
       ROLE_CHECK: [
         ROLE.CONTENT_CREATOR,
         ROLE.COURSE_CREATOR,
-        ROLE.BOOK_CREATOR
+        ROLE.BOOK_CREATOR,
+        ROLE.BOOK_REVIEWER,
+        ROLE.CONTENT_REVIEWER
       ]
     },
     '/action/content/v1/collaborator/update/:do_id': {
@@ -1801,7 +1803,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/dhiti/observations/mlsurvey/v1/listAllEvidences': {
+    '/dhiti/observations/mlreports/v1/listAllEvidences': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
@@ -1890,6 +1892,9 @@ const API_LIST = {
       checksNeeded: ["ROLE_CHECK"],
       ROLE_CHECK: [ROLE.ORG_ADMIN],
     },
+    "/keycloak/login": {
+      checksNeeded: []
+    }
   },
   URL_PATTERN: [
     '/learner/user/v1/feed/delete',

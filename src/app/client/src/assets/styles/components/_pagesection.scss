@@ -1,3 +1,5 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+
 .sb-pageSection {
   .sb-pageSection-header {
     display: flex;

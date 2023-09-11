@@ -1,154 +1,137 @@
 <ng-container *ngIf="!isLayoutAvailable()" tabindex="-1">
-    <div *ngIf="(boards.length || emptyBoard) && refresh" class="sb-header-filter-bar zindex-2">
-        <div class="d-flex state-medium-container sb-bg-color-white">
-            <div class="ui container d-flex flex-ai-center">
-                <div *ngIf="boards?.length" class="state-medium-container__dropdown">
-                    <div class="sb-field mb-0"><label>
-                            <app-select-option-group *ngIf="optionData" [optionData]="optionData"
-                                [selectedOption]="selectedOption" (selectedValue)="selectedGroupOption($event);">
-                            </app-select-option-group>
-                        </label>
-                    </div>
-                </div>
-                <div *ngIf="boards?.length && allValues?.medium?.length" class="state-medium-container__separator">
-                </div>
-                <div class="state-medium-container__medium" *ngIf="allValues?.medium?.length">
-                    <sb-library-filters [list]="allValues['medium']" [layout]="filterLayout.SQUARE"
-                        [selectedItems]="selectedFilters['medium']"
-                        (selectedFilter)="filterChangeEvent.next({ event: $event, type: 'medium'})">
-                    </sb-library-filters>
-                </div>
-            </div>
+  <div *ngIf="(boards.length || emptyBoard) && refresh" class="sb-header-filter-bar zindex-2">
+    <div class="d-flex state-medium-container sb-bg-color-white">
+      <div class="ui container d-flex flex-ai-center">
+        <div *ngIf="boards?.length" class="state-medium-container__dropdown">
+          <div class="sb-field mb-0"><label>
+              <app-select-option-group *ngIf="optionData" [optionData]="optionData" [selectedOption]="selectedOption"
+                (selectedValue)="selectedGroupOption($event);">
+              </app-select-option-group>
+            </label>
+          </div>
         </div>
-        <div class="sb-class-bar sb-bg-color-gray-0" *ngIf="allValues?.gradeLevel?.length">
-            <div class="ui container">
-                <sb-library-filters [list]="allValues['gradeLevel']" [layout]="filterLayout.ROUND"
-                    [selectedItems]="selectedFilters['gradeLevel']"
-                    (selectedFilter)="filterChangeEvent.next({ event: $event, type: 'gradeLevel'})">
-                </sb-library-filters>
-            </div>
+        <div *ngIf="boards?.length && allValues?.medium?.length" class="state-medium-container__separator">
         </div>
-​
-        <div class="sb-bg-color-white sb-global-filter-section">
-            <div class="ui container">
-                <div class="d-flex flex-ai-center flex-w-wrap">
-                    <div *ngIf="allValues?.subject?.length" class="state-medium-container__dropdown">
-                        <div class="sb-field mb-0"><label>
-                                <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['subject']"
-                                    (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'subject'})"
-                                    defaultSelectionText={{resourceService?.frmelmnts?.lbl?.subject}}
-                                    zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
-                                    class="selection sbt-dropdown-tick text-cencapitalize"
-                                    [ngClass]="!layoutConfiguration ? 'state-selection' : 'sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg'">
-                                    <div
-                                        [ngClass]="!layoutConfiguration ? 'state-selection__section' : 'sbt-dropdown-section'">
-                                        <sui-select-option *ngFor="let dropdownValue of allValues['subject']"
-                                            [value]="dropdownValue">
-                                        </sui-select-option>
-                                    </div>
-                                </sui-multi-select>
-                            </label>
-                        </div>
-                    </div>
-​
-                    <div *ngIf="allValues?.publisher?.length" class="state-medium-container__separator"> </div>
-​
-                    <div *ngIf="allValues?.publisher?.length" class="state-medium-container__dropdown">
-                        <div class="sb-field mb-0"><label>
-                                <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['publisher']"
-                                    (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'publisher'})"
-                                    defaultSelectionText={{resourceService?.frmelmnts?.lbl?.publishedBy}}
-                                    zeroSelectionText={{resourceService?.frmelmnts?.lbl?.Select}}
-                                    class="selection sbt-dropdown-tick text-cencapitalize"
-                                    [ngClass]="!layoutConfiguration ? 'state-selection' : 'sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg'">
-                                    <div
-                                        [ngClass]="!layoutConfiguration ? 'state-selection__section' : 'sbt-dropdown-section'">
-                                        <sui-select-option *ngFor="let dropdownValue of allValues['publisher']"
-                                            [value]="dropdownValue">
-                                        </sui-select-option>
-                                    </div>
-                                </sui-multi-select>
-                            </label>
-                        </div>
-                    </div>
-​
-                    <div *ngIf="allValues?.audience?.length" class="state-medium-container__separator"> </div>
-​
-​
-                    <div *ngIf="allValues?.audience?.length" class="state-medium-container__dropdown">
-                        <div class="sb-field mb-0"><label>
-                                <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['audience']"
-                                    (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'audience'})"
-                                    defaultSelectionText={{resourceService?.frmelmnts?.lbl?.userType}}
-                                    zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} tabindex="0"
-                                    class="selection sbt-dropdown-tick text-cencapitalize"
-                                    [ngClass]="!layoutConfiguration ? 'state-selection' : 'sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg'">
-                                    <div
-                                        [ngClass]="!layoutConfiguration ? 'state-selection__section' : 'sbt-dropdown-section'">
-                                        <sui-select-option *ngFor="let dropdownValue of allValues['audience']"
-                                            [value]="dropdownValue">
-                                        </sui-select-option>
-                                    </div>
-                                </sui-multi-select>
-                            </label>
-                        </div>
-                    </div>
-                    <button (click)="resetFilters()" appTelemetryInteract [telemetryInteractEdata]="getInteractEdata()"
-                        tabindex="0"
-                        class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto">{{resourceService.frmelmnts?.btn?.reset
-                        | translate}}
-                    </button>
-                </div>
-​
-            </div>
+        <div class="state-medium-container__medium" *ngIf="allValues?.medium?.length">
+          <sb-library-filters [list]="allValues['medium']" [layout]="filterLayout.SQUARE"
+            [selectedItems]="selectedFilters['medium']"
+            (selectedFilter)="filterChangeEvent.next({ event: $event, type: 'medium'})">
+          </sb-library-filters>
         </div>
-​
+      </div>
     </div>
+    <div class="sb-class-bar sb-bg-color-gray-0" *ngIf="allValues?.gradeLevel?.length">
+      <div class="ui container">
+        <sb-library-filters [list]="allValues['gradeLevel']" [layout]="filterLayout.ROUND"
+          [selectedItems]="selectedFilters['gradeLevel']"
+          (selectedFilter)="filterChangeEvent.next({ event: $event, type: 'gradeLevel'})">
+        </sb-library-filters>
+      </div>
+    </div>
+    <div class="sb-bg-color-white sb-global-filter-section">
+      <div class="ui container">
+        <div class="d-flex flex-ai-center flex-w-wrap">
+          <div *ngIf="allValues?.subject?.length" class="state-medium-container__dropdown">
+            <div class="sb-field mb-0"><label>
+                <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['subject']"
+                  (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'subject'})"
+                  defaultSelectionText={{resourceService?.frmelmnts?.lbl?.subject}}
+                  zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
+                  class="selection sbt-dropdown-tick text-cencapitalize"
+                  [ngClass]="!layoutConfiguration ? 'state-selection' : 'sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg'">
+                  <div [ngClass]="!layoutConfiguration ? 'state-selection__section' : 'sbt-dropdown-section'">
+                    <sui-select-option *ngFor="let dropdownValue of allValues['subject']" [value]="dropdownValue">
+                    </sui-select-option>
+                  </div>
+                </sui-multi-select>
+              </label>
+            </div>
+          </div>
+          <div *ngIf="allValues?.publisher?.length" class="state-medium-container__separator"> </div>
+          <div *ngIf="allValues?.publisher?.length" class="state-medium-container__dropdown">
+            <div class="sb-field mb-0"><label>
+                <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['publisher']"
+                  (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'publisher'})"
+                  defaultSelectionText={{resourceService?.frmelmnts?.lbl?.publishedBy}}
+                  zeroSelectionText={{resourceService?.frmelmnts?.lbl?.Select}}
+                  class="selection sbt-dropdown-tick text-cencapitalize"
+                  [ngClass]="!layoutConfiguration ? 'state-selection' : 'sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg'">
+                  <div [ngClass]="!layoutConfiguration ? 'state-selection__section' : 'sbt-dropdown-section'">
+                    <sui-select-option *ngFor="let dropdownValue of allValues['publisher']" [value]="dropdownValue">
+                    </sui-select-option>
+                  </div>
+                </sui-multi-select>
+              </label>
+            </div>
+          </div>
+          <div *ngIf="allValues?.audience?.length" class="state-medium-container__separator"> </div>
+          <div *ngIf="allValues?.audience?.length" class="state-medium-container__dropdown">
+            <div class="sb-field mb-0"><label>
+                <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['audience']"
+                  (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'audience'})"
+                  defaultSelectionText={{resourceService?.frmelmnts?.lbl?.userType}}
+                  zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} tabindex="0"
+                  class="selection sbt-dropdown-tick text-cencapitalize"
+                  [ngClass]="!layoutConfiguration ? 'state-selection' : 'sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg'">
+                  <div [ngClass]="!layoutConfiguration ? 'state-selection__section' : 'sbt-dropdown-section'">
+                    <sui-select-option *ngFor="let dropdownValue of allValues['audience']" [value]="dropdownValue">
+                    </sui-select-option>
+                  </div>
+                </sui-multi-select>
+              </label>
+            </div>
+          </div>
+          <button (click)="resetFilters()" appTelemetryInteract [telemetryInteractEdata]="getInteractEdata()"
+            tabindex="0" class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto">{{resourceService.frmelmnts?.btn?.reset
+            | translate}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </ng-container>
 <div *ngIf="isLayoutAvailable()" class="sbt-filter" tabindex="-1">
-​<mat-accordion class="sb-mat-accordion sbt-filter-accordion">
-        <mat-expansion-panel [expanded]="isOpen">
-            <mat-expansion-panel-header>
-                <div class="sbt-filter-switcher-container cursor-pointer mobile only" (click)="isOpen = !isOpen" tabindex="0">
-                    <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
-                    <div class="sbt-filter-text">{{resourceService.frmelmnts?.lbl?.filters | translate}}</div>
-                </div>
-                <div class="sbt-filter-switcher-container cursor-pointer computer only">
-                    <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
-                    <div class="sbt-filter-text">{{resourceService.frmelmnts?.lbl?.filters | translate}}</div>
-                </div>
-            </mat-expansion-panel-header>
-            <ng-container>
-                <div [hidden]="!((boards.length || emptyBoard) && refresh)" class="sbt-filter-bar mr-16 pl-24">
-                    <div class="sbt-reset-bar d-flex flex-ai-center flex-ai-jc-center" tabindex="0">
-                        <button (click)="onSearchFrameworkFilterReset()" tabindex="0" appTelemetryInteract
-                            [telemetryInteractEdata]="getInteractEdata()"
-                            class="sb-btn sb-btn-xs sb-btn-link-primary pull-right sbt-btn-reset cursor-pointer">{{resourceService.frmelmnts?.btn?.reset
-                            | translate}}
-                            <i class="icon undo"></i></button>
-                        <span class="sbt-filter-close"><i class="icon-svg icon-svg--xxs icon-close cursor-pointer"
-                                (click)="isOpen = !isOpen" tabindex="0"
-                                attr.aria-label="{{resourceService.frmelmnts?.btn?.close}}">
-                                <svg class="icon icon-svg--red">
-                                    <use xlink:href="./assets/images/sprite.svg#close"></use>
-                                </svg>
-                            </i>
-                        </span>
-                    </div>
-                    <div class="fsmall my-8 text-left filter-pref-text" tabindex="0">
-                        {{resourceService.frmelmnts?.lbl?.basedOnPref | translate}}</div>
-                    <div class="sbt-filter-scrollable pr-24">
-​
-                        <ng-container *ngIf="filterFormTemplateConfig && refreshSearchFilterComponent">
-                            <sb-search-framework-filter [frameworkAssociations]="allValues"
-                                [frameworkCategoryFilterFieldTemplateConfig]="filterFormTemplateConfig"
-                                [baseSearchFilter]="defaultFilters" #sbSearchFrameworkFilterComponent>
-                            </sb-search-framework-filter>
-                        </ng-container>
-​
-                    </div>
-                </div>
+  <mat-accordion class="sb-mat-accordion sbt-filter-accordion">
+    <mat-expansion-panel [expanded]="isOpen">
+      <mat-expansion-panel-header>
+        <div class="sbt-filter-switcher-container cursor-pointer mobile only" (click)="isOpen = !isOpen" tabindex="0">
+          <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
+          <div class="sbt-filter-text">{{resourceService.frmelmnts?.lbl?.filters | translate}}</div>
+        </div>
+        <div class="sbt-filter-switcher-container cursor-pointer computer only">
+          <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
+          <div class="sbt-filter-text">{{resourceService.frmelmnts?.lbl?.filters | translate}}</div>
+        </div>
+      </mat-expansion-panel-header>
+      <ng-container>
+        <div [hidden]="!((boards.length || emptyBoard) && refresh)" class="sbt-filter-bar mr-16 pl-24">
+          <div class="sbt-reset-bar d-flex flex-ai-center flex-ai-jc-center" tabindex="0">
+            <button (click)="onSearchFrameworkFilterReset()" tabindex="0" appTelemetryInteract
+              [telemetryInteractEdata]="getInteractEdata()"
+              class="sb-btn sb-btn-xs sb-btn-link-primary pull-right sbt-btn-reset cursor-pointer">{{resourceService.frmelmnts?.btn?.reset
+              | translate}}
+              <i class="icon undo"></i></button>
+            <span class="sbt-filter-close"><i class="icon-svg icon-svg--xxs icon-close cursor-pointer"
+                (click)="isOpen = !isOpen" tabindex="0" attr.aria-label="{{resourceService.frmelmnts?.btn?.close}}">
+                <svg class="icon icon-svg--red">
+                  <use xlink:href="./assets/images/sprite.svg#close"></use>
+                </svg>
+              </i>
+            </span>
+          </div>
+          <div class="fsmall my-8 text-left filter-pref-text" tabindex="0">
+            {{resourceService.frmelmnts?.lbl?.basedOnPref | translate}}</div>
+          <div class="sbt-filter-scrollable pr-24">
+            <ng-container *ngIf="filterFormTemplateConfig && refreshSearchFilterComponent">
+              <sb-search-framework-filter [frameworkAssociations]="allValues"
+                [frameworkCategoryFilterFieldTemplateConfig]="filterFormTemplateConfig"
+                [supportedFilterAttributes]="pageData?.metaData?.filters" [baseSearchFilter]="defaultFilters"
+                #sbSearchFrameworkFilterComponent>
+              </sb-search-framework-filter>
             </ng-container>
-        </mat-expansion-panel>
-    </mat-accordion>
+          </div>
+        </div>
+      </ng-container>
+    </mat-expansion-panel>
+  </mat-accordion>
 </div>

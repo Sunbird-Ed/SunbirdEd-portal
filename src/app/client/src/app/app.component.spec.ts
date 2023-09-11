@@ -384,6 +384,12 @@ describe("App Component", () => {
       jest.spyOn(appComponent, 'setDeviceId').mockImplementation(() => {
         return of('sample-device-id');
       });
+      jest.spyOn(appComponent, 'checkFormData').mockImplementation(() => {
+        return of('formData');
+      });
+      jest.spyOn(appComponent, 'getOnboardingList').mockImplementation(() => {
+        return of('onboardingFormData');
+      });
       mockNavigationHelperService.initialize = jest.fn(() => {});
       mockUserService.initialize = jest.fn(() => ({uid: 'sample-uid'}));
       jest.spyOn(appComponent, 'getOrgDetails').mockImplementation();
@@ -464,6 +470,12 @@ describe("App Component", () => {
       jest.spyOn(appComponent, 'setDeviceId').mockImplementation(() => {
         return of('sample-device-id');
       });
+      jest.spyOn(appComponent, 'checkFormData').mockImplementation(() => {
+        return of('formData');
+      });
+      jest.spyOn(appComponent, 'getOnboardingList').mockImplementation(() => {
+        return of('onboardingFormData');
+      });
       mockNavigationHelperService.initialize = jest.fn(() => {});
       mockUserService.initialize = jest.fn(() => ({uid: 'sample-uid'}));
       jest.spyOn(appComponent, 'getOrgDetails').mockImplementation();
@@ -536,6 +548,12 @@ describe("App Component", () => {
       mockResourceService.initialize = jest.fn(() => {});
       jest.spyOn(appComponent, 'setDeviceId').mockImplementation(() => {
         return of('sample-device-id');
+      });
+      jest.spyOn(appComponent, 'checkFormData').mockImplementation(() => {
+        return of('formData');
+      });
+      jest.spyOn(appComponent, 'getOnboardingList').mockImplementation(() => {
+        return of('onboardingFormData');
       });
       mockNavigationHelperService.initialize = jest.fn(() => {});
       mockUserService.initialize = jest.fn(() => ({uid: 'sample-uid'}));

@@ -1,2 +1,2 @@
-@import './mixins/mixins';
-@import './pages/page-center-view.scss';
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use 'pages/page-center-view.scss' as *;

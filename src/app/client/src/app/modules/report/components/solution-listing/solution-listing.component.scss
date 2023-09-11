@@ -1,5 +1,4 @@
-@import "variables";
-@import "mixins/mixins";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .main-container {
   padding:0 1%;
@@ -40,43 +39,43 @@
 
 .pull-right {
   float: right !important;
-  width: 120px;
+  width: calculateRem(120px);
 }
 
 .pull-left {
   float:left;
   font-size: 0.8125rem;
   font-weight: bold;
-  margin-top:7px
+  margin-top:calculateRem(7px);
 }
 
 select.search-entity {
-  width: 120px;
-  border: 1px solid #aaa;
-  color: #333;
-  border-radius: 3px;
-  padding: 4px;
+  width: calculateRem(120px);
+  border: calculateRem(1px) solid var(--gray-200);
+  color: var(--gray-800);
+  border-radius: calculateRem(3px);
+  padding: calculateRem(4px);
   font-size: 0.8125rem;
-  margin-bottom: 5px;
+  margin-bottom: calculateRem(5px);
   font-weight: bold;
   text-transform: capitalize;
 }
 
 select .select-entries{
-  border: 1px solid #aaa;
-  border-radius: 3px;
+  border: calculateRem(1px) solid var(--gray-200);
+  border-radius: calculateRem(3px);
   background-color: transparent;
-  padding: 4px;
+  padding: calculateRem(4px);
   font-size: 0.8125rem;
 }
 
 .header-section {
-  width: 70px;
+  width: calculateRem(70px);
   text-align: center;
 }
 
 .date-section {
-  width: 180px;
+  width: calculateRem(180px);
   text-align: center;
 }
 
@@ -85,5 +84,5 @@ label {
 }
 
 .iconSize{
-  font-size: 18px;
+  font-size: calculateRem(18px);
 }

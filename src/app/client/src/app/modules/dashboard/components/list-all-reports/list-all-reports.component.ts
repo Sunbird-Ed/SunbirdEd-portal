@@ -11,7 +11,7 @@ import * as moment from 'moment';
 import * as $ from 'jquery';
 import 'datatables.net';
 import { Location } from '@angular/common';
-
+const reportsToExclude : string[] = ['program_dashboard'];
 @Component({
   selector: 'app-list-all-reports',
   templateUrl: './list-all-reports.component.html',
@@ -100,6 +100,9 @@ export class ListAllReportsComponent implements OnInit {
       map(reports => {
         const [reportsArr, datasetsArr] = this.reports = _.partition(reports, report => _.toLower(_.get(report, 'report_type')) === 'report');
         const count = _.get(reports, 'length');
+        _.remove(reportsArr, (report) => {
+          return reportsToExclude.includes(report.reportconfig.report_type)
+        })
         return { count, reportsArr, datasetsArr };
       })
     );
@@ -139,7 +142,7 @@ export class ListAllReportsComponent implements OnInit {
     };
 
     const status = _.startCase(_.toLower(data));
-    const spanElement = `<span class="sb-label sb-label-table sb-label-${icon[_.toLower(data)].color}">
+    const spanElement = `<span class="sb-label sb-label-table sb-label-${icon[_.toLower(data)].color}" tabindex="0">
     ${data === 'live' ? `<span class="sb-live"></span>` : ''} ${status}</span>`;
     return spanElement;
   }
@@ -147,8 +150,8 @@ export class ListAllReportsComponent implements OnInit {
   private renderTags(data) {
 
     if (Array.isArray(data)) {
-      const elements = _.join(_.map(data, tag => `<span class="sb-label-name sb-label-table sb-label-primary-100 mr-5 px-8 py-4">${_.startCase(_.toLower(tag))}</span>`), ' ');
-      return `<div class="sb-filter-label"><div class="d-inline-flex m-0">${elements}</div></div>`;
+      const elements = _.join(_.map(data, tag => `<span class="sb-label-name sb-label-table sb-label-primary-100 mr-5 px-8 py-4" tabindex="0">${_.startCase(_.toLower(tag))}</span>`), ' ');
+      return `<div class="sb-filter-label" tabindex="0"><div class="d-inline-flex m-0">${elements}</div></div>`;
     }
 
     return _.startCase(_.toLower(data));
@@ -206,7 +209,7 @@ export class ListAllReportsComponent implements OnInit {
             if (isParameterized && row.children) {
               count = _.filter(row.children, child => _.toLower(child.status) === 'live').length;
             }
-            return `<button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-btn-square" aria-label="file-icon">
+            return `<button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-btn-square" aria-label="file-icon" tabindex="0">
             <i class="icon ${isParameterized && row.children ? 'copy outline' : 'file outline'}
             alternate"></i><span>${isParameterized && row.children ? `${count}/${row.children.length} Live` : ''}</span></button>`;
           },
@@ -216,7 +219,7 @@ export class ListAllReportsComponent implements OnInit {
         {
           title: 'Title', data: 'title', render: (value, type, row) => {
             const { title, description } = row;
-            return `<div class="sb-media"><div class="sb-media-body"><h6 class="p-0">
+            return `<div class="sb-media" tabindex="0"><div class="sb-media-body"><h6 class="p-0">
                   ${title}</h6> <p class="media-description sb__ellipsis"> ${description}</p></div></div>`;
           }
         },
@@ -225,7 +228,7 @@ export class ListAllReportsComponent implements OnInit {
           render: (value) => {
             const date = moment(value);
             if (date.isValid()) {
-              return `<td> ${moment(value).format('YYYY/MM/DD')} </td>`;
+              return `<td tabindex="0"> ${moment(value).format('YYYY/MM/DD')} </td>`;
             }
             return _.startCase(_.toLower(value));
           }
@@ -255,7 +258,7 @@ export class ListAllReportsComponent implements OnInit {
       this.rowClickEventHandler(reportid, hashed_val, materialize || false);
     });
 
-    const getChildTable = (table_id) => `<table id="${table_id}" class="w-80 b-1"></table>`;
+    const getChildTable = (table_id) => `<table id="${table_id}" class="sb-table sb-table-hover sb-table-striped sb-table-sortable w-80 dataTable no-footer"></table>`;
 
     $(el).on('click', 'td.details-control', (event) => {
       const tr = $(event.currentTarget).closest('tr');

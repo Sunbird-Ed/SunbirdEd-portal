@@ -1,18 +1,20 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+
 ul {
   list-style-type: none;
   padding:0px;margin:0px;
 }
 li {
   display: grid;
-  grid-template-columns: 20px auto;
+  grid-template-columns: calculateRem(20px) auto;
   justify-content: start;
   align-items: center;
   margin-bottom:1rem
 }
 li::before {
   content: ">";
-  font-size: 12px;
-  color: #999;
+  font-size: calculateRem(12px);
+  color: var(--gray-200);
   font-weight:bold;
 }
 

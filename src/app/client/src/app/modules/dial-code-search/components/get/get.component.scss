@@ -1,63 +1,12 @@
-@import './variables';
-@import "./mixins/mixins";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .sb-explore-qr-page-cover {
   padding: calculateRem(32px) 0 0 0;
-  min-height: calc(100vh - 230px);
+  min-height: calc(100vh - 14.375rem);
 }
 
 /*get dial code page responsive css*/
-.ui.footer.segment {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: var(--white);
-    z-index: 989898;
-}
-.bars.icon.tablet.sunbird-hamburger-menu {
-    cursor: pointer;
-    position: absolute;
-    margin: 0;
-    padding-top: 0.5em;
-    opacity: .7;
-    -webkit-transition: opacity .1s ease;
-    transition: opacity .1s ease;
-}
-.get-page-background {
-  background: linear-gradient(-90deg, var(--rc-5c8db7), var(--rc-91aecc));
-  height: 100vh;
-}
-.dailcode-page-background {
-  background: var(--rc-f9f9f9);
-  height: 100vh;
-}
-.bars.icon.mobile.sunbird-hamburger-menu {
-    cursor: pointer;
-    position: absolute;
-    margin: 0;
-    padding-top: 1.5em; 
-}
-.dial-section-header {
-  //margin-top: 3em;
-}
-.dial-section-seperater{
-  position: absolute;
-  height: 70vh;
-  border-left: calculateRem(1px) solid var(--gray-100);
-  left: 50%;
-}
-.dail-section-meta {
-  color: var(--white);
-}
-.ui.header.dial-section-header-text {
-  //color:#fff;
-  font-weight: bold !important;
-  font-size: calculateRem(16px)!important;
-}
-.ui.header .sub.header.dial-section-subheader-text {
-  //color: #fff;
-  font-size: calculateRem(14px);
-}
+
 .dial-section-input {
   margin-top: 11em;
 }
@@ -66,36 +15,6 @@
     margin-top: 3em;
   }
 }
-@media screen and  (min-width: 320px) and (max-width: 768px) {
-  .ui.header.dial-section-header-text {
-    padding-top: 4em !important;
-  }
-}
-.dial-code-section-bg {
-  //background: #fff;
-}
-@media only screen and (max-width: 767px) {
-  .ui.container.public-responvive-container {    
-    margin-right: 0 !important; 
-  } 
-  .dial-section-seperater{
-    display: none;
-  }
-}
-@media only screen and (min-width: 768px) {
-  .closeBtn-dial-code {
-    float:right;
-  }
-}
-@media screen and  (min-width: 320px) and (max-width: 768px) {
-  .ui.small.header.popUp-dial-code-header {
-    font-size: 1.2em;
-  }
-}
-.menu-public-header{
-  border-top: calculateRem(2px) solid rgba(var(--rc-rgba-866a6a), 0.13);
-}
-
 
 .sb-explore-qr-container {
   justify-content: center;

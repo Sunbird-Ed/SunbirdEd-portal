@@ -1,6 +1,6 @@
 // Angular modules
 import { NgModule } from '@angular/core';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v9';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // Modules

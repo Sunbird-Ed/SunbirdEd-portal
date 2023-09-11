@@ -1,11 +1,15 @@
-@import "./buttons";
-
+@use "~@project-sunbird/sb-styles/assets/buttons" as *;
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 /* modal styles */
 .sb-modal {
   .ui.modal {
-    @include margin(3.5rem auto 0 auto);
-    @include position(null, 0 0 null 0); //bourbon
-    @include size(100%, auto); //bourbon
+    margin:3.5rem auto 0 auto;
+    position: inherit;
+    left:0;
+    right:0;
+    top:0;
+    width:100%;
+    height: auto;
     background: none;
 
     .sb-modal-header {
@@ -14,13 +18,13 @@
       font-weight: 700;
       font-size: calculateRem(16px);
       padding: calculateRem(8px) calculateRem(16px);
-      border-bottom: 0 solid var(--gray-100); //@include size(auto,($base-block-space * 5)); //bourbon
+      border-bottom: 0 solid var(--gray-100);
       min-height: calculateRem(40px);
       line-height: calculateRem(24px);
     }
 
     .sb-modal-content {
-      min-height: 100px;
+      min-height: calculateRem(100px);
       padding: calculateRem(16px);
 
       overflow-y: auto;
@@ -30,15 +34,17 @@
     &>.close {
       color: var(--white);
       font-size: calculateRem(14px);
-      @include padding(0 0); //bourbon
-      @include margin(0 0);
-      @include size(($base-block-space * 5), ($base-block-space * 5)); //bourbon
+      padding:0 0 0 0;
+      margin: 0 0 0 0;
+      width:2.5rem;
+      height:2.5rem;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       outline: 0px;
-      @include position(absolute, 0 0 null null); //bourbon
+      position: absolute;
+      top:0;right:0;
     }
 
     .sb-modal-actions {
@@ -51,7 +57,7 @@
       align-items: center;
 
       .sb-btn+.sb-btn {
-        @include margin(0 0.5rem 0 0);
+        margin:0 0.5rem 0 0;
       }
     }
 
@@ -79,14 +85,14 @@
       max-width: calculateRem(900px);
 
       .sb-modal-content {
-        height: calc(100vh - 200px);
+        height: calc(100vh - 12.5rem);
       }
     }
 
     &.sb-modal-fullscreen {
-      @include position(fixed, 0 0 0 0); //bourbon
+      position: fixed;top:0;right:0;bottom:0;left:0;
       width: 100%;
-      @include margin(0 auto);
+      margin:0 auto;
       overflow-y: auto;
       overflow-x: hidden;
 
@@ -205,7 +211,7 @@
 
     .sb-modal-actions {
       .sb-btn+.sb-btn {
-        @include margin(0 0 0 0.5rem);
+        margin:0 0 0 0.5rem;
       }
     }
   }
@@ -300,7 +306,7 @@
     display: inline;
     width: 2rem;
     height: 2rem;
-    background-color: var(--rc-009D53);
+    background-color: var(--secondary-400);
     -webkit-mask-image: url(../../../assets/images/checkbox-icon.svg);
     mask-image: url(../../../assets/images/checkbox-icon.svg);
     -webkit-mask-size: contain;
@@ -345,11 +351,11 @@
     outline: 0px;
     border: 0;
     margin: 1rem;
-    color: red;
+    color: var(--red-400);
     span{
       font-size: 1.6rem;
       position: relative;
-      bottom: 2px;
+      bottom: calculateRem(2px);
     }
   }
 
@@ -384,11 +390,11 @@
     outline: 0px;
     border: 0;
     margin: 1rem;
-    color: red;
+    color: var(--red-400);
     span{
       font-size: 1.6rem;
       position: relative;
-      bottom: 2px;
+      bottom: calculateRem(2px);
     }
   }
 }

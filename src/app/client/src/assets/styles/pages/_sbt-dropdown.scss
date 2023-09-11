@@ -1,3 +1,4 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 /* select box */
 .sbt-dropdown-language.ui.selection.sbt-dropdown.dropdown {
   >.text span:last-child {
@@ -56,7 +57,7 @@
   line-height: calculateRem(40px);
   border: none;
   padding: 0 calculateRem(20px);
-  border-radius: 28px;
+  border-radius: calculateRem(28px);
   box-shadow: var(--sbt-box-shadow-3px);
 
   .default.text {
@@ -189,7 +190,7 @@
         background: var(--sbt-theme-purple-selectbox-lbg);
         color: var(--sbt-theme-purple-selectbox);
         font-weight: bold;
-        background: rgba(0,0,0,.05);
+        background: rgba(var(--rc-rgba-black),.05);
       }
 
       .sbt-dropdown-section .item.active::after {
