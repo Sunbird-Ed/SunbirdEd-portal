@@ -43,13 +43,14 @@ export class QumlPlayerService implements QuestionCursor,EditorCursor {
 
   setQuestionMap(key, value) {
     this.questionMap.set(key, value);
+    sessionStorage.setItem(key, JSON.stringify(value));
   }
 
   clearQuestionMap() {
     this.questionMap.clear();
   }
   removeQuestionMap(key: string): void {
-    console.log("key",key);
+    sessionStorage.removeItem(key);
   }
 
   getQuestionSet(identifier: string) {
