@@ -1,0 +1,8 @@
+<div class="toc__content text-left" [appTelemetryImpression]="telemetryImpression">
+    <app-content-media class="media__player" [playerConfig]="playerConfig" [contentData]="contentDetails" [isContentPresent]="true"
+        [isContentDeleted]="isContentDeleted" [contentProgressEvents$]="contentProgressEvents$"
+        (assessmentEvents)="onAssessmentEvents($event)"
+        (questionScoreSubmitEvents)="onQuestionScoreSubmitEvents($event)"
+        (questionScoreReviewEvents)="onQuestionScoreReviewEvents($event)" (deletedContent)="goBack()">
+    </app-content-media>
+</div>

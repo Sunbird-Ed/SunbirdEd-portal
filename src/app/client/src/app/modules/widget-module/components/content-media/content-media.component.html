@@ -1,0 +1,12 @@
+<div class="content-video">
+    <section class="" id="player-area-height">
+      <div class="aspectratio sbt-shadow-radius" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio [ngClass]="{'player-fullscreen': isFullScreenView}">
+        <app-media-player class="content-player" [playerOption]="playerOption" [playerConfig]="playerConfig"
+          [contentProgressEvents$]="contentProgressEvents$" (assessmentEvents)="onAssessmentEvents($event)"
+          (questionScoreSubmitEvents)="onQuestionScoreSubmitEvents($event)" (questionScoreReviewEvents)="onQuestionScoreReviewEvents($event)"[isContentDeleted]="contentDeleted" ></app-media-player>
+        
+        
+      </div>
+      
+    </section>
+  </div>
