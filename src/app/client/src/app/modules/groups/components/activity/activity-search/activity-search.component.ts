@@ -15,7 +15,7 @@ import { Subject, of, combineLatest } from 'rxjs';
 import { takeUntil, map, catchError, first, debounceTime, tap, delay, mergeMap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '../../../../shared/interfaces/index';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../../shared/services/cache-service/cache.service';
 import { GroupsService } from '../../../services/groups/groups.service';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';

@@ -24,6 +24,7 @@ export class GlobalConsentPiiComponent implements OnInit {
   @Input() profileInfo;
   @ViewChild('profileDetailsModal') profileDetailsModal;
   @Output() close = new EventEmitter<any>();
+  @Output() consentShare = new EventEmitter<any>();
   isOpen = false;
   instance: string;
   consentPii = 'Yes';
@@ -59,7 +60,7 @@ export class GlobalConsentPiiComponent implements OnInit {
     this.usersProfile = _.cloneDeep(this.userService.userProfile);
     this.getUserInformation();
     this.getUserConsent();
-    if (this.isglobalConsent) {
+    if (this.isglobalConsent || this.type === 'program-consent') {
       this.showSettingsPage = false;
     } else {
       this.showSettingsPage = true;
@@ -200,6 +201,9 @@ export class GlobalConsentPiiComponent implements OnInit {
         declReq.push(this.getDeclarationReqObject(this.usersProfile));
         this.updateUserDeclaration(declReq);
       }
+    } else if(this.type === 'program-consent'){
+      request.consumerId = this.collection.rootOrganisations;
+      request.objectId = this.collection.programId
     }
     this.csUserService.getConsent(request, { apiPath: '/learner/user/v1' })
       .pipe(takeUntil(this.unsubscribe))
@@ -239,11 +243,18 @@ export class GlobalConsentPiiComponent implements OnInit {
       request.consumerId = this.userService.channel;
       request.objectId = this.userService.channel;
       request.objectType = 'Organisation';
+    } else if(this.type === 'program-consent'){
+      request.consumerId = this.collection.rootOrganisations;
+      request.objectId = this.collection.programId;
+      request.objectType = 'Program'
     }
     this.csUserService.updateConsent(request, { apiPath: '/learner/user/v1' })
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(() => {
-        this.toasterService.success(_.get(this.resourceService, 'messages.smsg.dataSettingSubmitted'));
+        if(this.type === 'program-consent'){
+          this.consentShare.emit({consent:true})
+        }
+        this.type !== 'program-consent' && this.toasterService.success(_.get(this.resourceService, 'messages.smsg.dataSettingSubmitted'));
         this.getUserConsent();
         this.close.emit();
         this.popupControlService.changePopupStatus(true);
@@ -251,6 +262,9 @@ export class GlobalConsentPiiComponent implements OnInit {
         this.isTncAgreed = false;
         this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
         console.error('Error while updating user consent', error);
+        if(this.type === 'program-consent'){
+          this.consentShare.emit({consent:false})
+        }
       });
   }
 

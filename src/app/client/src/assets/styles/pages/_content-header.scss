@@ -1,4 +1,4 @@
-@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 .content-header {
   margin-bottom: calculateRem(24px);
   min-height: calculateRem(14px);

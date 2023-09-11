@@ -2645,7 +2645,7 @@ export const RESPONSE = {
         'data': [
           {
             'index': 0,
-            'name': 'CBSE/NCERT',
+            'name': 'CBSE',
             'value': 'ekstep_ncert_k-12',
             'searchCriteria': {
               'facets': [

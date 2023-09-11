@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl, ValidationErrors } from '@angular/forms';
+import { UntypedFormControl, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormService, OtpService, TncService, UserService } from '@sunbird/core';
 import { Consent, ConsentStatus } from '@project-sunbird/client-services/models';
@@ -13,7 +13,7 @@ import {
   UtilService, LayoutService
 } from '@sunbird/shared';
 import { IInteractEventEdata, IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
-import { FieldConfig } from '@project-sunbird/common-form-elements';
+import { FieldConfig } from '@project-sunbird/common-form-elements-full';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -493,7 +493,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   mobileVerificationAsyncFactory(formElement: FieldConfig<any>, profile: any, initialMobileVal): any {
     return (marker: string, trigger: HTMLElement) => {
       if (marker === 'MOBILE_OTP_VALIDATION') {
-        return async (control: FormControl) => {
+        return async (control: UntypedFormControl) => {
           if ((control && !control.value) || (initialMobileVal && initialMobileVal === control.value)) {
             return null;
           }
@@ -527,7 +527,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   emailVerificationAsyncFactory(formElement: FieldConfig<any>, profile: any, initialEmailVal): any {
     return (marker: string, trigger: HTMLElement) => {
       if (marker === 'EMAIL_OTP_VALIDATION') {
-        return async (control: FormControl) => {
+        return async (control: UntypedFormControl) => {
           if ((control && !control.value) || (initialEmailVal && initialEmailVal === control.value)) {
             return null;
           }

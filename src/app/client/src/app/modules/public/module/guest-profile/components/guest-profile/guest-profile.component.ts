@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DeviceRegisterService, UserService } from '@sunbird/core';
-import { ResourceService, UtilService, NavigationHelperService, ToasterService } from '@sunbird/shared';
+import { ResourceService, UtilService, NavigationHelperService, ToasterService, ConfigService} from '@sunbird/shared';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
@@ -33,11 +33,16 @@ export class GuestProfileComponent implements OnInit {
   deviceProfile;
   isDesktop = false;
   userRole: string;
-
+  avatarConfig = {
+    size: this.config.constants.SIZE.LARGE,
+    view: this.config.constants.VIEW.VERTICAL,
+    isTitle:false
+  };
   editProfileInteractEdata: IInteractEventEdata;
   editFrameworkInteractEData: IInteractEventEdata;
   telemetryImpression: IImpressionEventInput;
   public unsubscribe$ = new Subject<void>();
+  isFullScreenView: any;
   constructor(
     public activatedRoute: ActivatedRoute,
     public resourceService: ResourceService,
@@ -47,7 +52,8 @@ export class GuestProfileComponent implements OnInit {
     public userService: UserService,
     public router: Router,
     public navigationHelperService: NavigationHelperService,
-    public toasterService: ToasterService
+    public toasterService: ToasterService,
+    public config: ConfigService
   ) { }
 
   ngOnInit() {
@@ -156,5 +162,5 @@ export class GuestProfileComponent implements OnInit {
   goBack() {
     this.navigationHelperService.goBack();
   }
-
+  
 }

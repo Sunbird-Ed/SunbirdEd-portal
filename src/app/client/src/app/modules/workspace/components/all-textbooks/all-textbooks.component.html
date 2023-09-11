@@ -21,8 +21,8 @@
       </th>
     </tr>
   </thead>
-  <tbody [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="alltextbooks">
-    <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let content of alltextbooks let i = index;" [id]="i" [data]="content"
+  <tbody [appTelemetryImpression]="telemetryImpression" [throttle]="[1000]" [trigger]="alltextbooks">
+    <tr class="UpForReviewListHover cursor-pointer" *ngFor="let content of alltextbooks let i = index;" [id]="i" [data]="content"
       appTelemetryInteract [telemetryInteractObject]="{id:content.identifier,type:content.contentType,ver:content.pkgVersion ? content.pkgVersion.toString(): '1.0' }"
       [telemetryInteractEdata]="{id:'alltextbooks',type:'click',pageid:'alltextbooks'}">
       <td tabindex="0" (click)="contentClick(content)">

@@ -7,7 +7,7 @@ import { BrowserCacheTtlService } from '../../../shared/services/browser-cache-t
 import {  ServerResponse } from '../../../shared/interfaces/serverResponse';
 import { Observable, of } from 'rxjs';
 import { PublicDataService } from './../public-data/public-data.service';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import * as _ from 'lodash-es';
 import { OrgDetailsService } from '../org-details/org-details.service';
 @Injectable({

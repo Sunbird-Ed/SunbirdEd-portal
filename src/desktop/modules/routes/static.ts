@@ -151,5 +151,6 @@ export default (app, contentFilesPath, ecarsFolderPath ) => {
     locals.sunbirdQuestionSetChildrenLimit = null;
     locals.sunbirdCollectionChildrenLimit = null;
     locals.sunbirdNavAccessibility=null;
+    locals.defaultBoard = null;
     return locals;
   }

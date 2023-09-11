@@ -28,8 +28,8 @@
       </th>
     </tr>
   </thead>
-  <tbody [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inview($event)" [throttle]="1000" [trigger]="collaboratingContent">
-    <tr in-view-item class="UpForReviewListHover" *ngFor="let content of collaboratingContent |orderBy: column :reverse ; trackBy: trackByFn let i = index;"
+  <tbody [appTelemetryImpression]="telemetryImpression" [throttle]="1000" [trigger]="collaboratingContent">
+    <tr class="UpForReviewListHover" *ngFor="let content of collaboratingContent; trackBy: trackByFn let i = index;"
       [id]="i" [data]="content" appTelemetryInteract [telemetryInteractObject]="{id:content.identifier,type:content.contentType,ver:content.pkgVersion ? content.pkgVersion.toString(): '1.0' }"
       [telemetryInteractEdata]="{id:'collaborating-on',type:'click',pageid:'CollaboratingOn'}">
       <td>

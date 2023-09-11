@@ -1,0 +1,78 @@
+.course-card {
+    background-color: #ffffff;
+
+    .text-section {
+        margin-top: 20px;
+        .icon, .course-dd {
+            height: 24px;
+        }
+        .item-name {
+            font-family: 'Lato', Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0.25;
+            color: rgba(0, 0, 0, 0.6);
+            margin-left: 5px;
+        }
+        .course-title {
+            font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 0.25;
+            color: rgba(0, 0, 0, 0.87);
+            line-height: 24px;
+            margin-top: 10px;
+        }
+        .category {
+            font-family: 'Lato', Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            letter-spacing: 0.25;
+            color: rgba(0, 0, 0, 0.6);
+            line-height: 20px;
+        }
+        .rating {
+            color: rgb(254, 45, 155);
+            font-family: 'Lato', Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            margin-right: 5px;
+        }
+
+        .star.icon {
+            color: rgb(254, 45, 155);
+            font-size: 16px;
+        }
+
+        .duration {
+            font-family: 'Lato', Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            letter-spacing: 0.25;
+            color: rgba(0, 0, 0, 0.6);
+        }
+
+        .clock.icon {
+            color: rgba(0, 0, 0, 0.6);
+            font-size: 20px;
+        }
+
+        .dot {
+            color: rgba(0, 0, 0, 0.6);
+            font-size: 30px;
+            margin-left: 8px;
+            margin-right: 8px;
+        }
+
+        .right.floated {
+            float: right;
+             margin-right: 0.25em;
+          } 
+        
+          .course-dd {
+              margin-top: 15px;
+          }
+    }
+
+   
+}

@@ -2,14 +2,14 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import * as _ from 'lodash-es';
 import { UploadCertificateService } from '../../services/upload-certificate/upload-certificate.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { UserService, CertRegService } from '@sunbird/core';
 import { ToasterService, ResourceService, NavigationHelperService, LayoutService, COLUMN_TYPE } from '@sunbird/shared';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CertConfigModel } from './../../models/cert-config-model/cert-config-model';
 import { BrowseImagePopupComponent } from '../browse-image-popup/browse-image-popup.component';
 import {ActivatedRoute} from '@angular/router';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 @Component({
   selector: 'app-create-template',
   templateUrl: './create-template.component.html',
@@ -21,7 +21,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
   public browseImage: BrowseImagePopupComponent;
 
   public unsubscribe$ = new Subject<void>();
-  createTemplateForm: FormGroup;
+  createTemplateForm: UntypedFormGroup;
   selectStateOption: any = [];
   selectLanguageOption: any = [];
   selectState: any;
@@ -104,12 +104,12 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
   }
 
   initializeFormFields() {
-    this.createTemplateForm = new FormGroup({
-      certificateTitle: new FormControl('', [Validators.required]),
-      stateName: new FormControl('', [Validators.required]),
-      authoritySignature_0: new FormControl('', [Validators.required]),
-      authoritySignature_1: new FormControl(''),
-      allowPermission: new FormControl('', [Validators.required])
+    this.createTemplateForm = new UntypedFormGroup({
+      certificateTitle: new UntypedFormControl('', [Validators.required]),
+      stateName: new UntypedFormControl('', [Validators.required]),
+      authoritySignature_0: new UntypedFormControl('', [Validators.required]),
+      authoritySignature_1: new UntypedFormControl(''),
+      allowPermission: new UntypedFormControl('', [Validators.required])
     });
     // TODO: Move to a separate component this browse logic;
     this.createTemplateForm.valueChanges.subscribe(val => {
@@ -267,7 +267,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
   }
 
   editSVG(logosArray, stateLogos) {
-    return new Promise(async (resolve, reject) => {
+    return new Promise<void>(async (resolve, reject) => {
       for (let i = 0; i < logosArray.length; i++) {
         const logo = logosArray[i];
         if (logo) {

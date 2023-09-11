@@ -1,33 +1,115 @@
-@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "@project-sunbird/sb-styles/assets/mixins/mixins"as *;
+html {
+    --sb-card-slick-arrows-bg: rgba(0, 0, 0, 0.79);
+}
 
 .landing-page-section {
-    background-color:var(--sb-landing-page-bg);
+    background-color: var(--sb-landing-page-bg);
     border-bottom: calculateRem(1px) solid rgba(var(--rc-rgba-gray), 0.79);
     -webkit-box-shadow: 0 calculateRem(1px) calculateRem(3px) rgba(var(--rc-rgba-black), 0.075);
     box-shadow: 0 calculateRem(1px) calculateRem(3px) rgba(var(--rc-rgba-black), 0.075);
 }
+
 .landing-page-image {
     margin: calculateRem(40px) 0 calculateRem(40px) 0;
 }
+
 .landing-page-image img {
     border-radius: 0.65em;
 }
+
 .landing-page-description {
     padding-top: 3em;
 }
+
 .landing-page-description p {
     margin: 0;
     font-size: calculateRem(14px);
 }
+
 .ui.card>.card-opacity {
     opacity: 0.2;
 }
+
 .ui.card .article-header-padding {
     padding: 0 0 1em 1em;
     font-weight: bold;
     font-size: 1.25em;
 }
+
 .ui.segment .segment-heading {
     font-weight: bold;
     font-size: 1.25em;
-  }
+}
+
+.goal-oriented-hr-section,
+.featured-courses-section {
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 80px;
+    margin-bottom: 80px;
+
+    .heading {
+        font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+        font-size: 24px;
+        font-weight: 600;
+        color: RGBA(0, 0, 0, 0.87);
+        margin-bottom: 40px;
+    }
+}
+
+.infor-card {
+    &__wrap {
+        background: rgba(0, 0, 0, 0.04);
+        padding: 80px 0;
+        margin: 2rem 0;
+
+        h1 {
+            font-size: 1.5rem;
+            margin-left: 8.2%;
+            padding-bottom: 32px;
+            font-weight: 600;
+            text-align: left;
+            line-height: 1.5rem;
+        }
+    }
+}
+
+.slide {
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+}
+
+@media only screen and (max-width:1024px) {
+    .infor-card {
+        &__wrap {
+            padding: 20px 0;
+
+            h1 {
+                font-size: 1.2rem;
+                margin-left: 0%;
+                text-align: center;
+            }
+        }
+    }
+}
+
+.slick-slider {
+    // width: 88%;
+    margin: auto;
+    // background: rgb(14, 13, 13);
+}
+
+.slick-slider > .slick-next::before, .slick-slider > .slick-next::before {
+    background: rgb(28, 29, 31) !important;
+    color: #ffffff !important;
+}
+
+
+body .slick-prev,
+body .slick-next {
+    height: 45px;
+    width: 40px;
+    background: rgb(28, 29, 31) !important;
+    z-index: 100;
+}

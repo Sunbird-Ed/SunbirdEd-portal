@@ -11,6 +11,12 @@ export class ChartTypePipe implements PipeTransform {
         values: _.compact(chartData),
       });
     } else {
+      if(_.get(chartData, "filters")){
+          _.map(chartData.filters, (fil => {
+          _.has(fil, 'dependency') && _.unset(fil,'dependency')
+      }))
+      }
+  
       return ({
         colors: _.get(chartData, "colors"),
         datasets: _.get(chartData, "datasets"),

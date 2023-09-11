@@ -1,4 +1,4 @@
-@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 ::ng-deep{
     .sb-filter-g__item {
@@ -80,6 +80,11 @@
     }
     table.dataTable th, table.dataTable td {
         text-align: center !important;
+    }
+
+    sb-dashlet.dashlet-table app-filter .sb-form{
+        margin-left: 1rem !important;
+        margin-bottom: 1rem !important;
     }
 
   

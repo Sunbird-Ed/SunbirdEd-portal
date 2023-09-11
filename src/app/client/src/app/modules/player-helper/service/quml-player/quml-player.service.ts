@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import * as _ from 'lodash-es';
-import { QuestionCursor } from '@project-sunbird/sunbird-quml-player';
+import { QuestionCursor } from '@project-sunbird/sunbird-quml-player-v9';
 import { EditorCursor } from '@project-sunbird/sunbird-collection-editor';
 import { CsModule } from '@project-sunbird/client-services';
 import { PublicPlayerService } from '@sunbird/public';
@@ -10,7 +10,7 @@ import { map } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 
-export class QumlPlayerService implements QuestionCursor, EditorCursor {
+export class QumlPlayerService implements QuestionCursor,EditorCursor {
   private questionMap = new Map();
   private contentCsService: any;
   constructor(public csLibInitializerService: CsLibInitializerService,

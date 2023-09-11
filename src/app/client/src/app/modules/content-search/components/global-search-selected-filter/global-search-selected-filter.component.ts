@@ -44,7 +44,7 @@ export class GlobalSearchSelectedFilterComponent implements OnInit {
 
   public updateRoute() {
     let queryFilters = _.get(this.activatedRoute, 'snapshot.queryParams');
-    if (this.selectedFilters.channel) {
+    if (this?.selectedFilters?.channel) {
       const channelIds = [];
       const facetsData = _.find(this.facets, {'name': 'channel'});
       _.forEach(this.selectedFilters.channel, (value, index) => {

@@ -55,9 +55,6 @@
       "@sunbird/course-batch": [
         "app/modules/course-batch"
       ],
-      "moment": [
-        "../node_modules/moment/min/moment.min.js"
-      ],
       "@sunbird/player-helper": [
         "app/modules/player-helper"
       ],

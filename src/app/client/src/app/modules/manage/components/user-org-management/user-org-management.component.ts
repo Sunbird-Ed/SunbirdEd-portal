@@ -7,7 +7,7 @@ import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject, Telem
 import { Router, ActivatedRoute } from '@angular/router';
 import { takeUntil} from 'rxjs/operators';
 import * as _ from 'lodash-es';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import 'datatables.net';
 import dayjs from 'dayjs';
 import {Subject} from 'rxjs';

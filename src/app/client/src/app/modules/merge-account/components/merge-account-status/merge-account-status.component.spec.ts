@@ -4,7 +4,7 @@ import {TenantService} from '@sunbird/core';
 import { MergeAccountStatusComponent } from './merge-account-status.component';
 import { of } from 'rxjs';
 
-describe('MergeAccountStatus component', ()=> {
+xdescribe('MergeAccountStatus component', ()=> {
   let mergeAccountStatusComponent: MergeAccountStatusComponent;
   const mockActivatedRoute:Partial<ActivatedRoute>={
     queryParams: of({

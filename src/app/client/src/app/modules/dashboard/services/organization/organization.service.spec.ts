@@ -5,7 +5,7 @@ import { DashboardUtilsService } from "../dashboard-utils/dashboard-utils.servic
 import { of, throwError } from "rxjs";
 import * as mockData from "./organization.service.spec.data";
 import { HttpErrorResponse } from "@angular/common/http";
-import { data } from "jquery";
+// import { data } from "jquery";
 const testData = <any>mockData.mockRes;
  
 describe("OrganisationService", () => {

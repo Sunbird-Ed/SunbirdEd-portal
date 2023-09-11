@@ -7,8 +7,8 @@ import * as _ from 'lodash-es';
 import { ReportService } from '../../services';
 import { of, Observable, throwError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as moment from 'moment';
-import * as $ from 'jquery';
+import dayjs from 'dayjs';
+import  $ from 'jquery';
 import 'datatables.net';
 import { Location } from '@angular/common';
 const reportsToExclude : string[] = ['program_dashboard'];
@@ -226,9 +226,9 @@ export class ListAllReportsComponent implements OnInit {
         {
           title: 'Last Published Date', data: 'updatedon',
           render: (value) => {
-            const date = moment(value);
+            const date = dayjs(value);
             if (date.isValid()) {
-              return `<td tabindex="0"> ${moment(value).format('YYYY/MM/DD')} </td>`;
+              return `<td tabindex="0"> ${dayjs(value).format('YYYY/MM/DD')} </td>`;
             }
             return _.startCase(_.toLower(value));
           }
@@ -251,11 +251,14 @@ export class ListAllReportsComponent implements OnInit {
     this.indexColumn(masterTable);
 
     $(el).on('click', 'tbody tr td:not(.details-control)', (event) => {
-      const rowData = masterTable && masterTable.row(event.currentTarget).data();
-      if (_.get(rowData, 'isParameterized') && _.has(rowData, 'children') && rowData.children.length > 0) { return false; }
-      const { reportid, hashed_val, materialize } = rowData;
-      this.logTelemetry({ type: 'select-report', id: `${reportid}` });
-      this.rowClickEventHandler(reportid, hashed_val, materialize || false);
+      const rowData = masterTable && masterTable.row(event?.currentTarget).data();
+      if (_.get(rowData, 'reportid') && _.get(rowData, 'hashed_val') && rowData.hasOwnProperty('materialize')) {
+        const reportid = _.get(rowData,'reportid');
+        const hashed_val = _.get(rowData,'hashed_val');
+        const materialize = _.get(rowData,'materialize');
+        this.logTelemetry({ type: 'select-report', id: `${reportid}` });
+        this.rowClickEventHandler(reportid, hashed_val, materialize || false);
+      }
     });
 
     const getChildTable = (table_id) => `<table id="${table_id}" class="sb-table sb-table-hover sb-table-striped sb-table-sortable w-80 dataTable no-footer"></table>`;

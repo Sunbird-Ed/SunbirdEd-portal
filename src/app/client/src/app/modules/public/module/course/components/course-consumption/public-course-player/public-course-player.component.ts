@@ -9,7 +9,7 @@ import {
 } from '@sunbird/shared';
 import { CourseConsumptionService } from '@sunbird/learn';
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
-import * as TreeModel from 'tree-model';
+import TreeModel from 'tree-model';
 import { UserService, GeneraliseLabelService } from '@sunbird/core';
 import { TocCardType } from '@project-sunbird/common-consumption';
 import { ITelemetryShare, ContentUtilsServiceService } from '@sunbird/shared';

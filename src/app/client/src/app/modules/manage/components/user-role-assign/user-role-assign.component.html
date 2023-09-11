@@ -41,8 +41,9 @@
         <div class="add-adminrole__content">
           <div class="user-details mb-16">
             <div class="user-img ml-16">
-                <ngx-avatar class="my-avatar" [style]="customStyle" [size]="80" initialsSize="1" [textSizeRatio]="2" name="{{userObj.firstName}} ">
-                </ngx-avatar>
+                <sb-avatar class="my-avatar" [config]=avatarConfig initialsSize="1" [initial]="userObj?.firstName[0]"
+                      [attr.title]="userObj?.firstName">
+                    </sb-avatar>
             </div>
             <div class="user-metadata ml-32">
               <div class="user-name text-left">{{userObj.firstName}} {{userObj.lastName}}</div>

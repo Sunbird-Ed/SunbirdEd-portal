@@ -11,7 +11,7 @@ import {
   ExternalUrlPreviewService, LayoutService, UtilService, ConnectionService, OfflineCardService,
 } from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput, TelemetryService } from '@sunbird/telemetry';
-import * as TreeModel from 'tree-model';
+import TreeModel from 'tree-model';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { PopupControlService } from '../../../../service/popup-control.service';
 import { PublicPlayerService } from '@sunbird/public';

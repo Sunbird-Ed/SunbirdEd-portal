@@ -1,6 +1,6 @@
 import { ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { promise } from 'protractor';
 import { of, throwError } from 'rxjs';
 import { UserService } from '../../../core';
@@ -272,7 +272,7 @@ describe('GlobalSearchFilterComponent', () => {
             }, 10);
         });
 
-        it('should invoked ngOnInit for catch part', (done) => {
+        it('should invoked ngOnInit for catch part', () => {
             mockActivatedRoute.snapshot = {
                 data: {
                     telemetry: {
@@ -292,7 +292,6 @@ describe('GlobalSearchFilterComponent', () => {
                 expect(globalSearchFilterComponent.refresh).toBeTruthy();
                 expect(globalSearchFilterComponent.isOpen).toBeFalsy();
                 expect(mockConnectionService.monitor).toHaveBeenCalled();
-                done();
             }, 10);
         });
     });

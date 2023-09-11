@@ -24,17 +24,18 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 // SB core and shared services
 import { SearchService } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
-import { OrderModule } from 'ngx-order-pipe';
-import { AceEditorModule } from 'ng2-ace-editor';
+import { AceEditorModule } from '@derekbaker/ngx-ace-editor-wrapper';
 import { DiscussionModule } from '../discussion/discussion.module';
 import { SbTableComponent } from './components/sb-table/sb-table.component';
-import { DashletModule } from '@project-sunbird/sb-dashlet-v9';
+import { DashletModule } from '@project-sunbird/sb-dashlet';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MAT_DIALOG_DATA} from '@angular/material/dialog';
+
 
 
 @NgModule({
@@ -46,7 +47,6 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     ChartsModule,
     SuiModule,
     SharedModule,
-    OrderModule,
     CommonConsumptionModule,
     TelemetryModule,
     NgxDaterangepickerMd.forRoot(),
@@ -70,6 +70,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     SearchService,
     LineChartService,
     CourseConsumptionService,
-    OrganisationService, DownloadService, CourseProgressService, UsageService, ReportService]
+    OrganisationService, DownloadService, CourseProgressService, UsageService, ReportService,
+    { provide: MAT_DIALOG_DATA, useValue: {}}
+  ]
 })
 export class DashboardModule { }

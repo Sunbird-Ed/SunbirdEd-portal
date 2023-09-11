@@ -1,4 +1,4 @@
-@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .sb-prominent-filter-field {
   .form-control {
@@ -209,6 +209,11 @@ sui-multi-select.selection.sb-select-searchfilter.ui.dropdown.multiple {
 }
 .sb-prominent-filter {
  background: var(---rc-e9e8d9) !important; 
+}
+
+.errorMessage{
+  color:var(--ck-color-base-error);
+  margin-top: 0.625rem;
 }
 
 ::ng-deep{

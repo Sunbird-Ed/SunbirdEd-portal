@@ -1,7 +1,7 @@
 
 import { Injectable, EventEmitter } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute, NavigationStart } from '@angular/router';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import * as _ from 'lodash-es';
 import { UtilService } from '../util/util.service';
 import { Subject, asyncScheduler } from 'rxjs';

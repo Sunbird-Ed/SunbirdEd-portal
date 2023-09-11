@@ -6,8 +6,8 @@
 
 <div class="ui grid" *ngIf="!showLoader">
   <div class="twelve wide column" [appTelemetryImpression]="telemetryImpression">
-    <div class="ui stackable three column grid" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="draftList">
-      <div in-view-item *ngFor="let content of draftList;trackBy:identifier;let i = index;" [id]="i" [data]="content" class="column py-5 pl-10">
+    <div class="ui stackable three column grid" [throttle]="[1000]" [trigger]="draftList">
+      <div *ngFor="let content of draftList;trackBy:identifier;let i = index;" [id]="i" [data]="content" class="column py-5 pl-10">
         <app-card-creation [data]="content" (clickEvent)="contentClick($event)"></app-card-creation>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import {
   ResourceService, ConfigService, ToasterService, ServerResponse, Framework,
   ILoaderMessage, NavigationHelperService , BrowserCacheTtlService
@@ -8,14 +8,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { EditorService } from './../../services';
 import { SearchService, UserService, FrameworkService, FormService, PublicDataService, ContentService } from '@sunbird/core';
 import * as _ from 'lodash-es';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { DefaultTemplateComponent } from '../content-creation-default-template/content-creation-default-template.component';
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { WorkSpace } from '../../classes/workspace';
 import { WorkSpaceService } from '../../services';
 import { Subject } from 'rxjs';
 import { takeUntil} from 'rxjs/operators';
-import { UUID } from 'angular2-uuid';
+import { v4 as UUID } from 'uuid';
 
 @Component({
   selector: 'app-data-driven',
@@ -53,7 +53,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
   /**
  * userForm name creation
  */
-  public creationForm: FormGroup;
+  public creationForm: UntypedFormGroup;
   /**
 * Contains config service reference
 */
@@ -600,7 +600,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
           createdFor: this.userService?.userProfile?.rootOrgId ? [this.userService?.userProfile?.rootOrgId] : [],
           framework: this.framework,
           // creator: name,
-          code: UUID.UUID()
+          code: UUID()
         }
     };
   }

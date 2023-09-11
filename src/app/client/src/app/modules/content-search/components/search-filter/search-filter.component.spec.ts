@@ -1,6 +1,6 @@
 import { SearchFilterComponent } from './search-filter.component';
 import { ResourceService, LayoutService, UtilService } from '@sunbird/shared';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { FormService } from '../../../../modules/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';

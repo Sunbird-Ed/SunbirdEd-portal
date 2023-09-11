@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import * as _ from 'lodash-es';
 import { map, catchError } from 'rxjs/operators';
 import { of, Observable, iif, forkJoin } from 'rxjs';
-import * as TreeModel from 'tree-model';
+import TreeModel from 'tree-model';
 const treeModel = new TreeModel();
 
 @Injectable({

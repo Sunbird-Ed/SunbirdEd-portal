@@ -9,7 +9,7 @@
     </mat-expansion-panel-header>
     <div *ngIf="contentResponse" class="sb-mat-accordion__content">
       <div class="sb-single-pannel-accordion-list-item flex-ai-center text-left"
-        *ngFor="let data of contentResponse | orderBy:'createdOn': true">
+        *ngFor="let data of contentResponse">
         <i class="check circle icon success-icon mr-8 fs-1-429" *ngIf="data.status === 'completed'"></i>
         <div class="download-details-container" [ngClass]="{'cursor-pointer': data.status === 'completed'}" tabindex="0"
           (click)="openContent(data)">

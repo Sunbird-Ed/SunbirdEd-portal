@@ -25,4 +25,9 @@ describe("ChartTypePipe", () => {
     let transformedBigData = chartPipe.transform(mockChart.chartConfig);
     expect(transformedBigData).toEqual(mockChart.transformedConfig);
   });
+
+  it('should remove the dependency from config if present in the config before sending it to sb-dashlet', () => {
+    let transformedChartConfig = chartPipe.transform(mockChart.chartConfigWithDependencyFilter);
+    expect(transformedChartConfig).toEqual(mockChart.transformedConfig);
+  })
 });

@@ -1,0 +1,11 @@
+<div class="course-card grid">
+    <img class="ui centered image" src="{{data['image']}}" alt="course-img" />
+    <div class="text-section">
+        <img class="icon" src="/assets/images/course-icon.png" alt="course-icon" /> <span class="item-name">COURSE</span>
+        <p class="course-title">{{data["title"]}}</p>
+        <p class="category">{{data["category"]}}</p>
+        <span class="rating">{{data["rating"]}}</span> <i class="star icon"></i> <span class="dot">.</span> 
+        <i class="clock icon"></i> <span class="duration">{{data["duration"]}}</span>
+        <img *ngIf="data['showDD']" class="ui image right floated course-dd" src="/assets/images/course-dd.png" alt="course-img" />
+    </div>
+</div>

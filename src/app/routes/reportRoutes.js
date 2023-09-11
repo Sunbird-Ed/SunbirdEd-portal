@@ -138,7 +138,7 @@ module.exports = function (app) {
 
     app.get('/course-reports/metadata',
         proxyUtils.verifyToken(),
-        reportHelper.validateRoles(['CONTENT_CREATOR', 'REPORT_VIEWER', 'REPORT_ADMIN', 'ORG_ADMIN']),
+        reportHelper.validateRoles(['CONTENT_CREATOR', 'REPORT_VIEWER', 'REPORT_ADMIN', 'ORG_ADMIN','PROGRAM_DESIGNER','PROGRAM_MANAGER']),
         StorageService.CLOUD_CLIENT.getFileProperties(envHelper.sunbird_aws_reports)
         );
 

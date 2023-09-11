@@ -4,7 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { FormService } from './form.service';
 import { UserService } from '../../services/user/user.service';
 import { PublicDataService } from '../../services/public-data/public-data.service';
-import { CacheService } from "ng2-cache-service";
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { BrowserCacheTtlService } from '../../../shared/services/browser-cache-ttl/browser-cache-ttl.service'
 import { mockFormData } from './form.mock.spec.data';
 import { OrgDetailsService } from '../org-details/org-details.service';

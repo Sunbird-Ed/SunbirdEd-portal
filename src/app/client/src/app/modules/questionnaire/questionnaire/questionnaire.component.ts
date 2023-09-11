@@ -5,7 +5,7 @@ import {
   ResourceService,
   ConfigService,
 } from '@sunbird/shared';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ObservationService, ObservationUtilService } from '@sunbird/core';
 import { Location } from '@angular/common';
@@ -26,7 +26,7 @@ export class QuestionnaireComponent
   layoutConfiguration: any;
   FIRST_PANEL_LAYOUT;
   SECOND_PANEL_LAYOUT;
-  questionnaireForm: FormGroup;
+  questionnaireForm: UntypedFormGroup;
   sections: Section[];
   evidence: Evidence;
   queryParams: any;
@@ -34,7 +34,7 @@ export class QuestionnaireComponent
   canLeave = false;
   constructor(
     public layoutService: LayoutService,
-    public fb: FormBuilder,
+    public fb: UntypedFormBuilder,
     public resourceService: ResourceService,
     private activatedRoute: ActivatedRoute,
     private config: ConfigService,

@@ -7,7 +7,7 @@ import { Observable, of, Subscriber, Subscription, throwError as observableThrow
 import { UserService, PermissionService, ManagedUserService, CoursesService, ElectronService, FormService, LearnerService } from '../../../core';
 import { mockUserData } from './../../services/user/user.mock.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { TelemetryService } from '@sunbird/telemetry';
 import { mockData } from './main-menu.component.spec.data';
 

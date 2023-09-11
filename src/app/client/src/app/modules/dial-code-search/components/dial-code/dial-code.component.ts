@@ -142,6 +142,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
     this.instance = _.upperCase(_.get(this.resourceService, 'instance'));
     this.handleMobilePopupBanner();
     this.setTelemetryData();
+    this.inview({ inview: [] })
   }
 
   private processDialCode(params) {

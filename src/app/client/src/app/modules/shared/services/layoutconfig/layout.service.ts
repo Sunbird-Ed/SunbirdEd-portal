@@ -85,17 +85,26 @@ export class LayoutService {
   }
 
   initiateSwitchLayout() {
-    if (this.layoutConfig) {
+  if (this.layoutConfig) {
       this.layoutConfig = null;
       document.documentElement.setAttribute('layout', 'base');
       this.acessibleLayoutEnabled = false;
       localStorage.setItem('layoutType', 'default');
-
-    } else {
+     } else {
       this.layoutConfig = this.configService.appConfig.layoutConfiguration;
+      this.layoutConfig.name = 'joy';
       document.documentElement.setAttribute('layout', 'joy');
       localStorage.setItem('layoutType', 'joy');
     }
+ 
+    this.setLayoutConfig(this.layoutConfig);
+  }
+
+  switchLayoutBlueSky(){
+    document.documentElement.setAttribute('layout', 'blueSky');
+    this.acessibleLayoutEnabled = false;
+    localStorage.setItem('layoutType', 'blueSky');
+    this.layoutConfig.name = 'blueSky';
     this.setLayoutConfig(this.layoutConfig);
   }
 

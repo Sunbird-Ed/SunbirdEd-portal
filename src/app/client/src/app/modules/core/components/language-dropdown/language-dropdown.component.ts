@@ -2,7 +2,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { Component, OnInit, Input } from '@angular/core';
 import { ResourceService, UtilService, LayoutService, GenericResourceService } from '@sunbird/shared';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import * as _ from 'lodash-es';
 
 @Component({
@@ -29,6 +29,7 @@ export class LanguageDropdownComponent implements OnInit {
   ngOnInit() {
     // check if website select the language else get the cache service lang
     let tenantPageLang = localStorage.getItem('portalLanguage') || this._cacheService.get('portalLanguage');
+    if (tenantPageLang) {tenantPageLang=tenantPageLang.replaceAll("\"","")};
     if (tenantPageLang == null) {
       tenantPageLang = 'en';
     }

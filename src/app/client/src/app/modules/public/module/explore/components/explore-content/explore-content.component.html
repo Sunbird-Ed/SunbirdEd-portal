@@ -32,14 +32,14 @@
             </div>
           </div>
           
-          <div [appTelemetryImpression]="telemetryImpression" class="twelve wide column" in-view-container
-            (inview)="inView($event)" *ngIf="!showLoader && contentList.length">
+          <div [appTelemetryImpression]="telemetryImpression" class="twelve wide column" 
+             *ngIf="!showLoader && contentList.length">
            <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"
               *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="getFilters($event)"></app-global-search-selected-filter>
               <ng-container>
                 <!-- <ng-container *ngFor="let data of contentList;let i = index;"> -->
                   <div class="sb-grid mb-16">
-                    <div *ngFor="let content of contentList;let i = index;" in-view-item [id]="i" [data]="content" class="sb-grid--item"
+                    <div *ngFor="let content of contentList;let i = index;"  [id]="i" [data]="content" class="sb-grid--item"
                       [ngClass]="{'last mb-0':last}">
                       <sb-library-card *ngIf="!isDesktopApp;else desktopCard" [indexToDisplay]="i"
                         [layoutConfig]="layoutConfiguration" appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata"
@@ -89,7 +89,7 @@
           </div>
           <div class="twelve wide column" *ngIf="showLoader">
             <div class="sb-grid">
-              <div in-view-item [id]="i" [data]="content" class="sb-grid--item"
+              <div [id]="i" [data]="content" class="sb-grid--item"
                 *ngFor="let i of numberOfSections">
                 <sb-library-card [layoutConfig]="layoutConfiguration" [isLoading]="true"></sb-library-card>
               </div>

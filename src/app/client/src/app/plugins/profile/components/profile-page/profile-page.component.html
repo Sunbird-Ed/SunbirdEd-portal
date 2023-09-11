@@ -1,7 +1,7 @@
 <app-landing-section [textToDisplay]=""
 [layoutConfiguration]="{}" [noTitle]="true"></app-landing-section>
   <!--profile Content Header -->
-  <div [ngClass]="layoutConfiguration ? 'sb-back-actionbar' : 'sb-bg-white cc-player__btn-back'" class="relative position mt-0" [ngClass]="{'header-block': isFullScreenView}">
+  <div [ngClass]="layoutConfiguration ? 'sb-back-actionbar' : 'sb-bg-white cc-player__btn-back'" class="relative position mt-0">
     <div class="ui container py-0 px-0 d-flex flex-ai-center">
       <button type="button" (click)="goBack()" [ngClass]="layoutConfiguration ? 'sb-btn-primary sb-btn-round' : 'sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0'" class="sb-btn sb-btn-normal" tabindex="0" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
       <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
@@ -25,15 +25,11 @@
       <div class="mb-15 d-flex flex-jc-center relative avatar-container" aria-label="Profile">
        <img *ngIf="userProfile.stateValidated || !isCustodianOrgUser" role="img" src="assets/images/avatar-tickmark.svg" alt="certified" class="avatar-tickmark"
         matTooltip="{{resourceService.frmelmnts.lbl.stateVerified}}" [matTooltipPosition]="'right'">
-       <ngx-avatar [ngClass]="{verified: userProfile.stateValidated}" class="my-avatar" [style]="{
-         backgroundColor: '#ffffff',
-         border: '1px solid #fff',
-         boxShadow: '0 0 6px 0 rgba(0,0,0,0.38)',
-         borderRadius: '50%',
-         color: '#9017FF',
-         fontWeight: '700',
-         fontFamily: 'inherit'}" [size]="98" initialsSize="1" [textSizeRatio]="2" name="{{userProfile.firstName}} ">
-       </ngx-avatar>
+
+       <sb-avatar [ngClass]="{verified: userProfile.stateValidated}" class="my-avatar"   [style]="avtarDesktopStyle"
+                     [config]=avatarConfig initialsSize="1" [initial]="userProfile?.firstName[0]"
+                    [title]="userProfile?.firstName">
+                  </sb-avatar>
       </div>
     </div>
     <div class="profile-user-label font-w-bold d-flex text-center relative position">{{userProfile.firstName | titlecase}} {{userProfile.lastName |
@@ -172,7 +168,7 @@
           <div class="mb-15 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.board)">
             <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.boards | transposeTerms: 'frmelmnts.lbl.boards' : resourceService?.selectedLang}} :</span>
             <span class="fmedium font-w-bold pl-4"
-              *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board) | interpolate: 'CBSE': 'CBSE/NCERT'}}</span>
+              *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board)}}</span>
           </div>
           <div class="mb-15 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.medium)">
             <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}} :</span>
@@ -203,7 +199,7 @@
       <div class="mb-15 d-flex flex-ai-center flex-dc">
         <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.boards | transposeTerms: 'frmelmnts.lbl.boards' : resourceService?.selectedLang}}:</span>
         <span class="fmedium font-w-bold text-center"
-          *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board) | interpolate: 'CBSE': 'CBSE/NCERT'}}</span>
+          *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board)}}</span>
       </div>
       <div class="mb-15 d-flex flex-ai-center flex-dc">
         <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}} :</span>
@@ -325,7 +321,7 @@
         <div class="ui segment">
           <div class="regular slider pt-10">
             <app-page-section [section]="{ contents: contributions}" (visits)="prepareVisits($event)"
-              (playEvent)="openContent($event)"></app-page-section>
+              (playEvent)="openContent($event)" [layoutConfiguration]="layoutConfiguration"></app-page-section>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild, OnDestroy, AfterViewInit} from '@angular/core';
 import {ResourceService, ToasterService, NavigationHelperService} from '@sunbird/shared';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {DeviceRegisterService, UserService} from '@sunbird/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProfileService} from '@sunbird/profile';
@@ -25,14 +25,14 @@ export class UserLocationComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('userLocationModal') userLocationModal;
   @ViewChild('stateDiv') stateDiv;
   @ViewChild('districtDiv') districtDiv;
-  userDetailsForm: FormGroup;
+  userDetailsForm: UntypedFormGroup;
   public processedDeviceLocation: any = {};
   selectedState;
   selectedDistrict;
   allStates: any;
   allDistricts: any;
   showDistrictDivLoader = false;
-  sbFormBuilder: FormBuilder;
+  sbFormBuilder: UntypedFormBuilder;
   enableSubmitBtn = false;
   isDeviceProfileUpdateAllowed = false;
   isUserProfileUpdateAllowed = false;
@@ -41,7 +41,7 @@ export class UserLocationComponent implements OnInit, OnDestroy, AfterViewInit {
   private suggestedLocation;
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
-              formBuilder: FormBuilder, public profileService: ProfileService, private activatedRoute: ActivatedRoute,
+              formBuilder: UntypedFormBuilder, public profileService: ProfileService, private activatedRoute: ActivatedRoute,
               public router: Router, public userService: UserService, public deviceRegisterService: DeviceRegisterService,
               public navigationhelperService: NavigationHelperService, private telemetryService: TelemetryService,
               public popupControlService: PopupControlService) {
@@ -75,8 +75,8 @@ export class UserLocationComponent implements OnInit, OnDestroy, AfterViewInit {
 
   initializeFormFields() {
     this.userDetailsForm = this.sbFormBuilder.group({
-      state: new FormControl(null, [Validators.required]),
-      district: new FormControl(null, [Validators.required])
+      state: new UntypedFormControl(null, [Validators.required]),
+      district: new UntypedFormControl(null, [Validators.required])
     });
     this.enableSubmitBtn = (this.userDetailsForm.status === 'VALID');
     this.enableSubmitButton();

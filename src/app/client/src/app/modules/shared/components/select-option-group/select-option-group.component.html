@@ -4,7 +4,7 @@
     <div class="state-selection__section" *ngFor="let group of optionData">
       <div class="header">{{group.label | translate}}</div>
       <sui-select-option class="active" *ngFor="let option of group.option"
-                         [value]="option.name | interpolate: 'CBSE': 'CBSE/NCERT'"
+                         [value]="option.name"
         tabindex="0" (click)="onChange({label: group.label, value: group.value, selectedOption: option.value })"></sui-select-option>
     </div>
   </sui-select>
@@ -20,7 +20,7 @@
         <div *ngFor="let group of optionData">
           <!-- <div class="header">{{group.label}}</div> -->
           <sui-select-option class="active" *ngFor="let option of group.option"
-                             [value]="option.name | interpolate: 'CBSE': 'CBSE/NCERT'"
+                             [value]="option.name"
             tabindex="0" (click)="onChange({label: group.label, value: group.value, selectedOption: option.value })"></sui-select-option>
         </div>
       </div>

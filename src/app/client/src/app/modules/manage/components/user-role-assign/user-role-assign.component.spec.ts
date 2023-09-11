@@ -1,5 +1,5 @@
 import { SearchService, UserService, PermissionService } from "@sunbird/core";
-import { ToasterService, ResourceService } from "@sunbird/shared";
+import { ToasterService, ResourceService,ConfigService } from "@sunbird/shared";
 import { Router } from "@angular/router";
 import { ManageService } from "../../services/manage/manage.service";
 import { FormBuilder } from "@angular/forms";
@@ -52,6 +52,18 @@ describe("UserRoleAssign component", () => {
   const mockManageService: Partial<ManageService> = {
     updateRoles:jest.fn().mockReturnValue(of(true)) as any,
   };
+  const mockConfigService: Partial<ConfigService> = {
+    constants: {
+      SIZE: {
+        SMALL: 1,
+        MEDIUM: 2
+      },
+      VIEW: {
+        VERTICAL: {
+        }
+      }
+    }
+  };
   const removeRolesData = [
     "ORG_ADMIN",
     "SYSTEM_ADMINISTRATION",
@@ -68,7 +80,9 @@ describe("UserRoleAssign component", () => {
       mockToasterService as ToasterService,
       mockFormBuilder as FormBuilder,
       mockRoute as Router,
-      mockManageService as ManageService
+      mockManageService as ManageService,
+      mockConfigService as ConfigService
+      
     );
   });
 

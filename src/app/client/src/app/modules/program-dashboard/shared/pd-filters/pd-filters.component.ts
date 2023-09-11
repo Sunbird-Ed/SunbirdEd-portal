@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
 import * as _ from "lodash-es";
 
 @Component({
@@ -10,9 +10,9 @@ import * as _ from "lodash-es";
 export class PdFiltersComponent implements OnInit {
   @Input() pdFilter: any;
   @Output() filterChanged = new EventEmitter();
-  pdFiltersFormGroup: FormGroup;
+  pdFiltersFormGroup: UntypedFormGroup;
 
-  constructor(public fb: FormBuilder) {}
+  constructor(public fb: UntypedFormBuilder) {}
 
   ngOnInit(): void {
     this.generateForm();
@@ -22,7 +22,7 @@ export class PdFiltersComponent implements OnInit {
     this.pdFiltersFormGroup = this.fb.group({});
     this.pdFiltersFormGroup.addControl(
       _.get(this.pdFilter, "reference"),
-      this.fb.control("")
+      this.fb.control(this.pdFilter?.defaultValue ? this.pdFilter.defaultValue:"")
     );
   }
 

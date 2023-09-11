@@ -19,6 +19,7 @@ mochawesome-report
 /src/app/helpers/devConfig.js
 logs
 keys
+.angular
 #DESKTOP APP
 src/desktop/node_modules
 src/desktop/build

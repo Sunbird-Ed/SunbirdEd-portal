@@ -8,7 +8,6 @@ import {
   UserLocationComponent, UserOnboardingComponent, OnboardingUserSelectionComponent,
   ConfirmationPopupComponent, CertPreviewPopupComponent, ContentPlayerComponent, CollectionPlayerComponent, YearOfBirthComponent
 } from './components';
-import { SlickModule } from 'ngx-slick';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -19,10 +18,10 @@ import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
-import { CommonFormElementsModule } from '@project-sunbird/common-form-elements';
+import { CommonFormElementsModule } from '@project-sunbird/common-form-elements-full';
 import { LocationModule } from '../../plugins/location';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { DashletModule } from  '@project-sunbird/sb-dashlet-v9';
+import { DashletModule } from  '@project-sunbird/sb-dashlet';
 import { FrameworkCatLabelTranslatePipe } from './pipe/framework-label-translate/framework-label-translate.pipe';
 
 export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
@@ -40,7 +39,6 @@ export const csNotificationServiceFactory = (csLibInitializerService: CsLibIniti
 @NgModule({
   imports: [
     CommonModule,
-    SlickModule,
     SharedModule,
     CoreModule,
     TelemetryModule,

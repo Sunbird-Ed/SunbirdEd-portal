@@ -1,6 +1,6 @@
 import {Location as SbLocation} from '@project-sunbird/client-services/models/location';
-import {FieldConfig, FieldConfigOption} from '@project-sunbird/common-form-elements';
-import {FormGroup} from '@angular/forms';
+import {FieldConfig, FieldConfigOption} from '@project-sunbird/common-form-elements-full';
+import {UntypedFormGroup} from '@angular/forms';
 import {delay, distinctUntilChanged, map, mergeMap, take} from 'rxjs/operators';
 import {SbFormLocationOptionsFactory} from './sb-form-location-options.factory';
 import {concat, defer, of, Subscription} from 'rxjs';
@@ -25,7 +25,7 @@ export class SbFormLocationSelectionDelegate {
   shouldUserProfileLocationUpdate = false;
 
   locationFormConfig: FieldConfig<any>[];
-  formGroup?: FormGroup;
+  formGroup?: UntypedFormGroup;
   isLocationFormLoading = false;
 
   private formSuggestionsStrategy: 'userLocation' | 'userDeclared' | 'ipLocation';
@@ -93,7 +93,7 @@ export class SbFormLocationSelectionDelegate {
     }
   }
 
-  async onFormInitialize(formGroup: FormGroup) {
+  async onFormInitialize(formGroup: UntypedFormGroup) {
     this.isLocationFormLoading = false;
     this.formGroup = formGroup;
   }

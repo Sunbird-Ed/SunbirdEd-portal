@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../../../shared/services/cache-service/cache.service';
 import { UtilService, ResourceService, LayoutService, NavigationHelperService, ToasterService, ConfigService, ContentUtilsServiceService } from '@sunbird/shared';
 import { TenantService, PublicDataService } from '@sunbird/core';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';

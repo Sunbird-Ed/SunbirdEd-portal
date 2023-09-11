@@ -486,6 +486,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
           duration: this.navigationhelperService.getPageLoadTime()
         }
       };
+      this.inview({ inview: [] });
     });
   }
 

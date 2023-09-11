@@ -3,6 +3,7 @@
   "compilerOptions": {
     "outDir": "../out-tsc/spec",
     "baseUrl": "./src",
+    "module": "CommonJs",
     "paths": {
       "@sunbird/core": [
         "app/modules/core"
@@ -55,9 +56,6 @@
       "@sunbird/course-batch": [
         "app/modules/course-batch"
       ],
-      "moment": [
-        "../node_modules/moment/min/moment.min.js"
-      ],
       "@sunbird/player-helper": [
         "app/modules/player-helper"
       ],
@@ -75,6 +73,12 @@
       ],
       "@sunbird/groups": [
         "app/modules/groups"
+      ],
+      "@project-sunbird/client-services/services/group/interface": [
+        "../node_modules/@project-sunbird/client-services/services/group/interface"
+      ],
+      "^@project-sunbird/client-services/(.*)$": [
+        "../node_modules/@project-sunbird/client-services/$1"
       ]
     },
     "types": [
@@ -84,10 +88,7 @@
     ],
     "resolveJsonModule": true
   },
-  "files": [
-    "setup-jest.ts",
-    "polyfills.ts"
-  ],
+ 
   "include": [
     "**/*.spec.ts",
     "**/*.d.ts"

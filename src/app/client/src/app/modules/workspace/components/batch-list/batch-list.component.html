@@ -14,8 +14,8 @@
     </div>
     <div class="ui grid m-0" >
       <div class="twelve wide column px-0" [appTelemetryImpression]="telemetryImpression">
-        <div class="ui stackable four column grid" *ngIf="!showLoader && !noResult" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="batchList">
-          <div in-view-item *ngFor="let batch  of batchList;let i = index;" [id]="i" [data]="batch" class="column py-0">
+        <div class="ui stackable four column grid" *ngIf="!showLoader && !noResult" [throttle]="[1000]" [trigger]="batchList">
+          <div *ngFor="let batch  of batchList;let i = index;" [id]="i" [data]="batch" class="column py-0">
             <app-batch-card (clickEvent)="onCardClick($event)" [batch]="batch"></app-batch-card>
           </div>
         </div>

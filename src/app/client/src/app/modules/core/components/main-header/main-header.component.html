@@ -4,14 +4,14 @@
 <div *ngIf="showAccountMergemodal">
   <app-account-merge-modal (closeAccountMergeModal)="showAccountMergemodal = false"></app-account-merge-modal>
 </div>
-<div *ngIf="!layoutConfiguration">
+<div *ngIf="!layoutConfiguration ">
   <div class="ui relative main menu bs-0 d-block" [ngClass]="{'player-fullscreen-header': isFullScreenView}">
     <!--Header White Section-->
     <div class="ui container sb-header-ui-container">
       <div class="ui grid padded width-100">
         <div class="p-0 d-flex flex-ai-center" [ngClass]="isDesktopApp ? 'five wide column' : 'two wide column'">
           <!--Logo-->
-          <a class="d-flex logo" tabindex="0" title="{{tenantInfo.titleName}}" role="link" aria-label="Navigate to Homepage">
+          <a class="d-flex sbt-logo" tabindex="0" title="{{tenantInfo.titleName}}" role="link" aria-label="Navigate to Homepage">
             <img (click)="navigateToHome()" class="cursor-pointer" alt={{tenantInfo.titleName}}
               src="{{tenantInfo.logo}}">
           </a>
@@ -56,12 +56,14 @@
             <div class="ui dropdown right top pointing">
               <div class="" name="Guest" *ngIf='!userProfile && !guestUser' tabindex="0" (click)="toggleSideMenu(true)"><img
                 src="./assets/images/profile-icon.svg" alt="Guest User" width="48"></div>
-              <ngx-avatar tabindex="0" *ngIf='!userProfile && guestUser' (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle" [size]="38"
-                initialsSize="1" name="{{guestUser?.formatedName || 'Guest'}}">
-              </ngx-avatar>
-              <ngx-avatar tabindex="0" *ngIf='userProfile' (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle" [size]="38"
-                initialsSize="1" name="{{userProfile?.firstName}}">
-              </ngx-avatar>
+                <sb-avatar tabindex="0"  *ngIf='!userProfile && guestUser' (click)="toggleSideMenu(true)" class ="avtarDesktopStyle"
+                    [config]=avatarConfig initialsSize="2" [initial]="guestUser?.formatedName[0] || 'G'"
+                    [title]="guestUser?.formatedName || 'Guest'">
+                  </sb-avatar>
+                  <sb-avatar tabindex="0" *ngIf='userProfile' (click)="toggleSideMenu(true)" 
+                     [config]=avatarConfig initialsSize="2" [initial]="userProfile?.firstName[0]"
+                    [title]="userProfile?.firstName">
+                  </sb-avatar>
             </div>
           </a>
           <!--/Avtar Dropdown-->
@@ -169,8 +171,7 @@
   </div>
 </div>
 
-<div *ngIf="layoutConfiguration"
-  [ngClass]="{'player-fullscreen-header': isFullScreenView}">
+<div *ngIf="layoutConfiguration && layoutConfiguration.name !== 'blueSky'"   [ngClass]="{'player-fullscreen-header': isFullScreenView}">
   <div class="sbt-header sbt-fluid-header-bg">
     <div class="sbt-container">
       <!--Header section-->
@@ -197,13 +198,14 @@
                     <div class="sbt-guest-profile" tabindex="0" name="Guest" *ngIf='!userProfile && !guestUser'
                       (click)="toggleSideMenu(true)"><img src="./assets/images/profile-icon.svg" alt="Guest User"
                         width="48"></div>
-                    <ngx-avatar *ngIf='!userProfile && guestUser' tabindex="0" (click)="toggleSideMenu(true)"
-                      [style]="avtarDesktopStyle" [size]="38" initialsSize="1"
-                      name="{{guestUser?.formatedName || 'Guest'}}">
-                    </ngx-avatar>
-                    <ngx-avatar *ngIf='userProfile' tabindex="0" (click)="toggleSideMenu(true)"
-                      [style]="SbtavtarDesktopStyle" [size]="48" initialsSize="1" name="{{userProfile?.firstName}}">
-                    </ngx-avatar>
+                <sb-avatar tabindex="0"  *ngIf='!userProfile && guestUser' (click)="toggleSideMenu(true)" class ="avtarDesktopStyle"
+                    [config]=avatarConfig initialsSize="2" [initial]="guestUser?.formatedName[0] || 'G'"
+                    [title]="guestUser?.formatedName || 'Guest'">
+                </sb-avatar>
+                  <sb-avatar tabindex="0" *ngIf='userProfile' (click)="toggleSideMenu(true)"  
+                     [config]=avatarConfig initialsSize="2" [initial]="userProfile?.firstName[0]"
+                    [title]="userProfile?.firstName">
+                  </sb-avatar>
                   </div>
                 </a>
                 <!--/Avtar Dropdown-->
@@ -278,16 +280,16 @@
                     aria-label="Guest User" tabindex="0" name="Guest" *ngIf='!userProfile && !guestUser'
                     (click)="toggleSideMenu(true)"><img src="./assets/images/profile-icon.svg" alt="Guest User"
                       width="48"></div>
-                  <ngx-avatar aria-haspopup="true" aria-controls="overlaySidebarID" *ngIf='!userProfile && guestUser' tabindex="0" (click)="toggleSideMenu(true)"
-                    [style]="avtarDesktopStyle" [size]="38" initialsSize="1" name="{{guestUser?.formatedName || 'Guest'}}"
+                  <sb-avatar aria-haspopup="true" aria-controls="overlaySidebarID" *ngIf='!userProfile && guestUser' tabindex="0"
+                    (click)="toggleSideMenu(true)"  [config]=avatarConfig initialsSize="2" [initial]="guestUser?.formatedName[0] || 'G'"
                     [attr.aria-label]="'Welcome ' + (guestUser?.formatedName || 'Guest') + ', ' + 'Click here to continue to your profile'"
-                    [title]="'Welcome ' + (guestUser?.formatedName || 'Guest') + ', ' + 'Click here to continue to your profile'">
-                  </ngx-avatar>
-                  <ngx-avatar aria-haspopup="true" aria-controls="overlaySidebarID" *ngIf='userProfile' tabindex="0" (click)="toggleSideMenu(true)"
-                    [style]="SbtavtarDesktopStyle" [size]="48" initialsSize="1" name="{{userProfile?.firstName}}"
-                    [attr.aria-label]="'Welcome ' + userProfile?.firstName + ', ' + 'Click here to continue to your profile'"
-                    [title]="'Welcome ' + userProfile?.firstName + ', ' + 'Click here to continue to your profile'">
-                  </ngx-avatar>
+                    [attr.title]="'Welcome ' + (guestUser?.formatedName || 'Guest') + ', ' + 'Click here to continue to your profile'">
+                  </sb-avatar>
+                  <sb-avatar aria-haspopup="true" aria-controls="overlaySidebarID" *ngIf='userProfile' tabindex="0"
+                    (click)="toggleSideMenu(true)" [config]=avatarConfig initialsSize="2" [initial]="userProfile?.firstName[0]"
+                    title="'Welcome ' + userProfile?.firstName + ', ' + 'Click here to continue to your profile'"
+                    [attr.title]="userProfile?.firstName">
+                  </sb-avatar>
                 </div>
               </a>
               <!--/Avtar Dropdown-->
@@ -320,6 +322,21 @@
     </div>
   </div>
 </div>
+
+<ng-container *ngIf="layoutConfiguration && layoutConfiguration.name === 'blueSky'">
+  <compass-header class="compass-header" [ngClass]="{'player-fullscreen-header': isFullScreenView}"
+  [tenantInfo] = "tenantInfo"
+  [userService] = "userService"
+  [resourceService] = "resourceService"
+  [userProfile]="userProfile"
+  [guestUser]="guestUser"
+  [hrefPath]="hrefPath"
+  (navigateToHome)="navigateToHome()"
+  (clearFilters)="clearFiltersCache()"
+  (toggleSidebar)="toggleSideMenu($event)"
+  ></compass-header>
+</ng-container>
+
 
 <div class="overlay-sidebar" *ngIf="showSideMenu">
   <div class="overlay-sidebar__menu" tabindex="0" role="dialog" id="overlaySidebarID" aria-labelledby="dialog1_label" aria-modal="true" aria-label="open sidebar navigation">
@@ -443,7 +460,7 @@
           </li>
 
           <li class="list-item" role="link" appOnlineOnly (click)="toggleSideMenu(false)"
-            [class.active]="router.isActive(routerLinks?.groups)" tabindex="0"
+            [class.active]="router.isActive(routerLinks?.groups,false)" tabindex="0"
             *ngIf="!router.isActive('', true) && !isDesktopApp" [routerLink]="[navigateToGroups()]" appTelemetryInteract
             [telemetryInteractEdata]="myGroupIntractEData">
             <i class="icon-svg icon-svg--sm icon-groups mr-8"><svg class="icon icon-svg--primary">
@@ -452,7 +469,7 @@
             {{resourceService?.frmelmnts?.tab?.mygroups}} <span class="group__type mx-8">New</span>
           </li>
 
-          <li class="list-item"  role="link" [class.active]="router.isActive('/workspace')" appTelemetryInteract
+          <li class="list-item"  role="link" [class.active]="router.isActive('/workspace',false)" appTelemetryInteract
             [telemetryInteractEdata]="workspaceMenuIntractEdata" (click)="toggleSideMenu(false)"
             *ngIf='!isDesktopApp && isLayoutAvailable() && permissionService.permissionAvailable' appPermission
             [permission]='workSpaceRole' [routerLink]="[navigateToWorkspace()]" tabindex="0">
@@ -474,6 +491,9 @@
               </svg></i>
             <span *ngIf="layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToOldLayout}}</span>
             <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToJoyLayout}}</span>
+          </li>
+          <li class="list-item" role="link" tabindex="0">
+            <a (click)="toggleSideMenu(false);switchLayoutBlueSky('blueSky')">switch To blue sky theme</a>
           </li>
           <li class="list-item" role="link" tabindex="0" (click)="toggleSideMenu(false);" routerLink="/desktop/telemetry"
             *appDesktopOnly>
@@ -527,7 +547,7 @@
               {{resourceService.frmelmnts?.lnk?.profile}}
             </li>
             <li appOnlineOnly class="list-item" role="link" tabindex="0" (click)="toggleSideMenu(false)"
-              [class.active]="router.isActive(routerLinks?.explore)" *ngIf="!router.isActive('', true) && !isDesktopApp"
+              [class.active]="router.isActive(routerLinks?.explore,false)" *ngIf="!router.isActive('', true) && !isDesktopApp"
               [routerLink]="[navigateToGroups()]" appTelemetryInteract [telemetryInteractEdata]="myGroupIntractEData">
               <i class="icon-svg icon-svg--sm icon-groups mr-8"><svg class="icon icon-svg--primary">
                   <use xlink:href="./assets/images/sprite.svg#groups"></use>
@@ -540,6 +560,9 @@
                 </svg></i>
               <span *ngIf="layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToOldLayout}}</span>
               <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToJoyLayout}}</span>
+            </li>
+            <li class="list-item" role="link" tabindex="0">
+              <a (click)="toggleSideMenu(false);switchLayoutBlueSky('blueSky')">switch To blue sky theme</a>
             </li>
             <li class="list-item" tabindex="0" role="link" (click)="toggleSideMenu(false);" routerLink="/desktop/telemetry"
               *appDesktopOnly>

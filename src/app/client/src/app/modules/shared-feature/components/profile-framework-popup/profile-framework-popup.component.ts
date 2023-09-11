@@ -5,7 +5,7 @@ import { of, throwError, Subscription } from 'rxjs';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { PopupControlService } from '../../../../service/popup-control.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -67,10 +67,6 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         this.guestUserHashTagId = custodianOrg.result.response.value;
       });
       this.allowedFields = ['board', 'medium', 'gradeLevel'];
-    }
-    // Replacing CBSE with CBSE/NCERT
-    if (_.toLower(_.get(this.selectedOption, 'board')) === 'cbse') {
-      this.selectedOption['board'] = ['CBSE/NCERT'];
     }
     this.editMode = _.some(this.selectedOption, 'length') || false;
     this.unsubscribe = this.isCustodianOrgUser().pipe(
@@ -205,9 +201,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       this.enableSubmitButton();
       return;
     }
-    if (_.get(this.selectedOption, field.code) === 'CBSE/NCERT') {
-      this.frameWorkId = _.get(_.find(field.range, { name: 'CBSE' }), 'identifier');
-    } else if (_.get(this.boardOptions, 'range.length')) {
+    if (_.get(this.boardOptions, 'range.length')) {
       this.frameWorkId = _.get(_.find(this.boardOptions.range, { name: _.get(this.selectedOption, field.code) }), 'identifier');
     } else {
       this.frameWorkId = _.get(_.find(field.range, { name: _.get(this.selectedOption, field.code) }), 'identifier');
@@ -302,13 +296,6 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       const selectedOption = _.cloneDeep(this.selectedOption);
       selectedOption.board = _.get(this.selectedOption, 'board') ? [this.selectedOption.board] : [];
       selectedOption.id = this.frameWorkId;
-      if (selectedOption.board) {
-        _.forEach(selectedOption.board, (data, index) => {
-          if (data === 'CBSE/NCERT') {
-            selectedOption.board[index] = 'CBSE';
-          }
-        });
-      }
       if (this.dialogRef && this.dialogRef.close) {
         this.dialogRef.close();
       }

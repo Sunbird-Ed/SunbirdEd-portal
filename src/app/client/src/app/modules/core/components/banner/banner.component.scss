@@ -1,0 +1,85 @@
+@use "@project-sunbird/sb-styles/assets/mixins/mixins"as *;
+
+.banner {
+    padding-top: 20px;
+    padding-bottom: 40px;
+    background-color: #F5F5F5;
+
+    @media only screen and (min-width: 481px) {
+
+        .left-side h1,
+        .left-side p,
+        .left-side .buttons-section {
+            margin-left: 10%;
+            width: 80%;
+        }
+    }
+
+    .img-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    h1 {
+        font-weight: 600;
+        font-size: 36px;
+        line-height: 48px;
+        color: #000000;
+        text-align: left;
+    }
+
+    p {
+        font-family: Lato, Arial, Helvetica, sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        margin-top: 2em;
+    }
+
+    .buttons-section {
+        margin-top: 30px;
+    }
+
+    .sb-btn {
+        font-family: Lato, Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        box-shadow: none;
+        border: 1px solid #0154D2;
+    }
+
+    .sb-btn-normal {
+        border-radius: 8px;
+        color: #0154D2;
+        margin-right: 20px !important;
+    }
+
+    .sb-btn-primary {
+        color: #ffffff;
+    }
+
+    //  Mobile
+    @media only screen and (max-width: 480px) {
+
+        .left-side h1,
+        .left-side p,
+        .left-side .buttons-section {
+            margin-left: 10px;
+            width: 100%;
+        }
+    }
+
+    @media only screen and (min-width: 769px) and (max-width: 1201px) {
+
+        img {
+            margin-right: 10% !important;
+        }
+    }
+
+    @media only screen and (max-width: 768px) {
+
+        img {
+            margin-right: unset !important;
+        }
+    }
+}
