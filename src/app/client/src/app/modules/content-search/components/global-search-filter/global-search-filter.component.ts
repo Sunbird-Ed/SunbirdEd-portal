@@ -97,7 +97,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
         return {
           facet: f.name,
           type: 'dropdown',
-          labelText: f.label || f.name,
+          labelText: f.name === 'se_boards' ? _.get(this.resourceService, 'frmelmnts.lbl.boardsFilter') : f.label || f.name,
           placeholderText: `${this.resourceService.frmelmnts.lbl.Select} ${f.label || f.name}`,
           multiple: true
         };
