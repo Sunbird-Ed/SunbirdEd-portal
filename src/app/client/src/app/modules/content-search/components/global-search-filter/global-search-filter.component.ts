@@ -99,7 +99,8 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
           type: 'dropdown',
           labelText: f.name === 'se_boards' ? _.get(this.resourceService, 'frmelmnts.lbl.boardsFilter') : f.label || f.name,
           placeholderText: `${this.resourceService.frmelmnts.lbl.Select} ${f.label || f.name}`,
-          multiple: true
+          multiple: true,
+          autocomplete: true
         };
       });
       this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe((languageData) => {
