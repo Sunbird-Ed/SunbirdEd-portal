@@ -207,7 +207,7 @@ export class CopyContentService {
     else {
       url = `/workspace/content/edit/generic/${copiedIdentifier}/uploaded/${contentData.framework}/Draft`;
     }
-    this.router.navigate([url]);
+    this.router.navigate([url],{ skipLocationChange: true });
   }
 
   /**
