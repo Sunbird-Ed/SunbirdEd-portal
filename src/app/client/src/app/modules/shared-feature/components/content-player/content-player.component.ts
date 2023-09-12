@@ -54,7 +54,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
       // returning true will navigate without confirmation
       // returning false will show a confirm dialog before navigating away
       const deviceType = this.telemetryService.getDeviceType();
-      return deviceType === 'Desktop' && this.isQuestionSet && !this.isTypeCopyQuestionset ? false : true;
+      return deviceType === 'Desktop' && this.isQuestionSet  ? false : true;
     }
 
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
