@@ -202,12 +202,12 @@ export class CopyContentService {
     } else if (contentData.mimeType === 'application/vnd.ekstep.ecml-archive') {
       url = `/workspace/content/edit/content/${copiedIdentifier}/draft/${contentData.framework}/Draft`;
     } else if (_.get(contentData,'mimeType') === 'application/vnd.sunbird.questionset') {
-      url = `/workspace/edit/QuestionSet/${copiedIdentifier}/allcontent/Draft`;
+      url = `/workspace/edit/QuestionSet/${copiedIdentifier}/draft/Draft`;
     }
     else {
       url = `/workspace/content/edit/generic/${copiedIdentifier}/uploaded/${contentData.framework}/Draft`;
     }
-    this.router.navigate(["/workspace/edit/QuestionSet/do_113881463483392000157/allcontent/Draft"]);
+    this.router.navigate([url]);
   }
 
   /**
