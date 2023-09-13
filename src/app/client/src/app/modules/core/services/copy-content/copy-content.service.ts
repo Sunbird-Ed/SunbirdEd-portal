@@ -207,7 +207,8 @@ export class CopyContentService {
       url = `/workspace/content/edit/content/${copiedIdentifier}/draft/${contentData.framework}/Draft`;
     } else if (_.get(contentData,'mimeType') === 'application/vnd.sunbird.questionset') {
       url = `/workspace/edit/QuestionSet/${copiedIdentifier}/draft/Draft`;
-      this.router.navigate(['/workspace/edit/QuestionSet',copiedIdentifier,'draft/Draft']);
+      this.router.navigate(['/workspace/content/draft/1'])
+    //  this.router.navigate(['/workspace/edit/QuestionSet',copiedIdentifier,'draft/Draft']);
       return;
     }
     else {
