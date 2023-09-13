@@ -99,7 +99,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   enrollmentEndDate: string;
   todayDate = dayjs(new Date()).format('YYYY-MM-DD');
   showError = false;
-  isGroupURL: Boolean;
 
   constructor(private activatedRoute: ActivatedRoute, public courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, public router: Router, public permissionService: PermissionService,
@@ -119,7 +118,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
 
   ngOnInit() {
     this.isGroupAdmin = _.get(this.groupService, 'groupData.isAdmin');
-    this.isGroupURL=_.includes(_.get(this.router,'url'),'groupId');
     this.isDesktopApp = this.utilService.isDesktopApp;
     if (this.isDesktopApp) {
       this.connectionService.monitor().pipe(takeUntil(this.unsubscribe)).subscribe(isConnected => {
