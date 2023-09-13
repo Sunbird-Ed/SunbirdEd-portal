@@ -1,0 +1,14 @@
+::ng-deep {
+    .language-dropdown-options.ui.selection.sbt-dropdown.dropdown.sbt-green .menu > .item {
+        color: var(--gray-800);
+    }
+
+    .sb-mat__dropdown--nolabel.mat-form-field-appearance-fill .mat-form-field-flex {
+        height: 2.7rem;
+    }
+
+    .sb-mat__dropdown.mat-form-field-appearance-fill .mat-form-field-flex {
+        border-radius: 8px;
+    }
+}
+

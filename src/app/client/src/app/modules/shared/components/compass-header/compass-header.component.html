@@ -1,71 +1,75 @@
-    <div class="bs-1 sbt-header sbt-fluid-header-bg">
-      <div class="ui container">
-        <!--Header section-->
-        <header>
-          <div class="sb-g">
-            <div class="sb-g-col-xs-6 sb-g-col-md-6 sb-g-col-lg-6 sb-g-col-xxxl-8 sbt-header-logo">
-              <div [ngClass]="!userService.loggedIn ? 'flex-jc-space-between' : 'flex-jc-flex-start'"
-                class="d-flex flex-ai-center w-100">
-                <!--Logo-->
-                <a class="logo sbt-logo" tabindex="0" title="Compass" role="link"
-                  aria-label="Navigate to Homepage">
-                  <img (click)="navigateToHomepage()" class="cursor-pointer" alt={{tenantInfo.titleName}}
-                    src="{{tenantInfo.logo}}">
-                </a>
-                <!--/Logo-->
-              </div>
-  
+<div class="bs-1 sbt-header sbt-fluid-header-bg">
+  <div class="ui container">
+    <!--Header section-->
+    <header>
+      <div class="sb-g">
+        <div class="sb-g-col-xs-6 sb-g-col-md-6 sb-g-col-lg-6 sb-g-col-xxxl-8 sbt-header-logo">
+          <div [ngClass]="!userService.loggedIn ? 'flex-jc-space-between' : 'flex-jc-flex-start'"
+            class="d-flex flex-ai-center w-100">
+            <!--Logo-->
+            <a class="logo sbt-logo" tabindex="0" title="Compass" role="link" aria-label="Navigate to Homepage">
+              <img (click)="navigateToHomepage()" class="cursor-pointer" alt={{tenantInfo.titleName}}
+                src="{{tenantInfo.logo}}">
+            </a>
+            <ng-container *ngIf="userService.loggedIn">
+              <!-- menu -->
+              <mat-icon class="menuIcon" [matMenuTriggerFor]="menu">menu</mat-icon>
+              <span>Spaces</span>
+              <mat-menu #menu="matMenu">
+                <button (click)="navigateToHomepage()" mat-menu-item>Learn</button>
+              </mat-menu>
+            </ng-container>
+            <!--/Logo-->
+          </div>
+
+        </div>
+        <div class="sb-g-col-xs-6 sb-g-col-md-6 sb-g-col-lg-6 sb-g-col-xxxl-8 sbt-header-tool-bar">
+          <div class="d-flex flex-ai-center">
+            <div class="mr-2">
+              <app-language-dropdown [layoutConfiguration]="layoutConfiguration" [languageRange]='languages'
+                *ngIf=" isLanguageDropdown && languages && showLanguageDropdown()">
+              </app-language-dropdown>
             </div>
-            <div class="sb-g-col-xs-6 sb-g-col-md-6 sb-g-col-lg-6 sb-g-col-xxxl-8 sbt-header-tool-bar">
-              <div class="d-flex flex-ai-center">
-                
-                  <div class="compass-entrymenu m-0 d-flex flex-ai-center" role="navigation">
-                    <ng-container *ngIf="!userService.loggedIn">
-                    <a aria-current="page"
-                      tabindex="0"
-                      (click)="clearCache()"
-                      href={{hrefPath}} appOnlineOnly
-                      class="com-secondary-btn" appTelemetryInteract
-                      [telemetryInteractEdata]="signInIntractEdata">
-                      {{resourceService.frmelmnts?.btn?.login}}
-    
-                    </a>
-    
-                    <a aria-current="page"
-                    tabindex="1" routerLink="signup"
-                    class="com-primary-btn" appTelemetryInteract
-                    [telemetryInteractEdata]="signUpInteractEdata">
-                    {{resourceService.frmelmnts?.lbl?.register}}
-                  </a>
-                </ng-container>
-                <ng-container *ngIf="userService.loggedIn">
-                  <a class="profile-avtar p-0 ml-16">
-                    <div class="ui dropdown right top pointing">
-                      <div class="sbt-guest-profile" aria-haspopup="true" aria-controls="overlaySidebarID"
-                        aria-label="Guest User" tabindex="0" name="Guest" *ngIf='!userProfile && !guestUser'
-                        (click)="toggleSideMenu(true)"><img src="./assets/images/profile-icon.svg" alt="Guest User"
-                          width="48"></div>
-                      <sb-avatar aria-haspopup="true" aria-controls="overlaySidebarID" *ngIf='!userProfile && guestUser'
-                        tabindex="0" (click)="toggleSideMenu(true)" [config]=avatarConfig initialsSize="2"
-                        [initial]="guestUser?.formatedName[0] || 'G'"
-                        [attr.aria-label]="'Welcome ' + (guestUser?.formatedName || 'Guest') + ', ' + 'Click here to continue to your profile'"
-                        [attr.title]="'Welcome ' + (guestUser?.formatedName || 'Guest') + ', ' + 'Click here to continue to your profile'">
-                      </sb-avatar>
-                      <sb-avatar aria-haspopup="true" aria-controls="overlaySidebarID" *ngIf='userProfile' tabindex="0"
-                        (click)="toggleSideMenu(true)" [config]=avatarConfig initialsSize="2"
-                        [initial]="userProfile?.firstName[0]"
-                        title="'Welcome ' + userProfile?.firstName + ', ' + 'Click here to continue to your profile'"
-                        [attr.title]="userProfile?.firstName">
-                      </sb-avatar>
-                    </div>
-                  </a>  
-                </ng-container>
-                  <!--/Avtar Dropdown-->
+            <div class="compass-entrymenu m-0 d-flex flex-ai-center" role="navigation">
+              <ng-container *ngIf="!userService.loggedIn">
+                <a aria-current="page" tabindex="0" (click)="clearCache()" href={{hrefPath}} appOnlineOnly
+                  class="com-secondary-btn" appTelemetryInteract [telemetryInteractEdata]="signInIntractEdata">
+                  {{resourceService.frmelmnts?.btn?.login}}
+
+                </a>
+
+                <a aria-current="page" tabindex="1" routerLink="signup" class="com-primary-btn" appTelemetryInteract
+                  [telemetryInteractEdata]="signUpInteractEdata">
+                  {{resourceService.frmelmnts?.lbl?.register}}
+                </a>
+              </ng-container>
+              <ng-container *ngIf="userService.loggedIn">
+                <a class="profile-avtar p-0 ml-16">
+                  <div class="ui dropdown right top pointing">
+                    <div class="sbt-guest-profile" aria-haspopup="true" aria-controls="overlaySidebarID"
+                      aria-label="Guest User" tabindex="0" name="Guest" *ngIf='!userProfile && !guestUser'
+                      (click)="toggleSideMenu(true)"><img src="./assets/images/profile-icon.svg" alt="Guest User"
+                        width="48"></div>
+                    <sb-avatar aria-haspopup="true" aria-controls="overlaySidebarID" *ngIf='!userProfile && guestUser'
+                      tabindex="0" (click)="toggleSideMenu(true)" [config]=avatarConfig initialsSize="2"
+                      [initial]="guestUser?.formatedName[0] || 'G'"
+                      [attr.aria-label]="'Welcome ' + (guestUser?.formatedName || 'Guest') + ', ' + 'Click here to continue to your profile'"
+                      [attr.title]="'Welcome ' + (guestUser?.formatedName || 'Guest') + ', ' + 'Click here to continue to your profile'">
+                    </sb-avatar>
+                    <sb-avatar aria-haspopup="true" aria-controls="overlaySidebarID" *ngIf='userProfile' tabindex="0"
+                      (click)="toggleSideMenu(true)" [config]=avatarConfig initialsSize="2"
+                      [initial]="userProfile?.firstName[0]"
+                      title="'Welcome ' + userProfile?.firstName + ', ' + 'Click here to continue to your profile'"
+                      [attr.title]="userProfile?.firstName">
+                    </sb-avatar>
                   </div>
-              </div>
+                </a>
+              </ng-container>
+              <!--/Avtar Dropdown-->
             </div>
           </div>
-        </header>
+        </div>
       </div>
-    </div>
-  
+    </header>
+  </div>
+</div>
