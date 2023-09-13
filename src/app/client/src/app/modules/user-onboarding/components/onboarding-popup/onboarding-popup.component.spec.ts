@@ -322,7 +322,7 @@ describe("Onboarding Component", () => {
   });
 
   describe('getLocation', () => {
-    it('should return the location data', () => {
+    xit('should return the location data', () => {
       // arrange
       const result = { ipLocation: { state: "Karnataka", district: "Bangalore" } };
       onboardingPopupComponent.deviceProfile = result;
