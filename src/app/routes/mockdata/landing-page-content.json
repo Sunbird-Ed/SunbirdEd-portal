@@ -80,9 +80,11 @@
     },
     "banner": {
       "title": "Driving Government Success and Employee Fulfilment.",
-      "description": "Goal-oriented HR helps governments to improve their performance, employee satisfaction, culture and thus deliver great citizen experiences.",
+      "description": "Goal-oriented HR helps governments to improve their performance, employee satisfaction, culture and thus deliver great citizen experiences",
       "image": "/assets/images/banner.png",
-      "showButtons": true
+      "showButtons": true,
+      "loginTxt": "Login",
+      "registerTxt": "Register"
     },
     "goalOrientedHrCards": [
       {
