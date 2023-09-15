@@ -1,8 +1,9 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LayoutService } from '@sunbird/shared';
 import * as publicService from '../../services';
 import { SearchService } from './../../../core/services/search/search.service';
+import { ResourceService } from '@sunbird/shared';
 
 @Component({
   selector: 'app-landing-page',
@@ -18,7 +19,8 @@ export class LandingPageComponent implements OnInit {
 
   layoutConfiguration;
 
-  constructor(public layoutService: LayoutService, private landingPageContentService: publicService.LandingPageContentService, public search: SearchService, private router: Router) { }
+  constructor(public layoutService: LayoutService, private landingPageContentService: publicService.LandingPageContentService, 
+    public search: SearchService, private router: Router, public resourceService: ResourceService) { }
 
   ngOnInit() {
     // alert()
@@ -102,7 +104,7 @@ export class LandingPageComponent implements OnInit {
     };
     this.landingPageContentService.getCourses(requestData).subscribe(res => {
       this.courses = res["result"]["content"];
-      console.log('Courses', this.courses);
+      // console.log('Courses', this.courses);
     })
   }
 
