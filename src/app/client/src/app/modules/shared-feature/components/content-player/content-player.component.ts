@@ -51,10 +51,10 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
 
   @HostListener('window:beforeunload')
     canDeactivate() {
-      // returning true will navigate without confirmation
-      // returning false will show a confirm dialog before navigating away
-      const deviceType = this.telemetryService.getDeviceType();
-      return deviceType === 'Desktop' && this.isQuestionSet && !this.isTypeCopyQuestionset ? false : true;
+    // returning true will navigate without confirmation
+    // returning false will show a confirm dialog before navigating away
+    const deviceType = this.telemetryService.getDeviceType();
+    return deviceType === 'Desktop' && this.isQuestionSet && !this.isTypeCopyQuestionset ? false : true;
     }
 
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
@@ -236,6 +236,9 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
     let successMsg = '';
     let errorMsg = '';
     this.isTypeCopyQuestionset = _.get(contentData, 'mimeType') === 'application/vnd.sunbird.questionset';
+    if(this.isTypeCopyQuestionset){
+      window.onbeforeunload=null
+    }
     this.isTypeCopyQuestionset ? (successMsg = this.resourceService.messages.smsg.m0067, errorMsg = this.resourceService.messages.emsg.m0067) : (successMsg = this.resourceService.messages.smsg.m0042, errorMsg = this.resourceService.messages.emsg.m0008);
     this.copyContentService.copyContent(contentData).subscribe(
       (response) => {

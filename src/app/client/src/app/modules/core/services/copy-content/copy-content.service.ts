@@ -41,6 +41,7 @@ export class CopyContentService {
 
   hostUrl: string;
 
+
   /**
    * constructor
    * @param {ConfigService} config ConfigService reference
