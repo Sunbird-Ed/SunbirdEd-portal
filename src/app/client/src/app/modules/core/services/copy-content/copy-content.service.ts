@@ -39,7 +39,8 @@ export class CopyContentService {
 
   public frameworkService: FrameworkService;
 
-  questionSetUrl: string;
+  hostUrl: string;
+
 
   /**
    * constructor
@@ -55,7 +56,7 @@ export class CopyContentService {
     this.userService = userService;
     this.contentService = contentService;
     this.frameworkService = frameworkService;
-    this.questionSetUrl = document.location.origin;
+    this.hostUrl = document.location.origin;
   }
   /**
    * This method calls the copy API and call the redirecttoeditor method after success
@@ -206,9 +207,11 @@ export class CopyContentService {
     } else if (contentData.mimeType === 'application/vnd.ekstep.ecml-archive') {
       url = `/workspace/content/edit/content/${copiedIdentifier}/draft/${contentData.framework}/Draft`;
     } else if (_.get(contentData,'mimeType') === 'application/vnd.sunbird.questionset') {
-      url = `/workspace/edit/QuestionSet/${copiedIdentifier}/draft/Draft`;
-      window.open(this.questionSetUrl+url,"_self");
-      return
+      url = `/workspace/edit/QuestionSet/${copiedIdentifier}/allcontent/Draft`;
+      setTimeout(() => {
+        window.open(this.hostUrl+url,"_self");
+      }, 3000);
+      return;
     }
     else {
       url = `/workspace/content/edit/generic/${copiedIdentifier}/uploaded/${contentData.framework}/Draft`;
