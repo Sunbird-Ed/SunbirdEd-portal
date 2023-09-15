@@ -209,7 +209,7 @@ export class CopyContentService {
       url = `/workspace/edit/QuestionSet/${copiedIdentifier}/allcontent/Draft`;
       setTimeout(() => {
         window.open(this.hostUrl+url,"_self");
-      }, 3000);
+      }, 1000);
       return;
     }
     else {
