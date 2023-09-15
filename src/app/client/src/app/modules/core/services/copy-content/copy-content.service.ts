@@ -55,7 +55,7 @@ export class CopyContentService {
     this.router = router;
     this.userService = userService;
     this.contentService = contentService;
-    this.fr.meworkService = frameworkService;
+    this.frameworkService = frameworkService;
     this.hostUrl = document.location.origin;
   }
   /**
