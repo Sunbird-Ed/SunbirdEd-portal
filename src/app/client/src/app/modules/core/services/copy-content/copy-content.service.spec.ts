@@ -45,6 +45,12 @@ describe('CopyContentService', () => {
             }
         }) as any
     };
+    const mockDocument: Partial<Document> = {
+        location:{
+            origin:'https://test.com'
+        }as any
+    };
+
     const mockContentService: Partial<ContentService> = {};
     const mockDocument: Partial<Document> = {
         location:{

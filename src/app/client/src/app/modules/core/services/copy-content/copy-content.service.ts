@@ -41,6 +41,7 @@ export class CopyContentService {
 
   hostUrl: string;
 
+
   /**
    * constructor
    * @param {ConfigService} config ConfigService reference
@@ -54,7 +55,7 @@ export class CopyContentService {
     this.router = router;
     this.userService = userService;
     this.contentService = contentService;
-    this.frameworkService = frameworkService;
+    this.fr.meworkService = frameworkService;
     this.hostUrl = document.location.origin;
   }
   /**
