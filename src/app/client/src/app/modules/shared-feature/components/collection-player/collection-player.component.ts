@@ -18,6 +18,7 @@ import { PublicPlayerService } from '@sunbird/public';
 import { TocCardType, PlatformType } from '@project-sunbird/common-consumption';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 import { ContentManagerService } from '../../../public/module/offline/services';
+import { TaxonomyService } from '../../../../service/taxonomy.service';
 
 @Component({
   selector: 'app-collection-player',
@@ -103,7 +104,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   disableDelete: Boolean = false;
   isAvailableLocally = false;
   noContentMessage = '';
-
+  taxonomyCategories: any;
   constructor(public route: ActivatedRoute, public playerService: PlayerService,
     private windowScrollService: WindowScrollService, public router: Router, public navigationHelperService: NavigationHelperService,
     public toasterService: ToasterService, private deviceDetectorService: DeviceDetectorService, private resourceService: ResourceService,
@@ -115,7 +116,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     public publicPlayerService: PublicPlayerService, public coursesService: CoursesService,
     private utilService: UtilService, public contentManagerService: ContentManagerService,
     public connectionService: ConnectionService, private telemetryService: TelemetryService,
-    private offlineCardService: OfflineCardService) {
+    private offlineCardService: OfflineCardService,
+    public taxonomyService: TaxonomyService) {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
     this.playerOption = { showContentRating: true };
@@ -129,7 +131,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     this.noContentMessage = _.get(this.resourceService, 'messages.stmsg.m0121');
     this.playerServiceReference = this.userService.loggedIn ? this.playerService : this.publicPlayerService;
     this.initLayout();
-
+    this.taxonomyCategories = this.taxonomyService.getTaxonomyCategories();
     this.dialCode = _.get(this.route, 'snapshot.queryParams.dialCode');
     this.contentType = _.get(this.route, 'snapshot.queryParams.contentType') || 'Collection';
     this.contentData = this.getContent();

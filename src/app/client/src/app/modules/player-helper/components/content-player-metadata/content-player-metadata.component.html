@@ -58,19 +58,19 @@
     </dl>
     <dl class="sb-meta-data">
         <dt>{{resourceService.frmelmnts.lbl.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}}</dt>
-        <dd *ngIf="metadata.medium">{{metadata.medium}}</dd>
+        <dd *ngIf="fwCategoryCheck(metadata,fwCategory[1])">{{fwCategoryCheck(metadata,fwCategory[1])}}</dd>
     </dl>
     <dl class="sb-meta-data">
         <dt>{{resourceService.frmelmnts.lbl.board | transposeTerms: 'frmelmnts.lbl.board' : resourceService?.selectedLang}}</dt>
-        <dd *ngIf="metadata.board">{{metadata.board}}</dd>    
+        <dd *ngIf="fwCategoryCheck(metadata,fwCategory[0])">{{fwCategoryCheck(metadata,fwCategory[0])}}</dd>    
     </dl>
     <dl class="sb-meta-data">
         <dt>{{resourceService.frmelmnts.lbl.class | transposeTerms: 'frmelmnts.lbl.class' : resourceService?.selectedLang}}</dt>
-        <dd *ngIf="metadata.gradeLevel">{{metadata.gradeLevel}}</dd>
+        <dd *ngIf="fwCategoryCheck(metadata,fwCategory[2])">{{fwCategoryCheck(metadata,fwCategory[2])}}</dd>
     </dl>
     <dl class="sb-meta-data">
         <dt>{{resourceService.frmelmnts.lbl.subject | transposeTerms: 'frmelmnts.lbl.subject' : resourceService?.selectedLang}}</dt>
-        <dd *ngIf="metadata.subject">{{metadata.subject}}</dd>
+        <dd *ngIf="fwCategoryCheck(metadata,fwCategory[3])">{{fwCategoryCheck(metadata,fwCategory[3])}}</dd>
     </dl>
     <dl class="sb-meta-data" *ngIf="metadata.createdOn">
         <dt>{{resourceService.frmelmnts.lbl.createdon}}</dt>

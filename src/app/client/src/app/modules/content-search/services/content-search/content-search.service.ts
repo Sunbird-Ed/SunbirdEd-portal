@@ -1,8 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { FrameworkService, ChannelService } from '@sunbird/core';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { skipWhile, mergeMap, first, map } from 'rxjs/operators';
 import * as _ from 'lodash-es';
+import { TaxonomyService } from '../../../../service/taxonomy.service';
+
 const requiredCategories = { categories: 'board,gradeLevel,medium,class,subject' };
 @Injectable({ providedIn: 'root' })
 export class ContentSearchService {
@@ -24,13 +26,18 @@ export class ContentSearchService {
     return _.cloneDeep(this._filters);
   }
   private _searchResults$ = new BehaviorSubject<any>(undefined);
+  taxonomyCategories:any = {};
   get searchResults$(): Observable<any[]> {
     return this._searchResults$.asObservable()
       .pipe(skipWhile(data => data === undefined || data === null));
   }
 
-  constructor(private frameworkService: FrameworkService, private channelService: ChannelService) { }
+  constructor(private frameworkService: FrameworkService, private channelService: ChannelService, @Inject(TaxonomyService) private taxonomyService: TaxonomyService) { }
 
+  ngOnInit() {
+    this.taxonomyCategories = this.taxonomyService.getTaxonomyCategories();
+  }
+  
   public initialize(channelId: string, custodianOrg = false, defaultBoard: string) {
     this.channelId = channelId;
     this.custodianOrg = custodianOrg;
@@ -59,9 +66,9 @@ export class ContentSearchService {
       }), map(frameworkDetails => {
         const frameworkCategories: any[] = _.get(frameworkDetails, 'result.framework.categories');
         frameworkCategories.forEach(category => {
-          if (['medium', 'gradeLevel', 'subject'].includes(category.code)) {
+          if ([this.taxonomyCategories[1], this.taxonomyCategories[2], this.taxonomyCategories[3]].includes(category.code)) {
             this._filters[category.code] = category.terms || [];
-          } else if (!this.custodianOrg && category.code === 'board') {
+          } else if (!this.custodianOrg && category.code === this.taxonomyCategories[0]) {
             this._filters[category.code] = category.terms || [];
           }
         });
@@ -78,9 +85,9 @@ export class ContentSearchService {
     return this.frameworkService.getSelectedFrameworkCategories(this._frameworkId, requiredCategories).pipe(map(frameworkDetails => {
       const frameworkCategories: any[] = _.get(frameworkDetails, 'result.framework.categories');
       frameworkCategories.forEach(category => {
-        if (['medium', 'gradeLevel', 'subject'].includes(category.code)) {
+        if ([this.taxonomyCategories[1], this.taxonomyCategories[2], this.taxonomyCategories[3]].includes(category.code)) {
           this._filters[category.code] = category.terms || [];
-        } else if (category.code === 'board' && !this.custodianOrg) {
+        } else if (category.code === this.taxonomyCategories[0] && !this.custodianOrg) {
           this._filters[category.code] = category.terms || [];
         }
       });
@@ -100,7 +107,7 @@ export class ContentSearchService {
   public mapCategories({ filters = {} }) {
     return _.reduce(filters, (acc, value, key) => {
       const mappedValue = _.get(this.getCategoriesMapping, [key]);
-      if (mappedValue && key !== 'subject') { acc[mappedValue] = value; delete acc[key]; }
+      if (mappedValue && key !== this.taxonomyCategories[3]) { acc[mappedValue] = value; delete acc[key]; }
       return acc;
     }, filters);
   }

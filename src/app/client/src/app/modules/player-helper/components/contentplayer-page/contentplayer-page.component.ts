@@ -9,6 +9,7 @@ import { takeUntil, filter } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { PublicPlayerService } from '@sunbird/public';
+import { TaxonomyService } from '../../../../service/taxonomy.service';
 
 @Component({
   selector: 'app-contentplayer-page',
@@ -41,6 +42,7 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
   playerOption: any;
   layoutConfiguration;
   isDesktopApp = false;
+  fwCategory = [];
 
   constructor(private activatedRoute: ActivatedRoute,
     private configService: ConfigService,
@@ -51,10 +53,12 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
     private utilService: UtilService,
     private telemetryService: TelemetryService,
     public layoutService: LayoutService,
-    private playerService: PublicPlayerService
+    private playerService: PublicPlayerService,
+    private taxonomyService: TaxonomyService
   ) { }
 
   ngOnInit() {
+    this.fwCategory= _.map(this.taxonomyService.getTaxonomyCategories(), category => {return category} );
     this.isDesktopApp = this.utilService.isDesktopApp;
     this.initLayout();
     this.utilService.emitHideHeaderTabsEvent(true);
@@ -223,5 +227,8 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
     this.utilService.emitHideHeaderTabsEvent(false);
+  }
+  fwCategoryCheck(obj: any, category: string) {
+    return this.taxonomyService.getCategoryforHTML(obj, category);
   }
 }

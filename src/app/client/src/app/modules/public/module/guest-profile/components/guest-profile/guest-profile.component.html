@@ -87,19 +87,19 @@
         <div class="max-w-400 computer only">
           <div class="mb-15 d-flex flex-jc-center">
             <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.boards | transposeTerms: 'frmelmnts.lbl.boards' : resourceService?.selectedLang}} :</span>
-            <span class="fmedium font-w-bold pl-4">{{convertToString(guestUser?.framework?.board)}}</span>
+            <span class="fmedium font-w-bold pl-4">{{convertToString(fwCategoryCheck(guestUser.framework,fwCategory[0]))}}</span>
           </div>
           <div class="mb-15 d-flex flex-jc-center">
             <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}} :</span>
-            <span class="fmedium font-w-bold pl-4">{{convertToString(guestUser?.framework?.medium)}}</span>
+            <span class="fmedium font-w-bold pl-4">{{convertToString(fwCategoryCheck(guestUser.framework,fwCategory[1]))}}</span>
           </div>
           <div class="mb-15 d-flex flex-jc-center">
             <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.classes | transposeTerms: 'frmelmnts.lbl.classes': resourceService?.selectedLang}} :</span>
-            <span class="fmedium font-w-bold pl-4">{{convertToString(guestUser?.framework?.gradeLevel)}}</span>
+            <span class="fmedium font-w-bold pl-4">{{convertToString(fwCategoryCheck(guestUser.framework,fwCategory[2]))}}</span>
           </div>
-          <div class="d-flex flex-jc-center" *ngIf="guestUser?.framework?.subject?.length">
+          <div class="d-flex flex-jc-center" *ngIf="fwCategoryCheck(guestUser?.framework,fwCategory[0])?.length">
             <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.subjects | transposeTerms: 'frmelmnts.lbl.subjects': resourceService?.selectedLang}} :</span>
-            <span class="fmedium font-w-bold pl-4">{{convertToString(guestUser?.framework?.subject)}}</span>
+            <span class="fmedium font-w-bold pl-4">{{convertToString(fwCategoryCheck(guestUser.framework,fwCategory[3]))}}</span>
           </div>
         </div>
         <button class="sb-btn sb-btn-primary sb-btn-normal my-16 sb-btn-border computer only" appTelemetryInteract
@@ -113,19 +113,19 @@
     <div class="max-w-300 mobile only">
       <div class="mb-15 d-flex flex-ai-center flex-dc">
         <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.boards | transposeTerms: 'frmelmnts.lbl.boards' : resourceService?.selectedLang}}:</span>
-        <span class="fmedium font-w-bold text-center">{{convertToString(guestUser?.framework?.board)}}</span>
+        <span class="fmedium font-w-bold text-center">{{convertToString(fwCategoryCheck(guestUser.framework,fwCategory[0]))}}</span>
       </div>
       <div class="mb-15 d-flex flex-ai-center flex-dc">
         <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}} :</span>
-        <span class="fmedium font-w-bold text-center">{{convertToString(guestUser?.framework?.medium)}}</span>
+        <span class="fmedium font-w-bold text-center">{{convertToString(fwCategoryCheck(guestUser.framework,fwCategory[1]))}}</span>
       </div>
       <div class="mb-15 d-flex flex-ai-center flex-dc">
         <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.classes | transposeTerms: 'frmelmnts.lbl.classes': resourceService?.selectedLang}} :</span>
-        <span class="fmedium font-w-bold text-center">{{convertToString(guestUser?.framework?.gradeLevel)}}</span>
+        <span class="fmedium font-w-bold text-center">{{convertToString(fwCategoryCheck(guestUser.framework,fwCategory[2]))}}</span>
       </div>
       <div class="mb-15 d-flex flex-ai-center flex-dc">
         <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.subjects | transposeTerms: 'frmelmnts.lbl.subjects': resourceService?.selectedLang}} :</span>
-        <span class="fmedium font-w-bold text-center">{{convertToString(guestUser?.framework?.subject)}}</span>
+        <span class="fmedium font-w-bold text-center">{{convertToString(fwCategoryCheck(guestUser.framework,fwCategory[3]))}}</span>
       </div>
       <div class="d-flex flex-ai-center flex-jc-center" appTelemetryInteract
         [telemetryInteractEdata]="editFrameworkInteractEData" tabindex="0" (click)="showEdit = !showEdit">

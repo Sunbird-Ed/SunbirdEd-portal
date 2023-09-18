@@ -3,7 +3,7 @@ import { CourseProgressService } from './../course-progress/course-progress.serv
 import { IListReportsFilter, IReportsApiResponse, IDataSource } from './../../interfaces';
 import { ConfigService, IUserData } from '@sunbird/shared';
 import { UserService, BaseReportService, PermissionService, SearchService, FrameworkService } from '@sunbird/core';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UsageService } from '../usage/usage.service';
 import { map, catchError, pluck, mergeMap, shareReplay } from 'rxjs/operators';
@@ -11,6 +11,7 @@ import * as _ from 'lodash-es';
 import { Observable, of, forkJoin } from 'rxjs';
 import  dayjs from 'dayjs';
 import { v4 as UUID } from 'uuid';
+import { TaxonomyService } from '../../../../service/taxonomy.service';
 
 const PRE_DEFINED_PARAMETERS = ['$slug', '$board', '$state', '$channel'];
 
@@ -23,16 +24,21 @@ export class ReportService  {
   private _superAdminSlug: string;
 
   private cachedMapping = {};
+  taxonomyCategories:any = {};
 
   constructor(private sanitizer: DomSanitizer, private usageService: UsageService, private userService: UserService,
     private configService: ConfigService, private baseReportService: BaseReportService, private permissionService: PermissionService,
     private courseProgressService: CourseProgressService, private searchService: SearchService,
-    private frameworkService: FrameworkService, private profileService: ProfileService ) {
+    private frameworkService: FrameworkService, private profileService: ProfileService, @Inject(TaxonomyService) private taxonomyService: TaxonomyService ) {
     try {
       this._superAdminSlug = (<HTMLInputElement>document.getElementById('superAdminSlug')).value;
     } catch (error) {
       this._superAdminSlug = 'sunbird';
     }
+  }
+
+  ngOnInit() {
+    this.taxonomyCategories = this.taxonomyService.getTaxonomyCategories();
   }
 
   public fetchDataSource(filePath: string, id?: string | number): Observable<any> {
@@ -432,7 +438,7 @@ export class ReportService  {
                   .pipe(
                     map(framework => {
                       const frameworkData = _.get(framework, 'result.framework');
-                      const boardCategory = _.find(frameworkData.categories, ['code', 'board']);
+                      const boardCategory = _.find(frameworkData.categories, ['code', this.taxonomyCategories[0]]);
                       if (!boardCategory) { return of([]); }
                       return _.map(boardCategory.terms, 'name');
                     }),

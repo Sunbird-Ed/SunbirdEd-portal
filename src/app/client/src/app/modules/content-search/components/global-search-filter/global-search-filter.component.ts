@@ -7,7 +7,7 @@ import {
   OnDestroy,
   ChangeDetectorRef,
   OnChanges,
-  SimpleChanges, ViewChild
+  SimpleChanges, ViewChild, Inject
 } from '@angular/core';
 import * as _ from 'lodash-es';
 import { ResourceService, UtilService, ConnectionService } from '@sunbird/shared';
@@ -19,6 +19,7 @@ import { LibraryFiltersLayout } from '@project-sunbird/common-consumption';
 import { UserService } from '@sunbird/core';
 import { IFacetFilterFieldTemplateConfig } from '@project-sunbird/common-form-elements-full';
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
+import { TaxonomyService } from '../../../../service/taxonomy.service';
 
 @Component({
   selector: 'app-global-search-filter',
@@ -42,6 +43,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
   @Input() isOpen;
   @Output() filterChange: EventEmitter<{ status: string, filters?: any }> = new EventEmitter();
   @Input() cachedFilters?: any;
+  taxonomyCategories:any = {};
 
   @ViewChild('sbSearchFacetFilterComponent') searchFacetFilterComponent: any;
 
@@ -49,7 +51,8 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
 
   constructor(public resourceService: ResourceService, public router: Router,
     private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef, private utilService: UtilService,
-    public userService: UserService, private cacheService: CacheService, public connectionService: ConnectionService) {
+    public userService: UserService, private cacheService: CacheService, public connectionService: ConnectionService,
+    @Inject(TaxonomyService) private taxonomyService: TaxonomyService) {
   }
 
   onChange(facet) {
@@ -122,6 +125,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
     this.connectionService.monitor().subscribe(isConnected => {
       this.isConnected = isConnected;
     });
+    this.taxonomyCategories = this.taxonomyService.getTaxonomyCategories();
   }
 
   public resetFilters() {
@@ -129,7 +133,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
     if (this.utilService.isDesktopApp) {
       const userPreferences: any = this.userService.anonymousUserPreference;
       if (userPreferences) {
-        _.forEach(['board', 'medium', 'gradeLevel', 'channel'], (item) => {
+        _.forEach([this.taxonomyCategories[0], this.taxonomyCategories[1], this.taxonomyCategories[2], 'channel'], (item) => {
           if (!_.has(this.selectedFilters, item)) {
             this.selectedFilters[item] = _.isArray(userPreferences.framework[item]) ?
             userPreferences.framework[item] : _.split(userPreferences.framework[item], ', ');
@@ -160,7 +164,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
       map((queryParams) => {
         const queryFilters: any = {};
         _.forIn(queryParams, (value, key) => {
-          if (['medium', 'gradeLevel', 'board', 'channel', 'subject', 'primaryCategory', 'key', 'mediaType', 'se_boards', 'se_mediums', 'se_gradeLevels', 'se_subjects', 'additionalCategories'].includes(key)) {
+          if ([this.taxonomyCategories[1], this.taxonomyCategories[2], this.taxonomyCategories[0], 'channel', this.taxonomyCategories[3], 'primaryCategory', 'key', 'mediaType', 'se_boards', 'se_mediums', 'se_gradeLevels', 'se_subjects', 'additionalCategories'].includes(key)) {
             queryFilters[key] = key === 'key' || _.isArray(value) ? value : [value];
           }
         });
@@ -295,7 +299,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
       queryParams: {
         ...(() => {
           const queryParams = _.cloneDeep(this.activatedRoute.snapshot.queryParams);
-          const queryFilters = [...this.supportedFilterAttributes, ...['board', 'medium', 'gradeLevel', 'channel']];
+          const queryFilters = [...this.supportedFilterAttributes, ...[this.taxonomyCategories[0], this.taxonomyCategories[1], this.taxonomyCategories[2], 'channel']];
           queryFilters.forEach((attr) => delete queryParams[attr]);
           return queryParams;
         })()

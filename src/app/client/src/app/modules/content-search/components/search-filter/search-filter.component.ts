@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input, OnInit, OnDestroy, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, Inject } from '@angular/core';
 import * as _ from 'lodash-es';
 import { LibraryFiltersLayout } from '@project-sunbird/common-consumption';
 import { ResourceService, LayoutService, UtilService } from '@sunbird/shared';
@@ -9,6 +9,7 @@ import { ContentSearchService } from '../../services';
 import { FormService } from '@sunbird/core';
 import { IFrameworkCategoryFilterFieldTemplateConfig } from '@project-sunbird/common-form-elements-full';
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
+import { TaxonomyService } from '../../../../service/taxonomy.service';
 
 @Component({
   selector: 'app-search-filter',
@@ -46,6 +47,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   selectedNgModels = {};
   private audienceList;
   public refreshSearchFilterComponent = true;
+  taxonomyCategories:any = {};
 
   @ViewChild('sbSearchFrameworkFilterComponent') searchFrameworkFilterComponent: any;
   filterFormTemplateConfig: IFrameworkCategoryFilterFieldTemplateConfig[];
@@ -54,10 +56,11 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     private contentSearchService: ContentSearchService,
     private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef,
     public layoutService: LayoutService, private formService: FormService,
-    private cacheService: CacheService, private utilService: UtilService) { }
+    private cacheService: CacheService, private utilService: UtilService,
+    @Inject(TaxonomyService) private taxonomyService: TaxonomyService) { }
 
   get filterData() {
-    return _.get(this.pageData, 'metaData.filters') || ['medium', 'gradeLevel', 'board', 'channel', 'subject', 'audience', 'publisher', 'se_subjects', 'se_boards', 'se_gradeLevels', 'se_mediums'];
+    return _.get(this.pageData, 'metaData.filters') || [this.taxonomyCategories[1], 'gradeLevel', this.taxonomyCategories[0], 'channel', this.taxonomyCategories[3], 'audience', 'publisher', 'se_subjects', 'se_boards', 'se_gradeLevels', 'se_mediums'];
   }
 
   public getChannelId(index) {
@@ -126,6 +129,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       const queryParams = { ...this.defaultFilters, selectedTab: _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook' };
       this.router.navigate([], { queryParams, relativeTo: this.activatedRoute });
     }
+    this.taxonomyCategories = this.taxonomyService.getTaxonomyCategories();
   }
 
   /**
@@ -152,7 +156,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
           filters = _.pick(filters || {}, this.filterData);
           this.filters = filters = this.sortFilters({ filters });
           this.updateBoardList();
-          this.updateFiltersList({ filters: _.omit(filters, 'board') });
+          this.updateFiltersList({ filters: _.omit(filters, this.taxonomyCategories[0]) });
           this.emitFilterChangeEvent(true);
           this.hardRefreshFilter();
         })
@@ -188,7 +192,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   }
 
   private updateBoardList() {
-    if (_.get(this.filters, 'board') || !_.get(this.filters, 'board.length')) {
+    if (_.get(this.filters, this.taxonomyCategories[0]) || !_.get(this.filters, 'board.length')) {
       this.emptyBoard = true;
     }
     this.boards = this.allValues['board'] = this.filters.board || [];
@@ -198,14 +202,14 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     }));
     this.optionData.push({
       label: this.optionLabel.Board,
-      value: 'board',
+      value: this.taxonomyCategories[0],
       option: this.boards
     });
     this.optionData = _.uniqBy(this.optionData, 'label');
     if (this.boards.length) {
       const selectedOption = _.find(this.boards, { name: _.get(this.queryFilters, 'board[0]') }) ||
         _.find(this.boards, { name: _.get(this.defaultFilters, 'board[0]') }) || this.boards[0];
-      this.selectedBoard = { label: this.optionLabel.Board, value: 'board', selectedOption: _.get(selectedOption, 'name') };
+      this.selectedBoard = { label: this.optionLabel.Board, value: this.taxonomyCategories[0], selectedOption: _.get(selectedOption, 'name') };
       this.selectedOption = this.selectedBoard;
     }
   }

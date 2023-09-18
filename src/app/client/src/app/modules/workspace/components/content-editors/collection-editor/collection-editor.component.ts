@@ -12,6 +12,8 @@ import { environment } from '@sunbird/environment';
 import { TelemetryService, IInteractEventEdata } from '@sunbird/telemetry';
 import { combineLatest, of, throwError } from 'rxjs';
 import { map, mergeMap, tap, delay, first } from 'rxjs/operators';
+import { TaxonomyService } from '../../../../../service/taxonomy.service';
+
 jQuery.fn.iziModal = iziModal;
 enum state {
   UP_FOR_REVIEW = 'upForReview',
@@ -42,6 +44,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   resource_framework: string;
   collectionEditorURL: string = (<HTMLInputElement>document.getElementById('collectionEditorURL')) ?
   (<HTMLInputElement>document.getElementById('collectionEditorURL')).value : '';
+  taxonomyCategories:any
   /**
   * Default method of classs CollectionEditorComponent
   * @param {ResourceService} resourceService To get language constant
@@ -54,7 +57,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute, private userService: UserService, private _zone: NgZone, private router: Router,
     private configService: ConfigService, private tenantService: TenantService, private telemetryService: TelemetryService,
     private navigationHelperService: NavigationHelperService, private workspaceService: WorkSpaceService,
-    private frameworkService: FrameworkService) {
+    private frameworkService: FrameworkService, public taxonomySerive: TaxonomyService) {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     const deviceId = (<HTMLInputElement>document.getElementById('deviceId'));
     this.deviceId = deviceId ? deviceId.value : '';
@@ -65,6 +68,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     this.userProfile = this.userService.userProfile;
     this.routeParams = this.activatedRoute.snapshot.params;
     this.queryParams = this.activatedRoute.snapshot.queryParams;
+    this.taxonomyCategories = this.taxonomySerive.getTaxonomyCategories();
+
     if (this.routeParams.type === 'Course') {
       // tslint:disable-next-line:max-line-length
       return this.router.navigate(['workspace/edit/', 'Course', this.routeParams.contentId, this.routeParams.state, this.routeParams.contentStatus]);
@@ -232,7 +237,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       timeDiff: this.userService.getServerTimeDiff
     };
     if (this.routeParams.type.toLowerCase() === 'course' ) {
-      window.context['board'] = _.get(this.userProfile, 'framework.board');
+      window.context[this.taxonomyCategories[0]] = _.get(this.userProfile, `framework.+'${this.taxonomyCategories[0]}`);
     }
   }
   private setWindowConfig() {

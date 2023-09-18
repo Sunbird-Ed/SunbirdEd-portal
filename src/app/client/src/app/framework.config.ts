@@ -14,6 +14,7 @@ export const WebExtensionsConfig = {
 
 export const PluginModules = [ OfflineModule ];
 
+export const TaxonomyCategories = ['taxonomyCategory1', 'taxonomyCategory2', 'taxonomyCategory3', 'taxonomyCategory4'];
 
 export const taxonomyEnvironment = {
   production: false,

@@ -13,6 +13,7 @@ import { WorkSpaceService } from '../../services';
 import * as _ from 'lodash-es';
 import { SuiModalService } from 'ng2-semantic-ui-v9';
 import { IImpressionEventInput } from '@sunbird/telemetry';
+import { TaxonomyService } from '../../../../service/taxonomy.service';
 /**
  * The upforReview component search for all the upforreview content
 */
@@ -129,6 +130,8 @@ export class UpForReviewComponent extends WorkSpace implements OnInit, AfterView
    * To check if questionSet enabled
    */
    public isQuestionSetEnabled: boolean;
+   taxonomyCategories: any;
+
   /**
     * Constructor to create injected service(s) object
     Default method of Draft Component class
@@ -148,7 +151,8 @@ export class UpForReviewComponent extends WorkSpace implements OnInit, AfterView
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
     config: ConfigService, permissionService: PermissionService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService, 
+    public taxonomyService: TaxonomyService) {
     super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
@@ -185,6 +189,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit, AfterView
         this.queryParams = bothParams.queryParams;
         this.fecthUpForReviewContent(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber, bothParams);
       });
+      this.taxonomyCategories = this.taxonomyService.getTaxonomyCategories();
   }
 
   /**
@@ -210,10 +215,10 @@ export class UpForReviewComponent extends WorkSpace implements OnInit, AfterView
           rolesMap['CONTENT_REVIEW'])),
         createdBy: { '!=': this.userService.userid },
         objectType: this.isQuestionSetEnabled ? this.config.appConfig.WORKSPACE.allowedObjectType : this.config.appConfig.WORKSPACE.objectType,
-        board: bothParams.queryParams.board,
-        subject: bothParams.queryParams.subject,
-        medium: bothParams.queryParams.medium,
-        gradeLevel: bothParams.queryParams.gradeLevel
+        [this.taxonomyCategories[0]]: bothParams.queryParams[this.taxonomyCategories[0]],
+        [this.taxonomyCategories[3]]: bothParams.queryParams[this.taxonomyCategories[3]],
+        [this.taxonomyCategories[1]]: bothParams.queryParams[this.taxonomyCategories[1]],
+        [this.taxonomyCategories[2]]: bothParams.queryParams[this.taxonomyCategories[2]]
       },
       limit: limit,
       offset: (pageNumber - 1) * (limit),

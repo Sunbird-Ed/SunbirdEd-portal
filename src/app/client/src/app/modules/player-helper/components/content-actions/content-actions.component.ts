@@ -10,6 +10,7 @@ import * as _ from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ContentManagerService } from '../../../public/module/offline/services';
 import { takeUntil } from 'rxjs/operators';
+import { TaxonomyService } from '../../../../service/taxonomy.service';
 
 @Component({
   selector: 'app-content-actions',
@@ -42,6 +43,7 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
   subscription;
   isDesktopApp;
   telemetryEventSubscription$: EventEmitter<object>;
+  fwCategory = [];
 
   constructor(
     public router: Router,
@@ -55,9 +57,11 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
     public contentManagerService: ContentManagerService,
     public offlineCardService: OfflineCardService,
     public utilService: UtilService,
+    private taxonomyService: TaxonomyService
   ) { }
 
   ngOnInit() {
+    this.fwCategory= _.map(this.taxonomyService.getTaxonomyCategories(), category => {return category} );
     this.enableDisableactionButtons();
     this.isDesktopApp = this.utilService.isDesktopApp;
     const isVideoMimetype = _.includes(['video/mp4', 'video/webm'], _.get(this.contentData, 'mimeType'));
@@ -371,6 +375,10 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
     }, err => {
       this.toasterService.error(this.resourceService.messages.etmsg.desktop.deleteContentErrorMessage);
     });
+  }
+
+  fwCategoryCheck(obj: any, category: string) {
+    return this.taxonomyService.getCategoryforHTML(obj, category);
   }
 
 }

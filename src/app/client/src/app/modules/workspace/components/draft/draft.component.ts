@@ -12,7 +12,7 @@ import { WorkSpaceService } from '../../services';
 import * as _ from 'lodash-es';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui-v9';
 import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
-
+import { TaxonomyService  } from '../../../../service/taxonomy.service';
 /**
  * The draft component search for all the drafts
 */
@@ -76,6 +76,8 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
     */
     noResult = false;
 
+    taxonomyCategories:any;
+    
     /**
      * To show / hide error
     */
@@ -167,7 +169,8 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
         activatedRoute: ActivatedRoute,
         route: Router, userService: UserService,
         toasterService: ToasterService, resourceService: ResourceService,
-        config: ConfigService, public navigationhelperService: NavigationHelperService) {
+        config: ConfigService, public navigationhelperService: NavigationHelperService,
+        public taxonomyService:TaxonomyService) {
         super(searchService, workSpaceService, userService);
         this.paginationService = paginationService;
         this.route = route;
@@ -200,7 +203,8 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
               this.query = this.queryParams['query'];
               this.fetchDrafts(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber, bothParams);
             });
-    }
+        this.taxonomyCategories = this.taxonomyService.getTaxonomyCategories();
+    }   
     /**
      * This method sets the make an api call to get all drafts with page No and offset
      */
@@ -227,10 +231,10 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
                 createdBy: this.userService.userid,
                 // tslint:disable-next-line:max-line-length
                 primaryCategory: _.get(bothParams, 'queryParams.primaryCategory') || (!_.isEmpty(primaryCategories) ? primaryCategories : this.config.appConfig.WORKSPACE.primaryCategory),
-                board: bothParams['queryParams'].board,
-                subject: bothParams['queryParams'].subject,
-                medium: bothParams['queryParams'].medium,
-                gradeLevel: bothParams['queryParams'].gradeLevel
+                [this.taxonomyCategories[0]]: bothParams['queryParams'][this.taxonomyCategories[0]],
+                [this.taxonomyCategories[3]]: bothParams['queryParams'][[this.taxonomyCategories[3]]],
+                [this.taxonomyCategories[1]]: bothParams['queryParams'][[this.taxonomyCategories[1]]],
+                [this.taxonomyCategories[2]]: bothParams['queryParams'][[this.taxonomyCategories[2]]]
             },
             limit: this.pageLimit,
             offset: (this.pageNumber - 1) * (this.pageLimit),

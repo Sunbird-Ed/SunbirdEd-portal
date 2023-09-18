@@ -8,6 +8,7 @@ import { map, catchError } from 'rxjs/operators';
 import { of, combineLatest } from 'rxjs';
 import { UserSearchService } from './../../services';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { TaxonomyService } from '../../../../service/taxonomy.service';
 
 @Component({
   selector: 'app-user-filter',
@@ -45,7 +46,8 @@ export class UserFilterComponent implements OnInit {
     public profileService: ProfileService, public orgDetailsService: OrgDetailsService,
     public permissionService: PermissionService, public frameworkService: FrameworkService,
     public userSearchService: UserSearchService,
-    private formService: FormService) {
+    private formService: FormService,
+    private taxonomyService: TaxonomyService) {
     this.router.onSameUrlNavigation = 'reload';
   }
 
@@ -111,20 +113,20 @@ export class UserFilterComponent implements OnInit {
 
   private getFormatedFilterDetails() {
     this.frameworkService.initialize();
-    return this.frameworkService.frameworkData$.pipe(map((res) => {
+    return this.frameworkService.frameworkData$.pipe(map((res:any) => {
       const categoryMasterList = _.cloneDeep(res.frameworkdata['defaultFramework'].categories);
       // Preparing data for multi-select filter
-      const medium: any = _.find(categoryMasterList, { code: 'medium' });
+      const medium: any = _.find(categoryMasterList, { code: this.taxonomyService.getTaxonomyCategories()[1] });
       medium['label'] = medium.name;
       medium['range'] = this.sortFilters(medium.terms);
       this.medium = medium;
 
-      const gradeLevel: any = _.find(categoryMasterList, { code: 'gradeLevel' });
+      const gradeLevel: any = _.find(categoryMasterList, { code: this.taxonomyService.getTaxonomyCategories()[2] });
       gradeLevel['label'] = gradeLevel.name;
       gradeLevel['range'] = this.sortFilters(gradeLevel.terms);
       this.class = gradeLevel;
 
-      const subject: any = _.find(categoryMasterList, { code: 'subject' });
+      const subject: any = _.find(categoryMasterList, { code: this.taxonomyService.getTaxonomyCategories()[3] });
       subject['label'] = subject.name;
       subject['range'] = this.sortFilters(subject.terms);
       this.subject = subject;

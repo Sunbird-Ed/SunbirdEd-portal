@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import * as _ from 'lodash-es';
 import { ContentData, ResourceService } from '@sunbird/shared';
+import { TaxonomyService } from '../../../../service/taxonomy.service';
 
 @Component({
   selector: 'app-content-player-metadata',
@@ -16,14 +17,16 @@ export class ContentPlayerMetadataComponent implements OnInit {
   // conceptNames: any;
   // filteredConcepts: any;
   showContentCreditsModal: boolean;
+  fwCategory = [];
 
   @Input() contentData: ContentData;
-  constructor(public resourceService: ResourceService) { }
+  constructor(public resourceService: ResourceService,  private taxonomyService: TaxonomyService) { }
 
   ngOnInit() {
     this.metadata = { ...this.contentData };
     this.validateContent();
     this.instance = _.upperCase(this.resourceService.instance);
+    this.fwCategory= _.map(this.taxonomyService.getTaxonomyCategories(), category => {return category} );
   }
 
   validateContent() {
@@ -45,6 +48,9 @@ export class ContentPlayerMetadataComponent implements OnInit {
     this.showContentCreditsModal = true;
   }
 
+  fwCategoryCheck(obj: any, category: string) {
+    return this.taxonomyService.getCategoryforHTML(obj, category);
+  }
 }
 
 

@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, Output, EventEmitter, Inject } from '@angular/core';
 import { FormService, UserService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { LayoutService, ResourceService, UtilService, IUserData, NavigationHelperService} from '@sunbird/shared';
@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TelemetryService } from '@sunbird/telemetry';
+// import { TaxonomyService } from './../../../../service/taxonomy.service';
 
 
 @Component({
@@ -13,6 +14,7 @@ import { TelemetryService } from '@sunbird/telemetry';
   templateUrl: './content-type.component.html',
   styleUrls: ['./content-type.component.scss'],
 })
+
 export class ContentTypeComponent implements OnInit, OnDestroy {
   @Output() closeSideMenu = new EventEmitter<any>();
   @Input() layoutConfiguration;
@@ -24,6 +26,8 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   subscription: any;
   userType: any;
   returnTo: string;
+  taxonomyCategories:any;
+
   constructor(
     public formService: FormService,
     public resourceService: ResourceService,
@@ -34,6 +38,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     public layoutService: LayoutService,
     private utilService: UtilService,
     public navigationhelperService: NavigationHelperService,
+    // @Inject(TaxonomyService) private taxonomyService: TaxonomyService
   ) {}
 
 
@@ -44,6 +49,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         this.updateSelectedContentType(data);
       });
+    // this.taxonomyCategories = this.taxonomyService.getTaxonomyCategories();
   }
 
 
@@ -96,7 +102,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
 
     // All and myDownloads Tab should not carry any filters from other tabs / user can apply fresh filters
     if (data.contentType === 'mydownloads' || data.contentType === 'all') {
-      params = _.omit(params, ['board', 'medium', 'gradeLevel', 'subject', 'se_boards', 'se_mediums', 'se_gradeLevels', 'se_subjects']);
+      params = _.omit(params, [this.taxonomyCategories[0], this.taxonomyCategories[1], this.taxonomyCategories[2], this.taxonomyCategories[3], 'se_boards', 'se_mediums', 'se_gradeLevels', 'se_subjects']);
     }
 
     if (this.userService.loggedIn) {

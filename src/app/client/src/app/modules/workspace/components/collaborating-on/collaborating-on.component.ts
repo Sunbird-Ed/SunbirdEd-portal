@@ -11,6 +11,7 @@ import { WorkSpaceService } from '../../services';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { SuiModalService } from 'ng2-semantic-ui-v9';
+import { TaxonomyService } from '../../../../service/taxonomy.service';
 @Component({
   selector: 'app-collaborating-on',
   templateUrl: './collaborating-on.component.html'
@@ -109,6 +110,7 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit, After
   /**
 * value typed
 */
+  taxonomyCategories: any;
   query: string;
   /**
   * Contains returned object of the pagination service
@@ -157,7 +159,8 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit, After
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
     config: ConfigService, public modalService: SuiModalService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService,
+    public taxonomyService:TaxonomyService) {
     super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
@@ -218,10 +221,10 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit, After
         primaryCategory: _.get(bothParams, 'queryParams.primaryCategory') || (!_.isEmpty(primaryCategories) ? primaryCategories :
         this.config.appConfig.WORKSPACE.primaryCategory),
         objectType: this.config.appConfig.WORKSPACE.objectType,
-        board: bothParams.queryParams.board,
-        subject: bothParams.queryParams.subject,
-        medium: bothParams.queryParams.medium,
-        gradeLevel: bothParams.queryParams.gradeLevel
+        [this.taxonomyCategories[0]]: bothParams.queryParams[this.taxonomyCategories[0]],
+        [this.taxonomyCategories[3]]: bothParams.queryParams[this.taxonomyCategories[3]],
+        [this.taxonomyCategories[1]]: bothParams.queryParams[this.taxonomyCategories[1]],
+        [this.taxonomyCategories[2]]: bothParams.queryParams[this.taxonomyCategories[2]]
       },
       limit: limit,
       offset: (pageNumber - 1) * (limit),

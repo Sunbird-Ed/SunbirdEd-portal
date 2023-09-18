@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { LayoutService } from '@sunbird/shared';
 import * as publicService from '../../services';
 import { SearchService } from './../../../core/services/search/search.service';
+import { TaxonomyService } from '../../../../service/taxonomy.service';
 import { ResourceService } from '@sunbird/shared';
 
 @Component({
@@ -18,9 +19,10 @@ export class LandingPageComponent implements OnInit {
   courses: any = {};
 
   layoutConfiguration;
+  taxonomyCategories:any = {};
 
-  constructor(public layoutService: LayoutService, private landingPageContentService: publicService.LandingPageContentService, 
-    public search: SearchService, private router: Router, public resourceService: ResourceService) { }
+  constructor(public layoutService: LayoutService, private landingPageContentService: publicService.LandingPageContentService, public search: SearchService, 
+    private router: Router, @Inject(TaxonomyService) private taxonomyService: TaxonomyService, public resourceService: ResourceService) { }
 
   ngOnInit() {
     // alert()
@@ -106,6 +108,9 @@ export class LandingPageComponent implements OnInit {
       this.courses = res["result"]["content"];
       // console.log('Courses', this.courses);
     })
+
+    this.taxonomyCategories = this.taxonomyService.getTaxonomyCategories();
+    console.log('Taxonomy categories', this.taxonomyCategories);
   }
 
   slideConfig = { slidesToShow: 3, slidesToScroll: 3 };

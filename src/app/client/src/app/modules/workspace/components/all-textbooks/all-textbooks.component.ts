@@ -14,6 +14,7 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui-v9';
 import { debounceTime, map } from 'rxjs/operators';
 import { ContentIDParam } from '../../interfaces/delteparam';
+import { TaxonomyService } from '../../../../service/taxonomy.service';
 
 @Component({
   selector: 'app-all-textbooks',
@@ -189,6 +190,8 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
   /**
    * To show/hide collection modal
    */
+  taxonomyCategories: any;
+
   public collectionListModal = false;
   /**
     * Constructor to create injected service(s) object
@@ -207,7 +210,8 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
-    config: ConfigService, public modalService: SuiModalService) {
+    config: ConfigService, public modalService: SuiModalService,
+    public taxonomyService:TaxonomyService) {
     super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
@@ -240,6 +244,7 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
         this.query = this.queryParams['query'];
         this.fetchAllTextBooks(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber, bothParams);
       });
+      this.taxonomyCategories = this.taxonomyService.getTaxonomyCategories();
   }
   /**
   * This method sets the make an api call to get all textbooks with page No and offset
@@ -262,10 +267,10 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
         status: bothParams.queryParams.status ? bothParams.queryParams.status : preStatus,
         contentType: this.config.appConfig.WORKSPACE.adminHandledContentType,
         objectType: this.config.appConfig.WORKSPACE.objectType,
-        board: bothParams.queryParams.board,
-        subject: bothParams.queryParams.subject,
-        medium: bothParams.queryParams.medium,
-        gradeLevel: bothParams.queryParams.gradeLevel,
+        [this.taxonomyCategories[0]]: bothParams.queryParams[this.taxonomyCategories[0]],
+        [this.taxonomyCategories[3]]: bothParams.queryParams[this.taxonomyCategories[3]],
+        [this.taxonomyCategories[1]]: bothParams.queryParams[this.taxonomyCategories[1]],
+        [this.taxonomyCategories[2]]: bothParams.queryParams[this.taxonomyCategories[2]],
         channel: this.userService.channel
       },
       limit: limit,
@@ -346,17 +351,17 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
               channelMapping[channelId] = channelName;
             });
             _.forEach(collections, collection => {
-              const obj = _.pick(collection, ['contentType', 'board', 'medium', 'name', 'gradeLevel', 'subject', 'channel']);
+              const obj = _.pick(collection, ['contentType', 'name', 'channel', ...this.taxonomyCategories]);
               obj['channel'] = channelMapping[obj.channel];
               this.collectionData.push(obj);
           });
           this.headers = {
             type: 'Type',
             name: 'Name',
-            subject: 'Subject',
-            grade: 'Grade',
-            medium: 'Medium',
-            board: 'Board',
+            [this.taxonomyCategories[3]]: this.taxonomyService.capitalizeFirstLetter(this.taxonomyCategories[3]),
+            [this.taxonomyCategories[2]]: this.taxonomyService.capitalizeFirstLetter(this.taxonomyCategories[2]),
+            [this.taxonomyCategories[1]]: this.taxonomyService.capitalizeFirstLetter(this.taxonomyCategories[1]),
+            [this.taxonomyCategories[0]]: this.taxonomyService.capitalizeFirstLetter(this.taxonomyCategories[0]),
             channel: 'Tenant Name'
             };
             if (!_.isUndefined(modal)) {

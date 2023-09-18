@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LayoutService } from '../../../../../shared/services/layoutconfig/layout.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TaxonomyService } from '../../../../../../service/taxonomy.service';
 
 const USER_DETAILS_KEY = 'guestUserDetails';
 @Component({
@@ -16,6 +17,7 @@ const USER_DETAILS_KEY = 'guestUserDetails';
 })
 
 export class GuestProfileComponent implements OnInit {
+  fwCategory = [];
   avatarStyle = {
     backgroundColor: '#ffffff',
     border: '1px solid #fff',
@@ -53,10 +55,12 @@ export class GuestProfileComponent implements OnInit {
     public router: Router,
     public navigationHelperService: NavigationHelperService,
     public toasterService: ToasterService,
-    public config: ConfigService
+    public config: ConfigService,
+    private taxonomyService: TaxonomyService
   ) { }
 
   ngOnInit() {
+    this.fwCategory= _.map(this.taxonomyService.getTaxonomyCategories(), category => {return category} );
     this.isDesktop = this.utilService.isDesktopApp;
     this.getGuestUser();
     this.initLayout();
@@ -161,6 +165,10 @@ export class GuestProfileComponent implements OnInit {
 
   goBack() {
     this.navigationHelperService.goBack();
+  }
+
+  fwCategoryCheck(obj: any, category: string) {
+    return this.taxonomyService.getCategoryforHTML(obj, category);
   }
   
 }

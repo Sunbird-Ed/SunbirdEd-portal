@@ -10,6 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { map } from 'rxjs/operators';
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
+import { TaxonomyService } from '../../../../service/taxonomy.service';
 
 @Component({
   selector: 'app-curriculum-courses',
@@ -22,10 +23,11 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
   public isCustodianOrg = true;
   private unsubscribe$ = new Subject<void>();
   defaultBg = false;
+  fwCategory = [];
   public defaultFilters = {
-    board: [],
-    gradeLevel: [],
-    medium: []
+    // board: [],
+    // gradeLevel: [],
+    // medium: []
   };
 
   public selectedCourse: {};
@@ -39,10 +41,15 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
     public resourceService: ResourceService, public activatedRoute: ActivatedRoute,
     private router: Router, private navigationhelperService: NavigationHelperService,
     private coursesService: CoursesService, private telemetryService: TelemetryService,
-    private location: Location
+    private location: Location, private taxonomyService: TaxonomyService
   ) { }
 
   ngOnInit() {
+    this.fwCategory= _.map(this.taxonomyService.getTaxonomyCategories(), category => {return category} );
+    this.defaultFilters[this.fwCategory[0]] = [];
+    this.defaultFilters[this.fwCategory[1]] = [];
+    this.defaultFilters[this.fwCategory[2]] = [];
+    console.log("defaulFilters",this.defaultFilters);
     this.title = _.get(this.activatedRoute, 'snapshot.queryParams.title');
     if (!_.isEmpty(_.get(this.searchService, 'subjectThemeAndCourse.contents'))) {
       this.courseList = _.get(this.searchService, 'subjectThemeAndCourse.contents');

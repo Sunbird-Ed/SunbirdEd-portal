@@ -10,6 +10,7 @@ import { ExportToCsv } from 'export-to-csv';
 import { environment } from '@sunbird/environment';
 import { TransposeTermsPipe } from '../../pipes/transposeTerms/transposeTerms.pipe';
 // Dependency injection creates new instance each time if used in router sub-modules
+// import { TaxonomyService } from '../../../../service/taxonomy.service';
 @Injectable()
 export class UtilService {
   static singletonInstance: UtilService;
@@ -24,14 +25,14 @@ export class UtilService {
   public formData: any;
   public roleChanged = new BehaviorSubject('');
   public currentRole = this.roleChanged.asObservable();
-
-  constructor(private resourceService: ResourceService, private genericResourceService: GenericResourceService,) {
+  taxonomyCategories:any;
+  constructor(private resourceService: ResourceService, private genericResourceService: GenericResourceService) {
     if (!UtilService.singletonInstance) {
       UtilService.singletonInstance = this;
     }
     this._isDesktopApp = environment.isDesktopApp;
     return UtilService.singletonInstance;
-
+    this.taxonomyCategories = JSON.parse(localStorage.getItem('taxonomyCategories'));
   }
 
   get isDesktopApp() {
@@ -62,10 +63,10 @@ export class UtilService {
       downloadStatus: data.downloadStatus,
       description: data.description,
       rating: data.me_averageRating || '0',
-      subject: data.subject,
-      medium: data.medium,
+      [this.taxonomyCategories[3]]: data[this.taxonomyCategories[3]] ,
+      [this.taxonomyCategories[1]]: data[this.taxonomyCategories[1]],
       orgDetails: data.orgDetails || {},
-      gradeLevel: '',
+      [this.taxonomyCategories[2]]: '',
       contentType: data.contentType,
       topic: this.getTopicSubTopic('topic', data.topic),
       subTopic: this.getTopicSubTopic('subTopic', data.topic),
@@ -77,7 +78,7 @@ export class UtilService {
       badgeAssertions: data.badgeAssertions,
       organisation: data.organisation,
       hoverData: data.hoverData,
-      board: data.board || '',
+      [this.taxonomyCategories[0]]: data[this.taxonomyCategories[0]] || '',
       identifier: data.identifier,
       mimeType: data.mimeType,
       primaryCategory: data.primaryCategory,
@@ -97,11 +98,11 @@ export class UtilService {
       content['contentType'] = _.get(data.content, 'contentType') || '';
       content['organisation'] = _.get(data.content, 'orgDetails.orgName') || {};
       content['primaryCategory'] = _.get(data.content, 'primaryCategory');
-      content = { ...content, ..._.pick(data.content, ['subject', 'medium', 'gradeLevel']) };
+      content = { ...content, ..._.pick(data.content, [this.taxonomyCategories[3], this.taxonomyCategories[2], this.taxonomyCategories[1]]) };
     }
 
-    if (data.gradeLevel && data.gradeLevel.length) {
-      content['gradeLevel'] = _.isString(data.gradeLevel) ? data.gradeLevel : data.gradeLevel.join(',');
+    if (data[this.taxonomyCategories[2]] && data[this.taxonomyCategories[2]].length) {
+      content[this.taxonomyCategories[2]] = _.isString(data[this.taxonomyCategories[2]]) ? data[this.taxonomyCategories[2]] : data[this.taxonomyCategories[2]].join(',');
     }
     _.forIn(staticData, (value, key1) => {
       content[key1] = value;

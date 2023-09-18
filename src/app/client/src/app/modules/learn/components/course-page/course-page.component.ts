@@ -16,6 +16,7 @@ import { PublicPlayerService } from '@sunbird/public';
 import { takeUntil, map, mergeMap, filter, catchError, tap, pluck, switchMap, delay } from 'rxjs/operators';
 import { OfflineCardService } from '@sunbird/shared';
 import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
+import { TaxonomyService } from '../../../../service/taxonomy.service';
 
 @Component({
   templateUrl: './course-page.component.html'
@@ -51,6 +52,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
   public selectedCourseBatches: any;
   public showBatchInfo = false;
   public dataDrivenFilterEvent = new EventEmitter();
+  fwCategory = [];
   private myCoursesSearchQuery = JSON.stringify({
     'request': {
       'filters': {
@@ -96,7 +98,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public navigationhelperService: NavigationHelperService, public layoutService: LayoutService, private coursesService: CoursesService,
     private frameworkService: FrameworkService, private playerService: PlayerService, private searchService: SearchService,
     private offlineCardService: OfflineCardService, public contentManagerService: ContentManagerService,
-    public telemetryService: TelemetryService) {
+    public telemetryService: TelemetryService, private taxonomyService: TaxonomyService) {
     this.setTelemetryData();
   }
 
@@ -155,6 +157,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.fwCategory = _.map(this.taxonomyService.getTaxonomyCategories(), category => {return category} );
     this.initialize();
     this.subscription$ = this.mergeObservables();
     this.isDesktopApp = this.utilService.isDesktopApp;
@@ -220,7 +223,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       name: 'Course',
       organisationId: hashTagId || '*',
       filters,
-      facets: _.get(currentPageData, 'search.facets') || ['channel', 'gradeLevel', 'subject', 'medium'],
+      facets: _.get(currentPageData, 'search.facets') || ['channel', this.fwCategory[2], this.fwCategory[3], this.fwCategory[1]],
       params: _.get(this.configService, 'appConfig.CoursePageSection.contentApiQueryParams'),
       ...(!this.isUserLoggedIn() && {
         params: _.get(this.configService, 'appConfig.ExplorePage.contentApiQueryParams'),
@@ -323,7 +326,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       exists: ['batches.batchId'],
       sort_by: { 'me_averageRating': 'desc', 'batches.startDate': 'desc' },
       organisationId: this.hashTagId || '*',
-      facets: _.get(currentPageData, 'search.facets') || ['channel', 'gradeLevel', 'subject', 'medium'],
+      facets: _.get(currentPageData, 'search.facets') || ['channel', this.fwCategory[2], this.fwCategory[3], this.fwCategory[1]],
       fields: this.configService.urlConFig.params.CourseSearchField
     };
     return this.searchService.contentSearch(option)
@@ -332,9 +335,9 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
           this._courseSearchResponse = response;
           // For content(s) without subject name(s); map it to 'Others'
           _.forEach(_.get(response, 'result.content'), function (content) {
-            if (!_.get(content, 'subject') || !_.size(_.get(content, 'subject'))) { content['subject'] = ['Others']; }
+            if (!_.get(content, this.fwCategory[3]) || !_.size(_.get(content, this.fwCategory[3]))) { content[this.fwCategory[3]] = ['Others']; }
           });
-          const filteredContents = _.omit(_.groupBy(_.get(response, 'result.content'), 'subject'), ['undefined']);
+          const filteredContents = _.omit(_.groupBy(_.get(response, 'result.content'), this.fwCategory[3]), ['undefined']);
           for (const [key, value] of Object.entries(filteredContents)) {
             const isMultipleSubjects = key.split(',').length > 1;
             if (isMultipleSubjects) {
@@ -452,8 +455,8 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.selectedFilters = filterData;
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
-      if (element && element.code === 'board') {
-        collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
+      if (element && element.code === this.fwCategory[0]) {
+        collector[this.fwCategory[0]] = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
       }
       return collector;
     }, {});
@@ -747,7 +750,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     _.forEach(facets, (facet, key) => {
       switch (key) {
         case 'se_boards':
-        case 'board':
+        case this.fwCategory[0]:
           const boardData = {
             index: '1',
             label: _.get(this.resourceService, 'frmelmnts.lbl.boards'),
@@ -758,7 +761,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
           facetsData.push(boardData);
           break;
         case 'se_mediums':
-        case 'medium':
+        case this.fwCategory[1]:
           const mediumData = {
             index: '2',
             label: _.get(this.resourceService, 'frmelmnts.lbl.medium'),
@@ -769,7 +772,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
           facetsData.push(mediumData);
           break;
         case 'se_gradeLevels':
-        case 'gradeLevel':
+        case this.fwCategory[2]:
           const gradeLevelData = {
             index: '3',
             label: _.get(this.resourceService, 'frmelmnts.lbl.class'),
@@ -780,7 +783,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
           facetsData.push(gradeLevelData);
           break;
         case 'se_subjects':
-        case 'subject':
+        case this.fwCategory[3]:
           const subjectData = {
             index: '4',
             label: _.get(this.resourceService, 'frmelmnts.lbl.subject'),

@@ -13,6 +13,7 @@ import { WorkSpaceService } from '../../services';
 import * as _ from 'lodash-es';
 import { SuiModalService } from 'ng2-semantic-ui-v9';
 import { IImpressionEventInput } from '@sunbird/telemetry';
+import { TaxonomyService } from '../../../../service/taxonomy.service';
 /**
  * The  FlagReviewerComponent search for all the flag-reviewer
 */
@@ -93,9 +94,12 @@ export class FlagReviewerComponent extends WorkSpace implements OnInit, AfterVie
   */
   pageNumber = 1;
 
+  taxonomyCategories: any;
+
   /**
     * totalCount of the list
   */
+  
   totalCount: Number;
   /**
   sortByOption ;
@@ -151,7 +155,8 @@ export class FlagReviewerComponent extends WorkSpace implements OnInit, AfterVie
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
     config: ConfigService, permissionService: PermissionService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService,
+    public taxonomyService: TaxonomyService) {
     super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
@@ -187,6 +192,7 @@ export class FlagReviewerComponent extends WorkSpace implements OnInit, AfterVie
         this.queryParams = bothParams.queryParams;
         this.fecthFlagReviewerContent(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber, bothParams);
       });
+      this.taxonomyCategories = this.taxonomyService.getTaxonomyCategories();
   }
 
   /**
@@ -213,10 +219,10 @@ export class FlagReviewerComponent extends WorkSpace implements OnInit, AfterVie
           rolesMap['FLAG_REVIEWER'])),
         createdBy: { '!=': this.userService.userid },
         objectType: this.config.appConfig.WORKSPACE.objectType,
-        board: bothParams.queryParams.board,
-        subject: bothParams.queryParams.subject,
-        medium: bothParams.queryParams.medium,
-        gradeLevel: bothParams.queryParams.gradeLevel,
+        [this.taxonomyCategories[0]]: bothParams.queryParams[this.taxonomyCategories[0]],
+        [this.taxonomyCategories[3]]: bothParams.queryParams[this.taxonomyCategories[3]],
+        [this.taxonomyCategories[1]]: bothParams.queryParams[this.taxonomyCategories[1]],
+        [this.taxonomyCategories[2]]: bothParams.queryParams[this.taxonomyCategories[2]],
         primaryCategory: bothParams.queryParams.primaryCategory ?
         bothParams.queryParams.primaryCategory : (!_.isEmpty(primaryCategories) ? primaryCategories :
         this.config.appConfig.WORKSPACE.primaryCategory),

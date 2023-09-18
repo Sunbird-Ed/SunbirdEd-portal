@@ -13,6 +13,7 @@ import { CacheService } from '../../../shared/services/cache-service/cache.servi
 import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
 import {omit, groupBy, get, uniqBy, toLower, find, map as _map, forEach, each} from 'lodash-es';
 import * as publicService from '../../../public/services';
+import { TaxonomyService } from '../../../../service/taxonomy.service';
 interface Competency {
   title?: string,
   type?: string,
@@ -75,7 +76,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   public allCompetencyList : Array<Competency> = [];
   public popularCompetencyList : Array<Competency> = [];
   public coursesByCompetencies:any = {}
-
+  taxonomyCategories:any = [];
 
   constructor(public searchService: SearchService, public router: Router,
     public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
@@ -85,7 +86,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     public browserCacheTtlService: BrowserCacheTtlService, public orgDetailsService: OrgDetailsService,
     public navigationhelperService: NavigationHelperService, public layoutService: LayoutService, private schemaService: SchemaService,
     public contentManagerService: ContentManagerService, public telemetryService: TelemetryService,
-    private offlineCardService: OfflineCardService, private learnPageContentService : publicService.LearnPageContentService) {
+    private offlineCardService: OfflineCardService, private taxonomyService: TaxonomyService, private learnPageContentService : publicService.LearnPageContentService) {
     this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
     this.filterType = this.configService.appConfig.home.filterType;
     // this.redirectUrl = this.configService.appConfig.courses.searchPageredirectUrl;
@@ -205,9 +206,11 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
                   allComp.btnText="View courses";
                   allComp.expand=true;
                   for(let i of this.coursesByCompetencies.content){
-                    const lowerCaseSubject = i.subject.map(subject => subject.toLowerCase());
+                    if(i.subject){
+                      const lowerCaseSubject = i.subject.map(subject => subject.toLowerCase());
                     if(lowerCaseSubject.includes(value.name)){
                       dataList.push(i);
+                    }
                     }
                   }
                   allComp.expandData = dataList;
@@ -281,7 +284,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     filters = this.schemaService.schemaValidator({
       inputObj: filters || {},
       properties: _.get(this.schemaService.getSchema('content'), 'properties') || {},
-      omitKeys: ['key', 'sort_by', 'sortType', 'appliedFilters', 'selectedTab', 'mediaType', 'contentType', 'board', 'medium', 'gradeLevel', 'subject', 'description']
+      omitKeys: ['key', 'sort_by', 'sortType', 'appliedFilters', 'selectedTab', 'mediaType', 'contentType', 'description', ...this.taxonomyCategories]
     });
     filters.primaryCategory = filters.primaryCategory || _.get(this.allTabData, 'search.filters.primaryCategory');
     filters.mimeType = filters.mimeType || _.get(mimeType, 'values');
@@ -647,11 +650,11 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       const _searchFilters = this.cacheService.get('searchFiltersAll');
       let _cacheFilters = {
         primaryCategory: [..._.intersection(filterData['primaryCategory'], _searchFilters['primaryCategory']), ..._.difference(filterData['primaryCategory'], _searchFilters['primaryCategory'])],
-        se_boards: (_.get(filterData, 'se_boards') && filterData['se_boards'].length > 0) ? [_.union(_searchFilters['se_boards'], filterData['se_boards'])[0]] : [],
-        se_mediums: [..._.intersection(filterData['se_mediums'], _searchFilters['se_mediums']), ..._.difference(filterData['se_mediums'], _searchFilters['se_mediums'])],
-        se_gradeLevels: [..._.intersection(filterData['se_gradeLevels'], _searchFilters['se_gradeLevels']), ..._.difference(filterData['se_gradeLevels'], _searchFilters['se_gradeLevels'])],
-        se_subjects: [..._.intersection(filterData['se_subjects'], _searchFilters['se_subjects']),
-        ..._.difference(filterData['se_subjects'], _searchFilters['se_subjects'])].map((e) => { return _.startCase(e) }),
+        [this.taxonomyCategories[0]]: (_.get(filterData, this.taxonomyCategories[0]) && filterData[this.taxonomyCategories[0]].length > 0) ? [_.union(_searchFilters[this.taxonomyCategories[0]], filterData[this.taxonomyCategories[0]])[0]] : [],
+        [this.taxonomyCategories[1]]: [..._.intersection(filterData[this.taxonomyCategories[1], _searchFilters[this.taxonomyCategories[1]]]), ..._.difference(filterData[this.taxonomyCategories[1]], _searchFilters[this.taxonomyCategories[1]])],
+        [this.taxonomyCategories[2]]: [..._.intersection(filterData[this.taxonomyCategories[2]], _searchFilters[this.taxonomyCategories[2]]), ..._.difference(filterData[this.taxonomyCategories[2]], _searchFilters[this.taxonomyCategories[2]])],
+        [this.taxonomyCategories[3]]: [..._.intersection(filterData[this.taxonomyCategories[3]], _searchFilters[this.taxonomyCategories[3]]),
+        ..._.difference(filterData[this.taxonomyCategories[3]], _searchFilters[this.taxonomyCategories[3]])].map((e) => { return _.startCase(e) }),
         selectedTab: _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'all'
       };
       for (const key in _cacheFilters) {
@@ -668,8 +671,8 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
-      if (element.code === 'board') {
-        collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
+      if (element.code === this.taxonomyCategories[0]) {
+        collector[this.taxonomyCategories[0]] = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
       }
       return collector;
     }, {});
@@ -684,8 +687,8 @@ public viewAll(event) {
     searchQueryParams['exists'] = undefined;
     searchQueryParams['primaryCategory'] = (this.queryParams.primaryCategory && this.queryParams.primaryCategory.length)
      ? this.queryParams.primaryCategory : [event.name];
-     (this.queryParams.primaryCategory && this.queryParams.primaryCategory.length) ? (searchQueryParams['subject'] = [event.name]) :
-    (searchQueryParams['se_subjects'] = this.queryParams.se_subjects);
+     (this.queryParams.primaryCategory && this.queryParams.primaryCategory.length) ? (searchQueryParams[this.taxonomyCategories[3]] = [event.name]) :
+    (searchQueryParams[this.taxonomyCategories[3]] = this.queryParams[this.taxonomyCategories[3]]);
     searchQueryParams['selectedTab'] = 'all';
   if (this.queryParams.channel) {
     searchQueryParams['channel'] = this.queryParams.channel;

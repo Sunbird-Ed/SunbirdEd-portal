@@ -29,6 +29,7 @@ import { CertificateDownloadAsPdfService } from 'sb-svg2pdf-v13';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 import { FieldConfig, FieldConfigOption } from '@project-sunbird/common-form-elements-full';
 import { CsCertificateService } from '@project-sunbird/client-services/services/certificate/interface';
+import { TaxonomyService } from '../../../../service/taxonomy.service';
 
 @Component({
   templateUrl: './profile-page.component.html',
@@ -97,6 +98,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   subPersona: string[];
   isConnected = true;
   showFullScreenLoader = false;
+  fwCategory = [];
   avatarConfig = {
     size: this.configService.constants.SIZE.LARGE,
     view: this.configService.constants.VIEW.VERTICAL,
@@ -111,7 +113,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public navigationhelperService: NavigationHelperService, public certRegService: CertRegService,
     private telemetryService: TelemetryService, public layoutService: LayoutService, private formService: FormService,
     private certDownloadAsPdf: CertificateDownloadAsPdfService, private connectionService: ConnectionService,
-    @Inject('CS_CERTIFICATE_SERVICE') private CsCertificateService: CsCertificateService) {
+    @Inject('CS_CERTIFICATE_SERVICE') private CsCertificateService: CsCertificateService, private taxonomyService: TaxonomyService) {
     this.getNavParams();
   }
 
@@ -120,6 +122,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.fwCategory= _.map(this.taxonomyService.getTaxonomyCategories(), category => {return category} );
     this.isDesktopApp = this.utilService.isDesktopApp;
 
     this.activatedRoute.queryParams.subscribe((params) => {
@@ -688,14 +691,18 @@ private async getSubPersonaConfig(persona: string, userLocation: any): Promise<s
   return subPersonaFieldConfigOption;
 }
 
-public onLocationModalClose(event) {
-  this.showEditUserDetailsPopup = !this.showEditUserDetailsPopup;
-  this.showFullScreenLoader = !event?.isSubmitted ? false : true;
-  setTimeout(() => {
-    if (this.showFullScreenLoader) {
-      this.showFullScreenLoader = false;
-      this.toasterService.error(this.resourceService.messages.emsg.m0005);
-    }
-  }, 5000);
-}
+  public onLocationModalClose(event) {
+    this.showEditUserDetailsPopup = !this.showEditUserDetailsPopup;
+    this.showFullScreenLoader = !event?.isSubmitted ? false : true;
+    setTimeout(() => {
+      if (this.showFullScreenLoader) {
+        this.showFullScreenLoader = false;
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      }
+    }, 5000);
+  }
+
+  fwCategoryCheck(obj: any, category: string) {
+    return this.taxonomyService.getCategoryforHTML(obj, category);
+  }
 }

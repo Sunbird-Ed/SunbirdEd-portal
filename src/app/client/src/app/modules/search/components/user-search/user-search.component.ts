@@ -12,6 +12,7 @@ import { UserSearchService } from './../../services';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { ProfileService } from '@sunbird/profile';
 import {takeUntil} from 'rxjs/operators';
+import { TaxonomyService } from '../../../../service/taxonomy.service';
 
 @Component({
   selector: 'app-user-search',
@@ -127,7 +128,7 @@ export class UserSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   layoutConfiguration: any;
   public unsubscribe$ = new Subject<void>();
   avatarConfig: { size: any;  view: any;  isTitle:boolean };
-
+  taxonomyCategories: any;
   /**
      * Constructor to create injected service(s) object
      * Default method of Draft Component class
@@ -142,7 +143,7 @@ export class UserSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     resourceService: ResourceService, toasterService: ToasterService,
     config: ConfigService, user: UserService, userSearchService: UserSearchService,
     public permissionService: PermissionService, public profileService: ProfileService,
-    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
+    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService, private taxonomyService: TaxonomyService) {
     this.searchService = searchService;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -157,7 +158,7 @@ export class UserSearchComponent implements OnInit, AfterViewInit, OnDestroy {
       view: this.config.constants.VIEW.VERTICAL,
       isTitle:false
     };
-   
+    this.taxonomyCategories = this.taxonomyService.getTaxonomyCategories();
   }
   /**
    * This method sets the make an api call to get all search data with page No and offset
@@ -169,9 +170,9 @@ export class UserSearchComponent implements OnInit, AfterViewInit, OnDestroy {
       filters: {
         'rootOrgId': this.rootOrgId,
         'profileUserType.type': this.queryParams.Usertype,
-        'framework.medium': this.queryParams.medium,
-        'framework.gradeLevel': this.queryParams.gradeLevel,
-        'framework.subject': this.queryParams.subject
+         ['framework.'+this.taxonomyCategories[1]]: this.queryParams[this.taxonomyCategories[1]],
+         ['framework.'+this.taxonomyCategories[2]]: this.queryParams[this.taxonomyCategories[2]],
+         ['framework.'+this.taxonomyCategories[3]]: this.queryParams[this.taxonomyCategories[3]]
       },
       limit: this.pageLimit,
       pageNumber: this.pageNumber,

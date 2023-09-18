@@ -42,6 +42,7 @@ import {
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
 import {Location} from '@angular/common';
+import { TaxonomyService } from '../../../../service/taxonomy.service';
 
 @Component({
   selector: 'app-observation-listing',
@@ -79,6 +80,7 @@ export class ObservationListingComponent
   showEditUserDetailsPopup: any = true;
   payload: any;
   public limit  = 50;
+  fwCategory = [];
   constructor(
     public searchService: SearchService,
     public router: Router,
@@ -105,6 +107,7 @@ export class ObservationListingComponent
     config: ConfigService,
     private observationUtil: ObservationUtilService,
     private location: Location,
+    private taxonomyService: TaxonomyService
   ) {
     this.config = config;
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -112,6 +115,7 @@ export class ObservationListingComponent
   }
 
   async ngOnInit() {
+    this.fwCategory= _.map(this.taxonomyService.getTaxonomyCategories(), category => {return category} );
     this.initLayout();
     this.showEditUserDetailsPopup = await this.observationUtil.getProfileInfo();
      if (!this.showEditUserDetailsPopup) {
@@ -235,15 +239,15 @@ export class ObservationListingComponent
         identifier: value.solutionId,
         solutionId: value.solutionId,
         programId: value.programId,
-        medium: value.language,
+        [this.fwCategory[1]]: value.language,
         organization: value.creator,
         _id: value._id,
-        subject: subject
+        [this.fwCategory[3]]: subject
       };
       if (value.creator && value.creator.length) {
         const creator: any = [];
         creator.push(value.creator);
-        obj['gradeLevel'] = creator;
+        obj[this.fwCategory[2]] = creator;
       }
       result.push(obj);
       this.contentList = result;
@@ -334,7 +338,7 @@ export class ObservationListingComponent
       solutionId: data.solutionId,
       observationId: data._id,
       solutionName: data.name,
-      programName: data.subject[0],
+      programName: data[this.fwCategory[3]][0],
       entityType:data.entityType
     };
     this.router.navigate(['observation/details'], {

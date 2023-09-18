@@ -13,7 +13,7 @@ import TreeModel from 'tree-model';
 import { UserService, GeneraliseLabelService } from '@sunbird/core';
 import { TocCardType } from '@project-sunbird/common-consumption';
 import { ITelemetryShare, ContentUtilsServiceService } from '@sunbird/shared';
-
+import { TaxonomyService } from '../../../../../../../service/taxonomy.service';
 @Component({
   selector: 'app-public-course-player',
   templateUrl: './public-course-player.component.html',
@@ -43,6 +43,7 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
   shareLink: string;
   @ViewChild('joinTrainingModal') joinTrainingModal;
   isExpandedAll: boolean;
+  fwCategory = [];
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -54,12 +55,14 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
     private userService: UserService,
     public telemetryService: TelemetryService,
     private contentUtilsServiceService: ContentUtilsServiceService,
-    public generaliseLabelService: GeneraliseLabelService
+    public generaliseLabelService: GeneraliseLabelService,
+    private taxonomyService: TaxonomyService
   ) {
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
   }
 
   ngOnInit() {
+    this.fwCategory= _.map(this.taxonomyService.getTaxonomyCategories(), category => {return category} );
     const routeParams: any = { ...this.activatedRoute.snapshot.params };
     this.courseId = routeParams.courseId;
     const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
@@ -218,5 +221,8 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
       }
     };
     this.telemetryService.interact(interactData);
+  }
+  fwCategoryCheck(obj: any, category: string) {
+    return this.taxonomyService.getCategoryforHTML(obj, category);
   }
 }

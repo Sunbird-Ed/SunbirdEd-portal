@@ -14,6 +14,7 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui-v9';
 import { debounceTime, map } from 'rxjs/operators';
 import { ContentIDParam } from '../../interfaces/delteparam';
+import { TaxonomyService } from '../../../../service/taxonomy.service';
 
 @Component({
   selector: 'app-all-content',
@@ -192,7 +193,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
    * To store modal object of first yes/No modal
    */
   private deleteModal: any;
-
+  taxonomyCategories:any;
   /**
    * To show/hide collection modal
    */
@@ -216,7 +217,8 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
-    config: ConfigService, public modalService: SuiModalService) {
+    config: ConfigService, public modalService: SuiModalService,
+    public taxonomyService:TaxonomyService) {
     super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
@@ -229,6 +231,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
       'loaderMessage': this.resourceService.messages.stmsg.m0110,
     };
     this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
+    this.taxonomyCategories = this.taxonomyService.getTaxonomyCategories();
   }
 
   ngOnInit() {
@@ -277,10 +280,10 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
         createdBy: this.userService.userid,
         // tslint:disable-next-line:max-line-length
         primaryCategory: _.get(bothParams, 'queryParams.primaryCategory') || (!_.isEmpty(primaryCategories) ? primaryCategories : this.config.appConfig.WORKSPACE.primaryCategory),
-        board: bothParams.queryParams.board,
-        subject: bothParams.queryParams.subject,
-        medium: bothParams.queryParams.medium,
-        gradeLevel: bothParams.queryParams.gradeLevel
+        [this.taxonomyCategories[0]]: bothParams.queryParams[this.taxonomyCategories[0]],
+        [this.taxonomyCategories[3]]: bothParams.queryParams[this.taxonomyCategories[3]],
+        [this.taxonomyCategories[1]]: bothParams.queryParams[this.taxonomyCategories[1]],
+        [this.taxonomyCategories[2]]: bothParams.queryParams[this.taxonomyCategories[2]]
       },
       limit: limit,
       offset: (pageNumber - 1) * (limit),
@@ -376,7 +379,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
             });
 
             _.forEach(collections, collection => {
-              const obj = _.pick(collection, ['contentType', 'board', 'medium', 'name', 'gradeLevel', 'subject', 'channel']);
+              const obj = _.pick(collection, ['contentType','name','channel', ...this.taxonomyCategories]);
               obj['channel'] = channelMapping[obj.channel];
               this.collectionData.push(obj);
           });
@@ -384,10 +387,10 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
           this.headers = {
             type: 'Type',
             name: 'Name',
-            subject: 'Subject',
-            grade: 'Grade',
-            medium: 'Medium',
-            board: 'Board',
+            [this.taxonomyCategories[3]]: this.taxonomyService.capitalizeFirstLetter(this.taxonomyCategories[3]),
+            [this.taxonomyCategories[2]]: this.taxonomyService.capitalizeFirstLetter(this.taxonomyCategories[2]),
+            [this.taxonomyCategories[1]]: this.taxonomyService.capitalizeFirstLetter(this.taxonomyCategories[1]),
+            [this.taxonomyCategories[0]]: this.taxonomyService.capitalizeFirstLetter(this.taxonomyCategories[0]),
             channel: 'Tenant Name'
             };
             if (!_.isUndefined(modal)) {
