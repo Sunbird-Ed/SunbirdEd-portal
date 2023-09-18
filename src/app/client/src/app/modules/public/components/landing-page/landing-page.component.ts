@@ -21,7 +21,7 @@ export class LandingPageComponent implements OnInit {
   layoutConfiguration;
   taxonomyCategories:any = {};
 
-  constructor(public layoutService: LayoutService, private landingPageContentService: publicService.LandingPageContentService, public search: SearchService, 
+ constructor(public layoutService: LayoutService, private landingPageContentService: publicService.LandingPageContentService, public search: SearchService, 
     private router: Router, @Inject(TaxonomyService) private taxonomyService: TaxonomyService, public resourceService: ResourceService) { }
 
   ngOnInit() {
