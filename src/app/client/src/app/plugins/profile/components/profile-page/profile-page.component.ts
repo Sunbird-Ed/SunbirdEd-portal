@@ -62,6 +62,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   userFrameWork: any;
   telemetryImpression: IImpressionEventInput;
   myFrameworkEditEdata: IInteractEventEdata;
+  deleteAccountEdata: IInteractEventEdata;
   editProfileInteractEdata: IInteractEventEdata;
   editMobileInteractEdata: IInteractEventEdata;
   editEmailInteractEdata: IInteractEventEdata;
@@ -500,10 +501,19 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       type: 'click',
       pageid: 'profile-read'
     };
+    this.deleteAccountEdata={
+      id: 'delete-user-account',
+      type: 'click',
+      pageid: 'profile-read'
+    };
   }
 
   navigate(url, formAction) {
     this.router.navigate([url], {queryParams: {formaction: formAction}});
+  }
+
+  navigatetoRoute(url) {
+    this.router.navigate([url]);
   }
 
   ngAfterViewInit() {

@@ -1,0 +1,14 @@
+<div class="sb-mat__modal">
+  <div mat-dialog-title class="mb-0">
+    <button aria-label="close dialog" mat-dialog-close class="close-btn"></button>
+  </div>
+  <mat-dialog-content>
+    <div class="sb-mat__modal__content d-flex flex-jc-center py-16 px-16 ">
+      <div role="heading" aria-level="1" class=" delete__title">Are you sure you want to delete your account ? This action is irreversible!</div>
+    </div>
+  <app-otp-popup [otpData]="otpData" [redirectToLogin]="false"
+    (verificationSuccess)="updateProfile($event)" (closeContactForm)="closeModal()"
+    (redirectToParent)="showParentForm($event)">
+  </app-otp-popup>
+</mat-dialog-content>
+<router-outlet></router-outlet>
