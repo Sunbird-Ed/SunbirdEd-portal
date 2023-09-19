@@ -134,7 +134,6 @@
     "ngx-infinite-scroll": "^8.0.2",
     "ngx-order-pipe": "^2.0.4",
     "ngx-slick": "0.2.1",
-    "node-gyp": "^9.4.0",
     "rxjs": "^6.5.5",
     "sass": "^1.56.1",
     "sb-svg2pdf": "0.0.11",
