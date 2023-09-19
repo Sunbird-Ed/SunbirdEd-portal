@@ -199,6 +199,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
     this.resourceService = resourceService;
     this.config = config;
     this.state = 'published';
+    this.taxonomyCategories = this.taxonomyService.getTaxonomyCategories();
   }
 
   ngOnInit() {
