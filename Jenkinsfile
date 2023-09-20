@@ -55,15 +55,14 @@ snyk auth ${SNYK_TOKEN}
                 // check if params.buildDockerImage is true, then install snyk and run scan
                 stage('Snyk Scan') {
                     if (params.buildDockerImage == 'true') {
-                        sh '''
-                    export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+                        sh """
+export NVM_DIR="\$HOME/.nvm"
+[ -s "\$NVM_DIR/nvm.sh" ] && . "\$NVM_DIR/nvm.sh"
+[ -s "\$NVM_DIR/bash_completion" ] && . "\$NVM_DIR/bash_completion"
 snyk container test ${hub_org}/player:${build_tag} --json | snyk-to-html -d -o snyk_results.html
-                    '''
+"""
                     }
                 }
-
                 stage('ArchiveArtifacts') {
                     archiveArtifacts "metadata.json"
                     // archive the html report for snyk scan
