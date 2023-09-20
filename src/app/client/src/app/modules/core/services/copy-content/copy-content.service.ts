@@ -208,10 +208,10 @@ export class CopyContentService {
       url = `/workspace/content/edit/content/${copiedIdentifier}/draft/${contentData.framework}/Draft`;
     } else if (_.get(contentData,'mimeType') === 'application/vnd.sunbird.questionset') {
       url = `/workspace/edit/QuestionSet/${copiedIdentifier}/allcontent/Draft`;
-      setTimeout(() => {
-        window.open(this.hostUrl + url, "_self");
-      }, 1000);
-      return;
+      // setTimeout(() => {
+      //   window.open(this.hostUrl + url, "_self");
+      // }, 1000);
+      // return;
     }
     else {
       url = `/workspace/content/edit/generic/${copiedIdentifier}/uploaded/${contentData.framework}/Draft`;
