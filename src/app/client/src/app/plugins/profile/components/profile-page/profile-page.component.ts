@@ -47,6 +47,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   totalContributions: Number;
   attendedTraining: Array<object>;
   roles: Array<string>;
+  userRoles;
   showMoreRoles = true;
   showMoreTrainings = true;
   showMoreCertificates = true;
@@ -59,6 +60,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   orgDetails: any = [];
   showContactPopup = false;
   showEditUserDetailsPopup = false;
+  disableDelete=true
   userFrameWork: any;
   telemetryImpression: IImpressionEventInput;
   myFrameworkEditEdata: IInteractEventEdata;
@@ -122,7 +124,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.isDesktopApp = this.utilService.isDesktopApp;
-
     this.activatedRoute.queryParams.subscribe((params) => {
       if (params['showEditUserDetailsPopup']) {
         this.showEditUserDetailsPopup = true;
@@ -224,11 +225,15 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     });
-    let userRoles;
     if (_.get(this.userProfile, 'roles') && !_.isEmpty(this.userProfile.roles)) {
-      userRoles = _.map(this.userProfile.roles, 'role');
+      this.userRoles = _.map(this.userProfile.roles, 'role');
     }
-    _.forEach(userRoles, (value, key) => {
+    if (_.includes(this.userRoles, 'ORG_ADMIN')) {
+      this.disableDelete = true
+    } else {
+      this.disableDelete = false
+    }
+    _.forEach(this.userRoles, (value, key) => {
       if (value !== 'PUBLIC') {
         const roleName = _.find(this.userProfile.roleList, { id: value });
         if (roleName) {
@@ -513,7 +518,12 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   navigatetoRoute(url) {
-    this.router.navigate([url]);
+    if (_.includes(this.userRoles, 'ORG_ADMIN')) {
+      let msg = "You are the only Org Admin in the organization and hence will not be able to delete your account. Please contact support!"
+      this.toasterService.warning(msg);
+    }else{
+      this.router.navigate([url]);
+    }
   }
 
   ngAfterViewInit() {

@@ -477,9 +477,8 @@
           <!-- <span class="fmedium font-w-bold pl-4">Delete Account</span> -->
         </div>
       </div>
-      <button class="sb-btn sb-btn-normal sb-btn-error computer only" appTelemetryInteract appOnlineOnly
-        [telemetryInteractEdata]="myFrameworkEditEdata" (click)="navigatetoRoute('/profile/delete-account')" tabindex="0">Delete Your
-        Account</button>
+      <button class="sb-btn sb-btn-normal computer only" appTelemetryInteract appOnlineOnly
+        [telemetryInteractEdata]="deleteAccountEdata" (click)="navigatetoRoute('/profile/delete-account')" tabindex="0" [class.sb-btn-gray]="disableDelete" [class.sb-btn-outline-primary]="!disableDelete">DELETE YOUR ACCOUNT</button>
     </div>
   </div>
   <!-- Delete Account computer view ends-->
@@ -489,23 +488,17 @@
     <div class="mb-15 d-flex flex-ai-center flex-dc">
       <!-- <span class="fmedium font-w-bold text-center">Delete Account</span> -->
     </div>
-    <div class="d-flex flex-ai-center flex-jc-center" appTelemetryInteract
-      [telemetryInteractEdata]="myFrameworkEditEdata" tabindex="0" (click)="navigatetoRoute('/profile/delete-account')">
-      <button appOnlineOnly class="sb-btn sb-btn-error delete sb-btn-xs mt-30">Delete Your Account</button>
+    <div class="d-flex flex-ai-center flex-jc-center" appTelemetryInteract [telemetryInteractEdata]="deleteAccountEdata"
+      tabindex="0" (click)="navigatetoRoute('/profile/delete-account')">
+      <button appOnlineOnly class="sb-btn sb-btn-normal delete sb-btn-xs mt-30" [class.sb-btn-gray]="disableDelete"
+        [class.sb-btn-outline-primary]="!disableDelete">DELETE YOUR ACCOUNT</button>
     </div>
   </div>
   <!-- Delete Account mobile view ends-->
 </section>
-
 </div>
 </div>
 </div>
-
-<!-- 
-<button class="sb-btn sb-btn-normal sb-btn-error delete" appTelemetryInteract
-(click)="navigate('/profile/delete-managed-user','submit')"
-               tabindex="0">Delete Profile</button> -->
-
                
 <app-modal-wrapper #profileModal *ngIf="showEdit" [config]="{disableClose: false, panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="showEdit = !showEdit">
   <ng-template sbModalContent let-data>
