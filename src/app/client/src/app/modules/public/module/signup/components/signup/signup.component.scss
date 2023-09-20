@@ -164,3 +164,87 @@ body {
 .sb-btn-primary {
     border-radius: 8px!important;
 }
+
+.login-right {
+    .heading {
+        font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 36px;
+        // letter-spacing: -0.2;
+        color: rgba(0, 0, 0, 0.87);
+    }
+
+    .login-container {
+        margin-left: 20%;
+        margin-right: 20%;
+        align-items: center;
+
+        input {
+            width: 300px !important;
+            border-radius: 8px;
+            font-family: 'Lato', Arial, Helvetica, sans-serif;
+            font-size: 14px !important;
+            font-weight: 400 !important;
+            color: rgba(0, 0, 0, 0.6) !important;
+        }
+
+        .field {
+            width: 300px !important;
+        }
+
+        input:focus {
+            border-color: #85b7d9 !important;
+        }
+
+        .label {
+            margin-bottom: 0.3em !important;
+        }
+
+        ::placeholder {
+            font-family: 'Lato', Arial, Helvetica, sans-serif;
+            font-size: 14px !important;
+            font-weight: 400 !important;
+            color: rgba(0, 0, 0, 0.4) !important;
+        }
+
+        .pswd-field {
+            margin-top: 20px;
+        }
+
+        .register-message {
+            height: 20px;
+            margin-top: 8px;
+            color: #9f3a38;
+            font-family: 'Lato', Arial, Helvetica, sans-serif;
+            font-size: 14px;
+        }
+
+        .register-success-message {
+            height: 20px;
+            margin-top: 8px;
+            color: #26b048;
+            font-family: 'Lato', Arial, Helvetica, sans-serif;
+            font-size: 14px;
+        }
+
+        .ui.blue {
+            background-color: rgb(55, 82, 205);
+            width: 300px;
+            border-radius: 8px;
+        }
+
+        .login-link {
+            display: block;
+            width: 300px;
+            font-family: 'Lato', Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.22;
+            color: rgb(35, 134, 252);
+            margin-top: 35px;
+            text-align: center;
+            text-decoration: none;
+        }
+    }
+}

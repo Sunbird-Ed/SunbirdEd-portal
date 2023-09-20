@@ -1,5 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
-import { Subject, Subscription } from 'rxjs';
+import { Subject, Subscription, throwError } from 'rxjs';
+import { RegisterService } from '../../../../services/login/register.service';
+
 import {
   ResourceService,
   NavigationHelperService
@@ -11,6 +13,7 @@ import { IStartEventInput, IImpressionEventInput, IInteractEventEdata } from '@s
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RecaptchaComponent } from 'ng-recaptcha';
+import { catchError } from 'rxjs/operators';
 
 export enum SignUpStage {
   BASIC_INFO = 'basic_info',
@@ -44,10 +47,17 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   routeParams: any;
   get Stage() { return SignUpStage; }
   slideIndex = 1;
+  registerErrorMessage = '';
+  registerSuccessMessage = '';
+  firstNameFieldError = false;
+  lastNameFieldError = false;
+  emailFieldError = false;
+  passwordFieldError = false;
+  confirmPasswordFieldError = false;
 
   constructor(public resourceService: ResourceService, public tenantService: TenantService, public deviceDetectorService: DeviceDetectorService,
     public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
-    public navigationhelperService: NavigationHelperService, private router: Router) {
+    public navigationhelperService: NavigationHelperService, private router: Router, private registerService: RegisterService) {
   }
 
   ngOnInit() {
@@ -199,6 +209,81 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
 
   redirectToLogin () {
     window.location.href = '/resources';
+  }
+
+  register() {
+    let firstName: any = document.getElementById("first_name");
+    let lastName: any = document.getElementById("last_name");
+    let email: any = document.getElementById("email");
+    let username: any = document.getElementById("username");
+    let password: any = document.getElementById("password");
+    let confirmPassword: any = document.getElementById("confirm_password");
+
+    // Validation block
+
+    this.firstNameFieldError = false;
+    this.lastNameFieldError = false;
+    this.emailFieldError = false;
+    this.passwordFieldError = false;
+    this.confirmPasswordFieldError = false
+    if (firstName.value === "" && lastName.value === "" && password.value === "") {
+      this.registerErrorMessage = "All the fields are required";
+      this.firstNameFieldError = true;
+      this.lastNameFieldError = true;
+      this.emailFieldError = true;
+      this.passwordFieldError = true;
+      this.confirmPasswordFieldError = true
+    } else if (firstName.value === "") {
+      this.firstNameFieldError = true;
+      this.registerErrorMessage = "Please enter first name";
+    } else if (lastName.value === "") {
+      this.lastNameFieldError = true;
+      this.registerErrorMessage = "Please enter last name";
+    } else if (email.value === "") {
+      this.emailFieldError = true;
+      this.registerErrorMessage = "Please enter email id";
+    } else if (password.value === "") {
+      this.passwordFieldError = true;
+      this.registerErrorMessage = "Please enter password";
+    } else if (password.value === "") {
+      this.confirmPasswordFieldError = true;
+      this.registerErrorMessage = "Please confirm password";
+    } else if (password.value !== confirmPassword.value) {
+      this.passwordFieldError = true;
+      this.confirmPasswordFieldError = true;
+      this.registerErrorMessage = "Password & confirm password does not match";
+    } else {
+      this.registerErrorMessage = "";
+    }
+
+    if (this.registerErrorMessage !== "") {
+      return;
+    }
+
+    const data = {
+      request: {
+        firstName: firstName.value,
+        lastName: lastName.value,
+        userName: email.value,
+        email: email.value,
+        emailVerified: true,
+        password: password.value
+      }
+    }
+    this.registerService.register(data).pipe(catchError(error => {
+      // const statusCode = error.status;
+      this.registerErrorMessage = error.error.params.errmsg;
+      return throwError(error);
+    })
+    ).subscribe(res => {
+      firstName.value = "";
+      lastName.value = "";
+      email.value = "";
+      password.value = "";
+      confirmPassword.value = "";
+      this.registerSuccessMessage = "Registration successfull, please login."
+      console.log('Register', res);
+    })
   }
   
 }

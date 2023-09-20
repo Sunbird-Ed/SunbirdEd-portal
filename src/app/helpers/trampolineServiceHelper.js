@@ -239,13 +239,19 @@ module.exports = {
       body: {
         params: {},
         request: {
-          firstName: payload['name'],
+          // firstName: payload['name'],
+          // email: payload['email'],
+          // emailVerified: payload['email_verified'],
+          // userName: payload['sub'],
+          // phone: payload['phone_number'],
+          // phoneVerified: payload['phone_number_verified'],
+          // provider: payload['iss']
+          firstName: payload['firstName'],
+          lastName: payload['lastName'],
           email: payload['email'],
-          emailVerified: payload['email_verified'],
-          userName: payload['sub'],
-          phone: payload['phone_number'],
-          phoneVerified: payload['phone_number_verified'],
-          provider: payload['iss']
+          emailVerified: payload['emailVerified'],
+          userName: payload['email'],
+          password: payload['password']
         }
       },
       json: true
