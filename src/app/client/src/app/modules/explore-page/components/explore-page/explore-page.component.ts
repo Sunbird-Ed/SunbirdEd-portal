@@ -18,6 +18,29 @@ import { ProfileService } from '@sunbird/profile';
 import { SegmentationTagService } from '../../../core/services/segmentation-tag/segmentation-tag.service';
 import * as publicService from '../../../public/services';
 import { TaxonomyService } from '../../../../service/taxonomy.service';
+import { IContent } from '@project-sunbird/common-consumption';
+
+interface IContentSearchRequest {
+    request: {
+      filters: IFilters;
+      query?: string;
+      fields: string[];
+      softConstraints: ISoftConstraints;
+      mode: string,
+      facets: string[]
+    };
+  }
+
+  interface IFilters {
+    channel: string;
+    primaryCategory: string[];
+    visibility: string[];
+  }
+
+  interface ISoftConstraints {
+    badgeAssertions?: number;
+    channel?: number;
+  }
 
 @Component({
     selector: 'app-explore-page-component',
@@ -97,6 +120,12 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     competencyData: any;
     topicsData: any;
     fwCategory = [];
+    searchRequest: IContentSearchRequest;
+    recentlyPublishedList: IContent[] = [];
+    sortBy: string;
+    count: number;
+    recentlyPublishedTitle: string;
+    sliderConfig = { slidesToShow: 3, slidesToScroll: 3 };
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     }
@@ -261,6 +290,30 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             console.log(this.configContent);
           })
     }
+
+    public fetchRequestContents() {
+        for (let section of this.contentSections){
+            if(section.title.toLowerCase()=="recently published courses"){
+                this.searchRequest=section.searchRequest;
+                this.recentlyPublishedTitle=section.title;
+            }
+        }
+        if (this.searchRequest) {
+            const option = {...this.searchRequest.request};
+            const params = {orgdetails: 'orgName,email'};
+            option['params']=params;
+            this.searchService.contentSearch(option).subscribe((res: any) => {
+            this.recentlyPublishedList = this.sortBy ? res.result.content.concat().sort(this.sort(this.sortBy)) : res.result.content;
+            this.count = res.count;
+          });
+        }
+      }
+
+    public sort = (key) => {
+        return (a, b) => (a[key] > b[key]) ? 1 : ((b[key] > a[key]) ? -1 : 0);
+      }
+
+    
 
     public getBrowseByData(title : string){
         if(title.toLowerCase() == "competency"){
@@ -570,9 +623,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                             this.contentSections = [];
                                             const searchSections = currentPageData.sections.filter(sec => sec.facetKey === 'search');
                                             searchSections.forEach((item) => {
-                                                this.contentSections.push(this.getContentSection(item, option));
+                                                this.contentSections.push(this.getContentSection(item, option));  
                                             });
-
+                                            console.log("this.contentSections ", this.contentSections);
+                                            this.fetchRequestContents();
                                         }
                                     }
                                     return _map(sections, (section) => {

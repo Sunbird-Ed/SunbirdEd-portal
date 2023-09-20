@@ -1,6 +1,6 @@
 <div
   [ngClass]="[layoutConfiguration ? 'sbt-fluid-content-bg':'', (getSelectedTab() === 'home' || getSelectedTab() === 'explore') ? '': '']">
-  <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'"
+  <div class="sb-g ui container" [ngClass]="layoutConfiguration ? 'sb-g sbt-page-content' : 'sb-g'"
     [appTelemetryImpression]="telemetryImpression">
     <!-- Filter for web version -->
     <!-- `isFilterEnabled` reference from current page data -->
@@ -150,8 +150,23 @@
             </sb-pills-grid>
             <hr class="section-hr my-32" />
           </div>
+        <!-- Recently published courses -->
+        <div>
+          <div class="popular-card-title d-flex flex-jc-space-between flex-ai-center mb-32">
+            {{recentlyPublishedTitle}}
+            <span><button class="com-secondary-btn">Explore</button></span>
+          </div>
+          <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="sliderConfig" (init)="slickInit($event)"
+            (breakpoint)="breakpoint($event)" (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
+            <div ngxSlickItem class="slide" *ngFor='let course of recentlyPublishedList;'>
+                <compass-course-card class="" [data]="course"></compass-course-card>
+            </div>
+          </ngx-slick-carousel>
+        </div>
+        <!-- Recently published courses -->
+
           <div *ngIf="getSelectedTab() === 'home'">
-            <div *ngFor="let section of contentSections" class="pl-16">
+            <div *ngFor="let section of contentSections">
               <sb-content-section *ngIf="section?.isEnabled" (cardClick)="playContent($event, section?.title)"
                 [sortBy]="section?.apiConfig?.sortBy" [searchRequest]="section?.searchRequest" [title]="section?.title"
                 [layoutConfig]="layoutConfiguration" (viewMoreClick)="viewAll($event, section)"
@@ -166,7 +181,7 @@
               [showExploreContentButton]="noResultMessage?.showExploreContentButton"
               [telemetryInteractEdataObject]="exploreMoreButtonEdata"></app-no-result-found>
           </div>
-          <section class="ui container" *ngIf="configContent.browseByCardInfo">
+          <section class="mt-80" *ngIf="configContent.browseByCardInfo">
             <p class="browseTitle">{{configContent.browseByCardInfo.title}}</p>
             <div class="cardContainer">
                 <browse-by-card

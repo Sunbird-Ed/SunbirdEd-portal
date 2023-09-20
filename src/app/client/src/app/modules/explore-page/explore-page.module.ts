@@ -16,6 +16,7 @@ import { ContentSectionModule } from '@project-sunbird/sb-content-section';
 import {ObservationModule} from '../observation/observation.module';
 import { CommonConsumptionModule } from 'compass-common-consumption';
 import { CardModule } from 'compass-common-consumption';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 @NgModule({
   declarations: [ExplorePageComponent],
@@ -29,7 +30,7 @@ import { CardModule } from 'compass-common-consumption';
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
     SuiRatingModule, SuiCollapseModule, SuiDimmerModule, WebExtensionModule,
     CommonConsumptionModule, ContentSearchModule, ContentSectionModule, ObservationModule,
-    CardModule
+    CardModule, SlickCarouselModule
   ]
 })
 export class ExplorePageModule { }
