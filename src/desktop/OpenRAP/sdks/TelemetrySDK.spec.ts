@@ -46,7 +46,7 @@ describe("TelemetrySDK", () => {
       context: {
         channel: "505c7c48ac6dc1edc9b08f21db5a571d",
         pdata: {
-          id: "prod.diksha.desktop",
+          id: "prod.sunbird.desktop",
           ver: "2.0",
           pid: "sunbird-portal.contentplayer"
         },
