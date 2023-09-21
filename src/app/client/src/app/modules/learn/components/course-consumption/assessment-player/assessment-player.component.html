@@ -6,31 +6,37 @@
     <div class="ui container py-0 px-0 d-flex flex-ai-center">
     <div class="p-0 d-flex flex-ai-center w-100">
    <!-- Back button -->
-   <button type="button" [ngClass]="layoutConfiguration ? 'sb-btn-primary sb-btn-round' : 'sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0'" class="sb-btn sb-btn-normal" tabindex="0" (click)="goBack(); logTelemetry('back-track', courseHierarchy)" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
+   <!-- <button type="button" [ngClass]="layoutConfiguration ? 'sb-btn-primary sb-btn-round' : 'sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0'" class="sb-btn sb-btn-normal" tabindex="0" (click)="goBack(); logTelemetry('back-track', courseHierarchy)" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
    <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
        <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
      </svg></i>
    <span>{{resourceService?.frmelmnts?.btn?.back}}</span>
- </button>
- <div class="w-100 relative9 m-0 p-0 ml-16" [ngClass]="{'header-block': isFullScreenView}">
+ </button> -->
+ <div class="w-100 relative9 m-0 p-0" [ngClass]="{'header-block': isFullScreenView}">
   <div class="textbook p-0">
     <!-- Textbook details -->
     <div class="textbook__details d-flex flex-ai-center">
       <!-- Textbook image -->
-      <div class="textbook__heading">
-        <!-- Textbook title -->
-        <h5 class="textbook__title sb-color-primary font-weight-bold mb-0" tabindex="0">{{courseHierarchy?.name | titlecase}}
-        </h5>
-        <!-- Textbook Rating with share icon -->
-        <div class="textbook__rating mt-4">
-          <button tabindex="0" (click)="onShareLink();shareLinkModal=true;"
-            class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn">
-            <i class="icon-svg icon-svg--xxs icon-share mr-4"><svg class="icon icon-svg--primary">
-              <use xlink:href="assets/images/sprite.svg#share"></use>
-            </svg></i>
-            {{resourceService?.frmelmnts?.lbl?.share}}
-          </button>
+      <div class="d-flex flex-ai-center w-50">
+        <div class="textbook__heading w-30">
+          <!-- Textbook title -->
+          <h5 class="textbook__title font-weight-bold mb-0" tabindex="0">{{courseHierarchy?.name | titlecase}}
+          </h5>
+          <!-- Textbook Rating with share icon -->
+          <!-- <div class="textbook__rating mt-4">
+            <button tabindex="0" (click)="onShareLink();shareLinkModal=true;"
+              class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn">
+              <i class="icon-svg icon-svg--xxs icon-share mr-4"><svg class="icon icon-svg--primary">
+                <use xlink:href="assets/images/sprite.svg#share"></use>
+              </svg></i>
+              {{resourceService?.frmelmnts?.lbl?.share}}
+            </button>
+          </div> -->
         </div>
+      </div>
+      <div class="d-flex flex-ai-center w-50 flex-jc-flex-end">
+        <div class="w-50 text-right sb-color-gray-200">Your progress <span class="sb-color-gray-800 font-weight-bold">2 of 4 completed</span></div>
+        <div class="w-20 text-right sb-color-gray-200 d-flex w-100 flex-jc-flex-end flex-ai-center"><mat-icon class="mr-4">chat</mat-icon>Make notes</div>
       </div>
     </div>
   </div>
