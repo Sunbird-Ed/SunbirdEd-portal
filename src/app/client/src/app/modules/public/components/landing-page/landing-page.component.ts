@@ -139,4 +139,8 @@ export class LandingPageComponent implements OnInit {
     this.router.navigateByUrl('/signup')
   }
 
+  doJsonDecode = (data: any) => {
+    return JSON.parse(data);
+  }
+
 }

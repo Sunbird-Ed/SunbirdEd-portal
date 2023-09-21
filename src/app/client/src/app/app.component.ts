@@ -325,6 +325,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.getOnboardingList();
     this.checkToShowPopups();
     this.getStepperInfo();
+   
     this.isIOS = this.utilService.isIos;
     this.isDesktopApp = this.utilService.isDesktopApp;
     if (this.isDesktopApp) {
@@ -353,6 +354,7 @@ export class AppComponent implements OnInit, OnDestroy {
     );
     this.handleHeaderNFooter();
     this.resourceService.initialize();
+    
     this.genericResourceService.initialize();
     combineLatest(queryParams$, this.setDeviceId(), this.checkFormData())
       .pipe(
@@ -418,9 +420,19 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.landingPageContentService.getPageContent().subscribe(res => {
       this.configContent = res;
-      console.log(this.configContent);
+      // console.log(this.configContent);
     })
   }
+
+  formatFooterData = (footerData: any) => {
+    let data = {
+      links: JSON.parse(footerData.links),
+      logoLink: footerData.logoLink,
+      footerText: footerData.footerText
+    } 
+    return data;
+  }
+
   setUserOptions() {
     const userStoredData = JSON.parse(localStorage.getItem('guestUserDetails'));
     if (userStoredData) {

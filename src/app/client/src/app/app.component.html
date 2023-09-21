@@ -126,7 +126,7 @@
   <lib-chat-window [inputValues]="botObject"></lib-chat-window>
 </div>
 <ng-container *ngIf="resourceService?.frmelmnts?.footerData">
-  <main-footer [footerData]="resourceService?.frmelmnts?.footerData"></main-footer>
+  <main-footer [footerData]="formatFooterData(resourceService?.frmelmnts?.footerData) || resourceService"></main-footer>
 </ng-container>
 
 <!-- <app-modal-wrapper *ngIf="sessionExpiryInterceptor.sessionExpired"
