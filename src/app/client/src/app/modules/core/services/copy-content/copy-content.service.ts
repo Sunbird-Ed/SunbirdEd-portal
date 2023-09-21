@@ -211,7 +211,8 @@ export class CopyContentService {
       // setTimeout(() => {
       //   window.open(this.hostUrl + url, "_self");
       // }, 1000);
-      // return;
+      // return
+    }
     else {
       url = `/workspace/content/edit/generic/${copiedIdentifier}/uploaded/${contentData.framework}/Draft`;
     }
