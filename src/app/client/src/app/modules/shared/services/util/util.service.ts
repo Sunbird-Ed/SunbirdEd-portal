@@ -27,12 +27,12 @@ export class UtilService {
   public currentRole = this.roleChanged.asObservable();
   taxonomyCategories:any;
   constructor(private resourceService: ResourceService, private genericResourceService: GenericResourceService) {
+     this.taxonomyCategories = JSON.parse(localStorage.getItem('taxonomyCategories'));
     if (!UtilService.singletonInstance) {
       UtilService.singletonInstance = this;
     }
     this._isDesktopApp = environment.isDesktopApp;
     return UtilService.singletonInstance;
-    this.taxonomyCategories = JSON.parse(localStorage.getItem('taxonomyCategories'));
   }
 
   get isDesktopApp() {
