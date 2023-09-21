@@ -1116,4 +1116,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.isStepperCompleted = event;
     localStorage.setItem('isStepperCompleted', JSON.stringify(this.isStepperCompleted));
   }
+
+  doJsonDecode = (data: any) => {
+    return JSON.parse(data);
+  }
 }

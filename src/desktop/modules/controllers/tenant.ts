@@ -4,7 +4,7 @@ export default class Tenant {
   public get(req, res) {
     const resObj = {
       appLogo: "/assets/images/appLogo.png",
-      favicon: "/assets/images/favicon.ico",
+      favicon: "/assets/images/favicon.svg",
       logo: "/assets/images/logo.svg",
       titleName: process.env.APP_NAME,
     };

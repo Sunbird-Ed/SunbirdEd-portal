@@ -8,6 +8,7 @@ import { IEnrolledCourses, ICourses } from './../../interfaces';
 import { ContentService } from '../content/content.service';
 import {throwError as observableThrowError, of } from 'rxjs';
 import * as _ from 'lodash-es';
+import { HttpClient } from '@angular/common/http';
 /**
  *  Service for course API calls.
  */
@@ -52,7 +53,7 @@ export class CoursesService {
   * @param {ConfigService} config Reference of ConfigService
   */
   constructor(userService: UserService, learnerService: LearnerService,
-    config: ConfigService, contentService: ContentService) {
+    config: ConfigService, contentService: ContentService, private http: HttpClient) {
     this.config = config;
     this.userService = userService;
     this.learnerService = learnerService;
@@ -159,5 +160,9 @@ export class CoursesService {
     }, { onGoingBatchCount: 0, expiredBatchCount: 0,
       openBatch: { ongoing: [], expired: []}, inviteOnlyBatch: { ongoing: [], expired: [] }});
     return enrInfo;
+  }
+
+  getCourses(data: any){
+    return this.http.post(`/api/content/v1/search?orgdetails=orgName,email`, data);
   }
 }

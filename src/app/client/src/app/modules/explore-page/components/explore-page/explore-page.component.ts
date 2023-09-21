@@ -22,25 +22,25 @@ import { IContent } from '@project-sunbird/common-consumption';
 
 interface IContentSearchRequest {
     request: {
-      filters: IFilters;
-      query?: string;
-      fields: string[];
-      softConstraints: ISoftConstraints;
-      mode: string,
-      facets: string[]
+        filters: IFilters;
+        query?: string;
+        fields: string[];
+        softConstraints: ISoftConstraints;
+        mode: string,
+        facets: string[]
     };
-  }
+}
 
-  interface IFilters {
+interface IFilters {
     channel: string;
     primaryCategory: string[];
     visibility: string[];
-  }
+}
 
-  interface ISoftConstraints {
+interface ISoftConstraints {
     badgeAssertions?: number;
     channel?: number;
-  }
+}
 
 @Component({
     selector: 'app-explore-page-component',
@@ -89,7 +89,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public enrolledCourses: Array<any>;
     public enrolledSection: any;
     public selectedCourseBatches: any;
-    public configContent:any = {}
+    public configContent: any = {}
     private myCoursesSearchQuery = JSON.stringify({
         'request': { 'filters': { 'contentType': ['Course'], 'objectType': ['Content'], 'status': ['Live'] }, 'sort_by': { 'lastPublishedOn': 'desc' }, 'limit': 10, 'organisationId': _.get(this.userService.userProfile, 'organisationIds') }
     });
@@ -120,6 +120,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     competencyData: any;
     topicsData: any;
     fwCategory = [];
+    courses: any = {};
+    slideConfigNew = { slidesToShow: 3, slidesToScroll: 3 };
+
     searchRequest: IContentSearchRequest;
     recentlyPublishedList: IContent[] = [];
     sortBy: string;
@@ -157,7 +160,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         private browserCacheTtlService: BrowserCacheTtlService, private profileService: ProfileService,
         private segmentationTagService: SegmentationTagService, private observationUtil: ObservationUtilService,
         private genericResourceService: GenericResourceService, private cdr: ChangeDetectorRef, private taxonomyService: TaxonomyService,
-        private learnPageContentService : publicService.LearnPageContentService) {
+        private learnPageContentService: publicService.LearnPageContentService) {
         this.genericResourceService.initialize();
         this.instance = (<HTMLInputElement>document.getElementById('instance'))
             ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
@@ -244,7 +247,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit() {
-        this.fwCategory= _.map(this.taxonomyService.getTaxonomyCategories(), category => {return category} );
+        this.fwCategory = _.map(this.taxonomyService.getTaxonomyCategories(), category => { return category });
         this.isDesktopApp = this.utilService.isDesktopApp;
         this.setUserPreferences();
         this.subscription$ = this.activatedRoute.queryParams.subscribe(queryParams => {
@@ -283,40 +286,69 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             this.contentDownloadStatus = contentDownloadStatus;
             this.addHoverData();
         });
-        this.learnPageContentService.getPageContent().subscribe((res:any) => {
-            this.competencyData = res.competencyData;
-            this.topicsData = res.topicsData;
-            this.configContent = res;
-            console.log(this.configContent);
-          })
+        // this.learnPageContentService.getPageContent().subscribe((res: any) => {
+        //     this.competencyData = res.competencyData;
+        //     this.topicsData = res.topicsData;
+        //     this.configContent = res;
+        //     console.log(this.configContent);
+        // })
+        // let requestData = {
+        //     "request": {
+        //         "filters": {
+        //             "channel": this.getChannelId(),
+        //             "primaryCategory": ["Collection","Resource","Content Playlist","Course","Course Assessment","Digital Textbook","eTextbook","Explanation Content","Learning Resource","Lesson Plan Unit","Practice Question Set","Teacher Resource","Textbook Unit","LessonPlan","FocusSpot","Learning Outcome Definition","Curiosity Questions","MarkingSchemeRubric","ExplanationResource","ExperientialResource","Practice Resource","TVLesson","Course Unit"],
+        //             "visibility": ["Default","Parent"]
+        //         },
+        //         "limit": 100,
+        //         "sort_by": {
+        //             "lastPublishedOn": "desc"
+        //         },
+        //         "fields": ["name","appIcon","mimeType","gradeLevel","identifier","medium","pkgVersion","board","subject","resourceType","primaryCategory","contentType","channel","organisation","trackable"],
+        //         "softConstraints": {
+        //             "badgeAssertions": 98,
+        //             "channel": 100
+        //         },
+        //         "mode": "soft",
+        //         "facets": ["se_boards","se_gradeLevels","se_subjects","se_mediums","primaryCategory"],
+        //         "offset": 0
+        //     }
+        // };
+        // this.coursesService.getCourses(requestData).subscribe(res => {
+        //     this.courses = res["result"]["content"];
+        //     console.log('Courses', this.courses);
+        // })
+
+        // this.coursesService.getEnrolledCourses().subscribe(res => {
+        //     // this.courses = res["result"]["content"];
+        //     console.log('Enrolled Courses', res);
+        // })
     }
 
     public fetchRequestContents() {
-        for (let section of this.contentSections){
-            if(section.title.toLowerCase()=="recently published courses"){
-                this.searchRequest=section.searchRequest;
-                this.recentlyPublishedTitle=section.title;
+        for (let section of this.contentSections) {
+            if (section.title.toLowerCase() == "recently published courses") {
+                this.searchRequest = section.searchRequest;
+                this.recentlyPublishedTitle = section.title;
             }
         }
         if (this.searchRequest) {
-            const option = {...this.searchRequest.request};
-            const params = {orgdetails: 'orgName,email'};
-            option['params']=params;
+            const option = { ...this.searchRequest.request };
+            const params = { orgdetails: 'orgName,email' };
+            option['params'] = params;
             this.searchService.contentSearch(option).subscribe((res: any) => {
-            this.recentlyPublishedList = this.sortBy ? res.result.content.concat().sort(this.sort(this.sortBy)) : res.result.content;
-            this.count = res.count;
-          });
+                this.recentlyPublishedList = this.sortBy ? res.result.content.concat().sort(this.sort(this.sortBy)) : res.result.content;
+                this.count = res.count;
+                console.log('recentlyPublishedList', this.recentlyPublishedList);
+            });
         }
-      }
+    }
 
     public sort = (key) => {
         return (a, b) => (a[key] > b[key]) ? 1 : ((b[key] > a[key]) ? -1 : 0);
-      }
+    }
 
-    
-
-    public getBrowseByData(title : string){
-        if(title.toLowerCase() == "competency"){
+    public getBrowseByData(title: string) {
+        if (title.toLowerCase() == "competency") {
             this.router.navigate(['search/Library', 1]);
         }
     }
@@ -347,6 +379,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     let filteredCourses = _.filter(enrolledCourses || [], enrolledContentPredicate);
                     filteredCourses = _.orderBy(filteredCourses, [sortingField], [sortingOrder]);
                     this.enrolledCourses = _.orderBy(filteredCourses, [sortingField], [sortingOrder]);
+                    console.log('enrolledCourses', this.enrolledCourses);
                     const { constantData, metaData, dynamicFields } = _.get(this.configService, 'appConfig.CoursePageSection.enrolledCourses');
                     enrolledSection.contents = _.map(filteredCourses, content => {
                         const formatedContent = this.utilService.processContent(content, constantData, dynamicFields, metaData);
@@ -524,7 +557,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         }
                         const option = this.searchService.getSearchRequest(request, get(filters, 'primaryCategory'));
                         const params = _.get(this.activatedRoute, 'snapshot.queryParams');
-                        _.filter(Object.keys(params),filterValue => { 
+                        _.filter(Object.keys(params), filterValue => {
                             if (((_.get(currentPageData, 'metaData.filters').indexOf(filterValue) !== -1))) {
                                 let param = {};
                                 param[filterValue] = (typeof (params[filterValue]) === "string") ? params[filterValue].split(',') : params[filterValue];
@@ -623,9 +656,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                             this.contentSections = [];
                                             const searchSections = currentPageData.sections.filter(sec => sec.facetKey === 'search');
                                             searchSections.forEach((item) => {
-                                                this.contentSections.push(this.getContentSection(item, option));  
+                                                this.contentSections.push(this.getContentSection(item, option));
                                             });
-                                            console.log("this.contentSections ", this.contentSections);
+                                            // console.log("this.contentSections ", this.contentSections);
                                             this.fetchRequestContents();
                                         }
                                     }
@@ -1408,7 +1441,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         if (currentPageData) {
             const filterResponseData = _.get(currentPageData, 'metaData.searchFilterConfig');
             this.filterResponseData = filterResponseData;
-            this.userSelectedPreference=_.get(this, 'userPreference.framework');
+            this.userSelectedPreference = _.get(this, 'userPreference.framework');
             this.refreshFilter = false;
             this.cdr.detectChanges();
             this.refreshFilter = true;
@@ -1417,5 +1450,25 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     fwCategoryCheck(obj: any, category: string) {
         return this.taxonomyService.getCategoryforHTML(obj, category);
+    }
+
+    slickInit(e: any) {
+        // console.log('slick initialized');
+    }
+
+    breakpoint(e: any) {
+        // console.log('breakpoint');
+    }
+
+    afterChange(e: any) {
+        // console.log('afterChange');
+    }
+
+    beforeChange(e: any) {
+        // console.log('beforeChange');
+    }
+
+    doJsonDecode = (data: any) => {
+        return JSON.parse(data);
     }
 }

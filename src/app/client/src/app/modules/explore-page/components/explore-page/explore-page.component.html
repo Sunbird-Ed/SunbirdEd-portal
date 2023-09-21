@@ -1,6 +1,17 @@
+<compass-banner [config]="resourceService?.frmelmnts?.llp?.banner">
+</compass-banner>
+
 <div
   [ngClass]="[layoutConfiguration ? 'sbt-fluid-content-bg':'', (getSelectedTab() === 'home' || getSelectedTab() === 'explore') ? '': '']">
-  <div class="sb-g ui container" [ngClass]="layoutConfiguration ? 'sb-g sbt-page-content' : 'sb-g'"
+  <div class="ui container featured-courses-section">
+    <!--p class="heading">{{resourceService?.frmelmnts?.lp?.featuredCourses}}</p>
+    <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfigNew" (init)="slickInit($event)"
+        (breakpoint)="breakpoint($event)" (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
+        <div ngxSlickItem class="slide" *ngFor='let course of courses;'>
+            <compass-course-card [data]="course"></compass-course-card>
+        </div>
+    </ngx-slick-carousel-->
+  <div class="sb-g ui container" [ngClass]="layoutConfiguration ? 'sb-g' : 'sb-g'"
     [appTelemetryImpression]="telemetryImpression">
     <!-- Filter for web version -->
     <!-- `isFilterEnabled` reference from current page data -->
@@ -43,7 +54,7 @@
           </div>
 
           <!-- Template for displaying sections based on form configuration -->
-          <div *ngIf="_currentPageData?.sections && _currentPageData?.isEnabled" aria-label="User Preferences">
+          <!--div *ngIf="_currentPageData?.sections && _currentPageData?.isEnabled" aria-label="User Preferences">
             <div *ngIf="getSelectedTab() === 'home'" (click)="showEdit = !showEdit" class="sb-section-preference"
               tabindex="0">
               <div class="preference">
@@ -84,9 +95,9 @@
               <button
                 class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border">{{resourceService?.frmelmnts?.lbl?.changePreferences}}</button>
             </div>
-          </div>
-          <div *ngFor="let section of facetSections">
-            <div
+          </div-->
+          <!--div *ngFor="let section of facetSections"-->
+            <!--div
               *ngIf="getSelectedTab() === 'home' && section?.section?.facetKey === 'ContinueLearning' && enrolledSection?.contents?.length && isUserLoggedIn()"
               class="sb-library-cards relative9">
               <div class="twelve wide column relative9">
@@ -96,15 +107,15 @@
                 </app-page-section>
               </div>
               <hr class="section-hr my-32" />
-            </div>
+            </div-->
 
-            <div
+            <!--div
               *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0">
               <div class="mt-16 font-weight-bold flarge pl-16 text-left">{{getBannerTitle(section?.section?.title)}}
-              </div>
+              </div-->
 
 
-              <app-slick [viewType]="'dots'" [loadStatus]="'done'" class="mb-32 d-block">
+              <!--app-slick [viewType]="'dots'" [loadStatus]="'done'" class="mb-32 d-block">
                 <ng-container *ngIf="displayBanner">
                   <div *ngFor="let banner of primaryBanner;" class="mr-16">
                     <img [src]="banner?.ui?.background" class="w-100 banner-image" alt="{{banner?.ui?.text}}"
@@ -112,22 +123,22 @@
                       (click)="navigateToSpecificLocation(banner); handleBannerClick(banner)">
                   </div>
                 </ng-container>
-              </app-slick>
+              </app-slick-->
 
 
-              <app-slick [viewType]="'dots'" [loadStatus]="'done'">
+              <!--app-slick [viewType]="'dots'" [loadStatus]="'done'">
                 <ng-container *ngIf="displayBanner && secondaryBanner.length>0">
                   <div *ngFor="let banner of secondaryBanner" class="banner-image mr-16">
                     <sb-banner-card-hlist [bannerList]="banner" [secondaryBanner]="true" [platform]="'portal'"
                       (cardClick)="navigateToSpecificLocation(banner); handleBannerClick(banner)"></sb-banner-card-hlist>
                   </div>
                 </ng-container>
-              </app-slick>
+              </app-slick-->
 
-              <hr *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0"
-                class="section-hr my-32" />
-              </div>
-              <sb-pills-grid *ngIf="section?.section?.isEnabled" [title]="getSectionTitle(section?.section?.title)"
+              <!--hr *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0"
+                class="section-hr my-32" /-->
+              <!--/div-->
+              <!--sb-pills-grid *ngIf="section?.section?.isEnabled" [title]="getSectionTitle(section?.section?.title)"
                 [minDisplayCount]="section?.section?.theme?.limit || 4"
                 [viewMoreText]="resourceService?.frmelmnts?.lbl?.viewmore"
                 [viewLessText]="resourceService?.frmelmnts?.lbl?.viewless" [pillSize]="'medium'" [platform]="'portal'"
@@ -136,11 +147,11 @@
                 <sb-pill-item *ngFor="let pillData of section.data" [name]="pillData?.name | titlecase"
                   [icon]="utilService.getSectionPillIcon(section?.section?.theme?.icons, pillData?.value)"
                   [value]="pillData" [theme]="pillData?.theme"></sb-pill-item>
-              </sb-pills-grid>
-              <hr *ngIf="section?.section?.isEnabled && section?.data?.length" class="section-hr my-32" />
+              </sb-pills-grid-->
+              <!--hr *ngIf="section?.section?.isEnabled && section?.data?.length" class="section-hr my-32" /-->
             
-          </div>
-          <div *ngIf="showTargetedCategory && targetedCategory.length">
+          <!--/div-->
+          <!--div *ngIf="showTargetedCategory && targetedCategory.length">
             <sb-pills-grid [title]="getSectionCategoryTitle('frmelmnts.lbl.targetCategory')" [minDisplayCount]="4"
               [pillSize]="'medium'" [platform]="'portal'" [pillBorder]="'semi_round'"
               [pillsMultiRow]="'auto_responsive'" [pillTextElipsis]="'two_line'"
@@ -149,23 +160,36 @@
               [icon]="pillData?.icon?.web" [value]="(pillData?.icon?.web ? pillData : '')" [theme]="(pillData?.icon?.web ? targetedCategorytheme : Categorytheme)"></sb-pill-item>
             </sb-pills-grid>
             <hr class="section-hr my-32" />
-          </div>
+          </div-->
         <!-- Recently published courses -->
-        <div>
+        <div *ngIf="recentlyPublishedList && recentlyPublishedList.length > 0">
           <div class="popular-card-title d-flex flex-jc-space-between flex-ai-center mb-32">
-            {{recentlyPublishedTitle}}
-            <span><button class="com-secondary-btn">Explore</button></span>
+            {{resourceService?.frmelmnts?.llp?.recentlyPubCourses}}
+            <!--span><button class="com-secondary-btn">Explore</button></span-->
           </div>
           <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="sliderConfig" (init)="slickInit($event)"
             (breakpoint)="breakpoint($event)" (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
             <div ngxSlickItem class="slide" *ngFor='let course of recentlyPublishedList;'>
-                <compass-course-card class="" [data]="course"></compass-course-card>
+                <compass-course-card [routerLink]="['/learn/course', course['identifier']]" class="" [data]="course"></compass-course-card>
             </div>
           </ngx-slick-carousel>
         </div>
         <!-- Recently published courses -->
 
-          <div *ngIf="getSelectedTab() === 'home'">
+        <div *ngIf="enrolledCourses && enrolledCourses.length > 0">
+          <div class="popular-card-title d-flex flex-jc-space-between flex-ai-center mb-32">
+            {{resourceService?.frmelmnts?.llp?.continueWhereYouLeft}}
+            <!--span><button class="com-secondary-btn">Explore</button></span-->
+          </div>
+          <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="sliderConfig" (init)="slickInit($event)"
+            (breakpoint)="breakpoint($event)" (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
+            <div ngxSlickItem class="slide" *ngFor='let course of enrolledCourses;'>
+                <compass-course-card [routerLink]="['/learn/course', course['identifier']]" class="" [data]="course"></compass-course-card>
+            </div>
+          </ngx-slick-carousel>
+        </div>
+
+          <!--div *ngIf="getSelectedTab() === 'home'">
             <div *ngFor="let section of contentSections">
               <sb-content-section *ngIf="section?.isEnabled" (cardClick)="playContent($event, section?.title)"
                 [sortBy]="section?.apiConfig?.sortBy" [searchRequest]="section?.searchRequest" [title]="section?.title"
@@ -173,15 +197,15 @@
                 [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall">
               </sb-content-section>
             </div>
-          </div>
-          <div *ngIf="facetSections.length === 0 && !showLoader && getSelectedTab() === 'home'">
+          </div-->
+          <!--div *ngIf="facetSections.length === 0 && !showLoader && getSelectedTab() === 'home'">
             <app-no-result-found (exploreMoreContent)="navigateToExploreContent()" [filters]="selectedFilters"
               [title]="noResultMessage?.title" [subTitle]="noResultMessage?.subTitle"
               [buttonText]="noResultMessage?.buttonText"
               [showExploreContentButton]="noResultMessage?.showExploreContentButton"
               [telemetryInteractEdataObject]="exploreMoreButtonEdata"></app-no-result-found>
-          </div>
-          <section class="mt-80" *ngIf="configContent.browseByCardInfo">
+          </div-->
+          <!--section class="mt-80" *ngIf="configContent.browseByCardInfo">
             <p class="browseTitle">{{configContent.browseByCardInfo.title}}</p>
             <div class="cardContainer">
                 <browse-by-card
@@ -191,12 +215,12 @@
                   (click)="getBrowseByData(info.title)"
                 ></browse-by-card>
             </div>
-        </section>
+        </section-->
 
         </div>
         <!-- Template for displaying page sections -->
 
-        <div *ngIf="!_currentPageData?.sections">
+        <!--div *ngIf="!_currentPageData?.sections">
           <div *ngFor="let section of pageSections; let last = last" [ngClass]="{'last mb-0':last}">
             <sb-library-cards-grid *ngIf="!isDesktopApp" [layoutConfig]="layoutConfiguration"
               [type]="'infinite_card_grid'" [title]="section.name"
@@ -224,18 +248,29 @@
             [buttonText]="noResultMessage?.buttonText"
             [showExploreContentButton]="noResultMessage?.showExploreContentButton"
             [telemetryInteractEdataObject]="exploreMoreButtonEdata"></app-no-result-found>
-        </div>
+        </div-->
       </div>
     </div>
   </div>
 
+  <section class="ui container mt-4rem" *ngIf="resourceService?.frmelmnts?.llp?.browseByCardInfo">
+      <p class="browseTitle">{{resourceService?.frmelmnts?.llp?.browseByCardInfo.title}}</p>
+      <div class="cardContainer">
+          <browse-by-card
+            *ngFor="let info of doJsonDecode(resourceService?.frmelmnts?.llp?.browseByCardInfo.cards);"
+            class="browseByCard"
+            [cardInfo]="info"
+            (click)="getBrowseByData(info.title)"
+          ></browse-by-card>
+      </div>
+  </section>
   <div class="ui container mt-32">
     <div class="popular-card">
-      <div class="popular-card-title">{{topicsData.title}}</div>
-      <div><button class="com-secondary-btn">{{topicsData.button}}</button></div>
+      <div class="popular-card-title">{{resourceService?.frmelmnts?.llp?.topics.title}}</div>
+      <!--div><button class="com-secondary-btn">{{topicsData.button}}</button></div-->
     </div>
     <div class="ui grid middle aligned stackable">
-      <div class="three wide column" *ngFor="let data of topicsData.data;let i=index">
+      <div class="three wide column" *ngFor="let data of doJsonDecode(resourceService?.frmelmnts?.llp?.topics.data);let i=index">
         <sb-popular-card [pillName]="'Topic'" [data]="data"></sb-popular-card>
       </div>
     </div>
@@ -243,11 +278,11 @@
 
   <div class="ui container mt-32">
     <div class="popular-card">
-      <div class="popular-card-title">{{competencyData.title}}</div>
-      <div><button class="com-secondary-btn">{{competencyData.button}}</button></div>
+      <div class="popular-card-title">{{resourceService?.frmelmnts?.llp?.competencies.title}}</div>
+      <!--div><button class="com-secondary-btn">{{competencyData.button}}</button></div-->
     </div>
     <div class="ui grid middle aligned stackable">
-      <div class="three wide column" *ngFor="let data of competencyData.data;let i=index">
+      <div class="three wide column" *ngFor="let data of doJsonDecode(resourceService?.frmelmnts?.llp?.competencies.data);let i=index">
         <sb-popular-card [pillName]="'Competency'" [data]="data"></sb-popular-card>
       </div>
     </div>

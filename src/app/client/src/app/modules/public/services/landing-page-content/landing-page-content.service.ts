@@ -7,16 +7,14 @@ import { Observable } from 'rxjs';
 })
 export class LandingPageContentService {
 
-  apiUrl = 'https://compass-dev.tarento.com/api/content/v1';
-
   constructor(private http: HttpClient) { }
 
   getPageContent(){
     return this.http.get('/landingpageContent');
   }
 
-  getCourses(data: any){
-    return this.http.post(`${this.apiUrl}/search?orgdetails=orgName,email`, data);
-  }
+  // getCourses(data: any){
+  //   return this.http.post(`/api/content/v1/search?orgdetails=orgName,email`, data);
+  // }
 
 }

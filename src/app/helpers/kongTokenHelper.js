@@ -430,7 +430,7 @@ const generateLoggedInKongToken = (req, cb) => {
  */
 const getBearerToken = (req) => {
   if (KONG_DEVICE_REGISTER_TOKEN === 'false' && KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN === 'false') {
-    return req.session.userId ? KONG_LOGGEDIN_FALLBACK_TOKEN : KONG_ANONYMOUS_FALLBACK_TOKEN;
+    return req.session?.userId ? KONG_LOGGEDIN_FALLBACK_TOKEN : KONG_ANONYMOUS_FALLBACK_TOKEN;
   }
   else if (KONG_DEVICE_REGISTER_TOKEN === 'true' && KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN === 'false') {
     return req.session.userId ? _.get(req, 'session.' + KONG_DEVICE_BEARER_TOKEN) : KONG_ANONYMOUS_FALLBACK_TOKEN;

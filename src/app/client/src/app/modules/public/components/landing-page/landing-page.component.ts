@@ -1,10 +1,10 @@
-import { Component, OnInit, HostListener, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LayoutService } from '@sunbird/shared';
 import * as publicService from '../../services';
 import { SearchService } from './../../../core/services/search/search.service';
-import { TaxonomyService } from '../../../../service/taxonomy.service';
 import { ResourceService } from '@sunbird/shared';
+import { CoursesService } from '@sunbird/core';
 
 @Component({
   selector: 'app-landing-page',
@@ -19,10 +19,9 @@ export class LandingPageComponent implements OnInit {
   courses: any = {};
 
   layoutConfiguration;
-  taxonomyCategories:any = {};
 
- constructor(public layoutService: LayoutService, private landingPageContentService: publicService.LandingPageContentService, public search: SearchService, 
-    private router: Router, @Inject(TaxonomyService) private taxonomyService: TaxonomyService, public resourceService: ResourceService) { }
+  constructor(public layoutService: LayoutService, private landingPageContentService: publicService.LandingPageContentService, 
+    public search: SearchService, private router: Router, public resourceService: ResourceService, private coursesService: CoursesService) { }
 
   ngOnInit() {
     // alert()
@@ -38,79 +37,27 @@ export class LandingPageComponent implements OnInit {
       "request": {
         "filters": {
           "channel": "0138193046778920963",
-          "primaryCategory": [
-            "Collection",
-            "Resource",
-            "Content Playlist",
-            "Course",
-            "Course Assessment",
-            "Digital Textbook",
-            "eTextbook",
-            "Explanation Content",
-            "Learning Resource",
-            "Lesson Plan Unit",
-            "Practice Question Set",
-            "Teacher Resource",
-            "Textbook Unit",
-            "LessonPlan",
-            "FocusSpot",
-            "Learning Outcome Definition",
-            "Curiosity Questions",
-            "MarkingSchemeRubric",
-            "ExplanationResource",
-            "ExperientialResource",
-            "Practice Resource",
-            "TVLesson",
-            "Course Unit"
-          ],
-          "visibility": [
-            "Default",
-            "Parent"
-          ]
+          "primaryCategory": ["Collection","Resource","Content Playlist","Course","Course Assessment","Digital Textbook","eTextbook","Explanation Content","Learning Resource","Lesson Plan Unit","Practice Question Set","Teacher Resource","Textbook Unit","LessonPlan","FocusSpot","Learning Outcome Definition","Curiosity Questions","MarkingSchemeRubric","ExplanationResource","ExperientialResource","Practice Resource","TVLesson","Course Unit"],
+          "visibility": ["Default","Parent"]
         },
         "limit": 100,
         "sort_by": {
           "lastPublishedOn": "desc"
         },
-        "fields": [
-          "name",
-          "appIcon",
-          "mimeType",
-          "gradeLevel",
-          "identifier",
-          "medium",
-          "pkgVersion",
-          "board",
-          "subject",
-          "resourceType",
-          "primaryCategory",
-          "contentType",
-          "channel",
-          "organisation",
-          "trackable"
-        ],
+        "fields": ["name","appIcon","mimeType","gradeLevel","identifier","medium","pkgVersion","board","subject","resourceType","primaryCategory","contentType","channel","organisation","trackable"],
         "softConstraints": {
           "badgeAssertions": 98,
           "channel": 100
         },
         "mode": "soft",
-        "facets": [
-          "se_boards",
-          "se_gradeLevels",
-          "se_subjects",
-          "se_mediums",
-          "primaryCategory"
-        ],
+        "facets": ["se_boards","se_gradeLevels","se_subjects","se_mediums","primaryCategory"],
         "offset": 0
       }
     };
-    this.landingPageContentService.getCourses(requestData).subscribe(res => {
+    this.coursesService.getCourses(requestData).subscribe(res => {
       this.courses = res["result"]["content"];
       // console.log('Courses', this.courses);
     })
-
-    this.taxonomyCategories = this.taxonomyService.getTaxonomyCategories();
-    console.log('Taxonomy categories', this.taxonomyCategories);
   }
 
   slideConfig = { slidesToShow: 3, slidesToScroll: 3 };

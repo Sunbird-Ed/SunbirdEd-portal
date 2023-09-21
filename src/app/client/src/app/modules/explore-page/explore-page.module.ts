@@ -27,6 +27,7 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
     CoreModule,
     SharedModule,
     SharedFeatureModule,
+    SlickCarouselModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
     SuiRatingModule, SuiCollapseModule, SuiDimmerModule, WebExtensionModule,
     CommonConsumptionModule, ContentSearchModule, ContentSectionModule, ObservationModule,
