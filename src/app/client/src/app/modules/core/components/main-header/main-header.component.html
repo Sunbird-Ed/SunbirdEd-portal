@@ -324,7 +324,7 @@
 </div>
 
 <ng-container *ngIf="layoutConfiguration && layoutConfiguration.name === 'blueSky'">
-  <compass-header class="compass-header" [ngClass]="{'player-fullscreen-header': isFullScreenView}"
+  <compass-header class="compass-header" [ngClass]="{'player-fullscreen-header': isFullScreenView, 'hidden': isNoHeaderPage()}"
   [tenantInfo] = "tenantInfo"
   [userService] = "userService"
   [resourceService] = "resourceService"
