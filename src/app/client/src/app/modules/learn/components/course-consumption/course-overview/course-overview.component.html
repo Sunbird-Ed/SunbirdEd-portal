@@ -24,10 +24,13 @@
               <sb-avatar class="five wide column pl-0" [initial]="courseDetails.curator | nameIntials" [memberName]="courseDetails.curator" [memberRole]="'Curator'" [instance]="'compass'"></sb-avatar>
             </div>
           </div>
-          <div class="mt-48">
+          <div class="mt-48"  *ngIf="associatedCompetencies">
             <div class="sub-heading-one mb-16">{{configContent.overview.competencyTitle}}</div>
-            <div class="">
-              <sb-levels [levelsInfo]="levelsInfo"></sb-levels>
+            <div class="competencies">
+              <!-- <sb-levels [levelsInfo]="levelsInfo"></sb-levels> -->
+              <ul>
+                <li *ngFor="let term of associatedCompetencies">{{term.name}}</li>
+              </ul>
             </div>
           </div>
         </div>
