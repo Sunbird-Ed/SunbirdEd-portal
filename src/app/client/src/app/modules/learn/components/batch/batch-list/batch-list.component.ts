@@ -8,7 +8,9 @@ import { CourseBatchService } from './../../../services';
 })
 export class BatchListComponent implements OnInit {
   @Input() courseHierarchy:any;
+  @Input() configContent:any;
   batchList: []
+  
   constructor(private courseBatchService: CourseBatchService) { }
 
   ngOnInit(): void {
