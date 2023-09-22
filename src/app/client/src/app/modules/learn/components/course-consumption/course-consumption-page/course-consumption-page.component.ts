@@ -29,6 +29,8 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   selectedCourseBatches: { onGoingBatchCount: any; expiredBatchCount: any; openBatch: any; inviteOnlyBatch: any; courseId: any; };
   obs$;
   private fetchEnrolledCourses$ = new BehaviorSubject<boolean>(true);
+  config:any;
+  configContent: any;
   constructor(private activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, private coursesService: CoursesService,
     public toasterService: ToasterService, public courseBatchService: CourseBatchService,
@@ -47,6 +49,17 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
         this.checkCourseStatus(courseHierarchy);
         this.updateBreadCrumbs();
         this.showLoader = false;
+        this.config = {
+          className:'dark-background',
+          title: this.courseHierarchy.name, 
+          description: this.courseHierarchy.description,
+          contentType: this.courseHierarchy.contentType,
+          image:this.courseHierarchy.appIcon || 'assets/common-consumption/images/abstract_02.svg',
+          keywords: this.courseHierarchy.keywords,
+          rating:4.2,
+          numberOfRating:'123 ratings',
+          duration:'12h'
+        };
       }, err => {
         if (_.get(err, 'error.responseCode') && err.error.responseCode === 'RESOURCE_NOT_FOUND') {
           this.toasterService.error(this.generaliseLabelService.messages.emsg.m0002);
@@ -57,6 +70,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
       });
       this.coursePageContentService.getCoursePageContent().subscribe((res:any) => {
         this.courseTabs = res.courseTabs.data;
+        this.configContent = res;
     })
   }
 
@@ -188,4 +202,9 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
     this.showBatchInfo = false;
     isRouteChanged && this.fetchEnrolledCourses$.next(true); // update component only if batch is changed.
   }
+
+  addWishList(){
+    console.log('Add to wish list');
+  }
+
 }

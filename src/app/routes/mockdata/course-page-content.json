@@ -1,5 +1,24 @@
 {
     "courseTabs": {
         "data": ["Overview", "Course content", "Discussion forum", "Course members"]
+    },
+    "overview": {
+        "title": "Overview",
+        "description": "Description",
+        "authors" : "Author (s)",
+        "Curator (s)" : "Curator (s)",
+        "competencyTitle":"Your competency (s)"
+    },
+    "courseAside":{
+        "startCourse":"Start this course",
+        "rating":"Give rating",
+        "share":"Share",
+        "durationText":"hours of total content",
+        "modules":"Modules",
+        "videos":"Videos",
+        "pdfs": "PDFs",
+        "assessments":"Assessments",
+        "contentType":"Content Type",
+        "source": "Source"
     }
 }

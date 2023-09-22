@@ -1,0 +1,39 @@
+<div class="ui container mt-48" *ngIf="courseDetails">
+    <div class="ui grid w-100 padded">
+      <div class="first_panel eight wide column pl-0 pt-0">
+        <div class="headline">
+          {{configContent.overview.title}}
+        </div>
+        <div class="description mt-48">
+          <div class="sub-heading-one">
+           {{configContent.overview.description}}
+          </div>
+          <p class="mt-16">{{courseDetails.description}}
+          </p>
+        </div>
+        <div class="course-members mt-48">
+          <div class="course-author">
+            <div class="sub-heading-one mb-16">   {{configContent.overview.author}}</div>
+            <div class="ml-8 ui grid">
+              <sb-avatar class="five wide column pl-0" [initial]="courseDetails.creator | nameIntials" [memberName]="courseDetails.creator" [memberRole]="'Author'" [instance]="'compass'"></sb-avatar>
+            </div>
+          </div>
+          <div class="course-curator mt-48" *ngIf="courseDetails.curator">
+            <div class="sub-heading-one mb-16">   {{configContent.overview.curator}}</div>
+            <div class="ml-8 ui grid">
+              <sb-avatar class="five wide column pl-0" [initial]="courseDetails.curator | nameIntials" [memberName]="courseDetails.curator" [memberRole]="'Curator'" [instance]="'compass'"></sb-avatar>
+            </div>
+          </div>
+          <div class="mt-48">
+            <div class="sub-heading-one mb-16">{{configContent.overview.competencyTitle}}</div>
+            <div class="">
+              <sb-levels [levelsInfo]="levelsInfo"></sb-levels>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="second_pannel four wide column">
+        <app-course-aside [courseHierarchy]="courseDetails" [configContent]="configContent"></app-course-aside>
+      </div>
+    </div>
+  </div>

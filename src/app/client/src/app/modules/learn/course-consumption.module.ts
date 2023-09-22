@@ -28,6 +28,13 @@ import { DiscussionModule } from '../discussion/discussion.module';
 import { PendingchangesGuard } from '@sunbird/public';
 import { GroupsModule } from '../groups';
 import { CommonConsumptionModule } from 'compass-common-consumption';
+import { CourseOverviewComponent } from './components/course-consumption/course-overview/course-overview.component';
+import { IntialPipe } from './pipes/intial.pipe';
+import { CourseAsideComponent } from './components/course-consumption/course-aside/course-aside.component';
+
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
+import { BatchListComponent } from './components/batch/batch-list/batch-list.component';
 
 export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
   if (!CsModule.instance.isInitialised) {
@@ -63,7 +70,9 @@ export const csNotificationServiceFactory = (csLibInitializerService: CsLibIniti
     CommonConsumptionModule,
     NotificationModule,
     DiscussionModule,
-    GroupsModule
+    GroupsModule,
+    MatIconModule,
+    MatDividerModule
   ],
   providers: [
     { provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] },
@@ -73,6 +82,7 @@ export const csNotificationServiceFactory = (csLibInitializerService: CsLibIniti
   ],
   declarations: [CoursePlayerComponent, CourseConsumptionHeaderComponent, AssessmentPlayerComponent,
     CourseConsumptionPageComponent, BatchDetailsComponent, CurriculumCardComponent, UnEnrollBatchComponent,
-    AssessmentPlayerComponent, CourseCompletionComponent, CourseDetailsComponent, CertificateNameUpdatePopupComponent]
+    AssessmentPlayerComponent, CourseCompletionComponent, CourseDetailsComponent, CertificateNameUpdatePopupComponent,
+     CourseOverviewComponent, IntialPipe, CourseAsideComponent, BatchListComponent]
 })
 export class CourseConsumptionModule { }

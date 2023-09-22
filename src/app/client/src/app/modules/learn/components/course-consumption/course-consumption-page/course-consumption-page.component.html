@@ -1,4 +1,4 @@
-<app-landing-section [textToDisplay]="" [layoutConfiguration]="layoutConfiguration" [noTitle]="true">
+<!-- <app-landing-section [textToDisplay]="" [layoutConfiguration]="layoutConfiguration" [noTitle]="true">
 </app-landing-section>
 <app-course-consumption-header *ngIf="!showLoader && !showError && showAddGroup !== null"
     [courseHierarchy]="courseHierarchy" [enrolledBatchInfo]="enrolledBatchInfo" [groupId]="groupId"
@@ -15,15 +15,30 @@
 </div>
 <app-batch-info *ngIf="showBatchInfo" [enrolledBatchInfo]="selectedCourseBatches"
     (routeChanged)="refreshComponent($event)">
-</app-batch-info>
+</app-batch-info> -->
 
-<!-- <div *ngIf="courseTabs.length>0" class="courseTab">
+<ng-container *ngIf="config">
+    <compass-banner [config]="config" (wishList)="addWishList($event)"></compass-banner>
+</ng-container>
+<div *ngIf="courseTabs&&courseHierarchy" class="courseTab">
     <mat-tab-group animationDuration="0ms">
         <mat-tab label={{courseTabs[0]}}>
-            <app-course-player></app-course-player>
+            <!-- <router-outlet *ngIf="!showLoader && !showError"></router-outlet>
+            <div *ngIf="showLoader" class="ui container">
+                <div class="ui grid">
+                    <div class="twelve wide column">
+                        <app-loader></app-loader>
+                    </div>
+                </div>
+            </div> -->
+
+        <app-course-overview [courseDetails]="courseHierarchy" [configContent]="configContent"></app-course-overview>
         </mat-tab>
-        <mat-tab label={{courseTabs[1]}}>{{courseTabs[1]}}</mat-tab>
+        <mat-tab label={{courseTabs[1]}}>{{courseTabs[1]}}
+        </mat-tab>
         <mat-tab label={{courseTabs[2]}}>{{courseTabs[2]}}</mat-tab>
-        <mat-tab label={{courseTabs[3]}}>{{courseTabs[3]}}</mat-tab>
+        <mat-tab label={{courseTabs[3]}}>
+            <app-batch-list [courseHierarchy]="courseHierarchy" ></app-batch-list>
+        </mat-tab>
     </mat-tab-group>
-</div> -->
+</div>

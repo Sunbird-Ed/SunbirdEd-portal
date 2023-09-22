@@ -1,0 +1,57 @@
+<aside class="aside">
+    <div class="aside__top">
+    <button class="com-primary-btn">{{configContent.courseAside.startCourse}}</button>
+    <p class="aside__share-rating">
+        <button class="com-secondary-btn"> <mat-icon>star</mat-icon>{{configContent.courseAside.rating}}</button>
+        <button class="com-secondary-btn"><mat-icon>share</mat-icon>{{configContent.courseAside.share}}</button>
+    </p>
+    <section class="aside__course-info">
+        <h4 class="sub-heading-one">This course has</h4>
+        <ul>
+            <li>
+                <mat-icon>timer</mat-icon>
+                12 {{configContent.courseAside.durationText}}
+                <!-- {{ courseHierarchy.duration }} -->
+            </li>
+            <li>
+                <mat-icon>toc</mat-icon>
+                4 {{configContent.courseAside.modules}}
+                <!-- {{ courseHierarchy.duration }} -->
+            </li>
+            <li>
+                <mat-icon>play_circle_filled</mat-icon>
+                3 {{configContent.courseAside.videos}}
+                <!-- {{ courseHierarchy.duration }} -->
+            </li>
+            <li>
+                <mat-icon>picture_as_pdf</mat-icon>
+                4 {{configContent.courseAside.pdfs}}
+                <!-- {{ courseHierarchy.resources }} -->
+            </li>
+            <li>
+                <mat-icon>playlist_add_check</mat-icon>
+               {{configContent.courseAside.assessments}}
+                <!-- {{ courseHierarchy.resources }} -->
+            </li>
+        </ul>
+    </section>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="aside__bottom">
+        <ul>
+            <li>
+                <div class="body-two">{{configContent.courseAside.contentType}}</div>
+                <div class="sub-heading-one">{{courseHierarchy.contentType}}</div>
+            </li>
+            <li>
+                <div class="body-two">Cost</div>
+                <div class="sub-heading-one">Free</div>
+            </li>
+            <li>
+                <div class="body-two">{{configContent.courseAside.source}}</div>
+                <div class="sub-heading-one">{{courseHierarchy.copyright}}</div>
+            </li>
+        </ul>
+    </div>
+</aside>
+

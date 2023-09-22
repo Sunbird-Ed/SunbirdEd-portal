@@ -1,0 +1,59 @@
+.aside{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.08);
+    &__top, &__bottom {
+        padding: 24px;
+    }
+    .com-primary-btn{
+        display: block;
+        width: 100%;
+    }
+    &__share-rating  {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 24px;
+        .com-secondary-btn{
+            border-color:rgba(0, 0, 0, 0.16);
+            padding:10px 23px;
+            width: 47%;
+            .mat-icon{
+                margin-right: 8px;
+            }
+        }
+    }
+    &__course-info{
+        margin-top:48px;  
+        .sub-heading-one{
+            text-transform: none;
+        }
+        ul{
+            margin:16px 0 0 0;
+            padding:0;
+            li {
+                display: flex;
+                margin-bottom: 1rem;
+                color:rgba(0, 0, 0, 0.87);
+                .mat-icon{
+                    margin-right: 8px;
+                    color:rgba(0, 0, 0, 0.4);
+                }
+            }
+        }
+
+    }
+    &__bottom{
+        ul{
+            margin: 0;
+            padding: 0;
+            li {
+                .body-two {
+                    color:rgba(0, 0, 0, 0.4);
+                }
+                
+            }
+        }
+    }
+    
+}

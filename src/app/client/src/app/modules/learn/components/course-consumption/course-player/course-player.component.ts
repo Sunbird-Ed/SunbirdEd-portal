@@ -94,6 +94,37 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   isConnected = false;
   dropdownContent = true;
   showForceSync = true;
+
+  levelsInfo = {
+    header:{
+      content: 'Content Type',
+      type: 'Type',
+      level: 'Your level'
+    },
+    data: [
+      {
+        content: 'Consultation and Consensus Building',
+        type: 'Behavioural',
+        level: 3
+      },
+      {
+        content: 'Seeking Information',
+        type: 'Domain',
+        level: 2
+      },
+      {
+        content: 'Result Orientation',
+        type: 'Functional',
+        level: 3
+      },
+      {
+        content: 'Decision Making',
+        type: 'Functional',
+        level: 4
+      }
+    ]
+  }
+
   constructor(
     public activatedRoute: ActivatedRoute,
     private configService: ConfigService,

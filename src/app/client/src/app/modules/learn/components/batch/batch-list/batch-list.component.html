@@ -1,0 +1,16 @@
+<div class="ui container mt-48 batch-list" *ngIf="batchList">
+    <div class="ui grid w-100 padded">
+        <div class="first_panel eight wide column pl-0 pt-0">
+            <h2 class="headline">Course Members</h2>
+            <ul class="batch-list__wrap">
+                <li class="batch-list__item" *ngFor="let member of batchList">
+                    <sb-avatar class="five wide column pl-0" [initial]="member.name | nameIntials" [memberName]="member.name" [memberRole]="member.description" [instance]="'compass'"></sb-avatar>
+                </li>
+            </ul>
+        </div>
+        <div class="second_pannel four wide column">
+                <app-course-aside [courseHierarchy]="courseHierarchy"></app-course-aside>
+        </div>
+    </div>
+</div>
+

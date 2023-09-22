@@ -1,5 +1,5 @@
 <!-- Accordion and batch card section start -->
-
+<div *ngIf="false">
   <div *ngIf="!loader" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
     <div class="ui container relative9" [appTelemetryImpression]="telemetryCourseImpression">
       <div class="sb-course-details sb-g sb-g--gap24 py-16 text-left cc-player">
@@ -212,6 +212,7 @@
       </div>
     </div>
   </div>
+</div>
 
 <router-outlet></router-outlet>
 
@@ -254,7 +255,7 @@
   (close)="onPopupClose($event)"></app-confirmation-popup>
 
 <!-- new UI -->
-<div class="sb-bg-color-gray-0 textbook-container hide">
+<div class="sb-bg-color-gray-0 textbook-container">
   <div class="ui container">
     <div class="textbook py-16 d-flex flex-ai-center">
       <div class="textbook__details d-flex flex-ai-center">
@@ -329,6 +330,12 @@
           <div class="sub-heading-one mb-16">Curator (s)</div>
           <div class="ml-8 ui grid">
             <sb-avatar class="five wide column pl-0" [initial]="'SM'" [memberName]="'Shoaib Muhammed'" [memberRole]="'Curator'" [instance]="'compass'"></sb-avatar>
+          </div>
+        </div>
+        <div class="mt-48">
+          <div class="sub-heading-one mb-16">Your competency (s)</div>
+          <div class="">
+            <sb-levels [levelsInfo]="levelsInfo"></sb-levels>
           </div>
         </div>
       </div>
