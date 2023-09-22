@@ -241,7 +241,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   isNoHeaderPage(): boolean {
     const currentURL = this.router.url;
     const searchString = "/learn/course/play";
-    console.log("hello ", currentURL.includes(searchString));
     return currentURL.includes(searchString);
   }
 
