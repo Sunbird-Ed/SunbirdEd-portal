@@ -1,0 +1,37 @@
+@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use 'pages/sign_in_up' as *;
+
+.orange-border {
+    border-color: var(--accessibility-red) !important;
+}
+.blue.text {
+    color: var(--primary-color);
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}  
+.cursor-pointerText {
+    cursor: text;
+    pointer-events: none !important;
+}
+.delete__title{
+    margin: auto;
+    color: #dd4841 !important;
+  }
+  .container {
+     max-width: calculateRem(550px);
+    margin: 0 auto;
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width:100%;
+    @include respond-below(sm){
+      min-height: auto;
+    }}
+    form{
+        flex-direction: column;
+    }

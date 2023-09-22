@@ -1,22 +1,10 @@
-import { Component, EventEmitter, OnInit, Output, SecurityContext } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import {InterpolatePipe, ResourceService, ToasterService, ServerResponse, UtilService, NavigationHelperService, LayoutService,IUserData } from '@sunbird/shared';
-import { ProfileService } from '../../services';
-import { UntypedFormBuilder, Validators, UntypedFormGroup, UntypedFormControl } from '@angular/forms';
+import { Component, EventEmitter, OnInit, Output, ViewChildren } from '@angular/core';
+import { ResourceService, ToasterService, NavigationHelperService, LayoutService, IUserData } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { takeUntil } from 'rxjs/operators';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import {
-  OrgDetailsService,
-  ChannelService,
-  FrameworkService,
-  UserService,
-  FormService,
-  TncService,
-  ManagedUserService
-} from '@sunbird/core';
+import { UserService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -26,44 +14,39 @@ import { Subject } from 'rxjs';
 })
 export class DeleteUserComponent implements OnInit {
 
-  userDetailsForm: UntypedFormGroup;
-  sbFormBuilder: UntypedFormBuilder;
+  @ViewChildren('inputFields') inputFields;
+  @Output() close = new EventEmitter();
   enableSubmitBtn = false;
-  instance: string;
-  formData;
-  showLoader = true;
+  conditions = [];
   telemetryImpression: IImpressionEventInput;
   submitInteractEdata: IInteractEventEdata;
   submitCancelInteractEdata: IInteractEventEdata;
   layoutConfiguration: any;
-  showContactPopup=false
+  showContactPopup = false
+  list = ['Personal Information: Your personal account information, including your profile and login details, will be permanently deleted, including your activity history. This information cannot be recovered',
+    'Certificates: For certificate verification purposes, only your name will be stored. Access Loss: You will lose access to all features and services associated with this account, and any subscriptions or memberships may be terminated.',
+    'Single Sign-On (SSO): If you use Single Sign-On (SSO) to sign in, be aware that a new account will be created the next time you sign in. This new account will not have any historical information.',
+    'Resource Retention: Even after your account is deleted, any contributions, content, or resources you have created within the portal will not be deleted. These will remain accessible to other users as part of the collective content.You will no longer have control or management rights over them.',
+    'Usage Reports: Usage reports will retain location data declared by you.',
+    'Make sure you have backed up any important data and have considered the consequences before confirming account deletion and downloaded your certificates.']
 
-  @Output() close = new EventEmitter();
 
   public unsubscribe = new Subject<void>();
-  pageId = 'delete-managed-user';
+  pageId = 'delete-user';
   userProfile: any;
 
-  constructor(public resourceService: ResourceService, public toasterService: ToasterService,
-    public profileService: ProfileService, formBuilder: UntypedFormBuilder, public router: Router,
-    public userService: UserService, public orgDetailsService: OrgDetailsService, public channelService: ChannelService,
-    public frameworkService: FrameworkService, public utilService: UtilService, public formService: FormService,
+  constructor(public resourceService: ResourceService, public toasterService: ToasterService, public router: Router,
+    public userService: UserService,
     private activatedRoute: ActivatedRoute, public navigationhelperService: NavigationHelperService,
-    public tncService: TncService, private managedUserService: ManagedUserService, public layoutService: LayoutService,
-    public _sanitizer: DomSanitizer) {
-    this.sbFormBuilder = formBuilder;
+    public layoutService: LayoutService) {
     this.userService.userData$.subscribe((user: IUserData) => {
-      this.userProfile=user.userProfile;
+      this.userProfile = user.userProfile;
     })
   }
 
   ngOnInit() {
-   
-    
-      this.navigationhelperService.setNavigationUrl();
+    this.navigationhelperService.setNavigationUrl();
     this.setTelemetryData();
-    this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
-
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().
       pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig => {
@@ -71,7 +54,6 @@ export class DeleteUserComponent implements OnInit {
           this.layoutConfiguration = layoutConfig.layout;
         }
       });
-
   }
 
   goBack() {
@@ -93,13 +75,13 @@ export class DeleteUserComponent implements OnInit {
     };
 
     this.submitInteractEdata = {
-      id: 'submit-delete-managed-user',
+      id: 'submit-delete-user',
       type: 'click',
       pageid: this.pageId
     };
 
     this.submitCancelInteractEdata = {
-      id: 'cancel-delete-managed-user',
+      id: 'cancel-delete-user',
       type: 'click',
       pageid: this.pageId
     };
@@ -110,7 +92,37 @@ export class DeleteUserComponent implements OnInit {
   }
 
   onSubmitForm() {
-    this.enableSubmitBtn = false;
-    this.showContactPopup=true;
+    if (this.enableSubmitBtn) {
+      this.enableSubmitBtn = false;
+      this.showContactPopup = true;
+      this.conditions = []
+      this.inputFields.forEach((element) => {
+        element.nativeElement.checked = false;
+      });
+    }
+  }
+
+  /**
+    * This method checks whether the length of comments is greater than zero.
+    * If both the validation is passed it enables the submit button
+    */
+  validateModal() {
+    if ((this.inputFields && this.inputFields.length === this.conditions.length)) {
+      this.enableSubmitBtn = true;
+    } else {
+      this.enableSubmitBtn = false;
+    }
+  }
+  
+  /**
+   * This method pushes all the checked reason into a array
+   */
+  createCheckedArray(checkedItem) {
+    if (checkedItem && (_.indexOf(this.conditions, checkedItem) === -1)) {
+      this.conditions.push(checkedItem);
+    } else if (checkedItem && (_.indexOf(this.conditions, checkedItem) !== -1)) {
+      this.conditions.splice(_.indexOf(this.conditions, checkedItem), 1);
+    }
+    this.validateModal();
   }
 }

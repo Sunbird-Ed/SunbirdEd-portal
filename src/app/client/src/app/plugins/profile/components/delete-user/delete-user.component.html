@@ -1,77 +1,70 @@
-<app-modal-wrapper *ngIf="showContactPopup" [config]="{disableClose: false, panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="showContactPopup = !showContactPopup">
+<app-modal-wrapper *ngIf="showContactPopup"
+  [config]="{disableClose: false, panelClass: ['overflow-visible', 'material-modal']}"
+  (dismiss)="showContactPopup = !showContactPopup">
   <ng-template sbModalContent let-data>
-    <app-delete-account [dialogProps]="data" (close)="showContactPopup = !showContactPopup" [contactType]="contactType" [userProfile]="userProfile">
+    <app-delete-account [dialogProps]="data" (close)="showContactPopup = !showContactPopup" [contactType]="contactType"
+      [userProfile]="userProfile">
     </app-delete-account>
   </ng-template>
 </app-modal-wrapper>
 
-<!-- <div [appTelemetryImpression]="telemetryImpression"> -->
-    <!--profile Content Header -->
-    <div [ngClass]="layoutConfiguration ? 'sb-back-actionbar' : 'sb-bg-white cc-player__btn-back'" class="relative position mt-0">
-      <div class="ui container py-0 px-0 d-flex flex-ai-center">
-        <button type="button" (click)="goBack()" [ngClass]="layoutConfiguration ? 'sb-btn-primary sb-btn-round' : 'sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0'" class="sb-btn sb-btn-normal" tabindex="0" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
+<div [appTelemetryImpression]="telemetryImpression">
+  <!--profile Content Header -->
+  <div [ngClass]="layoutConfiguration ? 'sb-back-actionbar' : 'sb-bg-white cc-player__btn-back'"
+    class="relative position mt-0">
+    <div class="ui container py-0 px-0 d-flex flex-ai-center">
+      <button type="button" (click)="goBack()"
+        [ngClass]="layoutConfiguration ? 'sb-btn-primary sb-btn-round' : 'sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0'"
+        class="sb-btn sb-btn-normal" tabindex="0" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
         <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
             <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
           </svg></i>
-       <span>{{resourceService?.frmelmnts?.btn?.back}}</span>
+        <span>{{resourceService?.frmelmnts?.btn?.back}}</span>
       </button>
-        <div class="content-header__content w-100 ml-16">
-          <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0 content-header__content__title">
-            <div class="content-header__title font-weight-bold ellipsis text-left"  tabindex="0" role="heading" aria-level="2">{{resourceService?.frmelmnts?.lbl?.deleteAccount}}</div>
-          </div>
+      <div class="content-header__content w-100 ml-16">
+        <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0 content-header__content__title">
+          <div class="content-header__title font-weight-bold ellipsis text-left" tabindex="0" role="heading"
+            aria-level="2">{{resourceService?.frmelmnts?.lbl?.deleteAccount}}</div>
         </div>
       </div>
     </div>
+  </div>
 
-    <div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container box' : ''">
-  <!-- <div class="ui container py-16" *ngIf="showLoader">
-    <app-loader></app-loader>
-  </div> -->
-  <div class="sb-mat__modal" >
-    <div class="d-flex flex-jc-space-between py-16 px-16">
-      <div role="heading" aria-level="1" class="delete__title">Are you sure you want to delete your account ? This action is irrevirreversible!</div>
-    </div>
+  <div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container box' : ''">
+    <div class="sb-mat__modal">
+      <div class="d-flex flex-jc-space-between py-16 px-16">
+        <div role="heading" aria-level="1" class="delete__title">Are you sure you want to delete your account ? This
+          action is irrevirreversible!</div>
+      </div>
 
-    <div class="d-flex flex-jc-space-between py-16 px-16">
-      <div role="heading" aria-level="1" class="title">
-      NOTE:
-        <ul>
-          <li>
-            - Personal Information: Your personal account information, including your profile and login details, will be permanently deleted, including your activity history. This information cannot be recovered. 
-          </li>
-          <li>
-            - Certificates: For certificate verification purposes, only your name will be stored. 
-          </li>
-          <li>
-            - Access Loss: You will lose access to all features and services associated with this account, and any subscriptions or memberships may be terminated. 
-          </li>
-          <li>
-            - Single Sign-On (SSO): If you use Single Sign-On (SSO) to sign in, be aware that a new account will be created the next time you sign in. This new account will not have any historical information. 
-          </li>
-          <li>
-            - Resource Retention: Even after your account is deleted, any contributions, content, or resources you have created within the portal will not be deleted. These will remain accessible to other users as part of the collective content.You will no longer have control or management rights over them. 
-          </li>
-          <li>
-            - Usage Reports: Usage reports will retain location data declared by you. 
-          </li>
-          <li>
-            - Make sure you have backed up any important data and have considered the consequences before confirming account deletion and downloaded your certificates.
-          </li>
-        </ul>
-    
+      <div class="d-flex flex-jc-space-between py-16 px-16">
+        <div role="heading" aria-level="1" class="title">
+          NOTE:
+          <ul>
+            <li>
+              <div class="ui list" *ngFor="let item of list">
+                <div class="item">
+                  <div class="ui checkbox checklist">
+                    <input type="checkbox" #inputFields class="listItem" tabindex="0"
+                      (click)="createCheckedArray(item)">
+                    <label>{{item}}</label>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sb-mat__modal__actions d-flex flex-jc-space-evenly pb-16 px-16">
+        <button appTelemetryInteract [telemetryInteractEdata]="submitCancelInteractEdata" appTelemetryInteract
+          type="button" class="sb-btn sb-btn-normal sb-btn-primary mr-8" tabindex="0" (click)="onCancel()">
+          CANCEL</button>
+        <button appTelemetryInteract appOnlineOnly [telemetryInteractEdata]="submitInteractEdata"
+          [disabled]="!enableSubmitBtn" (click)="onSubmitForm()" tabindex="0" type="submit"
+          [class.sb-btn-gray]="!enableSubmitBtn" [class.sb-btn-error]="enableSubmitBtn" class="sb-btn sb-btn-normal">
+          DELETE ACCOUNT
+        </button>
       </div>
     </div>
- 
-    <div class="sb-mat__modal__actions d-flex flex-jc-space-evenly pb-16 px-16">
-      <button appTelemetryInteract [telemetryInteractEdata]="submitCancelInteractEdata" appTelemetryInteract
-        type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" tabindex="0" (click)="onCancel()">
-       CANCEL</button>
-      <button appTelemetryInteract appOnlineOnly [telemetryInteractEdata]="submitInteractEdata" [disabled]="!enableSubmitBtn"
-        (click)="onSubmitForm()" tabindex="0" type="submit" [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}"
-        class="sb-btn sb-btn-normal sb-btn-error">
-        DELETE ACCOUNT
-      </button>  
-    </div>
   </div>
-</div>
-<!-- </div>  -->

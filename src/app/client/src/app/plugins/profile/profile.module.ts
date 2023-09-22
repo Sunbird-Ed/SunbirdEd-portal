@@ -5,7 +5,7 @@ import { SharedModule } from '@sunbird/shared';
 import { ProfileRoutingModule } from './profile-routing.module';
 import {
   ProfilePageComponent, ProfileBadgeComponent, UpdateContactDetailsComponent,
-  AccountRecoveryInfoComponent, CreateUserComponent,DeleteUserComponent,DeleteAccountComponent, ChooseUserComponent, SubmitTeacherDetailsComponent
+  AccountRecoveryInfoComponent, CreateUserComponent,DeleteUserComponent,DeleteAccountComponent,OtpModalComponent, ChooseUserComponent, SubmitTeacherDetailsComponent
 } from './components';
 import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
   SuiProgressModule, SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui-v9';
@@ -62,6 +62,7 @@ export const csCertificateServiceFactory = (csLibInitializerService: CsLibInitia
    CreateUserComponent,
    DeleteUserComponent,
    DeleteAccountComponent,
+   OtpModalComponent,
    ChooseUserComponent,
    SubmitTeacherDetailsComponent],
   providers: [
