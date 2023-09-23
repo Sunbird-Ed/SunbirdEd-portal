@@ -1,5 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, NavigationExtras, NavigationStart } from '@angular/router';
+import { Component, Input, OnInit, Inject } from '@angular/core';
+import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
+import * as _ from 'lodash-es';
+import { CourseConsumptionService, CourseProgressService } from '../../../services';
+import { CoursesService, UserService } from '@sunbird/core';
+import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
+import { map, mergeMap, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-course-aside',
@@ -12,13 +18,9 @@ export class CourseAsideComponent implements OnInit {
 
   constructor(private router: Router) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
-  navigateToPlayerPage() {
-      const navigationExtras: NavigationExtras = {
-        queryParams: { batchId: this.courseHierarchy.batches[0].batchId, courseId: this.courseHierarchy.identifier, courseName: this.courseHierarchy.name },
-        state: {  }
-      };
-      this.router.navigate(['/learn/course/play'], navigationExtras);
+  navigate() {
+    this.router.navigate(['/learn/course/play',this.courseHierarchy.identifier]);
   }
 }
