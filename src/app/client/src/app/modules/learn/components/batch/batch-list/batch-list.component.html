@@ -4,7 +4,7 @@
             <h2 class="headline">Course Members</h2>
             <ul class="batch-list__wrap">
                 <li class="batch-list__item" *ngFor="let member of batchList">
-                    <sb-avatar class="five wide column pl-0" [initial]="member.name | nameIntials" [memberName]="member.name" [memberRole]="member.description" [instance]="'compass'"></sb-avatar>
+                    <sb-avatar class="five wide column pl-0" [initial]="member.fullName | nameIntials" [memberName]="member.fullName" [memberRole]="member.memberRoles" [instance]="'compass'"></sb-avatar>
                 </li>
             </ul>
         </div>
