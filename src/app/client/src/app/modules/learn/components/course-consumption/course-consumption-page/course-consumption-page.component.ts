@@ -31,6 +31,8 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   private fetchEnrolledCourses$ = new BehaviorSubject<boolean>(true);
   config:any;
   configContent: any;
+  tocList = []
+
   constructor(private activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, private coursesService: CoursesService,
     public toasterService: ToasterService, public courseBatchService: CourseBatchService,
@@ -48,6 +50,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
         this.getGeneraliseResourceBundle();
         this.checkCourseStatus(courseHierarchy);
         this.updateBreadCrumbs();
+        this.updateCourseContent()
         this.showLoader = false;
         this.config = {
           className:'dark-background',
@@ -207,4 +210,24 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
     console.log('Add to wish list');
   }
 
+  updateCourseContent() {
+    this.courseHierarchy.children.forEach((resource:any) => {
+     let toc = {
+            header:{
+              title:resource.name,
+              progress:75,
+              totalDuration:'00m'
+            },
+            body: []
+          }
+        toc.body = resource.children.map((c:any) => {
+          return {
+            name:c.name,
+            mimeType:c.contentType,
+            durations:'00m'
+          }
+        });
+        this.tocList.push(toc)
+    })
+  }
 }

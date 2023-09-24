@@ -20,5 +20,10 @@
         "assessments":"Assessments",
         "contentType":"Content Type",
         "source": "Source"
+    },
+    "courseContent": {
+        "title":"Course Content",
+        "expandAll":"Expand all",
+        "collapseAll":"Collapse all"
     }
 }

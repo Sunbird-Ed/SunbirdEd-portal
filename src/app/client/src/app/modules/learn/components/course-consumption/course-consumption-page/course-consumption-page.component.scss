@@ -74,3 +74,25 @@
         }
     }
 }
+
+.course-content {
+
+    .headline {
+        margin-bottom: 22px;
+    }
+    p {
+        display: flex;
+        justify-content: right;
+        .com-basic-btn {
+            text-transform: capitalize;
+        }
+    }
+    .toc {
+        &__container{
+            margin: 0 0 24px 0;
+        }
+        &__item{
+            margin-bottom: 24px;
+        }
+    }
+}

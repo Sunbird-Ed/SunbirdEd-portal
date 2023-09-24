@@ -34,7 +34,28 @@
 
         <app-course-overview [courseDetails]="courseHierarchy" [configContent]="configContent"></app-course-overview>
         </mat-tab>
-        <mat-tab label={{courseTabs[1]}}>{{courseTabs[1]}}
+        <mat-tab label={{courseTabs[1]}}>
+            <div class="ui container mt-48 course-content">
+                <div class="ui grid w-100 padded">
+                    <div class="first_panel eight wide column pl-0 pt-0">
+                        <div class="headline">
+                            Course content
+                        </div>
+                        <p>
+                            <button class="com-basic-btn">Expand all</button>
+                            <!-- <button class="com-basic-btn" hide>Collapse all</button> -->
+                        </p>
+                        <div class="toc__container">
+                            <div class="toc__item" *ngFor="let content of tocList">
+                                <toc-content [courseModules]="content"></toc-content>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="second_pannel four wide column">
+                        <app-course-aside [courseHierarchy]="courseHierarchy" [configContent]="configContent"></app-course-aside>
+                    </div>
+                </div>
+            </div>
         </mat-tab>
         <mat-tab label={{courseTabs[2]}}>{{courseTabs[2]}}</mat-tab>
         <mat-tab label={{courseTabs[3]}}>
