@@ -238,6 +238,12 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       });
   }
 
+  isNoHeaderPage(): boolean {
+    const currentURL = this.router.url;
+    const searchString = "/learn/course/play";
+    return currentURL.includes(searchString);
+  }
+
   setUserPreferences() {
     try {
         if (this.userService.loggedIn) {

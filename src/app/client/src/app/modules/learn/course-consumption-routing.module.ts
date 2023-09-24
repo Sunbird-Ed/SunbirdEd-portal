@@ -10,7 +10,7 @@ const telemetryEnv = 'Course';
 const objectType = 'Course';
 const routes: Routes = [
   {
-    path: 'play/:collectionId', component: AssessmentPlayerComponent, canDeactivate: [PendingchangesGuard],
+    path: 'play/:collectionId', component: AssessmentPlayerComponent,
     data: {
       telemetry: {
         env: telemetryEnv, pageid: 'course-player', type: 'view', object: { ver: '1.0', type: 'batch' }
