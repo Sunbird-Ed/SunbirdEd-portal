@@ -332,8 +332,34 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         }
         if (this.searchRequest) {
-            const option = { ...this.searchRequest.request };
-            const params = { orgdetails: 'orgName,email' };
+            let searchRequest = {
+                "request": {
+                    "filters": {
+                        "channel": this.channelId,
+                        "status": [
+                            "Live"
+                        ],
+                        "contentType": [
+                            "Course"
+                        ],
+                        "batches.status": [
+                            1
+                        ],
+                        "batches.enrollmentType": "open",
+
+                        "primaryCategory": [
+                            "Course"
+                        ]
+                    },
+                    "limit": 100,
+                    "sort_by": {
+                        "lastPublishedOn": "desc"
+                    }
+                }
+            };
+            // const option = { ...this.searchRequest.request };
+            const option = { ...searchRequest.request };
+            const params = { orgdetails: 'orgName,email', framework: this.contentSearchService.frameworkId };
             option['params'] = params;
             this.searchService.contentSearch(option).subscribe((res: any) => {
                 this.recentlyPublishedList = this.sortBy ? res.result.content.concat().sort(this.sort(this.sortBy)) : res.result.content;

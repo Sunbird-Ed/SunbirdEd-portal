@@ -102,16 +102,22 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     let i: any;
     let slides: any = document.getElementsByClassName("mySlides");
     let dots: any = document.getElementsByClassName("dot");
-    if (n > slides.length) { this.slideIndex = 1 }
-    if (n < 1) { this.slideIndex = slides.length }
-    for (i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none";
+    if (slides !== undefined) {
+      if (n > slides.length) { this.slideIndex = 1 }
+      if (n < 1) { this.slideIndex = slides.length }
+      for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+      }
+      for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" active", "");
+      }
+      if (slides[this.slideIndex - 1] !== undefined) {
+        slides[this.slideIndex - 1].style.display = "block";
+      }
+      if (dots[this.slideIndex - 1] !== undefined) {
+        dots[this.slideIndex - 1].className += " active";
+      }
     }
-    for (i = 0; i < dots.length; i++) {
-      dots[i].className = dots[i].className.replace(" active", "");
-    }
-    slides[this.slideIndex - 1].style.display = "block";
-    dots[this.slideIndex - 1].className += " active";
   }
 
   signUpTelemetryStart() {
