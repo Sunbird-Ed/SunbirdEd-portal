@@ -74,9 +74,7 @@ import { SbTaxonomyEditorModule } from 'sb-taxonomy-editor';
 export class AppModule {
   constructor(bootstrapFramework: BootstrapFramework) {
     bootstrapFramework.initialize(WebExtensionsConfig);
-    localStorage.setItem('environment', JSON.stringify(taxonomyEnvironment));
-    localStorage.setItem('taxonomyConfig', JSON.stringify(taxonomyConfig));
-  }
+ }
 }
 // required for AOT compilation
 export function HttpLoaderFactory(http: HttpClient) {
