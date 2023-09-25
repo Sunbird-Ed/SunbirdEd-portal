@@ -47,7 +47,7 @@
                         </p>
                         <div class="toc__container">
                             <div class="toc__item" *ngFor="let content of tocList">
-                                <toc-content [courseModules]="content"></toc-content>
+                                <toc-content [courseModules]="content" (contentClicked)="contentClicked($event)"></toc-content>
                             </div>
                         </div>
                     </div>

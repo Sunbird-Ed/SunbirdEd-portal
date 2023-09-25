@@ -62,99 +62,96 @@
                   (questionScoreReviewEvents)="onQuestionScoreReviewEvents($event)"
                   (ratingPopupClose)="onRatingPopupClose()" (selfAssessLastAttempt)="onSelfAssessLastAttempt($event)"></app-player>
               </div>
-              <app-content-actions [assessmentEvents]="assessmentEvents" *ngIf="isFullScreenView" class="player-fullscreen-action-items" [isFullScreen]="true" [contentData]="activeContent" [objectRollUp]="objectRollUp">
+              <!-- <app-content-actions [assessmentEvents]="assessmentEvents" *ngIf="isFullScreenView" class="player-fullscreen-action-items" [isFullScreen]="true" [contentData]="activeContent" [objectRollUp]="objectRollUp">
               </app-content-actions>
               <app-content-actions [assessmentEvents]="assessmentEvents" *ngIf="activeContent" [contentData]="activeContent" [objectRollUp]="objectRollUp">
-              </app-content-actions>
+              </app-content-actions> -->
             </section>
           </div>
-          <div class="mt-8">
+          <!-- <div class="mt-8">
             <app-credits-and-licence *ngIf="activeContent" [contentData]="activeContent"></app-credits-and-licence>
-          </div>
+          </div> -->
         </div>
       </section>
       <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4">
-        <div class="cc-player__list px-0">
- <!-- Module Progress bar -->
- <div class="certified-course__progress" *ngIf="totalContents > 0">
-     <!-- Previous / next module buttons -->
-     <div class="d-flex flex-ai-center flex-jc-space-between mb-8">
-      <!-- Previous module button -->
-      <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-left-icon-btn" aria-label="previous-module" *ngIf="prevModule"
-        tabindex="0" (click)="navigateToPlayerPage(prevModule); logTelemetry('previous-module', prevModule, true);">
-        <i class="icon-svg icon-svg--xxs icon-back mr-4 rotate-90" role="img" aria-label="arrow-up"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>{{generaliseLabelService?.frmelmnts?.lbl?.prevModule | translate}}
-      </button>
-      <!-- Previous Module button -->
-      <!-- Next Module button -->
-      <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-right-icon-btn ml-auto" aria-label="next-module" *ngIf="nextModule"
-        tabindex="0" (click)="navigateToPlayerPage(nextModule); logTelemetry('next-module', nextModule, true)">
-        {{generaliseLabelService?.frmelmnts?.lbl?.nextModule | translate}}<i class="icon-svg icon-svg--xxs icon-back ml-4 rotate90" role="img" aria-label="arrow-up"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>
-      </button>
-      <!-- Next Module button -->
-    </div>
-    <div *ngIf="!isUnitCompleted"> 
-      <div class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.moduleProgress}}</div>         
-      <div class="sb-color-primary fnormal font-weight-bold mt-4">{{consumedContents}}/{{totalContents}} {{resourceService?.frmelmnts?.lbl?.completed}}</div>
-      <mat-progress-bar mode="determinate" [value]="consumedContents" class="mb-0 mr-0 mt-8 tiny"></mat-progress-bar>
-    </div>
-  
-  <div class="module-complete-content d-flex flex-ai-center py-8 px-16 mb-8" *ngIf="isUnitCompleted">
-    <div class="mr-16 complete-content-image"><img src="./assets/images/badge-complete.svg" alt="complete-content-image"></div>
-    <label class="font-weight-bold mb-0 sb-color-secondary fnormal">{{generaliseLabelService?.frmelmnts?.lbl?.moduleFinish}}</label>
-  </div>
-</div>
-       
-
-        <h5 class="p-16 mb-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.contentsLabel}}</h5>
-        <div class="side-toc-content chapter-box">
-          <div *ngFor="let item of courseHierarchy?.children; let index = index;">
-            <p *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection'" class="title">{{item?.name}}</p>
-            <div *ngIf="item;else noContent">
-              <div *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
-                <ng-container *ngIf="item?.contentType">
-                  <div class="child-content-padding">
-                    <!-- toc card for Non Self Assess content -->
-                
-                    <sb-toc-card *ngIf="item?.contentType !== 'SelfAssess'" [content]="item"
-                      (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType" [contentStatus]="contentStatus">
-                    </sb-toc-card>
-                    <!-- toc card for Self Assess content with Label for Best Score -->
-                    <sb-toc-card *ngIf="item?.contentType === 'SelfAssess'" [content]="item"
-                      (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType" [contentStatus]="contentStatus"
-                      [maxAttempts]="item?.maxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
-                    </sb-toc-card>
-                  </div>
-                </ng-container>
-                </div>
-
-              <div *ngIf="item?.mimeType === 'application/vnd.sunbird.questionset'">
-                <div class="child-content-padding">
-                  <sb-toc-card [content]="item" (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType"
-                    [contentStatus]="contentStatus" [maxAttempts]="item?.maxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
-                  </sb-toc-card>
-                </div>
-              </div>
-
-              <div *ngIf="item?.children?.length">
-                <div *ngFor="let child of item?.children" >
-                  <div class="toc-child-item" *ngIf="child?.mimeType !== 'application/vnd.sunbird.question'">
-                    <sb-toc-child-item [activeContent]="activeContent" [childData]="child" (tocCardClick)="navigateToInitPlayer($event, 'child-item')"
-                      [contentStatus]="contentStatus" [type]="cardType">
-                    </sb-toc-child-item>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <ng-template #noContent>
-              <div class="heading">{{noContentMessage}}</div>
-            </ng-template>
-          </div>
-          <sb-toc-card [content]="courseHierarchy"
-            *ngIf="courseHierarchy?.mimeType !== 'application/vnd.ekstep.content-collection'"
-            (tocCardClick)="navigateToInitPlayer($event)" [type]="cardType" [contentStatus]="contentStatus">
-          </sb-toc-card>
+        <div class="toc__item" *ngFor="let content of tocList">
+          <toc-content [courseModules]="content" (contentClicked)="contentClicked($event)"></toc-content>
         </div>
-      </div>
+
+
+        <!-- <div class="cc-player__list px-0">
+          <div class="certified-course__progress" *ngIf="totalContents > 0">
+              <div class="d-flex flex-ai-center flex-jc-space-between mb-8">
+               <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-left-icon-btn" aria-label="previous-module" *ngIf="prevModule"
+                 tabindex="0" (click)="navigateToPlayerPage(prevModule); logTelemetry('previous-module', prevModule, true);">
+                 <i class="icon-svg icon-svg--xxs icon-back mr-4 rotate-90" role="img" aria-label="arrow-up"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>{{generaliseLabelService?.frmelmnts?.lbl?.prevModule | translate}}
+               </button>
+               <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-right-icon-btn ml-auto" aria-label="next-module" *ngIf="nextModule"
+                 tabindex="0" (click)="navigateToPlayerPage(nextModule); logTelemetry('next-module', nextModule, true)">
+                 {{generaliseLabelService?.frmelmnts?.lbl?.nextModule | translate}}<i class="icon-svg icon-svg--xxs icon-back ml-4 rotate90" role="img" aria-label="arrow-up"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>
+               </button>
+             </div>
+             <div *ngIf="!isUnitCompleted"> 
+               <div class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.moduleProgress}}</div>         
+               <div class="sb-color-primary fnormal font-weight-bold mt-4">{{consumedContents}}/{{totalContents}} {{resourceService?.frmelmnts?.lbl?.completed}}</div>
+               <mat-progress-bar mode="determinate" [value]="consumedContents" class="mb-0 mr-0 mt-8 tiny"></mat-progress-bar>
+             </div>
+           
+           <div class="module-complete-content d-flex flex-ai-center py-8 px-16 mb-8" *ngIf="isUnitCompleted">
+             <div class="mr-16 complete-content-image"><img src="./assets/images/badge-complete.svg" alt="complete-content-image"></div>
+             <label class="font-weight-bold mb-0 sb-color-secondary fnormal">{{generaliseLabelService?.frmelmnts?.lbl?.moduleFinish}}</label>
+           </div>
+         </div>
+                
+         
+                 <h5 class="p-16 mb-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.contentsLabel}}</h5>
+                 <div class="side-toc-content chapter-box">
+                   <div *ngFor="let item of courseHierarchy?.children; let index = index;">
+                     <p *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection'" class="title">{{item?.name}}</p>
+                     <div *ngIf="item;else noContent">
+                       <div *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
+                         <ng-container *ngIf="item?.contentType">
+                           <div class="child-content-padding">
+                         
+                             <sb-toc-card *ngIf="item?.contentType !== 'SelfAssess'" [content]="item"
+                               (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType" [contentStatus]="contentStatus">
+                             </sb-toc-card>
+                             <sb-toc-card *ngIf="item?.contentType === 'SelfAssess'" [content]="item"
+                               (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType" [contentStatus]="contentStatus"
+                               [maxAttempts]="item?.maxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
+                             </sb-toc-card>
+                           </div>
+                         </ng-container>
+                         </div>
+         
+                       <div *ngIf="item?.mimeType === 'application/vnd.sunbird.questionset'">
+                         <div class="child-content-padding">
+                           <sb-toc-card [content]="item" (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType"
+                             [contentStatus]="contentStatus" [maxAttempts]="item?.maxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
+                           </sb-toc-card>
+                         </div>
+                       </div>
+         
+                       <div *ngIf="item?.children?.length">
+                         <div *ngFor="let child of item?.children" >
+                           <div class="toc-child-item" *ngIf="child?.mimeType !== 'application/vnd.sunbird.question'">
+                             <sb-toc-child-item [activeContent]="activeContent" [childData]="child" (tocCardClick)="navigateToInitPlayer($event, 'child-item')"
+                               [contentStatus]="contentStatus" [type]="cardType">
+                             </sb-toc-child-item>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                     <ng-template #noContent>
+                       <div class="heading">{{noContentMessage}}</div>
+                     </ng-template>
+                   </div>
+                   <sb-toc-card [content]="courseHierarchy"
+                     *ngIf="courseHierarchy?.mimeType !== 'application/vnd.ekstep.content-collection'"
+                     (tocCardClick)="navigateToInitPlayer($event)" [type]="cardType" [contentStatus]="contentStatus">
+                   </sb-toc-card>
+                 </div>
+               </div> -->
       </section>
     </div>
   </div>
