@@ -46,6 +46,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
       .subscribe(({ courseHierarchy, enrolledBatchDetails }: any) => {
         this.enrolledBatchInfo = enrolledBatchDetails;
         this.courseHierarchy = courseHierarchy;
+        this.courseHierarchy['mimeTypeObjs'] = JSON.parse(this.courseHierarchy.mimeTypesCount);
         this.layoutService.updateSelectedContentType.emit(courseHierarchy.contentType);
         this.getGeneraliseResourceBundle();
         this.checkCourseStatus(courseHierarchy);

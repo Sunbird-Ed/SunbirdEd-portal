@@ -13,24 +13,24 @@
                 12 {{configContent.courseAside.durationText}}
                 <!-- {{ courseHierarchy.duration }} -->
             </li>
-            <li>
+            <li *ngIf="courseHierarchy.mimeTypeObjs['application/vnd.ekstep.content-collection']">
                 <mat-icon>toc</mat-icon>
-                4 {{configContent.courseAside.modules}}
+                {{courseHierarchy.mimeTypeObjs['application/vnd.ekstep.content-collection']}} {{configContent.courseAside.modules}}
                 <!-- {{ courseHierarchy.duration }} -->
             </li>
-            <li>
+            <li *ngIf="courseHierarchy.mimeTypeObjs['video/mp4']">
                 <mat-icon>play_circle_filled</mat-icon>
-                3 {{configContent.courseAside.videos}}
+                {{courseHierarchy.mimeTypeObjs['video/mp4']}} {{configContent.courseAside.videos}}
                 <!-- {{ courseHierarchy.duration }} -->
             </li>
-            <li>
+            <li *ngIf="courseHierarchy.mimeTypeObjs['application/pdf']">
                 <mat-icon>picture_as_pdf</mat-icon>
-                4 {{configContent.courseAside.pdfs}}
+               {{courseHierarchy.mimeTypeObjs['application/pdf']}} {{configContent.courseAside.pdfs}}
                 <!-- {{ courseHierarchy.resources }} -->
             </li>
-            <li>
+            <li *ngIf="courseHierarchy.mimeTypeObjs['application/vnd.sunbird.questionset']">
                 <mat-icon>playlist_add_check</mat-icon>
-               {{configContent.courseAside.assessments}}
+               {{courseHierarchy.mimeTypeObjs['application/vnd.sunbird.questionset']}} {{configContent.courseAside.assessments}}
                 <!-- {{ courseHierarchy.resources }} -->
             </li>
         </ul>
