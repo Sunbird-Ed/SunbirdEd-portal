@@ -170,7 +170,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     this.noContentMessage = _.get(this.resourceService, 'messages.stmsg.m0121');
     this.getLanguageChangeEvent();
     this.routerEventsChangeHandler().subscribe();
+    this.updateCourseContent();
   }
+
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().
@@ -249,6 +251,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
               } else {
                 this.courseHierarchy = data.courseHierarchy;
               }
+              console.log("courseHierarchy",this.courseHierarchy);
               if (!isSingleContent && _.get(this.courseHierarchy, 'mimeType') !==
               this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
                 isSingleContent = true;
@@ -972,7 +975,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
          toc.body = resource.children.map((c:any) => {
            return {
              name:c.name,
-             mimeType:c.contentType,
+             mimeType:c.mimeType,
              durations:'00m',
              parent: c.parent,
              selectedContent: c.identifier,

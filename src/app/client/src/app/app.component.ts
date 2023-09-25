@@ -424,6 +424,12 @@ export class AppComponent implements OnInit, OnDestroy {
     })
   }
 
+  isNoHeaderPage(): boolean {
+    const currentURL = this.router.url;
+    const searchString = "/learn/course/";
+    return currentURL.includes(searchString);
+  }
+
   formatFooterData = (footerData: any) => {
     let data = {
       links: JSON.parse(footerData.links),

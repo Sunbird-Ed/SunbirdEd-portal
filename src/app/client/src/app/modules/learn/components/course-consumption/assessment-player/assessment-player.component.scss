@@ -174,3 +174,11 @@
 .toc__item{
   margin-bottom: 24px;
 }
+
+.playerPageContainer{
+  margin: 0 24px;
+}
+
+.shadow{
+  box-shadow: 0 calculateRem(10px) calculateRem(10px) calculateRem(-10px) rgba(var(--rc-rgba-black), 0.25);
+}

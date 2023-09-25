@@ -3,7 +3,7 @@
 [layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
 <!-- Header: Back Button Previous Module & Next Module button -->
   <div [ngClass]="layoutConfiguration ? 'sb-back-actionbar' : 'sb-bg-color-white back-btn-container cc-player__btn-back relative9'" class="relative position mt-0">
-    <div class="ui container py-0 px-0 d-flex flex-ai-center">
+    <div class="playerPageContainer shadow py-0 px-0 d-flex flex-ai-center">
     <div class="p-0 d-flex flex-ai-center w-100">
    <!-- Back button -->
    <!-- <button type="button" [ngClass]="layoutConfiguration ? 'sb-btn-primary sb-btn-round' : 'sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0'" class="sb-btn sb-btn-normal" tabindex="0" (click)="goBack(); logTelemetry('back-track', courseHierarchy)" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
@@ -48,7 +48,7 @@
 
 <div *ngIf="!showLoader" [appTelemetryImpression]="telemetryPlayerPageImpression" [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''" class="text-left relative9">
   <!-- CC-Player Video -->
-  <div class="ui container">
+  <div class="playerPageContainer">
     <div class="cc-player sb-g">
       <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12 cc-player__video sb-toc-player-column">
      
@@ -73,7 +73,8 @@
           </div> -->
         </div>
       </section>
-      <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4">
+      <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 mb-24">
+        <p class="title">Content</p>
         <div class="toc__item" *ngFor="let content of tocList">
           <toc-content [courseModules]="content" (contentClicked)="contentClicked($event)"></toc-content>
         </div>
