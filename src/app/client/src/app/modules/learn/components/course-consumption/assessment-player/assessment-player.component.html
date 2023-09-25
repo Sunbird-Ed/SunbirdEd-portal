@@ -107,52 +107,9 @@
 
         <h5 class="p-16 mb-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.contentsLabel}}</h5>
         <div class="side-toc-content chapter-box">
-          <div *ngFor="let item of courseHierarchy?.children; let index = index;">
-            <p *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection'" class="title">{{item?.name}}</p>
-            <div *ngIf="item;else noContent">
-              <div *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
-                <ng-container *ngIf="item?.contentType">
-                  <div class="child-content-padding">
-                    <!-- toc card for Non Self Assess content -->
-                
-                    <sb-toc-card *ngIf="item?.contentType !== 'SelfAssess'" [content]="item"
-                      (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType" [contentStatus]="contentStatus">
-                    </sb-toc-card>
-                    <!-- toc card for Self Assess content with Label for Best Score -->
-                    <sb-toc-card *ngIf="item?.contentType === 'SelfAssess'" [content]="item"
-                      (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType" [contentStatus]="contentStatus"
-                      [maxAttempts]="item?.maxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
-                    </sb-toc-card>
-                  </div>
-                </ng-container>
-                </div>
-
-              <div *ngIf="item?.mimeType === 'application/vnd.sunbird.questionset'">
-                <div class="child-content-padding">
-                  <sb-toc-card [content]="item" (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType"
-                    [contentStatus]="contentStatus" [maxAttempts]="item?.maxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
-                  </sb-toc-card>
-                </div>
-              </div>
-
-              <div *ngIf="item?.children?.length">
-                <div *ngFor="let child of item?.children" >
-                  <div class="toc-child-item" *ngIf="child?.mimeType !== 'application/vnd.sunbird.question'">
-                    <sb-toc-child-item [activeContent]="activeContent" [childData]="child" (tocCardClick)="navigateToInitPlayer($event, 'child-item')"
-                      [contentStatus]="contentStatus" [type]="cardType">
-                    </sb-toc-child-item>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <ng-template #noContent>
-              <div class="heading">{{noContentMessage}}</div>
-            </ng-template>
-          </div>
-          <sb-toc-card [content]="courseHierarchy"
-            *ngIf="courseHierarchy?.mimeType !== 'application/vnd.ekstep.content-collection'"
-            (tocCardClick)="navigateToInitPlayer($event)" [type]="cardType" [contentStatus]="contentStatus">
-          </sb-toc-card>
+            <div *ngFor="let content of tocList">
+              <toc-content [courseModules]="content"></toc-content>
+            </div>         
         </div>
       </div>
       </section>

@@ -21,6 +21,8 @@ export class CourseAsideComponent implements OnInit {
   ngOnInit(): void {}
 
   navigate() {
-    this.router.navigate(['/learn/course/play',this.courseHierarchy.identifier]);
+    this.router.navigate(['/learn/course/play',this.courseHierarchy.identifier],{
+      state: { data: this.courseHierarchy }
+    });
   }
 }

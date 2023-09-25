@@ -117,6 +117,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   attemptID: any;
   courseEvaluable: any;
   questionSetEvaluable: any;
+  tocList = []
+  courseHierarchyList;
   @HostListener('window:beforeunload')
   canDeactivate() {
     // returning true will navigate without confirmation
@@ -161,6 +163,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.initLayout();
     this.subscribeToQueryParam();
+    this.activatedRoute.paramMap.subscribe(params => {
+      this.courseHierarchyList = history.state.data;
+    });
     this.subscribeToContentProgressEvents().subscribe(data => { });
     this.navigationHelperService.contentFullScreenEvent.
     pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
@@ -169,7 +174,30 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     this.noContentMessage = _.get(this.resourceService, 'messages.stmsg.m0121');
     this.getLanguageChangeEvent();
     this.routerEventsChangeHandler().subscribe();
+    this.updateCourseContent();
   }
+
+  updateCourseContent() {
+    this.courseHierarchyList.children.forEach((resource:any) => {
+     let toc = {
+            header:{
+              title:resource.name,
+              progress:75,
+              totalDuration:'00m'
+            },
+            body: []
+          }
+        toc.body = resource.children.map((c:any) => {
+          return {
+            name:c.name,
+            mimeType:c.mimeType,
+            durations:'00m'
+          }
+        });
+        this.tocList.push(toc)
+    })
+  }
+
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().
@@ -247,6 +275,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
               } else {
                 this.courseHierarchy = data.courseHierarchy;
               }
+              console.log("courseHierarchy",this.courseHierarchy);
               if (!isSingleContent && _.get(this.courseHierarchy, 'mimeType') !==
               this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
                 isSingleContent = true;
@@ -267,6 +296,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
             .pipe(takeUntil(this.unsubscribe))
             .subscribe((data) => {
               this.courseHierarchy = data.result.content;
+              console.log("courseHierarchy",this.courseHierarchy);
               this.layoutService.updateSelectedContentType.emit(this.courseHierarchy.contentType);
               if (this.courseHierarchy.mimeType !== 'application/vnd.ekstep.content-collection') {
                 this.activeContent = this.courseHierarchy;
