@@ -164,10 +164,6 @@ export class OtpModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  redirectToParentComponent() {
-    this.redirectToParent.emit('true');
-  }
-
   ngOnDestroy() {
     if (this.tenantDataSubscription) {
       this.tenantDataSubscription.unsubscribe();

@@ -2,9 +2,9 @@ import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angu
 import { UntypedFormGroup } from '@angular/forms';
 import * as _ from 'lodash-es';
 import { UserService, OtpService } from '@sunbird/core';
-import { ResourceService, ServerResponse, ToasterService, ConfigService } from '@sunbird/shared';
+import { ResourceService, ServerResponse, ToasterService, ConfigService,CacheService } from '@sunbird/shared';
 import { Subject } from 'rxjs';
-import { ProfileService } from './../../services';
+import { ProfileService } from '../../services';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -32,7 +32,7 @@ export class DeleteAccountComponent implements OnInit, OnDestroy {
   constructor(public resourceService: ResourceService, public userService: UserService,
     public otpService: OtpService, public toasterService: ToasterService,
     public profileService: ProfileService, private matDialog: MatDialog,
-    public configService: ConfigService) { }
+    public configService: ConfigService,private cacheService:CacheService) { }
 
   ngOnInit() {
     this.validateAndEditContact();
@@ -68,9 +68,6 @@ export class DeleteAccountComponent implements OnInit, OnDestroy {
   closeModal() {
     this.closeMatDialog();
     this.close.emit();
-  }
-
-  showParentForm(event) {
   }
 
   prepareOtpData(otpData?) {
@@ -115,8 +112,9 @@ export class DeleteAccountComponent implements OnInit, OnDestroy {
     );
   }
 
-  updateProfile(data) {
-
+  verificationSuccess(data) {
+      window.location.replace('/logoff');
+      this.cacheService.removeAll();
   }
 
   setInteractEventData() {

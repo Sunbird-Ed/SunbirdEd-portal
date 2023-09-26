@@ -2,8 +2,8 @@
   <div mat-dialog-title class="mb-0">
   </div>
   <mat-dialog-content>
-    <app-otp-modal [otpData]="otpData" [redirectToLogin]="false" (verificationSuccess)="updateProfile($event)"
-      (closeContactForm)="closeModal()" (redirectToParent)="showParentForm($event)">
+    <app-otp-modal [otpData]="otpData" [redirectToLogin]="false" (verificationSuccess)="verificationSuccess($event)"
+      (closeContactForm)="closeModal()">
     </app-otp-modal>
   </mat-dialog-content>
   <router-outlet></router-outlet>

@@ -35,12 +35,12 @@ const routes: Routes = [
     }
   },
   {
-    path: 'delete-account', component: DeleteUserComponent,
+    path: 'delete-user', component: DeleteUserComponent,
     data: {
       menuBar: {
         visible: false
       },
-      pageTitle: 'delete-user-account',
+      pageTitle: 'delete-user',
       telemetry: {
         env: telemetryEnv, type: 'view'
       }

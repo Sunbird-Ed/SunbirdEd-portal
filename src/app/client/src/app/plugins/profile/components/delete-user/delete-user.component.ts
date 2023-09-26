@@ -99,6 +99,8 @@ export class DeleteUserComponent implements OnInit {
       this.inputFields.forEach((element) => {
         element.nativeElement.checked = false;
       });
+    }else{
+      this.toasterService.warning('Please accept all terms and conditions')
     }
   }
 
