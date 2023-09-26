@@ -375,7 +375,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     public getBrowseByData(title: string) {
         if (title.toLowerCase() == "competency") {
-            this.router.navigate(['search/Library', 1]);
+            // this.router.navigate(['search/Library', 1]);
+            this.router.navigateByUrl(`search/Library/1?channel=${this.channelId}`)
         }
     }
 

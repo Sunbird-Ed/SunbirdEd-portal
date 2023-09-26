@@ -295,7 +295,8 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         filters[key] = el;
       }
     });
-    
+    // alert(filters.visibility);
+    filters.channel = this.queryParams.channel;
     const option = {
       filters: filters,
       fields: _.get(this.allTabData, 'search.fields'),
