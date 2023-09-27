@@ -119,6 +119,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
       this.dataDrivenFilters = {};
       this.fetchContentOnParamChange();
       this.setNoResultMessage();
+      this.listenLanguageChange();
       // tslint:disable-next-line:max-line-length
       this.telemetryImpression = this.groupsService.getImpressionObject(this.activatedRoute.snapshot, this.router.url, {type: CATEGORY_SEARCH});
     }, error => {
@@ -360,6 +361,14 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
       'message': 'messages.stmsg.m0007',
       'messageText': 'messages.stmsg.m0006'
     };
+  }
+
+  private listenLanguageChange() {
+    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe((languageData) => {
+      if (_.get(this.contentList, 'length') ) {
+        this.facets = this.searchService.updateFacetsData(this.facets);
+      }
+    });
   }
 
   ngOnDestroy() {
