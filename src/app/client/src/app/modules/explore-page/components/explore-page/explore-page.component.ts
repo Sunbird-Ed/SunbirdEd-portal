@@ -1,4 +1,4 @@
-import { forkJoin, Subject, Observable, BehaviorSubject, merge, of, concat, combineLatest } from 'rxjs';
+import { forkJoin, Subject, Observable, BehaviorSubject, merge, of, concat, combineLatest,Subscription } from 'rxjs';
 import { OrgDetailsService, UserService, SearchService, FormService, PlayerService, CoursesService, ObservationUtilService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
 import { Component, OnInit, OnDestroy, HostListener, AfterViewInit, ChangeDetectorRef } from '@angular/core';
@@ -91,6 +91,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     Categorytheme: any;
     filterResponseData = {};
     refreshFilter: boolean = true;
+    private themeSubject = new BehaviorSubject<string>('light'); 
+    theme$ = this.themeSubject.asObservable();
+    private themeSubscription: Subscription;
+
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     }
@@ -130,8 +134,21 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.userType = result;
             }
         });
+
+        this.themeSubscription = this.theme$.subscribe((theme) => {
+        });
+        
+        const localDataThemeAttribute = localStorage.getItem('data-mode');
+        if (localDataThemeAttribute) {
+          this.setTheme(localDataThemeAttribute);
+        }
     }
 
+    setTheme(value: string) {
+      this.themeSubject.next(value);
+      document.documentElement.setAttribute('data-mode', value);
+      localStorage.setItem('data-mode', value);
+    }
 
     private initConfiguration() {
         this.defaultFilters = this.userService.defaultFrameworkFilters;
@@ -616,6 +633,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         data[currentBoard][currentUserType]) {
                         this.showTargetedCategory = true;
                         this.targetedCategory = data[currentBoard][currentUserType];
+                        this.targetedCategory = this.targetedCategory.filter(item => item.icon.web !== '');
                         this.targetedCategorytheme = {
                             "iconBgColor": "rgba(255,255,255,1)",
                             "pillBgColor": "rgba(255,255,255,1)"
@@ -691,6 +709,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnDestroy() {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
+        this.themeSubscription.unsubscribe();
     }
 
     private setTelemetryData() {
