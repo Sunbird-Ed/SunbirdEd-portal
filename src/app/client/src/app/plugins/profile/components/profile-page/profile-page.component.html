@@ -478,7 +478,7 @@
         </div>
       </div>
       <button class="sb-btn sb-btn-normal computer only" appTelemetryInteract appOnlineOnly
-        [telemetryInteractEdata]="deleteAccountEdata" (click)="navigatetoRoute('/profile/delete-user')" tabindex="0" [class.sb-btn-gray]="disableDelete" [class.sb-btn-outline-primary]="!disableDelete">DELETE YOUR ACCOUNT</button>
+        [telemetryInteractEdata]="deleteAccountEdata" (click)="navigatetoRoute('/profile/delete-user')" tabindex="0" [class.sb-btn-gray]="disableDelete" [class.sb-btn-outline-primary]="!disableDelete"> {{resourceService?.frmelmnts.lbl.deleteAccount|uppercase}}</button>
     </div>
   </div>
   <!-- Delete Account computer view ends-->
@@ -491,7 +491,7 @@
     <div class="d-flex flex-ai-center flex-jc-center" appTelemetryInteract [telemetryInteractEdata]="deleteAccountEdata"
       tabindex="0" (click)="navigatetoRoute('/profile/delete-user')">
       <button appOnlineOnly class="sb-btn sb-btn-normal delete sb-btn-xs mt-30" [class.sb-btn-gray]="disableDelete"
-        [class.sb-btn-outline-primary]="!disableDelete">DELETE YOUR ACCOUNT</button>
+        [class.sb-btn-outline-primary]="!disableDelete"> {{resourceService?.frmelmnts.lbl.deleteAccount|uppercase}}</button>
     </div>
   </div>
   <!-- Delete Account mobile view ends-->

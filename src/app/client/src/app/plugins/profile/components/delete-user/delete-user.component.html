@@ -33,37 +33,41 @@
   <div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container box' : ''">
     <div class="sb-mat__modal">
       <div class="d-flex flex-jc-space-between py-16 px-16">
-        <div role="heading" aria-level="1" class="delete__title">Are you sure you want to delete your account ? This
-          action is irrevirreversible!</div>
+        <div role="heading" aria-level="1" class="delete__title">
+          {{resourceService?.frmelmnts?.lbl?.deleteConfirmMessage}}</div>
       </div>
 
-      <div class="d-flex flex-jc-space-between py-16 px-16">
+      <div class="d-flex flex-jc-space-between px-16">
         <div role="heading" aria-level="1" class="title">
-          NOTE:
-          <ul>
-            <li>
-              <div class="ui list" *ngFor="let item of list">
-                <div class="item">
-                  <div class="ui checkbox checklist">
-                    <input type="checkbox" #inputFields class="listItem" tabindex="0"
-                      (click)="createCheckedArray(item)">
-                    <label>{{item}}</label>
+          <div class="head py-16 px-10">
+            <b> {{resourceService?.frmelmnts?.lbl?.deleteNote}}</b>
+          </div>
+          <div class="conditions">
+            <ul>
+              <li>
+                <div class="ui list" *ngFor="let item of list">
+                  <div class="item">
+                    <div class="ui checkbox checklist">
+                      <input type="checkbox" #inputFields class="listItem" tabindex="0"
+                        (click)="createCheckedArray(item)">
+                      <label>{{item}}</label>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </li>
-          </ul>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
 
       <div class="sb-mat__modal__actions d-flex flex-jc-space-evenly pb-16 px-16">
         <button appTelemetryInteract [telemetryInteractEdata]="submitCancelInteractEdata" appTelemetryInteract
           type="button" class="sb-btn sb-btn-normal sb-btn-primary mr-8" tabindex="0" (click)="onCancel()">
-          CANCEL</button>
+          {{resourceService?.frmelmnts?.btn?.cancel|uppercase}}</button>
         <button appTelemetryInteract appOnlineOnly [telemetryInteractEdata]="submitInteractEdata"
           [disabled]="!enableSubmitBtn" (click)="onSubmitForm()" tabindex="0" type="submit"
           [class.sb-btn-gray]="!enableSubmitBtn" [class.sb-btn-error]="enableSubmitBtn" class="sb-btn sb-btn-normal">
-          DELETE ACCOUNT
+          {{resourceService?.frmelmnts.lbl.deleteAccount|uppercase}}
         </button>
       </div>
     </div>

@@ -1,8 +1,8 @@
 <!--Content-->
 <div class="sb-mat__modal__content">
   <div class="d-flex flex-jc-center py-16 px-16 ">
-    <div role="heading" aria-level="1" class=" delete__title">Are you sure you want to delete your account ? This action
-      is irreversible!</div>
+    <div role="heading" aria-level="1" class=" delete__title">{{resourceService?.frmelmnts?.lbl?.deleteConfirmMessage}}
+    </div>
   </div>
   <div class="container">
     <div class="mt-20">
@@ -35,11 +35,11 @@
 <div class="sb-mat__modal__actions d-flex flex-jc-space-evenly pb-16 px-16">
   <button appTelemetryInteract [telemetryInteractEdata]="submitCancelInteractEdata" type="button"
     class="sb-btn sb-btn-normal sb-btn-primary mr-8" tabindex="0" mat-dialog-close>
-    CANCEL</button>
+    {{resourceService?.frmelmnts?.btn?.cancel|uppercase}}</button>
   <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
     [telemetryInteractEdata]="submitInteractEdata" [disabled]="!enableSubmitBtn" (click)="verifyOTP()" tabindex="0"
     [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}" class="sb-btn sb-btn-normal sb-btn-error">
-    DELETE ACCOUNT
+    {{resourceService?.frmelmnts.lbl.deleteAccount|uppercase}}
   </button>
 </div>
 <!--/Actions-->
