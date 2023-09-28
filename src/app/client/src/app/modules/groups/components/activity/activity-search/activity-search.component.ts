@@ -363,6 +363,9 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     };
   }
 
+  /**
+   * @description - On language change dropdown this method will update the label and placeholder of the search filter
+   */
   private listenLanguageChange() {
     this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe((languageData) => {
       if (_.get(this.contentList, 'length') ) {
