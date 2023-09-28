@@ -23,14 +23,7 @@ export class DeleteUserComponent implements OnInit {
   submitCancelInteractEdata: IInteractEventEdata;
   layoutConfiguration: any;
   showContactPopup = false
-  list = ['Personal Information: Your personal account information, including your profile and login details, will be permanently deleted, including your activity history. This information cannot be recovered',
-    'Certificates: For certificate verification purposes, only your name will be stored. Access Loss: You will lose access to all features and services associated with this account, and any subscriptions or memberships may be terminated.',
-    'Single Sign-On (SSO): If you use Single Sign-On (SSO) to sign in, be aware that a new account will be created the next time you sign in. This new account will not have any historical information.',
-    'Resource Retention: Even after your account is deleted, any contributions, content, or resources you have created within the portal will not be deleted. These will remain accessible to other users as part of the collective content.You will no longer have control or management rights over them.',
-    'Usage Reports: Usage reports will retain location data declared by you.',
-    'Make sure you have backed up any important data and have considered the consequences before confirming account deletion and downloaded your certificates.']
-
-
+  list = []
   public unsubscribe = new Subject<void>();
   pageId = 'delete-user';
   userProfile: any;
@@ -45,6 +38,10 @@ export class DeleteUserComponent implements OnInit {
   }
 
   ngOnInit() {
+    let obj = this.resourceService.frmelmnts.lbl
+    this.list = Object.keys(obj)
+      .filter(key => key.includes('condition'))
+      .map(key => obj[key]);
     this.navigationhelperService.setNavigationUrl();
     this.setTelemetryData();
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -100,7 +97,7 @@ export class DeleteUserComponent implements OnInit {
         element.nativeElement.checked = false;
       });
     }else{
-      this.toasterService.warning('Please accept all terms and conditions')
+      this.toasterService.warning(this.resourceService.messages.imsg.m0092)
     }
   }
 
