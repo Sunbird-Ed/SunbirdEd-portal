@@ -52,6 +52,7 @@ describe('GlobalConsentPiiComponent', () => {
 			utm_campaign: 'utm_campaign',
 			utm_medium: 'utm_medium',
 			clientId: 'android',
+			consent: true,
 			context: JSON.stringify({ data: 'sample-data' })
 		})
 	};
@@ -156,6 +157,16 @@ describe('GlobalConsentPiiComponent', () => {
 		component.saveConsent();
 		expect(component.showConsentPopup).toBe(true);
 		expect(component.toggleEditSetting).toHaveBeenCalled();
+	  });
+	  it('should call checkQueryParams ', () => {
+		component.type = 'course-consent';
+		component.checkQueryParams();
+		expect(component.showConsentPopup).toBe(true);
+	  });
+	  it('should call checkQueryParams ', () => {
+		component.type = 'program-consent';
+		component.checkQueryParams();
+		expect(component.showConsentPopup).toBe(true);
 	  });
 	  describe("course-consent", () => {
 	  it('should get getUserConsent', () => {
