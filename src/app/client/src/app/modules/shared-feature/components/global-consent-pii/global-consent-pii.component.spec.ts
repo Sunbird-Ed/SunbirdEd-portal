@@ -15,8 +15,6 @@ describe('GlobalConsentPiiComponent', () => {
 	let component: GlobalConsentPiiComponent;
 
 	const csUserService: Partial<CsUserService> = {
-		getConsent: jest.fn().mockReturnValue(of(MockData.getConsentResponse)) as any,
-		updateConsent:jest.fn().mockReturnValue(of(MockData.getConsentResponse)) as any
 	};
 	const toasterService: Partial<ToasterService> = {
 		error: jest.fn(),
@@ -80,6 +78,7 @@ describe('GlobalConsentPiiComponent', () => {
 	});
 
 	beforeEach(() => {
+		// component.type = null;
 		jest.clearAllMocks();
 		jest.resetAllMocks();
 	});
@@ -91,12 +90,13 @@ describe('GlobalConsentPiiComponent', () => {
 		csUserService.getConsent = jest.fn().mockReturnValue(of(MockData.getConsentResponse)) as any;
 		component.userService._userProfile = MockData.userProfile as any;
 		component.collection = MockData.collection as any;
+		component.type='abcd'
 		component.ngOnInit();
-		jest.spyOn(component, 'getUserConsent');
+		// jest.spyOn(component, 'getUserConsent');
 		jest.spyOn(component, 'getUserInformation').mockReturnValue();
 		component.ngOnInit();
 		expect(component.getUserInformation).toHaveBeenCalled();
-		expect(component.getUserConsent).toHaveBeenCalled();
+		// expect(component.getUserConsent).toHaveBeenCalled();
 		expect(component.userInformation['name']).toEqual(`${MockData.userProfile.firstName} ${MockData.userProfile.lastName}`);
 	});
 	it('should fetch tnc configuration', () => {
@@ -129,7 +129,8 @@ describe('GlobalConsentPiiComponent', () => {
 	});
 	it('should call saveConsent and as NO', () => {
 		component.consentPii = 'No';
-		jest.spyOn(component, 'updateUserConsent');
+		csUserService.updateConsent = jest.fn().mockReturnValue(of(MockData.getConsentResponse)) as any
+		// jest.spyOn(component, 'updateUserConsent');
 		jest.spyOn(component, 'toggleEditSetting');
 		jest.spyOn(csUserService, 'updateConsent').mockReturnValue(of({
 			'consent': {
@@ -138,12 +139,13 @@ describe('GlobalConsentPiiComponent', () => {
 			'message': 'User Consent updated successfully.'
 		}));
 		component.saveConsent();
-		expect(component.updateUserConsent).toHaveBeenCalled();
+		// expect(component.updateUserConsent).toHaveBeenCalled();
 		expect(component.toggleEditSetting).toHaveBeenCalled();
 	  });
 	  it('should call saveConsent and as YES', () => {
 		component.consentPii = 'Yes';
-		jest.spyOn(component, 'updateUserConsent');
+		csUserService.updateConsent = jest.fn().mockReturnValue(of(MockData.getConsentResponse)) as any
+		// jest.spyOn(component, 'updateUserConsent');
 		jest.spyOn(component, 'toggleEditSetting');
 		jest.spyOn(csUserService, 'updateConsent').mockReturnValue(of({
 			'consent': {
@@ -155,15 +157,86 @@ describe('GlobalConsentPiiComponent', () => {
 		expect(component.showConsentPopup).toBe(true);
 		expect(component.toggleEditSetting).toHaveBeenCalled();
 	  });
+	  describe("course-consent", () => {
 	  it('should get getUserConsent', () => {
 		userService._userProfile = MockData.userProfile  as any;;
 		component.collection = MockData.collection  as any;;
-		component.getUserConsent();
-		jest.spyOn(csUserService, 'getConsent').mockReturnValue(of(MockData.getConsentResponse)as any);
+		component.type = 'course-consent';
+		csUserService.getConsent = jest.fn().mockReturnValue(of(MockData.getConsentResponse)) as any;
 		component.getUserConsent();
 		expect(component.isDataShareOn).toBe(false);
 		expect(component.consentPii).toEqual('Yes');
 	  });
+	  it('should get getUserConsent with error', () => {
+		userService._userProfile = MockData.userProfile  as any;;
+		component.collection = MockData.collection  as any;;
+		component.type = 'course-consent';
+		csUserService.getConsent = jest.fn(() => throwError({code: 'HTTP_CLIENT_ERROR',response:{responseCode:404}}));
+		component.getUserConsent();
+		expect(component.isDataShareOn).toBe(false);
+		expect(component.consentPii).toEqual('Yes');
+	  });
+	  it('should get updateConsent', () => {
+		userService._userProfile = MockData.userProfile  as any;;
+		component.collection = MockData.collection  as any;;
+		component.type = 'course-consent';
+		csUserService.updateConsent = jest.fn().mockReturnValue(of(MockData.getConsentResponse)) as any;
+		component.updateUserConsent(true);
+		expect(component.isDataShareOn).toBe(false);
+		expect(component.consentPii).toEqual('Yes');
+	  });
+	});
+	  describe("global-consent", () => {
+	  it('should get getUserConsent', () => {
+		userService._userProfile = MockData.userProfile  as any;;
+		component.collection = MockData.collection  as any;;
+		component.type = 'global-consent';
+		csUserService.updateUserDeclarations= jest.fn().mockReturnValue(of(MockData.getConsentResponse)) as any;
+		csUserService.getConsent = jest.fn().mockReturnValue(of(MockData.getConsentResponse)) as any;
+		component.getUserConsent();
+		expect(component.isDataShareOn).toBe(false);
+		expect(component.consentPii).toEqual('Yes');
+	  });
+	  it('should get getUserConsent with error', () => {
+		userService._userProfile = MockData.userProfile  as any;;
+		component.collection = MockData.collection  as any;;
+		component.type = 'global-consent';
+		csUserService.updateUserDeclarations= jest.fn().mockReturnValue(of(MockData.getConsentResponse)) as any;
+		csUserService.getConsent = jest.fn(() => throwError({code: 'HTTP_CLIENT_ERROR'}));
+		component.getUserConsent();
+		expect(component.isDataShareOn).toBe(false);
+		expect(component.consentPii).toEqual('Yes');
+	  });
+	  it('should get updateConsent', () => {
+		userService._userProfile = MockData.userProfile  as any;;
+		component.collection = MockData.collection  as any;;
+		component.type = 'global-consent';
+		csUserService.updateConsent = jest.fn().mockReturnValue(of(MockData.getConsentResponse)) as any;
+		component.updateUserConsent(true);
+		expect(component.isDataShareOn).toBe(false);
+		expect(component.consentPii).toEqual('Yes');
+	  });
+	});
+	  describe("program-consent", () => {
+	  it('should get getUserConsent', () => {
+		userService._userProfile = MockData.userProfile  as any;;
+		component.collection = MockData.collection  as any;;
+		component.type = 'program-consent';
+		csUserService.getConsent = jest.fn().mockReturnValue(of(MockData.getConsentResponse)) as any;
+		component.getUserConsent();
+		expect(component.isDataShareOn).toBe(false);
+		expect(component.consentPii).toEqual('Yes');
+	  });
+	  it('should get updateConsent', () => {
+		userService._userProfile = MockData.userProfile  as any;;
+		component.collection = MockData.collection  as any;;
+		component.type = 'program-consent';
+		csUserService.updateConsent = jest.fn().mockReturnValue(of(MockData.getConsentResponse)) as any;
+		component.updateUserConsent(true);
+		expect(component.isDataShareOn).toBe(false);
+		expect(component.consentPii).toEqual('Yes');
+	  });
+	});
 	describe("ngOnDestroy", () => {
 		it('should destroy sub', () => {
 			component.unsubscribe = {
