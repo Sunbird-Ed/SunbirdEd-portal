@@ -1,6 +1,6 @@
 {
   "name": "src",
-  "version": "6.0.0",
+  "version": "7.0.0",
   "license": "MIT",
   "description": "SUNBIRD Client Portal",
   "keywords": [
@@ -68,7 +68,7 @@
     "@project-sunbird/sb-notification": "6.0.0",
     "@project-sunbird/sb-styles": "^0.0.15",
     "@project-sunbird/sb-themes": "0.0.88",
-    "@project-sunbird/sunbird-collection-editor": "5.4.8",
+    "@project-sunbird/sunbird-collection-editor": "5.4.9",
     "@project-sunbird/sunbird-epub-player-v9": "5.6.0",
     "@project-sunbird/sunbird-file-upload-library": "1.0.2",
     "@project-sunbird/sunbird-pdf-player-v9": "5.5.0",
@@ -78,7 +78,7 @@
     "@project-sunbird/sunbird-video-player-v9": "5.5.1",
     "@project-sunbird/telemetry-sdk": "0.0.29",
     "@project-sunbird/web-extensions": "6.0.0",
-    "@samagra-x/uci-console": "6.0.2",
+    "@samagra-x/uci-console": "6.0.3",
     "@shikshalokam/sl-questionnaire": "2.3.1",
     "@shikshalokam/sl-reports-library": "^3.0.1",
     "@swimlane/ngx-datatable": "20.1.0",

@@ -150,22 +150,26 @@ export class CreateUserComponent implements OnInit {
 
   onSubmitForm() {
     this.enableSubmitBtn = false;
-    this.userDetailsForm.value.name = this._sanitizer.sanitize(SecurityContext.HTML,this.userDetailsForm.value.name);
-    const createUserRequest = {
-      request: {
-        firstName: this.userDetailsForm.controls?.name.value,
-        managedBy: this.managedUserService.getUserId()
-      }
-    };
-    this.managedUserService.getParentProfile().subscribe((userProfileData) => {
-      if (!_.isEmpty(_.get(userProfileData, 'userLocations'))) {
-        createUserRequest.request['profileLocation'] = _.map(_.get(userProfileData, 'userLocations'), function(location) { return {code: location.code, type: location.type}; });
-      }
-      if (_.get(userProfileData, 'framework') && !_.isEmpty(_.get(userProfileData, 'framework'))) {
-        createUserRequest.request['framework'] = _.get(userProfileData, 'framework');
-      }
-      this.registerUser(createUserRequest, userProfileData);
-    });
+    this.userDetailsForm.value.name = _.trim(this._sanitizer.sanitize(SecurityContext.HTML,this.userDetailsForm.value.name));
+    if (this.userDetailsForm.value.name !== '' && this.userDetailsForm.value.name !== null) {
+      const createUserRequest = {
+        request: {
+          firstName: this.userDetailsForm.controls?.name.value,
+          managedBy: this.managedUserService.getUserId()
+        }
+      };
+      this.managedUserService.getParentProfile().subscribe((userProfileData) => {
+        if (!_.isEmpty(_.get(userProfileData, 'userLocations'))) {
+          createUserRequest.request['profileLocation'] = _.map(_.get(userProfileData, 'userLocations'), function (location) { return { code: location.code, type: location.type }; });
+        }
+        if (_.get(userProfileData, 'framework') && !_.isEmpty(_.get(userProfileData, 'framework'))) {
+          createUserRequest.request['framework'] = _.get(userProfileData, 'framework');
+        }
+        this.registerUser(createUserRequest, userProfileData);
+      });
+    } else {
+      return false;
+    }
   }
 
   registerUser(createUserRequest, userProfileData) {

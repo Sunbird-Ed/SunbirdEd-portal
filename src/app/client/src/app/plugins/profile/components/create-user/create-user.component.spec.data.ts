@@ -22,7 +22,7 @@ export const mockRes = {
         'description': '',
         'editable': true,
         'inputType': 'checkbox',
-        'required': true,
+        'required': false,
         'displayProperty': 'Editable',
         'visible': true,
         'renderingHints': {

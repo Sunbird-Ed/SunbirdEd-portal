@@ -1,7 +1,7 @@
 {
   "name": "player",
   "author": "sunbird",
-  "version": "6.0.0",
+  "version": "7.0.0",
   "buildNumber": "1",
   "private": true,
   "description": "SUNBIRD Client Backend",

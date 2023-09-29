@@ -1,12 +1,13 @@
 import { map, mergeMap, switchMap } from 'rxjs/operators';
 import { ConfigService, ServerResponse, ContentData } from '@sunbird/shared';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import * as _ from 'lodash-es';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user/user.service';
 import { ContentService } from './../content/content.service';
 import { FrameworkService } from './../framework/framework.service';
 import { of } from 'rxjs';
+import {DOCUMENT} from '@angular/common';
 
 /**
  * Service to copy content
@@ -38,6 +39,8 @@ export class CopyContentService {
 
   public frameworkService: FrameworkService;
 
+  hostUrl: string;
+
   /**
    * constructor
    * @param {ConfigService} config ConfigService reference
@@ -46,12 +49,13 @@ export class CopyContentService {
    * @param {ContentService} contentService ContentService reference
    */
   constructor(config: ConfigService, router: Router, userService: UserService, contentService: ContentService,
-    frameworkService: FrameworkService) {
+    frameworkService: FrameworkService,@Inject(DOCUMENT) private document: Document) {
     this.config = config;
     this.router = router;
     this.userService = userService;
     this.contentService = contentService;
     this.frameworkService = frameworkService;
+    this.hostUrl = document.location.origin;
   }
   /**
    * This method calls the copy API and call the redirecttoeditor method after success
@@ -203,6 +207,10 @@ export class CopyContentService {
       url = `/workspace/content/edit/content/${copiedIdentifier}/draft/${contentData.framework}/Draft`;
     } else if (_.get(contentData,'mimeType') === 'application/vnd.sunbird.questionset') {
       url = `/workspace/edit/QuestionSet/${copiedIdentifier}/allcontent/Draft`;
+      setTimeout(() => {
+        window.open(this.hostUrl + url, "_self");
+      }, 1000);
+      return;
     }
     else {
       url = `/workspace/content/edit/generic/${copiedIdentifier}/uploaded/${contentData.framework}/Draft`;
