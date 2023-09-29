@@ -91,6 +91,7 @@ describe('GlobalConsentPiiComponent', () => {
 		csUserService.getConsent = jest.fn().mockReturnValue(of(MockData.getConsentResponse)) as any;
 		component.userService._userProfile = MockData.userProfile as any;
 		component.collection = MockData.collection as any;
+		component.profileInfo =MockData.userProfileObj as any;
 		component.type='abcd'
 		component.ngOnInit();
 		// jest.spyOn(component, 'getUserConsent');
@@ -100,9 +101,27 @@ describe('GlobalConsentPiiComponent', () => {
 		// expect(component.getUserConsent).toHaveBeenCalled();
 		expect(component.userInformation['name']).toEqual(`${MockData.userProfile.firstName} ${MockData.userProfile.lastName}`);
 	});
+	it('should set user Information', () => {
+		csUserService.getConsent = jest.fn().mockReturnValue(of(MockData.getConsentResponse)) as any;
+		component.userService._userProfile = MockData.userProfile1 as any;
+		component.collection = MockData.collection as any;
+		component.profileInfo =MockData.userProfileObj as any;
+		component.type='abcd'
+		component.ngOnInit();
+		jest.spyOn(component, 'getUserInformation').mockReturnValue();
+		component.ngOnInit();
+		expect(component.getUserInformation).toHaveBeenCalled();
+		expect(component.userInformation['name']).toEqual(`${MockData.userProfile.firstName} ${MockData.userProfile.lastName}`);
+	});
 	it('should fetch tnc configuration', () => {
 		jest.spyOn(tncService, 'getTncConfig').mockReturnValue(of(MockData.tncConfig) as any);
 		jest.spyOn(utilService, 'parseJson').mockReturnValue(JSON.parse(MockData.tncConfig.result.response.value))
+		component.fetchTncData();
+		expect(component.termsAndConditionLink).toEqual('http://test.com/tnc.html');
+	});
+	it('should fetch tnc configuration', () => {
+		jest.spyOn(tncService, 'getTncConfig').mockReturnValue(of(MockData.tncConfig) as any);
+		jest.spyOn(utilService, 'parseJson').mockReturnValue(throwError(MockData.tncConfig.result.response.value))
 		component.fetchTncData();
 		expect(component.termsAndConditionLink).toEqual('http://test.com/tnc.html');
 	});
@@ -196,6 +215,15 @@ describe('GlobalConsentPiiComponent', () => {
 		expect(component.isDataShareOn).toBe(false);
 		expect(component.consentPii).toEqual('Yes');
 	  });
+	  it('should get updateConsent with type program-consent', () => {
+		userService._userProfile = MockData.userProfile  as any;;
+		component.collection = MockData.collection  as any;;
+		component.type = 'program-consent';
+		csUserService.updateConsent = jest.fn(() => throwError({code: 'HTTP_CLIENT_ERROR',response:{responseCode:404}}));
+		component.updateUserConsent(true);
+		expect(component.isDataShareOn).toBe(false);
+		expect(component.consentPii).toEqual('Yes');
+	  });
 	});
 	  describe("global-consent", () => {
 	  it('should get getUserConsent', () => {
@@ -213,6 +241,16 @@ describe('GlobalConsentPiiComponent', () => {
 		component.collection = MockData.collection  as any;;
 		component.type = 'global-consent';
 		csUserService.updateUserDeclarations= jest.fn().mockReturnValue(of(MockData.getConsentResponse)) as any;
+		csUserService.getConsent = jest.fn(() => throwError({code: 'HTTP_CLIENT_ERROR'}));
+		component.getUserConsent();
+		expect(component.isDataShareOn).toBe(false);
+		expect(component.consentPii).toEqual('Yes');
+	  });
+	  it('should get getUserConsent with error', () => {
+		userService._userProfile = MockData.userProfile  as any;;
+		component.collection = MockData.collection  as any;;
+		component.type = 'global-consent';
+		csUserService.updateUserDeclarations= jest.fn(() => throwError({code: 'HTTP_CLIENT_ERROR'}));
 		csUserService.getConsent = jest.fn(() => throwError({code: 'HTTP_CLIENT_ERROR'}));
 		component.getUserConsent();
 		expect(component.isDataShareOn).toBe(false);
