@@ -142,6 +142,8 @@ export const MockData = {
         'status': 'success',
       },
       'responseCode': 'OK',
+      'ts':12345,
+      'ver':1.1,
       'result': {
         'response': {
           'id': 'tncConfig',

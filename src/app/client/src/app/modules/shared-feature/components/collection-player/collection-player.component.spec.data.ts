@@ -1,6 +1,6 @@
 
 
-export const CollectionHierarchyGetMockResponse = {
+export const mockResponse = {
     'id': 'ekstep.learning.content.hierarchy',
     'ver': '2.0',
     'ts': '2018-05-07T07:20:27ZZ',
@@ -530,204 +530,207 @@ export const CollectionHierarchyGetMockResponse = {
 
 
 export const collectionTree = {
-
+    contentData: {
+        'identifier': '1234567890',
+        'contentType': 'PrimaryContentType',
+    },
     'data': {
-    'channel': 'b00bc992ef25f1a9a8d63291e20efc8d',
+        'channel': 'b00bc992ef25f1a9a8d63291e20efc8d',
 
-        },
-        'mimeType': 'application/vnd.ekstep.content-collection',
-        // tslint:disable-next-line:max-line-length
-        'appIcon': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/do_1125110672521134081296/artifact/62f05664348aeff61aa195d0dc3caba5_1527228627157.thumb.jpg',
-        'gradeLevel': [
-            'Class 4'
-        ],
-        'children': [
-            {
-                'code': 'do_1125110676518584321298',
-                // tslint:disable-next-line:max-line-length
-                'downloadUrl': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_1125110676518584321298/untitled-course-unit_1527230368465_do_1125110676518584321298_1.0_spine.ecar',
-                'language': [
-                    'English'
-                ],
-                'variants': {
-                    'spine': {
-                        // tslint:disable-next-line:max-line-length
-                        'ecarUrl': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_1125110676518584321298/untitled-course-unit_1527230368465_do_1125110676518584321298_1.0_spine.ecar',
-                        'size': 68729
-                    }
-                },
-                'mimeType': 'application/vnd.ekstep.content-collection',
-                'idealScreenSize': 'normal',
-                'createdOn': '2018-05-25T06:32:17.971+0000',
-                'children': [
-                    {
-                        'previewUrl': 'http://www.dailymotion.com/video/x175su1',
-                        'subject': 'English',
-                        // tslint:disable-next-line:max-line-length
-                        'downloadUrl': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_1125110622654464001294/a5-ext-link_1527765793788_do_1125110622654464001294_2.0.ecar',
-                        'channel': '505c7c48ac6dc1edc9b08f21db5a571d',
-                        'showNotification': true,
-                        'language': [
-                            'English'
-                        ],
-                        'variants': {
-                            'spine': {
-                                // tslint:disable-next-line:max-line-length
-                                'ecarUrl': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_1125110622654464001294/a5-ext-link_1527765793872_do_1125110622654464001294_2.0_spine.ecar',
-                                'size': 68484
-                            }
-                        },
-                        'mimeType': 'text/x-url',
-                        'gradeLevel': [
-                            'Class 1'
-                        ],
-                        // tslint:disable-next-line:max-line-length
-                        'appIcon': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/do_1125110622654464001294/artifact/62f05664348aeff61aa195d0dc3caba5_1527228627157.thumb.jpg',
-                        'appId': 'dev.sunbird.portal',
-                        'artifactUrl': 'http://www.dailymotion.com/video/x175su1',
-                        'contentEncoding': 'identity',
-                        'sYS_INTERNAL_LAST_UPDATED_ON': '2018-05-31T11:23:14.033+0000',
-                        'contentType': 'Resource',
-                        'lastUpdatedBy': '3b34c469-460b-4c20-8756-c5fce2de9e69',
-                        'identifier': 'do_1125110622654464001294',
-                        'audience': [
-                            'Learner'
-                        ],
-                        'visibility': 'Default',
-                        'consumerId': '72e54829-6402-4cf0-888e-9b30733c1b88',
-                        'index': 1,
-                        'mediaType': 'content',
-                        'osId': 'org.ekstep.quiz.app',
-                        'lastPublishedBy': '3b34c469-460b-4c20-8756-c5fce2de9e69',
-                        'prevState': 'Live',
-                        'lastPublishedOn': '2018-05-31T11:23:13.788+0000',
-                        'size': 68484,
-                        'concepts': [
-                            {
-                                'identifier': 'SC7',
-                                'name': 'Earth',
-                                'objectType': 'Concept',
-                                'relation': 'associatedTo',
-                                'description': 'Earth',
-                                'index': null,
-                                'status': null,
-                                'depth': null,
-                                'mimeType': null,
-                                'visibility': null,
-                                'compatibilityLevel': null
-                            }
-                        ],
-                        'name': 'A5 ext link',
-                        'status': 'Live',
-                        'code': 'a5392316-994b-456c-b14b-2d11316c843a',
-                        'medium': 'Hindi',
-                        // tslint:disable-next-line:max-line-length
-                        'posterImage': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/do_1125110569107128321291/artifact/62f05664348aeff61aa195d0dc3caba5_1527228627157.jpg',
-                        'idealScreenSize': 'normal',
-                        'createdOn': '2018-05-25T06:21:20.450+0000',
-                        'contentDisposition': 'online',
-                        'lastUpdatedOn': '2018-05-31T11:23:13.620+0000',
-                        'creator': 'sunbird Test',
-                        'createdFor': [
-                            'ORG_001'
-                        ],
-                        'os': [
-                            'All'
-                        ],
-                        'pkgVersion': 2,
-                        'versionKey': '1527765793620',
-                        'idealScreenDensity': 'hdpi',
-                        's3Key': 'ecar_files/do_1125110622654464001294/a5-ext-link_1527765793788_do_1125110622654464001294_2.0.ecar',
-                        'framework': 'NCF',
-                        'lastSubmittedOn': '2018-05-25T06:22:18.386+0000',
-                        'createdBy': '63b0870c-f370-4f96-842d-f6a7fa2db1df',
-                        'compatibilityLevel': 4,
-                        'board': 'CBSE',
-                        'resourceType': 'Practice'
-                    }
-                ],
-                'contentDisposition': 'inline',
-                'contentEncoding': 'gzip',
-                'lastUpdatedOn': '2018-05-25T06:37:47.881+0000',
-                'sYS_INTERNAL_LAST_UPDATED_ON': '2018-05-25T06:39:28.728+0000',
-                'contentType': 'CourseUnit',
-                'identifier': 'do_1125110676518584321298',
-                'audience': [
-                    'Learner'
-                ],
-                'visibility': 'Parent',
-                'os': [
-                    'All'
-                ],
-                'index': 1,
-                'mediaType': 'content',
-                'osId': 'org.ekstep.launcher',
-                'pkgVersion': 1,
-                'versionKey': '1527229937971',
-                'idealScreenDensity': 'hdpi',
-                's3Key': 'ecar_files/do_1125110676518584321298/untitled-course-unit_1527230368465_do_1125110676518584321298_1.0_spine.ecar',
-                'size': 68729,
-                'lastPublishedOn': '2018-05-25T06:39:28.461+0000',
-                'compatibilityLevel': 4,
-                'name': 'Untitled Course Unit',
-                'status': 'Live'
-            }
-        ],
-        'appId': 'ekstep_portal',
-        'contentEncoding': 'gzip',
-        'mimeTypesCount': '{"text/x-url":1,"application/vnd.ekstep.content-collection":1}',
-        'contentType': 'Course',
-        'sYS_INTERNAL_LAST_UPDATED_ON': '2018-06-27T08:00:03.690+0000',
-        'lastUpdatedBy': '3b34c469-460b-4c20-8756-c5fce2de9e69',
-        'identifier': 'do_1125110672521134081296',
-        'audience': [
-            'Learner'
-        ],
-        // tslint:disable-next-line:max-line-length
-        'toc_url': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/do_1125110672521134081296/artifact/do_1125110672521134081296toc.json',
-        'visibility': 'Default',
-        'contentTypesCount': '{"CourseUnit":1,"Resource":1}',
-        'childNodes': [
-            'do_1125110622654464001294',
-            'do_1125110676518584321298'
-        ],
-        'consumerId': '72e54829-6402-4cf0-888e-9b30733c1b88',
-        'mediaType': 'content',
-        'osId': 'org.ekstep.quiz.app',
-        'lastPublishedBy': '3b34c469-460b-4c20-8756-c5fce2de9e69',
-        'prevState': 'Review',
-        'size': 136330,
-        'lastPublishedOn': '2018-05-25T06:39:28.869+0000',
-        'name': 'A5 ext course',
-        'status': 'Live',
-        'code': 'org.sunbird.jWP6eG',
-        'medium': 'Hindi',
-        // tslint:disable-next-line:max-line-length
-        'posterImage': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/do_1125110569107128321291/artifact/62f05664348aeff61aa195d0dc3caba5_1527228627157.jpg',
-        'idealScreenSize': 'normal',
-        'createdOn': '2018-05-25T06:31:29.174+0000',
-        'contentDisposition': 'inline',
-        'lastUpdatedOn': '2018-05-25T06:39:28.401+0000',
-        'c_Sunbird_Dev_open_batch_count': 1,
-        'creator': 'sunbird Test',
-        'createdFor': [
-            'ORG_001'
-        ],
-        'os': [
-            'All'
-        ],
-        'pkgVersion': 1,
-        'versionKey': '1527230368401',
-        'idealScreenDensity': 'hdpi',
-        's3Key': 'ecar_files/do_1125110672521134081296/a5-ext-course_1527230368908_do_1125110672521134081296_1.0_spine.ecar',
-        'framework': 'NCF',
-        'lastSubmittedOn': '2018-05-25T06:37:48.439+0000',
-        'createdBy': '63b0870c-f370-4f96-842d-f6a7fa2db1df',
-        'leafNodesCount': 1,
-        'compatibilityLevel': 4,
-        'c_Sunbird_Dev_private_batch_count': 2,
-        'board': 'CBSE'
-    };
+    },
+    'mimeType': 'application/vnd.ekstep.content-collection',
+    // tslint:disable-next-line:max-line-length
+    'appIcon': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/do_1125110672521134081296/artifact/62f05664348aeff61aa195d0dc3caba5_1527228627157.thumb.jpg',
+    'gradeLevel': [
+        'Class 4'
+    ],
+    'children': [
+        {
+            'code': 'do_1125110676518584321298',
+            // tslint:disable-next-line:max-line-length
+            'downloadUrl': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_1125110676518584321298/untitled-course-unit_1527230368465_do_1125110676518584321298_1.0_spine.ecar',
+            'language': [
+                'English'
+            ],
+            'variants': {
+                'spine': {
+                    // tslint:disable-next-line:max-line-length
+                    'ecarUrl': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_1125110676518584321298/untitled-course-unit_1527230368465_do_1125110676518584321298_1.0_spine.ecar',
+                    'size': 68729
+                }
+            },
+            'mimeType': 'application/vnd.ekstep.content-collection',
+            'idealScreenSize': 'normal',
+            'createdOn': '2018-05-25T06:32:17.971+0000',
+            'children': [
+                {
+                    'previewUrl': 'http://www.dailymotion.com/video/x175su1',
+                    'subject': 'English',
+                    // tslint:disable-next-line:max-line-length
+                    'downloadUrl': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_1125110622654464001294/a5-ext-link_1527765793788_do_1125110622654464001294_2.0.ecar',
+                    'channel': '505c7c48ac6dc1edc9b08f21db5a571d',
+                    'showNotification': true,
+                    'language': [
+                        'English'
+                    ],
+                    'variants': {
+                        'spine': {
+                            // tslint:disable-next-line:max-line-length
+                            'ecarUrl': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_1125110622654464001294/a5-ext-link_1527765793872_do_1125110622654464001294_2.0_spine.ecar',
+                            'size': 68484
+                        }
+                    },
+                    'mimeType': 'text/x-url',
+                    'gradeLevel': [
+                        'Class 1'
+                    ],
+                    // tslint:disable-next-line:max-line-length
+                    'appIcon': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/do_1125110622654464001294/artifact/62f05664348aeff61aa195d0dc3caba5_1527228627157.thumb.jpg',
+                    'appId': 'dev.sunbird.portal',
+                    'artifactUrl': 'http://www.dailymotion.com/video/x175su1',
+                    'contentEncoding': 'identity',
+                    'sYS_INTERNAL_LAST_UPDATED_ON': '2018-05-31T11:23:14.033+0000',
+                    'contentType': 'Resource',
+                    'lastUpdatedBy': '3b34c469-460b-4c20-8756-c5fce2de9e69',
+                    'identifier': 'do_1125110622654464001294',
+                    'audience': [
+                        'Learner'
+                    ],
+                    'visibility': 'Default',
+                    'consumerId': '72e54829-6402-4cf0-888e-9b30733c1b88',
+                    'index': 1,
+                    'mediaType': 'content',
+                    'osId': 'org.ekstep.quiz.app',
+                    'lastPublishedBy': '3b34c469-460b-4c20-8756-c5fce2de9e69',
+                    'prevState': 'Live',
+                    'lastPublishedOn': '2018-05-31T11:23:13.788+0000',
+                    'size': 68484,
+                    'concepts': [
+                        {
+                            'identifier': 'SC7',
+                            'name': 'Earth',
+                            'objectType': 'Concept',
+                            'relation': 'associatedTo',
+                            'description': 'Earth',
+                            'index': null,
+                            'status': null,
+                            'depth': null,
+                            'mimeType': null,
+                            'visibility': null,
+                            'compatibilityLevel': null
+                        }
+                    ],
+                    'name': 'A5 ext link',
+                    'status': 'Live',
+                    'code': 'a5392316-994b-456c-b14b-2d11316c843a',
+                    'medium': 'Hindi',
+                    // tslint:disable-next-line:max-line-length
+                    'posterImage': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/do_1125110569107128321291/artifact/62f05664348aeff61aa195d0dc3caba5_1527228627157.jpg',
+                    'idealScreenSize': 'normal',
+                    'createdOn': '2018-05-25T06:21:20.450+0000',
+                    'contentDisposition': 'online',
+                    'lastUpdatedOn': '2018-05-31T11:23:13.620+0000',
+                    'creator': 'sunbird Test',
+                    'createdFor': [
+                        'ORG_001'
+                    ],
+                    'os': [
+                        'All'
+                    ],
+                    'pkgVersion': 2,
+                    'versionKey': '1527765793620',
+                    'idealScreenDensity': 'hdpi',
+                    's3Key': 'ecar_files/do_1125110622654464001294/a5-ext-link_1527765793788_do_1125110622654464001294_2.0.ecar',
+                    'framework': 'NCF',
+                    'lastSubmittedOn': '2018-05-25T06:22:18.386+0000',
+                    'createdBy': '63b0870c-f370-4f96-842d-f6a7fa2db1df',
+                    'compatibilityLevel': 4,
+                    'board': 'CBSE',
+                    'resourceType': 'Practice'
+                }
+            ],
+            'contentDisposition': 'inline',
+            'contentEncoding': 'gzip',
+            'lastUpdatedOn': '2018-05-25T06:37:47.881+0000',
+            'sYS_INTERNAL_LAST_UPDATED_ON': '2018-05-25T06:39:28.728+0000',
+            'contentType': 'CourseUnit',
+            'identifier': 'do_1125110676518584321298',
+            'audience': [
+                'Learner'
+            ],
+            'visibility': 'Parent',
+            'os': [
+                'All'
+            ],
+            'index': 1,
+            'mediaType': 'content',
+            'osId': 'org.ekstep.launcher',
+            'pkgVersion': 1,
+            'versionKey': '1527229937971',
+            'idealScreenDensity': 'hdpi',
+            's3Key': 'ecar_files/do_1125110676518584321298/untitled-course-unit_1527230368465_do_1125110676518584321298_1.0_spine.ecar',
+            'size': 68729,
+            'lastPublishedOn': '2018-05-25T06:39:28.461+0000',
+            'compatibilityLevel': 4,
+            'name': 'Untitled Course Unit',
+            'status': 'Live'
+        }
+    ],
+    'appId': 'ekstep_portal',
+    'contentEncoding': 'gzip',
+    'mimeTypesCount': '{"text/x-url":1,"application/vnd.ekstep.content-collection":1}',
+    'contentType': 'Course',
+    'sYS_INTERNAL_LAST_UPDATED_ON': '2018-06-27T08:00:03.690+0000',
+    'lastUpdatedBy': '3b34c469-460b-4c20-8756-c5fce2de9e69',
+    'identifier': 'do_1125110672521134081296',
+    'audience': [
+        'Learner'
+    ],
+    // tslint:disable-next-line:max-line-length
+    'toc_url': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/do_1125110672521134081296/artifact/do_1125110672521134081296toc.json',
+    'visibility': 'Default',
+    'contentTypesCount': '{"CourseUnit":1,"Resource":1}',
+    'childNodes': [
+        'do_1125110622654464001294',
+        'do_1125110676518584321298'
+    ],
+    'consumerId': '72e54829-6402-4cf0-888e-9b30733c1b88',
+    'mediaType': 'content',
+    'osId': 'org.ekstep.quiz.app',
+    'lastPublishedBy': '3b34c469-460b-4c20-8756-c5fce2de9e69',
+    'prevState': 'Review',
+    'size': 136330,
+    'lastPublishedOn': '2018-05-25T06:39:28.869+0000',
+    'name': 'A5 ext course',
+    'status': 'Live',
+    'code': 'org.sunbird.jWP6eG',
+    'medium': 'Hindi',
+    // tslint:disable-next-line:max-line-length
+    'posterImage': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/do_1125110569107128321291/artifact/62f05664348aeff61aa195d0dc3caba5_1527228627157.jpg',
+    'idealScreenSize': 'normal',
+    'createdOn': '2018-05-25T06:31:29.174+0000',
+    'contentDisposition': 'inline',
+    'lastUpdatedOn': '2018-05-25T06:39:28.401+0000',
+    'c_Sunbird_Dev_open_batch_count': 1,
+    'creator': 'sunbird Test',
+    'createdFor': [
+        'ORG_001'
+    ],
+    'os': [
+        'All'
+    ],
+    'pkgVersion': 1,
+    'versionKey': '1527230368401',
+    'idealScreenDensity': 'hdpi',
+    's3Key': 'ecar_files/do_1125110672521134081296/a5-ext-course_1527230368908_do_1125110672521134081296_1.0_spine.ecar',
+    'framework': 'NCF',
+    'lastSubmittedOn': '2018-05-25T06:37:48.439+0000',
+    'createdBy': '63b0870c-f370-4f96-842d-f6a7fa2db1df',
+    'leafNodesCount': 1,
+    'compatibilityLevel': 4,
+    'c_Sunbird_Dev_private_batch_count': 2,
+    'board': 'CBSE'
+};
 
 export const telemetryErrorData = {
     'context': {
@@ -748,22 +751,22 @@ export const telemetryErrorData = {
 export const requiredProperties = {
     'mimeType': 'application/vnd.ekstep.content-collection',
     'children': [
-      {
-        'mimeType': 'application/vnd.ekstep.content-collection',
-        'children': [
-          {
-            'mimeType': 'text/x-url',
-            'contentType': 'Resource',
-            'identifier': 'do_1125110622654464001294',
-            'visibility': 'Default',
-            'name': 'A5 ext link'
-          }
-        ],
-        'contentType': 'CourseUnit',
-        'identifier': 'do_1125110676518584321298',
-        'visibility': 'Parent',
-        'name': 'Untitled Course Unit'
-      }
+        {
+            'mimeType': 'application/vnd.ekstep.content-collection',
+            'children': [
+                {
+                    'mimeType': 'text/x-url',
+                    'contentType': 'Resource',
+                    'identifier': 'do_1125110622654464001294',
+                    'visibility': 'Default',
+                    'name': 'A5 ext link'
+                }
+            ],
+            'contentType': 'CourseUnit',
+            'identifier': 'do_1125110676518584321298',
+            'visibility': 'Parent',
+            'name': 'Untitled Course Unit'
+        }
     ],
     'contentType': 'Course',
     'identifier': 'do_1125110672521134081296',
@@ -805,8 +808,12 @@ export const contentHeaderData = {
             }
         }
     },
-    collectionData : {
-        'id': 'api.course.hierarchy',
+    collectionData: {
+        'identifier': '1234567890',
+        'contentType': 'PrimaryContentType',
+        'pkgVersion': 5.3,
+        'title': 'PrimaryContentType',
+        'id': 'do_1234567890',
         'ver': '1.0',
         'ts': '2020-01-10T06:02:18.087Z',
         'params': {
@@ -817,431 +824,9 @@ export const contentHeaderData = {
             'errmsg': null
         },
         'responseCode': 'OK',
-        'result': {
-            'content': {
-                'keywords': [
-                    'LFW',
-                    'Story'
-                ],
-                'subject': 'English',
-                'channel': '505c7c48ac6dc1edc9b08f21db5a571d',
-                // tslint:disable-next-line: max-line-length
-                'downloadUrl': 'https://ekstep-public-prod.s3-ap-south-1.amazonaws.com/ecar_files/do_3123405048187617282365/attippttai-vaacippu_1506426300521_do_3123405048187617282365_3.0.ecar',
-                'language': [
-                    'Tamil'
-                ],
-                'variants': {
-                    'spine': {
-                        // tslint:disable-next-line: max-line-length
-                        'ecarUrl': 'https://ekstep-public-prod.s3-ap-south-1.amazonaws.com/ecar_files/do_3123405048187617282365/attippttai-vaacippu_1506426301631_do_3123405048187617282365_3.0_spine.ecar',
-                        'size': 88377
-                    }
-                },
-                'mimeType': 'application/vnd.ekstep.content-collection',
-                'gradeLevel': [
-                    'Other'
-                ],
-                // tslint:disable-next-line: max-line-length
-                'appIcon': 'https://ekstep-public-prod.s3-ap-south-1.amazonaws.com/content/do_3123405048187617282365/artifact/reading_1491392171063.thumb.png',
-                'children': [
-                    {
-                        // tslint:disable-next-line: max-line-length
-                        'previewUrl': 'https://ekstep-public-prod.s3-ap-south-1.amazonaws.com/content/ecml/do_3123361417003663362549-latest',
-                        'keywords': [
-                            'LFW'
-                        ],
-                        'subject': 'English',
-                        'channel': 'in.ekstep',
-                        // tslint:disable-next-line: max-line-length
-                        'downloadUrl': 'https://ekstep-public-prod.s3-ap-south-1.amazonaws.com/ecar_files/do_3123361417003663362549/meyyellluttukkllinnn-oli-paakm-1_1506423864879_do_3123361417003663362549_3.0.ecar',
-                        'language': [
-                            'Tamil'
-                        ],
-                        'variants': {
-                            'spine': {
-                                // tslint:disable-next-line: max-line-length
-                                'ecarUrl': 'https://ekstep-public-prod.s3-ap-south-1.amazonaws.com/ecar_files/do_3123361417003663362549/meyyellluttukkllinnn-oli-paakm-1_1506423865269_do_3123361417003663362549_3.0_spine.ecar',
-                                'size': 7069
-                            }
-                        },
-                        'source': '',
-                        'mimeType': 'application/vnd.ekstep.ecml-archive',
-                        'gradeLevel': [
-                            'Other'
-                        ],
-                        // tslint:disable-next-line: max-line-length
-                        'appIcon': 'https://ekstep-public-prod.s3-ap-south-1.amazonaws.com/content/do_31225577063385497622350/artifact/ed0871597c0dd7845e711fd225fd57f2_1496065700362.jpeg',
-                        'copyType': 'Enhance',
-                        'collaborators': [
-                            '244',
-                            '2511',
-                            '2918'
-                        ],
-                        // tslint:disable-next-line: max-line-length
-                        'artifactUrl': 'https://ekstep-public-prod.s3-ap-south-1.amazonaws.com/content/do_3123361417003663362549/artifact/1506423864439_do_3123361417003663362549.zip',
-                        'contentEncoding': 'gzip',
-                        'contentType': 'Resource',
-                        'sYS_INTERNAL_LAST_UPDATED_ON': '2017-09-26T11:04:25.506+0000',
-                        'lastUpdatedBy': '587',
-                        'identifier': 'do_3123361417003663362549',
-                        'audience': [
-                            'Learner'
-                        ],
-                        'visibility': 'Default',
-                        'consumerId': '62e15662-bb09-439f-86e2-d65bd84f3c23',
-                        'index': 2,
-                        'mediaType': 'content',
-                        'osId': 'org.ekstep.quiz.app',
-                        'ageGroup': [
-                            'Other'
-                        ],
-                        'lastPublishedBy': '587',
-                        'languageCode': 'mr',
-                        'tags': [
-                            'LFW'
-                        ],
-                        'size': 5530239,
-                        'lastPublishedOn': '2017-09-26T11:04:24.879+0000',
-                        'concepts': [
-                            {
-                                'identifier': 'LO16',
-                                'name': 'Onset-Coda Awareness',
-                                'objectType': 'Concept',
-                                'relation': 'associatedTo',
-                                'description': 'Onset-Coda Awareness',
-                                'index': null,
-                                'status': null,
-                                'depth': null,
-                                'mimeType': null,
-                                'visibility': null,
-                                'compatibilityLevel': null
-                            },
-                            {
-                                'identifier': 'LO17',
-                                'name': 'Memory For Sound Strings',
-                                'objectType': 'Concept',
-                                'relation': 'associatedTo',
-                                'description': 'Memory For Sound Strings',
-                                'index': null,
-                                'status': null,
-                                'depth': null,
-                                'mimeType': null,
-                                'visibility': null,
-                                'compatibilityLevel': null
-                            },
-                            {
-                                'identifier': 'LO12',
-                                'name': 'Phoneme Awareness',
-                                'objectType': 'Concept',
-                                'relation': 'associatedTo',
-                                'description': 'Phoneme Awareness',
-                                'index': null,
-                                'status': null,
-                                'depth': null,
-                                'mimeType': null,
-                                'visibility': null,
-                                'compatibilityLevel': null
-                            },
-                            {
-                                'identifier': 'LO14',
-                                'name': 'Syllable Awareness',
-                                'objectType': 'Concept',
-                                'relation': 'associatedTo',
-                                'description': 'Syllable Awareness',
-                                'index': null,
-                                'status': null,
-                                'depth': null,
-                                'mimeType': null,
-                                'visibility': null,
-                                'compatibilityLevel': null
-                            }
-                        ],
-                        'domain': [
-                            'literacy'
-                        ],
-                        'name': 'மெய்யெழுத்துக்களின் ஒலி (பாகம் - 1)',
-                        'publisher': '',
-                        'attributions': [
-                            ''
-                        ],
-                        'status': 'Live',
-                        'template': '',
-                        'code': 'org.ekstep.literacy.story.8627.fork.323.1505876483',
-                        'origin': 'do_31225786094437171212832',
-                        'description': 'இந்த பாகத்தில் மெய் எழுத்துக்களை எப்படி உச்சரிப்பது என்று பயில்வீர்கள்.',
-                        'idealScreenSize': 'normal',
-                        'createdOn': '2017-09-26T07:06:05.279+0000',
-                        'contentDisposition': 'inline',
-                        'lastUpdatedOn': '2017-09-26T11:11:36.493+0000',
-                        'owner': 'LeapForWord',
-                        'createdFor': [
-                            ''
-                        ],
-                        'creator': 'Paluru Abhign Sai (EkStep)',
-                        'os': [
-                            'All'
-                        ],
-                        'pkgVersion': 3,
-                        'versionKey': '1506423865506',
-                        'idealScreenDensity': 'hdpi',
-                        'framework': 'NCF',
-                        // tslint:disable-next-line: max-line-length
-                        's3Key': 'ecar_files/do_3123361417003663362549/meyyellluttukkllinnn-oli-paakm-1_1506423864879_do_3123361417003663362549_3.0.ecar',
-                        'lastSubmittedOn': '2017-09-26T11:02:29.813+0000',
-                        'createdBy': '323',
-                        'compatibilityLevel': 2,
-                        'organization': [
-                            ''
-                        ],
-                        'board': 'Other',
-                        'resourceType': 'Learn'
-                    },
-                    {
-                        'copyright': '',
-                        // tslint:disable-next-line: max-line-length
-                        'previewUrl': 'https://ekstep-public-prod.s3-ap-south-1.amazonaws.com/content/ecml/do_31225698054253772812594-latest',
-                        'keywords': [
-                            'LFW'
-                        ],
-                        'subject': 'English',
-                        'channel': 'in.ekstep',
-                        // tslint:disable-next-line: max-line-length
-                        'downloadUrl': 'https://ekstep-public-prod.s3-ap-south-1.amazonaws.com/ecar_files/do_31225698054253772812594/1.5-vkupprrai-pyirrccikll-classroom-activities-ert_1506404806553_do_31225698054253772812594_6.0.ecar',
-                        'language': [
-                            'Tamil'
-                        ],
-                        'variants': {
-                            'spine': {
-                                // tslint:disable-next-line: max-line-length
-                                'ecarUrl': 'https://ekstep-public-prod.s3-ap-south-1.amazonaws.com/ecar_files/do_31225698054253772812594/1.5-vkupprrai-pyirrccikll-classroom-activities-ert_1506404807027_do_31225698054253772812594_6.0_spine.ecar',
-                                'size': 7559
-                            }
-                        },
-                        'mimeType': 'application/vnd.ekstep.ecml-archive',
-                        'source': '',
-                        'gradeLevel': [
-                            'Other'
-                        ],
-                        // tslint:disable-next-line: max-line-length
-                        'appIcon': 'https://ekstep-public-prod.s3-ap-south-1.amazonaws.com/content/do_31225705680633036812652/artifact/238c913bdf34c7563b4b4e144ed1f0a5_1496222805834.jpeg',
-                        'me_totalTimespent': 8501.46,
-                        'me_averageTimespentPerSession': 26.73,
-                        'me_totalRatings': 0,
-                        'copyType': 'Enhance',
-                        'contentEncoding': 'gzip',
-                        'collaborators': [
-                            '323',
-                            '244'
-                        ],
-                        // tslint:disable-next-line: max-line-length
-                        'artifactUrl': 'https://ekstep-public-prod.s3-ap-south-1.amazonaws.com/content/do_31225698054253772812594/artifact/1506403054422_do_31225698054253772812594.zip',
-                        'contentType': 'Resource',
-                        'sYS_INTERNAL_LAST_UPDATED_ON': '2017-09-26T05:46:47.156+0000',
-                        'lastUpdatedBy': '587',
-                        'identifier': 'do_31225698054253772812594',
-                        'audience': [
-                            'Instructor'
-                        ],
-                        'visibility': 'Default',
-                        'portalOwner': '1224',
-                        'index': 3,
-                        'mediaType': 'content',
-                        'osId': 'org.ekstep.quiz.app',
-                        'ageGroup': [
-                            'Other'
-                        ],
-                        'lastPublishedBy': '587',
-                        'languageCode': 'mr',
-                        'tags': [
-                            'LFW'
-                        ],
-                        'prevState': 'Review',
-                        'size': 5771212,
-                        'lastPublishedOn': '2017-09-26T05:46:46.553+0000',
-                        'concepts': [
-                            {
-                                'identifier': 'LO14',
-                                'name': 'Syllable Awareness',
-                                'objectType': 'Concept',
-                                'relation': 'associatedTo',
-                                'description': 'Syllable Awareness',
-                                'index': null,
-                                'status': null,
-                                'depth': null,
-                                'mimeType': null,
-                                'visibility': null,
-                                'compatibilityLevel': null
-                            },
-                            {
-                                'identifier': 'LO16',
-                                'name': 'Onset-Coda Awareness',
-                                'objectType': 'Concept',
-                                'relation': 'associatedTo',
-                                'description': 'Onset-Coda Awareness',
-                                'index': null,
-                                'status': null,
-                                'depth': null,
-                                'mimeType': null,
-                                'visibility': null,
-                                'compatibilityLevel': null
-                            },
-                            {
-                                'identifier': 'LO12',
-                                'name': 'Phoneme Awareness',
-                                'objectType': 'Concept',
-                                'relation': 'associatedTo',
-                                'description': 'Phoneme Awareness',
-                                'index': null,
-                                'status': null,
-                                'depth': null,
-                                'mimeType': null,
-                                'visibility': null,
-                                'compatibilityLevel': null
-                            },
-                            {
-                                'identifier': 'LO17',
-                                'name': 'Memory For Sound Strings',
-                                'objectType': 'Concept',
-                                'relation': 'associatedTo',
-                                'description': 'Memory For Sound Strings',
-                                'index': null,
-                                'status': null,
-                                'depth': null,
-                                'mimeType': null,
-                                'visibility': null,
-                                'compatibilityLevel': null
-                            }
-                        ],
-                        'domain': [
-                            'literacy'
-                        ],
-                        'me_averageSessionsPerDevice': 1.99,
-                        'name': '1.5 வகுப்பறை பயிற்ச்சிகள் (Classroom Activities) (ERT)',
-                        'publisher': '',
-                        'attributions': [
-                            ''
-                        ],
-                        'status': 'Live',
-                        'template': '',
-                        'me_averageInteractionsPerMin': 7.93,
-                        'code': 'org.ekstep.literacy.story.8627.fork.fork.fork.fork',
-                        'me_totalSessionsCount': 318,
-                        'origin': 'do_31225695567299379212578',
-                        'description': 'இந்த பாடத்தில் தமிழ்மூலம் ஆங்கிலம் காற்று கொடுக்க சில செய்முறைகள் உள்ளன.',
-                        'idealScreenSize': 'normal',
-                        'createdOn': '2017-09-26T05:40:51.444+0000',
-                        'me_totalSideloads': 2,
-                        'me_totalComments': 0,
-                        'popularity': 8501.46,
-                        'contentDisposition': 'inline',
-                        'lastUpdatedOn': '2017-09-26T05:54:00.324+0000',
-                        'me_totalDevices': 160,
-                        'me_totalDownloads': 2,
-                        'owner': 'LeapForWord',
-                        'createdFor': [
-                            'org.ekstep.partner.lfw'
-                        ],
-                        'creator': 'LeapForWord Content',
-                        'os': [
-                            'All'
-                        ],
-                        'me_totalInteractions': 1124,
-                        'pkgVersion': 6,
-                        'versionKey': '1506404807156',
-                        'idealScreenDensity': 'hdpi',
-                        'framework': 'NCF',
-                        // tslint:disable-next-line: max-line-length
-                        's3Key': 'ecar_files/do_31225698054253772812594/1.5-vkupprrai-pyirrccikll-classroom-activities-ert_1506404806553_do_31225698054253772812594_6.0.ecar',
-                        'lastSubmittedOn': '2017-09-26T05:40:58.789+0000',
-                        'me_averageRating': 0,
-                        'createdBy': '1224',
-                        'compatibilityLevel': 2,
-                        'organization': [
-                            'LeapForWord'
-                        ],
-                        'resourceType': 'Learn'
-                    }
-                ],
-                'contentEncoding': 'gzip',
-                'mimeTypesCount': '{"application/vnd.ekstep.ecml-archive":4}',
-                'contentType': 'Collection',
-                'sYS_INTERNAL_LAST_UPDATED_ON': '2017-09-26T11:45:01.830+0000',
-                'lastUpdatedBy': '73f3d379-9bcf-4363-a38d-33d69b26586f',
-                'identifier': 'do_3123405048187617282365',
-                'audience': [
-                    'Learner'
-                ],
-                // tslint:disable-next-line: max-line-length
-                'toc_url': 'https://ekstep-public-prod.s3-ap-south-1.amazonaws.com/content/do_3123405048187617282365/artifact/do_3123405048187617282365toc.json',
-                'visibility': 'Default',
-                'contentTypesCount': '{\'Story\':4}',
-                'consumerId': '0aa13c48-dda0-4259-9007-c795dacd7b9c',
-                'mediaType': 'content',
-                'ageGroup': [
-                    'Other'
-                ],
-                'osId': 'org.ekstep.quiz.app',
-                'lastPublishedBy': '73f3d379-9bcf-4363-a38d-33d69b26586f',
-                'tags': [
-                    'LFW',
-                    'Story'
-                ],
-                'size': 14465853,
-                'lastPublishedOn': '2017-09-26T11:44:57.575+0000',
-                'concepts': [
-                    {
-                        'identifier': 'LO4',
-                        'name': 'Understanding of Grammar/Syntax',
-                        'objectType': 'Concept',
-                        'relation': 'associatedTo',
-                        'description': 'Understanding of Grammar/Syntax',
-                        'index': null,
-                        'status': null,
-                        'depth': null,
-                        'mimeType': null,
-                        'visibility': null,
-                        'compatibilityLevel': null
-                    }
-                ],
-                'domain': [
-                    'literacy'
-                ],
-                'name': 'அடிப்படை வாசிப்பு',
-                'status': 'Live',
-                'code': 'do_3123405048187617282365',
-                'description': 'அடிப்படை வாசிப்பு',
-                // tslint:disable-next-line: max-line-length
-                'posterImage': 'https://ekstep-public-prod.s3-ap-south-1.amazonaws.com/content/do_31221748466338201625192/artifact/reading_1491392171063.png',
-                'idealScreenSize': 'normal',
-                'createdOn': '2017-09-26T11:33:05.485+0000',
-                'contentDisposition': 'inline',
-                'lastUpdatedOn': '2017-09-26T11:51:35.018+0000',
-                'createdFor': [
-                    '0123221758376673287017',
-                    'ORG_001'
-                ],
-                'creator': 'SaiPaluru',
-                'os': [
-                    'All'
-                ],
-                'pkgVersion': 3,
-                'versionKey': '1506426301830',
-                'idealScreenDensity': 'hdpi',
-                'framework': 'NCF',
-                's3Key': 'ecar_files/do_3123405048187617282365/attippttai-vaacippu_1506426300521_do_3123405048187617282365_3.0.ecar',
-                'lastSubmittedOn': '2017-09-26T11:40:12.869+0000',
-                'createdBy': '2defd89a-5ed9-4ced-8efd-9fabeebe0f03',
-                'leafNodesCount': 2,
-                'compatibilityLevel': 1,
-                'board': 'State (Tamil Nadu)',
-                'resourceType': 'Collection',
-                'desktopAppMetadata': {
-                    'addedUsing': 'download',
-                    'createdOn': 1578635715771,
-                    'updatedOn': 1578635715771,
-                    'isAvailable': true
-                }
-            }
+        'data': {
+            'identifier': 'do_1234567890',
+            'mimeType': 'application/vnd.ekstep.content-collection'
         }
     },
     updateCollection: {
@@ -1353,4 +938,110 @@ export const contentHeaderData = {
         }
 
     },
+};
+
+export const userProfile = {
+    userId: "b2cb1e94-1a35-48d3-96dc-b7dfde252aa2",
+    lastName: null,
+    tcStatus: null,
+    maskedPhone: null,
+    rootOrgName: "CustROOTOrg10",
+    roles: ["PUBLIC", "PROGRAM_MANAGER"],
+    channel: "custchannel",
+    updatedDate: null,
+    prevUsedPhone: "",
+    stateValidated: false,
+    isDeleted: false,
+    organisations: [
+        {
+            updatedBy: null,
+            organisationId: "01285019302823526477",
+            orgName: "CustROOTOrg10",
+            addedByName: null,
+            addedBy: null,
+            roles: ["PUBLIC"],
+            approvedBy: null,
+            updatedDate: null,
+            userId: "b2cb1e94-1a35-48d3-96dc-b7dfde252aa2",
+            approvaldate: null,
+            isDeleted: false,
+            parentOrgId: null,
+            hashTagId: "01285019302823526477",
+            isRejected: null,
+            position: null,
+            id: "01302569853059072057",
+            orgjoindate: "2020-05-21 08:49:17:549+0000",
+            isApproved: null,
+            orgLeftDate: null,
+            identifier: "ORG_001",
+        },
+    ],
+    rootOrg: {
+        dateTime: null,
+        preferredLanguage: "English",
+        approvedBy: null,
+        channel: "ROOT_ORG",
+        description: "Sunbird",
+        updatedDate: "2017-08-24 06:02:10:846+0000",
+        addressId: null,
+        orgType: null,
+        provider: null,
+        orgCode: "sunbird",
+        theme: null,
+        id: "ORG_001",
+        communityId: null,
+        isApproved: null,
+        slug: "sunbird",
+        identifier: "ORG_001",
+        thumbnail: null,
+        orgName: "Sunbird",
+        updatedBy: "user1",
+        externalId: null,
+        isRootOrg: true,
+        rootOrgId: null,
+        approvedDate: null,
+        imgUrl: null,
+        homeUrl: null,
+        isDefault: null,
+        contactDetail: "[{'phone':'213124234234','email':'test@test.com'}]",
+        createdDate: null,
+        createdBy: null,
+        parentOrgId: null,
+        hashTagId: "b00bc992ef25f1a9a8d63291e20efc8d",
+        noOfMembers: 1,
+        status: null,
+    },
+    managedBy: "8454cb21-3ce9-4e30-85b5-fade097880d8",
+    provider: null,
+    flagsValue: 0,
+    maskedEmail: null,
+    id: "b2cb1e94-1a35-48d3-96dc-b7dfde252aa2",
+    tempPassword: null,
+    recoveryEmail: "",
+    email: "",
+    identifier: "b2cb1e94-1a35-48d3-96dc-b7dfde252aa2",
+    thumbnail: null,
+    updatedBy: null,
+    accesscode: null,
+    profileSummary: null,
+    phoneVerified: false,
+    tcUpdatedDate: null,
+    locationIds: [],
+    registryId: null,
+    recoveryPhone: "",
+    userName: "9885632_y6nj",
+    rootOrgId: "01285019302823526477",
+    prevUsedEmail: "",
+    firstName: "9885632",
+    lastLoginTime: null,
+    emailVerified: "false",
+    tncAcceptedOn: "2020-05-21T08:49:18.211Z",
+    framework: {},
+    createdDate: "2020-05-21 08:49:14:762+0000",
+    phone: "",
+    createdBy: null,
+    currentLoginTime: null,
+    userType: "OTHER",
+    tncAcceptedVersion: "v1",
+    status: 1,
 };

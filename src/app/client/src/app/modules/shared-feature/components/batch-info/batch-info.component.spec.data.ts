@@ -119,6 +119,35 @@ export const batchInfoMockResponse = {
         },
         'courseId': 'do_2127644219762278401149'
       },
+      ServerResponse: {
+        'id': 'org.search',
+        'ver': 'v2',
+        'ts': '',
+        params: {
+          resmsgid: 'msg_id',
+          status: 'success'
+        },
+        'responseCode': 'OK',
+        'result': {
+          'response': {
+            'count': 1,
+            'content': [
+              {
+                'keys': {},
+                'channel': 'ntp',
+                'description': 'NTP Pre-prod Organization',
+                'updatedDate': null,
+                'organisationType': 5,
+                'isTenant': true,
+                'provider': null,
+                'id': '01268904781886259221',
+                'hashTagId': '01268904781886259221',
+                'status': 1
+              }
+            ]
+          }
+        }
+      },
     batchList: [
       {
         'dateTime': '2019-05-18 17:11:53:560+0000',
