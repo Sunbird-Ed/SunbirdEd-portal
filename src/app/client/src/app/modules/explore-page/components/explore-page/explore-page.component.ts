@@ -620,7 +620,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         this.dataThemeAttribute = document.documentElement.getAttribute('data-mode');
                         const pillBgColor = this.dataThemeAttribute === 'light'? "rgba(255,255,255,1)" :"rgba(36,37,36,1)" 
                         this.targetedCategory = data[currentBoard][currentUserType];
-                        this.targetedCategory = this.targetedCategory.filter(item => item.icon.web !== '');
                         this.targetedCategorytheme = {
                             "iconBgColor": "rgba(255,255,255,1)",
                             "pillBgColor": pillBgColor
