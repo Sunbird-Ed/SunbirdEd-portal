@@ -139,6 +139,7 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
           this.registerSubmit.emit(_.get(result, 'value'));
           this.toasterService.success(this.resourceService?.messages?.smsg?.m0057);
         }).catch((err) => {
+          console.log("Error for location selection", err);
           this.toasterService.error(this.resourceService?.messages?.emsg?.m0005);
         });
     } else {
