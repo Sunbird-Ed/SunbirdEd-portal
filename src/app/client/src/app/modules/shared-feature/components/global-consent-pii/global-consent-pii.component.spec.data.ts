@@ -125,7 +125,6 @@ export const MockData = {
       'tncAcceptedOn': '2020-08-12T06:36:35.914Z',
       'phone': '******2507',
       'userType': 'OTHER',
-      'lastName': 'usr',
       'externalIds': [
         {
           'idType': 'custchannel',
