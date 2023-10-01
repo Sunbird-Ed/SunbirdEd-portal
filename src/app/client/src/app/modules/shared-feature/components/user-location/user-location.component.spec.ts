@@ -1,18 +1,16 @@
 import { FormControl, FormGroup } from '@angular/forms';
 import { ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { DeviceRegisterService, UserService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventEmitter } from '@angular/core';
 import { ProfileService } from '@sunbird/profile';
 import { _ } from 'lodash-es';
-import { IImpressionEventInput, IInteractEventInput, TelemetryService } from '@sunbird/telemetry';
-import { map } from 'rxjs/operators';
-import { forkJoin, of, throwError } from 'rxjs';
+import { TelemetryService } from '@sunbird/telemetry';
+import { of, throwError } from 'rxjs';
 import { PopupControlService } from '../../../../service/popup-control.service';
 import { UserLocationComponent } from './user-location.component';
 import { userLocationMockData } from './user-location.component.spec.data';
-import e from 'express';
 
 describe('UserLocationComponent', () => {
 	let component: UserLocationComponent;

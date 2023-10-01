@@ -1,4 +1,14 @@
 export const mockUserData = {
+    userFeedData:{
+        'data': {
+            'prospectChannels': [
+                'TN',
+                'RJ',
+                'AP'
+            ],
+            'order': 1
+        }
+    },
     feedSuccessResponse: {
         'id': null,
         'ver': null,
@@ -97,6 +107,22 @@ export const mockUserData = {
                 'msgid': null,
                 'err': 'USER_MIGRATION_FAILED',
                 'status': 'USER_MIGRATION_FAILED',
+                'errmsg': 'user is failed to migrate'
+            }
+        },
+        'responseCode': 'CLIENT_ERROR',
+        'result': {}
+    },
+    migrateErrorResponsewithothererror: {
+        'id': 'api.user.migrate',
+        'ver': 'v1',
+        'ts': '2019-11-18 18:01:13:308+0530',
+        'error': {
+            'params': {
+                'resmsgid': null,
+                'msgid': null,
+                'err': 'USER_MIGRATION_CANNOT_BE_DONE',
+                'status': 'USER_MIGRATION_CANNOT_BE_DONE',
                 'errmsg': 'user is failed to migrate'
             }
         },
