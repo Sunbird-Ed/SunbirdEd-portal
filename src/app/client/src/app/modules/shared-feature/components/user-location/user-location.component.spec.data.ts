@@ -4,6 +4,21 @@ export const userLocationMockData = {
       value: {}
     }
   },
+  result:{
+    response:[{
+      code: '2',
+      name: 'Himachal Pradesh',
+      id: '3789e5e3-a31f-43fa-9cb3-c1b26460fff3',
+      type: 'state'
+    },{
+      code: '3',
+      name: 'karnataka',
+      id: '3789e5e3-a31f-43fa-9cb3-c1b26460fff4',
+      type: 'state'
+    }]
+
+  },
+  state:'KARNATAKA',
   stateList: [{
     code: '2',
     name: 'Himachal Pradesh',
@@ -16,7 +31,13 @@ export const userLocationMockData = {
     id: 'cde02789-5803-424b-a3f5-10db347280e9',
     type: 'district',
     parentId: '4a6d77a1-6653-4e30-9be8-93371b6b53b5'
-  }],
+  },
+  {code: '3045',
+  name: 'Bangalore',
+  id: 'cde02789-5803-424b-a3f5-10db347280e9',
+  type: 'district',
+  parentId: '4a6d77a1-6653-4e30-9be8-93371b6b53b5'
+}],
   telemetryData: {
     locationIntractEdata: {
       id: 'submit-clicked',
@@ -61,4 +82,21 @@ export const userLocationMockData = {
       {id: 'SC-1373', type: 'Task'}
     ]
   },
+  deviceLocation:{
+    "id": "analytics.device-profile",
+    "ver": "1.0",
+    "ts": "2023-09-30T05:28:55.502+00:00",
+    "params": {
+        "resmsgid": "2a4d1a08-3a7a-4ccb-a6ed-693fadea0810",
+        "status": "successful",
+        "client_key": null
+    },
+    "responseCode": "OK",
+    "result": {
+        "ipLocation": {
+            "state": "Karanataka",
+            "district": "Bangalore"
+        }
+    }
+}
 };
