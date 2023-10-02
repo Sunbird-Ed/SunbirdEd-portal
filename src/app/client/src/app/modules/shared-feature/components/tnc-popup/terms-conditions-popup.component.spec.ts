@@ -24,23 +24,29 @@ describe('TermsAndConditionsPopupComponent', () => {
 
     const userService: Partial<UserService> = {
         loggedIn: true,
-    slug: jest.fn().mockReturnValue('tn') as any,
-    userData$: of({userProfile: {
-      userId: 'sample-uid',
-      rootOrgId: 'sample-root-id',
-      rootOrg: {},
-      hashTagIds: ['id'],
-    } as any}) as any,
-    setIsCustodianUser: jest.fn(),
-    userid: 'sample-uid',
-    appId: 'sample-id',
-    getServerTimeDiff: '',
-    acceptTermsAndConditions:jest.fn()
+        slug: jest.fn().mockReturnValue('tn') as any,
+        userData$: of({
+            userProfile: {
+                userId: 'sample-uid',
+                rootOrgId: 'sample-root-id',
+                rootOrg: {},
+                hashTagIds: ['id'],
+                managedBy: 'user123',
+            } as any
+        }) as any,
+        setIsCustodianUser: jest.fn(),
+        userid: 'sample-uid',
+        appId: 'sample-id',
+        getServerTimeDiff: '',
+        acceptTermsAndConditions: jest.fn()
     };
     const resourceService: Partial<ResourceService> = {
         messages: {
             stmsg: {
                 m0129: 'Loading the terms and conditions.'
+            },
+            fmsg: {
+                m0085: 'There was a technical error. Try again.'
             },
             emsg: {
                 m0005: 'Something went wrong, try again later'
@@ -55,12 +61,17 @@ describe('TermsAndConditionsPopupComponent', () => {
         tenantData$: of({ favicon: 'sample-favicon', tenantData: { logo: 'test' } }) as any
     };
     const sanitizer: Partial<DomSanitizer> = {
-        bypassSecurityTrustResourceUrl:jest.fn()
+        bypassSecurityTrustResourceUrl: jest.fn()
     };
     const popupControlService: Partial<PopupControlService> = {
         changePopupStatus: jest.fn()
     };
-    const matDialog: Partial<MatDialog> = {};
+    const dialogRefData = {
+        close: jest.fn()
+    };
+    const matDialog: Partial<MatDialog> = {
+        getDialogById: jest.fn().mockReturnValue(dialogRefData)
+    };
 
     beforeAll(() => {
         component = new TermsAndConditionsPopupComponent(
@@ -84,33 +95,65 @@ describe('TermsAndConditionsPopupComponent', () => {
     });
     it('should call the ngOninit method and  userProfile need to be', () => {
         userService._userProfile = { 'organisations': ['01229679766115942443'] } as any;
-        tenantService._tenantData$=jest.fn().mockReturnValue(of(tNcMockResponse.tenantMockData) as any) as any;
-        userService._userData$ = jest.fn().mockReturnValue(throwError({error:true})as any)as any;
+        tenantService._tenantData$ = jest.fn().mockReturnValue(of(tNcMockResponse.tenantMockData) as any) as any;
+        userService._userData$ = jest.fn().mockReturnValue(throwError({ error: true }) as any) as any;
         component.ngOnInit();
-        const obj ={
+        const obj = {
             userId: 'sample-uid',
             rootOrgId: 'sample-root-id',
             rootOrg: {},
-            hashTagIds: [ 'id' ]
-          }
+            hashTagIds: ['id'],
+            managedBy: 'user123'
+        }
         expect(JSON.stringify(component['userProfile'])).toEqual(JSON.stringify(obj));
     });
     it('should call the ngOninit method and  userProfile need to be', () => {
-        component.tncUrl='https://sunbird.org/termsandcond/demo.html'
+        component.tncUrl = 'https://sunbird.org/termsandcond/demo.html'
         userService._userProfile = { 'organisations': ['01229679766115942443'] } as any;
-        tenantService._tenantData$=jest.fn().mockReturnValue(of(tNcMockResponse.tenantMockData) as any) as any;
-        userService._userData$ = jest.fn().mockReturnValue(throwError({error:true})as any)as any;
+        tenantService._tenantData$ = jest.fn().mockReturnValue(of(tNcMockResponse.tenantMockData) as any) as any;
+        userService._userData$ = jest.fn().mockReturnValue(throwError({ error: true }) as any) as any;
         component.ngOnInit();
         expect(sanitizer.bypassSecurityTrustResourceUrl).toBeCalled();
     });
     it('should call acceptTermsAndConditions api', () => {
         component.disableContinueBtn = true;
-        userService._userProfile = { 'organisations': ['01229679766115942443'] }as any;
+        component.adminTncVersion = 'V4';
+        userService._userProfile = { 'organisations': ['01229679766115942443'] } as any;
         jest.spyOn(userService, 'acceptTermsAndConditions').mockReturnValue(of({}) as any);
         jest.spyOn(component, 'onClose');
         component.onSubmitTnc('1234');
         expect(component.onClose).toHaveBeenCalled();
-      });
+    });
+    it('should call acceptTermsAndConditions api with reportViewerTncVersion', () => {
+        component.disableContinueBtn = true;
+        component.adminTncVersion = null;
+        component.reportViewerTncVersion = 'V4';
+        userService._userProfile = { 'organisations': ['01229679766115942443'] } as any;
+        jest.spyOn(userService, 'acceptTermsAndConditions').mockReturnValue(of({}) as any);
+        jest.spyOn(component, 'onClose');
+        component.onSubmitTnc('1234');
+        expect(component.onClose).toHaveBeenCalled();
+    });
+    it('should call acceptTermsAndConditions api with error', () => {
+        component.disableContinueBtn = true;
+        component.adminTncVersion = null;
+        component.reportViewerTncVersion = 'V4';
+        userService._userProfile = { 'organisations': ['01229679766115942443'] } as any;
+        jest.spyOn(userService, 'acceptTermsAndConditions').mockReturnValue(throwError({ error: 'true' }) as any);
+        jest.spyOn(component, 'onClose');
+        component.onSubmitTnc('1234');
+        expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0085);
+    });
+    it('should call onClickCheckbox api', () => {
+        component.onClickCheckbox(true);
+        expect(component.disableContinueBtn).toBeFalsy()
+    });
+    it('should call onClose api', () => {
+        component.close = new EventEmitter<void>();
+        jest.spyOn(popupControlService, 'changePopupStatus');
+        jest.spyOn(component.close, 'emit');
+        component.onClose('modalId');
+    });
     describe("ngOnDestroy", () => {
         it('should destroy sub', () => {
             component['userSubscription'] = {
