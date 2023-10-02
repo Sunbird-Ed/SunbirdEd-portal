@@ -1,4 +1,241 @@
 export const Response = {
+  userProfile: {
+    userId: "b2cb1e94-1a35-48d3-96dc-b7dfde252aa2",
+    lastName: null,
+    tcStatus: null,
+    maskedPhone: null,
+    rootOrgName: "CustROOTOrg10",
+    roles: ["PUBLIC", "PROGRAM_MANAGER"],
+    channel: "custchannel",
+    updatedDate: null,
+    prevUsedPhone: "",
+    stateValidated: false,
+    isDeleted: false,
+    organisations: [
+      {
+        updatedBy: null,
+        organisationId: "01285019302823526477",
+        orgName: "CustROOTOrg10",
+        addedByName: null,
+        addedBy: null,
+        roles: ["PUBLIC"],
+        approvedBy: null,
+        updatedDate: null,
+        userId: "b2cb1e94-1a35-48d3-96dc-b7dfde252aa2",
+        approvaldate: null,
+        isDeleted: false,
+        parentOrgId: null,
+        hashTagId: "01285019302823526477",
+        isRejected: null,
+        position: null,
+        id: "01302569853059072057",
+        orgjoindate: "2020-05-21 08:49:17:549+0000",
+        isApproved: null,
+        orgLeftDate: null,
+        identifier: "ORG_001",
+      },
+    ],
+    rootOrg: {
+      dateTime: null,
+      preferredLanguage: "English",
+      approvedBy: null,
+      channel: "ROOT_ORG",
+      description: "Sunbird",
+      updatedDate: "2017-08-24 06:02:10:846+0000",
+      addressId: null,
+      orgType: null,
+      provider: null,
+      orgCode: "sunbird",
+      theme: null,
+      id: "ORG_001",
+      communityId: null,
+      isApproved: null,
+      slug: "sunbird",
+      identifier: "ORG_001",
+      thumbnail: null,
+      orgName: "Sunbird",
+      updatedBy: "user1",
+      externalId: null,
+      isRootOrg: true,
+      rootOrgId: 'ROOT_ORG',
+      approvedDate: null,
+      imgUrl: null,
+      homeUrl: null,
+      isDefault: null,
+      contactDetail: "[{'phone':'213124234234','email':'test@test.com'}]",
+      createdDate: null,
+      createdBy: null,
+      parentOrgId: null,
+      hashTagId: "b00bc992ef25f1a9a8d63291e20efc8d",
+      noOfMembers: 1,
+      status: null,
+    },
+    managedBy: "8454cb21-3ce9-4e30-85b5-fade097880d8",
+    provider: null,
+    flagsValue: 0,
+    maskedEmail: null,
+    id: "b2cb1e94-1a35-48d3-96dc-b7dfde252aa2",
+    tempPassword: null,
+    recoveryEmail: "",
+    email: "",
+    identifier: "b2cb1e94-1a35-48d3-96dc-b7dfde252aa2",
+    thumbnail: null,
+    updatedBy: null,
+    accesscode: null,
+    profileSummary: null,
+    phoneVerified: false,
+    tcUpdatedDate: null,
+    locationIds: [],
+    registryId: null,
+    recoveryPhone: "",
+    userName: "9885632_y6nj",
+    rootOrgId: "01285019302823526477",
+    prevUsedEmail: "",
+    firstName: "9885632",
+    lastLoginTime: null,
+    emailVerified: "false",
+    tncAcceptedOn: "2020-05-21T08:49:18.211Z",
+    framework: {},
+    createdDate: "2020-05-21 08:49:14:762+0000",
+    phone: "",
+    createdBy: null,
+    currentLoginTime: null,
+    userType: "OTHER",
+    tncAcceptedVersion: "v1",
+    status: 1,
+  },
+  channel: {
+    "code": "0126684405014528002",
+    "frameworks": [
+      {
+        "name": "State (Uttarakhand)",
+        "relation": "hasSequenceMember",
+        "identifier": "uk_k-12",
+        "description": "State (Uttarakhand)",
+        "objectType": "Framework",
+        "status": "Live",
+        "type": "K-12"
+      },
+      {
+        "name": "CBSE",
+        "relation": "hasSequenceMember",
+        "identifier": "ekstep_ncert_k-12",
+        "description": "EKSTEP NCERT",
+        "objectType": "Framework",
+        "status": "Live",
+        "type": "K-12"
+      },
+      {
+        "name": "CISCE",
+        "relation": "hasSequenceMember",
+        "identifier": "cisce_k-12",
+        "description": "CISCE",
+        "objectType": "Framework",
+        "status": "Live",
+        "type": "K-12"
+      },
+      {
+        "name": "Others",
+        "relation": "hasSequenceMember",
+        "identifier": "z_test_framework",
+        "description": "Others",
+        "objectType": "Framework",
+        "status": "Live",
+        "type": "K-12"
+      },
+      {
+        "name": "State (Karnataka)",
+        "relation": "hasSequenceMember",
+        "identifier": "ka_k-12",
+        "description": "State (Karnataka)",
+        "objectType": "Framework",
+        "status": "Live",
+        "type": "K-12"
+      }
+    ],
+    "channel": "in.ekstep",
+    "description": "Sunbird Custodian Organization",
+    "createdOn": "2019-01-02T14:44:48.959+0000",
+    "objectType": "Channel",
+    "collectionPrimaryCategories": [
+      "Content Playlist",
+      "Course",
+      "Digital Textbook",
+      "Question paper"
+    ],
+    "appId": "Sunbird.portal",
+    "primaryCategories": [
+      {
+        "identifier": "obj-cat:asset_asset_all",
+        "name": "Asset",
+        "targetObjectType": "Asset"
+      },
+      {
+        "identifier": "obj-cat:certasset_asset_all",
+        "name": "CertAsset",
+        "targetObjectType": "Asset"
+      }
+    ],
+    "additionalCategories": [
+      "Asset",
+      "CCT",
+      "CertAsset",
+      "Certificate Template",
+      "Classroom Teaching Video",
+      "Concept Map",
+      "TV Lesson"
+    ],
+    "lastUpdatedOn": "2022-08-23T05:46:55.407+0000",
+    "collectionAdditionalCategories": [
+      "Textbook",
+      "Lesson Plan",
+      "CCT",
+      "FLN"
+    ],
+    "contentAdditionalCategories": [
+      "Classroom Teaching Video",
+      "Concept Map",
+      "Curiosity Question Set",
+      "Experiential Resource",
+      "Explanation Video",
+      "Focus Spot",
+      "Learning Outcome Definition",
+      "Lesson Plan",
+      "Marking Scheme Rubric",
+      "Pedagogy Flow",
+      "Previous Board Exam Papers",
+      "TV Lesson",
+      "Textbook",
+      "CCT",
+      "FLN"
+    ],
+    "identifier": "0126684405014528002",
+    "lastStatusChangedOn": "2019-06-04T14:06:34.428+0000",
+    "consumerId": "2fe08bf6-bf82-4193-a559-a272c45e2d0e",
+    "assetAdditionalCategories": [],
+    "autoCreateBatch": "Disabled",
+    "languageCode": [],
+    "versionKey": "1661233615407",
+    "contentPrimaryCategories": [
+      "Course Assessment",
+      "eTextbook",
+      "Explanation Content",
+      "Learning Resource",
+      "Practice Question Set",
+      "Teacher Resource",
+      "Exam Question"
+    ],
+    "framework": "",
+    "name": "dikshacustodian",
+    "defaultCourseFramework": "TPD",
+    "assetPrimaryCategories": [
+      "Asset",
+      "CertAsset",
+      "Certificate Template"
+    ],
+    "status": "Live",
+    "defaultFramework": "NCF"
+  },
   categories1: [
     {
       'identifier': 'ncf_board',
@@ -904,6 +1141,36 @@ export const Response = {
       'inputType': 'select',
       'label': 'Subject',
       'required': false
+    }
+  ],
+  selectedOption: [
+    {
+      'code': 'board',
+      'name': 'Board',
+      'label': 'Board',
+      'required': true,
+      'index': 1
+    },
+    {
+      'code': 'medium',
+      'name': 'Medium',
+      'label': 'Medium',
+      'required': true,
+      'index': 2
+    },
+    {
+      'code': 'gradeLevel',
+      'name': 'gradeLevel',
+      'label': 'gradeLevel',
+      'required': true,
+      'index': 3
+    },
+    {
+      'code': 'subject',
+      'name': 'subject',
+      'label': 'subject',
+      'required': true,
+      'index': 4
     }
   ]
 };
