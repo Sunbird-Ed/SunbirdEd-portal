@@ -261,6 +261,8 @@ export class ReportService  {
 
   public getLatestLastModifiedOnDate(data: { result: any, id: string, lastModifiedOn: undefined | string }[],
     dataSourceIds?: { ids: string[] }) {
+      console.log("getLatestLastModifiedOnDate---> data--",data);
+      console.log("getLatestLastModifiedOnDate---> dataSourceIds--",dataSourceIds);
     let queryObj = data;
     if (dataSourceIds) {
       queryObj = _.filter(data, obj => _.includes(dataSourceIds.ids, obj.id));
