@@ -59,6 +59,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     downloadIdentifier: string;
     contentDownloadStatus = {};
     isConnected = true;
+    dataThemeAttribute: string;
     private _facets$ = new Subject();
     public showBatchInfo = false;
     public enrolledCourses: Array<any>;
@@ -615,10 +616,12 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     if (currentUserType && currentBoard && data && data[currentBoard] &&
                         data[currentBoard][currentUserType]) {
                         this.showTargetedCategory = true;
+                        this.dataThemeAttribute = document.documentElement.getAttribute('data-mode');
+                        const pillBgColor = this.dataThemeAttribute === 'light'? "rgba(255,255,255,1)" :"rgba(36,37,36,1)" 
                         this.targetedCategory = data[currentBoard][currentUserType];
                         this.targetedCategorytheme = {
                             "iconBgColor": "rgba(255,255,255,1)",
-                            "pillBgColor": "rgba(255,255,255,1)"
+                            "pillBgColor": pillBgColor
                         }
                         this.Categorytheme = {
                             "iconBgColor": "rgba(255,0,0,0)",
