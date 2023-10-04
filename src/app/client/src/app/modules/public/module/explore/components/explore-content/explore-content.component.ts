@@ -77,6 +77,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     this.isDesktopApp = this.utilService.isDesktopApp;
     this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe$)).subscribe(queryParams => {
       this.queryParams = { ...queryParams };
+      if(queryParams.publisher) this.utilService.setNcertPublisher(true);
     });
     this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
       this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
