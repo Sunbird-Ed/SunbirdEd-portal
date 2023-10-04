@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const utils = require('./helpers/utils.js');
-const LEARNER_URL = utils.defaultHost(utils.envVariables.LEARNER_URL);
+const LEARNER_URL = utils?.defaultHost(utils?.envVariables?.LEARNER_URL);
 enableLogger({
   logBasePath: path.join(__dirname, 'logs'),
   logLevel: envHelper.sunbird_portal_log_level,
@@ -72,7 +72,7 @@ const addLogContext = (req, res, next) => {
       "id": req.get('X-App-Id'),
       "pid": "",
       "ver":  req.get('X-App-Version')
-    },    
+    },
     userId: req.get('X-User-ID'),
     isDebugEnabled: req.get('X-Debug-Enable')
   }
@@ -108,7 +108,7 @@ app.all([
     secret: envHelper?.PORTAL_SESSION_SECRET_KEY,
     resave: false,
     cookie: {
-      maxAge: envHelper.sunbird_session_ttl 
+      maxAge: envHelper.sunbird_session_ttl
     },
     saveUninitialized: false,
     store: memoryStore
@@ -125,8 +125,8 @@ const morganConfig = (tokens, req, res) => {
   let edata = {
     "eid": "LOG",
     "edata": {
-      "type": "system", 
-      "level": "TRACE", 
+      "type": "system",
+      "level": "TRACE",
       "requestid": req.get('x-request-id'),
       "message": "ENTRY LOG: " + req.get('x-msgid'),
       "params": req.body ? JSON.stringify(req.body) : "empty"
@@ -184,7 +184,7 @@ app.all('/clearSession', (req, res) => {
 });
 
 app.use(['/api/*', '/user/*', '/merge/*', '/device/*', '/google/*', '/v2/user/*', '/v1/sso/*', '/migrate/*', '/v1/user/*' , '/logoff', '/logout', '/sso/sign-in/*'],
-  captureResBodyForLogging, 
+  captureResBodyForLogging,
   morgan(morganConfig)); // , { skip: (req, res) => !(logger.level === "debug") })); // skip logging if logger level is not debug
 
 app.get('/enableDebugMode', (req, res, next) => {
@@ -406,7 +406,7 @@ function handleShutDowns() {
     timeout: 60 * 1000, // forcefully shutdown if not closed gracefully after 1 min
     onShutdown: cleanup,
     finally: () => logger.info({ msg: 'Server gracefully shut down.'}),
-    development: process.env.sunbird_environment === 'local' ? true : false, // in dev mode skip graceful shutdown 
+    development: process.env.sunbird_environment === 'local' ? true : false, // in dev mode skip graceful shutdown
   });
 }
 

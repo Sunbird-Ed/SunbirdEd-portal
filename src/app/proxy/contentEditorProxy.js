@@ -2,14 +2,14 @@ const utils = require('../helpers/utils.js');
 const proxyUtils = require('./proxyUtils.js')
 const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')
-const contentProxyUrl  = utils.defaultHost(utils.envVariables.CONTENT_PROXY_URL);
-const learnerServiceBaseUrl  = utils.defaultHost(utils.envVariables.LEARNER_URL);
-const learner_Service_Local_BaseUrl = utils.defaultHost(utils.envVariables.learner_Service_Local_BaseUrl);
-const PORTAL_EXT_PLUGIN_URL = utils.defaultHost(utils.envVariables.PORTAL_EXT_PLUGIN_URL);
-const contentServiceBaseUrl = utils.defaultHost(utils.envVariables.CONTENT_URL);
+const contentProxyUrl  = utils?.defaultHost(utils?.envVariables?.CONTENT_PROXY_URL);
+const learnerServiceBaseUrl  = utils?.defaultHost(utils?.envVariables?.LEARNER_URL);
+const learner_Service_Local_BaseUrl = utils?.defaultHost(utils?.envVariables?.learner_Service_Local_BaseUrl);
+const PORTAL_EXT_PLUGIN_URL = utils?.defaultHost(utils?.envVariables?.PORTAL_EXT_PLUGIN_URL);
+const contentServiceBaseUrl = utils?.defaultHost(utils?.envVariables?.CONTENT_URL);
 const reqDataLimitOfContentUpload = '30mb'
 const telemetryHelper = require('../helpers/telemetryHelper')
-const learnerURL  = utils.defaultHost(utils.envVariables.LEARNER_URL);
+const learnerURL  = utils?.defaultHost(utils?.envVariables?.LEARNER_URL);
 const isAPIWhitelisted = require('../helpers/apiWhiteList');
 
 module.exports = function (app) {
@@ -256,7 +256,7 @@ module.exports = function (app) {
     })
   )
   // Collection import & export API's END
-  
+
   app.post('/action/content/v3/upload/*',
     isAPIWhitelisted.isAllowed(),
     proxy(contentProxyUrl, {
@@ -267,7 +267,7 @@ module.exports = function (app) {
       userResDecorator: userResDecorator
     })
   )
-  // asset create , upload and read api's 
+  // asset create , upload and read api's
   app.post('/action/asset/v1/upload/:do_id',
     isAPIWhitelisted.isAllowed(),
     proxy(contentServiceBaseUrl, {
