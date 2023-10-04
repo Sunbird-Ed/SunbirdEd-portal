@@ -71,6 +71,7 @@ describe('SsoMergeConfirmation component', ()=> {
   });
 
   it('should migrate user', ()=> {
+    ssoMergeConfirmationComponent.userDetails={id:'1234'} as any;
     const assignedData = '/v1/sso/migrate/account/initiate?userId=1&identifier=type1&identifierValue=1&freeUser=true&tncAccepted=true&tncVersion=true';
     ssoMergeConfirmationComponent.migrateUser();
     expect(window.location.href).toEqual(assignedData);

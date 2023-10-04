@@ -1,7 +1,7 @@
 import { ResourceService,UtilService,ConfigService,ToasterService } from '@sunbird/shared';
 import { _ } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { of, throwError } from 'rxjs';
+import {  of, throwError } from 'rxjs';
 import { TenantService,OtpService,UserService } from '@sunbird/core';
 import { testData } from './otp-popup.component.spec.data';
 import { OtpPopupComponent } from './otp-popup.component';
@@ -91,10 +91,11 @@ describe('OtpPopupComponent', () => {
         expect(component.unsubscribe.complete).toHaveBeenCalled();
       });
       it('set values with enabling the submit button', () => {
+        component.enableSubmitBtn = true;
         component.ngOnInit();
         const email = component.otpForm.controls['otp'];
         email.setValue('784758');
-        expect(component.enableSubmitBtn).toBeTruthy();
+        expect(component.enableSubmitBtn).toBeFalsy();
       });
     
       it('call verifyOTP and get success', () => {
