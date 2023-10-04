@@ -518,11 +518,11 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   navigatetoRoute(url) {
-    if (_.includes(this.userRoles, 'ORG_ADMIN')) {
-      let msg = "You are the only Org Admin in the organization and hence will not be able to delete your account. Please contact support!"
-      this.toasterService.warning(msg);
-    }else{
+    if (_.includes(this.userProfile.userRoles, 'PUBLIC')&& this.userProfile.userRoles.length===1) {
       this.router.navigate([url]);
+    }else{
+      let msg = "Your role doesnot allow you to delete your account. Please contact support!"
+      this.toasterService.warning(msg);
     }
   }
 

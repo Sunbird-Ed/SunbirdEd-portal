@@ -114,7 +114,7 @@ export class DeleteUserComponent implements OnInit {
   }
   
   /**
-   * This method pushes all the checked reason into a array
+   * This method pushes all the checked conditions into an array
    */
   createCheckedArray(checkedItem) {
     if (checkedItem && (_.indexOf(this.conditions, checkedItem) === -1)) {
