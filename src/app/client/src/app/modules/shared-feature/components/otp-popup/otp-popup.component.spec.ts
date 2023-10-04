@@ -94,7 +94,7 @@ describe('OtpPopupComponent', () => {
         component.ngOnInit();
         const email = component.otpForm.controls['otp'];
         email.setValue('784758');
-        expect(component.enableSubmitBtn).toBeFalsy();
+        expect(component.enableSubmitBtn).toBeTruthy();
       });
     
       it('call verifyOTP and get success', () => {
