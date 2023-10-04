@@ -108,22 +108,18 @@ Installing Sunbird requires two primary software components:
     
 
 4. Edit the Application Configuration
+    > Open `<PROJECT-FOLDER>/src/app/helpers/mandatoryEnv.js` in any available text editor with the below keys along with the values as per the infra
+                                                                                                                                                  
+          |       Variable Name                     |                   Description                                       |
+          | :-------------------------------------- |---------------------------------------------------------------------|
+          |  sunbird_anonymous_register_token       |   Token to register anonymous device                                |                                  
+          |  sunbird_anonymous_default_token        |   Fallback token for device register API for `anonymous` users      |                                                           
+          |  sunbird_loggedin_device_register_api   |   Kong End Point for Logged Users                                   |                               
+          |  sunbird_logged_default_token           |   Fallback token for device register API for `logged-in` users      |                                                         
+          |  sunbird_loggedin_register_token        |   Device register API for logged-in users                           | 
+          |  cloud_private_storage_secret           |   To set the Cloud Account Key                                      |
 
-    > These are the mandatory keys required to run the application in Local environment. Please update them with appropriatte values in `<PROJECT-FOLDER>/src/app/helpers/environmentVariablesHelper.js`
-
-        |           Environment Variable        |  Data Type |             Description                |
-        | :-------------------------------------| ---------- | -------------------------------------  |
-        |     sunbird_cloud_storage_provider    |   string   |        Cloud Service Provider          |
-        |   cloud_private_storage_accountname   |   string   |          Cloud Account Name            |
-        |      cloud_private_storage_secret     |   string   |          Cloud Account Key             |
-        |  KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN |   boolean  |   Flag value to allow anonymous user   |
-        |  sunbird_anonymous_device_register_api|   string   |The API for registering anonymous device|
-        |  sunbird_anonymous_register_token     |   string   |    Token to register anonymous device  |
-        |               SB_DOMAIN               |   string   |    The host for Sunbird Environment    |
-        |         PORTAL_API_AUTH_TOKEN         |   string   |     User generated API auth token      |
-
-
-    > Open `<PROJECT-FOLDER>/src/app/helpers/environmentVariablesHelper.js` in any available text editor and update the contents of the file so that it contains exactly the following values
+    > Open `<PROJECT-FOLDER>/src/app/helpers/optionalEnv.js` in any available text editor and update the contents of the file so that it contains exactly the following values
 
       ```console
           module.exports = {
@@ -220,14 +216,3 @@ Installing Sunbird requires two primary software components:
 | [@shikshalokam/sl-questionnaire](https://www.npmjs.com/package/@shikshalokam/sl-questionnaire)           	    | https://github.com/shikshalokam/sl-questionnaire-components       | 2.3.0       	| NG 12      	|
 | [@shikshalokam/sl-reports-library](https://www.npmjs.com/package/@shikshalokam/sl-reports-library)           	| https://github.com/shikshalokam/sl-reports-library                | 3.0.1       	| NG 14      	|
 
-### Mandatory Environmental variables
-Open `<PROJECT-FOLDER>/src/app/helpers/mandatoryEnv.js` in any available text editor with the below keys along with the values as per the infra
-                                                                                                                                        
-|       Variable Name                     |                   Description                                       |
-| :-------------------------------------- |---------------------------------------------------------------------|
-|  sunbird_anonymous_register_token       |   Token to register anonymous device                                |                                  
-|  sunbird_anonymous_default_token        |   Fallback token for device register API for `anonymous` users      |                                                           
-|  sunbird_loggedin_device_register_api   |   Kong End Point for Logged Users                                   |                               
-|  sunbird_logged_default_token           |   Fallback token for device register API for `logged-in` users      |                                                         
-|  sunbird_loggedin_register_token        |   Device register API for logged-in users                           | 
-|  cloud_private_storage_secret           |   To set the Cloud Account Key                                      |
