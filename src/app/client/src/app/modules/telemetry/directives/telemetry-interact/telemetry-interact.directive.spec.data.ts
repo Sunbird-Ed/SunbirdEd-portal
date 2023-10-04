@@ -3,7 +3,7 @@ export const eventData = {
         'context': {
           'channel': '01231711180382208027',
           'pdata': {
-            'id': 'staging.diksha.portal',
+            'id': 'staging.sunbird.portal',
             'ver': '1.5.1',
             'pid': 'sunbird-portal'
           },

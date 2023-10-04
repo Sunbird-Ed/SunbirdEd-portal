@@ -390,7 +390,7 @@ export const mockData = {
                                     }
                                 ],
                                 'children': [],
-                                'appId': 'staging.diksha.portal',
+                                'appId': 'staging.sunbird.portal',
                                 'usesContent': [],
                                 'artifactUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_2128813466672988161137/artifact/1574067416128_do_2128813466672988161137.zip',
                                 'contentEncoding': 'gzip',
@@ -522,7 +522,7 @@ export const mockData = {
                                     }
                                 ],
                                 'children': [],
-                                'appId': 'staging.diksha.portal',
+                                'appId': 'staging.sunbird.portal',
                                 'usesContent': [],
                                 'artifactUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_212911074637045760134/artifact/1576059759229_do_212911074637045760134.zip',
                                 'contentEncoding': 'gzip',
@@ -760,7 +760,7 @@ export const mockData = {
                                         'status': 'Draft'
                                     }
                                 ],
-                                'appId': 'staging.diksha.portal',
+                                'appId': 'staging.sunbird.portal',
                                 'artifactUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_2126724195828858881544/artifact/1546926777134_do_2126724195828858881544.zip',
                                 'contentEncoding': 'gzip',
                                 'lockKey': '43b3eaa3-06a6-4478-a1c9-983edd9a136a',
@@ -948,7 +948,7 @@ export const mockData = {
                                     }
                                 ],
                                 'children': [],
-                                'appId': 'staging.diksha.portal',
+                                'appId': 'staging.sunbird.portal',
                                 'usesContent': [],
                                 'artifactUrl': 'https://www.youtube.com/watch?v=j0gFAznHTjI',
                                 'contentEncoding': 'identity',
@@ -1217,7 +1217,7 @@ export const mockData = {
                                     }
                                 ],
                                 'children': [],
-                                'appId': 'staging.diksha.portal',
+                                'appId': 'staging.sunbird.portal',
                                 'usesContent': [],
                                 'artifactUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_2128559225078743041897/artifact/1569327506060_do_2128559225078743041897.zip',
                                 'contentEncoding': 'gzip',
@@ -1380,7 +1380,7 @@ export const mockData = {
                                                         'gradeLevel': [
                                                             'Class 10'
                                                         ],
-                                                        'appId': 'staging.diksha.portal',
+                                                        'appId': 'staging.sunbird.portal',
                                                         'artifactUrl': 'https://www.youtube.com/watch?v=XPQyvDxfFIo',
                                                         'contentEncoding': 'identity',
                                                         'lockKey': '39a774ab-b58f-479f-a141-414f9bee40e3',
@@ -1480,7 +1480,7 @@ export const mockData = {
                                                 'gradeLevel': [
                                                     'Class 10'
                                                 ],
-                                                'appId': 'staging.diksha.portal',
+                                                'appId': 'staging.sunbird.portal',
                                                 'artifactUrl': 'https://www.youtube.com/watch?v=3JJLvsccj0I',
                                                 'contentEncoding': 'identity',
                                                 'lockKey': '3fff2fad-fbf1-489a-bac5-722d2b40c742',
@@ -1705,7 +1705,7 @@ export const mockData = {
                                                             }
                                                         ],
                                                         'children': [],
-                                                        'appId': 'staging.diksha.portal',
+                                                        'appId': 'staging.sunbird.portal',
                                                         'usesContent': [],
                                                         'artifactUrl': 'https://www.youtube.com/watch?v=0uaE6BYAoWk',
                                                         'contentEncoding': 'identity',
@@ -1884,7 +1884,7 @@ export const mockData = {
                                                     }
                                                 ],
                                                 'children': [],
-                                                'appId': 'staging.diksha.portal',
+                                                'appId': 'staging.sunbird.portal',
                                                 'usesContent': [],
                                                 'artifactUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/assets/do_212696420966211584118320/planet-earth-revolving.mp4',
                                                 'contentEncoding': 'identity',
@@ -2049,7 +2049,7 @@ export const mockData = {
                                         'variants': '{"online":{"ecarUrl":"https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_21289114271400755214888/neel_lesson_plan_1573626659670_do_21289114271400755214888_1.0_online.ecar","size":9075.0},"spine":{"ecarUrl":"https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_21289114271400755214888/neel_lesson_plan_1573626658223_do_21289114271400755214888_1.0_spine.ecar","size":184382.0}}'
                                     }
                                 ],
-                                'appId': 'staging.diksha.portal',
+                                'appId': 'staging.sunbird.portal',
                                 'contentEncoding': 'gzip',
                                 'lockKey': '003fae36-0fef-49dd-8bd5-ded2fc4afd16',
                                 'totalCompressedSize': 10328585,
@@ -2157,7 +2157,7 @@ export const mockData = {
                         'variants': '{"online":{"ecarUrl":"https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_21289679356020326415198/dial-code-with-book-and-book-unit_1576148945546_do_21289679356020326415198_4.0_online.ecar","size":16596.0},"spine":{"ecarUrl":"https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_21289679356020326415198/dial-code-with-book-and-book-unit_1576148945149_do_21289679356020326415198_4.0_spine.ecar","size":304214.0}}'
                     }
                 ],
-                'appId': 'staging.diksha.portal',
+                'appId': 'staging.sunbird.portal',
                 'contentEncoding': 'gzip',
                 'lockKey': 'a0f3e08b-66dd-44d9-bd81-f49806b9d6ce',
                 'totalCompressedSize': 12609414,
@@ -2357,7 +2357,7 @@ export const mockData = {
             }
           ],
           'children': [],
-          'appId': 'staging.diksha.portal',
+          'appId': 'staging.sunbird.portal',
           'usesContent': [],
           'artifactUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_2128813466672988161137/artifact/1574067416128_do_2128813466672988161137.zip',
           'contentEncoding': 'gzip',
@@ -2490,7 +2490,7 @@ export const mockData = {
             }
           ],
           'children': [],
-          'appId': 'staging.diksha.portal',
+          'appId': 'staging.sunbird.portal',
           'usesContent': [],
           'artifactUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_212911074637045760134/artifact/1576059759229_do_212911074637045760134.zip',
           'contentEncoding': 'gzip',
@@ -2729,7 +2729,7 @@ export const mockData = {
               'status': 'Draft'
             }
           ],
-          'appId': 'staging.diksha.portal',
+          'appId': 'staging.sunbird.portal',
           'artifactUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_2126724195828858881544/artifact/1546926777134_do_2126724195828858881544.zip',
           'contentEncoding': 'gzip',
           'lockKey': '43b3eaa3-06a6-4478-a1c9-983edd9a136a',
@@ -2918,7 +2918,7 @@ export const mockData = {
             }
           ],
           'children': [],
-          'appId': 'staging.diksha.portal',
+          'appId': 'staging.sunbird.portal',
           'usesContent': [],
           'artifactUrl': 'https://www.youtube.com/watch?v=j0gFAznHTjI',
           'contentEncoding': 'identity',
@@ -3162,7 +3162,7 @@ export const mockData = {
             }
           ],
           'children': [],
-          'appId': 'staging.diksha.portal',
+          'appId': 'staging.sunbird.portal',
           'usesContent': [],
           'artifactUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_2128559225078743041897/artifact/1569327506060_do_2128559225078743041897.zip',
           'contentEncoding': 'gzip',
@@ -3256,7 +3256,7 @@ export const mockData = {
           'gradeLevel': [
             'Class 10'
           ],
-          'appId': 'staging.diksha.portal',
+          'appId': 'staging.sunbird.portal',
           'artifactUrl': 'https://www.youtube.com/watch?v=XPQyvDxfFIo',
           'contentEncoding': 'identity',
           'lockKey': '39a774ab-b58f-479f-a141-414f9bee40e3',
@@ -3345,7 +3345,7 @@ export const mockData = {
           'gradeLevel': [
             'Class 10'
           ],
-          'appId': 'staging.diksha.portal',
+          'appId': 'staging.sunbird.portal',
           'artifactUrl': 'https://www.youtube.com/watch?v=3JJLvsccj0I',
           'contentEncoding': 'identity',
           'lockKey': '3fff2fad-fbf1-489a-bac5-722d2b40c742',
@@ -3535,7 +3535,7 @@ export const mockData = {
             }
           ],
           'children': [],
-          'appId': 'staging.diksha.portal',
+          'appId': 'staging.sunbird.portal',
           'usesContent': [],
           'artifactUrl': 'https://www.youtube.com/watch?v=0uaE6BYAoWk',
           'contentEncoding': 'identity',
@@ -3703,7 +3703,7 @@ export const mockData = {
             }
           ],
           'children': [],
-          'appId': 'staging.diksha.portal',
+          'appId': 'staging.sunbird.portal',
           'usesContent': [],
           'artifactUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/assets/do_212696420966211584118320/planet-earth-revolving.mp4',
           'contentEncoding': 'identity',

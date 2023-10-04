@@ -144,7 +144,7 @@ export class MainFooterComponent implements OnInit, AfterViewInit, OnDestroy {
       // For iGot the URL is direclty taken; no UTM needed
       this.redirect(playstoreLink);
     } else {
-      let applink = this.configService.appConfig.UrlLinks.downloadDikshaApp;
+      let applink = this.configService.appConfig.UrlLinks.downloadSunbirdApp;
       const sendUtmParams = _.get(this.activatedRoute, 'firstChild.firstChild.snapshot.data.sendUtmParams');
       const utm_source = this.userService.slug ? `${this.instance}-${this.userService.slug}` : this.instance;
       if (sendUtmParams) {
