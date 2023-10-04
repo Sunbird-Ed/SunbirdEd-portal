@@ -35,6 +35,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
   public selectedFilters: any = {};
   public refresh = true;
   public isConnected = true;
+  public ncertVal: boolean;
   public filterChangeEvent = new Subject();
   private unsubscribe$ = new Subject<void>();
   public resetFilterInteractEdata: IInteractEventEdata;
@@ -81,7 +82,13 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
           return 1;
         }
         return -1;
-      }).map((f) => {
+      })
+      .filter(f => {
+        this.ncertVal = this.utilService.getNcertPublisher();
+        if(this.ncertVal && f.name === 'se_boards') return false;
+        else return f;
+      })
+      .map((f) => {
         if (f.name === 'mediaType') {
           f.values = f.mimeTypeList.map((m) => ({name: m}));
 
@@ -99,8 +106,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
           type: 'dropdown',
           labelText: f.name === 'se_boards' ? _.get(this.resourceService, 'frmelmnts.lbl.boardsFilter') : f.label || f.name,
           placeholderText: `${this.resourceService.frmelmnts.lbl.Select} ${f.label || f.name}`,
-          multiple: true,
-          autocomplete: true
+          multiple: true
         };
       });
       this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe((languageData) => {

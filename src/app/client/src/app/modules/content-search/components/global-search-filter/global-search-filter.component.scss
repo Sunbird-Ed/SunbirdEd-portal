@@ -36,4 +36,12 @@
   .ui.dropdown .menu div .selected.item, .ui.dropdown.selected{
     font-weight: 700 !important;
   }
+  .sb-mat__dropdown--nolabel.mat-form-field-appearance-fill .mat-select {
+    font-size: 0.8125rem;
+  }
+  .select-board {
+    .mat-select-value {
+      padding-top: 4px;
+    }
+  }
 }

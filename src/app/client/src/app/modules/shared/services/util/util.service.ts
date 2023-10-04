@@ -24,6 +24,7 @@ export class UtilService {
   public formData: any;
   public roleChanged = new BehaviorSubject('');
   public currentRole = this.roleChanged.asObservable();
+  public isPublisherNcert: boolean;
 
   constructor(private resourceService: ResourceService, private genericResourceService: GenericResourceService,) {
     if (!UtilService.singletonInstance) {
@@ -32,6 +33,14 @@ export class UtilService {
     this._isDesktopApp = environment.isDesktopApp;
     return UtilService.singletonInstance;
 
+  }
+
+  setNcertPublisher(val: boolean) {
+    this.isPublisherNcert = val;
+  }
+  
+  getNcertPublisher() {
+    return this.isPublisherNcert;
   }
 
   get isDesktopApp() {
