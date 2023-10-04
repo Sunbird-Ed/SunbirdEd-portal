@@ -3,10 +3,10 @@ const proxyUtils = require('../proxy/proxyUtils.js')
 const reportHelper = require('../helpers/reportHelper.js')
 const BASE_REPORT_URL = "/report";
 const proxy = require('express-http-proxy');
-const REPORT_SERVICE_URL = utils.defaultHost(utils.envVariables.REPORT_SERVICE_URL);
-const CONTENT_URL = utils.defaultHost(utils.envVariables.CONTENT_URL);
-const sunbird_data_product_service = utils.defaultHost(utils.envVariables.sunbird_data_product_service);
-const DATASERVICE_URL = utils.defaultHost(utils.envVariables.DATASERVICE_URL);
+const REPORT_SERVICE_URL = utils?.defaultHost(utils?.envVariables?.REPORT_SERVICE_URL);
+const CONTENT_URL = utils?.defaultHost(utils?.envVariables?.CONTENT_URL);
+const sunbird_data_product_service = utils?.defaultHost(utils?.envVariables?.sunbird_data_product_service);
+const DATASERVICE_URL = utils?.defaultHost(utils?.envVariables?.DATASERVICE_URL);
 
 const reqDataLimitOfContentUpload = '50mb';
 const _ = require('lodash');
@@ -62,7 +62,7 @@ module.exports = function (app) {
             }
         })
     )
-    
+
     app.all(['/report/request/read/:tag', '/report/request/list/:tag', '/report/request/submit'],
     proxyUtils.verifyToken(),
     proxy(sunbird_data_product_service, {
@@ -114,7 +114,7 @@ module.exports = function (app) {
       }
     })
   )
-  
+
     app.all([`${BASE_REPORT_URL}/get/:reportId/:hash`, `${BASE_REPORT_URL}/summary/*`],
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN']),
