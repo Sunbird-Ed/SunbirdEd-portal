@@ -22,6 +22,7 @@ export let fakeOpenBatchDetails = {
   'courseCreator': 'd7c1a905-2268-4fdd-976d-28bdabfb7b0e',
   'hashTagId': '',
   'participantCount': 11,
+  'participants':['01278646366204723214'],
   'mentors': [],
   'countDecrementStatus': false,
   'name': 'ஓபன் பேட்ச் ',
@@ -29,5 +30,10 @@ export let fakeOpenBatchDetails = {
   'enrollmentType': 'open',
   'courseId': 'do_21278645271447142411200',
   'startDate': '2019-06-18',
-  'status': 1
+  'status': 1,
+  'result':{
+    response:{
+      content:'abcd'
+    }
+  }
 };
