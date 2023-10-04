@@ -10,8 +10,8 @@ const { logger } = require('@project-sunbird/logger');
 const { encriptWithTime, encrypt } = require('../helpers/crypto');
 const { decodeNChkTime } = require('../helpers/utilityService');
 const googleService = require('../helpers/googleService');
-const learner_Service_Local_BaseUrl = utils.defaultHost(utils.envVariables.learner_Service_Local_BaseUrl);
-const LEARNER_URL  = utils.defaultHost(utils.envVariables.LEARNER_URL);
+const learner_Service_Local_BaseUrl = utils?.defaultHost(utils?.envVariables?.learner_Service_Local_BaseUrl);
+const LEARNER_URL  = utils?.defaultHost(utils?.envVariables?.LEARNER_URL);
 module.exports = (app) => {
 
   app.post('/learner/user/v1/fuzzy/search',
