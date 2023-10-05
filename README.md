@@ -119,7 +119,7 @@ Installing Sunbird requires two primary software components:
           |  sunbird_loggedin_register_token        |   Device register API for logged-in users                           | 
           |  cloud_private_storage_secret           |   To set the Cloud Account Key                                      |
 
-    > For further reference refer to the confluence link : [https://project-sunbird.atlassian.net/wiki/spaces/SP/pages/3353378817/Portal+-+Min+environment+variables](https://project-sunbird.atlassian.net/wiki/spaces/SP/pages/3353378817/Portal+-+Min+environment+variables)
+    > For further environment variable reference refer to this confluence wiki link: [https://project-sunbird.atlassian.net/wiki/spaces/SP/pages/3353378817/Portal+-+Min+environment+variables](https://project-sunbird.atlassian.net/wiki/spaces/SP/pages/3353378817/Portal+-+Min+environment+variables)
 
     > Once the file is updated with appropriate values, then you can proceed with running the application
 
