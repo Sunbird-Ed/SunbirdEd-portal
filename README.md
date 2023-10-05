@@ -119,31 +119,7 @@ Installing Sunbird requires two primary software components:
           |  sunbird_loggedin_register_token        |   Device register API for logged-in users                           | 
           |  cloud_private_storage_secret           |   To set the Cloud Account Key                                      |
 
-    > Open `<PROJECT-FOLDER>/src/app/helpers/optionalEnv.js` in any available text editor and update the contents of the file so that it contains exactly the following values
-
-      ```console
-          module.exports = {
-              // 1. LEARNER_URL   
-              LEARNER_URL: env.sunbird_learner_player_url || <'https://<host for adopter's instance>',
-              
-              // 2. CONTENT_URL
-              CONTENT_URL: env.sunbird_content_player_url || <'https://<host for adopter's instance>',
-              
-              // 3. CONTENT_PROXY  
-              CONTENT_PROXY_URL: env.sunbird_content_proxy_url || <'https://<host for adopter's instance>',
-              PORTAL_REALM: env.sunbird_portal_realm || 'sunbird',
-              
-              // 4. PORTAL_AUTH_SERVER_URL
-              PORTAL_AUTH_SERVER_URL: env.sunbird_portal_auth_server_url || <'https://<host for adopter's instance>',
-              PORTAL_AUTH_SERVER_CLIENT: env.sunbird_portal_auth_server_client || "portal",
-              ...
-              PORTAL_PORT: env.sunbird_port || 3000,
-                
-              // 5. PORTAL_ECHO_API_URL
-              PORTAL_ECHO_API_URL: env.sunbird_echo_api_url || '',
-              ...
-          }
-      ```
+    > For further reference refer to the confluence link : `https://project-sunbird.atlassian.net/wiki/spaces/SP/pages/3353378817/Portal+-+Min+environment+variables`
 
     > Once the file is updated with appropriate values, then you can proceed with running the application
 
