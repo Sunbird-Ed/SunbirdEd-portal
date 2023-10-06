@@ -36,7 +36,6 @@
   "private": true,
   "dependencies": {
     "@angular-devkit/build-angular": "0.1102.19",
-    "client-cloud-services": "https://github.com/dicdiksha/client-cloud-services.git#5cd4e1208308627e00ec9df7a0e77c94045960fa",
     "@angular/animations": "^11.2.14",
     "@angular/cdk": "11.2.13",
     "@angular/cli": "^11.2.19",
@@ -52,6 +51,7 @@
     "@angular/platform-browser": "^11.2.14",
     "@angular/platform-browser-dynamic": "^11.2.14",
     "@angular/router": "^11.2.14",
+    "@dictrigyn/pdf-player": "^0.0.9",
     "@ngx-translate/core": "12.0.0",
     "@ngx-translate/http-loader": "^5.0.0",
     "@project-sunbird/chatbot-client": "3.0.3",
@@ -85,6 +85,7 @@
     "angular-inport": "^2.0.0",
     "angular2-uuid": "1.1.1",
     "chart.js": "2.9.4",
+    "client-cloud-services": "https://github.com/dicdiksha/client-cloud-services.git#5cd4e1208308627e00ec9df7a0e77c94045960fa",
     "common-form-elements-v9": "4.5.0",
     "common-form-elements-web-v9": "4.7.2",
     "content-section-v11": "0.0.9",
@@ -117,7 +118,7 @@
     "lodash-es": "^4.17.15",
     "marked": "1.1.1",
     "md5": "2.2.1",
-    "moment": "2.29.1",
+    "moment": "^2.24.0",
     "moment-duration-format": "2.3.2",
     "ng-recaptcha": "^5.0.0",
     "ng-svg-editor": "0.0.24",
@@ -166,6 +167,6 @@
     "typescript": "~4.0.8"
   },
   "resolutions": {
-    "moment": "2.29.1"
+    "moment": "2.24.0"
   }
 }
