@@ -51,7 +51,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     {
       category: 'board',
       type: 'dropdown',
-      labelText: _.get(this.resourceService, 'frmelmnts.lbl.boards'),
+      labelText: _.get(this.resourceService, 'frmelmnts.lbl.boardsFilter'),
       placeholderText: _.get(this.resourceService, 'frmelmnts.lbl.selectBoard'),
       multiple: false
     },
@@ -400,6 +400,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
         this.filterFormTemplateConfig = config;
         this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe((languageData) => {
           this.filterFormTemplateConfig.forEach((facet) => {
+            // facet['autocomplete'] = true;
             facet['labelText'] = this.utilService.transposeTerms(facet['labelText'], facet['labelText'], this.resourceService.selectedLang);
             facet['placeholderText'] = this.utilService.transposeTerms(facet['placeholderText'], facet['placeholderText'], this.resourceService.selectedLang);
           });

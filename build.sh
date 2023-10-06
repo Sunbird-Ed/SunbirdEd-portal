@@ -1,17 +1,16 @@
-#!/bin/bash
+#!/bin/bash -xv
 STARTTIME=$(date +%s)
-NODE_VERSION=14.19.0
+#NODE_VERSION=14.19.1
 echo "Starting portal build from build.sh"
-set -euo pipefail	
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+set -euo pipefail
+export PATH=$PATH:/var/lib/jenkins/.nvm/versions/node/v14.19.1/bin
 build_tag=$1
 name=player
 node=$2
 org=$3
 buildDockerImage=$4
 buildCdnAssests=$5
+node -v
 echo "buildDockerImage: " $buildDockerImage
 echo "buildCdnAssests: " $buildCdnAssests
 if [ $buildCdnAssests == true ]
@@ -21,7 +20,7 @@ then
 fi
 
 commit_hash=$(git rev-parse --short HEAD)
-nvm install $NODE_VERSION # same is used in client and server
+#nvm install $NODE_VERSION # same is used in client and server
 
 cd src/app
 mkdir -p app_dist/ # this folder should be created prior server and client build
@@ -46,14 +45,14 @@ build_client_cdn(){
 # function to run client build
 build_client(){
     echo "Building client in background"
-    nvm use $NODE_VERSION
+    #nvm use $NODE_VERSION
     cd client
     echo "starting client yarn install"
-    yarn install --no-progress --production=true
+    yarn install --no-progress --production=true --ignore-engines
     echo "completed client yarn install"
     if [ $buildDockerImage == true ]
     then
-    build_client_docker & # run client local build in background 
+    build_client_docker & # run client local build in background
     fi
     if [ $buildCdnAssests == true ]
     then
@@ -69,21 +68,21 @@ build_server(){
     echo "copying requied files to app_dist"
     cp -R libs helpers proxy resourcebundles package.json framework.config.js sunbird-plugins routes constants controllers server.js ./../../Dockerfile app_dist
     cd app_dist
-    nvm use $NODE_VERSION
+    #nvm use $NODE_VERSION
     echo "starting server yarn install"
-    yarn install --no-progress --production=true
+    yarn install --no-progress --production=true --ignore-engines
     echo "completed server yarn install"
     node helpers/resourceBundles/build.js -task="phraseAppPull"
 }
 
-build_client & # run client build in background 
+build_client & # run client build in background
 if [ $buildDockerImage == true ]
 then
    build_server & # run client build in background
 fi
 
 ## wait for both build to complete
-wait 
+wait
 
 BUILD_ENDTIME=$(date +%s)
 echo "Client and Server Build complete Took $[$BUILD_ENDTIME - $STARTTIME] seconds to complete."
@@ -93,7 +92,6 @@ then
 cd app_dist
 mkdir -p node_modules/client-cloud-services/dist
 cp /var/lib/jenkins/custombuild/client-cloud-services/bundle.js node_modules/client-cloud-services/dist/
-
 # you will need to inject the custom client-cloud-service bundle.js to the player build
 # the actual file location will depends on your bundle.js location
 #    1. build the custom client-cloud-services from https://github.com/ocisunbird/client-cloud-services/tree/oci-5.1.0
