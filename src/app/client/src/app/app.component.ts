@@ -18,6 +18,8 @@ import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/common';
 import { image } from '../assets/images/tara-bot-icon';
 import { SBTagModule } from 'sb-tag-manager';
+import { AngularFireAnalytics } from '@angular/fire/analytics';
+
 /**
  * main app component
  */
@@ -123,7 +125,7 @@ export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('resetFontSize') resetFontSize: ElementRef;
   @ViewChild('darkModeToggle') darkModeToggle: ElementRef;
 
-  constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
+  constructor(private analytics: AngularFireAnalytics, private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
     private deviceRegisterService: DeviceRegisterService, private courseService: CoursesService, private tenantService: TenantService,
@@ -143,6 +145,9 @@ export class AppComponent implements OnInit, OnDestroy {
     } else {
       document.documentElement.setAttribute('layout', 'base');
     }
+
+    this.analytics.logEvent('custom_diksha_web_event', {USER_ID: `DIKSHA${Math.random()*1000}`});
+
   }
   /**
    * dispatch telemetry window unload event before browser closes
