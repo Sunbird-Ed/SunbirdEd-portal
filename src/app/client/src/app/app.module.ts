@@ -25,6 +25,20 @@ import { TranslateStore } from '@ngx-translate/core';
 import { SbSearchFilterModule } from '@project-sunbird/common-form-elements';
 import { ModalModule } from 'ngx-bootstrap/modal';
 
+import { AngularFireAnalyticsModule, ScreenTrackingService } from '@angular/fire/analytics';
+import { AngularFireModule } from '@angular/fire';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA1rRdz7oyOB7Pf7uKhgfvBacgf8o4inno",
+  authDomain: "diksha-4446b.firebaseapp.com",
+  databaseURL: "https://diksha-4446b.firebaseio.com",
+  projectId: "diksha-4446b",
+  storageBucket: "diksha-4446b.appspot.com",
+  messagingSenderId: "280944945973",
+  appId: "1:280944945973:web:86ba50ffc9e1ec8ab5fa7c",
+  measurementId: "G-9Z3LDJ42BE"
+};
+
 @NgModule({
   declarations: [
     AppComponent
@@ -53,7 +67,9 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     ...PluginModules,
      // ngx-translate and the loader module
      HttpClientModule,
-    AppRoutingModule // don't add any module below this because it contains wildcard route
+    AppRoutingModule, // don't add any module below this because it contains wildcard route
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireAnalyticsModule,
   ],
   entryComponents: [AppComponent],
   bootstrap: [AppComponent],
@@ -63,7 +79,9 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     TranslateStore,
     { provide: CacheStorageAbstract, useClass: CacheSessionStorage },
     { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true },
-    { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy }
+    { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy },
+    ScreenTrackingService,
+    // UserTrackingService
   ]
 })
 export class AppModule {
