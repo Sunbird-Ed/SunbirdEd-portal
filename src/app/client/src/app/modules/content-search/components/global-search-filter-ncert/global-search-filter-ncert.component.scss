@@ -1,0 +1,47 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "pages/sbt-filter" as *;
+@use "components/sb-forms/facet-filters" as *;
+
+// .sb-prominent-filter {
+//   .sb-prominent-filter-container.sb-global-search {
+//     .sb-prominent-filter-field:nth-child(6) {
+//       width: auto;
+//     }
+//   }
+// }
+
+:host ::ng-deep {
+  .ui.selection.sbt-dropdown.dropdown .menu>div .item {
+    color: var(--sbt-theme-purple-selectbox);
+    padding: 0.75rem 1.25rem !important;
+    font-size: 0.86rem;
+    position: relative;
+    cursor: pointer;
+    display: block;
+    border: none;
+    height: auto;
+    text-align: left;
+    border-top: none;
+    line-height: 1em;
+    text-transform: none;
+    box-shadow: none;
+    -webkit-touch-callout: none;
+  }
+  .ui.dropdown .menu div .active.item{
+      font-weight: 700 !important;
+  }
+  .ui.dropdown .menu>div .item:hover {
+    background: rgba(var(--rc-rgba-black), 0.05);
+  }
+  .ui.dropdown .menu div .selected.item, .ui.dropdown.selected{
+    font-weight: 700 !important;
+  }
+  .sb-mat__dropdown--nolabel.mat-form-field-appearance-fill .mat-select {
+    font-size: 0.8125rem;
+  }
+  .select-board {
+    .mat-select-value {
+      padding-top: 4px;
+    }
+  }
+}

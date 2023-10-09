@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NoResultComponent, SearchFilterComponent, PageSectionComponent,
-  TopicPickerComponent, DataDrivenFilterComponent, ViewAllComponent, GlobalSearchFilterComponent, GlobalSearchSelectedFilterComponent } from './components';
+  TopicPickerComponent, DataDrivenFilterComponent, ViewAllComponent, GlobalSearchFilterComponent, GlobalSearchSelectedFilterComponent, GlobalSearchFilterNcertComponent } from './components';
 import { SharedModule } from '@sunbird/shared';
 import {
   SuiModalModule, SuiProgressModule, SuiAccordionModule,
@@ -19,7 +19,7 @@ import { SbSearchFilterModule } from '@project-sunbird/common-form-elements';
 
 @NgModule({
   declarations: [NoResultComponent, SearchFilterComponent, PageSectionComponent,
-    TopicPickerComponent, DataDrivenFilterComponent, ViewAllComponent, GlobalSearchFilterComponent, GlobalSearchSelectedFilterComponent],
+    TopicPickerComponent, DataDrivenFilterComponent, ViewAllComponent, GlobalSearchFilterComponent, GlobalSearchSelectedFilterComponent, GlobalSearchFilterNcertComponent],
     imports: [
         SharedFeatureModule,
         RouterModule,
@@ -35,6 +35,6 @@ import { SbSearchFilterModule } from '@project-sunbird/common-form-elements';
         SuiTabsModule, SuiSelectModule, SuiDimmerModule, SuiCollapseModule, SuiDropdownModule, SbSearchFilterModule,
     ],
   exports: [NoResultComponent, SearchFilterComponent, PageSectionComponent,
-    TopicPickerComponent, DataDrivenFilterComponent, ViewAllComponent, GlobalSearchFilterComponent, GlobalSearchSelectedFilterComponent]
+    TopicPickerComponent, DataDrivenFilterComponent, ViewAllComponent, GlobalSearchFilterComponent, GlobalSearchSelectedFilterComponent, GlobalSearchFilterNcertComponent]
 })
 export class ContentSearchModule { }

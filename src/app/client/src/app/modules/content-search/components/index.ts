@@ -6,3 +6,4 @@ export * from './topic-picker/topic-picker.component';
 export * from './view-all/view-all.component';
 export * from './global-search-filter/global-search-filter.component';
 export * from './global-search-selected-filter/global-search-selected-filter.component';
+export * from './global-search-filter-ncert/global-search-filter-ncert.component';
