@@ -47,6 +47,7 @@ build_client(){
     echo "Building client in background"
     #nvm use $NODE_VERSION
     cd client
+    npm login --scope=@dicdiksha --auth-type=legacy --registry=https://npm.pkg.github.com --username=dicdiksha --password=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
     echo "starting client yarn install"
     yarn install --no-progress --production=true --ignore-engines
     echo "completed client yarn install"
