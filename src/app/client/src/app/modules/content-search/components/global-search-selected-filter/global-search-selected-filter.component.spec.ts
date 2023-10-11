@@ -14,30 +14,30 @@ describe('PageSectionComponent', () => {
     navigate: jest.fn()
   };
   const mockActivatedRoute: Partial<ActivatedRoute> = {
-    
-  params: of({ collectionId: "123" }),
-  snapshot: {
-    queryParams: {
-      type: 'edit',
-      courseId: 'do_456789',
-      batchId: '124631256',
-  },
+
+    params: of({ collectionId: "123" }),
+    snapshot: {
+      queryParams: {
+        type: 'edit',
+        courseId: 'do_456789',
+        batchId: '124631256',
+      },
       data: {
-          telemetry: {
-            env: 'certs',
-            pageid: 'certificate-configuration',
-            type: 'view',
-            subtype: 'paginate',
-            ver: '1.0'
-          }
+        telemetry: {
+          env: 'certs',
+          pageid: 'certificate-configuration',
+          type: 'view',
+          subtype: 'paginate',
+          ver: '1.0'
+        }
       }
-  } as any
+    } as any
   };
   const mockResourceService: Partial<ResourceService> = {};
   const mockUtilService: Partial<UtilService> = {
     isDesktopApp: true,
     isIos: true,
-    transposeTerms:jest.fn()
+    transposeTerms: jest.fn()
   };
   beforeAll(() => {
     component = new GlobalSearchSelectedFilterComponent(
@@ -59,31 +59,31 @@ describe('PageSectionComponent', () => {
   it('should call removeFilterSelection', () => {
     component.facets = Response.facets;
     component.selectedFilters = Response.selectedFilters;
-    component.removeFilterSelection({type: 'medium', value: 'assamese'});
+    component.removeFilterSelection({ type: 'medium', value: 'assamese' });
     expect(component.selectedFilters).toEqual(Response.filterChange.filters);
   });
   it('should update routes', () => {
     component.selectedFilters = Response.selectedFiltersData;
     component.facets = Response.facetsData;
-    component.queryParamsToOmit = {obj:'abc'};
+    component.queryParamsToOmit = { obj: 'abc' };
     component.updateRoute();
     expect(component.selectedFilters).toEqual(Response.selectedFilterData);
   });
 
   it('should call showLabel method', () => {
-   const obj= component.showLabel();
+    const obj = component.showLabel();
     expect(obj).toBeTruthy()
   });
   it('should call showLabel method', () => {
     component.selectedFilters = Response.selectedFilter;
-    const obj= component.showLabel();
-     expect(obj).toBeFalsy()
-   });
-   it('should call ngOnInit method', () => {
+    const obj = component.showLabel();
+    expect(obj).toBeFalsy()
+  });
+  it('should call ngOnInit method', () => {
     mockResourceService.languageSelected$ = of({
       language: 'en'
+    });
+    component.ngOnInit();
+    expect(mockUtilService.transposeTerms).toBeCalled();
   });
-   component.ngOnInit();
-     expect(mockUtilService.transposeTerms).toBeCalled();
-   });
 });
