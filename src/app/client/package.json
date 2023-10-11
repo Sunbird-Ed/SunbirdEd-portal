@@ -52,7 +52,7 @@
     "@angular/platform-browser": "^11.2.14",
     "@angular/platform-browser-dynamic": "^11.2.14",
     "@angular/router": "^11.2.14",
-    "@dicdiksha/pdf-player": "^0.0.1",
+    "@dictrigyn/pdf-player": "^0.0.6",
     "@ngx-translate/core": "12.0.0",
     "@ngx-translate/http-loader": "^5.0.0",
     "@project-sunbird/chatbot-client": "3.0.3",
