@@ -7,7 +7,7 @@ import { Subject, merge, of, zip, BehaviorSubject, defer } from 'rxjs';
 import { debounceTime, map, tap, switchMap, takeUntil, retry, catchError } from 'rxjs/operators';
 import { ContentSearchService } from '../../services';
 import { FormService } from '@sunbird/core';
-import { IFrameworkCategoryFilterFieldTemplateConfig } from '@project-sunbird/common-form-elements';
+import { IFrameworkCategoryFilterFieldTemplateConfig } from '@dictrigyn/common-form-elements';
 import { CacheService } from 'ng2-cache-service';
 
 @Component({
