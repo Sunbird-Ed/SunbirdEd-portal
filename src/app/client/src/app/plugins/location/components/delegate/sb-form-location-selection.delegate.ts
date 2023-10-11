@@ -1,5 +1,5 @@
 import {Location as SbLocation} from '@project-sunbird/client-services/models/location';
-import {FieldConfig, FieldConfigOption} from '@project-sunbird/common-form-elements';
+import {FieldConfig, FieldConfigOption} from '@dictrigyn/common-form-elements';
 import {FormGroup} from '@angular/forms';
 import {delay, distinctUntilChanged, map, mergeMap, take} from 'rxjs/operators';
 import {SbFormLocationOptionsFactory} from './sb-form-location-options.factory';
