@@ -4,7 +4,8 @@ const envHelper = require('./helpers/environmentVariablesHelper.js');
 const path = require('path');
 const fs = require('fs');
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-
+const utils = require('./helpers/utils.js');
+const LEARNER_URL = utils?.defaultHost(utils?.envVariables?.LEARNER_URL);
 enableLogger({
   logBasePath: path.join(__dirname, 'logs'),
   logLevel: envHelper.sunbird_portal_log_level,
@@ -47,7 +48,7 @@ const { frameworkAPI } = require('@project-sunbird/ext-framework-server/api');
 const frameworkConfig = require('./framework.config.js');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
-const kidTokenPublicKeyBasePath = envHelper.sunbird_kid_public_key_base_path;
+const kidTokenPublicKeyBasePath = envHelper?.sunbird_kid_public_key_base_path;
 const { loadTokenPublicKeys } = require('sb_api_interceptor');
 const { getGeneralisedResourcesBundles } = require('./helpers/resourceBundleHelper.js')
 const { apiWhiteListLogger, isAllowed } = require('./helpers/apiWhiteList');
@@ -71,7 +72,7 @@ const addLogContext = (req, res, next) => {
       "id": req.get('X-App-Id'),
       "pid": "",
       "ver":  req.get('X-App-Version')
-    },    
+    },
     userId: req.get('X-User-ID'),
     isDebugEnabled: req.get('X-Debug-Enable')
   }
@@ -104,10 +105,10 @@ app.all([
   '/uci/*'
 ],
   session({
-    secret: envHelper.PORTAL_SESSION_SECRET_KEY,
+    secret: envHelper?.PORTAL_SESSION_SECRET_KEY,
     resave: false,
     cookie: {
-      maxAge: envHelper.sunbird_session_ttl 
+      maxAge: envHelper.sunbird_session_ttl
     },
     saveUninitialized: false,
     store: memoryStore
@@ -124,8 +125,8 @@ const morganConfig = (tokens, req, res) => {
   let edata = {
     "eid": "LOG",
     "edata": {
-      "type": "system", 
-      "level": "TRACE", 
+      "type": "system",
+      "level": "TRACE",
       "requestid": req.get('x-request-id'),
       "message": "ENTRY LOG: " + req.get('x-msgid'),
       "params": req.body ? JSON.stringify(req.body) : "empty"
@@ -183,7 +184,7 @@ app.all('/clearSession', (req, res) => {
 });
 
 app.use(['/api/*', '/user/*', '/merge/*', '/device/*', '/google/*', '/v2/user/*', '/v1/sso/*', '/migrate/*', '/v1/user/*' , '/logoff', '/logout', '/sso/sign-in/*'],
-  captureResBodyForLogging, 
+  captureResBodyForLogging,
   morgan(morganConfig)); // , { skip: (req, res) => !(logger.level === "debug") })); // skip logging if logger level is not debug
 
 app.get('/enableDebugMode', (req, res, next) => {
@@ -273,10 +274,10 @@ require('./routes/mlRoutes.js')(app) // observation api routes
 //cert-reg routes
 require('./routes/certRegRoutes.js')(app);
 
-app.all(['/content/data/v1/telemetry', '/action/data/v3/telemetry'], proxy(envHelper.TELEMETRY_SERVICE_LOCAL_URL, {
+app.all(['/content/data/v1/telemetry', '/action/data/v3/telemetry'], proxy(envHelper?.TELEMETRY_SERVICE_LOCAL_URL, {
   limit: '50mb',
-  proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(envHelper.TELEMETRY_SERVICE_LOCAL_URL),
-  proxyReqPathResolver: req => require('url').parse(envHelper.TELEMETRY_SERVICE_LOCAL_URL + telemetryEventConfig.endpoint).path
+  proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(envHelper?.TELEMETRY_SERVICE_LOCAL_URL),
+  proxyReqPathResolver: req => require('url').parse(envHelper?.TELEMETRY_SERVICE_LOCAL_URL + telemetryEventConfig.endpoint).path
 }))
 
 app.get(['/v1/tenant/info', '/v1/tenant/info/:tenantId'], proxyUtils.addCorsHeaders, tenantHelper.getInfo) // tenant api
@@ -359,7 +360,7 @@ async function runApp() {
 const fetchDefaultChannelDetails = (callback) => {
   const options = {
     method: 'POST',
-    url: envHelper.LEARNER_URL + 'org/v2/search',
+    url: LEARNER_URL + 'org/v2/search',
     headers: {
       'x-msgid': uuid(),
       'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
@@ -382,7 +383,7 @@ telemetry.init({
   method: 'POST',
   batchsize: process.env.sunbird_telemetry_sync_batch_size || 200,
   endpoint: telemetryEventConfig.endpoint,
-  host: envHelper.TELEMETRY_SERVICE_LOCAL_URL,
+  host: envHelper?.TELEMETRY_SERVICE_LOCAL_URL,
   authtoken: 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
 })
 
@@ -405,7 +406,7 @@ function handleShutDowns() {
     timeout: 60 * 1000, // forcefully shutdown if not closed gracefully after 1 min
     onShutdown: cleanup,
     finally: () => logger.info({ msg: 'Server gracefully shut down.'}),
-    development: process.env.sunbird_environment === 'local' ? true : false, // in dev mode skip graceful shutdown 
+    development: process.env.sunbird_environment === 'local' ? true : false, // in dev mode skip graceful shutdown
   });
 }
 
