@@ -6,7 +6,8 @@
 
 const proxyUtils        = require('../proxy/proxyUtils.js')
 const envHelper         = require('../helpers/environmentVariablesHelper.js')
-const learnerURL        = envHelper.LEARNER_URL
+const utils = require('../helpers/utils.js');
+const learnerURL  = utils?.defaultHost(utils?.envVariables?.LEARNER_URL);
 const telemetryHelper   = require('../helpers/telemetryHelper.js')
 const proxy             = require('express-http-proxy')
 const bodyParser        = require('body-parser')
@@ -17,6 +18,7 @@ const googleService     = require('../helpers/googleService')
 const reqDataLimitOfContentUpload = '50mb'
 const { logger } = require('@project-sunbird/logger');
 const {parseJson, isDateExpired, decodeNChkTime} = require('../helpers/utilityService');
+const learner_Service_Local_BaseUrl = utils?.defaultHost(utils?.envVariables?.learner_Service_Local_BaseUrl);
 const _ = require('lodash');
 
 module.exports = function (app) {
@@ -25,8 +27,8 @@ module.exports = function (app) {
   // Helper route to enable enable admin to update user fields
   app.patch('/learner/portal/user/v1/update',
     proxyUtils.verifyToken(),
-    proxy(envHelper.learner_Service_Local_BaseUrl, {
-      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(envHelper.learner_Service_Local_BaseUrl),
+    proxy(learner_Service_Local_BaseUrl, {
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learner_Service_Local_BaseUrl),
       proxyReqPathResolver: (req) => {
         return '/private/user/v3/update';
       },
@@ -57,7 +59,7 @@ module.exports = function (app) {
 
   // Route to check user email exists - SSO update contact workflow
   app.all('/learner/user/v1/get/email/*', googleService.validateRecaptcha, proxyObj());
-  
+
   // Route to check user phone exists - SSO update contact workflow
   app.all('/learner/user/v1/get/phone/*', googleService.validateRecaptcha, proxyObj());
 
@@ -97,7 +99,7 @@ module.exports = function (app) {
           logger.info({ msg: '/learner/rc/certificate/v1/search called - ' + req.method + ' - ' + '/api/rc/certificate/v1/search' });
           return `/api/rc/certificate/v1/search`;
         }
-       
+
         if (query) {
           return require('url').parse(learnerURL + urlParam + '?' + query).path
         } else {

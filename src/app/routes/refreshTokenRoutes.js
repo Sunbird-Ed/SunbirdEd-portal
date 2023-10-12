@@ -10,21 +10,21 @@ const { logError } = require('../helpers/utilityService');
 
 const keyClockMobileClients = {
 }
-if(envHelper.KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT.clientId){
-  keyClockMobileClients[envHelper.KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT.clientId] = {
-    client_id: envHelper.KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT.clientId,
-    client_secret: envHelper.KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT.secret
+if(envHelper?.KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT?.clientId){
+  keyClockMobileClients[envHelper?.KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT?.clientId] = {
+    client_id: envHelper?.KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT?.clientId,
+    client_secret: envHelper?.KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT?.secret
   }
 }
-if(envHelper.KEYCLOAK_GOOGLE_ANDROID_CLIENT.clientId){
-  keyClockMobileClients[envHelper.KEYCLOAK_GOOGLE_ANDROID_CLIENT.clientId] = {
-    client_id: envHelper.KEYCLOAK_GOOGLE_ANDROID_CLIENT.clientId,
-    client_secret: envHelper.KEYCLOAK_GOOGLE_ANDROID_CLIENT.secret
+if(envHelper?.KEYCLOAK_GOOGLE_ANDROID_CLIENT?.clientId){
+  keyClockMobileClients[envHelper?.KEYCLOAK_GOOGLE_ANDROID_CLIENT?.clientId] = {
+    client_id: envHelper?.KEYCLOAK_GOOGLE_ANDROID_CLIENT?.clientId,
+    client_secret: envHelper?.KEYCLOAK_GOOGLE_ANDROID_CLIENT?.secret
   }
 }
-if(envHelper.KEYCLOAK_ANDROID_CLIENT.clientId){
-  keyClockMobileClients[envHelper.KEYCLOAK_ANDROID_CLIENT.clientId] = {
-    client_id: envHelper.KEYCLOAK_ANDROID_CLIENT.clientId
+if(envHelper?.KEYCLOAK_ANDROID_CLIENT?.clientId){
+  keyClockMobileClients[envHelper?.KEYCLOAK_ANDROID_CLIENT?.clientId] = {
+    client_id: envHelper?.KEYCLOAK_ANDROID_CLIENT?.clientId
   }
 }
 const setConnectionTimeout = (time) => {
@@ -59,7 +59,7 @@ module.exports = (app) => {
           forever: true,
           timeout: 60000,
           method: 'POST',
-          url: `${envHelper.PORTAL_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/token`,
+          url: `${envHelper?.PORTAL_AUTH_SERVER_URL}/realms/${envHelper?.PORTAL_REALM}/protocol/openid-connect/token`,
           form: {
             client_id: clientDetails.client_id,
             grant_type: 'refresh_token',
@@ -116,7 +116,7 @@ const verifyAuthToken = async (req) => {
     method: 'GET',
     forever: true,
     timeout: 60000,
-    url: envHelper.PORTAL_ECHO_API_URL + 'test',
+    url: envHelper?.PORTAL_ECHO_API_URL + 'test',
     'rejectUnauthorized': false,
     headers: {
       authorization: req.get('authorization')
