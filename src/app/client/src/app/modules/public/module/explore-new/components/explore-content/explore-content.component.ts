@@ -206,11 +206,25 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     if (!filters.channel) {
       filters.channel = this.hashTagId;
     }
-    if (!filters.publisher) {
+    if (this.queryParams.selectedTab == 'textbook') {
       filters.publisher = 'NCERT';
+    } else {
+      delete filters.publisher;
     }
     const _filters = _.get(this.allTabData, 'search.filters');
-    filters.primaryCategory = filters.primaryCategory || ((_.get(filters, 'primaryCategory.length') && filters.primaryCategory) || _.get(this.allTabData, 'search.filters.primaryCategory'));
+    switch(this.queryParams.selectedTab) {
+      case 'course': 
+        filters.primaryCategory = ['Course', 'Course Assessment'];
+        break;
+      case 'textbook': 
+        filters.primaryCategory = ['Digital Textbook'];
+        break;
+      case 'tvProgram':
+        filters.primaryCategory = ['TVLesson'];
+        break;
+      default: 
+      filters.primaryCategory || ((_.get(filters, 'primaryCategory.length') && filters.primaryCategory) || _.get(this.allTabData, 'search.filters.primaryCategory'));
+    }
     filters.mimeType = filters.mimeType || _.get(mimeType, 'values');
     _.forEach(_filters, (el, key) => {
       if (key !== 'primaryCategory' && key !== 'mimeType' && !_.has(filters, key)) {
@@ -549,7 +563,7 @@ logTelemetry(content, actionId) {
      this.queryParams.primaryCategory : [event.name];
     (this.queryParams.primaryCategory && this.queryParams.primaryCategory.length) ? (searchQueryParams['subject'] = [event.name]) :
     (searchQueryParams['se_subjects'] = this.queryParams.se_subjects);
-    searchQueryParams['selectedTab'] = 'all';
+    searchQueryParams['selectedTab'] = this.queryParams.selectedTab;
     if (this.queryParams.channel) {
       searchQueryParams['channel'] = this.queryParams.channel;
     }

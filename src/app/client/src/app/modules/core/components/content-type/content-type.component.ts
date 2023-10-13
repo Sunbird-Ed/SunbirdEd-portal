@@ -112,11 +112,11 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     console.log("User preference in params check after", params)
     console.log("Full data", data);
     if (this.userService.loggedIn) {
-      this.router.navigate([this.exploreNcert ? '/explore-new': data.loggedInUserRoute.route],
+      this.router.navigate([this.exploreNcert ? '/explore-new/1': data.loggedInUserRoute.route],
         { queryParams: { ...params, selectedTab: data.loggedInUserRoute.queryParam } });
     } else {
       !data.isLoginMandatory ?
-        this.router.navigate([this.exploreNcert ? '/explore-new': data.anonumousUserRoute.route],
+        this.router.navigate([this.exploreNcert ? '/explore-new/1': data.anonumousUserRoute.route],
           { queryParams: { ...params, selectedTab: data.anonumousUserRoute.queryParam } }) : window.location.href = this.exploreNcert ? '/explore-new': data.loggedInUserRoute.route;
     }
   }
