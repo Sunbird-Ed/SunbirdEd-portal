@@ -445,11 +445,6 @@ const API_LIST = {
     '/learner/user/v3/update': {
       checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
       ROLE_CHECK: [ROLE.ALL],
-      OWNER_CHECK: {
-        checks: [
-          { entity: '__session__userId', params: [] }
-        ]
-      }
     },
     '/learner/user/v1/get': {
       checksNeeded: ['ROLE_CHECK'],
