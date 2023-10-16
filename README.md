@@ -105,19 +105,21 @@ Installing Sunbird requires two primary software components:
           |  sunbird_default_tenant   | sunbird |   string  |
 
     > The initialization of these environmental variables can take place in a common place like in your **.bashrc** or **.bash_profile**
-    
+
 
 4. Edit the Application Configuration
     > Open `<PROJECT-FOLDER>/src/app/helpers/mandatoryEnv.js` in any available text editor with the below keys along with the values as per the infra
-                                                                                                                                                  
+
           |       Variable Name                     |                   Description                                       |
           | :-------------------------------------- |---------------------------------------------------------------------|
-          |  sunbird_anonymous_register_token       |   Token to register anonymous device                                |                                  
-          |  sunbird_anonymous_default_token        |   Fallback token for device register API for `anonymous` users      |                                                           
-          |  sunbird_loggedin_device_register_api   |   Kong End Point for Logged Users                                   |                               
-          |  sunbird_logged_default_token           |   Fallback token for device register API for `logged-in` users      |                                                         
-          |  sunbird_loggedin_register_token        |   Device register API for logged-in users                           | 
+          |  token                                  |   Fallback token for tokens present in mandatoryEnv.js              |
+          |  sunbird_anonymous_register_token       |   Token to register anonymous device                                |
+          |  sunbird_anonymous_default_token        |   Fallback token for device register API for `anonymous` users      |
+          |  sunbird_logged_default_token           |   Fallback token for device register API for `logged-in` users      |
+          |  sunbird_loggedin_register_token        |   Device register API for logged-in users                           |
           |  cloud_private_storage_secret           |   To set the Cloud Account Key                                      |
+          |  cloud_private_storage_secret           |   To set the Cloud Private Storage Account Name                     |
+          |  cloud_private_storage_secret           |   To set the Cloud Storage Provider                                 |
 
     > For further environment variable reference refer to this confluence wiki link: [https://project-sunbird.atlassian.net/wiki/spaces/SP/pages/3353378817/Portal+-+Min+environment+variables](https://project-sunbird.atlassian.net/wiki/spaces/SP/pages/3353378817/Portal+-+Min+environment+variables)
 
@@ -141,8 +143,8 @@ Installing Sunbird requires two primary software components:
 ### Project Structure
 
     .
-    ├── Sunbirded-portal                                            
-    |   ├── /.circleci                           # 
+    ├── Sunbirded-portal
+    |   ├── /.circleci                           #
     │   |   └── config.yml                       # Circleci Configuration file
     |   ├── /src/app                             # Sunbird portal or web application
     │   |   ├── /client                          # -|-
