@@ -64,6 +64,3 @@ describe('ConnectionService', () => {
         });
     });
 });
-
-
-
