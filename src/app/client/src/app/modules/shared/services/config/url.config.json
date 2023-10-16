@@ -343,6 +343,9 @@
       "READ": "org/v2/preferences/read"
     },
     "QUESTIONSET": {
+      "V2": {
+        "CREATE": "questionset/v2/create"
+      },
       "CREATE": "questionset/v1/create",
       "READ": "questionset/v1/read",
       "HIERARCHY_READ": "questionset/v1/hierarchy",

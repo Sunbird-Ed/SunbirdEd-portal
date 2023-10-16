@@ -104,6 +104,16 @@ const routes: Routes = [
               }, breadcrumbs: [{ label: 'Home', url: '/home' },
               { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
             }
+          },
+          {
+            path: 'questionset-v2', component: DataDrivenComponent,
+            data: {
+              telemetry: {
+                env: telemetryEnv, pageid: 'workspace-create-questionset-v2', uri: '/workspace/content/create/questionset-v2',
+                type: 'view', mode: 'create', object: { type: objectType, ver: '1.0' }
+              }, breadcrumbs: [{ label: 'Home', url: '/home' },
+              { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+            }
           }
         ]
       },

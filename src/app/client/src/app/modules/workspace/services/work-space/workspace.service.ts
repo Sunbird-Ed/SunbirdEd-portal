@@ -323,6 +323,16 @@ export class WorkSpaceService {
     return this.actionService.post(option);
   }
 
+  createV2QuestionSet(req): Observable<ServerResponse> {
+    const option = {
+          url: this.config.urlConFig.URLS.QUESTIONSET.V2.CREATE,
+          data: {
+              'request': req
+          }
+      };
+    return this.actionService.post(option);
+  }
+
   getQuestion(contentId: string, option: any = { params: {} }): Observable<ServerResponse> {
     const param = { fields: this.config.editorConfig.DEFAULT_PARAMS_FIELDS };
     const req = {
