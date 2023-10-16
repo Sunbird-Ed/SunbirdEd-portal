@@ -100,7 +100,5 @@ describe('ContentUtilsServiceService', () => {
         };
         const actualRollup = service.getContentRollup(mockContent);
         expect(actualRollup).toEqual(expectedRollup);
-    });
-    
-    
+    });   
 });
