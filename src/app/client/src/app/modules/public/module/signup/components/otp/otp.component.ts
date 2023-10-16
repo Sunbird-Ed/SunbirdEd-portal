@@ -62,6 +62,7 @@ export class OtpComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('OTPCOmponent--> this.startingForm => ', JSON.stringify(this.startingForm));
     // console.log('Global Object data => ', this.startingForm); // TODO: log!
     this.emailAddress = _.get(this.startingForm, 'emailPassInfo.type') === 'email' ? _.get(this.startingForm, 'emailPassInfo.key') : '';
     this.phoneNumber = _.get(this.startingForm, 'emailPassInfo.type') === 'phone' ? _.get(this.startingForm, 'emailPassInfo.key') : '';
@@ -128,11 +129,14 @@ export class OtpComponent implements OnInit {
     };
     this.signupService.verifyOTP(request).subscribe(
       (data: ServerResponse) => {
+        console.log("verifyOTP---> data--",JSON.stringify(data));
         this.infoMessage = '';
         this.errorMessage = '';
         if (_.get(this.startingForm, 'routeParams.loginMode') === 'gmail') {
+          console.log("verifyOTP---> if--> this.startingFOrm--",JSON.stringify(this.startingForm));
           this.updateUserBasicInfo();
         } else {
+          console.log("verifyOTP---> else--> this.startingFOrm--",JSON.stringify(this.startingForm));
           this.createUser(data);
         }
       },
@@ -198,8 +202,13 @@ export class OtpComponent implements OnInit {
       identifier = _.get(this.startingForm, 'emailPassInfo.key');
     }
     createRequest.request['reqData'] = _.get(data, 'reqData');
+    console.log("createUser---> createRequest--",JSON.stringify(createRequest));
     if (this.otpForm.controls.tncAccepted.value && this.otpForm.controls.tncAccepted.status === 'VALID') {
       this.signupService.createUserV3(createRequest).subscribe((resp: ServerResponse) => {
+        console.log("createUser---> this.startingFOrm--",JSON.stringify(this.startingForm));
+        console.log("createUser---> resp--",JSON.stringify(resp));
+        console.log("createUser---> userid--",JSON.stringify(resp.result.userId));
+        debugger;
         this.telemetryLogEvents('sign-up', true);
         const tncAcceptRequestBody = {
           request: {

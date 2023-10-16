@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LandingPageComponent } from './components';
 import { LandingpageGuard } from './services';
 import { OfflineApplicationDownloadComponent } from '@sunbird/shared';
+import { TestLocationComponent } from './module/signup/components/test-location/test-location.component';
 
 const routes: Routes = [
   {
@@ -41,7 +42,9 @@ const routes: Routes = [
   },
   {
     path: 'guest-profile', loadChildren: () => import('./module/guest-profile/guest-profile.module').then(m => m.GuestProfileModule)
-  }
+  },
+  {
+    path: 'test-location', component: TestLocationComponent, }
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

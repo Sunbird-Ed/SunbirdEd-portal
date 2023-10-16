@@ -141,9 +141,12 @@ export class ReportComponent implements OnInit {
    * @param reportId
    */
   private renderReport(reportId: string, hash?: string) {
+    console.log("reportId----", reportId);
     return this.fetchConfig(reportId, hash)
       .pipe(
         switchMap(report => {
+        console.log("renderReport-->report--",report);
+
           const isUserReportAdmin = this.isUserReportAdmin = this.reportService.isUserReportAdmin();
           if (!isUserReportAdmin && _.toLower(_.get(report, 'status')) !== 'live') {
             return throwError({ messageText: 'messages.stmsg.m0144' });
@@ -168,6 +171,7 @@ export class ReportComponent implements OnInit {
             return forkJoin(this.reportService.downloadMultipleDataSources(updatedDataSource), this.getLatestSummary(reportId)).pipe(
               retry(1),
               map((apiResponse) => {
+                console.log("renderReport-->apiResponse--",apiResponse);
                 const [data, reportSummary] = apiResponse;
                 const result: any = Object.assign({});
                 const chart = (charts && this.reportService.prepareChartData(charts, data, updatedDataSource,
@@ -182,6 +186,7 @@ export class ReportComponent implements OnInit {
 
                 this.chartsReportData = JSON.parse(JSON.stringify(result));
                 this.reportData = JSON.parse(JSON.stringify(result));
+                console.log("renderReport-->result--",result);                
                 return result;
               })
             );
