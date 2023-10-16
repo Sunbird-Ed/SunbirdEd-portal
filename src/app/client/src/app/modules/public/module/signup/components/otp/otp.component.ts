@@ -202,7 +202,7 @@ export class OtpComponent implements OnInit {
     createRequest.request['reqData'] = _.get(data, 'reqData');
     if (this.otpForm.controls.tncAccepted.value && this.otpForm.controls.tncAccepted.status === 'VALID') {
       this.signupService.createUserV3(createRequest).subscribe((resp: ServerResponse) => {
-        if(resp.result.userId) {
+        if(resp.responseCode=== 'OK' && resp.result.userId) {
           const locationDetails: SbLocation[] = Object.keys(_.get(this.startingForm, 'onboardingInfo.children.persona'))
           .reduce<SbLocation[]>((acc, key) => {
             const locationDetail: SbLocation | null = _.get(this.startingForm, 'onboardingInfo.children.persona')[key];
