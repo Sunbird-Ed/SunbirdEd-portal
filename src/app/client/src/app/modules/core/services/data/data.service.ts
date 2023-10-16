@@ -145,6 +145,7 @@ export class DataService {
       headers: requestParam.header ? requestParam.header : this.getHeader(),
       params: requestParam.param
     };
+    console.log("httpOptions---", JSON.stringify(httpOptions));
     return this.http.patch(this.baseUrl + requestParam.url, requestParam.data, httpOptions).pipe(
       mergeMap((data: ServerResponse) => {
         if (data.responseCode !== 'OK') {
