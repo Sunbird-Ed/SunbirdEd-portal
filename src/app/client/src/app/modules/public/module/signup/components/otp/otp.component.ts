@@ -202,32 +202,34 @@ export class OtpComponent implements OnInit {
     createRequest.request['reqData'] = _.get(data, 'reqData');
     if (this.otpForm.controls.tncAccepted.value && this.otpForm.controls.tncAccepted.status === 'VALID') {
       this.signupService.createUserV3(createRequest).subscribe((resp: ServerResponse) => {
-        const locationDetails: SbLocation[] = Object.keys(_.get(this.startingForm, 'onboardingInfo.children.persona'))
-        .reduce<SbLocation[]>((acc, key) => {
-          const locationDetail: SbLocation | null = _.get(this.startingForm, 'onboardingInfo.children.persona')[key];
-          if (_.get(locationDetail, 'code')) {
-            acc.push(locationDetail);
-          }
-          return acc;
-        }, []);
-        const userTypes = [{ type: 'teacher' }];
-        const payload: any = {
-            userId: resp.result.userId,
-            profileLocation: locationDetails,
-            profileUserTypes: userTypes,
-            firstName: createRequest.request.firstName
-          
-        };
-        console.log("payload---",payload);
-        this.locationService.updateProfile(payload).toPromise()
-          .then((res) => {
-            console.log("locUpdate res---", JSON.stringify(res));
-            // this.registerSubmit.emit(_.get(result, 'value'));
-            this.toasterService.success(this.resourceService?.messages?.smsg?.m0057);
-        }).catch((err) => {
-          console.log("Error for location selection", err);
-          this.toasterService.error(this.resourceService?.messages?.emsg?.m0005);
-        });
+        if(resp.result.userId) {
+          const locationDetails: SbLocation[] = Object.keys(_.get(this.startingForm, 'onboardingInfo.children.persona'))
+          .reduce<SbLocation[]>((acc, key) => {
+            const locationDetail: SbLocation | null = _.get(this.startingForm, 'onboardingInfo.children.persona')[key];
+            if (_.get(locationDetail, 'code')) {
+              acc.push(locationDetail);
+            }
+            return acc;
+          }, []);
+          const userTypes = [{ type: 'teacher' }];
+          const payload: any = {
+              userId: resp.result.userId,
+              profileLocation: locationDetails,
+              profileUserTypes: userTypes,
+              firstName: createRequest.request.firstName
+            
+          };
+          console.log("payload---",payload);
+          this.locationService.updateProfile(payload).toPromise()
+            .then((res) => {
+              console.log("locUpdate res---", JSON.stringify(res));
+              // this.registerSubmit.emit(_.get(result, 'value'));
+              this.toasterService.success(this.resourceService?.messages?.smsg?.m0057);
+          }).catch((err) => {
+            console.log("Error for location selection", err);
+            this.toasterService.error(this.resourceService?.messages?.emsg?.m0005);
+          });
+        }
         this.telemetryLogEvents('sign-up', true);
         const tncAcceptRequestBody = {
           request: {
