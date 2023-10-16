@@ -9,7 +9,8 @@ import { SignupService } from './services';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedModule } from '@sunbird/shared';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
-import { LocationModule } from '../../../../plugins/location';
+import { LocationModule, LocationService } from '../../../../plugins/location';
+import { TestLocationComponent } from './components/test-location/test-location.component';
 
 @NgModule({
   imports: [
@@ -24,7 +25,7 @@ import { LocationModule } from '../../../../plugins/location';
     SharedFeatureModule,
     LocationModule
   ],
-  declarations: [SignupComponent, OtpComponent, SignupBasicInfoComponent, SignupOnboardingInfoComponent, SignupEmailPasswordComponent],
-  providers: [SignupService]
+  declarations: [SignupComponent, OtpComponent, SignupBasicInfoComponent, SignupOnboardingInfoComponent, SignupEmailPasswordComponent, TestLocationComponent],
+  providers: [SignupService, LocationService]
 })
 export class SignupModule { }
