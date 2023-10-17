@@ -60,7 +60,5 @@ describe('SelectOptionGroupComponent', () => {
        ];
        component.choosedValue();
        expect(component.preSelectedValue).toBe('Selected Option');
-    });
-    
-    
+    });  
 }); 
