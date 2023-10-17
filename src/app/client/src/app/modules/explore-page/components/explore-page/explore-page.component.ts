@@ -452,7 +452,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         }
                         const option = this.searchService.getSearchRequest(request, get(filters, 'primaryCategory'));
                         const params = _.get(this.activatedRoute, 'snapshot.queryParams');
-                        _.filter(Object.keys(params),filterValue => { 
+                        _.filter(Object.keys(params),filterValue => {
                             if (((_.get(currentPageData, 'metaData.filters').indexOf(filterValue) !== -1))) {
                                 let param = {};
                                 param[filterValue] = (typeof (params[filterValue]) === "string") ? params[filterValue].split(',') : params[filterValue];
@@ -465,9 +465,127 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         if (this.userService.loggedIn) {
                             option.filters['visibility'] = option.filters['channel'] = [];
                         }
+                        let response = {
+                            "id": "api.content.search",
+                            "ver": "1.0",
+                            "ts": "2023-10-10T13:56:50.374Z",
+                            "params": {
+                                "resmsgid": "dc3a4e60-6774-11ee-a1e6-236e810e887c",
+                                "msgid": "6803be90-3c86-4964-a5db-fdb8b39dd9cc",
+                                "status": "successful",
+                                "err": null,
+                                "errmsg": null
+                            },
+                            "responseCode": "OK",
+                            "result": {
+                                "count": 1,
+                                "content": [
+                                    {
+                                        "trackable": {
+                                            "enabled": "No",
+                                            "autoBatch": "No"
+                                        },
+                                        "identifier": "do_113777389672423424171",
+                                        "primaryCategory": "Course Unit",
+                                        "channel": "0137541424673095687",
+                                        "name": "Course Unit",
+                                        "mimeType": "application/vnd.ekstep.content-collection",
+                                        "contentType": "CourseUnit",
+                                        "pkgVersion": 1,
+                                        "objectType": "Content",
+                                        "orgDetails": {
+                                            "email": null,
+                                            "orgName": "Sunbird Org"
+                                        }
+                                    }
+                                ],
+                                "facets": [
+                                    {
+                                        "values": [   {
+                                                "name": "grains",
+                                                "count": 9
+                                            },
+                                            {
+                                                "name": "horticulture",
+                                                "count": 32
+                                            }],
+
+                                        "name": "foodcrops"
+                                    },
+                                    {
+                                        "values": [   {
+                                                "name": "feedingandnutrition",
+                                                "count": 9
+                                            },
+                                            {
+                                                "name": "geneticsandselection",
+                                                "count": 32
+                                            }],
+                                        "name": "livestockmanagement"
+                                    },
+                                    {
+                                        "values": [
+                                            {
+                                                "name": "course unit",
+                                                "count": 1
+                                            }
+                                        ],
+                                        "name": "primaryCategory"
+                                    },
+                                    {
+                                        "values": [   {
+                                                "name": "crops",
+                                                "count": 9
+                                            },
+                                            {
+                                                "name": "pastures",
+                                                "count": 32
+                                            }],
+                                        "name": "commercialcrops"
+                                    },
+                                    {
+                                        "values": [   {
+                                                "name": "beefcattle",
+                                                "count": 9
+                                            },
+                                            {
+                                                "name": "bees",
+                                                "count": 32
+                                            }],
+                                        "name": "livestockspecies"
+                                    },
+                                    {
+                                        "values": [   {
+                                                "name": "diseases",
+                                                "count": 9
+                                            }
+                                            ],
+                                        "name": "animalwelfare"
+                                    },
+                                    {
+                                        "values": [
+                                            {
+                                                "name": "content",
+                                                "count": 1
+                                            }
+                                        ],
+                                        "name": "mediaType"
+                                    },
+                                    {
+                                        "values": [
+                                            {
+                                                "name": "application/vnd.ekstep.content-collection",
+                                                "count": 1
+                                            }
+                                        ],
+                                        "name": "mimeType"
+                                    }
+                                ]
+                            }
+                        }
                         return this.searchService.contentSearch(option)
                             .pipe(
-                                map((response) => {
+                                map((service_response) => {
                                     const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
                                     this._facets$.next(request.facets ?
                                         this.utilService.processCourseFacetData(_.get(response, 'result'), _.get(request, 'facets')) : {});
@@ -617,7 +735,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         data[currentBoard][currentUserType]) {
                         this.showTargetedCategory = true;
                         this.dataThemeAttribute = document.documentElement.getAttribute('data-mode');
-                        const pillBgColor = this.dataThemeAttribute === 'light'? "rgba(255,255,255,1)" :"rgba(36,37,36,1)" 
+                        const pillBgColor = this.dataThemeAttribute === 'light'? "rgba(255,255,255,1)" :"rgba(36,37,36,1)"
                         this.targetedCategory = data[currentBoard][currentUserType];
                         this.targetedCategorytheme = {
                             "iconBgColor": "rgba(255,255,255,1)",

@@ -256,9 +256,127 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     if (cbseNcertExists) {
       option.filters.se_boards = ['CBSE'];
     }
+    let data = {
+            "id": "api.content.search",
+            "ver": "1.0",
+            "ts": "2023-10-10T13:56:50.374Z",
+            "params": {
+                "resmsgid": "dc3a4e60-6774-11ee-a1e6-236e810e887c",
+                "msgid": "6803be90-3c86-4964-a5db-fdb8b39dd9cc",
+                "status": "successful",
+                "err": null,
+                "errmsg": null
+            },
+            "responseCode": "OK",
+            "result": {
+                "count": 1,
+                "content": [
+                    {
+                        "trackable": {
+                            "enabled": "No",
+                            "autoBatch": "No"
+                        },
+                        "identifier": "do_113777389672423424171",
+                        "primaryCategory": "Course Unit",
+                        "channel": "0137541424673095687",
+                        "name": "Course Unit",
+                        "mimeType": "application/vnd.ekstep.content-collection",
+                        "contentType": "CourseUnit",
+                        "pkgVersion": 1,
+                        "objectType": "Content",
+                        "orgDetails": {
+                            "email": null,
+                            "orgName": "Sunbird Org"
+                        }
+                    }
+                ],
+                "facets": [
+                    {
+                        "values": [   {
+                                "name": "grains",
+                                "count": 9
+                            },
+                            {
+                                "name": "horticulture",
+                                "count": 32
+                            }],
+
+                        "name": "foodcrops"
+                    },
+                    {
+                        "values": [   {
+                                "name": "feedingandnutrition",
+                                "count": 9
+                            },
+                            {
+                                "name": "geneticsandselection",
+                                "count": 32
+                            }],
+                        "name": "livestockmanagement"
+                    },
+                    {
+                        "values": [
+                            {
+                                "name": "course unit",
+                                "count": 1
+                            }
+                        ],
+                        "name": "primaryCategory"
+                    },
+                    {
+                        "values": [   {
+                                "name": "crops",
+                                "count": 9
+                            },
+                            {
+                                "name": "pastures",
+                                "count": 32
+                            }],
+                        "name": "commercialcrops"
+                    },
+                    {
+                        "values": [   {
+                                "name": "beefcattle",
+                                "count": 9
+                            },
+                            {
+                                "name": "bees",
+                                "count": 32
+                            }],
+                        "name": "livestockspecies"
+                    },
+                    {
+                        "values": [   {
+                                "name": "diseases",
+                                "count": 9
+                            }
+                            ],
+                        "name": "animalwelfare"
+                    },
+                    {
+                        "values": [
+                            {
+                                "name": "content",
+                                "count": 1
+                            }
+                        ],
+                        "name": "mediaType"
+                    },
+                    {
+                        "values": [
+                            {
+                                "name": "application/vnd.ekstep.content-collection",
+                                "count": 1
+                            }
+                        ],
+                        "name": "mimeType"
+                    }
+                ]
+            }
+        }
     this.searchService.contentSearch(option)
       .pipe(
-        mergeMap(data => {
+        mergeMap(service_data => {
         //   const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
         //   const filteredContents = omit(groupBy(get(data, 'result.content') || get(data, 'result.QuestionSet'), content => {
         //     return ((this.queryParams['primaryCategory'] && this.queryParams['primaryCategory'].length > 0) ? content['subject'] : content['primaryCategory']);
@@ -339,7 +457,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       });
   }
   addHoverData() {
-    this.contentList = this.utilService.addHoverData(this.contentList, true);  
+    this.contentList = this.utilService.addHoverData(this.contentList, true);
   }
   moveToTop() {
     window.scroll({
@@ -421,7 +539,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
 
   private setNoResultMessage() {
     this.resourceService.languageSelected$.subscribe(item => {
-    let title = this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noBookfoundTitle'), 'frmelmnts.lbl.noBookfoundTitle', get(item, 'value'));    
+    let title = this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noBookfoundTitle'), 'frmelmnts.lbl.noBookfoundTitle', get(item, 'value'));
     if (this.queryParams.key) {
       const title_part1 = _.replace(this.resourceService.frmelmnts.lbl.desktop.yourSearch, '{key}', this.queryParams.key);
       const title_part2 = this.resourceService.frmelmnts.lbl.desktop.notMatchContent;
@@ -433,9 +551,9 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         'buttonText': this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noBookfoundButtonText'), 'frmelmnts.lbl.noBookfoundButtonText', get(item, 'value')),
         'showExploreContentButton': false
       };
-      
+
     });
-    
+
   }
 
   updateCardData(downloadListdata) {
