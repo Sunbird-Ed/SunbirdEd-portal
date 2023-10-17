@@ -1,6 +1,6 @@
 const env = process.env;
 // Environment
-const SB_DOMAIN = 'https://staging.sunbirded.org';
+const SB_DOMAIN = env.sb_domain;
 
 const fs = require('fs')
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'))
