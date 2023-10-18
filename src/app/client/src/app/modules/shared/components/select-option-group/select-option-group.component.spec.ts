@@ -42,7 +42,7 @@ describe('SelectOptionGroupComponent', () => {
 
     it('should set preSelectedValue based on selectedOption.label', () => {
         component.selectedOptionValue = null;
-        component.selectedOption = { label: 'result.consumption.frmelmnts.lbl.publisher', value: 'Test Value', selectedOption: 'Selected Option' };
+        component.selectedOption = { label: 'selected label', value: 'Test Value', selectedOption: 'Selected Option' };
         component.optionData = [
           { label: 'result.consumption.frmelmnts.lbl.publisher', option: [{ value: 'Option 1', name: 'Name 1' }] },
           { label: 'Other Label', value: 'Test Value' },
