@@ -16,6 +16,7 @@
     "chai-http": "4.2.0",
     "chai-spies": "1.0.0",
     "codacy-coverage": "3.0.0",
+    "dotenv": "16.3.1",
     "gulp": "4.0.2",
     "gulp-rename": "2.0.0",
     "mocha": "4.1.0",

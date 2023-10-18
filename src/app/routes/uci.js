@@ -2,11 +2,9 @@ const proxyUtils = require("../proxy/proxyUtils.js");
 const BASE_REPORT_URL = "/uci/admin";
 const BASE_REPORT_URL_GRAPHQL = "/uci-api/gql";
 const proxy = require("express-http-proxy");
-const {
-  uci_service_base_url,
-} = require("../helpers/environmentVariablesHelper.js");
+const utils = require('../helpers/utils.js');
+const uci_service_base_url = utils?.defaultHost(utils?.envVariables?.uci_service_base_url);
 const { logger } = require("@project-sunbird/logger");
-
 // TODO: remove this hack for Local dev
 let verifyToken;
 if (process.env.sunbird_environment !== "local") {
