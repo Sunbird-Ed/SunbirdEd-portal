@@ -9,8 +9,6 @@ let mandEnvVariables = {
 
     // ######## Mandatory variables for `logged-in` User ########
 
-    // The env variable is used to set the config of kong to enable the  logged-in feature
-    sunbird_loggedin_device_register_api: env.sunbird_loggedin_device_register_api || env.sunbird_default_token,
     // Fallback token for device register API for `logged-in` users
     sunbird_logged_default_token: env.sunbird_logged_default_token || env.sunbird_default_token,
     // Device register API for logged-in users
@@ -19,6 +17,10 @@ let mandEnvVariables = {
     // ######## Configuration of Cloud Service Provider  ########
 
     // Cloud Account Key
-    cloud_private_storage_secret: env.cloud_private_storage_secret || '',
+    cloud_private_storage_secret: env.cloud_private_storage_secret || env.cloud_private_storage_secret,
+    // Cloud Private Storage Account Name
+    cloud_private_storage_accountname: env.cloud_private_storage_accountname || env.cloud_private_storage_accountname,
+    // Cloud Storage Provider
+    sunbird_cloud_storage_provider: env.sunbird_cloud_storage_provider || env.sunbird_cloud_storage_provider,
 }
 module.exports = mandEnvVariables;
