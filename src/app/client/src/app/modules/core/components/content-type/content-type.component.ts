@@ -46,7 +46,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
         this.updateSelectedContentType(data);
       });
 
-    if (this.router.url.indexOf('/explore-new') > -1) {
+    if (this.router.url.indexOf('/exploren') > -1) {
       this.exploreNcert = true;
     }
   }
@@ -112,12 +112,12 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     console.log("User preference in params check after", params)
     console.log("Full data", data);
     if (this.userService.loggedIn) {
-      this.router.navigate([this.exploreNcert ? '/explore-new/1': data.loggedInUserRoute.route],
+      this.router.navigate([this.exploreNcert ? '/exploren/1': data.loggedInUserRoute.route],
         { queryParams: { ...params, selectedTab: data.loggedInUserRoute.queryParam } });
     } else {
       !data.isLoginMandatory ?
-        this.router.navigate([this.exploreNcert ? '/explore-new/1': data.anonumousUserRoute.route],
-          { queryParams: { ...params, selectedTab: data.anonumousUserRoute.queryParam } }) : window.location.href = this.exploreNcert ? '/explore-new': data.loggedInUserRoute.route;
+        this.router.navigate([this.exploreNcert ? '/exploren/1': data.anonumousUserRoute.route],
+          { queryParams: { ...params, selectedTab: data.anonumousUserRoute.queryParam } }) : window.location.href = this.exploreNcert ? '/exploren': data.loggedInUserRoute.route;
     }
   }
 
