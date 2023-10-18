@@ -219,7 +219,7 @@ export class OtpComponent implements OnInit {
               firstName: createRequest.request.firstName
             
           };
-          console.log("payload---",payload);
+          console.log("payload---",JSON.stringify(payload));
           this.locationService.updateProfile(payload).toPromise()
             .then((res) => {
               console.log("locUpdate res---", JSON.stringify(res));

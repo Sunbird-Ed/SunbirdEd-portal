@@ -443,13 +443,8 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.ALL]
     },
     '/learner/user/v3/update': {
-      checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
-      ROLE_CHECK: [ROLE.ALL],
-      OWNER_CHECK: {
-        checks: [
-          { entity: '__session__userId', params: [] }
-        ]
-      }
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/user/v1/get': {
       checksNeeded: ['ROLE_CHECK'],
