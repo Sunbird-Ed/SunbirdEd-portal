@@ -16,7 +16,7 @@ import * as _ from 'lodash-es';
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { ProfileService } from '@sunbird/profile';
 import { SegmentationTagService } from '../../../core/services/segmentation-tag/segmentation-tag.service';
-import { response } from './explore-page.component.spec.data'
+import { response } from 'sb-mock-json'
 @Component({
     selector: 'app-explore-page-component',
     templateUrl: './explore-page.component.html',

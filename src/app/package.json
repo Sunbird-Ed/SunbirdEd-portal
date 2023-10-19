@@ -109,6 +109,7 @@
     "sb_api_interceptor": "file:libs/sb_api_interceptor",
     "sb_cache_manager": "file:libs/sb_cache_manager",
     "sb_telemetry_util": "file:libs/sb_telemetry_util",
+    "sb-mock-json": "^1.0.0",
     "sunbird-localization": "0.0.2",
     "svg2img": "0.6.1",
     "ua-parser-js": "0.7.13",

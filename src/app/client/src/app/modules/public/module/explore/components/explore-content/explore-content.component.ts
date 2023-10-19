@@ -12,7 +12,7 @@ import { takeUntil, map, mergeMap, first, debounceTime, tap, delay } from 'rxjs/
 import { CacheService } from '../../../../../shared/services/cache-service/cache.service';
 import { ContentManagerService } from '../../../offline/services';
 import {omit, groupBy, get, uniqBy, toLower, find, map as _map, forEach, each} from 'lodash-es';
-import { data } from './explore-content.component.spec.data'
+import { data } from 'sb-mock-json'
 
 @Component({
   templateUrl: './explore-content.component.html',
