@@ -12,6 +12,7 @@ import { takeUntil, map, mergeMap, first, debounceTime, tap, delay } from 'rxjs/
 import { CacheService } from '../../../../../shared/services/cache-service/cache.service';
 import { ContentManagerService } from '../../../offline/services';
 import {omit, groupBy, get, uniqBy, toLower, find, map as _map, forEach, each} from 'lodash-es';
+import { data } from 'sb-mock-json'
 
 @Component({
   templateUrl: './explore-content.component.html',
@@ -234,7 +235,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       facets: this.globalSearchFacets,
       params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
     };
-    _.filter(Object.keys(this.queryParams),filterValue => { 
+    _.filter(Object.keys(this.queryParams),filterValue => {
       if(((_.get(this.allTabData , 'search.facets').indexOf(filterValue) !== -1)))
       {
           option.filters[filterValue] = (typeof(this.queryParams[filterValue]) === "string" ) ? this.queryParams[filterValue].split(',') : this.queryParams[filterValue];
@@ -256,9 +257,10 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     if (cbseNcertExists) {
       option.filters.se_boards = ['CBSE'];
     }
+
     this.searchService.contentSearch(option)
       .pipe(
-        mergeMap(data => {
+        mergeMap(service_data => {
         //   const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
         //   const filteredContents = omit(groupBy(get(data, 'result.content') || get(data, 'result.QuestionSet'), content => {
         //     return ((this.queryParams['primaryCategory'] && this.queryParams['primaryCategory'].length > 0) ? content['subject'] : content['primaryCategory']);
@@ -339,7 +341,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       });
   }
   addHoverData() {
-    this.contentList = this.utilService.addHoverData(this.contentList, true);  
+    this.contentList = this.utilService.addHoverData(this.contentList, true);
   }
   moveToTop() {
     window.scroll({
@@ -421,7 +423,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
 
   private setNoResultMessage() {
     this.resourceService.languageSelected$.subscribe(item => {
-    let title = this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noBookfoundTitle'), 'frmelmnts.lbl.noBookfoundTitle', get(item, 'value'));    
+    let title = this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noBookfoundTitle'), 'frmelmnts.lbl.noBookfoundTitle', get(item, 'value'));
     if (this.queryParams.key) {
       const title_part1 = _.replace(this.resourceService.frmelmnts.lbl.desktop.yourSearch, '{key}', this.queryParams.key);
       const title_part2 = this.resourceService.frmelmnts.lbl.desktop.notMatchContent;
@@ -433,9 +435,9 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         'buttonText': this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noBookfoundButtonText'), 'frmelmnts.lbl.noBookfoundButtonText', get(item, 'value')),
         'showExploreContentButton': false
       };
-      
+
     });
-    
+
   }
 
   updateCardData(downloadListdata) {

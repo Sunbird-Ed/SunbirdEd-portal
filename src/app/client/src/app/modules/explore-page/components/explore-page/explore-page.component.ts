@@ -16,7 +16,7 @@ import * as _ from 'lodash-es';
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { ProfileService } from '@sunbird/profile';
 import { SegmentationTagService } from '../../../core/services/segmentation-tag/segmentation-tag.service';
-
+import { response } from 'sb-mock-json'
 @Component({
     selector: 'app-explore-page-component',
     templateUrl: './explore-page.component.html',
@@ -452,7 +452,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         }
                         const option = this.searchService.getSearchRequest(request, get(filters, 'primaryCategory'));
                         const params = _.get(this.activatedRoute, 'snapshot.queryParams');
-                        _.filter(Object.keys(params),filterValue => { 
+                        _.filter(Object.keys(params),filterValue => {
                             if (((_.get(currentPageData, 'metaData.filters').indexOf(filterValue) !== -1))) {
                                 let param = {};
                                 param[filterValue] = (typeof (params[filterValue]) === "string") ? params[filterValue].split(',') : params[filterValue];
@@ -465,9 +465,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         if (this.userService.loggedIn) {
                             option.filters['visibility'] = option.filters['channel'] = [];
                         }
+
                         return this.searchService.contentSearch(option)
                             .pipe(
-                                map((response) => {
+                                map((service_response) => {
                                     const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
                                     this._facets$.next(request.facets ?
                                         this.utilService.processCourseFacetData(_.get(response, 'result'), _.get(request, 'facets')) : {});
@@ -617,7 +618,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         data[currentBoard][currentUserType]) {
                         this.showTargetedCategory = true;
                         this.dataThemeAttribute = document.documentElement.getAttribute('data-mode');
-                        const pillBgColor = this.dataThemeAttribute === 'light'? "rgba(255,255,255,1)" :"rgba(36,37,36,1)" 
+                        const pillBgColor = this.dataThemeAttribute === 'light'? "rgba(255,255,255,1)" :"rgba(36,37,36,1)"
                         this.targetedCategory = data[currentBoard][currentUserType];
                         this.targetedCategorytheme = {
                             "iconBgColor": "rgba(255,255,255,1)",
