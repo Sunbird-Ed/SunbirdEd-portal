@@ -222,6 +222,9 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       case 'tvProgram':
         filters.primaryCategory = ['TVLesson'];
         break;
+      case 'home':
+        this.router.navigateByUrl('/exploren?selectedTab=home')
+        break;
       default: 
       filters.primaryCategory || ((_.get(filters, 'primaryCategory.length') && filters.primaryCategory) || _.get(this.allTabData, 'search.filters.primaryCategory'));
     }
