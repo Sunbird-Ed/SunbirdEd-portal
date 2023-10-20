@@ -232,7 +232,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       }
     });
 
-  
+    
     _.forEach(this.formData, (form, key) => {
       const pageTitle = _.get(this.resourceService, form.title);
       if (pageTitle && pageType && (pageTitle === pageType)) {
@@ -279,6 +279,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     // if (cbseNcertExists) {
     //   option.filters.se_boards = ['CBSE'];
     // }
+    option.filters.primaryCategory = filters.primaryCategory;
     console.log("Options before API", option);
     this.searchService.contentSearch(option)
       .pipe(
