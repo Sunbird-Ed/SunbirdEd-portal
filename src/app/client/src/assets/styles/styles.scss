@@ -29,3 +29,23 @@
     bottom: 0;
     background: rgba(0, 0, 0, 0.854);
 }
+
+@mixin contentScroll{
+    max-height: calc(100vh - 0px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.content-scroll {
+    @include contentScroll();
+}
+
+.sbt-page-content-area {
+    &.relative9 {
+        &.home-container {
+            overflow-x: inherit;
+            overflow-y: inherit;
+            max-height: 100%;
+        }
+    }
+}
