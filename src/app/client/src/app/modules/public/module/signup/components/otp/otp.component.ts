@@ -216,7 +216,6 @@ export class OtpComponent implements OnInit {
       };
     createRequest.request['location'] = locationInfo;      
     createRequest.request['reqData'] = _.get(data, 'reqData');
-    console.log("createUser---",JSON.stringify(createRequest));
     if (this.otpForm.controls.tncAccepted.value && this.otpForm.controls.tncAccepted.status === 'VALID') {
       this.signupService.createUserV3(createRequest).subscribe((resp: ServerResponse) => {
         if(resp.responseCode=== 'OK' && resp.result.userId) {
@@ -236,11 +235,8 @@ export class OtpComponent implements OnInit {
               firstName: createRequest.request.firstName
             
           };
-          console.log("payload---",JSON.stringify(payload));
           this.locationService.updateProfile(payload).toPromise()
             .then((res) => {
-              console.log("locUpdate res---", JSON.stringify(res));
-              // this.registerSubmit.emit(_.get(result, 'value'));
               this.toasterService.success(this.resourceService?.messages?.smsg?.m0057);
           }).catch((err) => {
             console.log("Error for location selection", err);
