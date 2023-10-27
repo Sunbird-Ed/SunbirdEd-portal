@@ -29,7 +29,7 @@
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT" *ngIf="subscription$ | async">
       <div [appTelemetryImpression]="telemetryImpression"
-        [ngClass]="[layoutConfiguration ? 'sbt-page-content-area relative9' : 'ui container mt-24', (getSelectedTab() === 'home' || getSelectedTab() === 'explore') ? 'home-container': '']">
+        [ngClass]="[layoutConfiguration ? 'sbt-page-content-area relative9 content-scroll' : 'ui container mt-24', (getSelectedTab() === 'home' || getSelectedTab() === 'explore') ? 'home-container': '']">
         <div *ngIf="false" [ngClass]="{'relative9': isUserLoggedIn()}">
           <div class="sb-bg-color-white py-16 mb-24">
             <h4 class="sb-categories-title text-left">{{resourceService?.frmelmnts?.lbl?.courses}}</h4>
