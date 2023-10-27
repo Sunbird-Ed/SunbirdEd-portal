@@ -18,7 +18,7 @@
         </div>
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT" class="w-100">
-      <div [ngClass]="layoutConfiguration ? 'sbt-page-content-area content-scroll' : 'ui container mt-24'">
+      <div [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
         <div class="content-grid relative9">
           <div class="sb-pageSection" *ngIf="!showLoader && totalCount > 0 && !showBackButton">
             <div class="sb-pageSection-header mb-10">
@@ -32,7 +32,7 @@
             </div>
           </div>
           
-          <div [appTelemetryImpression]="telemetryImpression" class="twelve wide column" in-view-container
+          <div [appTelemetryImpression]="telemetryImpression" class="twelve wide column content-scroll" in-view-container
             (inview)="inView($event)" *ngIf="!showLoader && contentList.length">
            <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"
               *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="getFilters($event)"></app-global-search-selected-filter>
@@ -82,12 +82,12 @@
               </div>
             </ng-container> -->
           </div>
-          <div [appTelemetryImpression]="telemetryImpression" class="twelve wide column"
+          <div [appTelemetryImpression]="telemetryImpression" class="twelve wide column "
             *ngIf="contentList.length === 0 && !showLoader">
             <app-no-result-found [title]="noResultMessage?.title" [subTitle]="noResultMessage?.subTitle" 
             [buttonText]="noResultMessage?.buttonText" [showExploreContentButton]="noResultMessage?.showExploreContentButton"></app-no-result-found>
           </div>
-          <div class="twelve wide column" *ngIf="showLoader">
+          <div class="twelve wide column content-scroll" *ngIf="showLoader">
             <div class="sb-grid">
               <div in-view-item [id]="i" [data]="content" class="sb-grid--item"
                 *ngFor="let i of numberOfSections">

@@ -9,7 +9,7 @@
         </div>
         <div [ngClass]="SECOND_PANEL_LAYOUT">
             <div [appTelemetryImpression]="telemetryImpression"
-                [ngClass]="layoutConfiguration ? 'sbt-page-content-area content-scroll' : 'ui container'">
+                [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container'">
                 <div class="relative9" [appTelemetryImpression]="telemetryImpression">
                     <div class="sb-pageSection">
                         <div class="sb-pageSection-header" *ngIf="!showLoader">
@@ -23,7 +23,7 @@
                                     class="close icon"></i></button>
                         </div>
                     </div>
-                    <div class="twelve wide column mt-16" *ngIf="!showLoader && !noResult">
+                    <div class="twelve wide column mt-16 content-scroll" *ngIf="!showLoader && !noResult">
                         <div class="sb-grid dynamic-section-card">
                             <div class="" *ngFor="let content of searchList;let i = index;">
                                 <ng-container *ngIf="!layoutConfiguration">
@@ -46,7 +46,7 @@
                     <div class="twelve wide column" *ngIf="noResult && !showLoader">
                         <app-no-result [data]="noResultMessage"></app-no-result>
                     </div>
-                    <div class="twelve wide column test-class" *ngIf="showLoader">
+                    <div class="twelve wide column content-scroll" *ngIf="showLoader">
                         <app-loader [data]='loaderMessage'></app-loader>
                     </div>
                     <div class="twelve wide column right aligned py-0 mt-16"
