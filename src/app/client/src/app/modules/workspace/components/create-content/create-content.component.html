@@ -1,8 +1,10 @@
     <div class="ui grid mt-5">
       <div class="twelve wide column ">
         <div class="ui grid">
-          <div class="three wide column" *ngIf='permissionService.permissionAvailable' appPermission
-            [permission]='textBookRole' [appTelemetryImpression]="telemetryImpression">
+          
+          <div class="three wide column" *ngIf='permissionService.permissionAvailable && showCategory(resourceService?.frmelmnts?.lbl?.textbook)' appPermission
+            [permission]='textBookRole'  [appTelemetryImpression]="telemetryImpression">
+            
             <div class="ui link card" routerLink="textbook" appTelemetryInteract
               [telemetryInteractEdata]="{id:'createTextbook',type:'click',pageid:'create-textbook'}">
               <div class="content">
@@ -14,7 +16,7 @@
             </div>
             <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.textbookdescription}}</p>
           </div>
-          <div class="three wide column" *ngIf='permissionService.permissionAvailable' appPermission
+          <div class="three wide column" *ngIf='permissionService.permissionAvailable && showCategory(resourceService?.frmelmnts?.lbl?.course)' appPermission
             [permission]='courseRole'>
             <div class="ui link card" routerLink="course" [queryParams]="{showFrameworkSelection: true}" appTelemetryInteract
               [telemetryInteractEdata]="{id:'createCourse',type:'click',pageid:'create-course'}">
@@ -27,7 +29,7 @@
             </div>
             <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.coursedescription}}</p>
           </div>
-          <div class="three wide column" *ngIf='permissionService.permissionAvailable' appPermission
+          <div class="three wide column" *ngIf='permissionService.permissionAvailable  && showCategory(resourceService?.frmelmnts?.lbl?.lesson)' appPermission
             [permission]='lessonRole'>
             <div class="ui link card" routerLink="studymaterial" appTelemetryInteract
               [telemetryInteractEdata]="{id:'createStudyMaterial',type:'click',pageid:'create-study-material'}">
@@ -40,7 +42,7 @@
             </div>
             <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.lessondescription}}</p>
           </div>
-          <div class="three wide column" *ngIf='permissionService.permissionAvailable' appPermission
+          <div class="three wide column" *ngIf='permissionService.permissionAvailable  && showCategory(resourceService?.frmelmnts?.lbl?.collection)' appPermission
             [permission]='collectionRole'>
             <div class="ui link card" routerLink="collection" appTelemetryInteract
               [telemetryInteractEdata]="{id:'createColllection',type:'click',pageid:'create-collection'}">
@@ -57,7 +59,7 @@
       </div>
       <div class="twelve wide column ">
         <div class="ui grid">
-          <div class="three wide column" *ngIf='permissionService.permissionAvailable' appPermission
+          <div class="three wide column" *ngIf='permissionService.permissionAvailable  && showCategory(resourceService?.frmelmnts?.lbl?.lessonplan)' appPermission
             [permission]='lessonplanRole'>
             <div class="ui link card" routerLink="lessonplan">
               <div class="content" appTelemetryInteract
@@ -70,7 +72,7 @@
             </div>
             <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.lessonplandescription}}</p>
           </div>
-          <div class="three wide column" *ngIf='permissionService.permissionAvailable' appPermission
+          <div class="three wide column" *ngIf='permissionService.permissionAvailable  && showCategory(resourceService?.frmelmnts?.lbl?.contentupload)' appPermission
             [permission]='contentUploadRole'>
             <div class="ui link card" routerLink="../edit/generic/" appTelemetryInteract
               [telemetryInteractEdata]="{id:'uploadContent',type:'click',pageid:'upload-content'}">
@@ -83,7 +85,7 @@
             </div>
             <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.contentuploaddescription}}</p>
           </div>
-          <div class="three wide column" *ngIf='permissionService.permissionAvailable' appPermission
+          <div class="three wide column" *ngIf='permissionService.permissionAvailable  && showCategory(resourceService?.frmelmnts?.lbl?.contentuploadlarge)' appPermission
             [permission]='contentUploadRole'>
             <div class="ui link card" routerLink="../edit/editorforlargecontent/" appTelemetryInteract
               [telemetryInteractEdata]="{id:'uploadContent',type:'click',pageid:'upload-content'}">
@@ -97,7 +99,7 @@
             <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.contentuploaddescription}}</p>
           </div>
           <!-- Assessment -->
-          <div class="three wide column" *ngIf='permissionService.permissionAvailable' appPermission
+          <div class="three wide column" *ngIf='permissionService.permissionAvailable  && showCategory(resourceService?.frmelmnts?.lbl?.assessment)' appPermission
             [permission]='assessmentRole'>
             <div class="ui link card" routerLink="assessment" appTelemetryInteract
               [telemetryInteractEdata]="{id:'createAssessment',type:'click',pageid:'create-assessment'}" [telemetryInteractCdata]="[{ id: 'user:workspace:assessment:create', type: 'Feature' }, { id: 'SB-17206', type: 'Task' }]">
@@ -114,7 +116,7 @@
       </div>
       <div class="twelve wide column ">
         <div class="ui grid">
-          <div class="three wide column" *ngIf='permissionService.permissionAvailable && enableQuestionSetCreation === true' appPermission
+          <div class="three wide column" *ngIf="permissionService.permissionAvailable && showCategory('Questionsets')" appPermission
             [permission]='collectionRole'>
             <div class="ui link card" routerLink="questionset">
               <div class="content" appTelemetryInteract
