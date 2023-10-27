@@ -96,7 +96,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
         }
       }
       console.log("User preference in params check before", params)
-      if(this.exploreNcert) params = { publisher: 'NCERT' };
+      if(this.exploreNcert) params = {};
     } catch (error) {
       return null;
     }
