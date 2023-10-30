@@ -13,7 +13,7 @@
 [Sunbird](http://sunbird.org) is a next-generation scalable open-source learning solution for teachers and tutors. Built for the 21st century with [state-of-the-art technology](http://www.sunbird.org/architecture/views/physical/), Sunbird runs natively in [cloud/mobile environments](http://www.sunbird.org/features/). The [open-source governance](LICENSE) of Sunbird allows a massive community of nation-builders to co-create and extend the solution in novel ways.
 
 ## What is the project mission?
-Project Sunbird has a mission to improve learning outcomes for 200 million children across India. This is a multi-dimensional problem unique to the multi-lingual offline population of India (and other developing countries). It's not a problem of any single organization or stakeholder and it cannot be realistically addressed by individual effort. 
+Project Sunbird has a mission to improve learning outcomes for 200 million children across India. This is a multi-dimensional problem unique to the multi-lingual offline population of India (and other developing countries). It's not a problem of any single organization or stakeholder and it cannot be realistically addressed by individual effort.
 
 Project Sunbird is an [open, iterative and collaborative](http://www.sunbird.org/participate/) approach to bring together the best minds in pursuit of this audacious goal.
 
@@ -105,19 +105,29 @@ Installing Sunbird requires two primary software components:
           |  sunbird_default_tenant   | sunbird |   string  |
 
     > The initialization of these environmental variables can take place in a common place like in your **.bashrc** or **.bash_profile**
-    
+
 
 4. Edit the Application Configuration
     > Open `<PROJECT-FOLDER>/src/app/helpers/mandatoryEnv.js` in any available text editor with the below keys along with the values as per the infra
-                                                                                                                                                  
+
           |       Variable Name                     |                   Description                                       |
           | :-------------------------------------- |---------------------------------------------------------------------|
-          |  sunbird_anonymous_register_token       |   Token to register anonymous device                                |                                  
-          |  sunbird_anonymous_default_token        |   Fallback token for device register API for `anonymous` users      |                                                           
-          |  sunbird_loggedin_device_register_api   |   Kong End Point for Logged Users                                   |                               
-          |  sunbird_logged_default_token           |   Fallback token for device register API for `logged-in` users      |                                                         
-          |  sunbird_loggedin_register_token        |   Device register API for logged-in users                           | 
+          |  sunbird_anonymous_register_token       |   Token to register anonymous device                                |
+          |  sunbird_anonymous_default_token        |   Fallback token for device register API for `anonymous` users      |
+          |  sunbird_logged_default_token           |   Fallback token for device register API for `logged-in` users      |
+          |  sunbird_loggedin_register_token        |   Device register API for logged-in users                           |
           |  cloud_private_storage_secret           |   To set the Cloud Account Key                                      |
+          |  cloud_private_storage_accountname      |   To set the Cloud Private Storage Account Name                     |
+          |  sunbird_cloud_storage_provider         |   To set the Cloud Storage Provider                                 |
+   > To configure your application, rename the file `.env.example` to `.env` and enter the values of the following environment variables
+
+          |       Environment Variable              |                   Description                                       |
+          | :-------------------------------------- |---------------------------------------------------------------------|
+          |  sunbird_default_token                  |   To set the Default Tokens in the mandatoryEnv.js file             |
+          |  cloud_private_storage_secret           |   To set the Cloud Account Key                                      |
+          |  cloud_private_storage_accountname      |   To set the Cloud Private Storage Account Name                     |
+          |  sunbird_cloud_storage_provider         |   To set the Cloud Storage Provider                                 |
+          |  sb_domain                              |   To set the Environment of the Application                         |
 
     > For further environment variable reference refer to this confluence wiki link: [https://project-sunbird.atlassian.net/wiki/spaces/SP/pages/3353378817/Portal+-+Min+environment+variables](https://project-sunbird.atlassian.net/wiki/spaces/SP/pages/3353378817/Portal+-+Min+environment+variables)
 
@@ -141,8 +151,8 @@ Installing Sunbird requires two primary software components:
 ### Project Structure
 
     .
-    ├── Sunbirded-portal                                            
-    |   ├── /.circleci                           # 
+    ├── Sunbirded-portal
+    |   ├── /.circleci                           #
     │   |   └── config.yml                       # Circleci Configuration file
     |   ├── /src/app                             # Sunbird portal or web application
     │   |   ├── /client                          # -|-
@@ -191,4 +201,3 @@ Installing Sunbird requires two primary software components:
 | [@project-sunbird/sb-notification](https://www.npmjs.com/package/@project-sunbird/sb-notification)           	| https://github.com/Sunbird-Ed/sb-notification                    	| 6.0.0       	| NG 14      	|
 | [@shikshalokam/sl-questionnaire](https://www.npmjs.com/package/@shikshalokam/sl-questionnaire)           	    | https://github.com/shikshalokam/sl-questionnaire-components       | 2.3.0       	| NG 12      	|
 | [@shikshalokam/sl-reports-library](https://www.npmjs.com/package/@shikshalokam/sl-reports-library)           	| https://github.com/shikshalokam/sl-reports-library                | 3.0.1       	| NG 14      	|
-
