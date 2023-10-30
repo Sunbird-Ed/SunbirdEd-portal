@@ -41,6 +41,7 @@
   },
   "scripts": {
     "server": "gulp update:index:file && node server",
+    "local-server": "export NODE_ENV=development && npm run server",
     "validate": "npm ls",
     "precommit": "lint-staged",
     "resource-bundles": "node helpers/resourceBundles/build.js",
