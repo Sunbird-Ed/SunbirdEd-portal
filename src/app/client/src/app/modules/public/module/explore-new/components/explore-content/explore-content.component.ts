@@ -773,7 +773,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     // if (cbseNcertExists) {
     //   option.filters.se_boards = ['CBSE'];
     // }
-    option.filters.primaryCategory = filters.primaryCategory;
+    option.filters.primaryCategory = this.selectedFilters.primaryCategory && this.selectedFilters.primaryCategory.length ? this.selectedFilters.primaryCategory : filters.primaryCategory;
     console.log("Options before API", option);
     this.searchService.contentSearch(option)
       .pipe(
