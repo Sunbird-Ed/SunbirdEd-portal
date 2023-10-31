@@ -208,15 +208,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
             this.toasterService.error(this.resourceService.messages.fmsg.m0102);
           });
         }
-        if (_.toLower(this.contentType) === 'questionset-v2') {
-          const reqData = this.generateQuestionSetData();
-          this.workSpaceService.createV2QuestionSet(reqData).subscribe(res => {
-            // tslint:disable-next-line:max-line-length
-            this.router.navigate(['workspace/edit/', 'QuestionSet-V2', res.result.identifier, 'allcontent', 'Draft']);
-          }, err => {
-            this.toasterService.error(this.resourceService.messages.fmsg.m0102);
-          });
-        } else {
+        else {
           const categoryList = {
             'code' : 'primaryCategory',
             'identifier': 'sb_primaryCategory',

@@ -9,6 +9,7 @@ import { IDeleteParam, ContentIDParam } from '../../interfaces/delteparam';
 import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
+
 @Injectable()
 export class WorkSpaceService {
   /**
@@ -316,16 +317,6 @@ export class WorkSpaceService {
   createQuestionSet(req): Observable<ServerResponse> {
     const option = {
           url: this.config.urlConFig.URLS.QUESTIONSET.CREATE,
-          data: {
-              'request': req
-          }
-      };
-    return this.actionService.post(option);
-  }
-
-  createV2QuestionSet(req): Observable<ServerResponse> {
-    const option = {
-          url: this.config.urlConFig.URLS.QUESTIONSET.V2.CREATE,
           data: {
               'request': req
           }

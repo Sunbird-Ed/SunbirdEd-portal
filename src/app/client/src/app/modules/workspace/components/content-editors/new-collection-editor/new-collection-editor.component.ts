@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { UserService, PublicDataService, ContentService, FrameworkService } from '@sunbird/core';
 import { TelemetryService, IInteractEventEdata } from '@sunbird/telemetry';
 import { ConfigService, NavigationHelperService, ToasterService, ResourceService, LayoutService, ServerResponse} from '@sunbird/shared';
@@ -20,6 +20,8 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
   public portalVersion: string;
   public userProfile: any;
   public showLoader = false;
+  public showCollectionEditor = false;
+  public showQuestionsetEditor = false;
   private routeParams: any;
   public queryParams: object;
   public collectionDetails: any;
@@ -127,9 +129,9 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
     if (_.isEmpty(lockInfo) && allowedEditState && ( allowedEditStatus || this.userService.userProfile.rootOrgAdmin )) {
       return combineLatest(
         this.getCollectionDetails(),
-        this.editorService.getOwnershipType(),
-        this.lockContent(),
-      ).pipe(map(data => ({ collectionInfo: data[0], ownershipType: data[1]})));
+        // this.editorService.getOwnershipType(), // to-do remove the comment
+        // this.lockContent(), // to-do remove the comment
+      ).pipe(map(data => ({ collectionInfo: data[0]}))); // to-do revert the change
     } else {
       return combineLatest(
         this.getCollectionDetails(),
@@ -218,9 +220,11 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
           this.editorConfig.context['targetFWIds'] = _.get(this.collectionDetails, 'targetFWIds');
         }
         this.showLoader = false;
+        this.showCollectionEditor = true;
       } else {
         this.setEditorConfig();
         this.showLoader = false;
+        this.showQuestionsetEditor = true;
       }
     }, err => {
       this.toasterService.error(this.resourceService.messages.emsg.m0015);

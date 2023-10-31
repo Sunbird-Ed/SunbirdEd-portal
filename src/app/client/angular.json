@@ -58,6 +58,11 @@
                 "glob": "**/*.*",
                 "input": "./node_modules/@samagra-x/uci-console/assets/",
                 "output": "/assets/uci-console"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/@project-sunbird/sunbird-questionset-editor/lib/assets",
+                "output": "/assets/"
               }
             ],
             "styles": [
