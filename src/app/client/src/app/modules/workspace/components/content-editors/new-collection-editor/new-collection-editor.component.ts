@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService, PublicDataService, ContentService, FrameworkService } from '@sunbird/core';
 import { TelemetryService, IInteractEventEdata } from '@sunbird/telemetry';
 import { ConfigService, NavigationHelperService, ToasterService, ResourceService, LayoutService, ServerResponse} from '@sunbird/shared';

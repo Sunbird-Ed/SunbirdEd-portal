@@ -207,8 +207,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
           }, err => {
             this.toasterService.error(this.resourceService.messages.fmsg.m0102);
           });
-        }
-        else {
+        } else {
           const categoryList = {
             'code' : 'primaryCategory',
             'identifier': 'sb_primaryCategory',
