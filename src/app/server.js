@@ -213,13 +213,13 @@ app.all('/sessionExpired', endSession, (req, res) => {
   const redirectUri = req.get('referer') || `${_.get(envHelper, 'SUNBIRD_PORTAL_BASE_URL')}/profile`;
   const logoutUrl = keycloak.logoutUrl(redirectUri);
   delete req.session.userId;
-  res.cookie('connect.sid', '', { expires: new Date() });
+  res.cookie('connect.sid', '', { expires: new Date(), secure: true, sameSite: 'strict'});
   res.redirect(logoutUrl);
 })
 
 app.get('/endSession', endSession, (req, res) => {
   delete req.session.userId;
-  res.cookie('connect.sid', '', { expires: new Date() });
+  res.cookie('connect.sid', '', { expires: new Date(), secure: true, sameSite: 'strict' });
   res.status(200)
   res.end()
 });
