@@ -23,7 +23,7 @@ const VDNURL = envHelper.vdnURL || 'https://dockstaging.sunbirded.org';
 const { getAuthToken } = require('../helpers/kongTokenHelper');
 
 module.exports = (app) => {
-
+  
   app.get('/v2/user/session/create', async (req, res) => { // updating api version to 2
     logger.info({msg: '/v2/user/session/create called'});
     let jwtPayload, userDetails, redirectUrl, errType, orgDetails;
@@ -44,7 +44,7 @@ module.exports = (app) => {
       errType = 'USER_FETCH_API';
       userDetails = await fetchUserWithExternalId(jwtPayload, req);
       if (_.get(req,'cookies.redirectPath')){
-        res.cookie ('userDetails', JSON.stringify(encrypt(userDetails.userName, externalKey)));
+        res.cookie ('userDetails', JSON.stringify(encrypt(userDetails.userName, externalKey)), {secure: true, sameSite: 'strict'});
       }
       req.session.userDetails = userDetails;
       logger.info({msg: "userDetails fetched" + userDetails});
@@ -255,7 +255,7 @@ module.exports = (app) => {
       })
       logErrorEvent(req, errType, error);
     } finally {
-      redirectURIFromCookie && res.cookie('SSO_REDIRECT_URI', '', {expires: new Date(0)});
+      redirectURIFromCookie && res.cookie('SSO_REDIRECT_URI', '', {expires: new Date(0), secure: true, sameSite: 'strict'});
       res.redirect(redirectUrl || errorUrl);
     }
   })
