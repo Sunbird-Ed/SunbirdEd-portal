@@ -124,7 +124,8 @@
       "GET_MANAGED_USER": "user/v1/managed",
       "USER_EXISTS_GET_USER_BY_KEY": "isUserExists/user/v1/get",
       "USER_DECLARATION": "user/v1/declarations",
-      "GET_SESSION": "get/user/sessionId"
+      "GET_SESSION": "get/user/sessionId",
+      "DELETE":"/user/v1/delete"
     },
     "CERTIFICATE": {
       "FETCH_CERTIFICATES": "v1/certs/search",
