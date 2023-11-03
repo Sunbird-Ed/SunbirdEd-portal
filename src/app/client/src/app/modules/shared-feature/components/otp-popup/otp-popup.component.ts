@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import {ResourceService, ServerResponse, UtilService, ConfigService, ToasterService} from '@sunbird/shared';
+import {ResourceService, ServerResponse, UtilService, ConfigService, ToasterService, NavigationHelperService} from '@sunbird/shared';
 import { Validators, UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import * as _ from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -16,6 +16,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
 
   @Input() otpData: any;
   @Input() redirectToLogin: boolean;
+  @Input() delete=false
   @Output() redirectToParent = new EventEmitter();
   @Output() verificationSuccess = new EventEmitter();
   @Output() closeContactForm = new EventEmitter();
@@ -36,11 +37,12 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
   submitInteractEdata: IInteractEventEdata;
   resendOtpInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
+  cancelInteractEdata: IInteractEventEdata;
   remainingAttempt: 'string';
   constructor(public resourceService: ResourceService, public tenantService: TenantService,
               public deviceDetectorService: DeviceDetectorService, public otpService: OtpService, public userService: UserService,
               public utilService: UtilService, public configService: ConfigService,
-              public toasterService: ToasterService) {
+              public toasterService: ToasterService,public navigationhelperService: NavigationHelperService) {
   }
 
   ngOnInit() {
@@ -69,7 +71,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
       this.enableResendButton = true;
     }, 22000);
     const interval = setInterval(() => {
-      this.resendOTPbtn = this.resourceService.frmelmnts.lbl.resendOTP + ' (' + this.counter + ')';
+      this.resendOTPbtn =this.delete ? this.resourceService.frmelmnts.lbl.resendOTP + ' in ' + this.counter + ' seconds' : this.resourceService.frmelmnts.lbl.resendOTP + ' (' + this.counter + ')';
       this.counter--;
       if (this.counter < 0) {
         this.resendOTPbtn = this.resourceService.frmelmnts.lbl.resendOTP;
@@ -187,11 +189,20 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: 'profile-read'
     };
+    this.cancelInteractEdata = {
+      id: 'cancel-otp',
+      type: 'click',
+      pageid: 'otp-delete'
+    };
 
     this.telemetryInteractObject = {
       id: this.userService.userid,
       type: 'User',
       ver: '1.0'
     };
+  }
+
+  onCancel() {
+    this.navigationhelperService.navigateToLastUrl();
   }
 }
