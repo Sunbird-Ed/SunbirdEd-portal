@@ -104,10 +104,7 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
       }
     );
     this.workSpaceService.getFormData(this.enableWorkspaceData.request).subscribe((resp: any)=>{
-      console.log(resp);
-      const formValue = _.first(_.get(resp, 'result.form.data.fields'));      
       this.categoriesConfig = resp.result.form.data.fields;
-      console.log(this.categoriesConfig);
     })
   }
 
@@ -131,7 +128,7 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
 
   showCategory(category){
     if(this.categoriesConfig.length > 0){
-      return this.categoriesConfig.some( cat => cat.name == category && cat.visible == true);
+      return this.categoriesConfig.some( cat => cat.code == category && cat.visible == true);
     }
   }
 }
