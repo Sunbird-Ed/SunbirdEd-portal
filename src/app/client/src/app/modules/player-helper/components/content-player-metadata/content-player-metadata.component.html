@@ -72,6 +72,14 @@
         <dt>{{resourceService.frmelmnts.lbl.subject | transposeTerms: 'frmelmnts.lbl.subject' : resourceService?.selectedLang}}</dt>
         <dd *ngIf="metadata.subject">{{metadata.subject}}</dd>
     </dl>
+    <dl class="sb-meta-data">
+        <dt>{{resourceService.frmelmnts.lbl.programs | transposeTerms: 'frmelmnts.lbl.programs' : resourceService?.selectedLang}}</dt>
+        <dd *ngIf="metadata.programs">{{metadata.programs}}</dd>
+    </dl>
+    <dl class="sb-meta-data">
+        <dt>{{resourceService.frmelmnts.lbl.verticals | transposeTerms: 'frmelmnts.lbl.verticals' : resourceService?.selectedLang}}</dt>
+        <dd *ngIf="metadata.verticals">{{metadata.verticals}}</dd>
+    </dl>
     <dl class="sb-meta-data" *ngIf="metadata.createdOn">
         <dt>{{resourceService.frmelmnts.lbl.createdon}}</dt>
         <dd>{{metadata.createdOn | dateFormat }}</dd>
