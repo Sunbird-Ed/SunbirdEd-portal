@@ -38,6 +38,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
   resendOtpInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   cancelInteractEdata: IInteractEventEdata;
+  submitUserDeleteInteractEdata:IInteractEventEdata;
   remainingAttempt: 'string';
   constructor(public resourceService: ResourceService, public tenantService: TenantService,
               public deviceDetectorService: DeviceDetectorService, public otpService: OtpService, public userService: UserService,
@@ -190,9 +191,14 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
       pageid: 'profile-read'
     };
     this.cancelInteractEdata = {
-      id: 'cancel-otp',
+      id: 'cancel-otp-delete-user',
       type: 'click',
-      pageid: 'otp-delete'
+      pageid: 'user-delete-otp-popup'
+    };
+    this.submitUserDeleteInteractEdata = {
+      id: 'submit-otp-delete-user',
+      type: 'click',
+      pageid: 'user-delete-otp-popup'
     };
 
     this.telemetryInteractObject = {

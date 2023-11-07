@@ -79,7 +79,7 @@
     class="sb-btn sb-btn-normal sb-btn-primary mr-8" tabindex="0" mat-dialog-close>
     {{resourceService?.frmelmnts?.btn?.cancel|uppercase}}</button>
   <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-    [telemetryInteractEdata]="submitInteractEdata" [disabled]="!enableSubmitBtn" (click)="verifyOTP()" tabindex="0"
+    [telemetryInteractEdata]="submitUserDeleteInteractEdata" [disabled]="!enableSubmitBtn" (click)="verifyOTP()" tabindex="0"
     [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}" class="sb-btn sb-btn-normal sb-btn-error">
     {{resourceService?.frmelmnts.lbl.deleteAccount|uppercase}}
   </button>
