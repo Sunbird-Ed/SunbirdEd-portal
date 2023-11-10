@@ -31,6 +31,14 @@
             <div class="sbt-filter-scrollable pr-24">
               <div class="fsmall my-8 text-left filter-pref-text" tabindex="0">
                 {{resourceService.frmelmnts?.lbl?.basedOnPref | translate}}</div>
+              <div class="sb-input">
+                <label class="cfe-multiselect-label input-label">{{resourceService.frmelmnts?.lbl.boardsFilter}}</label>
+                <mat-form-field appearance="fill" class="sb-mat__dropdown sb-mat__dropdown--nolabel w-100 mb-10 mt-5">
+                  <mat-select role="listbox" placeholder="Select Board" class="selection select-board" value="NCERT">
+                    <mat-option class="mat-dropdown__options" role="option" value="NCERT" appTelemetryInteract attr.aria-label="Text">NCERT</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
               <sb-search-facet-filter *ngIf="filterFormTemplateConfig"
                 [supportedFilterAttributes]="supportedFilterAttributes" [searchResultFacets]="facets"
                 [filterFormTemplateConfig]="filterFormTemplateConfig"

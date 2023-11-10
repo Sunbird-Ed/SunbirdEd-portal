@@ -20,6 +20,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   contentTypes;
   selectedContentType;
   isDesktopApp = false;
+  exploreNcert: boolean = false;
   public unsubscribe$ = new Subject<void>();
   subscription: any;
   userType: any;
@@ -44,6 +45,10 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         this.updateSelectedContentType(data);
       });
+
+    if (this.router.url.indexOf('/exploren') > -1) {
+      this.exploreNcert = true;
+    }
   }
 
 
@@ -90,22 +95,29 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
           params = _.cloneDeep(_.get(userPreference, 'framework'));
         }
       }
+      console.log("User preference in params check before", params)
+      if(this.exploreNcert) params = {};
     } catch (error) {
       return null;
     }
 
     // All and myDownloads Tab should not carry any filters from other tabs / user can apply fresh filters
-    if (data.contentType === 'mydownloads' || data.contentType === 'all') {
-      params = _.omit(params, ['board', 'medium', 'gradeLevel', 'subject', 'se_boards', 'se_mediums', 'se_gradeLevels', 'se_subjects']);
+    if(this.exploreNcert) {
+      params = _.omit(params, ['board', 'medium', 'gradeLevel', 'subject', 'se_boards', 'se_mediums', 'se_gradeLevels', 'se_subjects']);  
+    } else {
+      if (data.contentType === 'mydownloads' || data.contentType === 'all') {
+        params = _.omit(params, ['board', 'medium', 'gradeLevel', 'subject', 'se_boards', 'se_mediums', 'se_gradeLevels', 'se_subjects']);
+      }
     }
-
+    console.log("User preference in params check after", params)
+    console.log("Full data", data);
     if (this.userService.loggedIn) {
-      this.router.navigate([data.loggedInUserRoute.route],
+      this.router.navigate([this.exploreNcert ? '/exploren/1': data.loggedInUserRoute.route],
         { queryParams: { ...params, selectedTab: data.loggedInUserRoute.queryParam } });
     } else {
       !data.isLoginMandatory ?
-        this.router.navigate([data.anonumousUserRoute.route],
-          { queryParams: { ...params, selectedTab: data.anonumousUserRoute.queryParam } }) : window.location.href = data.loggedInUserRoute.route;
+        this.router.navigate([this.exploreNcert ? '/exploren/1': data.anonumousUserRoute.route],
+          { queryParams: { ...params, selectedTab: data.anonumousUserRoute.queryParam } }) : window.location.href = this.exploreNcert ? '/exploren': data.loggedInUserRoute.route;
     }
   }
 
