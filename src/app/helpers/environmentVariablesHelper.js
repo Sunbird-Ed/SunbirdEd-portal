@@ -296,6 +296,21 @@ let envVariables = {
   sunbird_portal_uci_bot_phone_number: env.sunbird_portal_uci_bot_phone_number || '',
 }
 
+// FIREBASE ANALYSTICS
+
+function firebaseConfiguration() {
+  return {
+   FIREBASE_API_KEY: env.firebase_api_Key || '',
+   FIREBASE_AUTH_DOMAIN: env.firebase_auth_domain || '',
+   FIREBASE_DATABASE_URL: env.firebase_database_url || '',
+   FIREBASE_PROJECT_ID: env.firebase_project_id || '',
+   FIREBASE_STORAGE_BUCKET: env.firebase_storage_bucket || '',
+   FIREBASE_MESSAGING_SENDER_ID: env.firebase_messaging_sender_id || '',
+   FIREBASE_APP_ID: env.firebase_app_id || '',
+   FIREBASE_MEASUREMENT_ID: env.firebase_measurement_id || '',
+  }
+}
+
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
   ? env.sunbird_cassandra_urls.split(',') : ['localhost']
 
