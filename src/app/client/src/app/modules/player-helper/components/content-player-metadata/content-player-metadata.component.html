@@ -35,11 +35,11 @@
         <dd *ngIf="metadata.author">{{metadata.author}}</dd>
     </dl>
     <dl class="sb-meta-data">
-        <dt>{{resourceService.frmelmnts.lbl.programs | transposeTerms: 'frmelmnts.lbl.programs' : resourceService?.selectedLang}}</dt>
+        <dt>{{resourceService.frmelmnts.lbl?.programs}}</dt>
         <dd *ngIf="metadata.programs">{{metadata.programs}}</dd>
     </dl>
     <dl class="sb-meta-data">
-        <dt>{{resourceService.frmelmnts.lbl.verticals | transposeTerms: 'frmelmnts.lbl.verticals' : resourceService?.selectedLang}}</dt>
+        <dt>{{resourceService.frmelmnts.lbl?.verticals}}</dt>
         <dd *ngIf="metadata.verticals">{{metadata.verticals}}</dd>
     </dl>
     <dl class="sb-meta-data">
