@@ -1334,6 +1334,11 @@
     "inPageredirectUrl": "/explore",
     "searchPageredirectUrl": "/explore/1"
   },
+  "exploreNew": {
+    "filterType": "exploren",
+    "inPageredirectUrl": "/exploren",
+    "searchPageredirectUrl": "/exploren/1"
+  },
   "exploreCourse": {
     "filterType": "explore-course",
     "inPageredirectUrl": "/explore-course",

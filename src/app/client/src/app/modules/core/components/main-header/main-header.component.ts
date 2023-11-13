@@ -254,6 +254,12 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       this.hrefPath = url.replace('explore-course', 'learn');
     } else if (url.indexOf('explore-groups') >= 0) {
       this.hrefPath = url.replace('explore-groups', MY_GROUPS);
+    } else if (url.indexOf('exploren') >= 0) {
+      if (url.indexOf('exploren/') >= 0) {
+        this.hrefPath = url.replace('exploren', 'search/Library');
+      } else {
+        this.hrefPath = url.replace('exploren', 'resources');
+      }
     } else if (url.indexOf('explore') >= 0) {
       if (url.indexOf('explore/') >= 0) {
         this.hrefPath = url.replace('explore', 'search/Library');
