@@ -18,7 +18,7 @@ import { CacheService } from '../app/modules/shared/services/cache-service/cache
 import { DOCUMENT } from '@angular/common';
 import { image } from '../assets/images/tara-bot-icon';
 import { SBTagModule } from 'sb-tag-manager';
-import { CslFrameworkService } from '../app/modules/shared/services/csl-framework/csl-framework.service';
+import { CslFrameworkService } from '../app/modules/public/services/csl-framework/csl-framework.service';
 
 /**
  * main app component
@@ -321,12 +321,7 @@ export class AppComponent implements OnInit, OnDestroy {
    * @description - method to initiate & set the csl framework categories details 
    */
 
-  transformFWCategory() {
-   this.cslFrameworkService.setFrameworkCategories();
-   this.cslFrameworkService.setFrameworkCategoriesObject();
-  }
   ngOnInit() {
-    this.transformFWCategory();
     this.getOnboardingList();
     this.checkToShowPopups();
     this.getStepperInfo();
@@ -386,6 +381,7 @@ export class AppComponent implements OnInit, OnDestroy {
           }
         }))
       .subscribe(data => {
+        this.cslFrameworkService.setDefaultFWforCsl('', data.hashTagId);
         this.tenantService.getTenantInfo(this.userService.slug);
         this.tenantService.initialize();
         this.setPortalTitleLogo();

@@ -6,7 +6,7 @@ import { map, catchError } from 'rxjs/operators';
 import { of, Observable, iif, forkJoin } from 'rxjs';
 import TreeModel from 'tree-model';
 const treeModel = new TreeModel();
-import { CslFrameworkService } from '../../../../modules/shared/services/csl-framework/csl-framework.service';
+import { CslFrameworkService } from '../../../../modules/public/services/csl-framework/csl-framework.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -140,7 +140,7 @@ export class DialCodeService {
           },
           userProfile:
             this.user.loggedIn && _.get(this.user.userProfile, 'framework.[this.frameworkCategories.fwCategory1.code]')
-              ? { [this.frameworkCategories.fwCategory1.code]: this.user.userProfile.framework[this.frameworkCategories.fwCategory1.code]
+              ? { [this.frameworkCategories?.fwCategory1?.code]: this.user.userProfile.framework[this.frameworkCategories?.fwCategory1?.code]
               }
               : {},
         },

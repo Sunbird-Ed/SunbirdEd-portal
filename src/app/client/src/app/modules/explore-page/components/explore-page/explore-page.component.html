@@ -55,11 +55,13 @@
                 </p>
                 <p>
 
-                  <span *ngFor = "let category of transformUserPreference" class="mr-24">
-                    <span >{{category?.labels}}:
+
+                  <span *ngFor="let category of transformUserPreference" class="mr-24">
+                    <span>{{category?.labels}}:</span>
+                    <span *ngFor="let item of category?.values; let last=last" class="font-weight-bold">
+                      {{item}}{{!last && category.values.length > 1 ? ',' : ''}}
                     </span>
-                    <span *ngFor="let item of category?.values" class="font-weight-bold">{{item}}</span>
-                  </span>   
+                  </span>
                 </p>
               </div>
               <button

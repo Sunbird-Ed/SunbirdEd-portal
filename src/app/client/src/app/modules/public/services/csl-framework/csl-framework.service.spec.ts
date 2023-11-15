@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CslFrameworkService } from '../csl-framework/csl-framework.service';
+import { CslFrameworkService } from './csl-framework.service';
 
 describe('CslFrameworkService', () => {
   let service: CslFrameworkService;

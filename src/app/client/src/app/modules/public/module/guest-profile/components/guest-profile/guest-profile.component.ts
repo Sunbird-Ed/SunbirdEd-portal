@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LayoutService } from '../../../../../shared/services/layoutconfig/layout.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CslFrameworkService } from '../../../../../shared/services/csl-framework/csl-framework.service';
+import { CslFrameworkService } from '../../../../../public/services/csl-framework/csl-framework.service';
 
 const USER_DETAILS_KEY = 'guestUserDetails';
 @Component({

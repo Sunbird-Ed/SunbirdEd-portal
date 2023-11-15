@@ -57,7 +57,7 @@ export class FormService {
               subType: this.configService.appConfig.formApiTypes[formInputParams.contentType]
               ? this.configService.appConfig.formApiTypes[formInputParams.contentType]
               : formInputParams.contentType,
-              rootOrgId: hashTagId ? hashTagId : rootOrgId,
+              rootOrgId:this.configService.appConfig.frameworkCatConfig.changeChannel ? this.configService.appConfig.frameworkCatConfig.channel : hashTagId ? hashTagId : rootOrgId,
               component: _.get(formInputParams, 'component')
             }
           }

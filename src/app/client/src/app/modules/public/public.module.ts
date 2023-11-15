@@ -6,7 +6,6 @@ import { PublicPlayerService, LandingpageGuard, PendingchangesGuard } from './se
 import { SharedModule } from '@sunbird/shared';
 import { PublicRoutingModule } from './public-routing.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { CslFrameworkService } from '../shared/services/csl-framework/csl-framework.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -15,6 +14,6 @@ import { CslFrameworkService } from '../shared/services/csl-framework/csl-framew
     PublicRoutingModule
   ],
   declarations: [LandingPageComponent],
-  providers: [PublicPlayerService, DeviceDetectorService, LandingpageGuard, PendingchangesGuard,CslFrameworkService]
+  providers: [PublicPlayerService, DeviceDetectorService, LandingpageGuard, PendingchangesGuard]
 })
 export class PublicModule { }

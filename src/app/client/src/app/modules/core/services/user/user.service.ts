@@ -16,7 +16,6 @@ import { APP_BASE_HREF } from '@angular/common';
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { DataService } from './../data/data.service';
 import { environment } from '@sunbird/environment';
-import { CslFrameworkService } from '../../../shared/services/csl-framework/csl-framework.service';
 
 /**
  * Service to fetch user details from server
@@ -124,14 +123,14 @@ export class UserService {
   * @param {LearnerService} learner LearnerService reference
   */
   constructor(config: ConfigService, learner: LearnerService, private cacheService: CacheService,
-    private http: HttpClient, contentService: ContentService, publicDataService: PublicDataService, private cslFrameworkService:CslFrameworkService,
+    private http: HttpClient, contentService: ContentService, publicDataService: PublicDataService,
     @Inject(APP_BASE_HREF) baseHref: string, private dataService: DataService) {
     this.config = config;
     this.learnerService = learner;
     this.contentService = contentService;
     this.publicDataService = publicDataService;
     this.isDesktopApp = environment.isDesktopApp;
-    this.frameworkCategories = this.cslFrameworkService.getFrameworkCategories();
+    this.frameworkCategories = localStorage.getItem('fwCategoryObjectValues');
     try {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
       DataService.userId = this._userid;
@@ -551,9 +550,9 @@ export class UserService {
       let userDetails = JSON.parse(localStorage.getItem('guestUserDetails'));
       userFramework = _.get(userDetails, 'framework');
     } else {
-      userFramework = (isUserLoggedIn && framework && _.pick(framework, [this.frameworkCategories.fwCategory2.code, this.frameworkCategories.fwCategory3.code, this.frameworkCategories.fwCategory1.code, 'id'])) || {};
+      userFramework = (isUserLoggedIn && framework && _.pick(framework, [this.frameworkCategories?.fwCategory2?.code, this.frameworkCategories?.fwCategory3?.code, this.frameworkCategories?.fwCategory1?.code, 'id'])) || {};
     }
   
-    return { [this.frameworkCategories.fwCategory1.code]: this.defaultBoard, ...userFramework };
+    return { [this.frameworkCategories?.fwCategory1?.code]: this.defaultBoard, ...userFramework };
   }
 }

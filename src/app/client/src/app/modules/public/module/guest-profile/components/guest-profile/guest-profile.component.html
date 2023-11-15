@@ -87,7 +87,7 @@
         <div class="max-w-400 computer only">
           <div class="mb-15 d-flex flex-jc-center" *ngFor = "let category of transFormGuestUser">
             <span class="fmedium white-space-nowrap">{{category?.labels}} : </span>
-            <span class="fmedium font-w-bold pl-4" *ngFor="let item of category?.values" class="font-weight-bold" >{{item}}</span>
+            <span class="fmedium font-w-bold pl-4" *ngFor="let item of category?.values let last=last" class="font-weight-bold" >{{item}}{{!last && category.values.length > 1 ? ',' : ''}}</span>
           </div>
         </div>
         <button class="sb-btn sb-btn-primary sb-btn-normal my-16 sb-btn-border computer only" appTelemetryInteract
@@ -101,7 +101,7 @@
     <div class="max-w-300 mobile only">
       <div class="mb-15 d-flex flex-ai-center flex-dc" *ngFor = "let category of transFormGuestUser">
         <span class="fmedium white-space-nowrap">{{category?.labels}} : </span>
-        <span class="fmedium font-w-bold text-center" *ngFor="let item of category?.values" >{{item}}</span>
+        <span class="fmedium font-w-bold text-center" *ngFor="let item of category?.values let last=last" >{{item}}{{!last && category.values.length > 1 ? ',' : ''}}</span>
       </div>
       <div class="d-flex flex-ai-center flex-jc-center" appTelemetryInteract
         [telemetryInteractEdata]="editFrameworkInteractEData" tabindex="0" (click)="showEdit = !showEdit">

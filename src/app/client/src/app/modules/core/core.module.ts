@@ -22,7 +22,7 @@ import { ContentTypeComponent } from './components/content-type/content-type.com
 import { LocationModule } from '../../plugins/location/location.module';
 import { NotificationModule } from '../notification/notification.module';
 import { TelemetryErrorModalComponent } from '../shared/components/telemetry-error-modal/telemetry-error-modal.component';
-import { CslFrameworkService } from '../shared/services/csl-framework/csl-framework.service';
+import { CslFrameworkService } from '../public/services/csl-framework/csl-framework.service';
 @NgModule({
   imports: [
     CommonModule,
