@@ -194,7 +194,7 @@ describe('DeleteAccountComponent', () => {
     });
 
     it('should create a instance of component and call the verificationSuccess method', () => {
-        global.window = Object.create(window);
+         global.window = Object.create(window);
         const url = 'http://localhost/';
         const data = {}
         component.verificationSuccess(data);
