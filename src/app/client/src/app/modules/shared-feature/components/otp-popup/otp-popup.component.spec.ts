@@ -1,4 +1,4 @@
-import { ResourceService,UtilService,ConfigService,ToasterService } from '@sunbird/shared';
+import { ResourceService,UtilService,ConfigService,ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { _ } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import {  of, throwError } from 'rxjs';
@@ -56,6 +56,7 @@ describe('OtpPopupComponent', () => {
         error: jest.fn(),
         success: jest.fn()
     };
+  const navigationHelperService: Partial<NavigationHelperService> ={}
 
     beforeAll(() => {
         component = new OtpPopupComponent(
@@ -66,7 +67,8 @@ describe('OtpPopupComponent', () => {
 			userService as UserService,
 			utilService as UtilService,
 			configService as ConfigService,
-			toasterService as ToasterService
+			toasterService as ToasterService,
+      navigationHelperService as NavigationHelperService
         )
     });
 
