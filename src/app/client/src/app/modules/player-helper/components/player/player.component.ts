@@ -446,18 +446,24 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   showRatingPopup(event) {
     let contentProgress;
+
     const playerSummary: Array<any> = _.get(event, 'detail.telemetryData.edata.summary');
     if (playerSummary) {
       const contentMimeType = this.playerConfig.metadata.mimeType;
       contentProgress = CsContentProgressCalculator.calculate(playerSummary, contentMimeType);
     }
+
     if (event.detail.telemetryData.eid === 'END' && contentProgress === 100) {
-      this.contentRatingModal = !this.isFullScreenView;
-      this.showRatingModalAfterClose = true;
-      if (this.modal) {
-        this.modal.showContentRatingModal = true;
-      }
+      setTimeout(() => {
+        this.contentRatingModal = !this.isFullScreenView;
+        this.showRatingModalAfterClose = true;
+        if (this.modal) {
+          this.modal.showContentRatingModal = true;
+        }
+      }, 1300);
     }
+    
+
   }
 
   /**
