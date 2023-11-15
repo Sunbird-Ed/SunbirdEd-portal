@@ -25,18 +25,22 @@ import { TranslateStore } from '@ngx-translate/core';
 import { SbSearchFilterModule } from '@dictrigyn/common-form-elements';
 import { ModalModule } from 'ngx-bootstrap/modal';
 
+declare function firebaseConfiguration(): any;
+
 import { AngularFireAnalyticsModule, ScreenTrackingService } from '@angular/fire/analytics';
 import { AngularFireModule } from '@angular/fire';
 
-const firebaseConfig = {
-  apiKey: "AIzaSyA1rRdz7oyOB7Pf7uKhgfvBacgf8o4inno",
-  authDomain: "diksha-4446b.firebaseapp.com",
-  databaseURL: "https://diksha-4446b.firebaseio.com",
-  projectId: "diksha-4446b",
-  storageBucket: "diksha-4446b.appspot.com",
-  messagingSenderId: "280944945973",
-  appId: "1:280944945973:web:86ba50ffc9e1ec8ab5fa7c",
-  measurementId: "G-9Z3LDJ42BE"
+var firebaseURL:any = firebaseConfiguration();
+
+var firebaseConfig = {
+  apiKey: JSON.stringify(firebaseURL.FIREBASE_API_KEY),
+  authDomain: JSON.stringify(firebaseURL.FIREBASE_AUTH_DOMAIN),
+  databaseURL: JSON.stringify(firebaseURL.FIREBASE_DATABASE_URL),
+  projectId: JSON.stringify(firebaseURL.FIREBASE_PROJECT_ID),
+  storageBucket: JSON.stringify(firebaseURL.FIREBASE_STORAGE_BUCKET),
+  messagingSenderId: JSON.stringify(firebaseURL.FIREBASE_MESSAGING_SENDER_ID),
+  appId: JSON.stringify(firebaseURL.FIREBASE_APP_ID),
+  measurementId: JSON.stringify(firebaseURL.FIREBASE_MEASUREMENT_ID)
 };
 
 @NgModule({
@@ -85,6 +89,7 @@ const firebaseConfig = {
   ]
 })
 export class AppModule {
+  
   constructor(bootstrapFramework: BootstrapFramework) {
     bootstrapFramework.initialize(WebExtensionsConfig);
   }
