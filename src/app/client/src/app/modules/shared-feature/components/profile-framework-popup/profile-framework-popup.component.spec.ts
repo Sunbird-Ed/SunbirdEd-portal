@@ -70,6 +70,7 @@ describe('ProfileFrameworkPopupComponent', () => {
     const profileService: Partial<ProfileService> = {};
     const mockCslFrameworkService: Partial<CslFrameworkService> = {
         getFrameworkCategories: jest.fn(),
+        getFrameworkCategoriesObject: jest.fn(),
     };
     const mockConfigService: Partial<ConfigService> = {
     appConfig: {
