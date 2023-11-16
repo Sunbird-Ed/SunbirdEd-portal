@@ -118,6 +118,7 @@ export const Response = {
             }
         ],
         'rootOrgId': 'ORG_001',
+        'userRoles':['ORG_ADMIN', 'COURSE_MENTOR', 'CONTENT_REVIEWER', 'PUBLIC'],
         'firstName': 'Reviewer',
         'phone': '******7418',
         'dob': '2018-04-23',
