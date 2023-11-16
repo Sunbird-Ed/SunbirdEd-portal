@@ -1,24 +1,7 @@
 import {ProfileService} from '../../services';
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild, Inject } from '@angular/core';
-import {
-  CertRegService,
-  CoursesService,
-  OrgDetailsService,
-  PlayerService,
-  SearchService,
-  UserService,
-  FormService
-} from '@sunbird/core';
-import {
-  ConfigService,
-  IUserData, LayoutService,
-  NavigationHelperService,
-  ResourceService,
-  ServerResponse,
-  ToasterService,
-  UtilService,
-  ConnectionService
-} from '@sunbird/shared';
+import { CertRegService, CoursesService, OrgDetailsService, PlayerService, SearchService, UserService, FormService } from '@sunbird/core';
+import { ConfigService, IUserData, LayoutService, NavigationHelperService, ResourceService, ServerResponse, ToasterService, UtilService, ConnectionService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import {Subject, Subscription} from 'rxjs';
 import {IImpressionEventInput, IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
@@ -521,7 +504,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     if (_.includes(this.userProfile.userRoles, 'PUBLIC')&& this.userProfile.userRoles.length===1) {
       this.router.navigate([url]);
     }else{
-      let msg = "Your role doesnot allow you to delete your account. Please contact support!"
+      const msg = 'Your role doesnot allow you to delete your account. Please contact support!'
       this.toasterService.warning(msg);
     }
   }

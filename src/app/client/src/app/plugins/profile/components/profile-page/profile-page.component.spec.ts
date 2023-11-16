@@ -1,22 +1,6 @@
 import { ProfileService } from '../../services';
-import {
-    CertRegService,
-    CoursesService,
-    OrgDetailsService,
-    PlayerService,
-    SearchService,
-    UserService,
-    FormService
-} from '@sunbird/core';
-import {
-    ConfigService,
-    LayoutService,
-    NavigationHelperService,
-    ResourceService,
-    ToasterService,
-    UtilService,
-    ConnectionService
-} from '@sunbird/shared';
+import { CertRegService, CoursesService, OrgDetailsService, PlayerService, SearchService, UserService, FormService } from '@sunbird/core';
+import { ConfigService, LayoutService, NavigationHelperService, ResourceService, ToasterService, UtilService, ConnectionService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { of, throwError } from 'rxjs';
 import { TelemetryService } from '@sunbird/telemetry';
@@ -858,6 +842,21 @@ describe("ProfilePageComponent", () => {
             profilePageComponent.navigate(url, formAction);
             //assert
             expect(navigateSpy).toHaveBeenCalledWith([url], { queryParams: { formaction: formAction } });
+        });
+        it('should call a method navigatetoRoute when the delete user button is clicked', () => {
+            profilePageComponent.userProfile = Response.userProfileforDeleteUser
+            const url = '/profile/delete-user';
+            const navigateSpy = jest.spyOn(mockRouter, 'navigate');
+            profilePageComponent.navigatetoRoute(url);
+            expect(navigateSpy).toHaveBeenCalledWith([url]);
+        });
+        it('should call a method navigatetoRoute when the delete user button is clicked with more roles', () => {
+            profilePageComponent.userProfile = Response.userProfileforDeleteUser
+            profilePageComponent.userProfile.userRoles =['PUBLIC','BOOK_CREATOR','CONTENT_CREATOR'];
+            const url = '/profile/delete-user';
+            const msg = 'Your role doesnot allow you to delete your account. Please contact support!'
+            profilePageComponent.navigatetoRoute(url);
+            expect(mockToasterService.warning).toBeCalledWith(msg)
         });
     });
 });
