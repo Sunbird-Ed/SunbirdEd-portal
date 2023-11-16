@@ -148,7 +148,7 @@ describe('DeleteUserComponent', () => {
         expect(component.showContactPopup).toBeTruthy();
     });
     it('should create a instance of component and call the validateModal method with inputFields', () => {
-        component.conditions.length=1;
+        component.conditions.length = 1;
         component.inputFields = [
             {
                 nativeElement: {
@@ -161,7 +161,7 @@ describe('DeleteUserComponent', () => {
         expect(component.enableSubmitBtn).toBeTruthy();
     });
     it('should create a instance of component and call the validateModal method with inputFields', () => {
-        component.conditions.length=2;
+        component.conditions.length = 2;
         component.inputFields = [
             {
                 nativeElement: {
@@ -174,15 +174,20 @@ describe('DeleteUserComponent', () => {
         expect(component.enableSubmitBtn).toBeFalsy();
     });
     it('should create a instance of component and call the createCheckedArray method with input checkedItem', () => {
-        const checkedItem =  [
-            'Personal Information: Your personal account information, including your profile and login details, will be permanently deleted, including your activity history. This information cannot be recovered',
-            'Certificates: For certificate verification purposes, only your name will be stored. Access Loss: You will lose access to all features and services associated with this account, and any subscriptions or memberships may be terminated.',
-            'Single Sign-On (SSO): If you use Single Sign-On (SSO) to sign in, be aware that a new account will be created the next time you sign in. This new account will not have any historical information.',
-            'Resource Retention: Even after your account is deleted, any contributions, content, or resources you have created within the portal will not be deleted. These will remain accessible to other users as part of the collective content.You will no longer have control or management rights over them.',
+        const checkedItem = 'Usage Reports: Usage reports will retain location data declared by you.'
+        component.conditions = [
             'Usage Reports: Usage reports will retain location data declared by you.',
             'Make sure you have backed up any important data and have considered the consequences before confirming account deletion and downloaded your certificates.'
-          ]      
+        ];
         component.createCheckedArray(checkedItem);
         expect(component).toBeTruthy();
+        expect(component.conditions).toEqual(['Make sure you have backed up any important data and have considered the consequences before confirming account deletion and downloaded your certificates.']);
+    });
+    it('should create a instance of component and call the createCheckedArray method with input checkedItem and conditions as empty', () => {
+        const checkedItem = 'Usage Reports: Usage reports will retain location data declared by you.'
+        component.conditions = [];
+        component.createCheckedArray(checkedItem);
+        expect(component).toBeTruthy();
+        expect(component.conditions).toEqual([checkedItem]);
     });
 });
