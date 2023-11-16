@@ -94,7 +94,9 @@ describe('App Component', () => {
     userOrgDetails: 'testing123'
   };
 
-  const mockCslFrameworkService: Partial<CslFrameworkService> = {};
+  const mockCslFrameworkService: Partial<CslFrameworkService> = {
+    getFrameworkCategories: jest.fn(),
+  };
 
   beforeAll(() => {
     appComponent = new AppComponent(

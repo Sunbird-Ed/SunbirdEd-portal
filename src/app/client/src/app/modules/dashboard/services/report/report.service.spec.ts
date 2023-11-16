@@ -108,7 +108,9 @@ describe('ReportService', () => {
       }
     }) as any
   };
-  const mockCslFrameworkService: Partial<CslFrameworkService> = {};
+  const mockCslFrameworkService: Partial<CslFrameworkService> = {
+    getFrameworkCategories: jest.fn(),
+  };
 
   beforeAll(() => {
     reportService = new ReportService(

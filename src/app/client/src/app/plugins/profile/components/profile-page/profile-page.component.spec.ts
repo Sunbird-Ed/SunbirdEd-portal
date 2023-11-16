@@ -139,7 +139,9 @@ describe("ProfilePageComponent", () => {
         monitor: jest.fn()
     };
     const mockCsCertificateService: Partial<CsCertificateService> = {};
-    const mockCslFrameworkService: Partial<CslFrameworkService> = {};
+    const mockCslFrameworkService: Partial<CslFrameworkService> = {
+        getFrameworkCategoriesObject: jest.fn(),
+    };
 
 
     beforeAll(() => {

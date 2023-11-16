@@ -68,7 +68,9 @@ describe('ProfileFrameworkPopupComponent', () => {
         getDialogById: jest.fn().mockReturnValue(dialogRefData)
     };
     const profileService: Partial<ProfileService> = {};
-    const mockCslFrameworkService: Partial<CslFrameworkService> = {};
+    const mockCslFrameworkService: Partial<CslFrameworkService> = {
+        getFrameworkCategories: jest.fn(),
+    };
     const mockConfigService: Partial<ConfigService> = {
     appConfig: {
       layoutConfiguration: 'joy',
