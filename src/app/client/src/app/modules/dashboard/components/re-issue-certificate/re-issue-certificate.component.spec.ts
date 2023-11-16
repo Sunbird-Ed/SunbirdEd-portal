@@ -89,7 +89,6 @@ describe("ReIssueCertificateComponent", () => {
             //expect(reIssueCertificateComponent.toggleModal).toBeCalled();
             expect(mockToasterService.success).toBeCalledWith(mockResourceService.messages.dashboard.smsg.m001)
         });
-
         it('reIssue certificate should throw error', () => {
             const batch = {
                 batchId: 123456,
