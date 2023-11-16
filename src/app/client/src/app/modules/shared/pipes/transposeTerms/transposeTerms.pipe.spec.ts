@@ -23,10 +23,10 @@ describe('TransposeTermsPipe', () => {
     });
     
     describe('transform', () => {
+         const defaultValue = 'Default';
+         const selectedLang = 'en';
         it('should return the transformed value when a term is found', () => {
           const value = 'This is {term1} and {term2}.';
-          const defaultValue = 'Default';
-          const selectedLang = 'en';
           const transformedValue = transposeTermsPipe.transform(
             value,
             defaultValue,
@@ -37,8 +37,6 @@ describe('TransposeTermsPipe', () => {
     
         it('should return the original value when no terms are found', () => {
           const value = 'No terms here.';
-          const defaultValue = 'Default';
-          const selectedLang = 'en';
           const transformedValue = transposeTermsPipe.transform(
             value,
             defaultValue,
@@ -49,8 +47,6 @@ describe('TransposeTermsPipe', () => {
     
         it('should return the default value when the value is falsy', () => {
           const value = '';
-          const defaultValue = 'Default';
-          const selectedLang = 'en';
           const transformedValue = transposeTermsPipe.transform(
             value,
             defaultValue,
@@ -61,13 +57,13 @@ describe('TransposeTermsPipe', () => {
       });
     
       describe('getTermsMapping', () => {
+        const startsWith = '{';
+        const endsWith = '}';
+        const defaultValue = 'Default';
         it('should replace the term with the translation if found in the genericResourceService', () => {
           const value = 'This is {term1}.';
           const term = 'term1';
           const lang = 'en';
-          const startsWith = '{';
-          const endsWith = '}';
-          const defaultValue = 'Default';
           genericResourceService.terms = {
             en: {
               term1: 'Translated Term 1',
@@ -88,9 +84,6 @@ describe('TransposeTermsPipe', () => {
           const value = 'This is {term1}.';
           const term = 'term1';
           const lang = 'fr';
-          const startsWith = '{';
-          const endsWith = '}';
-          const defaultValue = 'Default';
           genericResourceService.terms = {
             defaultLanguage: 'en',
             en: {
@@ -115,9 +108,6 @@ describe('TransposeTermsPipe', () => {
           const value = 'This is {term1}.';
           const term = 'term2';
           const lang = 'en';
-          const startsWith = '{';
-          const endsWith = '}';
-          const defaultValue = 'Default';
           genericResourceService.terms = {
             en: {
               term1: 'Translated Term 1',
@@ -133,66 +123,59 @@ describe('TransposeTermsPipe', () => {
           );
           expect(transformedValue).toBe(defaultValue);
         });
-      }); 
 
-      it('should replace the term with its translation in the specified language', () => {
-        const value = 'Mock text TranslatedTerm with a placeholder';
-        const term = 'term';
-        const lang = 'en';
-        const startsWith = '{';
-        const endsWith = '}';
-        const defaultValue = 'Default';
-    
-        const result = transposeTermsPipe.getTermsMapping(value, term, lang, startsWith, endsWith, defaultValue);
-        expect(result).toMatch(/^(Mock text TranslatedTerm with a placeholder|Default)$/);
+        it('should replace the term with its translation in the specified language', () => {
+          const value = 'Mock text TranslatedTerm with a placeholder';
+          const term = 'term';
+          const lang = 'en';
+      
+          const result = transposeTermsPipe.getTermsMapping(value, term, lang, startsWith, endsWith, defaultValue);
+          expect(result).toMatch(/^(Mock text TranslatedTerm with a placeholder|Default)$/);
+        });
+      
+        it('should replace the term with its translation in the default language', () => {
+          const value = 'Mock text {term} with a placeholder';
+          const term = 'term';
+          const lang = 'fr';
+
+          const result = transposeTermsPipe.getTermsMapping(value, term, lang, startsWith, endsWith, defaultValue);
+          expect(result).toMatch(/^(Mock text TranslatedTerm with a placeholder|Default)$/);
+        });
+
+        it('should return the default value when the term is not found', () => {
+          const value = 'Some text {term} with a placeholder';
+          const term = 'nonexistentterm';
+          const lang = 'en';
+          const result = transposeTermsPipe.getTermsMapping(value, term, lang, startsWith, endsWith, defaultValue);
+          expect(result).toBe(defaultValue);
+        });
       });
       
-      it('should replace the term with its translation in the default language', () => {
-        const value = 'Mock text {term} with a placeholder';
-        const term = 'term';
-        const lang = 'fr';
-        const startsWith = '{';
-        const endsWith = '}';
-        const defaultValue = 'Default';
+      describe('Transform the terms with getTermsMapping', () => {
+        it('should transform value when terms are present', () => {
+          const value = '{frameworkCategory1}';
+          const expectedResult = 'Translation1';
+          jest.spyOn(transposeTermsPipe, 'getTermsMapping').mockReturnValue('Translation1');
 
-        const result = transposeTermsPipe.getTermsMapping(value, term, lang, startsWith, endsWith, defaultValue);
-        expect(result).toMatch(/^(Mock text TranslatedTerm with a placeholder|Default)$/);
-      });
+          const result = transposeTermsPipe.transform(value, 'Default Translation');
+          expect(result).toEqual(expectedResult);
+        });
 
-      it('should return the default value when the term is not found', () => {
-        const value = 'Some text {term} with a placeholder';
-        const term = 'nonexistentterm';
-        const lang = 'en';
-        const startsWith = '{';
-        const endsWith = '}';
-        const defaultValue = 'Default';
-        const result = transposeTermsPipe.getTermsMapping(value, term, lang, startsWith, endsWith, defaultValue);
-        expect(result).toBe(defaultValue);
-      });
+        it('should return the original value when terms are not present', () => {
+          const value = 'No terms present';
+          const expectedResult = 'No terms present';
+      
+          const result = transposeTermsPipe.transform(value, 'Default Translation');
+          expect(result).toEqual(expectedResult);
+        });
 
-      it('should transform value when terms are present', () => {
-        const value = '{frameworkCategory1}';
-        const expectedResult = 'Translation1';
-        jest.spyOn(transposeTermsPipe, 'getTermsMapping').mockReturnValue('Translation1');
-
-        const result = transposeTermsPipe.transform(value, 'Default Translation');
-        expect(result).toEqual(expectedResult);
-      });
-
-      it('should return the original value when terms are not present', () => {
-        const value = 'No terms present';
-        const expectedResult = 'No terms present';
-    
-        const result = transposeTermsPipe.transform(value, 'Default Translation');
-        expect(result).toEqual(expectedResult);
-      });
-
-      it('should return default value when value is falsy', () => {
-        const value = null;
-        const expectedResult = 'Default Translation';
-    
-        const result = transposeTermsPipe.transform(value, 'Default Translation');
-        expect(result).toEqual(expectedResult);
+        it('should return default value when value is falsy', () => {
+          const value = null;
+          const expectedResult = 'Default Translation';
+      
+          const result = transposeTermsPipe.transform(value, 'Default Translation');
+          expect(result).toEqual(expectedResult);
+        });
       });
       
       it('should return the translated term from the default language when it exists', () => {
@@ -222,5 +205,5 @@ describe('TransposeTermsPipe', () => {
           defaultValue
         );
         expect(result).toEqual(value.replace(startsWith + term + endsWith, 'TranslatedTerm'));
-      }); 
+      });     
 });
