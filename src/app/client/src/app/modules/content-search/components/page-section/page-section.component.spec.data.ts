@@ -3,6 +3,7 @@ export const Response = {
         'name': 'Multiple Data',
         'length': 1,
         'count': 1,
+        'display':'{"name":{"data":{"obj":"test"}}}',
         'metaData': { identifier: 'do_4354432223' },
         'contents': [
             {
@@ -19,13 +20,14 @@ export const Response = {
         'contents': []
     },
     playContentData: {
-        action: {eventName: 'onImage'},
+        action: { eventName: 'onImage' },
         data: {
             name: 'Content by Harish',
-             image: 'https://ekstep-public-dev76723213.thumb.jpeg',
-             description: 'Untitled Collection',
-             rating: '0',
-             action: {eventName: 'onImage'}}
+            image: 'https://ekstep-public-dev76723213.thumb.jpeg',
+            description: 'Untitled Collection',
+            rating: '0',
+            action: { eventName: 'onImage' }
+        }
     },
     event1: {
         'inview': [
@@ -92,7 +94,84 @@ export const Response = {
         ],
         'direction': 'up'
     },
-
+    slideConfig: {
+        "slidesToShow": 4,
+        "slidesToScroll": 1,
+        "responsive": [
+            {
+                "breakpoint": 2800,
+                "settings": {
+                    "slidesToShow": 4,
+                    "slidesToScroll": 2
+                }
+            },
+            {
+                "breakpoint": 2200,
+                "settings": {
+                    "slidesToShow": 4,
+                    "slidesToScroll": 2
+                }
+            },
+            {
+                "breakpoint": 2000,
+                "settings": {
+                    "slidesToShow": 3.01,
+                    "slidesToScroll": 2
+                }
+            },
+            {
+                "breakpoint": 1600,
+                "settings": {
+                    "slidesToShow": 3,
+                    "slidesToScroll": 2
+                }
+            },
+            {
+                "breakpoint": 1200,
+                "settings": {
+                    "slidesToShow": 2.5,
+                    "slidesToScroll": 2
+                }
+            },
+            {
+                "breakpoint": 900,
+                "settings": {
+                    "slidesToShow": 2.5,
+                    "slidesToScroll": 1
+                }
+            },
+            {
+                "breakpoint": 768,
+                "settings": {
+                    "slidesToShow": 2,
+                    "slidesToScroll": 1
+                }
+            },
+            {
+                "breakpoint": 660,
+                "settings": {
+                    "slidesToShow": 2,
+                    "slidesToScroll": 1
+                }
+            },
+            {
+                "breakpoint": 530,
+                "settings": {
+                    "slidesToShow": 1.5,
+                    "slidesToScroll": 1
+                }
+            },
+            {
+                "breakpoint": 450,
+                "settings": {
+                    "slidesToShow": 1,
+                    "slidesToScroll": 1
+                }
+            }
+        ],
+        "infinite": false,
+        "rtl": false
+    },
     event: {
         'inview': [
             {
@@ -296,5 +375,5 @@ export const Response = {
         }
     ],
     slideEventData: { event: 'w.Event', slick: 'Slick', currentSlide: 4 },
-    slide2EventData: { event: 'w.Event', slick: 'Slick', currentSlide: 0,  nextSlide: 4  }
+    slide2EventData: { event: 'w.Event', slick: 'Slick', currentSlide: 0, nextSlide: 4 }
 };

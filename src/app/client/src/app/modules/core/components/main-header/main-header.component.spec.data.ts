@@ -283,6 +283,11 @@ export const mockData = {
       }
     }
   },
+  LogoutInteractEdata: {
+    id: 'logout',
+    type: 'click',
+    pageid: 'resources'
+  },
   telemetryEventClassic: {
     context: {env: 'main-header', cdata: []},
     edata: {id: 'switch-theme', type: 'click', pageid: '/', subtype: 'classic'}

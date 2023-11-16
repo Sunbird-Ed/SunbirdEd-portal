@@ -4,7 +4,7 @@ import {TenantService} from '@sunbird/core';
 import { MergeAccountStatusComponent } from './merge-account-status.component';
 import { of } from 'rxjs';
 
-xdescribe('MergeAccountStatus component', ()=> {
+describe('MergeAccountStatus component', ()=> {
   let mergeAccountStatusComponent: MergeAccountStatusComponent;
   const mockActivatedRoute:Partial<ActivatedRoute>={
     queryParams: of({
@@ -74,7 +74,7 @@ xdescribe('MergeAccountStatus component', ()=> {
     });
   })
 
-  it('should handle closeModal method', ()=>{
+  xit('should handle closeModal method', ()=>{
     global.window = Object.create(window);
     Object.defineProperty(window, 'location', {
       value: {

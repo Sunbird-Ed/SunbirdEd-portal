@@ -24,21 +24,21 @@ const keycloakTrampoline = getKeyCloakClient({
   }
 })
 const keycloakTrampolineAndroid = getKeyCloakClient({
-  resource: envHelper.KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT.clientId,
+  resource: envHelper?.KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT?.clientId,
   bearerOnly: true,
-  serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
-  realm: envHelper.PORTAL_REALM,
+  serverUrl: envHelper?.PORTAL_AUTH_SERVER_URL,
+  realm: envHelper?.PORTAL_REALM,
   credentials: {
-    secret: envHelper.KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT.secret
+    secret: envHelper?.KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT?.secret
   }
 })
 const keycloakTrampolineDesktop = getKeyCloakClient({
-  resource: envHelper.KEYCLOAK_TRAMPOLINE_DESKTOP_CLIENT.clientId,
+  resource: envHelper?.KEYCLOAK_TRAMPOLINE_DESKTOP_CLIENT?.clientId,
   bearerOnly: true,
-  serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
-  realm: envHelper.PORTAL_REALM,
+  serverUrl: envHelper?.PORTAL_AUTH_SERVER_URL,
+  realm: envHelper?.PORTAL_REALM,
   credentials: {
-    secret: envHelper.KEYCLOAK_TRAMPOLINE_DESKTOP_CLIENT.secret
+    secret: envHelper?.KEYCLOAK_TRAMPOLINE_DESKTOP_CLIENT?.secret
   }
 })
 const verifySignature = async (token) => {
@@ -92,7 +92,7 @@ const verifyToken = (token) => {
 const fetchUserWithExternalId = async (payload, req) => { // will be called from player docker to learner docker
   const options = {
     method: 'GET',
-    url: `${envHelper.learner_Service_Local_BaseUrl}${privateBaseUrl}v1/read/${payload.sub}?provider=${payload.state_id}&idType=${payload.state_id}`,
+    url: `${envHelper?.learner_Service_Local_BaseUrl}${privateBaseUrl}v1/read/${payload.sub}?provider=${payload.state_id}&idType=${payload.state_id}`,
     headers: getHeaders(req),
     json: true
   }
@@ -119,7 +119,7 @@ const freeUpUser = async (req) => {
   };
   const options = {
     method: 'POST',
-    url: envHelper.learner_Service_Local_BaseUrl + privateBaseUrl + 'v1/identifier/freeup',
+    url: envHelper?.learner_Service_Local_BaseUrl + privateBaseUrl + 'v1/identifier/freeup',
     headers: getHeaders(req),
     body: {
       request: freeUprequest
@@ -220,7 +220,7 @@ const updateContact = (req, userDetails) => { // will be called from player dock
   }
   const options = {
     method: 'PATCH',
-    url: envHelper.learner_Service_Local_BaseUrl + privateBaseUrl +'v1/update',
+    url: envHelper?.learner_Service_Local_BaseUrl + privateBaseUrl +'v1/update',
     headers: getHeaders(req),
     body: {
       request: requestBody
@@ -245,7 +245,7 @@ const updateRoles = (req, userId, jwtPayload) => { // will be called from player
   }
   const options = {
     method: 'POST',
-    url: envHelper.learner_Service_Local_BaseUrl + privateBaseUrl +'v1/assign/role',
+    url: envHelper?.learner_Service_Local_BaseUrl + privateBaseUrl +'v1/assign/role',
     headers: getHeaders(req),
     body: {
       request: requestBody
@@ -276,7 +276,7 @@ const migrateUser = (req, jwtPayload) => { // will be called from player docker 
 
   const options = {
     method: 'PATCH',
-    url: envHelper.learner_Service_Local_BaseUrl + privateBaseUrl +'v1/migrate',
+    url: envHelper?.learner_Service_Local_BaseUrl + privateBaseUrl +'v1/migrate',
     headers: getHeaders(req),
     body: {
       request: requestBody
