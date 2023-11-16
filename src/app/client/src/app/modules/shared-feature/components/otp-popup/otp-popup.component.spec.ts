@@ -56,7 +56,9 @@ describe('OtpPopupComponent', () => {
         error: jest.fn(),
         success: jest.fn()
     };
-  const navigationHelperService: Partial<NavigationHelperService> ={}
+  const navigationHelperService: Partial<NavigationHelperService> ={
+    navigateToLastUrl:jest.fn()
+  }
 
     beforeAll(() => {
         component = new OtpPopupComponent(
@@ -178,6 +180,14 @@ describe('OtpPopupComponent', () => {
         expect(component.infoMessage).toEqual('');
         expect(component.errorMessage).toEqual(resourceService.frmelmnts.lbl.OTPresendMaxretryreached);
       });
-      
+      it('call onCancel method ', () => {
+        component.onCancel();
+        expect(navigationHelperService.navigateToLastUrl).toBeCalled();
+      });
+      it('call redirectToParentComponent method ', () => {
+        jest.spyOn(component.redirectToParent, 'emit');
+        component.redirectToParentComponent();
+        expect(component.redirectToParent.emit).toBeCalled();
+      });
      
 });
