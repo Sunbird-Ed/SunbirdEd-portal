@@ -9,6 +9,7 @@ import { TelemetryService } from './modules/telemetry';
 import { ProfileService } from './plugins/profile';
 import { mockData } from './app.component.spec.data';
 import { mockRes } from './modules/workspace/components/upforreview-contentplayer/upforreview-content.component.spce.data';
+import { CslFrameworkService } from '../app/modules/public/services/csl-framework/csl-framework.service';
 
 describe('App Component', () => {
   let appComponent: AppComponent;
@@ -93,6 +94,8 @@ describe('App Component', () => {
     userOrgDetails: 'testing123'
   };
 
+  const mockCslFrameworkService: Partial<CslFrameworkService> = {};
+
   beforeAll(() => {
     appComponent = new AppComponent(
       mockCacheService as CacheService,
@@ -121,7 +124,8 @@ describe('App Component', () => {
       mockRenderer2 as Renderer2,
       mockNgZone as NgZone,
       mockConnectionService as ConnectionService,
-      mockGenericResourceService as GenericResourceService
+      mockGenericResourceService as GenericResourceService,
+      mockCslFrameworkService as CslFrameworkService
     );
   });
 
@@ -136,7 +140,7 @@ describe('App Component', () => {
   it('should handle login', () => {
     Object.defineProperty(window, 'location', {
       writable: true,
-      value: { 
+      value: {
         replace: jest.fn(),
       }
     });
@@ -209,7 +213,7 @@ describe('App Component', () => {
       setTimeout(() => {
         expect(appComponent.showGlobalConsentPopUpSection).toBeTruthy();
         done();
-      });  
+      });
     });
 
     it('should check framework selected or not for logged in and custodian user', (done) => {
@@ -229,7 +233,7 @@ describe('App Component', () => {
       setTimeout(() => {
         expect(appComponent.checkFrameworkSelected).toHaveBeenCalled();
         done();
-      });  
+      });
     });
   })
 

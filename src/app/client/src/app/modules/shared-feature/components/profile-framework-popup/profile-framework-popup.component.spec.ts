@@ -9,6 +9,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ProfileService } from '@sunbird/profile';
 import { Response } from './profile-framework-popup.component.spec.data';
 import { ProfileFrameworkPopupComponent } from './profile-framework-popup.component';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
+import { ConfigService } from '../../../shared/services/config/config.service';
 
 describe('ProfileFrameworkPopupComponent', () => {
     let component: ProfileFrameworkPopupComponent;
@@ -66,6 +68,23 @@ describe('ProfileFrameworkPopupComponent', () => {
         getDialogById: jest.fn().mockReturnValue(dialogRefData)
     };
     const profileService: Partial<ProfileService> = {};
+    const mockCslFrameworkService: Partial<CslFrameworkService> = {};
+    const mockConfigService: Partial<ConfigService> = {
+    appConfig: {
+      layoutConfiguration: 'joy',
+      TELEMETRY: {
+        PID: 'sample-page-id'
+      }
+    },
+    urlConFig: {
+      URLS: {
+        TELEMETRY: {
+          SYNC: true
+        },
+        CONTENT_PREFIX: ''
+      }
+    }
+  };
     beforeAll(() => {
         component = new ProfileFrameworkPopupComponent(
             router as Router,
@@ -79,7 +98,9 @@ describe('ProfileFrameworkPopupComponent', () => {
             orgDetailsService as OrgDetailsService,
             popupControlService as PopupControlService,
             matDialog as MatDialog,
-            profileService as ProfileService
+            profileService as ProfileService,
+            mockCslFrameworkService as CslFrameworkService,
+            mockConfigService as ConfigService,
         )
     });
 
