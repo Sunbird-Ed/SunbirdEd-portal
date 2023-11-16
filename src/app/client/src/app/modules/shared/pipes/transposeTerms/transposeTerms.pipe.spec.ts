@@ -23,8 +23,8 @@ describe('TransposeTermsPipe', () => {
     });
     
     describe('transform', () => {
-         const defaultValue = 'Default';
-         const selectedLang = 'en';
+        const defaultValue = 'Default';
+        const selectedLang = 'en';
         it('should return the transformed value when a term is found', () => {
           const value = 'This is {term1} and {term2}.';
           const transformedValue = transposeTermsPipe.transform(
@@ -149,8 +149,34 @@ describe('TransposeTermsPipe', () => {
           const result = transposeTermsPipe.getTermsMapping(value, term, lang, startsWith, endsWith, defaultValue);
           expect(result).toBe(defaultValue);
         });
+
+        it('should return the translated term from the default language when it exists', () => {
+          const termsMappingMock = {
+            defaultLanguage: 'en',
+            en: {
+              someTerm: 'TranslatedTerm',
+            },
+          };
+          const value = '{someTerm}';
+          const term = 'someTerm';
+          const lang = 'es';
+    
+          Object.defineProperty(genericResourceService, 'terms', {
+              get: jest.fn().mockReturnValue(termsMappingMock),
+            });
+    
+          const result = transposeTermsPipe.getTermsMapping(
+            value,
+            term,
+            lang,
+            startsWith,
+            endsWith,
+            defaultValue
+          );
+          expect(result).toEqual(value.replace(startsWith + term + endsWith, 'TranslatedTerm'));
+        });     
       });
-      
+
       describe('Transform the terms with getTermsMapping', () => {
         it('should transform value when terms are present', () => {
           const value = '{frameworkCategory1}';
@@ -176,34 +202,5 @@ describe('TransposeTermsPipe', () => {
           const result = transposeTermsPipe.transform(value, 'Default Translation');
           expect(result).toEqual(expectedResult);
         });
-      });
-      
-      it('should return the translated term from the default language when it exists', () => {
-        const termsMappingMock = {
-          defaultLanguage: 'en',
-          en: {
-            someTerm: 'TranslatedTerm',
-          },
-        };
-        const value = '{someTerm}';
-        const term = 'someTerm';
-        const lang = 'es';
-        const startsWith = '{';
-        const endsWith = '}';
-        const defaultValue = 'Default';
-  
-        Object.defineProperty(genericResourceService, 'terms', {
-            get: jest.fn().mockReturnValue(termsMappingMock),
-          });
-  
-        const result = transposeTermsPipe.getTermsMapping(
-          value,
-          term,
-          lang,
-          startsWith,
-          endsWith,
-          defaultValue
-        );
-        expect(result).toEqual(value.replace(startsWith + term + endsWith, 'TranslatedTerm'));
       });     
 });
