@@ -398,6 +398,7 @@ export const mockUserData = {
                         'updatedBy': null,
                         'addedByName': null,
                         'addedBy': null,
+                        'hashTagId': '0123653943740170242',
                         'roles': [
                             'CONTENT_CREATION',
                             'PUBLIC'
@@ -610,11 +611,14 @@ export const mockUserData = {
                 'userOrgDetails': {
                     'PUBLIC': {
                         'orgId': '01285019302823526477',
-                        'orgName': 'ORG_001'},
+                        'orgName': 'ORG_001'
+                    },
                     'COURSE_MENTOR': {
-                        'orgId': '01285019302823526477', 'orgName': 'ORG_001'},
+                        'orgId': '01285019302823526477', 'orgName': 'ORG_001'
+                    },
                     'COURSE_CREATOR': {
-                        'orgId': '01285019302823526477',  'orgName': 'ORG_001'}
+                        'orgId': '01285019302823526477', 'orgName': 'ORG_001'
+                    }
                 }
             }
         }
@@ -1216,7 +1220,6 @@ export const mockUserData = {
             }
         }
     },
-
     migrateSuccessResponse: {
         'id': 'api.user.migrate',
         'ver': 'v1',
@@ -1233,6 +1236,243 @@ export const mockUserData = {
             'response': 'SUCCESS',
             'errors': []
         }
+    },
+    userProfile: {
+        'missingFields': [
+            'dob',
+            'location'
+        ],
+        'lastName': 'User',
+        'webPages': [
+            {
+                'type': 'fb',
+                'url': 'https://www.facebook.com/gjh'
+            }
+        ],
+        'tcStatus': null,
+        'loginId': 'ntptest102',
+        'education': [
+            {
+                'updatedBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+                'yearOfPassing': 2000,
+                'degree': 'ahd',
+                'updatedDate': '2017-12-06 13:52:13:291+0000',
+                'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+                'addressId': null,
+                'duration': null,
+                'courseName': null,
+                'createdDate': '2017-12-06 13:50:59:915+0000',
+                'isDeleted': null,
+                'createdBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+                'boardOrUniversity': '',
+                'grade': 'F',
+                'percentage': 999,
+                'name': 'djd',
+                'id': '0123909651904757763'
+            }
+        ],
+        'gender': 'female',
+        'regOrgId': '0123653943740170242',
+        'subject': [
+            'Gujarati',
+            'Kannada'
+        ],
+        'roles': [
+            'public'
+        ],
+        'language': [
+            'Kannada'
+        ],
+        'updatedDate': '2017-12-06 13:52:13:291+0000',
+        'completeness': 88,
+        'skills': [
+            {
+                'skillName': 'bnn',
+                'addedAt': '2018-02-17',
+                'endorsersList': [
+                    {
+                        'endorseDate': '2018-02-17',
+                        'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e'
+                    }
+                ],
+                'addedBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+                'endorsementcount': 0,
+                'id': 'f2f8f18e45d2ede1eb93f40dd53e11290814fd5999d056181d919f219c9fda03',
+                'skillNameToLowercase': 'bnn',
+                'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e'
+            }
+        ],
+        'isDeleted': false,
+        'provider': null,
+        'countryCode': null,
+        'id': '0123867019537448963',
+        'tempPassword': null,
+        'email': 'us********@testss.com',
+        'rootOrg': {
+            'dateTime': null,
+            'preferredLanguage': 'English',
+            'approvedBy': null,
+            'channel': 'ROOT_ORG',
+            'description': 'Sunbird',
+            'updatedDate': '2017-08-24 06:02:10:846+0000',
+            'addressId': null,
+            'orgType': null,
+            'provider': null,
+            'orgCode': 'sunbird',
+            'theme': null,
+            'id': 'ORG_001',
+            'communityId': null,
+            'isApproved': null,
+            'slug': 'sunbird',
+            'identifier': 'ORG_001',
+            'thumbnail': null,
+            'orgName': 'Sunbird',
+            'updatedBy': 'user1',
+            'externalId': null,
+            'isRootOrg': true,
+            'rootOrgId': null,
+            'approvedDate': null,
+            'imgUrl': null,
+            'homeUrl': null,
+            'isDefault': null,
+            'contactDetail':
+                '[{\'phone\':\'213124234234\',\'email\':\'test@test.com\'}]',
+            'createdDate': null,
+            'createdBy': null,
+            'parentOrgId': null,
+            'hashTagId': 'b00bc992ef25f1a9a8d63291e20efc8d',
+            'noOfMembers': 1,
+            'status': null
+        },
+        'identifier': '0123653943740170242',
+        'profileVisibility': {
+            'skills': 'private',
+            'address': 'private',
+            'profileSummary': 'private'
+        },
+        'thumbnail': null,
+        'updatedBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+        'address': [
+            {
+                'country': 'dsfg',
+                'updatedBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+                'city': 'dsf',
+                'updatedDate': '2018-02-21 08:54:46:451+0000',
+                'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+                'zipcode': '560015',
+                'addType': 'current',
+                'createdDate': '2018-01-28 17:31:11:677+0000',
+                'isDeleted': null,
+                'createdBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+                'addressLine1': 'sadf',
+                'addressLine2': 'sdf',
+                'id': '01242858643843481618',
+                'state': 'dsfff'
+            }
+        ],
+        'jobProfile': [
+            {
+                'jobName': 'hhH',
+                'orgName': 'hhh',
+                'role': 'bnmnghbgg',
+                'updatedBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+                'endDate': null,
+                'isVerified': null,
+                'subject': [
+                    'Assamese'
+                ],
+                'joiningDate': '2017-10-19',
+                'updatedDate': '2018-02-21 08:49:05:880+0000',
+                'isCurrentJob': false,
+                'verifiedBy': null,
+                'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+                'boardName': null,
+                'orgId': null,
+                'addressId': null,
+                'createdDate': '2017-12-06 16:15:28:684+0000',
+                'isDeleted': null,
+                'createdBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+                'verifiedDate': null,
+                'isRejected': null,
+                'id': '01239103162216448010'
+            }
+        ],
+        'profileSummary': 'asdd',
+        'tcUpdatedDate': null,
+        'avatar': null,
+        'userName': 'ntptest102',
+        'rootOrgId': 'ORG_001',
+        'userId': '0008ccab-2103-46c9-adba-6cdf84d37f06',
+        'emailVerified': 'true',
+        'firstName': 'test',
+        'lastLoginTime': 123456,
+        'createdDate': '2017-12-06 16:15:28:684+0000',
+        'createdBy': '0008ccab-2103-46c9-adba-6cdf84d37f06',
+        'phone': '1234567890',
+        'dob': '2021',
+        'registeredOrg': {
+            'dateTime': null,
+            'preferredLanguage': null,
+            'approvedBy': null,
+            'channel': null,
+            'description': null,
+            'updatedDate': '2017-11-17 09:00:59:342+0000',
+            'addressId': null,
+            'orgType': null,
+            'provider': null,
+            'orgCode': null,
+            'locationId': '0123668622585610242',
+            'theme': null,
+            'id': '0123653943740170242',
+            'communityId': null,
+            'isApproved': null,
+            'slug': null,
+            'identifier': '0123653943740170242',
+            'thumbnail': null,
+            'orgName': 'QA ORG',
+            'updatedBy': '159e93d1-da0c-4231-be94-e75b0c226d7c',
+            'externalId': null,
+            'isRootOrg': false,
+            'rootOrgId': 'ORG_001',
+            'approvedDate': null,
+            'imgUrl': null,
+            'homeUrl': null,
+            'orgTypeId': null,
+            'isDefault': null,
+            'contactDetail': [],
+            'createdDate': '2017-10-31 10:43:48:600+0000',
+            'createdBy': null,
+            'parentOrgId': null,
+            'hashTagId': '0123653943740170242',
+            'noOfMembers': null,
+            'status': 1
+        },
+        'currentLoginTime': null,
+        'location': '',
+        'status': 1
+    },
+    UserOrganization: {
+        'organisationId': '01269878797503692810',
+        'identifier': '0123653943740170242',
+        'orgName': 'QA ORG',
+        'updatedBy': '159e93d1-da0c-4231-be94-e75b0c226d7c',
+        'addedByName': null,
+        'addedBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+        'roles': [
+            'public'
+        ],
+        'approvedBy': null,
+        'updatedDate': '2017-11-17 09:00:59:342+0000',
+        'userId': '0008ccab-2103-46c9-adba-6cdf84d37f06',
+        'approvaldate': '2017-11-17 09:00:59:342+0000',
+        'isDeleted': null,
+        'isRejected': null,
+        'id': '01239103162216448010',
+        'position': 'ASD',
+        'isApproved': null,
+        'orgjoindate': '2017-10-31 10:47:04:732+0000',
+        'orgLeftDate': null,
+        'hashTagId': '0123653943740170242',
     }
 };
 
