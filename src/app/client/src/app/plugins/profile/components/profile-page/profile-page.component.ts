@@ -1,24 +1,7 @@
 import {ProfileService} from '../../services';
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild, Inject } from '@angular/core';
-import {
-  CertRegService,
-  CoursesService,
-  OrgDetailsService,
-  PlayerService,
-  SearchService,
-  UserService,
-  FormService
-} from '@sunbird/core';
-import {
-  ConfigService,
-  IUserData, LayoutService,
-  NavigationHelperService,
-  ResourceService,
-  ServerResponse,
-  ToasterService,
-  UtilService,
-  ConnectionService
-} from '@sunbird/shared';
+import { CertRegService, CoursesService, OrgDetailsService, PlayerService, SearchService, UserService, FormService } from '@sunbird/core';
+import { ConfigService, IUserData, LayoutService, NavigationHelperService, ResourceService, ServerResponse, ToasterService, UtilService, ConnectionService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import {Subject, Subscription} from 'rxjs';
 import {IImpressionEventInput, IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
@@ -47,6 +30,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   totalContributions: Number;
   attendedTraining: Array<object>;
   roles: Array<string>;
+  userRoles;
   showMoreRoles = true;
   showMoreTrainings = true;
   showMoreCertificates = true;
@@ -59,9 +43,11 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   orgDetails: any = [];
   showContactPopup = false;
   showEditUserDetailsPopup = false;
+  disableDelete=true
   userFrameWork: any;
   telemetryImpression: IImpressionEventInput;
   myFrameworkEditEdata: IInteractEventEdata;
+  deleteAccountEdata: IInteractEventEdata;
   editProfileInteractEdata: IInteractEventEdata;
   editMobileInteractEdata: IInteractEventEdata;
   editEmailInteractEdata: IInteractEventEdata;
@@ -121,7 +107,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.isDesktopApp = this.utilService.isDesktopApp;
-
     this.activatedRoute.queryParams.subscribe((params) => {
       if (params['showEditUserDetailsPopup']) {
         this.showEditUserDetailsPopup = true;
@@ -223,11 +208,15 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     });
-    let userRoles;
     if (_.get(this.userProfile, 'roles') && !_.isEmpty(this.userProfile.roles)) {
-      userRoles = _.map(this.userProfile.roles, 'role');
+      this.userRoles = _.map(this.userProfile.roles, 'role');
     }
-    _.forEach(userRoles, (value, key) => {
+    if (_.includes(this.userRoles, 'ORG_ADMIN')) {
+      this.disableDelete = true
+    } else {
+      this.disableDelete = false
+    }
+    _.forEach(this.userRoles, (value, key) => {
       if (value !== 'PUBLIC') {
         const roleName = _.find(this.userProfile.roleList, { id: value });
         if (roleName) {
@@ -500,10 +489,24 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       type: 'click',
       pageid: 'profile-read'
     };
+    this.deleteAccountEdata={
+      id: 'delete-user-account',
+      type: 'click',
+      pageid: 'profile-read'
+    };
   }
 
   navigate(url, formAction) {
     this.router.navigate([url], {queryParams: {formaction: formAction}});
+  }
+
+  navigatetoRoute(url) {
+    if (_.includes(this.userProfile.userRoles, 'PUBLIC')&& this.userProfile.userRoles.length===1) {
+      this.router.navigate([url]);
+    }else{
+      const msg = 'Your role doesnot allow you to delete your account. Please contact support!'
+      this.toasterService.warning(msg);
+    }
   }
 
   ngAfterViewInit() {
