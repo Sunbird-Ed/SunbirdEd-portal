@@ -220,14 +220,36 @@ describe('ProfileFrameworkPopupComponent', () => {
         expect(toasterService.error).toBeCalledWith(resourceService.messages.emsg.m0005);
     });
     it('should call getFormDetails method', () => {
-        component['_formFieldProperties'] = Response.formFields1;
-        component['getFormDetails']();
-        expect(formService.getFormConfig).toHaveBeenCalled();
+       component['_formFieldProperties'] = Response.formFields1;
+       jest.spyOn(formService, 'getFormConfig').mockReturnValue(of({
+        id: 'id',
+        params: {
+          resmsgid: '',
+          status: 'status'
+        },
+        responseCode: 'OK',
+        result: {},
+        ts: '',
+        ver: ''
+      }));
+       component['getFormDetails']();
+       expect(formService.getFormConfig).toHaveBeenCalled();
     });
-    it('should call getFormDetails method with admin user', () => {
+    it('should call getFormDetails method with admin user', async () => {
         component['_formFieldProperties'] = Response.formFields1;
         localStorage.setItem('userType', 'administrator');
-        component['getFormDetails']();
+        jest.spyOn(formService, 'getFormConfig').mockReturnValue(of({
+        id: 'id',
+        params: {
+          resmsgid: '',
+          status: 'status'
+        },
+        responseCode: 'OK',
+        result: {},
+        ts: '',
+        ver: ''
+      }));
+        await component['getFormDetails']();
         expect(formService.getFormConfig).toHaveBeenCalled();
     });
 });
