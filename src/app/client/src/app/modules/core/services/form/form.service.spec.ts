@@ -1,4 +1,4 @@
-import { of, throwError } from "rxjs";
+import { of, EMPTY } from 'rxjs';
 import { ConfigService } from '../../../shared/services/config/config.service';
 import { HttpClient } from "@angular/common/http";
 import { FormService } from './form.service';
@@ -39,27 +39,34 @@ describe('FormService', () => {
     }))
   };
   const mockBrowserCacheTtlService: Partial<BrowserCacheTtlService> = {};
-  const mockOrgDetailsService: Partial<OrgDetailsService> = {};
+  const mockOrgDetailsService: Partial<OrgDetailsService> = {
+        getCustodianOrgDetails: jest.fn(),
+        getOrgDetails: jest.fn()
+  };
   const mockPublicDataService: Partial<PublicDataService> = {
     get: jest.fn().mockImplementation(() => { }),
     post: jest.fn(() => of(mockFormData.success))
   };
-  const mockUserService: Partial<UserService> = {
-    loggedIn: true,
-    slug: jest.fn().mockReturnValue("tn") as any,
-    userData$: of({
-      userProfile: {
-        userId: 'sample-uid',
-        rootOrgId: 'sample-root-id',
-        rootOrg: {},
-        hashTagIds: ['id']
-      } as any
-    }) as any,
-    setIsCustodianUser: jest.fn(),
-    userid: 'sample-uid',
-    appId: 'sample-id',
-    getServerTimeDiff: '',
-  };
+  function createMockUserService(loggedIn: boolean, hashTagId: string, slug: string): Partial<UserService> {
+  return {
+    loggedIn,
+    slug: slug,
+      userData$: of({
+        userProfile: {
+          userId: 'sample-uid',
+          rootOrgId: 'sample-root-id',
+          rootOrg: {},
+          hashTagIds: ['id']
+        } as any
+      }) as any,
+      setIsCustodianUser: jest.fn(),
+      userid: 'sample-uid',
+      appId: 'sample-id',
+      getServerTimeDiff: '',
+      hashTagId,
+    };
+  }
+  const mockUserService = createMockUserService(true, 'userHashTagId','sample-slug');
   const mockHttpClient: Partial<HttpClient> = {
   };
   beforeAll(() => {
@@ -67,7 +74,7 @@ describe('FormService', () => {
       mockUserService as UserService,
       mockConfigService as ConfigService,
       mockPublicDataService as PublicDataService,
-      mockCacheService as CacheService, 
+      mockCacheService as CacheService,
       mockBrowserCacheTtlService as BrowserCacheTtlService,
       mockOrgDetailsService as OrgDetailsService
     );
@@ -77,57 +84,82 @@ describe('FormService', () => {
     jest.clearAllMocks();
     jest.resetAllMocks();
   });
-
   it('should create a instance of FormService', () => {
     expect(formService).toBeTruthy();
   });
 
-  describe('should fetch formDetails details', () => {
-    const hashTagId = 'NTP';
-    const formInputParams = {
-      formType: 'user',
-      formAction: 'onboarding',
-      contentType: 'exclusion',
-      component: 'portal',
-      framework: 'NTP'
-    };
-    const responseKey = 'data.fields';
-    it('should call the getFormConfig method with imputs for the method', (done) => {
-      jest.spyOn(formService.publicDataService,'post').mockReturnValue(of({
-        id: 'id',
-        params: {
-          resmsgid: '',
-          status: 'staus'
-        },
-        responseCode: 'OK',
-        result: {},
-        ts: '',
-        ver: ''
-      }));
-      // act
-      formService.getFormConfig(formInputParams,hashTagId,responseKey).subscribe(() => {
-        done();
+  describe('setForm', () => {
+    it('should set form data in cache with the correct key and value', () => {
+      const formKey = 'exampleFormKey';
+      const formData = { field1: 'value1', field2: 'value2' };
+      formService.setForm(formKey, formData);
+      const expectedKey = btoa(formKey);
+      expect(mockCacheService.set).toHaveBeenCalledWith(expectedKey, formData, {
+        maxAge: mockBrowserCacheTtlService.browserCacheTtl
       });
-      expect(formService.publicDataService.post).toHaveBeenCalled();
+    });
+    it('should handle errors when setting form data in cache', () => {
+      const formKey = 'exampleFormKey';
+      const formData = { field1: 'value1', field2: 'value2' };
+      mockCacheService.set = jest.fn(() => {
+        throw new Error('Cache error');
+      });
+      expect(() => formService.setForm(formKey, formData)).toThrowError('Cache error');
     });
 
-    it('should call the getFormConfig method with imputs for the method for cacheService', (done) => {
-      jest.spyOn(formService['cacheService'],'get').mockReturnValue(of({
-        id: 'id',
+  });
+
+  describe('getHashTagID', () => {
+    it('should return user hashTagId when logged in', () => {
+      formService.getHashTagID().subscribe((result) => {
+        expect(result).toBe('userHashTagId');
+      });
+    });
+
+    it('should return hashTagId from orgDetailsService when userService has a slug', () => {
+      const mockOrgDetails = {
+        id: 'orgId',
         params: {
           resmsgid: '',
-          status: 'staus'
+          status: 'status',
         },
         responseCode: 'OK',
-        result: {},
+        result: {
+          hashTagId: 'orgHashTagId',
+        },
         ts: '',
-        ver: ''
-      }));
-      // act
-      formService.getFormConfig(formInputParams,hashTagId,responseKey).subscribe(() => {
-        done();
+        ver: '',
+      };
+      jest.spyOn(formService['orgDetailsService'], 'getOrgDetails').mockReturnValue(of(mockOrgDetails));
+      formService['userService'] = createMockUserService(false, 'userHashTagId', 'sample-slug') as UserService;
+      formService.getHashTagID().subscribe((result) => {
+      expect(result).toBe('orgHashTagId');
+      expect(formService['orgDetailsService'].getOrgDetails).toHaveBeenCalledWith('sample-slug');
       });
-      expect(formService['cacheService'].get).toHaveBeenCalled();
+    });
+
+    it('should return hashTagId from custodian orgDetailsService when userService has no slug', () => {
+      const mockCustodianOrgDetails = {
+        id: 'custodianOrgId',
+        params: {
+          resmsgid: '',
+          status: 'status',
+        },
+        responseCode: 'OK',
+        result: {
+          response: {
+            value: 'custodianHashTagId',
+          },
+        },
+        ts: '',
+        ver: '',
+      };
+      jest.spyOn(formService['orgDetailsService'], 'getCustodianOrgDetails').mockReturnValue(of(mockCustodianOrgDetails));
+      formService['userService'] = createMockUserService(false, 'sluguserHashTagId', null) as UserService;
+      formService.getHashTagID().subscribe((result) => {
+        expect(result).toBe('custodianHashTagId');
+        expect(formService['orgDetailsService'].getCustodianOrgDetails).toHaveBeenCalled();
+      });
     });
   });
 
