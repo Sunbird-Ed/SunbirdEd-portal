@@ -34,7 +34,6 @@ node('build-slave') {
                 }
 
                 stage('Build') {
-                    sh("npm config delete prefix")
                     sh("bash ./build.sh  ${build_tag} ${env.NODE_NAME} ${hub_org} ${params.buildDockerImage} ${params.buildCdnAssests} ${params.cdnUrl}")
                 }
 
