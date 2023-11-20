@@ -34,12 +34,17 @@
     max-height: calc(100vh - 0px);
     overflow-y: auto;
     overflow-x: hidden;
+    padding-right: 16px;
 }
 
 .content-scroll {
     @include contentScroll();
 }
 
+.sbt-page-content{
+    padding-left: 0;
+    padding-right: 0;
+}
 .sbt-page-content-area {
     &.relative9 {
         &.home-container {
