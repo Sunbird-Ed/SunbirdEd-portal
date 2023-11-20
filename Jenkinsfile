@@ -17,7 +17,6 @@ node('build-slave') {
                 }
                 // cleanWs()
                 npm config delete prefix
-                nvm use --delete-prefix v18.17.0
 
                 checkout scm
                 commit_hash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
