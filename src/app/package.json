@@ -29,8 +29,8 @@
     "webpack-bundle-analyzer": "3.7.0"
   },
   "engines": {
-    "node": ">=18.17.0",
-    "npm": ">=9.6.7"
+    "node": ">=16.19.0",
+    "npm": ">=8.19.3"
   },
   "nodemonConfig": {
     "ignore": [
