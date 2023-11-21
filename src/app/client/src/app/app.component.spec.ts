@@ -96,6 +96,7 @@ describe('App Component', () => {
 
   const mockCslFrameworkService: Partial<CslFrameworkService> = {
     getFrameworkCategories: jest.fn(),
+    setDefaultFWforCsl: jest.fn()
   };
 
   beforeAll(() => {
