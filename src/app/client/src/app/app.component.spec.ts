@@ -27,6 +27,7 @@ describe('App Component', () => {
       hashTagIds: ['id']
     } as any}) as any,
     setIsCustodianUser: jest.fn(),
+    setGuestUser: jest.fn(),
     userid: 'sample-uid',
     appId: 'sample-id',
     getServerTimeDiff: '',
@@ -75,7 +76,9 @@ describe('App Component', () => {
     isDesktopApp: true,
     isIos: true
   };
-  const mockFormService: Partial<FormService> = {};
+  const mockFormService: Partial<FormService> = {
+    getFormConfig: jest.fn()
+  };
   const mockSessionExpiryInterceptor: Partial<SessionExpiryInterceptor> = {};
   const mockChangeDetectionRef: Partial<ChangeDetectorRef> = {
   };
@@ -622,5 +625,58 @@ describe('App Component', () => {
 
   it('should be checked Location Status is Required', () => {
     appComponent.isLocationStatusRequired();
+  });
+
+  it('should initialize with usertype,framework and onboarding popup enabled when form config is available', () => {
+    const formConfigResponse = {
+      onboardingPopups: {
+        isVisible: true,
+        defaultFormatedName: "Guest"
+      },
+      userTypePopup: {
+        isVisible: true,
+        defaultUserType: "Teacher",
+        defaultGuestUserType: "Teacher"
+      },
+      frameworkPopup: {
+        isVisible: true,
+        defaultFormatedName: "Guest"
+    },
+      locationPopup: {
+        isVisible: true
+      }
+    };
+    jest.spyOn(appComponent.formService, 'getFormConfig').mockReturnValue(of(formConfigResponse));
+    appComponent.getOnboardingList();
+    expect(appComponent.isOnboardingEnabled).toEqual(true);
+    expect(appComponent.isBmgEnabled).toEqual(true);
+    expect(appComponent.isUserTypeEnabled).toEqual(true);
+  });
+
+  it('should call guestuser method of userservice when either isVisible of onboarding or framework popup is false', () => {
+    const formConfigResponse = {
+      onboardingPopups: {
+        isVisible: false,
+        defaultFormatedName: "Guest"
+      },
+      userTypePopup: {
+        isVisible: true,
+        defaultUserType: "Teacher",
+        defaultGuestUserType: "Teacher"
+      },
+      frameworkPopup: {
+        isVisible: false,
+        defaultFormatedName: "Guest"
+    },
+      locationPopup: {
+        isVisible: true
+      }
+    };
+    jest.spyOn(appComponent.formService, 'getFormConfig').mockReturnValue(of(formConfigResponse));
+    appComponent.getOnboardingList();
+    expect(appComponent.isOnboardingEnabled).toEqual(false);
+    expect(appComponent.isBmgEnabled).toEqual(false);
+    expect(appComponent.isUserTypeEnabled).toEqual(true);
+    expect(appComponent.userService.setGuestUser).toHaveBeenCalledWith(true);
   });
 });
