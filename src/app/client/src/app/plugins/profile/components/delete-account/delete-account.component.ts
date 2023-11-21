@@ -114,14 +114,16 @@ export class DeleteAccountComponent implements OnInit, OnDestroy {
   verificationSuccess(data) {
       this.userService.deleteUser().subscribe(
         (data: ServerResponse) => {
-          console.log('----->',data);
+          if(_.get(data, 'result.response') === 'SUCCESS'){
+            window.location.replace('/logoff');
+            this.cacheService.removeAll();
+          }
         },
         (err) => {
           console.log('------>',err);
         }
       );
-       // window.location.replace('/logoff');
-       // this.cacheService.removeAll();
+       
   }
 
   setInteractEventData() {

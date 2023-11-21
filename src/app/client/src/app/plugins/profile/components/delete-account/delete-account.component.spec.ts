@@ -123,11 +123,7 @@ describe('DeleteAccountComponent', () => {
         component.closeModal();
         expect(component.closeMatDialog).toBeCalled();
     });
-<<<<<<< HEAD
     it('should create a instance of component and call the generateOTP method', () => {
-=======
-    xit('should create a instance of component and call the generateOTP method', () => {
->>>>>>> upstream/release-7.0.0
         jest.spyOn(component,'prepareOtpData');
         const req =  {
             key: '1234567890',
