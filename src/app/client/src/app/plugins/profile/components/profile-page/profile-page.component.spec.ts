@@ -106,6 +106,7 @@ describe("ProfilePageComponent", () => {
 
     };
     const mockUtilService: Partial<UtilService> = {
+        getDataForCard: jest.fn(),
         isDesktopApp: true,
     };
     const mockSearchService: Partial<SearchService> = {};
@@ -141,6 +142,7 @@ describe("ProfilePageComponent", () => {
     const mockCsCertificateService: Partial<CsCertificateService> = {};
     const mockCslFrameworkService: Partial<CslFrameworkService> = {
         getFrameworkCategoriesObject: jest.fn(),
+        frameworkLabelTransform: jest.fn(),
     };
 
 
