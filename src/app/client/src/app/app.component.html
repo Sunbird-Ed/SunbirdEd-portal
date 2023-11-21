@@ -81,9 +81,9 @@
     </app-onboarding-popup>
 
     <!-- popup disabled  -->
-    <div *ngIf="loadPopUps && isPopupEnabled">
+    <div *ngIf="loadPopUps && isOnboardingEnabled">
       <!-- 2nd popup BMGS  -->
-      <app-modal-wrapper #frameWorkPopUp *ngIf="showFrameWorkPopUp"
+      <app-modal-wrapper #frameWorkPopUp *ngIf="showFrameWorkPopUp && isBmgEnabled"
         [config]="{disableClose: true, panelClass: ['overflow-visible', 'material-modal'], autoFocus: false}">
         <ng-template sbModalContent let-data>
           <app-popup [dialogProps]="data" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit"
@@ -127,7 +127,7 @@
 </div>
 <app-footer [layoutConfiguration]="layoutConfiguration" *ngIf="!hideHeaderNFooter"></app-footer>
 
-<app-modal-wrapper *ngIf="sessionExpiryInterceptor.sessionExpired"
+<!-- <app-modal-wrapper *ngIf="sessionExpiryInterceptor.sessionExpired"
   [config]="{disableClose: true, size: 'small', panelClass: 'material-modal'}">
   <ng-template sbModalContent let-data>
     <div class="sb-mat__modal sb-mat__modal--small">
@@ -151,7 +151,7 @@
 
     </div>
   </ng-template>
-</app-modal-wrapper>
+</app-modal-wrapper> -->
 
 <ng-container *ngIf="layoutConfiguration">
   <svg width="332px" height="358px" viewBox="0 0 332 358" class="sbt-theme-bg-img computer only" version="1.1"

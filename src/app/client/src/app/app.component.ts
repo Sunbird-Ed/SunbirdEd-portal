@@ -125,7 +125,10 @@ export class AppComponent implements OnInit, OnDestroy {
   isStepperCompleted = false;
   OnboardingFormConfig: any;
   isStepperEnabled = false;
-  isPopupEnabled = false;
+  onboardingData: any;
+  isOnboardingEnabled = true;
+  isBmgEnabled = true;
+  isUserTypeEnabled = true;
   @ViewChild('increaseFontSize') increaseFontSize: ElementRef;
   @ViewChild('decreaseFontSize') decreaseFontSize: ElementRef;
   @ViewChild('resetFontSize') resetFontSize: ElementRef;
@@ -313,8 +316,24 @@ export class AppComponent implements OnInit, OnDestroy {
     //       this.isStepperEnabled = true;
     //     }
     //     else { this.isPopupEnabled = true; }
-    //   }, error => { this.isPopupEnabled = true; });
-    this.isPopupEnabled = true;
+    //   }, error => { this.isPopupEnabled = true; });;
+    const formReadInputParams = {
+      formType: 'onboardingPopupVisibility',
+      formAction: 'onboarding',
+      contentType: "global",
+      component: "portal"
+    };
+    this.formService.getFormConfig(formReadInputParams).subscribe(
+      (formResponsedata) => {
+        if (formResponsedata) {
+          this.isOnboardingEnabled= formResponsedata.onboardingPopups? formResponsedata.onboardingPopups.isVisible : true;
+          this.isBmgEnabled = formResponsedata.frameworkPopup? formResponsedata.frameworkPopup.isVisible : true;
+          this.isUserTypeEnabled =formResponsedata.userTypePopup? formResponsedata.userTypePopup.isVisible: true;
+          if(this.isOnboardingEnabled === false || this.isBmgEnabled === false){
+            this.userService.setGuestUser(true);
+          }
+        }
+      }, error => { console.log("Cant read the form")});
   }
   ngOnInit() {
     this.getOnboardingList();
