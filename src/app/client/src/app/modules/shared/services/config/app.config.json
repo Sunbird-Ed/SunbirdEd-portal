@@ -1478,6 +1478,6 @@
   },
   "OTPTemplate": {
       "updateContactTemplate": "otpContactUpdateTemplate",
-      "userDeleteTemplate": "otpContactUpdateTemplate"
+      "userDeleteTemplate": "otpDeleteUserTemplate"
   }
 }
