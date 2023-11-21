@@ -75,6 +75,32 @@ describe('OnboardingUserSelection component', () => {
       expect(initializeSpy).toBeCalled();
       expect( setPopupInteractEdataSpy).toBeCalled();
     });
+
+    it('should set usertype enabled value to be true', () => {
+      const formConfigResponse = {
+        userTypePopup: {
+          isVisible: true,
+          defaultUserType: "Teacher",
+          defaultGuestUserType: "Teacher"
+        },
+      };
+      jest.spyOn(onboardingUserSelectionComponent['formService'], 'getFormConfig').mockReturnValue(of(formConfigResponse));
+      onboardingUserSelectionComponent.ngOnInit();
+      expect(onboardingUserSelectionComponent.isUserTypeEnabled).toBe(true);
+    });
+    it('should set usertype enabled value to be false', () => {
+      const formConfigResponse = {
+        userTypePopup: {
+          isVisible: false,
+          defaultUserType: "Teacher",
+          defaultGuestUserType: "Teacher"
+        },
+      };
+      jest.spyOn(onboardingUserSelectionComponent['formService'], 'getFormConfig').mockReturnValue(of(formConfigResponse));
+      onboardingUserSelectionComponent.ngOnInit();
+      expect(onboardingUserSelectionComponent.isUserTypeEnabled).toBe(false);
+    });
+    
   });
 
 
