@@ -60,7 +60,6 @@ export class DeleteAccountComponent implements OnInit, OnDestroy {
           this.resourceService.frmelmnts.lbl.wrongEmailOTP
       };
       this.verifiedUser = false;
-
       this.generateOTP({ request }, otpData);
     }
   }
@@ -113,8 +112,16 @@ export class DeleteAccountComponent implements OnInit, OnDestroy {
   }
 
   verificationSuccess(data) {
-      window.location.replace('/logoff');
-      this.cacheService.removeAll();
+      this.userService.deleteUser().subscribe(
+        (data: ServerResponse) => {
+          console.log('----->',data);
+        },
+        (err) => {
+          console.log('------>',err);
+        }
+      );
+       // window.location.replace('/logoff');
+       // this.cacheService.removeAll();
   }
 
   setInteractEventData() {
@@ -124,7 +131,6 @@ export class DeleteAccountComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: 'delete-account'
     };
-
     this.telemetryInteractObject = {
       id: this.userService.userid,
       type: 'User',
