@@ -71,6 +71,7 @@ describe('ProfileFrameworkPopupComponent', () => {
     const mockCslFrameworkService: Partial<CslFrameworkService> = {
         getFrameworkCategories: jest.fn(),
         getFrameworkCategoriesObject: jest.fn(),
+        setFWCatConfigFromCsl: jest.fn()
     };
     const mockConfigService: Partial<ConfigService> = {
     appConfig: {
@@ -104,7 +105,7 @@ describe('ProfileFrameworkPopupComponent', () => {
             profileService as ProfileService,
             mockCslFrameworkService as CslFrameworkService,
             mockConfigService as ConfigService,
-        )
+        );
     });
 
     beforeEach(() => {
@@ -219,6 +220,7 @@ describe('ProfileFrameworkPopupComponent', () => {
         component.onSubmitForm();
         expect(toasterService.error).toBeCalledWith(resourceService.messages.emsg.m0005);
     });
+    
     it('should call getFormDetails method', () => {
        component['_formFieldProperties'] = Response.formFields1;
        jest.spyOn(formService, 'getFormConfig').mockReturnValue(of({
@@ -235,6 +237,7 @@ describe('ProfileFrameworkPopupComponent', () => {
        component['getFormDetails']();
        expect(formService.getFormConfig).toHaveBeenCalled();
     });
+
     it('should call getFormDetails method with admin user', async () => {
         component['_formFieldProperties'] = Response.formFields1;
         localStorage.setItem('userType', 'administrator');
@@ -252,4 +255,47 @@ describe('ProfileFrameworkPopupComponent', () => {
         await component['getFormDetails']();
         expect(formService.getFormConfig).toHaveBeenCalled();
     });
+
+    it('should handle error and return default value in catch block', async () => {
+        const formServiceInputParams = {
+            contentType: "admin_framework",
+            formAction: "create",
+            formType: "user",
+            };
+        const hashTagId = 1234;
+        const mockError = new Error('Mocked error message');
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+        jest.spyOn(formService, 'getFormConfig').mockImplementation(() => throwError(mockError));
+        const result = await component['getFormDetails']().toPromise();
+        expect(formService.getFormConfig).toHaveBeenCalledWith(formServiceInputParams, hashTagId);
+        expect(consoleErrorSpy).toHaveBeenCalledWith('Error fetching form config:', expect.objectContaining({ message: 'Mocked error message' })
+        );
+        consoleErrorSpy.mockRestore();
+        expect(result).toEqual(component.frameworkCategoriesObject);
+    });
+
+    it('should update frameworkCategories and frameworkCategoriesObject when setFWCatConfigFromCsl succeeds', async () => {
+        const frameWorkId = 'sampleFrameworkId';
+        const mockCategories = 'mockCategories';
+        const mockCategoriesObject = 'mockCategoriesObject';
+        jest.spyOn((component as any).cslFrameworkService, 'setFWCatConfigFromCsl').mockResolvedValueOnce(undefined);
+        jest.spyOn((component as any).cslFrameworkService, 'getFrameworkCategories').mockReturnValueOnce(mockCategories);
+        jest.spyOn((component as any).cslFrameworkService, 'getFrameworkCategoriesObject').mockReturnValueOnce(mockCategoriesObject);
+        await component['updateFrameworkCategories'](frameWorkId);
+        expect((component as any).cslFrameworkService.setFWCatConfigFromCsl).toHaveBeenCalledWith(frameWorkId);
+        expect(component['frameworkCategories']).toEqual(mockCategories);
+        expect(component['frameworkCategoriesObject']).toEqual(mockCategoriesObject);
+    });
+
+    it('should log an error when setFWCatConfigFromCsl fails', async () => {
+        const frameWorkId = 'sampleFrameworkId';
+        const mockError = new Error('Sample error message');
+        jest.spyOn((component as any).cslFrameworkService, 'setFWCatConfigFromCsl').mockRejectedValueOnce(mockError);
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+        await component['updateFrameworkCategories'](frameWorkId);
+        expect((component as any).cslFrameworkService.setFWCatConfigFromCsl).toHaveBeenCalledWith(frameWorkId);
+        expect(consoleErrorSpy).toHaveBeenCalledWith('Error updating framework categories:', mockError);
+        consoleErrorSpy.mockRestore();
+    });
+
 });
