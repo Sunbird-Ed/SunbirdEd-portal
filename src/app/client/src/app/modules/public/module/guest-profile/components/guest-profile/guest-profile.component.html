@@ -146,7 +146,7 @@
   </ng-template>
 </app-modal-wrapper>
 
-<app-location-selection (close)="closeEditDetailsPopup()" *ngIf="showEditUserDetailsPopup">
+<app-location-selection (close)="closeEditDetailsPopup()" [showEditLocationDetailsPopup]="true" *ngIf="showEditUserDetailsPopup">
   <div slot="popup-sub-header">
     <p class="subtitle">{{resourceService?.frmelmnts?.lbl?.editPersonalDetails}}&lrm;</p>
   </div>
