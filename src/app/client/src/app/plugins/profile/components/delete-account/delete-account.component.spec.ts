@@ -146,11 +146,7 @@ describe('DeleteAccountComponent', () => {
           component.generateOTP(req, otpData);
           expect(component.prepareOtpData).toBeCalled();
     });
-<<<<<<< HEAD
     it('should create a instance of component and call the generateOTP method without req object', () => {
-=======
-    xit('should create a instance of component and call the generateOTP method without req object', () => {
->>>>>>> upstream/release-7.0.0
         jest.spyOn(component,'prepareOtpData');
         component.contactType='phone'
         component.contactTypeForm = {
