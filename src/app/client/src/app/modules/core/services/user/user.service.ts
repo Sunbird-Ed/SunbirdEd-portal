@@ -44,6 +44,7 @@ export class UserService {
    * Contains root org id
    */
   public _rootOrgId: string;
+  private setGuest: boolean;
   /**
    * Contains user profile.
    */
@@ -101,6 +102,8 @@ export class UserService {
   public organizationsDetails: Array<IOrganization>;
   public createManagedUser = new EventEmitter();
   public isDesktopApp = false;
+  public isBmgEnabled = true;
+  public isOnboardingEnabled = true;
   _guestData$ = new BehaviorSubject<any>(undefined);
   public guestUserProfile;
   public readonly guestData$: Observable<any> = this._guestData$.asObservable()
@@ -496,6 +499,10 @@ export class UserService {
     }));
   }
 
+  setGuestUser(value: boolean): void{
+    this.setGuest = value;
+  }
+
   getGuestUser(): Observable<any> {
     if (this.isDesktopApp) {
       return this.getAnonymousUserPreference().pipe(map((response: ServerResponse) => {
@@ -513,7 +520,12 @@ export class UserService {
         this.guestUserProfile = JSON.parse(guestUserDetails);
         this._guestData$.next({ userProfile: this.guestUserProfile });
         return of(this.guestUserProfile);
-      } else {
+      } 
+      else if(this.setGuest){
+        const configData = {"formatedName": "Guest"}
+        return of(configData);
+      }
+      else{
         return throwError(undefined);
       }
     }
