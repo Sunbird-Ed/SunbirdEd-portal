@@ -29,6 +29,8 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
   isSubmitted = false;
   public locationSelectionModalId = 'location-selection';
   @Input() isStepper = false;
+  @Input() showEditLocationDetailsPopup: boolean;
+  public isLocationEnabled = true;
 
   constructor(
     public resourceService: ResourceService,
@@ -40,7 +42,7 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
     public navigationHelperService: NavigationHelperService,
     public popupControlService: PopupControlService,
     protected telemetryService: TelemetryService,
-    protected formService: FormService,
+    public formService: FormService,
     private orgDetailsService: OrgDetailsService,
     private utilService: UtilService,
     private matDialog: MatDialog
@@ -56,10 +58,25 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
 
   ngOnInit() {
     this.popupControlService.changePopupStatus(false);
+    const formReadInputParams = {
+      formType: 'onboardingPopupVisibility',
+      formAction: 'onboarding',
+      contentType: "global",
+      component: "portal"
+    };
+    this.formService.getFormConfig(formReadInputParams).subscribe(
+      (formResponsedata) => {
+        if (formResponsedata) {
+          this.isLocationEnabled= formResponsedata.locationPopup? formResponsedata.locationPopup.isVisible : true;
+        }
+      }, error => { console.log("Cant read the form")});
+      
     this.sbFormLocationSelectionDelegate.init(this.deviceProfile, this.showModal, this.isStepper )
       .catch(() => {
         this.closeModal();
-        this.toasterService.error(this.resourceService.messages.fmsg.m0049);
+        if(this.isLocationEnabled === true){
+          this.toasterService.error(this.resourceService.messages.fmsg.m0049);
+        }
       });
   }
 
