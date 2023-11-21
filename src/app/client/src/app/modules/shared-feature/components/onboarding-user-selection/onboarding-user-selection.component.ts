@@ -37,6 +37,7 @@ export class OnboardingUserSelectionComponent implements OnInit, OnDestroy {
 
   private updateUserSelection$ = new BehaviorSubject<string>(undefined);
   public unsubscribe$ = new Subject<void>();
+  isUserTypeEnabled = true;
 
   constructor(
     public resourceService: ResourceService,
@@ -52,6 +53,22 @@ export class OnboardingUserSelectionComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    const formReadInputParams = {
+      formType: 'onboardingPopupVisibility',
+      formAction: 'onboarding',
+      contentType: "global",
+      component: "portal"
+    };
+    this.formService.getFormConfig(formReadInputParams).subscribe(
+      (formResponsedata) => {
+        if (formResponsedata) {
+          this.isUserTypeEnabled =formResponsedata.userTypePopup? formResponsedata.userTypePopup.isVisible: true;
+          if(this.isUserTypeEnabled === false){
+            localStorage.setItem('userType',formResponsedata.userTypePopup.defaultUserType);
+            localStorage.setItem('guestUserType',formResponsedata.userTypePopup.defaultGuestUserType);
+          }
+        }
+    }, error => { console.log("Cant read the form")})
     this.setPopupInteractEdata();
     this.initialize().subscribe();
     if(this.isStepper) {
