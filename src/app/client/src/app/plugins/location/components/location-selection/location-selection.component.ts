@@ -61,20 +61,9 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
     /**
       * @description - Here we enable/disable the location popup based on the isvisible value returned from the form config request
     */
-    const formReadInputParams = {
-      formType: 'onboardingPopupVisibility',
-      formAction: 'onboarding',
-      contentType: "global",
-      component: "portal"
-    };
-    this.formService.getFormConfig(formReadInputParams).subscribe(
-      (formResponsedata) => {
-        if (formResponsedata) {
-          this.isLocationEnabled= formResponsedata.locationPopup? formResponsedata.locationPopup.isVisible : true;
-        }
-      }, error => { console.log("Cant read the form")
-    });
-      
+    this.popupControlService.getOnboardingData().subscribe((formResponsedata)=>{
+      this.isLocationEnabled= formResponsedata.locationPopup? formResponsedata.locationPopup.isVisible : true;
+    })
     this.sbFormLocationSelectionDelegate.init(this.deviceProfile, this.showModal, this.isStepper )
       .catch(() => {
         this.closeModal();
