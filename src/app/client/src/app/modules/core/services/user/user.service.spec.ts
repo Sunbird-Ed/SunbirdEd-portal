@@ -330,9 +330,16 @@ describe('UserService', () => {
   });
 
   it('should call deleteUser method', () => {
-    const opt = { url: '/user/v1/delete/0008ccab-2103-46c9-adba-6cdf84d37f06' }
+    const opt = {
+      url: '/user/v1/delete',
+      data: {
+        request: {
+          userId: '0008ccab-2103-46c9-adba-6cdf84d37f06'
+        }
+      }
+    }
     userService.deleteUser();
-    expect(mockLearnerService.delete).toHaveBeenCalledWith(opt)
+    expect(mockLearnerService.post).toHaveBeenCalledWith(opt)
   });
 
   it('should call acceptTermsAndConditions method', () => {

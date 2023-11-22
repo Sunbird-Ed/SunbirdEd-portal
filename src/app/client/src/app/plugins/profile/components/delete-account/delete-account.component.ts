@@ -121,6 +121,8 @@ export class DeleteAccountComponent implements OnInit, OnDestroy {
         },
         (err) => {
           console.log('------>',err);
+          const errorMessage =  this.resourceService.messages.fmsg.m0085;
+          this.toasterService.error(errorMessage);
         }
       );
        
