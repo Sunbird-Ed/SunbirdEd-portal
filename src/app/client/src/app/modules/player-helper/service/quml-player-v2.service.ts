@@ -1,10 +1,11 @@
 import { Inject, Injectable } from '@angular/core';
-import { Observable, of, throwError} from 'rxjs';
+import { Observable, forkJoin, of, throwError} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map, mergeMap } from 'rxjs/operators';
 import { QuestionCursor } from '@project-sunbird/sunbird-quml-player';
 import { EditorCursor } from '@project-sunbird/sunbird-questionset-editor';
 import * as _ from 'lodash-es';
+import { PublicPlayerService } from '@sunbird/public';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ import * as _ from 'lodash-es';
 
 export class QumlPlayerV2Service implements QuestionCursor, EditorCursor {
   public questionMap =  new Map();
-  constructor(private http: HttpClient) {} // @Inject(HttpClient)
+  constructor(private http: HttpClient,
+    public playerService: PublicPlayerService) {} // @Inject(HttpClient)
 
   getQuestion(questionId: string): Observable<any> {
     if (_.isEmpty(questionId)) { return of({}); }
@@ -32,8 +34,22 @@ export class QumlPlayerV2Service implements QuestionCursor, EditorCursor {
     }));
   }
 
-  getQuestionSet(identifier: string): Observable<any> {
-    return of({});
+  getQuestionSet(identifier: string) {
+    const hierarchy = this.playerService.getQuestionSetHierarchyV2(identifier);
+    const questionSetResponse = this.playerService.getQuestionSetRead(identifier);
+
+    return forkJoin([hierarchy, questionSetResponse]).pipe(map(res => {
+      const questionSet = _.get(res[0], 'questionSet');
+      const instructions = _.get(res[1], 'result.questionset.instructions');
+      const outcomeDeclaration = _.get(res[1], 'result.questionset.outcomeDeclaration');
+      if (questionSet && instructions) {
+        questionSet['instructions'] = instructions;
+      }
+      if(questionSet && outcomeDeclaration) {
+        questionSet['outcomeDeclaration'] = outcomeDeclaration;
+      }
+      return { questionSet };
+    }));
   }
 
   getQuestionData(questionId) {
@@ -48,8 +64,20 @@ export class QumlPlayerV2Service implements QuestionCursor, EditorCursor {
     this.questionMap.clear();
   }
 
-  getAllQuestionSet(identifiers: string[]): Observable<any>  {
-    return of({});
+  getAllQuestionSet(identifiers: string[]): Observable<any> {
+    const option = {
+      params: {
+        fields: 'maxScore'
+      }
+    };
+    const requests = _.map(identifiers, id => {
+      return this.playerService.getQuestionSetRead(id, option);
+    });
+    return forkJoin(requests).pipe(
+      map(res => {
+        return res.map(item => _.get(item, 'result.questionset.maxScore'));
+      })
+    );
   }
 
   private post(questionIds): Observable<any> {

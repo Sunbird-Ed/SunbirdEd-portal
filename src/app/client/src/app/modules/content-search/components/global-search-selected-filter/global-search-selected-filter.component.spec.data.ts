@@ -24,10 +24,13 @@ export const Response = {
       'name': 'channel'
     }
   ],
+  selectedFilter:{
+    selectedTab:'all'
+  },
   selectedFilterData: {
     'channel': [
       '01258043108936908899'
-    ]
+    ],
   },
 };
 

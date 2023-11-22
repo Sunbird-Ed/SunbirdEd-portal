@@ -183,17 +183,17 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
 
   getQuestionSetHierarchy() {
     const serveiceRef =  this.userService.loggedIn ? this.playerService : this.publicPlayerService;
-    this.publicPlayerService.getQuestionSetHierarchy(this.contentId).pipe(
+    this.publicPlayerService.getQuestionSetHierarchyV2(this.contentId).pipe(
       takeUntil(this.unsubscribe$))
       .subscribe((response) => {
         this.showLoader = false;
         const contentDetails = {
           contentId: this.contentId,
-          contentData: response.questionSet
+          contentData: response.result.questionset
         };
         this.playerConfig = serveiceRef.getConfig(contentDetails);
         this.playerConfig.context.objectRollup = this.objectRollup;
-        this.contentData = response.questionSet;
+        this.contentData = response.result.questionset;
         this.showPlayer = true;
       }, (err) => {
         this.showLoader = false;

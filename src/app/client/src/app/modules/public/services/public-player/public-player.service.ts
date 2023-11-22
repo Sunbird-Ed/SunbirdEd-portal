@@ -216,6 +216,15 @@ export class PublicPlayerService {
     }));
   }
 
+  getQuestionSetHierarchyV2(contentId: string) {
+    const req = {
+        url: `${this.configService.urlConFig.URLS.QUESTIONSET.HIERARCHY_READ}/${contentId}`
+    };
+    return this.publicDataService.get(req).pipe(map((response: any) => {
+        return response;
+    }));
+  }
+
   getQuestionSetRead(contentId: string, option: any = { params: {} }): Observable<ServerResponse> {
     const param = { fields: this.configService.urlConFig.params.questionSetRead };
     const req = {

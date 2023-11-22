@@ -1,6 +1,6 @@
 const env = process.env;
 // Environment
-const SB_DOMAIN = 'https://staging.sunbirded.org';
+const SB_DOMAIN = env.sb_domain;
 
 const fs = require('fs')
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'))
@@ -35,10 +35,6 @@ let optionalEnvVariables = {
     // To set replication stratergy
     PORTAL_CASSANDRA_REPLICATION_STRATEGY: env.sunbird_cassandra_replication_strategy || '{"class":"SimpleStrategy","replication_factor":1}',
 
-    // CSP Configuration
-    cloud_private_storage_accountname: env.cloud_private_storage_accountname || 'azure',
-    sunbird_cloud_storage_provider: env.sunbird_cloud_storage_provider || 'azure',
-
     // Common key for Uploading Desktop Crash logs
     cloud_storage_desktopCrash_bucketname: env.cloud_storage_desktopCrash_bucketname || 'desktopappcrashlogs',
 
@@ -61,6 +57,7 @@ let optionalEnvVariables = {
     // Kong endpoints
     KONG_DEVICE_REGISTER_AUTH_TOKEN: env.sunbird_kong_device_register_token || '',
     sunbird_anonymous_device_register_api: env.sunbird_anonymous_device_register_api || '',
+    sunbird_loggedin_device_register_api: env.sunbird_loggedin_device_register_api || '',
     sunbird_kong_refresh_token_api: env.sunbird_kong_refresh_token_api || '',
 
 
