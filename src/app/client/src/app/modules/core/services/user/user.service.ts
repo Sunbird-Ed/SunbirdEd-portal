@@ -102,8 +102,6 @@ export class UserService {
   public organizationsDetails: Array<IOrganization>;
   public createManagedUser = new EventEmitter();
   public isDesktopApp = false;
-  public isBmgEnabled = true;
-  public isOnboardingEnabled = true;
   _guestData$ = new BehaviorSubject<any>(undefined);
   public guestUserProfile;
   public readonly guestData$: Observable<any> = this._guestData$.asObservable()

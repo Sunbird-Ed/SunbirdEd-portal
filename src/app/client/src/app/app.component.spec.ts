@@ -649,7 +649,7 @@ describe('App Component', () => {
     jest.spyOn(appComponent.formService, 'getFormConfig').mockReturnValue(of(formConfigResponse));
     appComponent.getOnboardingList();
     expect(appComponent.isOnboardingEnabled).toEqual(true);
-    expect(appComponent.isBmgEnabled).toEqual(true);
+    expect(appComponent.isFWSelectionEnabled).toEqual(true);
     expect(appComponent.isUserTypeEnabled).toEqual(true);
   });
 
@@ -675,7 +675,7 @@ describe('App Component', () => {
     jest.spyOn(appComponent.formService, 'getFormConfig').mockReturnValue(of(formConfigResponse));
     appComponent.getOnboardingList();
     expect(appComponent.isOnboardingEnabled).toEqual(false);
-    expect(appComponent.isBmgEnabled).toEqual(false);
+    expect(appComponent.isFWSelectionEnabled).toEqual(false);
     expect(appComponent.isUserTypeEnabled).toEqual(true);
     expect(appComponent.userService.setGuestUser).toHaveBeenCalledWith(true);
   });
