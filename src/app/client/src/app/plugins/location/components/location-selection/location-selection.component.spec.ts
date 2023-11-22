@@ -54,7 +54,8 @@ describe('LocationSelectionComponent', () => {
     contentFullScreenEvent: new EventEmitter<any>()
   };
   const mockPopupControlService: Partial<PopupControlService> = {
-    changePopupStatus: jest.fn()
+    changePopupStatus: jest.fn(),
+    getOnboardingData: jest.fn()
   };
   const mockTelemetryService: Partial<TelemetryService> = {};
   const mockFormService: Partial<FormService> = {
@@ -109,21 +110,26 @@ describe('LocationSelectionComponent', () => {
     expect(locationSelectionComponent).toBeTruthy();
   });
 
-  it('should initialize with location enabled when form config is available', () => {
-    const formReadInputParams = {
-      formType: 'onboardingPopupVisibility',
-      formAction: 'onboarding',
-      contentType: 'global',
-      component: 'portal'
-    };
+  it('should initialize with location enabled when response from popupcontrol service is true', () => {
     const formConfigResponse = {
       locationPopup: {
         isVisible: true
       }
     };
-    jest.spyOn(locationSelectionComponent.formService, 'getFormConfig').mockReturnValue(of(formConfigResponse));
+    jest.spyOn(locationSelectionComponent.popupControlService, 'getOnboardingData').mockReturnValue(of(formConfigResponse));
     locationSelectionComponent.ngOnInit();
     expect(locationSelectionComponent.isLocationEnabled).toEqual(true);
+  });
+
+  it('should initialize with location enabled when response from popupcontrol service is false', () => {
+    const formConfigResponse = {
+      locationPopup: {
+        isVisible: false
+      }
+    };
+    jest.spyOn(locationSelectionComponent.popupControlService, 'getOnboardingData').mockReturnValue(of(formConfigResponse));
+    locationSelectionComponent.ngOnInit();
+    expect(locationSelectionComponent.isLocationEnabled).toEqual(false);
   });
   
   it('should initialize sbFormLocationSelectionDelegate successfully', async () => {
