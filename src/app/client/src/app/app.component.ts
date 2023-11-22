@@ -317,6 +317,9 @@ export class AppComponent implements OnInit, OnDestroy {
     //     }
     //     else { this.isPopupEnabled = true; }
     //   }, error => { this.isPopupEnabled = true; });;
+    /**
+      * @description - This method enables/disables the onboarding popups based on the isvisible values returned from the form config request
+    */
     const formReadInputParams = {
       formType: 'onboardingPopupVisibility',
       formAction: 'onboarding',
@@ -330,10 +333,11 @@ export class AppComponent implements OnInit, OnDestroy {
           this.isFWSelectionEnabled = formResponsedata.frameworkPopup? formResponsedata.frameworkPopup.isVisible : true;
           this.isUserTypeEnabled =formResponsedata.userTypePopup? formResponsedata.userTypePopup.isVisible: true;
           if(this.isOnboardingEnabled === false || this.isFWSelectionEnabled === false){
-            this.userService.setGuestUser(true);
+            this.userService.setGuestUser(true); //user service method is set to true in case either of onboarding or framework popup is disabled
           }
         }
-      }, error => { console.log("Cant read the form")});
+      }, error => { console.log("Cant read the form")
+    });
   }
   ngOnInit() {
     this.getOnboardingList();

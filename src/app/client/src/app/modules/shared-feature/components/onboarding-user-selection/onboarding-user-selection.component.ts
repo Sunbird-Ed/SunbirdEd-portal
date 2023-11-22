@@ -53,6 +53,10 @@ export class OnboardingUserSelectionComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    /**
+      * @description - Here we enable/disable the usertype popup based on the isvisible value returned from the form config request 
+      *                along with setting up the required localstorage values in the case usertype popup is disabled
+    */
     const formReadInputParams = {
       formType: 'onboardingPopupVisibility',
       formAction: 'onboarding',
@@ -68,7 +72,8 @@ export class OnboardingUserSelectionComponent implements OnInit, OnDestroy {
             localStorage.setItem('guestUserType',formResponsedata.userTypePopup.defaultGuestUserType);
           }
         }
-    }, error => { console.log("Cant read the form")})
+      }, error => { console.log("Cant read the form")
+    });
     this.setPopupInteractEdata();
     this.initialize().subscribe();
     if(this.isStepper) {

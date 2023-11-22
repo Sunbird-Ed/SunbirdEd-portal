@@ -486,7 +486,10 @@ export class UserService {
       return response;
     }));
   }
-
+  
+  /**
+    * @description - This method is called in the case where either of onboarding or framework popup is disabled and setGuest value is made true
+  */
   setGuestUser(value: boolean): void{
     this.setGuest = value;
   }
@@ -509,6 +512,9 @@ export class UserService {
         this._guestData$.next({ userProfile: this.guestUserProfile });
         return of(this.guestUserProfile);
       } 
+      /**
+      * @description - This config data is manually returned in the case where onboarding or framework popup is disabled
+      */
       else if(this.setGuest){
         const configData = {"formatedName": "Guest"}
         return of(configData);

@@ -58,6 +58,9 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
 
   ngOnInit() {
     this.popupControlService.changePopupStatus(false);
+    /**
+      * @description - Here we enable/disable the location popup based on the isvisible value returned from the form config request
+    */
     const formReadInputParams = {
       formType: 'onboardingPopupVisibility',
       formAction: 'onboarding',
@@ -69,7 +72,8 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
         if (formResponsedata) {
           this.isLocationEnabled= formResponsedata.locationPopup? formResponsedata.locationPopup.isVisible : true;
         }
-      }, error => { console.log("Cant read the form")});
+      }, error => { console.log("Cant read the form")
+    });
       
     this.sbFormLocationSelectionDelegate.init(this.deviceProfile, this.showModal, this.isStepper )
       .catch(() => {
