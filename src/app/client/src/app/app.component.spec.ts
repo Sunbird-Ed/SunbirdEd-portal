@@ -9,6 +9,7 @@ import { TelemetryService } from './modules/telemetry';
 import { ProfileService } from './plugins/profile';
 import { mockData } from './app.component.spec.data';
 import { mockRes } from './modules/workspace/components/upforreview-contentplayer/upforreview-content.component.spce.data';
+import { PopupControlService } from './service/popup-control.service';
 
 describe('App Component', () => {
   let appComponent: AppComponent;
@@ -90,6 +91,9 @@ describe('App Component', () => {
   const mockPublicDataService: Partial<PublicDataService> = {};
   const mockLearnerService: Partial<LearnerService> = {};
   const mockDocument: Partial<Document> = {};
+  const mockPopupControlService: Partial<PopupControlService> = {
+    setOnboardingData: jest.fn()
+  };
 
   const mockUserRoles = {
     userRoles: ['PUBLIC'],
@@ -124,7 +128,8 @@ describe('App Component', () => {
       mockRenderer2 as Renderer2,
       mockNgZone as NgZone,
       mockConnectionService as ConnectionService,
-      mockGenericResourceService as GenericResourceService
+      mockGenericResourceService as GenericResourceService,
+      mockPopupControlService as PopupControlService
     );
   });
 
@@ -367,6 +372,7 @@ describe('App Component', () => {
     it('should be return user details for web and Ios', () => {
       // arrange
       jest.spyOn(appComponent, 'notifyNetworkChange').mockImplementation();
+      jest.spyOn(appComponent.formService, 'getFormConfig').mockReturnValue(of({"response":true}));
       mockDocument.body = {
         classList: {
           add: jest.fn()
@@ -453,6 +459,7 @@ describe('App Component', () => {
     it('should be return user details for guest user', () => {
       // arrange
       jest.spyOn(appComponent, 'notifyNetworkChange').mockImplementation();
+      jest.spyOn(appComponent.formService, 'getFormConfig').mockReturnValue(of({"response":true}));
       mockDocument.body = {
         classList: {
           add: jest.fn()
@@ -532,6 +539,7 @@ describe('App Component', () => {
     it('should be return user details for guest user and error part', () => {
       // arrange
       jest.spyOn(appComponent, 'notifyNetworkChange').mockImplementation();
+      jest.spyOn(appComponent.formService, 'getFormConfig').mockReturnValue(of({"response":true}));
       mockDocument.body = {
         classList: {
           add: jest.fn()
@@ -673,10 +681,11 @@ describe('App Component', () => {
       }
     };
     jest.spyOn(appComponent.formService, 'getFormConfig').mockReturnValue(of(formConfigResponse));
-    appComponent.getOnboardingList();
+    appComponent.getOnboardingSkipStatus();
+    expect(appComponent.popupControlService.setOnboardingData).toHaveBeenCalled();
     expect(appComponent.isOnboardingEnabled).toEqual(false);
     expect(appComponent.isFWSelectionEnabled).toEqual(false);
     expect(appComponent.isUserTypeEnabled).toEqual(true);
-    expect(appComponent.userService.setGuestUser).toHaveBeenCalledWith(true);
+    expect(appComponent.userService.setGuestUser).toHaveBeenCalledWith(true,formConfigResponse.frameworkPopup.defaultFormatedName);
   });
 });
