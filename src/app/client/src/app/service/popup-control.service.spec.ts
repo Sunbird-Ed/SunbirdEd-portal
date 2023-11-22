@@ -24,5 +24,33 @@ describe('PopupControlService', () => {
             expect(result).toBeFalsy();
         });
     });
+    
+    it('should set onboarding data', () => {
+        const mockData = { 
+            "onboardingPopups": {
+              "isVisible": true,
+              "defaultFormatedName": "Guest"
+            }
+        };
+        popupControlService.setOnboardingData(mockData);
+    
+        popupControlService.getOnboardingData().subscribe(data => {
+          expect(data).toEqual(mockData);
+        });
+    });
 
+    it('should get onboarding data', () => {
+        const mockData = { 
+            "onboardingPopups": {
+              "isVisible": true,
+              "defaultFormatedName": "Guest"
+            }
+        };
+        popupControlService.setOnboardingData(mockData);
+        const onboardingData$ = popupControlService.getOnboardingData();
+    
+        onboardingData$.subscribe(data => {
+          expect(data).toEqual(mockData);
+        });
+    });
 });
