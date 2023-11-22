@@ -333,7 +333,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.isFWSelectionEnabled = formResponsedata.frameworkPopup? formResponsedata.frameworkPopup.isVisible : true;
           this.isUserTypeEnabled =formResponsedata.userTypePopup? formResponsedata.userTypePopup.isVisible: true;
           if(this.isOnboardingEnabled === false || this.isFWSelectionEnabled === false){
-            this.userService.setGuestUser(true); //user service method is set to true in case either of onboarding or framework popup is disabled
+            this.userService.setGuestUser(true,formResponsedata.frameworkPopup.defaultFormatedName); //user service method is set to true in case either of onboarding or framework popup is disabled
           }
         }
       }, error => { console.log("Cant read the form")

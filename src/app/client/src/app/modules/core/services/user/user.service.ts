@@ -45,6 +45,7 @@ export class UserService {
    */
   public _rootOrgId: string;
   private setGuest: boolean;
+  public formatedName: string;
   /**
    * Contains user profile.
    */
@@ -490,8 +491,9 @@ export class UserService {
   /**
     * @description - This method is called in the case where either of onboarding or framework popup is disabled and setGuest value is made true
   */
-  setGuestUser(value: boolean): void{
+  setGuestUser(value: boolean, defaultFormatedName: string): void{
     this.setGuest = value;
+    this.formatedName = defaultFormatedName;
   }
 
   getGuestUser(): Observable<any> {
@@ -516,7 +518,7 @@ export class UserService {
       * @description - This config data is manually returned in the case where onboarding or framework popup is disabled
       */
       else if(this.setGuest){
-        const configData = {"formatedName": "Guest"}
+        const configData = {"formatedName": this.formatedName}
         return of(configData);
       }
       else{
