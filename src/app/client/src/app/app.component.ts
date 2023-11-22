@@ -127,7 +127,7 @@ export class AppComponent implements OnInit, OnDestroy {
   isStepperEnabled = false;
   onboardingData: any;
   isOnboardingEnabled = true;
-  isBmgEnabled = true;
+  isFWSelectionEnabled = true;
   isUserTypeEnabled = true;
   @ViewChild('increaseFontSize') increaseFontSize: ElementRef;
   @ViewChild('decreaseFontSize') decreaseFontSize: ElementRef;
@@ -327,9 +327,9 @@ export class AppComponent implements OnInit, OnDestroy {
       (formResponsedata) => {
         if (formResponsedata) {
           this.isOnboardingEnabled= formResponsedata.onboardingPopups? formResponsedata.onboardingPopups.isVisible : true;
-          this.isBmgEnabled = formResponsedata.frameworkPopup? formResponsedata.frameworkPopup.isVisible : true;
+          this.isFWSelectionEnabled = formResponsedata.frameworkPopup? formResponsedata.frameworkPopup.isVisible : true;
           this.isUserTypeEnabled =formResponsedata.userTypePopup? formResponsedata.userTypePopup.isVisible: true;
-          if(this.isOnboardingEnabled === false || this.isBmgEnabled === false){
+          if(this.isOnboardingEnabled === false || this.isFWSelectionEnabled === false){
             this.userService.setGuestUser(true);
           }
         }
