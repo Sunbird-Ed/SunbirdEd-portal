@@ -2,17 +2,18 @@ import { CslFrameworkService } from './csl-framework.service';
 import { CsFrameworkService } from '@project-sunbird/client-services/services/framework';
 import { ChannelService } from '@sunbird/core';
 import { ConfigService } from '../../../shared/services/config/config.service';
-import { of } from 'rxjs';
+import _ from 'lodash';
+import { of ,throwError} from 'rxjs';
 
-jest.mock('@project-sunbird/client-services/services/framework');
-jest.mock('@sunbird/core');
-jest.mock('lodash');
 
 describe('CslFrameworkService', () => {
   let service: CslFrameworkService;
+  const mockData = {
+    exampleProperty: 'exampleValue',
+  };
   const csFrameworkServiceMock: Partial<CsFrameworkService> = {
     getFrameworkConfigMap: jest.fn(),
-    getFrameworkConfig: jest.fn()
+    getFrameworkConfig: jest.fn().mockReturnValue(of(mockData)),
   };
 
   const channelServiceMock: Partial<ChannelService> = {
@@ -71,8 +72,105 @@ describe('CslFrameworkService', () => {
   });
 
   it('should log a message when userSelFramework is not provided', () => {
+    const consoleLogSpy = jest.spyOn(console, 'log');
     service.setFwCatObjConfigFromCsl(undefined);
-    expect(console.log).toHaveBeenCalledWith('userSelFramework not found');
+    expect(consoleLogSpy).toHaveBeenCalledWith('userSelFramework not found');
+    consoleLogSpy.mockRestore();
+  });
+
+  it('should fetch framework categories object from CSL and set it in local storage', () => {
+    const selectedFramework = 'mockFramework';
+    const setFwCatObjConfigFromCslMock = jest.spyOn(service, 'setFwCatObjConfigFromCsl');
+    service.fetchFWCatObjFromCsl(selectedFramework);
+    expect(setFwCatObjConfigFromCslMock).toHaveBeenCalledWith(selectedFramework);
+    expect(setFwCatObjConfigFromCslMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('should transform user-defined framework category based on user preference', () => {
+    const userDefinedFwCategory = [
+      { code: 'category1', label: 'Category 1' },
+      { code: 'category2', label: 'Category 2' },
+    ];
+    const userPreference = {
+      framework: {
+        category1: ['Value1', 'Value2'],
+      },
+    };
+    const transformedArray = service.frameworkLabelTransform(userDefinedFwCategory, userPreference);
+    expect(transformedArray).toHaveLength(1);
+    expect(transformedArray[0]).toEqual({
+      labels: 'Category 1',
+      values: ['Value1', 'Value2'],
+    });
+  });
+
+  it('should set framework based on channel data if userSelFramework is not provided', () => {
+    const channelDataMock = {
+      result: {
+        channel: {
+          defaultFramework: 'channelDefaultFramework'
+        }
+      }
+
+    };
+    (channelServiceMock.getFrameWork as any).mockReturnValueOnce(of(channelDataMock));
+    const setFWCatConfigFromCslSpy = jest.spyOn(service, 'setFWCatConfigFromCsl');
+    service.setDefaultFWforCsl(undefined, 'someChannelId');
+    expect(channelServiceMock.getFrameWork).toHaveBeenCalledWith('someChannelId');
+    expect(setFWCatConfigFromCslSpy).toHaveBeenCalledWith('someDefaultFramework');
+  });
+
+  it('should reject the Promise when fetching framework configuration fails', async () => {
+    const errorMock = new Error('Mocked error');
+    jest.spyOn(csFrameworkServiceMock, 'getFrameworkConfigMap').mockReturnValueOnce(throwError(errorMock));
+
+    try {
+      await service.setFWCatConfigFromCsl('userSelectedFramework');
+      fail('The Promise should have been rejected');
+    } catch (error) {
+      expect(error).toEqual(errorMock);
+    }
+    expect(csFrameworkServiceMock.getFrameworkConfigMap).toHaveBeenCalledWith('userSelectedFramework', {
+      apiPath: '/api/framework/v1/'
+    });
+  });
+
+  it('should resolve the Promise when fetching framework configuration is successful', async () => {
+    const fwDataMock = { exampleProperty: 'exampleValue' };
+    jest.spyOn(csFrameworkServiceMock, 'getFrameworkConfigMap').mockReturnValueOnce(of(fwDataMock));
+    const setFwCatObjConfigFromCslSpy = jest.spyOn(service, 'setFwCatObjConfigFromCsl');
+    await service.setFWCatConfigFromCsl('userSelectedFramework');
+
+    expect(csFrameworkServiceMock.getFrameworkConfigMap).toHaveBeenCalledTimes(3);
+    expect(csFrameworkServiceMock.getFrameworkConfigMap).toHaveBeenCalledWith('userSelectedFramework', {
+      apiPath: '/api/framework/v1/'
+    });
+    expect(setFwCatObjConfigFromCslSpy).toHaveBeenCalledWith('userSelectedFramework');
+    expect(localStorage.getItem('fwCategoryObject')).toBe(JSON.stringify(fwDataMock));
+  });
+
+  it('should parse the string into an object if it is not null or undefined', () => {
+    const testObject = { key: 'value' };
+    localStorage.setItem('fwCategoryObject', JSON.stringify(testObject));
+    const result = service.getFrameworkCategories();
+    expect(result).toEqual(testObject);
+  });
+
+  it('should parse the string into an object if it is not null or undefined', () => {
+    const testObject = { key: 'value' };
+    localStorage.setItem('fwCategoryObjectValues', JSON.stringify(testObject));
+    const result = service.getFrameworkCategoriesObject();
+    expect(result).toEqual(testObject);
+  });
+
+  it('should handle error when fetching framework configuration fails', () => {
+    const userSelFramework = 'mockedFramework';
+    const errorMock = new Error('Mocked error');
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+    jest.spyOn(csFrameworkServiceMock, 'getFrameworkConfig').mockReturnValueOnce(throwError(errorMock));
+    service.setFwCatObjConfigFromCsl(userSelFramework);
+    expect(consoleErrorSpy).toHaveBeenCalledWith('getFrameworkConfig failed', errorMock);
+    consoleErrorSpy.mockRestore();
   });
 
 });
