@@ -48,10 +48,10 @@ module.exports = function (app) {
   )
   app.post('/learner/user/v1/delete',
     bodyParser.json(),
-    // proxyUtils.verifyToken(),
-    // isAPIWhitelisted.isAllowed(),
-    // telemetryHelper.generateTelemetryForLearnerService,
-    // telemetryHelper.generateTelemetryForProxy,
+    proxyUtils.verifyToken(),
+    isAPIWhitelisted.isAllowed(),
+    telemetryHelper.generateTelemetryForLearnerService,
+    telemetryHelper.generateTelemetryForProxy,
     proxy(learnerURL, {
       limit: reqDataLimitOfContentUpload,
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
@@ -74,6 +74,10 @@ module.exports = function (app) {
       }
     })
   )
+  app.get('/learner/user/deletefromMobile', async (req, res) => {
+    const redirectUrl = 'dev.sunbird.app://mobile' + '?userId:b8e9cf1d-7a51-4edf-98d8-d47b3fc262e1';
+    res.redirect(redirectUrl);
+  });
 
   app.get('/learner/user/v1/managed/*', proxyManagedUserRequest());
 

@@ -286,6 +286,10 @@
               [telemetryInteractEdata]="deleteAccountEdata" (click)="navigatetoRoute('/profile/delete-user')" tabindex="0"
               [class.sb-btn-gray]="disableDelete" [class.sb-btn-outline-primary]="!disableDelete">
               {{resourceService?.frmelmnts.lbl.deleteAccount|uppercase}}</button>
+              <button class="sb-btn mt-16 sb-btn-normal computer only" appTelemetryInteract appOnlineOnly
+          [telemetryInteractEdata]="deleteAccountEdata" (click)="deleteForMobileOnly()" tabindex="0"
+          [class.sb-btn-gray]="disableDelete" [class.sb-btn-outline-primary]="!disableDelete">
+         Delete for Mobile only</button>
           </div>
         </div>
         <!-- Delete Account computer view ends-->

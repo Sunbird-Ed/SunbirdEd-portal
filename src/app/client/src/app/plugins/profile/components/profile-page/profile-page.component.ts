@@ -1,6 +1,6 @@
 import {ProfileService} from '../../services';
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild, Inject } from '@angular/core';
-import { CertRegService, CoursesService, OrgDetailsService, PlayerService, SearchService, UserService, FormService } from '@sunbird/core';
+import { CertRegService, CoursesService, OrgDetailsService, PlayerService, SearchService, UserService, FormService, LearnerService } from '@sunbird/core';
 import { ConfigService, IUserData, LayoutService, NavigationHelperService, ResourceService, ServerResponse, ToasterService, UtilService, ConnectionService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import {Subject, Subscription} from 'rxjs';
@@ -12,7 +12,6 @@ import { CertificateDownloadAsPdfService } from 'sb-svg2pdf-v13';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 import { FieldConfig, FieldConfigOption } from '@project-sunbird/common-form-elements-full';
 import { CsCertificateService } from '@project-sunbird/client-services/services/certificate/interface';
-
 @Component({
   templateUrl: './profile-page.component.html',
   styleUrls: ['./profile-page.component.scss'],
@@ -97,6 +96,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public navigationhelperService: NavigationHelperService, public certRegService: CertRegService,
     private telemetryService: TelemetryService, public layoutService: LayoutService, private formService: FormService,
     private certDownloadAsPdf: CertificateDownloadAsPdfService, private connectionService: ConnectionService,
+    public learnerService:LearnerService,
     @Inject('CS_CERTIFICATE_SERVICE') private CsCertificateService: CsCertificateService) {
     this.getNavParams();
   }
@@ -700,5 +700,15 @@ public onLocationModalClose(event) {
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
     }
   }, 5000);
+}
+public deleteForMobileOnly(){
+  const option = {
+    url: 'user/deletefromMobile'
+  };
+  this.learnerService.get(option).subscribe(res => {
+    console.log('----->',res);
+  }, err => {
+    console.log('----->',err);
+  });
 }
 }
