@@ -9,6 +9,7 @@ import { ITenantData } from './../../../core/services/tenant/interfaces/tenant';
 import { ProfileService } from '@sunbird/profile';
 import { BehaviorSubject, merge, empty, of, Subject } from 'rxjs';
 import { switchMap, retry, tap, skipWhile, catchError, takeUntil, concatMap, take, skip } from 'rxjs/operators';
+import { PopupControlService } from '../../../../service/popup-control.service';
 
 interface IGuest {
   code: string;
@@ -49,7 +50,8 @@ export class OnboardingUserSelectionComponent implements OnInit, OnDestroy {
     private formService: FormService,
     private profileService: ProfileService,
     private userService: UserService,
-    private toasterService: ToasterService
+    private toasterService: ToasterService,
+    private popupControlService: PopupControlService
   ) { }
 
   ngOnInit() {
@@ -57,22 +59,12 @@ export class OnboardingUserSelectionComponent implements OnInit, OnDestroy {
       * @description - Here we enable/disable the usertype popup based on the isvisible value returned from the form config request 
       *                along with setting up the required localstorage values in the case usertype popup is disabled
     */
-    const formReadInputParams = {
-      formType: 'onboardingPopupVisibility',
-      formAction: 'onboarding',
-      contentType: "global",
-      component: "portal"
-    };
-    this.formService.getFormConfig(formReadInputParams).subscribe(
-      (formResponsedata) => {
-        if (formResponsedata) {
-          this.isUserTypeEnabled =formResponsedata.userTypePopup? formResponsedata.userTypePopup.isVisible: true;
-          if(this.isUserTypeEnabled === false){
-            localStorage.setItem('userType',formResponsedata.userTypePopup.defaultUserType);
-            localStorage.setItem('guestUserType',formResponsedata.userTypePopup.defaultGuestUserType);
-          }
-        }
-      }, error => { console.log("Cant read the form")
+    this.popupControlService.getOnboardingData().subscribe((formResponsedata)=>{
+      this.isUserTypeEnabled =formResponsedata.userTypePopup? formResponsedata.userTypePopup.isVisible: true;
+      if(this.isUserTypeEnabled === false){
+        localStorage.setItem('userType',formResponsedata.userTypePopup.defaultUserType);
+        localStorage.setItem('guestUserType',formResponsedata.userTypePopup.defaultGuestUserType);
+      }
     });
     this.setPopupInteractEdata();
     this.initialize().subscribe();
