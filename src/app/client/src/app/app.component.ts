@@ -18,7 +18,7 @@ import { CacheService } from '../app/modules/shared/services/cache-service/cache
 import { DOCUMENT } from '@angular/common';
 import { image } from '../assets/images/tara-bot-icon';
 import { SBTagModule } from 'sb-tag-manager';
-
+import { PopupControlService } from './service/popup-control.service';
 /**
  * main app component
  */
@@ -125,6 +125,7 @@ export class AppComponent implements OnInit, OnDestroy {
   isStepperCompleted = false;
   OnboardingFormConfig: any;
   isStepperEnabled = false;
+  isPopupEnabled = false;
   onboardingData: any;
   isOnboardingEnabled = true;
   isFWSelectionEnabled = true;
@@ -144,7 +145,7 @@ export class AppComponent implements OnInit, OnDestroy {
     public formService: FormService, @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
     public changeDetectorRef: ChangeDetectorRef, public layoutService: LayoutService,
     public generaliseLabelService: GeneraliseLabelService, private renderer: Renderer2, private zone: NgZone,
-    private connectionService: ConnectionService, public genericResourceService: GenericResourceService) {
+    private connectionService: ConnectionService, public genericResourceService: GenericResourceService, public popupControlService: PopupControlService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
     const layoutType = localStorage.getItem('layoutType') || 'base';
@@ -317,6 +318,10 @@ export class AppComponent implements OnInit, OnDestroy {
     //     }
     //     else { this.isPopupEnabled = true; }
     //   }, error => { this.isPopupEnabled = true; });;
+    this.isPopupEnabled = true;
+  }
+
+  getOnboardingSkipStatus(){
     /**
       * @description - This method enables/disables the onboarding popups based on the isvisible values returned from the form config request
     */
@@ -329,6 +334,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.formService.getFormConfig(formReadInputParams).subscribe(
       (formResponsedata) => {
         if (formResponsedata) {
+          this.popupControlService.setOnboardingData(formResponsedata);
           this.isOnboardingEnabled= formResponsedata.onboardingPopups? formResponsedata.onboardingPopups.isVisible : true;
           this.isFWSelectionEnabled = formResponsedata.frameworkPopup? formResponsedata.frameworkPopup.isVisible : true;
           this.isUserTypeEnabled =formResponsedata.userTypePopup? formResponsedata.userTypePopup.isVisible: true;
@@ -339,8 +345,10 @@ export class AppComponent implements OnInit, OnDestroy {
       }, error => { console.log("Cant read the form")
     });
   }
+
   ngOnInit() {
     this.getOnboardingList();
+    this.getOnboardingSkipStatus();
     this.checkToShowPopups();
     this.getStepperInfo();
     this.isIOS = this.utilService.isIos;
