@@ -461,6 +461,40 @@ describe('UtilService', () => {
       const result = utilService.getPlayerDownloadStatus(status, content);
       expect(result).toBe(false);
     });
+
+    it('should return true when addedUsing is "import" and downloadStatus is falsy', () => {
+      const status = 'DOWNLOAD';
+      const content = {
+        desktopAppMetadata: {
+          addedUsing: 'import',
+        },
+      };
+      jest.spyOn(utilService, 'isDownloaded').mockReturnValue(true);
+      const result = utilService.getPlayerDownloadStatus(status, content);
+      expect(result).toBe(true);
+    });
+
+    it('should return the result of isDownloaded when addedUsing is "import" and downloadStatus is falsy', () => {
+      const status = 'DOWNLOAD';
+      const content = {
+        desktopAppMetadata: {
+          addedUsing: 'import',
+        },
+      };
+      jest.spyOn(utilService, 'isDownloaded').mockReturnValue(true);
+      const result = utilService.getPlayerDownloadStatus(status, content);
+      expect(result).toBe(true);
+      expect(utilService.isDownloaded).toHaveBeenCalledWith(content, status);
+    });
+
+    it('should return the result of isDownloaded when status is "DOWNLOAD" and downloadStatus is falsy', () => {
+      const status = 'DOWNLOAD';
+      const content = {};
+      jest.spyOn(utilService, 'isDownloaded').mockReturnValue(true);
+      const result = utilService.getPlayerDownloadStatus(status, content);
+      expect(result).toBe(true);
+      expect(utilService.isDownloaded).toHaveBeenCalledWith(content, status);
+    });
   });
 
   describe('getPlayerUpdateStatus', () => {
