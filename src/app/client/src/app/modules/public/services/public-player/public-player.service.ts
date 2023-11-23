@@ -221,7 +221,7 @@ export class PublicPlayerService {
         url: `${this.configService.urlConFig.URLS.QUESTIONSET.HIERARCHY_READ}/${contentId}`
     };
     return this.publicDataService.get(req).pipe(map((response: any) => {
-        return response;
+        return response.result;
     }));
   }
 

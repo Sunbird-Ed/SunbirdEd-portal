@@ -189,11 +189,11 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
         this.showLoader = false;
         const contentDetails = {
           contentId: this.contentId,
-          contentData: response.result.questionset
+          contentData: response.questionset
         };
         this.playerConfig = serveiceRef.getConfig(contentDetails);
         this.playerConfig.context.objectRollup = this.objectRollup;
-        this.contentData = response.result.questionset;
+        this.contentData = response.questionset;
         this.showPlayer = true;
       }, (err) => {
         this.showLoader = false;

@@ -129,9 +129,9 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
     if (_.isEmpty(lockInfo) && allowedEditState && ( allowedEditStatus || this.userService.userProfile.rootOrgAdmin )) {
       return combineLatest(
         this.getCollectionDetails(),
-        // this.editorService.getOwnershipType(), // to-do remove the comment
-        // this.lockContent(), // to-do remove the comment
-      ).pipe(map(data => ({ collectionInfo: data[0]}))); // to-do revert the change
+        this.editorService.getOwnershipType(),
+        this.lockContent(),
+      ).pipe(map(data => ({ collectionInfo: data[0], ownershipType: data[1]})));
     } else {
       return combineLatest(
         this.getCollectionDetails(),
