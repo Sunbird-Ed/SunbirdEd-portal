@@ -597,4 +597,73 @@ describe('UtilService', () => {
       expect(result).toEqual(expectedOutput);
     });
   });
+
+  describe('downloadCSV', () => {
+    it('should generate CSV file with the correct filename and data', () => {
+      const collection = { name: 'TestCollection' };
+      const data = [
+        { id: 1, name: 'Item 1', price: 10.99 },
+        { id: 2, name: 'Item 2', price: 19.99 },
+      ];
+      const mockGenerateCsv = jest.fn();
+      jest.spyOn(ExportToCsv.prototype, 'generateCsv').mockImplementation(mockGenerateCsv);
+      utilService.downloadCSV(collection, data);
+      expect(mockGenerateCsv).toHaveBeenCalledWith(data);
+      expect(mockGenerateCsv).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('clearSearchQuery', () => {
+    it('should call next on searchQuery', () => {
+      const mockNext = jest.fn();
+      utilService['searchQuery'].next = mockNext;
+      utilService.clearSearchQuery();
+      expect(mockNext).toHaveBeenCalled();
+    });
+  });
+
+  describe('updateSearchKeyword', () => {
+    it('should emit search keyword', (done) => {
+      const keyword = 'example';
+      utilService.searchKeyword.subscribe((emittedKeyword) => {
+        expect(emittedKeyword).toBe(keyword);
+        done();
+      });
+      utilService.updateSearchKeyword(keyword);
+    });
+  });
+
+  describe('updateRoleChange', () => {
+    it('should emit role change', (done) => {
+      const roleType = 'admin';
+      jest.spyOn(utilService.roleChanged, 'next');
+      utilService.updateRoleChange(roleType);
+      expect(utilService.roleChanged.next).toHaveBeenCalledWith(roleType);
+      done();
+    });
+  });
+
+  describe('EmitLanguageEvent', () => {
+    it('should emit language change event', (done) => {
+      const language = { code: 'en', label: 'English', dir: 'ltr', value: 'english' };
+      utilService.languageChange.subscribe((emittedLanguage) => {
+        expect(emittedLanguage).toEqual(language);
+        done();
+      });
+
+      utilService.emitLanguageChangeEvent(language);
+    });
+  });
+
+  describe('emitHideHeaderTabsEvent', () => {
+    it('should emit hide header tabs event', (done) => {
+      const hideTab = true;
+      utilService.hideHeaderTabs.subscribe((emittedHideTab) => {
+        expect(emittedHideTab).toEqual(hideTab);
+        done();
+      });
+      utilService.emitHideHeaderTabsEvent(hideTab);
+    });
+  });
+
 });
