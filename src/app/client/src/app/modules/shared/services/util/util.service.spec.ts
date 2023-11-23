@@ -559,4 +559,42 @@ describe('UtilService', () => {
       expect(result).toEqual({});
     });
   });
+
+  describe('processData', ()=>{
+    it('should process sections and extract facets based on keys', () => {
+      const sections = [
+        {
+          facets: [
+            { name: 'category', values: [{ type: 'A' }, { type: 'B' }] },
+            { name: 'color', values: [{ type: 'Red' }, { type: 'Blue' }] },
+          ],
+        },
+        {
+          facets: [
+            { name: 'category', values: [{ type: 'C' }, { type: 'D' }] },
+            { name: 'size', values: [{ type: 'Small' }, { type: 'Large' }] },
+          ],
+        },
+      ];
+      const keys = ['category', 'color', 'size'];
+      const result = utilService.processData(sections, keys);
+      const expectedOutput = {
+        category: [
+          { type: 'A' },
+          { type: 'B' },
+          { type: 'C' },
+          { type: 'D' },
+        ],
+        color: [
+          { type: 'Red' },
+          { type: 'Blue' },
+        ],
+        size: [
+          { type: 'Small' },
+          { type: 'Large' },
+        ],
+      };
+      expect(result).toEqual(expectedOutput);
+    });
+  });
 });
