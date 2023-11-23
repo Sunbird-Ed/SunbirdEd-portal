@@ -481,6 +481,28 @@ describe('UtilService', () => {
       const result = utilService.getPlayerUpdateStatus(status, content, currentRoute, isUpdated);
       expect(result).toBe(false);
     });
+
+    it('should return true if downloadStatus matches the provided status', () => {
+      const status = 'YOUR_STATUS';
+      const content = {
+        downloadStatus: 'YOUR_STATUS',
+      };
+      const currentRoute = 'library';
+      const isUpdated = true;
+      const result = utilService.getPlayerUpdateStatus(status, content, currentRoute, isUpdated);
+      expect(result).toBe(true);
+    });
+
+  it('should return false if downloadStatus does not match the provided status', () => {
+    const status = 'YOUR_STATUS';
+    const content = {
+      downloadStatus: 'ANOTHER_STATUS',
+    };
+    const currentRoute = 'library';
+    const isUpdated = true;
+    const result = utilService.getPlayerUpdateStatus(status, content, currentRoute, isUpdated);
+    expect(result).toBe(false);
+  });
   });
 
   describe('isAvailable', () => {
@@ -663,6 +685,43 @@ describe('UtilService', () => {
         done();
       });
       utilService.emitHideHeaderTabsEvent(hideTab);
+    });
+  });
+
+  describe('convertSelectedOption', () => {
+    it('should convert selected options based on translations', () => {
+      const selectedData = {
+        color: ['red', 'green'],
+        size: ['small', 'medium'],
+      };
+      const formFieldProperties = [
+        {
+          code: 'color',
+          range: [
+            { translations: '{"en": "Red", "fr": "Rouge"}' },
+            { translations: '{"en": "Green", "fr": "Vert"}' },
+          ],
+        },
+        {
+          code: 'size',
+          range: [
+            { translations: '{"en": "Small", "fr": "Petit"}' },
+            { translations: '{"en": "Medium", "fr": "Moyen"}' },
+          ],
+        },
+      ];
+      const selectedLanguage = 'en';
+      const convertLanguage = 'fr';
+      const convertedOptions = utilService.convertSelectedOption(
+        selectedData,
+        formFieldProperties,
+        selectedLanguage,
+        convertLanguage
+      );
+      expect(convertedOptions).toEqual({
+        color: ['red', 'green'],
+        size: ['small', 'medium'],
+      });
     });
   });
 
