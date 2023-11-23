@@ -240,13 +240,15 @@ describe('UserService', () => {
   });
 
   it('should set the guest user value to true', () => {
-    userService.setGuestUser(true);
+    userService.setGuestUser(true,"guest");
     expect(userService['setGuest']).toBe(true);
+    expect(userService.formatedName).toBe("guest");
   });
 
   it('should set the guest user value to false', () => {
-    userService.setGuestUser(false);
+    userService.setGuestUser(false,"mockUsername");
     expect(userService['setGuest']).toBe(false);
+    expect(userService.formatedName).toBe("mockUsername");
   });
 
   it('should return configData when setGuest is true', () => {
