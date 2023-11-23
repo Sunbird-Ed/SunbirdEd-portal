@@ -614,6 +614,22 @@ describe('UtilService', () => {
       const result = utilService.processCourseFacetData(sections, keys);
       expect(result).toEqual({});
     });
+
+    it('should process course facet data correctly', () => {
+      const sections = {
+        facets: [
+          { name: 'primaryCategory', values: ['Math', 'Science'] },
+          { name: 'additionalCategories', values: ['Physics', 'Chemistry'] },
+        ],
+      };
+      const keys = ['primaryCategory', 'additionalCategories'];
+      jest.spyOn(utilService, 'processCourseFacetData').mockReturnValue({
+        primaryCategory: ['Math', 'Science'],
+        additionalCategories: ['Physics', 'Chemistry'],
+      });
+      const result = utilService.processCourseFacetData(sections, keys);
+      expect(result).toEqual({additionalCategories: ["Physics", "Chemistry"], "primaryCategory": ["Math", "Science"]});
+    });
   });
 
   describe('processData', ()=>{
