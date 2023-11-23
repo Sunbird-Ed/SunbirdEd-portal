@@ -220,7 +220,7 @@ describe('ProfileFrameworkPopupComponent', () => {
         component.onSubmitForm();
         expect(toasterService.error).toBeCalledWith(resourceService.messages.emsg.m0005);
     });
-    
+
     it('should call getFormDetails method', () => {
        component['_formFieldProperties'] = Response.formFields1;
        jest.spyOn(formService, 'getFormConfig').mockReturnValue(of({
@@ -297,5 +297,32 @@ describe('ProfileFrameworkPopupComponent', () => {
         expect(consoleErrorSpy).toHaveBeenCalledWith('Error updating framework categories:', mockError);
         consoleErrorSpy.mockRestore();
     });
+
+    it('should set frameworkCategories, frameworkCategoriesObject, popup status, and guestUserHashTagId when ngOnInit is called', () => {
+        jest.spyOn(mockCslFrameworkService, 'getFrameworkCategories').mockReturnValue('mock-framework-categories');
+        jest.spyOn(mockCslFrameworkService, 'getFrameworkCategoriesObject').mockReturnValue('mock-framework-categories-object');
+        jest.spyOn(orgDetailsService, 'getCustodianOrgDetails').mockReturnValue(of({ result: { response: { value: 'mock-custodian-org-value' } } }));
+        component.ngOnInit();
+        expect(component.frameworkCategories).toEqual('mock-framework-categories');
+        expect(component.frameworkCategoriesObject).toEqual('mock-framework-categories-object');
+        expect(component.popupControlService.changePopupStatus).toHaveBeenCalledWith(false);
+        expect(component.guestUserHashTagId).toEqual(1234);
+    });
+
+    it('should get custodian org data for guest', (done) => {
+        const mockChannelData = {
+        result: {
+            channel: {
+            defaultFramework: 'channelDefaultFramework'
+            }
+        }
+        };
+        jest.spyOn(component['channelService'], 'getFrameWork').mockReturnValue(of(mockChannelData as any));
+        component['getCustodianOrgDataForGuest']().subscribe((result) => {
+        expect(result).toEqual( {"code": undefined, "index": 1, "label": undefined, "range": []});
+        done();
+        });
+    });
+
 
 });
