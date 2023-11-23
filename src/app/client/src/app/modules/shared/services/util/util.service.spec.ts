@@ -524,31 +524,31 @@ describe('UtilService', () => {
     const frameWorkData = {};
     const result = utilService.manipulateSoftConstraint(filter, softConstraintData, frameWorkData);
     expect(result).toEqual(softConstraintData);
-  });
-
-  it('should return false when a filter is provided, regardless of framework data', () => {
-    const filter = {objectType: 'Content', contentType: 'Course', status: Array(1)}
-    const softConstraintData = {};
-    const frameWorkData = {};
-    const result = utilService.manipulateSoftConstraint(filter, softConstraintData, frameWorkData);
-    expect(result).toBe(false);
-  });
-
-  it('should return filtered framework data in soft mode when framework data is not empty and no filter is provided', () => {
-    const filter = null;
-    const softConstraintData = {
-      filters: { subject: ['English'], board: ['NCERT', 'ICSE'], channel: '0123166367624478721' },
-      softConstraints: { badgeAssertions: 98, board: 99, channel: 100 },
-      mode: 'soft'
-    };
-    const frameWorkData = null;
-    const result = utilService.manipulateSoftConstraint(filter, softConstraintData, frameWorkData);
-    expect(result).toEqual({
-      filters: { subject: ['English'], board: ['NCERT', 'ICSE'], channel: '0123166367624478721' },
-      softConstraints: { badgeAssertions: 98, board: 99, channel: 100 },
-      mode: 'soft'
     });
-  });
+
+    it('should return false when a filter is provided, regardless of framework data', () => {
+      const filter = {objectType: 'Content', contentType: 'Course', status: Array(1)}
+      const softConstraintData = {};
+      const frameWorkData = {};
+      const result = utilService.manipulateSoftConstraint(filter, softConstraintData, frameWorkData);
+      expect(result).toBe(false);
+    });
+
+    it('should return filtered framework data in soft mode when framework data is not empty and no filter is provided', () => {
+      const filter = null;
+      const softConstraintData = {
+        filters: { subject: ['English'], board: ['NCERT', 'ICSE'], channel: '0123166367624478721' },
+        softConstraints: { badgeAssertions: 98, board: 99, channel: 100 },
+        mode: 'soft'
+      };
+      const frameWorkData = null;
+      const result = utilService.manipulateSoftConstraint(filter, softConstraintData, frameWorkData);
+      expect(result).toEqual({
+        filters: { subject: ['English'], board: ['NCERT', 'ICSE'], channel: '0123166367624478721' },
+        softConstraints: { badgeAssertions: 98, board: 99, channel: 100 },
+        mode: 'soft'
+      });
+    });
   });
 
   describe('processCourseFacetData', () => {
