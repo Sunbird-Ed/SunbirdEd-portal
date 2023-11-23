@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable, forkJoin, of, throwError} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map, mergeMap } from 'rxjs/operators';
@@ -14,7 +14,7 @@ import { PublicPlayerService } from '@sunbird/public';
 export class QumlPlayerV2Service implements QuestionCursor, EditorCursor {
   public questionMap =  new Map();
   constructor(private http: HttpClient,
-    public playerService: PublicPlayerService) {} // @Inject(HttpClient)
+    public playerService: PublicPlayerService) {}
 
   getQuestion(questionId: string): Observable<any> {
     if (_.isEmpty(questionId)) { return of({}); }
