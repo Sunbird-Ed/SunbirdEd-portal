@@ -1,26 +1,25 @@
 import { Injectable } from '@angular/core';
-import { Observable, forkJoin, of, throwError} from 'rxjs';
+import { Observable, forkJoin, of, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map, mergeMap } from 'rxjs/operators';
 import { QuestionCursor } from '@project-sunbird/sunbird-quml-player';
 import { EditorCursor } from '@project-sunbird/sunbird-questionset-editor';
 import * as _ from 'lodash-es';
 import { PublicPlayerService } from '@sunbird/public';
-
 @Injectable({
   providedIn: 'root'
 })
 
 export class QumlPlayerV2Service implements QuestionCursor, EditorCursor {
-  public questionMap =  new Map();
+  public questionMap = new Map();
   constructor(private http: HttpClient,
-    public playerService: PublicPlayerService) {}
+    public playerService: PublicPlayerService) { }
 
   getQuestion(questionId: string): Observable<any> {
     if (_.isEmpty(questionId)) { return of({}); }
     const question = this.getQuestionData(questionId);
     if (question) {
-        return of({questions : _.castArray(question)});
+      return of({ questions: _.castArray(question) });
     } else {
       return this.post(_.castArray(questionId)).pipe(map((data) => {
         return data.result;
@@ -45,7 +44,7 @@ export class QumlPlayerV2Service implements QuestionCursor, EditorCursor {
       if (questionSet && instructions) {
         questionSet['instructions'] = instructions;
       }
-      if(questionSet && outcomeDeclaration) {
+      if (questionSet && outcomeDeclaration) {
         questionSet['outcomeDeclaration'] = outcomeDeclaration;
       }
       return { questionSet };
@@ -80,9 +79,9 @@ export class QumlPlayerV2Service implements QuestionCursor, EditorCursor {
     );
   }
 
-  private post(questionIds): Observable<any> {
+  post(questionIds): Observable<any> {
     const httpOptions = {
-        headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' }
     };
     const requestParam = {
       url: 'api/question/v2/list',
@@ -95,12 +94,11 @@ export class QumlPlayerV2Service implements QuestionCursor, EditorCursor {
       }
     };
     return this.http.post(requestParam.url, requestParam.data, httpOptions).pipe(
-        mergeMap((data: any) => {
-            if (data.responseCode !== 'OK') {
-                return throwError(data);
-            }
-            return of(data);
-        }));
+      mergeMap((data: any) => {
+        if (data.responseCode !== 'OK') {
+          return throwError(data);
+        }
+        return of(data);
+      }));
   }
-
 }
