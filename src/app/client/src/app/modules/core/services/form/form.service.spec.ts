@@ -21,8 +21,12 @@ describe('FormService', () => {
       }
     },
     appConfig:{
+      frameworkCatConfig: {
+        changeChannel: true,
+        defaultFW: 'someDefaultFramework'
+      },
       formApiTypes:{
-
+        userType: "userType"
       }
     }
   };
@@ -87,7 +91,7 @@ describe('FormService', () => {
     expect(formService).toBeTruthy();
   });
 
-  describe('getFormConfig', () => {
+   describe('getFormConfig', () => {
     const hashTagId = 'NTP';
     const formInputParams = {
       formType: 'user',
@@ -134,7 +138,7 @@ describe('FormService', () => {
     });
   });
 
-   describe('setForm', () => {
+  describe('setForm', () => {
     it('should set form data in cache with the correct key and value', () => {
       const formKey = 'exampleFormKey';
       const formData = { field1: 'value1', field2: 'value2' };
