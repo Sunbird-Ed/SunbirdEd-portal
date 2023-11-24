@@ -323,7 +323,7 @@ export class AppComponent implements OnInit, OnDestroy {
   
   /**
       * @description - This method enables/disables the onboarding popups based on the isvisible values returned from the form config request
-    */
+  */
   getOnboardingSkipStatus(){
     const formReadInputParams = {
       formType: 'onboardingPopupVisibility',
