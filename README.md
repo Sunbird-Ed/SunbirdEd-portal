@@ -108,22 +108,11 @@ Installing Sunbird requires two primary software components:
 
 
 4. Edit the Application Configuration
-    > Open `<PROJECT-FOLDER>/src/app/helpers/mandatoryEnv.js` in any available text editor with the below keys along with the values as per the infra
-
-          |       Variable Name                     |                   Description                                       |
-          | :-------------------------------------- |---------------------------------------------------------------------|
-          |  sunbird_anonymous_register_token       |   Token to register anonymous device                                |
-          |  sunbird_anonymous_default_token        |   Fallback token for device register API for `anonymous` users      |
-          |  sunbird_logged_default_token           |   Fallback token for device register API for `logged-in` users      |
-          |  sunbird_loggedin_register_token        |   Device register API for logged-in users                           |
-          |  cloud_private_storage_secret           |   To set the Cloud Account Key                                      |
-          |  cloud_private_storage_accountname      |   To set the Cloud Private Storage Account Name                     |
-          |  sunbird_cloud_storage_provider         |   To set the Cloud Storage Provider                                 |
-   > To configure your application, rename the file `.env.example` to `.env` and enter the values of the following environment variables
+   > To configure your application for local development, rename the file `example.env` in `/src/app` folder to `.env` and enter the values of the following environment variables
 
           |       Environment Variable              |                   Description                                       |
           | :-------------------------------------- |---------------------------------------------------------------------|
-          |  sunbird_default_token                  |   To set the Default Tokens in the mandatoryEnv.js file             |
+          |  sunbird_default_token                  |   To set the Default Mandatory Token for Anonymous and Logged User  |
           |  cloud_private_storage_secret           |   To set the Cloud Account Key                                      |
           |  cloud_private_storage_accountname      |   To set the Cloud Private Storage Account Name                     |
           |  sunbird_cloud_storage_provider         |   To set the Cloud Storage Provider                                 |
@@ -144,7 +133,7 @@ Installing Sunbird requires two primary software components:
 2. Sunbird services stack or the backend API interface
 
     1. Run the following command in the **{PROJECT-FOLDER}/src/app** folder
-    2. $ npm run server
+    2. $ npm run local-server
 
 3. The local HTTP server is launched at `http://localhost:3000`
 

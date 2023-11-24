@@ -27,6 +27,7 @@ import { CsCourseService } from '@project-sunbird/client-services/services/cours
 import { CsCertificateService } from '@project-sunbird/client-services/services/certificate/interface';
 import { ProfilePageComponent } from './profile-page.component';
 import { Response } from './profile-page.spec.data';
+import { CslFrameworkService } from '../../../../modules/public/services/csl-framework/csl-framework.service';
 
 describe("ProfilePageComponent", () => {
     let profilePageComponent: ProfilePageComponent;
@@ -105,6 +106,7 @@ describe("ProfilePageComponent", () => {
 
     };
     const mockUtilService: Partial<UtilService> = {
+        getDataForCard: jest.fn(),
         isDesktopApp: true,
     };
     const mockSearchService: Partial<SearchService> = {};
@@ -138,6 +140,11 @@ describe("ProfilePageComponent", () => {
         monitor: jest.fn()
     };
     const mockCsCertificateService: Partial<CsCertificateService> = {};
+    const mockCslFrameworkService: Partial<CslFrameworkService> = {
+        getFrameworkCategoriesObject: jest.fn(),
+        frameworkLabelTransform: jest.fn(),
+    };
+
 
     beforeAll(() => {
         profilePageComponent = new ProfilePageComponent(
@@ -162,9 +169,11 @@ describe("ProfilePageComponent", () => {
             mockFormService as FormService,
             mockCertificateDownloadAsPdfService as CertificateDownloadAsPdfService,
             mockConnectionService as ConnectionService,
+            mockCslFrameworkService as CslFrameworkService,
             mockCsCertificateService as CsCertificateService
         );
     });
+
 
     beforeEach(() => {
         jest.clearAllMocks();

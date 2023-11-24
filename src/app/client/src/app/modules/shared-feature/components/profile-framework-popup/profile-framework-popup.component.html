@@ -22,11 +22,11 @@
       <form class="ui form">
         <div *ngFor="let field of formFieldOptions">
           <div class="required sb-field-form-group"
-            *ngIf="field.code === 'board' && allowedFields.includes(field.code)">
+            *ngIf="field.code === this.frameworkCategories?.fwCategory1?.code">
             <div class="sb-field">
                 <mat-form-field id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
                   <mat-label>{{( field?.translation || field?.label) | frameworkCatLabelTranslate | transposeTerms: ( field?.translation || field?.label) : resourceService?.selectedLang}}
-                    <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
+                    <span class="mr-8 sb-color-red"> * </span>
                   </mat-label>
                   <mat-select name={{field.code}} role="listbox" aria-label="field?.label"
                   class="selection" [(ngModel)]="selectedOption[field.code]" (selectionChange)="handleFieldChange($event, field)">
@@ -36,12 +36,12 @@
                 </mat-form-field>
             </div>
           </div>
-          <div class="sb-field-form-group mt-8" *ngIf="field.code !== 'board' && allowedFields.includes(field.code)"
-            [ngClass]="field.code === 'subject' ? '' : 'required'">
+          <div class="sb-field-form-group mt-8" *ngIf="field.code !== this.frameworkCategories?.fwCategory1?.code"
+            [ngClass]="field.code === this.frameworkCategories?.fwCategory4?.code ? '' : 'required'">
             <div class="sb-field">
-                <mat-form-field *ngIf="field.code === 'gradeLevel'" id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
+                <mat-form-field *ngIf="field.code ===this.frameworkCategories?.fwCategory3?.code" id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
                   <mat-label>{{( field?.translation || field?.label) | frameworkCatLabelTranslate | transposeTerms: ( field?.translation || field?.label) : resourceService?.selectedLang}}
-                    <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
+                    <span class="mr-8 sb-color-red" > * </span>
                   </mat-label>
                   <mat-select multiple name={{field.code}} role="listbox" aria-label="field?.label"
                   class="selection" [(ngModel)]="selectedOption[field.code]" (selectionChange)="handleFieldChange($event, field)">
@@ -56,9 +56,9 @@
                   </mat-select>
                 </mat-form-field>
 
-                <mat-form-field *ngIf="field.code !== 'gradeLevel'" id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
+                <mat-form-field *ngIf="field.code !== this.frameworkCategories?.fwCategory3?.code" id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
                   <mat-label>{{( field?.translation || field?.label) | frameworkCatLabelTranslate | transposeTerms: (field?.translation || field?.label) : resourceService?.selectedLang}}
-                    <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
+                    <span class="mr-8 sb-color-red"> * </span>
                   </mat-label>
                   <mat-select multiple name={{field.code}} role="listbox" aria-label="field?.label"
                   class="selection" [(ngModel)]="selectedOption[field.code]" (selectionChange)="handleFieldChange($event, field)">
