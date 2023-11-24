@@ -144,9 +144,12 @@ module.exports = function (app) {
   // Question & QuestionSet API's START
 
   app.get([
-    '/action/questionset/v1/read/:do_id',
-    '/action/question/v1/read/:do_id',
-    '/action/questionset/v1/hierarchy/:do_id',
+    '/action/questionset/v2/read/:do_id',
+    '/action/question/v2/read/:do_id',
+    '/action/questionset/v2/hierarchy/:do_id',
+    '/action/questionset/v2/read/:do_id',
+    '/action/question/v2/read/:do_id',
+    '/action/questionset/v2/hierarchy/:do_id',
     ],
     isAPIWhitelisted.isAllowed(),
     addCorsHeaders,
@@ -163,13 +166,13 @@ module.exports = function (app) {
   )
 
   app.post([
-    '/action/questionset/v1/create',
-    '/action/questionset/v1/review/:do_id',
-    '/action/questionset/v1/publish/:do_id',
-    '/action/questionset/v1/reject/:do_id',
-    '/action/question/v1/create',
-    '/action/question/v1/review/:do_id',
-    '/action/question/v1/publish/:do_id'
+    '/action/questionset/v2/create',
+    '/action/questionset/v2/review/:do_id',
+    '/action/questionset/v2/publish/:do_id',
+    '/action/questionset/v2/reject/:do_id',
+    '/action/question/v2/create',
+    '/action/question/v2/review/:do_id',
+    '/action/question/v2/publish/:do_id'
     ],
     isAPIWhitelisted.isAllowed(),
     addCorsHeaders,
@@ -186,10 +189,10 @@ module.exports = function (app) {
   )
 
   app.patch([
-    '/action/questionset/v1/hierarchy/update',
-    '/action/questionset/v1/update/:do_id',
-    '/action/questionset/v1/add',
-    '/action/question/v1/update/:do_id'
+    '/action/questionset/v2/hierarchy/update',
+    '/action/questionset/v2/update/:do_id',
+    '/action/questionset/v2/add',
+    '/action/question/v2/update/:do_id'
     ],
     isAPIWhitelisted.isAllowed(),
     addCorsHeaders,
