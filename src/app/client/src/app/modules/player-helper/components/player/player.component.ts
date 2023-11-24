@@ -72,6 +72,13 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   totalPage: any;
   currentPageType: any
 
+  summaryProg: any;
+  summarytotallength: any;
+  summaryvisitedlength: any;
+  summaryvisitedcontentend: any;
+  summarytotalseekedlength: any;
+  summaryendpageseen: any;
+
   /**
  * Dom element reference of contentRatingModal
  */
@@ -416,6 +423,41 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   generateContentReadEvent(event: any, newPlayerEvent?) {
+    
+    let holdsummary = event.edata.summary;
+
+    if(holdsummary && holdsummary.length > 0) {
+      for(let summary of holdsummary) {
+
+        for(let key in summary) {
+              if(key == 'progress') {
+                  this.summaryProg = summary[key]
+              }
+              if(key == 'totallength') {
+                  this.summarytotallength = summary[key]
+              }
+              if(key == 'visitedlength') {
+                  this.summaryvisitedlength = summary[key]
+              }
+              if(key == 'visitedcontentend') {
+                  this.summaryvisitedcontentend = summary[key]
+              }
+              if(key == 'totalseekedlength') {
+                  this.summarytotalseekedlength = summary[key]
+              }
+              if(key == 'endpageseen') {
+                this.summaryendpageseen = summary[key]
+              }
+        }
+  
+      }
+
+    }
+
+
+
+
+
     let eventCopy = newPlayerEvent ? _.cloneDeep(event) : event;
     if (!eventCopy) {
       return;
@@ -426,8 +468,15 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     const eid = _.get(eventCopy, 'detail.telemetryData.eid');
     const contentId = _.get(eventCopy, 'detail.telemetryData.object.id');
     // this.contentId = contentId;
+
     if (eid && (eid === 'START' || eid === 'END') && contentId === _.get(this.playerConfig, 'metadata.identifier')) {
-      this.showRatingPopup(eventCopy);
+
+      // if(this.summaryProg && this.summaryvisitedlength === this.totalPage && this.summaryvisitedcontentend) {
+        setTimeout(() => {
+          this.showRatingPopup(eventCopy);
+        }, 1300);
+      // }
+
       if (this.contentProgressEvents$) {
         this.contentProgressEvents$.next(eventCopy);
       }
@@ -461,7 +510,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       contentProgress = CsContentProgressCalculator.calculate(playerSummary, contentMimeType);
     }
 
-    if (event.detail.telemetryData.eid === 'END' && contentProgress === 100 && this.currentPageType === "END" && this.currentPage === this.totalPage) {
+    if (event.detail.telemetryData.eid === 'END' && contentProgress === 100 &&
+        this.currentPageType === "END" && this.currentPage === this.totalPage) {
         this.contentRatingModal = !this.isFullScreenView;
         this.showRatingModalAfterClose = true;
         if (this.modal) {
