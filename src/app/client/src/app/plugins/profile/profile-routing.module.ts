@@ -4,7 +4,8 @@ import {
   ProfilePageComponent,
   CreateUserComponent,
   ChooseUserComponent,
-  SubmitTeacherDetailsComponent
+  SubmitTeacherDetailsComponent,
+  DeleteUserComponent
 } from './components';
 const telemetryEnv = 'profile';
 const objectType = 'profile';
@@ -28,6 +29,18 @@ const routes: Routes = [
         visible: false
       },
       pageTitle: 'create-managed-user',
+      telemetry: {
+        env: telemetryEnv, type: 'view'
+      }
+    }
+  },
+  {
+    path: 'delete-user', component: DeleteUserComponent,
+    data: {
+      menuBar: {
+        visible: false
+      },
+      pageTitle: 'delete-user',
       telemetry: {
         env: telemetryEnv, type: 'view'
       }

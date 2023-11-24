@@ -17,3 +17,22 @@ input[type=number]::-webkit-inner-spin-button {
     cursor: text;
     pointer-events: none !important;
 }
+.delete__title{
+    margin: auto;
+    color: #dd4841 !important;
+  }
+  .container {
+    max-width: calculateRem(550px);
+    margin: 0 auto;
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width:100%;
+    @include respond-below(sm){
+      min-height: auto;
+    }}
+    
+    form{
+        flex-direction: column;
+    }

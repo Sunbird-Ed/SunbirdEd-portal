@@ -47,6 +47,29 @@ module.exports = function (app) {
     })
   )
 
+  app.delete('/learner/user/v1/delete/:userId',
+  // proxyUtils.verifyToken(),
+   isAPIWhitelisted.isAllowed(),
+  proxy(envHelper.learner_Service_Local_BaseUrl, {
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(envHelper.learner_Service_Local_BaseUrl),
+    proxyReqPathResolver: (req) => {
+      return require('url').parse(envHelper.LEARNER_URL + req.originalUrl.replace('/learner/', '')).path
+    },
+    userResDecorator: (proxyRes, proxyResData, req, res) => {
+      logger.info({ msg: '/learner/user/v1/delete called upstream url /user/v1/delete' });
+      try {
+        const data = JSON.parse(proxyResData.toString('utf8'));
+        if (req.method === 'DELETE' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+        else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
+      } catch (err) {
+        logger.error({ msg: 'learner route : userResDecorator json parse error:', proxyResData });
+        logger.error({ msg: 'learner route : error for /learner/user/v1/delete upstram url is /private/user/v1/delete ', err });
+        return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, null);
+      }
+    }
+  })
+)
+
   app.get('/learner/user/v1/managed/*', proxyManagedUserRequest());
 
   // Route to check user email id exists (or) already registered

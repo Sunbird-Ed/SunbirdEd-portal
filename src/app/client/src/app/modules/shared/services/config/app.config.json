@@ -1482,6 +1482,8 @@
   "frameworkCatConfig": {
     "changeChannel": false,
     "channel":"0138934136407244800",
-    "defaultFW": "agriculture_framework"
+    "defaultFW": "agriculture_framework",
+    "updateContactTemplate": "otpContactUpdateTemplate",
+    "userDeleteTemplate": "otpContactUpdateTemplate"
   }
 }

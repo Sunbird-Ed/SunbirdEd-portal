@@ -1,22 +1,6 @@
 import { ProfileService } from '../../services';
-import {
-    CertRegService,
-    CoursesService,
-    OrgDetailsService,
-    PlayerService,
-    SearchService,
-    UserService,
-    FormService
-} from '@sunbird/core';
-import {
-    ConfigService,
-    LayoutService,
-    NavigationHelperService,
-    ResourceService,
-    ToasterService,
-    UtilService,
-    ConnectionService
-} from '@sunbird/shared';
+import { CertRegService, CoursesService, OrgDetailsService, PlayerService, SearchService, UserService, FormService } from '@sunbird/core';
+import { ConfigService, LayoutService, NavigationHelperService, ResourceService, ToasterService, UtilService, ConnectionService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { of, throwError } from 'rxjs';
 import { TelemetryService } from '@sunbird/telemetry';
@@ -193,6 +177,7 @@ describe("ProfilePageComponent", () => {
             profilePageComponent.userProfile = Response.userData;
             //act
             profilePageComponent.getOrgDetails();
+            expect(profilePageComponent.disableDelete).toBeFalsy();
         });
     });
 
@@ -276,6 +261,7 @@ describe("ProfilePageComponent", () => {
             mockLayoutService.switchableLayout = jest.fn(() => of([{ isConnected: true }]));
             mockCoursesService._enrolledCourseData$ = jest.fn(() => of({ err: null, enrolledCourses: Response.courseSuccess.result.courses })) as any;
             mockConnectionService.monitor = jest.fn(() => of(true));
+            profilePageComponent.userRoles = ['ORG_ADMIN', 'CONTENT_CREATOR', 'PUBLIC'];
             jest.spyOn(profilePageComponent, 'getOrgDetails').mockImplementation();
             jest.spyOn(profilePageComponent, 'getContribution').mockImplementation();
             jest.spyOn(profilePageComponent, 'getTrainingAttended').mockImplementation();
@@ -302,6 +288,7 @@ describe("ProfilePageComponent", () => {
             //arrange
             mockUserService._userData$ = jest.fn(() => of({ err: null, userProfile: Response.userData })) as any;
             mockConnectionService.monitor = jest.fn(() => of(true));
+            profilePageComponent.userRoles = ['ORG_ADMIN', 'CONTENT_CREATOR', 'PUBLIC'];
             jest.spyOn(profilePageComponent, 'getOrgDetails').mockImplementation();
             mockFormService.getFormConfig = jest.fn(() => of([{ code: 'teacher' }, { code: 'persona', children: { teacher: [{ code: 'subPersona', templateOptions: { multiple: 'true', options: [{ value: 'sampleType', lablel: 'samplelabel' }] } }] } }])) as any;
             mockCoursesService._enrolledCourseData$ = jest.fn(() => of({ err: null, enrolledCourses: Response.courseSuccess.result.courses })) as any;
@@ -859,5 +846,36 @@ describe("ProfilePageComponent", () => {
             //assert
             expect(navigateSpy).toHaveBeenCalledWith([url], { queryParams: { formaction: formAction } });
         });
+        it('should call a method navigatetoRoute when the delete user button is clicked', () => {
+            profilePageComponent.userProfile = Response.userProfileforDeleteUser
+            const url = '/profile/delete-user';
+            const navigateSpy = jest.spyOn(mockRouter, 'navigate');
+            profilePageComponent.navigatetoRoute(url);
+            expect(navigateSpy).toHaveBeenCalledWith([url]);
+        });
+        it('should call a method navigatetoRoute when the delete user button is clicked with more roles', () => {
+            profilePageComponent.userProfile = Response.userProfileforDeleteUser
+            profilePageComponent.userProfile.userRoles =['PUBLIC','BOOK_CREATOR','CONTENT_CREATOR'];
+            const url = '/profile/delete-user';
+            const msg = 'Your role doesnot allow you to delete your account. Please contact support!'
+            profilePageComponent.navigatetoRoute(url);
+            expect(mockToasterService.warning).toBeCalledWith(msg)
+        });
     });
+    describe('calling the org details method',() =>{
+        xit('should return the org details with the role and disableDelete as true', () => {
+            //arrange
+            profilePageComponent.userRoles = ['ORG_ADMIN', 'CONTENT_CREATOR', 'PUBLIC'];
+            //act
+            profilePageComponent.getOrgDetails();
+            expect(profilePageComponent.disableDelete).toBeTruthy();
+        });
+        it('should return the org details with the role and disableDelete as false', () => {
+            //arrange
+            profilePageComponent.userRoles = ['COURSE_MENTOR', 'CONTENT_CREATOR', 'PUBLIC'];
+            //act
+            profilePageComponent.getOrgDetails();
+            expect(profilePageComponent.disableDelete).toBeFalsy();
+        });
+    })
 });
