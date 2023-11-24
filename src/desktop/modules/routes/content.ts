@@ -296,7 +296,7 @@ export default (app, proxyURL, contentDownloadManager) => {
                 `ReqId = "${req.headers["X-msgid"]}": Convert buffer data to json`,
               );
               const proxyData = content.convertBufferToJson(proxyResData, req);
-              const contents = _.get(proxyData, "result.questionSet");
+              const contents = _.get(proxyData, "result.questionset");
               if (!_.isEmpty(contents)) {
                 logger.debug(
                   `ReqId = "${req.headers["X-msgid"]}": Calling decorateDialCodeContent to decorate a content`,
@@ -307,7 +307,7 @@ export default (app, proxyURL, contentDownloadManager) => {
                     logger.info(
                       `ReqId = "${req.headers["X-msgid"]}": Resolving Data after decorating DialCodecontent `,
                     );
-                    proxyData.result.questionSet = data[0];
+                    proxyData.result.questionset = data[0];
                     resolve(proxyData);
                   })
                   .catch((err) => {

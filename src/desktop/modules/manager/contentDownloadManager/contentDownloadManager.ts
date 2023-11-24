@@ -417,6 +417,6 @@ export class ContentDownloadManager {
 
   private async getQuestionsetHierarchy(contentId) {
     const quesionset = await HTTPService.get(`${this.QuestionSetReadUrl}/${contentId}`, {}).toPromise();
-    return quesionset.data.result.questionSet;
+    return quesionset.data.result.questionset;
   }
 }
