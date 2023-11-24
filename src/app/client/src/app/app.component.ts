@@ -320,11 +320,11 @@ export class AppComponent implements OnInit, OnDestroy {
     //   }, error => { this.isPopupEnabled = true; });;
     this.isPopupEnabled = true;
   }
-
-  getOnboardingSkipStatus(){
-    /**
+  
+  /**
       * @description - This method enables/disables the onboarding popups based on the isvisible values returned from the form config request
     */
+  getOnboardingSkipStatus(){
     const formReadInputParams = {
       formType: 'onboardingPopupVisibility',
       formAction: 'onboarding',
@@ -338,8 +338,8 @@ export class AppComponent implements OnInit, OnDestroy {
           this.isOnboardingEnabled= formResponsedata.onboardingPopups? formResponsedata.onboardingPopups.isVisible : true;
           this.isFWSelectionEnabled = formResponsedata.frameworkPopup? formResponsedata.frameworkPopup.isVisible : true;
           this.isUserTypeEnabled =formResponsedata.userTypePopup? formResponsedata.userTypePopup.isVisible: true;
-          if(this.isOnboardingEnabled === false || this.isFWSelectionEnabled === false){
-            this.userService.setGuestUser(true,formResponsedata.frameworkPopup.defaultFormatedName); //user service method is set to true in case either of onboarding or framework popup is disabled
+          if(!(this.isOnboardingEnabled) || !(this.isFWSelectionEnabled)){
+             this.userService.setGuestUser(true,formResponsedata.frameworkPopup.defaultFormatedName); //user service method is set to true in case either of onboarding or framework popup is disabled
           }
         }
       }, error => { console.log("Cant read the form")
