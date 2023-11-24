@@ -216,6 +216,26 @@ export class PublicPlayerService {
     }));
   }
 
+  getQuestionSetHierarchyV1(contentId: string) {
+    const req = {
+        url: `${this.configService.urlConFig.URLS.QUESTIONSET.V1.HIERARCHY_READ}/${contentId}`
+    };
+    return this.publicDataService.get(req).pipe(map((response: any) => {
+        return response.result;
+    }));
+  }
+
+  getQuestionSetReadV1(contentId: string, option: any = { params: {} }): Observable<ServerResponse> {
+    const param = { fields: this.configService.urlConFig.params.questionSetRead };
+    const req = {
+        url: `${this.configService.urlConFig.URLS.QUESTIONSET.V1.READ}/${contentId}`,
+        param: { ...param, ...option.params }
+    };
+    return this.publicDataService.get(req).pipe(map((response: ServerResponse) => {
+        return response;
+    }));
+  }
+
   getQuestionSetRead(contentId: string, option: any = { params: {} }): Observable<ServerResponse> {
     const param = { fields: this.configService.urlConFig.params.questionSetRead };
     const req = {
