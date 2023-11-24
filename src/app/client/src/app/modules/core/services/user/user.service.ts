@@ -490,12 +490,13 @@ export class UserService {
   
   /**
     * @description - This method is called in the case where either of onboarding or framework popup is disabled and setGuest value is made true
+    *                and config data is manually returned in the case where onboarding or framework popup is disabled in getGuestUser
   */
   setGuestUser(value: boolean, defaultFormatedName: string): void{
     this.setGuest = value;
     this.formatedName = defaultFormatedName;
   }
-
+  
   getGuestUser(): Observable<any> {
     if (this.isDesktopApp) {
       return this.getAnonymousUserPreference().pipe(map((response: ServerResponse) => {
@@ -508,15 +509,11 @@ export class UserService {
       }));
     } else {
       const guestUserDetails = localStorage.getItem('guestUserDetails');
-
       if (guestUserDetails) {
         this.guestUserProfile = JSON.parse(guestUserDetails);
         this._guestData$.next({ userProfile: this.guestUserProfile });
         return of(this.guestUserProfile);
       } 
-      /**
-      * @description - This config data is manually returned in the case where onboarding or framework popup is disabled
-      */
       else if(this.setGuest){
         const configData = {"formatedName": this.formatedName}
         return of(configData);
