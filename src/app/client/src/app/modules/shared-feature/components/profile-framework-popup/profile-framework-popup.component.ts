@@ -95,7 +95,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         this.toasterService.warning(this.resourceService.messages.emsg.m0012);
         this.navigateToLibrary();
       });
-
+      this.enableSubmitButton(); //to enable submit button if all are non-mandatory fields
     this.setInteractEventData();
   }
   private getFormOptionsForCustodianOrgForGuestUser() {

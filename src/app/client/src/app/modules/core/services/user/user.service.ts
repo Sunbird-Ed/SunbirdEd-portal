@@ -130,7 +130,8 @@ export class UserService {
     this.contentService = contentService;
     this.publicDataService = publicDataService;
     this.isDesktopApp = environment.isDesktopApp;
-    this.frameworkCategories = localStorage.getItem('fwCategoryObjectValues');
+    let fwObj = localStorage.getItem('fwCategoryObject');
+    this.frameworkCategories = JSON.parse(fwObj);
     try {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
       DataService.userId = this._userid;

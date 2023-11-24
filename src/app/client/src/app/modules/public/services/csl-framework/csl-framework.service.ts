@@ -3,14 +3,50 @@ import { CsFrameworkService } from '@project-sunbird/client-services/services/fr
 import { ChannelService } from '@sunbird/core';
 import _ from 'lodash';
 import { ConfigService } from '../../../shared/services/config/config.service';
+import { FormService } from '../../../core/services/form/form.service';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
+// Interface for framework category data
+interface FrameworkCategory {
+  code: string;
+  label: string;
+  placeHolder: string;
+}
+
+// Interface for framework categories object
+interface FrameworkCategories {
+  fwCategory1?: {
+    code: string;
+  };
+  // Add more properties if needed
+}
+
+// Interface for transformed data object
+interface TransformedData {
+  category: string;
+  type: string;
+  labelText: string;
+  defaultLabelText: string;
+  placeholderText: string;
+  defaultPlaceholderText: string;
+  dataSource: string;
+  multiple: boolean;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class CslFrameworkService {
   defaultFramework;
-  constructor(@Inject('CS_FRAMEWORK_SERVICE') private csFrameworkService: CsFrameworkService, private channelService: ChannelService, private configService: ConfigService
-  ) { }
+  selectedFramework;
+  rootOrgId;
+  searchFilterConfig;
+  constructor(@Inject('CS_FRAMEWORK_SERVICE') private csFrameworkService: CsFrameworkService, private channelService: ChannelService, private configService: ConfigService, public formService: FormService
+  ) {
+    this.selectedFramework = localStorage.getItem('selectedFramework');
+    this.rootOrgId = localStorage.getItem('orgHashTagId');
+
+  }
 
   /**
    * Sets the user-selected framework and fetches it from the channel service if not provided.
@@ -19,17 +55,12 @@ export class CslFrameworkService {
    */
   public setDefaultFWforCsl(userSelFramework?: any, channelId?: any): void {
     if (!userSelFramework && channelId) {
-      // If userSelFramework is not provided, fetch it from the channel service
       this.channelService.getFrameWork(channelId).subscribe((channelData: any) => {
-        // Retrieve the default framework from channelData
         this.defaultFramework = _.get(channelData, 'result.channel.defaultFramework');
-        // Determine the selected framework based on configuration or default value for test
         let selectedFW = this.configService.appConfig.frameworkCatConfig.changeChannel ? this.configService.appConfig.frameworkCatConfig.defaultFW : this.defaultFramework;
-        // Set the framework categories based on the selected framework
         this.setFWCatConfigFromCsl(selectedFW);
       });
     } else {
-      // If userSelFramework is provided, use it directly and set the framework categories
       this.setFWCatConfigFromCsl(userSelFramework);
     }
   }
@@ -55,21 +86,17 @@ export class CslFrameworkService {
    */
   frameworkLabelTransform(userDefinedFwCategory: any[], userPreference: any): any[] {
     let transformedArray: any[] = [];
-    // Iterate through each user-defined framework category
     userDefinedFwCategory.forEach(field => {
-      // Check if user preference contains data for the current category
       if (userPreference.framework[field.code] && userPreference.framework[field.code][0]) {
-        // Construct label-value pair based on the user preference data
         let data = {
           labels: field.label,
           values: userPreference.framework[field.code]
         };
-        // Push the constructed data into the transformed array
         transformedArray.push(data);
       }
     });
 
-    return transformedArray; // Return the transformed framework label-value pairs
+    return transformedArray;
   }
 
   /**
@@ -81,35 +108,26 @@ export class CslFrameworkService {
  */
   public setFWCatConfigFromCsl(userSelFramework: any): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      // Check if userSelFramework is provided
       if (userSelFramework) {
-        // Fetch framework configuration for the provided user-selected framework
         this.csFrameworkService.getFrameworkConfigMap(userSelFramework, {
           apiPath: '/api/framework/v1/'
         }).subscribe(
           (fwData) => {
-            // Log successful retrieval of framework data
             console.log('getFrameworkConfigMap success', fwData);
-
-            // Remove previous framework categories object from local storage
             localStorage.removeItem('fwCategoryObject');
-
-            // Save the new framework categories object to local storage
             localStorage.setItem('fwCategoryObject', JSON.stringify(fwData));
-
-            // Set framework categories object based on the provided user-selected framework
+            localStorage.setItem('selectedFramework', userSelFramework);
             this.setFwCatObjConfigFromCsl(userSelFramework);
 
-            resolve(); // Resolve the Promise when the operation completes
+            resolve();
           },
           (error) => {
-            // Log error if fetching framework configuration fails and reject the Promise
             console.error('getFrameworkConfigMap failed', error);
+            localStorage.setItem('selectedFramework', userSelFramework);
             reject(error);
           }
         );
       } else {
-        // Log if userSelFramework is not provided and resolve the Promise
         console.log('userSelFramework not found');
         resolve();
       }
@@ -122,15 +140,10 @@ export class CslFrameworkService {
    *                             otherwise returns null.
    */
   public getFrameworkCategories(): Object | null {
-    // Retrieve the framework categories from local storage as a string
     const fwCategoryObjectString = localStorage.getItem('fwCategoryObject');
-
-    // Check if the retrieved string is not null or undefined
     if (fwCategoryObjectString) {
-      // Parse the string to convert it into an object and return it
       return JSON.parse(fwCategoryObjectString);
     } else {
-      // Return null if no framework categories are found in local storage
       return null;
     }
   }
@@ -141,23 +154,19 @@ export class CslFrameworkService {
  */
   public setFwCatObjConfigFromCsl(userSelFramework: any): void {
     if (userSelFramework) {
-      // Fetch framework configuration for the provided user-selected framework
       this.csFrameworkService.getFrameworkConfig(userSelFramework, {
         apiPath: '/api/framework/v1/'
       }).subscribe(
         (fwData) => {
-          // Upon successful retrieval, update local storage with framework data
           console.log('getFrameworkConfig success', fwData);
           localStorage.removeItem('fwCategoryObjectValues');
           localStorage.setItem('fwCategoryObjectValues', JSON.stringify(fwData));
         },
         (error) => {
-          // Handle error in fetching framework configuration
           console.error('getFrameworkConfig failed', error);
         }
       );
     } else {
-      // If userSelFramework is not provided, log the situation
       console.log('userSelFramework not found');
     }
   }
@@ -168,15 +177,112 @@ export class CslFrameworkService {
    *                             otherwise returns null.
    */
   public getFrameworkCategoriesObject(): Object | null {
-    // Retrieve the framework categories object from local storage as a string
     const fwCategoryObjectValuesString = localStorage.getItem('fwCategoryObjectValues');
-
-    // Check if the retrieved string is not null or undefined
     if (fwCategoryObjectValuesString) {
-      // Parse the string to convert it into an object and return it
       return JSON.parse(fwCategoryObjectValuesString);
     } else {
-      // Return null if no framework categories object is found in local storage
+      return null;
+    }
+  }
+  /**
+ * Transforms framework categories object into page filter data.
+ * @param frameworkCategoriesObject - Object containing framework categories data.
+ * @param frameworkCategories - Additional framework categories data.
+ * @returns Transformed page filter data array.
+ */
+  public transformPageLevelFilter(
+    frameworkCategoriesObject: FrameworkCategory[],
+    frameworkCategories: FrameworkCategories
+  ): TransformedData[] {
+    const pageFilterData: TransformedData[] = frameworkCategoriesObject.map(filterData => {
+      const transformData: TransformedData = {
+        category: filterData.code,
+        type: "dropdown",
+        labelText: filterData.label,
+        defaultLabelText: filterData.label,
+        placeholderText: filterData.placeHolder,
+        defaultPlaceholderText: filterData.placeHolder,
+        dataSource: "framework",
+        multiple: frameworkCategories?.fwCategory1?.code === filterData.code ? false : true,
+      };
+
+      return transformData;
+    });
+
+    return pageFilterData;
+  }
+
+  /**
+   * @description Fetches form details relevant to global search filters.
+   *              It utilizes framework category object string to initiate the form service request.
+   * @returns {Observable} - Returns an Observable containing form details for global search filters.
+   *                         In case of an error, returns a  framework default data (fwCategoryObjectString).
+   */
+  private getFormDetails() {
+    const fwCategoryObjectString = this.getFrameworkCategoriesObject();
+    const formServiceInputParams = {
+      formType: 'searchfilterconfig1',
+      formAction: 'globalsearch',
+      contentType: 'global',
+      framework: this.selectedFramework,
+      component: 'portal'
+    };
+
+    return this.formService.getFormConfig(formServiceInputParams, this.rootOrgId).pipe(
+      catchError(error => {
+        console.error('Error fetching form config:', error);
+        return of(fwCategoryObjectString); // Return default data in case of error
+      })
+    );
+  }
+
+  /**
+ * @description Constructs and sets the transformed global filter configuration based on form details retrieved.
+ *               This method constructs an object structure from the response data obtained from getFormDetails().
+ *               It maps over the array of objects and creates a transformed structure to store in localStorage.
+ *               Additionally, it manages the storage of the transformed data and original response data.
+ */
+  setTransFormGlobalFilterConfig() {
+    this.getFormDetails().subscribe(responeData => {
+      let transformedObject: any = {};
+      responeData.map((filter, index) => {
+        transformedObject[`fwCategory${index + 1}`] = {
+          index: filter?.index,
+          code: filter?.code,
+          alternativeCode: filter.alternativeCode ? filter.alternativeCode : null,
+          label: filter?.label,
+          translation: filter?.translation,
+        };
+      });
+      localStorage.removeItem('globalFilterConfig');
+      localStorage.removeItem('globalFilterObjectValues');
+      localStorage.setItem('globalFilterObjectValues', JSON.stringify(responeData))
+      localStorage.setItem('globalFilterObject', JSON.stringify(transformedObject))
+
+
+    })
+  }
+  /**
+ * @description Retrieves the global filter categories object (non-values) from local storage.
+ * @returns {Object|null} - Returns the global filter categories object if found in local storage, otherwise returns null.
+ */
+  getGlobalFilterCategories() {
+    const filterCategoryObject = localStorage.getItem('globalFilterObject');
+    if (filterCategoryObject) {
+      return JSON.parse(filterCategoryObject);
+    } else {
+      return null;
+    }
+  }
+  /**
+ * @description Retrieves the global filter categories object from local storage.
+ * @returns {Object|null} - Returns the global filter categories object if found in local storage, otherwise returns null.
+ */
+  getGlobalFilterCategoriesObject() {
+    const filterCategoryObjectVal = localStorage.getItem('globalFilterObjectValues');
+    if (filterCategoryObjectVal) {
+      return JSON.parse(filterCategoryObjectVal);
+    } else {
       return null;
     }
   }

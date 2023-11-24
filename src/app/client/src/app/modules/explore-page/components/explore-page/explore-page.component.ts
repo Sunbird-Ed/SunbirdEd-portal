@@ -69,6 +69,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     frameworkCategories;
     frameworkCategoriesObject;
     transformUserPreference;
+    globalFilterCategories;
     private myCoursesSearchQuery = JSON.stringify({
         'request': { 'filters': { 'contentType': ['Course'], 'objectType': ['Content'], 'status': ['Live'] }, 'sort_by': { 'lastPublishedOn': 'desc' }, 'limit': 10, 'organisationId': _.get(this.userService.userProfile, 'organisationIds') }
     });
@@ -213,6 +214,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit() {
+        this.cslFrameworkService.setTransFormGlobalFilterConfig();
         this.frameworkCategories = this.cslFrameworkService?.getFrameworkCategories();
         this.frameworkCategoriesObject = this.cslFrameworkService?.getFrameworkCategoriesObject();
         this.isDesktopApp = this.utilService.isDesktopApp;
@@ -642,8 +644,12 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private getContentSection(section, searchOptions) {
+        this.globalFilterCategories = this.cslFrameworkService?.getGlobalFilterCategories();
+        let globalFilterAltCat1 = this.globalFilterCategories.fwCategory1?.alternativeCode ?? this.globalFilterCategories.fwCategory4?.code;
+        let globalFilterAltCat2 = this.globalFilterCategories.fwCategory2?.alternativeCode ?? this.globalFilterCategories.fwCategory3?.code;
+        let globalFilterAltCat3 = this.globalFilterCategories.fwCategory3?.alternativeCode ?? this.globalFilterCategories.fwCategory2?.code;
         const sectionFilters = _.get(section, 'apiConfig.req.request.filters');
-        const requiredProps = ['se_boards', 'se_gradeLevels', 'se_mediums'];
+        const requiredProps = [globalFilterAltCat1, globalFilterAltCat2, globalFilterAltCat3];
         if (_.has(sectionFilters, ...requiredProps) && searchOptions.filters) {
             const preferences = _.pick(searchOptions.filters, requiredProps);
             section.apiConfig.req.request.filters = { ...section.apiConfig.req.request.filters, ...preferences };
@@ -1343,15 +1349,17 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
     /**
-     * @description - Method to get the filterconfig from current page metadata for search filter component and set the value
+     * Sets the filter configuration based on the current page data or retrieves it from the framework based data
+     * @param currentPage - Optional parameter representing the current page data.
      */
     private setFilterConfig(currentPage) {
         this.filterResponseData = {};
         const currentPageData = currentPage ? currentPage : this.getCurrentPageData();
         if (currentPageData) {
             const filterResponseData = _.get(currentPageData, 'metaData.searchFilterConfig');
-            this.filterResponseData = filterResponseData;
-            this.userSelectedPreference=_.get(this, 'userPreference.framework');
+            this.filterResponseData = filterResponseData ? filterResponseData :
+                this.cslFrameworkService.transformPageLevelFilter(this.frameworkCategoriesObject, this.frameworkCategories);
+            this.userSelectedPreference = _.get(this, 'userPreference.framework');
             this.refreshFilter = false;
             this.cdr.detectChanges();
             this.refreshFilter = true;
@@ -1359,5 +1367,5 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     capitalizeFirstLetter(str: string): string {
         return str.charAt(0).toUpperCase() + str.slice(1);
-      }
-}
+    }
+} 

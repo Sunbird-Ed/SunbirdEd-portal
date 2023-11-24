@@ -16,6 +16,7 @@ import { PublicPlayerService } from '@sunbird/public';
 import { takeUntil, map, mergeMap, filter, catchError, tap, pluck, switchMap, delay } from 'rxjs/operators';
 import { OfflineCardService } from '@sunbird/shared';
 import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 @Component({
   templateUrl: './course-page.component.html'
@@ -80,6 +81,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
   contentName;
   contentData;
   downloadIdentifier: string;
+  globalFilterCategoriesObject;
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -96,7 +98,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public navigationhelperService: NavigationHelperService, public layoutService: LayoutService, private coursesService: CoursesService,
     private frameworkService: FrameworkService, private playerService: PlayerService, private searchService: SearchService,
     private offlineCardService: OfflineCardService, public contentManagerService: ContentManagerService,
-    public telemetryService: TelemetryService) {
+    public telemetryService: TelemetryService, public cslFrameworkService: CslFrameworkService) {
     this.setTelemetryData();
   }
 
@@ -155,6 +157,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.globalFilterCategoriesObject = this.cslFrameworkService.getGlobalFilterCategoriesObject();
     this.initialize();
     this.subscription$ = this.mergeObservables();
     this.isDesktopApp = this.utilService.isDesktopApp;
@@ -742,94 +745,34 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       'messageText': 'messages.stmsg.m0006'
     };
   }
-  updateFacetsData(facets) {
+  updateFacetsData(facets) { //validate this
     const facetsData = [];
-    _.forEach(facets, (facet, key) => {
-      switch (key) {
-        case 'se_boards':
-        case 'board':
-          const boardData = {
-            index: '1',
-            label: _.get(this.resourceService, 'frmelmnts.lbl.boards'),
-            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectBoard'),
-            values: facet,
-            name: key
-          };
-          facetsData.push(boardData);
-          break;
-        case 'se_mediums':
-        case 'medium':
-          const mediumData = {
-            index: '2',
-            label: _.get(this.resourceService, 'frmelmnts.lbl.medium'),
-            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectMedium'),
-            values: facet,
-            name: key
-          };
-          facetsData.push(mediumData);
-          break;
-        case 'se_gradeLevels':
-        case 'gradeLevel':
-          const gradeLevelData = {
-            index: '3',
-            label: _.get(this.resourceService, 'frmelmnts.lbl.class'),
-            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectClass'),
-            values: facet,
-            name: key
-          };
-          facetsData.push(gradeLevelData);
-          break;
-        case 'se_subjects':
-        case 'subject':
-          const subjectData = {
-            index: '4',
-            label: _.get(this.resourceService, 'frmelmnts.lbl.subject'),
-            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectSubject'),
-            values: facet,
-            name: key
-          };
-          facetsData.push(subjectData);
-          break;
-        case 'publisher':
-          const publisherData = {
-            index: '5',
-            label: _.get(this.resourceService, 'frmelmnts.lbl.publisher'),
-            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectPublisher'),
-            values: facet,
-            name: key
-          };
-          facetsData.push(publisherData);
-          break;
-        case 'contentType':
-          const contentTypeData = {
-            index: '6',
-            label: _.get(this.resourceService, 'frmelmnts.lbl.contentType'),
-            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectContentType'),
-            values: facet,
-            name: key
-          };
-          facetsData.push(contentTypeData);
-          break;
-        case 'channel':
-          const channelLists = [];
-          _.forEach(facet, (channelList) => {
-            if (channelList.orgName) {
-              channelList.name = channelList.orgName;
-            }
-            channelLists.push(channelList);
-          });
-          const channelData = {
-            index: '1',
-            label: _.get(this.resourceService, 'frmelmnts.lbl.orgname'),
-            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.orgname'),
-            values: channelLists,
-            name: key
-          };
-          facetsData.push(channelData);
-          break;
+    this.globalFilterCategoriesObject.forEach((filter) => {
+      const facet = facets[filter.code];
+      if (facet) {
+        const facetData = {
+          index: filter.code === 'channel' ? '1' : filter.index.toString(),
+          label: filter.label,
+          placeholder: filter.placeHolder,
+          values: filter.code === 'channel' ? this.processChannelData(facet) : facet,
+          name: filter.code
+        };
+
+        facetsData.push(facetData);
       }
     });
+    console.log('view-all', facetsData);
     return facetsData;
+  }
+
+  // Helper method to process channel data
+  processChannelData(facet) {
+    return facet.map((channelList) => {
+      if (channelList.orgName) {
+        channelList.name = channelList.orgName;
+      }
+      return channelList;
+    });
   }
 
   private fetchEnrolledCoursesSection() {
