@@ -67,7 +67,7 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
     this.sbFormLocationSelectionDelegate.init(this.deviceProfile, this.showModal, this.isStepper )
       .catch(() => {
         this.closeModal();
-        if(this.isLocationEnabled === true){
+        if(this.isLocationEnabled){
           this.toasterService.error(this.resourceService.messages.fmsg.m0049);
         }
       });
