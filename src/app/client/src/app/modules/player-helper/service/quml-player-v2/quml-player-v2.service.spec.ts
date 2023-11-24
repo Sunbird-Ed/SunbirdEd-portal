@@ -14,7 +14,7 @@ describe('QumlPlayerV2Service', () => {
   };
 
   const mockPublicPlayerService: Partial<PublicPlayerService> = {
-    getQuestionSetHierarchyV2: jest.fn().mockImplementation(() => {
+    getQuestionSetHierarchy: jest.fn().mockImplementation(() => {
       return of(hierarchyResponse.result)
     }),
     getQuestionSetRead: jest.fn().mockImplementation(() => {
