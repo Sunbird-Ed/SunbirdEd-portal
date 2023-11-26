@@ -79,7 +79,7 @@
     "azure-storage": "2.10.2",
     "body-parser": "1.17.2",
     "cassandra-session-store": "1.0.6",
-    "client-cloud-services": "2.0.3",
+    "client-cloud-services": "3.0.0",
     "compare-versions": "3.5.1",
     "compression": "1.7.2",
     "connect-redis": "4.0.4",
@@ -115,7 +115,7 @@
     "sb_cache_manager": "file:libs/sb_cache_manager",
     "sb_telemetry_util": "file:libs/sb_telemetry_util",
     "sunbird-localization": "0.0.2",
-    "svg2img": "0.6.1",
+    "svg2img": "0.7.0",
     "ua-parser-js": "0.7.13",
     "uuid": "3.1.0",
     "uuid-validate": "0.0.3"
