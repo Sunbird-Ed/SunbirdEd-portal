@@ -135,7 +135,7 @@
               </svg></i>{{resourceService?.frmelmnts?.btn?.continueLearning}}</button>
         </div>
 
-        <h5 class="sb-color-primary font-weight-bold mb-0 sb__ellipsis" tabindex="0">You have completed this course</h5>
+        <h5 class="sb-color-primary font-weight-bold mb-0 sb__ellipsis" tabindex="0" *ngIf="progress===100">You have completed this course</h5>
 
         <div class="ml-auto text-right py-8"
           *ngIf="!enrolledCourse && viewDashboard && !router.url.includes('/dashboard')">
