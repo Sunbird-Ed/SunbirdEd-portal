@@ -97,4 +97,58 @@ describe('SegmentationTagService', () => {
     expect(service.exeCommands).toContain(cmdCriteria);
   });
 
+  it('should clear exeCommands array', () => {
+    service.exeCommands = [
+      {
+        commandId: '123',
+        controlFunction: 'BANNER_CONFIG',
+        targetedClient: 'portal',
+        controlFunctionPayload: {
+          showBanner: true,
+        },
+      },
+    ];
+
+    service.getUpdatedCommands();
+
+    expect(service.exeCommands).toEqual([]);
+  });
+
+  it('should invoke evalCriteria after clearing exeCommands', () => {
+    const evalCriteriaSpy = jest.spyOn(service, 'evalCriteria');
+    service.getUpdatedCommands();
+    expect(evalCriteriaSpy).toHaveBeenCalled();
+  });
+
+  it('should fetch segmentation commands using frameworkService.getSegmentationCommands', async () => {
+    const getSegmentationCommandsSpy = jest.spyOn(frameworkService, 'getSegmentationCommands').mockResolvedValue([]);
+    await service.getSegmentCommand();
+    expect(getSegmentationCommandsSpy).toHaveBeenCalled();
+  });
+
+  it('should update comdList when segmentation commands are available', async () => {
+    const mockCommandList = [
+      {
+        commandId: '123',
+        controlFunction: 'BANNER_CONFIG',
+        targetedClient: 'portal',
+        controlFunctionPayload: {
+          showBanner: true,
+        },
+      },
+    ];
+    const evalCriteriaSpy = jest.spyOn(service, 'evalCriteria');
+    jest.spyOn(frameworkService, 'getSegmentationCommands').mockResolvedValue(mockCommandList);
+    await service.getSegmentCommand();
+    expect(service['comdList']).toEqual(mockCommandList);
+    expect(evalCriteriaSpy).toHaveBeenCalled();
+  });
+  
+  it('should not update comdList when segmentation commands are not available', async () => {
+    const mockCommandList = null;
+    jest.spyOn(frameworkService, 'getSegmentationCommands').mockResolvedValue(mockCommandList);
+    await service.getSegmentCommand();
+    expect(service['comdList']).toEqual([]);
+  });
+
 });
