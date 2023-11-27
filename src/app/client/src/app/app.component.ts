@@ -13,7 +13,7 @@ import {
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
 import { Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin, zip, Subject } from 'rxjs';
-import { first, filter, mergeMap, tap, skipWhile, startWith, takeUntil, debounceTime } from 'rxjs/operators';
+import { first, filter, mergeMap, tap, skipWhile, startWith, takeUntil, debounceTime, catchError } from 'rxjs/operators';
 import { CacheService } from '../app/modules/shared/services/cache-service/cache.service';
 import { DOCUMENT } from '@angular/common';
 import { image } from '../assets/images/tara-bot-icon';
@@ -127,6 +127,8 @@ export class AppComponent implements OnInit, OnDestroy {
   isStepperEnabled = false;
   isPopupEnabled = false;
   onboardingData: any;
+  onboardingDataSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  onboardingData$ = this.onboardingDataSubject;
   isOnboardingEnabled = true;
   isFWSelectionEnabled = true;
   isUserTypeEnabled = true;
@@ -324,26 +326,40 @@ export class AppComponent implements OnInit, OnDestroy {
   /**
       * @description - This method enables/disables the onboarding popups based on the isvisible values returned from the form config request
   */
-  getOnboardingSkipStatus(){
+  async getOnboardingSkipStatus(){
     const formReadInputParams = {
       formType: 'onboardingPopupVisibility',
       formAction: 'onboarding',
       contentType: "global",
       component: "portal"
     };
-    this.formService.getFormConfig(formReadInputParams).subscribe(
-      (formResponsedata) => {
-        if (formResponsedata) {
-          this.popupControlService.setOnboardingData(formResponsedata);
-          this.isOnboardingEnabled= formResponsedata.onboardingPopups? formResponsedata.onboardingPopups.isVisible : true;
-          this.isFWSelectionEnabled = formResponsedata.frameworkPopup? formResponsedata.frameworkPopup.isVisible : true;
-          this.isUserTypeEnabled =formResponsedata.userTypePopup? formResponsedata.userTypePopup.isVisible: true;
-          if(!(this.isOnboardingEnabled) || !(this.isFWSelectionEnabled)){
-             this.userService.setGuestUser(true,formResponsedata.frameworkPopup.defaultFormatedName); //user service method is set to true in case either of onboarding or framework popup is disabled
-          }
-        }
-      }, error => { console.log("Cant read the form")
-    });
+    try {
+      const formResponsedata = await this.formService
+        .getFormConfig(formReadInputParams)
+        .pipe(
+          catchError((error) => {
+            console.error('Error fetching form config:', error);
+            return [];
+          })
+        )
+        .toPromise();
+      this.onboardingData = formResponsedata;
+      this.onboardingDataSubject.next(this.onboardingData);
+    } catch (error) {
+      console.log('Cant read the form:', error);
+      return null;
+    }
+    this.popupControlService.setOnboardingData(this.onboardingData);
+    this.checkPopupVisiblity(this.onboardingData);
+  }
+
+  checkPopupVisiblity(onboardingData){
+    this.isOnboardingEnabled= onboardingData.onboardingPopups? onboardingData.onboardingPopups.isVisible : true;
+    this.isFWSelectionEnabled = onboardingData.frameworkPopup? onboardingData.frameworkPopup.isVisible : true;
+    this.isUserTypeEnabled =onboardingData.userTypePopup? onboardingData.userTypePopup.isVisible: true;
+    if(!(this.isOnboardingEnabled) || !(this.isFWSelectionEnabled)){
+      this.userService.setGuestUser(true,onboardingData.frameworkPopup.defaultFormatedName); //user service method is set to true in case either of onboarding or framework popup is disabled
+    }
   }
 
   ngOnInit() {
@@ -397,14 +413,27 @@ export class AppComponent implements OnInit, OnDestroy {
             this.setUserOptions();
           } else {
             this.isGuestUser = true;
-            this.userService.getGuestUser().subscribe((response) => {
-              this.guestUserDetails = response;
-            }, error => {
-              console.error('Error while fetching guest user', error);
+            const onboardingPromise = new Promise((resolve) => {
+              this.onboardingData$.subscribe((data) => {
+                if (data) {
+                  resolve(this.onboardingData);
+                }
+              });
             });
-
+            onboardingPromise.then((onboardingData) => {
+              this.onboardingData = onboardingData;
+              this.checkPopupVisiblity(this.onboardingData);
+              this.userService.getGuestUser().subscribe(
+                (response) => {
+                  this.guestUserDetails = response;
+                },
+                (error) => {
+                  console.error('Error while fetching guest user', error);
+                }
+              );
+            });
             return this.setOrgDetails();
-          }
+          }            
         }))
       .subscribe(data => {
         this.tenantService.getTenantInfo(this.userService.slug);
