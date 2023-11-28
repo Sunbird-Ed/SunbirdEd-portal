@@ -76,13 +76,13 @@
       <!-- Previous module button -->
       <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-left-icon-btn" aria-label="previous-module" *ngIf="prevModule"
         tabindex="0" (click)="navigateToPlayerPage(prevModule); logTelemetry('previous-module', prevModule, true);">
-        <i class="icon-svg icon-svg--xxs icon-back mr-4 rotate-90" role="img" aria-label="arrow-up"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>{{generaliseLabelService?.frmelmnts?.lbl?.prevModule | translate}}
+        <i class="icon-svg icon-svg--xxs icon-back mr-4 rotate-90" role="img" aria-label="arrow-up"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>{{generaliseLabelService?.frmelmnts?.lbl?.prevModule || 'Prev. module' | translate}}
       </button>
       <!-- Previous Module button -->
       <!-- Next Module button -->
       <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-right-icon-btn ml-auto" aria-label="next-module" *ngIf="nextModule"
         tabindex="0" (click)="navigateToPlayerPage(nextModule); logTelemetry('next-module', nextModule, true)">
-        {{generaliseLabelService?.frmelmnts?.lbl?.nextModule | translate}}<i class="icon-svg icon-svg--xxs icon-back ml-4 rotate90" role="img" aria-label="arrow-up"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>
+        {{generaliseLabelService?.frmelmnts?.lbl?.nextModule || 'Next module' | translate}}<i class="icon-svg icon-svg--xxs icon-back ml-4 rotate90" role="img" aria-label="arrow-up"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>
       </button>
       <!-- Next Module button -->
     </div>

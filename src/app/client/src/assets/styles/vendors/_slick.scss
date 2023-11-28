@@ -259,18 +259,18 @@ $slick-opacity-not-active: 0 !default;
 
 @include respond-above(sm) {
   .slick-prev {
-    left: calculateRem(-24px);
+    left: calculateRem(-3px);
 
     [dir="rtl"] & {
-      right: calculateRem(-24px);
+      right: calculateRem(-3px);
     }
   }
 
   .slick-next {
-    right: calculateRem(-24px);
+    right: calculateRem(-3px);
 
     [dir="rtl"] & {
-      left: calculateRem(-24px);
+      left: calculateRem(-3px);
     }
   }
 }
