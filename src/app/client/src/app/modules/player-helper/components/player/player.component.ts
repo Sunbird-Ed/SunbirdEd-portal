@@ -72,13 +72,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   totalPage: any;
   currentPageType: any
 
-  summaryProg: any;
-  summarytotallength: any;
-  summaryvisitedlength: any;
-  summaryvisitedcontentend: any;
-  summarytotalseekedlength: any;
-  summaryendpageseen: any;
-
   /**
  * Dom element reference of contentRatingModal
  */
@@ -424,39 +417,37 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   generateContentReadEvent(event: any, newPlayerEvent?) {
     
-    let holdsummary = event.edata.summary;
 
-    if(holdsummary && holdsummary.length > 0) {
-      for(let summary of holdsummary) {
+    // to be used later for ratting modal
+    // let holdsummary = event.edata.summary;
+    // if(holdsummary && holdsummary.length > 0) {
+    //   for(let summary of holdsummary) {
 
-        for(let key in summary) {
-              if(key == 'progress') {
-                  this.summaryProg = summary[key]
-              }
-              if(key == 'totallength') {
-                  this.summarytotallength = summary[key]
-              }
-              if(key == 'visitedlength') {
-                  this.summaryvisitedlength = summary[key]
-              }
-              if(key == 'visitedcontentend') {
-                  this.summaryvisitedcontentend = summary[key]
-              }
-              if(key == 'totalseekedlength') {
-                  this.summarytotalseekedlength = summary[key]
-              }
-              if(key == 'endpageseen') {
-                this.summaryendpageseen = summary[key]
-              }
-        }
+    //     for(let key in summary) {
+    //           if(key == 'progress') {
+    //               this.summaryProg = summary[key]
+    //           }
+    //           if(key == 'totallength') {
+    //               this.summarytotallength = summary[key]
+    //           }
+    //           if(key == 'visitedlength') {
+    //               this.summaryvisitedlength = summary[key]
+    //           }
+    //           if(key == 'visitedcontentend') {
+    //               this.summaryvisitedcontentend = summary[key]
+    //           }
+    //           if(key == 'totalseekedlength') {
+    //               this.summarytotalseekedlength = summary[key]
+    //           }
+    //           if(key == 'endpageseen') {
+    //             this.summaryendpageseen = summary[key]
+    //           }
+    //     }
   
-      }
+    //   }
 
-    }
-
-
-
-
+    // }
+    // to be used later for ratting modal end
 
     let eventCopy = newPlayerEvent ? _.cloneDeep(event) : event;
     if (!eventCopy) {
@@ -470,12 +461,10 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     // this.contentId = contentId;
 
     if (eid && (eid === 'START' || eid === 'END') && contentId === _.get(this.playerConfig, 'metadata.identifier')) {
-
-      // if(this.summaryProg && this.summaryvisitedlength === this.totalPage && this.summaryvisitedcontentend) {
+      
         setTimeout(() => {
           this.showRatingPopup(eventCopy);
-        }, 1300);
-      // }
+        }, 1400);
 
       if (this.contentProgressEvents$) {
         this.contentProgressEvents$.next(eventCopy);
