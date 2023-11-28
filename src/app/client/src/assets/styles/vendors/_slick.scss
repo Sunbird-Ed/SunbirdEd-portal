@@ -259,7 +259,7 @@ $slick-opacity-not-active: 0 !default;
 
 @include respond-above(sm) {
   .slick-prev {
-    left: calculateRem(-3px);
+    left: calculateRem(13px);
 
     [dir="rtl"] & {
       right: calculateRem(-3px);
@@ -270,7 +270,7 @@ $slick-opacity-not-active: 0 !default;
     right: calculateRem(-3px);
 
     [dir="rtl"] & {
-      left: calculateRem(-3px);
+      left: calculateRem(13px);
     }
   }
 }

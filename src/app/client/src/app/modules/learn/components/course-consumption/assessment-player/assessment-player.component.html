@@ -87,14 +87,14 @@
       <!-- Next Module button -->
     </div>
     <div *ngIf="!isUnitCompleted"> 
-      <div class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.moduleProgress}}</div>         
-      <div class="sb-color-primary fnormal font-weight-bold mt-4">{{consumedContents}}/{{totalContents}} {{resourceService?.frmelmnts?.lbl?.completed}}</div>
+      <div class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.moduleProgress || "Module progress"}}</div>         
+      <div class="sb-color-primary fnormal font-weight-bold mt-4">{{consumedContents}}/{{totalContents}} {{resourceService?.frmelmnts?.lbl?.completed || 'Completed'}}</div>
       <mat-progress-bar mode="determinate" [value]="consumedContents" class="mb-0 mr-0 mt-8 tiny"></mat-progress-bar>
     </div>
   
   <div class="module-complete-content d-flex flex-ai-center py-8 px-16 mb-8" *ngIf="isUnitCompleted">
     <div class="mr-16 complete-content-image"><img src="./assets/images/badge-complete.svg" alt="complete-content-image"></div>
-    <label class="font-weight-bold mb-0 sb-color-secondary fnormal">{{generaliseLabelService?.frmelmnts?.lbl?.moduleFinish}}</label>
+    <label class="font-weight-bold mb-0 sb-color-secondary fnormal">{{generaliseLabelService?.frmelmnts?.lbl?.moduleFinish || "You have completed this module" }}</label>
   </div>
 </div>
        
