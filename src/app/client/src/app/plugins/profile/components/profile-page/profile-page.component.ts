@@ -706,8 +706,10 @@ public deleteForMobileOnly(){
     url: 'user/deletefromMobile'
   };
   this.learnerService.get(option).subscribe(res => {
+    window.open('dev.sunbird.app://mobile?uid=12345678','_blank')
     console.log('----->',res);
   }, err => {
+    window.open('dev.sunbird.app://mobile?uid=12345678','_blank')
     console.log('----->',err);
   });
 }
