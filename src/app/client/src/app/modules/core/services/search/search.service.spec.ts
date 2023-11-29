@@ -8,6 +8,8 @@ import { ConfigService, ResourceService } from '../../../shared';
 import { PublicDataService } from './../public-data/public-data.service';
 import { FormService } from '../../../core';
 import { serviceMockData } from './search.service.spec.data';
+import { CsFrameworkService } from '@project-sunbird/client-services/services/framework';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 describe('SearchService', () => {
   let searchService: SearchService;
@@ -74,6 +76,16 @@ describe('SearchService', () => {
     }
   };
 
+  const csFrameworkServiceMock: Partial<CsFrameworkService> = {
+    getFrameworkConfigMap: jest.fn(),
+  };
+
+  const mockCslFrameworkService: Partial<CslFrameworkService> = {
+    getFrameworkCategories: jest.fn(),
+    setDefaultFWforCsl: jest.fn(),
+    getGlobalFilterCategoriesObject: jest.fn()
+  };
+
   beforeAll(() => {
     searchService = new SearchService(
       mockUserService as UserService,
@@ -82,7 +94,10 @@ describe('SearchService', () => {
       mockLearnerService as LearnerService,
       mockPublicDataService as PublicDataService,
       mockResourceService as ResourceService,
-      mockFormService as FormService
+      mockFormService as FormService,
+      mockCslFrameworkService as CslFrameworkService,
+      csFrameworkServiceMock as CsFrameworkService,
+
     );
   });
 

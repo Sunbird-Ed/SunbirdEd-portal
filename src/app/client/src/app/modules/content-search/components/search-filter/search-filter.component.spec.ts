@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { ContentSearchService } from './../../services';
 import * as _ from 'lodash-es';
+import { CslFrameworkService } from  '../../../public/services/csl-framework/csl-framework.service';
 
 describe('SearchFilterComponent', () => {
     let component: SearchFilterComponent;
@@ -16,7 +17,7 @@ describe('SearchFilterComponent', () => {
             medium: 'se_mediums',
             gradeLevel: 'se_gradeLevels',
             board: 'se_boards'
-        },
+        } as any,
         fetchFilter:jest.fn()
     };
     const mockFormService: Partial<FormService> = {};
@@ -47,6 +48,10 @@ describe('SearchFilterComponent', () => {
     };
     const mockUtilService: Partial<UtilService> = {
     };
+    const mockCslFrameworkService: Partial<CslFrameworkService> = {
+        getFrameworkCategories: jest.fn(),
+        setDefaultFWforCsl: jest.fn()
+    };
 
     beforeAll(() => {
         component = new SearchFilterComponent(
@@ -58,7 +63,8 @@ describe('SearchFilterComponent', () => {
             mockLayoutService as LayoutService,
             mockFormService as FormService,
             mockCacheService as CacheService,
-            mockUtilService as UtilService
+            mockUtilService as UtilService,
+            mockCslFrameworkService as CslFrameworkService
         );
     });
 
@@ -157,7 +163,7 @@ describe('SearchFilterComponent', () => {
         component['checkForWindowSize']();
         expect(component.isOpen).toBeFalsy();
     });
-    
+
 
     describe('ngOnInit', () => {
         it('should invoked ngOnInit for reset filters', () => {

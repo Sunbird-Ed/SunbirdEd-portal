@@ -9,6 +9,7 @@ import { Location } from '@angular/common';
 import { BrowserCacheTtlService, LayoutService, UtilService } from '../../../shared';
 import { OrgDetailsService, UserService } from '../../../core';
 import { Response } from './view-all.component.spec.data';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 describe('ViewAllComponent', () => {
   let component: ViewAllComponent;
@@ -126,6 +127,14 @@ describe('ViewAllComponent', () => {
     redoLayoutCSS: jest.fn(),
     switchableLayout: jest.fn()
   };
+  const mockCslFrameworkService: Partial<CslFrameworkService> = {
+    getFrameworkCategories: jest.fn(),
+    setDefaultFWforCsl: jest.fn(),
+    getGlobalFilterCategoriesObject: jest.fn(() =>[
+      { code: 'board', name: 'Board' },
+      { code: 'medium', name: 'Medium' },
+    ] ),
+  };
 
   beforeAll(() => {
     component = new ViewAllComponent(
@@ -146,6 +155,7 @@ describe('ViewAllComponent', () => {
       mockBrowserCacheTtlService as BrowserCacheTtlService,
       mockNavigationHelperService as NavigationHelperService,
       mockLayoutService as LayoutService,
+      mockCslFrameworkService as CslFrameworkService
     );
 
   });
