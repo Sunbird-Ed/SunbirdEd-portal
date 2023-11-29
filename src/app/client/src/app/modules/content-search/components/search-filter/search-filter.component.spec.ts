@@ -113,11 +113,13 @@ describe('SearchFilterComponent', () => {
             'id': 'reset-filter', 'type': 'click',
             'pageid': 'resource-search', 'extra': {
                 'filters': {
-                    board: ['AP Board'],
+                    board: [],
                     channel: [],
                     medium: [],
                     publisher: [],
-                    subject: ['subject-1'],
+                    undefined: [
+                        "AP Board",
+                    ],
                     selectedTab: 'textbook'
                 }
             }
@@ -137,19 +139,14 @@ describe('SearchFilterComponent', () => {
     it('should call filterData', () => {
         const returnData = component.filterData;
         expect(returnData).toEqual([
-            'medium',
-            'gradeLevel',
-            'board',
-            'channel',
-            'subject',
-            'audience',
-            'publisher',
-            'se_subjects',
-            'se_boards',
-            'se_gradeLevels',
-            'se_mediums'
+            component.frameworkCategories?.fwCategory1?.code,
+            component.frameworkCategories?.fwCategory2?.code,
+            component.frameworkCategories?.fwCategory3?.code,
+            component.frameworkCategories?.fwCategory4?.code,
+            'channel', 'audience', 'publisher', 'se_subjects', 'se_boards', 'se_gradeLevels', 'se_mediums'
         ]);
     });
+
 
     it('should call getChannelId', () => {
         const returnData = component.getChannelId(0);
