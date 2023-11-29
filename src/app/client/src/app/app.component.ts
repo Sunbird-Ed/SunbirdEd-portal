@@ -352,7 +352,10 @@ export class AppComponent implements OnInit, OnDestroy {
     this.popupControlService.setOnboardingData(this.onboardingData);
     this.checkPopupVisiblity(this.onboardingData);
   }
-
+  
+  /**
+    * @description - This method sets the popup show values to true/false based on values from form config
+  */
   checkPopupVisiblity(onboardingData){
     this.isOnboardingEnabled= onboardingData.onboardingPopups? onboardingData.onboardingPopups.isVisible : true;
     this.isFWSelectionEnabled = onboardingData.frameworkPopup? onboardingData.frameworkPopup.isVisible : true;

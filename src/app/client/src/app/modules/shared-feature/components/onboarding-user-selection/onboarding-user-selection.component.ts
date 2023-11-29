@@ -56,7 +56,7 @@ export class OnboardingUserSelectionComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     /**
-      * @description - Here we enable/disable the usertype popup based on the isvisible value returned from the form config request
+      * @description - popupcontrol service returned value is used to enable/disable the usertype popup based on the isvisible value
     */
     this.popupControlService.getOnboardingData().subscribe((formResponsedata)=>{
       this.isUserTypeEnabled =formResponsedata.userTypePopup? formResponsedata.userTypePopup.isVisible: true;
