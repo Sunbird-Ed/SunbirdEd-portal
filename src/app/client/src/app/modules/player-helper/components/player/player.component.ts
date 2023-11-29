@@ -68,6 +68,10 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   contentId: string;
   collectionId:string;
 
+  currentPage: any;
+  totalPage: any;
+  currentPageType: any
+
   /**
  * Dom element reference of contentRatingModal
  */
@@ -419,7 +423,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     const contentId = _.get(eventCopy, 'detail.telemetryData.object.id');
     // this.contentId = contentId;
     if (eid && (eid === 'START' || eid === 'END') && contentId === _.get(this.playerConfig, 'metadata.identifier')) {
-      this.showRatingPopup(eventCopy);
+      setTimeout(() => {
+        this.showRatingPopup(eventCopy);
+      }, 1400);
       if (this.contentProgressEvents$) {
         this.contentProgressEvents$.next(eventCopy);
       }
@@ -451,7 +457,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       const contentMimeType = this.playerConfig.metadata.mimeType;
       contentProgress = CsContentProgressCalculator.calculate(playerSummary, contentMimeType);
     }
-    if (event.detail.telemetryData.eid === 'END' && contentProgress === 100) {
+    if (event.detail.telemetryData.eid === 'END' && contentProgress === 100 &&
+    this.currentPageType === "END" && this.currentPage === this.totalPage) {
       this.contentRatingModal = !this.isFullScreenView;
       this.showRatingModalAfterClose = true;
       if (this.modal) {
