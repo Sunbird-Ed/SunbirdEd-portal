@@ -429,37 +429,40 @@ describe('ViewAllComponent', () => {
     const returnValue = component.updateFacetsData(Response.facetContentType);
     expect(JSON.stringify(returnValue)).toEqual(JSON.stringify(obj));
   });
+
   it('should call updateFacetsData method channel', () => {
-    const obj = [
-      {
-        index: '1',
-        label: 'Organization Name',
-        placeholder: 'Organization Name',
-        values: ['1', 'channel', 'channel', 'channel'],
-        name: 'channel'
-      }
-    ]
-    component.globalFilterCategoriesObject = component.cslFrameworkService.getGlobalFilterCategoriesObject();
-    const returnValue = component.updateFacetsData(Response.facetChannel);
-    expect(JSON.stringify(returnValue)).toEqual(JSON.stringify(obj));
+    const mockGlobalFilterCategoriesObject = [
+    { index: 1, label: 'Organization Name', placeHolder: 'Organization Name', code: 'channel', name: 'channel' },
+    ];
+    const mockFacets = {
+       channel: ['Chattisgarh']
+    };
+    jest.spyOn(component.cslFrameworkService, 'getGlobalFilterCategoriesObject')
+    .mockReturnValue(mockGlobalFilterCategoriesObject);
+    const returnValue = component.updateFacetsData(mockFacets);
+    expect(returnValue).toEqual([{"index": "1", "label": "Organization Name", "name": "channel", "placeholder": "Organization Name", "values": ["Chattisgarh"]}]);
   });
+
   it('should call processEnrolledCourses method', () => {
     component.processEnrolledCourses(Response.enrolledCourseData, Response.pageData);
     expect(component.noResult).toBeFalsy();
     expect(component.totalCount).toEqual(0);
   });
+
   it('should call updateCardData method', () => {
     component.searchList = Response.successData as any;
     component.updateCardData(Response.enrolledCourseData);
     expect(mockPublicPlayerService.updateDownloadStatus).toBeCalled();
   });
+
   it('should call getframeWorkData method', () => {
     mockFormService.getFormConfig = jest.fn(() => of({
       id: 'sample-id'
-  }));
+    }));
     component['getframeWorkData']();
     expect(mockFormService.getFormConfig).toBeCalled();
   });
+
   it('should call getframeWorkData method with error', () => {
     // jest.spyOn(mockToasterService,'error');
      mockFormService.getFormConfig = jest.fn(() => throwError({
