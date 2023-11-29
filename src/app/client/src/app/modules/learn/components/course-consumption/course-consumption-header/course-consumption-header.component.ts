@@ -194,6 +194,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         }
       });
 
+      console.log(this.courseHierarchy, "Hierarchy in course consumption header");
       this.courseConsumptionService.updateContentConsumedStatus.emit(
         {
           courseId: this.courseId,
