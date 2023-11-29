@@ -13,7 +13,6 @@ import { PopupControlService } from './service/popup-control.service';
 
 describe('App Component', () => {
   let appComponent: AppComponent;
-
   const mockCacheService: Partial<CacheService> = {
     set: jest.fn()
   };
@@ -456,7 +455,7 @@ describe('App Component', () => {
       jest.resetAllMocks();
     });
 
-    it('should be return user details for guest user', () => {
+    it('should be return user details for guest user', async () => {
       // arrange
       jest.spyOn(appComponent, 'notifyNetworkChange').mockImplementation();
       jest.spyOn(appComponent.formService, 'getFormConfig').mockReturnValue(of({"response":true}));
@@ -514,6 +513,7 @@ describe('App Component', () => {
       jest.spyOn(appComponent, 'setFingerPrintTelemetry').mockImplementation();
       Storage.prototype.setItem = jest.fn(() => true);
       jest.spyOn(appComponent, 'joyThemePopup').mockImplementation();
+    
       mockChangeDetectionRef.detectChanges = jest.fn();
       mockUserService.getGuestUser = jest.fn(() => of({role: 'teacher'}));
       mockOrgDetailsService.getOrgDetails = jest.fn(() => of({
@@ -532,7 +532,6 @@ describe('App Component', () => {
       expect(mockUserService.initialize).toHaveBeenCalledTimes(1);
       expect(mockTenantService.getTenantInfo).toHaveBeenCalled();
       expect(mockTenantService.initialize).toHaveBeenCalled();
-      expect(mockUserService.getGuestUser).toHaveBeenCalled();
       expect(mockOrgDetailsService.getOrgDetails).toHaveBeenCalled();
     });
 
@@ -603,7 +602,6 @@ describe('App Component', () => {
       expect(mockResourceService.initialize).toHaveBeenCalled();
       expect(mockNavigationHelperService.initialize).toHaveBeenCalled();
       expect(mockUserService.initialize).toHaveBeenCalledTimes(1);
-      expect(mockUserService.getGuestUser).toHaveBeenCalled();
       expect(mockOrgDetailsService.getOrgDetails).toHaveBeenCalled();
     });
   });
@@ -661,7 +659,7 @@ describe('App Component', () => {
     expect(appComponent.isUserTypeEnabled).toEqual(true);
   });
 
-  it('should call guestuser method of userservice when either isVisible of onboarding or framework popup is false', () => {
+  it('should call guestuser method of userservice when either isVisible of onboarding or framework popup is false', async () => {
     const formConfigResponse = {
       onboardingPopups: {
         isVisible: false,
@@ -681,11 +679,45 @@ describe('App Component', () => {
       }
     };
     jest.spyOn(appComponent.formService, 'getFormConfig').mockReturnValue(of(formConfigResponse));
-    appComponent.getOnboardingSkipStatus();
-    expect(appComponent.popupControlService.setOnboardingData).toHaveBeenCalled();
-    expect(appComponent.isOnboardingEnabled).toEqual(false);
-    expect(appComponent.isFWSelectionEnabled).toEqual(false);
-    expect(appComponent.isUserTypeEnabled).toEqual(true);
-    expect(appComponent.userService.setGuestUser).toHaveBeenCalledWith(true,formConfigResponse.frameworkPopup.defaultFormatedName);
+    jest.spyOn(appComponent,'checkPopupVisiblity');
+    const nextSpy = jest.spyOn(appComponent.onboardingDataSubject, 'next');
+    await appComponent.getOnboardingSkipStatus();
+
+    expect(appComponent.onboardingData).toEqual(formConfigResponse);
+    expect(nextSpy).toHaveBeenCalledWith(formConfigResponse);
+    expect(appComponent.popupControlService.setOnboardingData).toHaveBeenCalledWith(appComponent.onboardingData);
+    expect(appComponent.checkPopupVisiblity).toHaveBeenCalledWith(appComponent.onboardingData);
   });
+  
+  describe('checkPopupVisiblity',()=>{
+    it('should set flags to true when popups are enabled', () => {
+      const onboardingData = {
+        onboardingPopups: { isVisible: true },
+        frameworkPopup: { isVisible: true },
+        userTypePopup: { isVisible: true },
+      };
+  
+      appComponent.checkPopupVisiblity(onboardingData);
+  
+      expect(appComponent.isOnboardingEnabled).toBe(true);
+      expect(appComponent.isFWSelectionEnabled).toBe(true);
+      expect(appComponent.isUserTypeEnabled).toBe(true);
+    });
+  
+    it('should set flags to false when onboarding popup is disabled', () => {
+      const onboardingData = {
+        onboardingPopups: { isVisible: false },
+        frameworkPopup: { isVisible: false, defaultFormatedName: 'Guest' },
+        userTypePopup: { isVisible: false },
+      };
+  
+      appComponent.checkPopupVisiblity(onboardingData);
+  
+      expect(appComponent.isOnboardingEnabled).toBe(false);
+      expect(appComponent.isFWSelectionEnabled).toBe(false);
+      expect(appComponent.isUserTypeEnabled).toBe(false);
+      expect(appComponent.userService.setGuestUser).toHaveBeenCalledWith(true,onboardingData.frameworkPopup.defaultFormatedName);
+    });
+  })
+
 });
