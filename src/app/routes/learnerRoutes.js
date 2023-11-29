@@ -28,7 +28,7 @@ module.exports = function (app) {
     const redirectUrl = 'dev.sunbird.app://mobile' + '?userId:b8e9cf1d-7a51-4edf-98d8-d47b3fc262e1';
     try{
       logger.info({msg:'in the try block of /learner/user/v1/delete'});
-      res.redirect(redirectUrl);
+      
     }  catch (err) {
       logger.info({msg:'in the catch block of /learner/user/v1/delete'});
     }finally {
