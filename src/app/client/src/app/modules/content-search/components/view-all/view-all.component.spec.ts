@@ -131,8 +131,13 @@ describe('ViewAllComponent', () => {
     getFrameworkCategories: jest.fn(),
     setDefaultFWforCsl: jest.fn(),
     getGlobalFilterCategoriesObject: jest.fn(() =>[
-      { code: 'board', name: 'Board' },
-      { code: 'medium', name: 'Medium' },
+      { index: 1,label: 'Organization Name', placeHolder: 'Organization Name',code:'channel', name: 'channel'},
+      { index: 1,label: 'Board',placeHolder: 'Select Board', code: 'board', name: 'Board' },
+      { index: 2 ,label: 'Medium',placeHolder: 'Select Medium', code: 'medium', name: 'Medium' },
+      { index: 3,label: 'Classes', placeHolder: 'Select Classes',code:'gradeLevel', name: 'gradeLevel'},
+      { index: 4,label: 'Subjects', placeHolder: 'Select Subjects',code:'subject', name: 'subject'},
+      { index: 5,label: 'Publisher', placeHolder: 'Select publisher',code:'publisher', name: 'publisher'},
+      { index: 6,label: 'Content type', placeHolder: 'Select content type',code:'contentType', name: 'contentType'},
     ] ),
   };
 
@@ -331,6 +336,7 @@ describe('ViewAllComponent', () => {
         name: 'board'
       }
     ]
+    component.globalFilterCategoriesObject = component.cslFrameworkService.getGlobalFilterCategoriesObject();
     const returnValue = component.updateFacetsData(Response.facetBoard);
     expect(JSON.stringify(returnValue)).toEqual(JSON.stringify(obj));
   });
@@ -349,6 +355,7 @@ describe('ViewAllComponent', () => {
         name: 'medium'
       }
     ]
+    component.globalFilterCategoriesObject = component.cslFrameworkService.getGlobalFilterCategoriesObject();
     const returnValue = component.updateFacetsData(Response.facetMedium);
     expect(JSON.stringify(returnValue)).toEqual(JSON.stringify(obj));
   });
@@ -362,6 +369,7 @@ describe('ViewAllComponent', () => {
         name: 'gradeLevel'
       }
     ]
+    component.globalFilterCategoriesObject = component.cslFrameworkService.getGlobalFilterCategoriesObject();
     const returnValue = component.updateFacetsData(Response.facetgradeLevel);
     expect(JSON.stringify(returnValue)).toEqual(JSON.stringify(obj));
   });
@@ -398,6 +406,7 @@ describe('ViewAllComponent', () => {
         name: 'publisher'
       }
     ]
+    component.globalFilterCategoriesObject = component.cslFrameworkService.getGlobalFilterCategoriesObject();
     const returnValue = component.updateFacetsData(Response.facetPublisher);
     expect(JSON.stringify(returnValue)).toEqual(JSON.stringify(obj));
   });
@@ -416,6 +425,7 @@ describe('ViewAllComponent', () => {
         name: 'contentType'
       }
     ]
+    component.globalFilterCategoriesObject = component.cslFrameworkService.getGlobalFilterCategoriesObject();
     const returnValue = component.updateFacetsData(Response.facetContentType);
     expect(JSON.stringify(returnValue)).toEqual(JSON.stringify(obj));
   });
@@ -429,6 +439,7 @@ describe('ViewAllComponent', () => {
         name: 'channel'
       }
     ]
+    component.globalFilterCategoriesObject = component.cslFrameworkService.getGlobalFilterCategoriesObject();
     const returnValue = component.updateFacetsData(Response.facetChannel);
     expect(JSON.stringify(returnValue)).toEqual(JSON.stringify(obj));
   });
