@@ -167,6 +167,7 @@ describe('ViewAllComponent', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    component.globalFilterCategoriesObject = component.cslFrameworkService.getGlobalFilterCategoriesObject();
   });
 
   it('should be create a instance of View All Component', () => {
@@ -336,7 +337,6 @@ describe('ViewAllComponent', () => {
         name: 'board'
       }
     ]
-    component.globalFilterCategoriesObject = component.cslFrameworkService.getGlobalFilterCategoriesObject();
     const returnValue = component.updateFacetsData(Response.facetBoard);
     expect(JSON.stringify(returnValue)).toEqual(JSON.stringify(obj));
   });
@@ -355,7 +355,6 @@ describe('ViewAllComponent', () => {
         name: 'medium'
       }
     ]
-    component.globalFilterCategoriesObject = component.cslFrameworkService.getGlobalFilterCategoriesObject();
     const returnValue = component.updateFacetsData(Response.facetMedium);
     expect(JSON.stringify(returnValue)).toEqual(JSON.stringify(obj));
   });
@@ -369,7 +368,6 @@ describe('ViewAllComponent', () => {
         name: 'gradeLevel'
       }
     ]
-    component.globalFilterCategoriesObject = component.cslFrameworkService.getGlobalFilterCategoriesObject();
     const returnValue = component.updateFacetsData(Response.facetgradeLevel);
     expect(JSON.stringify(returnValue)).toEqual(JSON.stringify(obj));
   });
@@ -406,7 +404,6 @@ describe('ViewAllComponent', () => {
         name: 'publisher'
       }
     ]
-    component.globalFilterCategoriesObject = component.cslFrameworkService.getGlobalFilterCategoriesObject();
     const returnValue = component.updateFacetsData(Response.facetPublisher);
     expect(JSON.stringify(returnValue)).toEqual(JSON.stringify(obj));
   });
@@ -425,7 +422,6 @@ describe('ViewAllComponent', () => {
         name: 'contentType'
       }
     ]
-    component.globalFilterCategoriesObject = component.cslFrameworkService.getGlobalFilterCategoriesObject();
     const returnValue = component.updateFacetsData(Response.facetContentType);
     expect(JSON.stringify(returnValue)).toEqual(JSON.stringify(obj));
   });
