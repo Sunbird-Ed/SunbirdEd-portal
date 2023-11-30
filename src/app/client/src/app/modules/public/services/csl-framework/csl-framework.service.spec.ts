@@ -4,7 +4,7 @@ import { ChannelService } from '@sunbird/core';
 import { ConfigService } from '../../../shared/services/config/config.service';
 import _ from 'lodash';
 import { of ,throwError} from 'rxjs';
-
+import { FormService } from '../../../core/services/form/form.service';
 
 describe('CslFrameworkService', () => {
   let service: CslFrameworkService;
@@ -29,11 +29,14 @@ describe('CslFrameworkService', () => {
     }
   };
 
+  const mockFormService: Partial<FormService> = {};
+
   beforeEach(() => {
     service = new CslFrameworkService(
       csFrameworkServiceMock as CsFrameworkService,
       channelServiceMock as ChannelService,
-      configServiceMock as ConfigService
+      configServiceMock as ConfigService,
+      mockFormService as FormService
     );
   });
 

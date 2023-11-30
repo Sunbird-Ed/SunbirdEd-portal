@@ -19,6 +19,8 @@ import { OfflineCardService } from '@sunbird/shared';
 import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
 import { CoursePageComponent } from './course-page.component';
 import { Response } from './course-page.component.spec.data';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
+
 describe('CoursePageComponent', () => {
     let component: CoursePageComponent;
 
@@ -60,31 +62,36 @@ describe('CoursePageComponent', () => {
 	const offlineCardService :Partial<OfflineCardService> ={};
 	const contentManagerService :Partial<ContentManagerService> ={};
 	const telemetryService :Partial<TelemetryService> ={};
+  const mockCslFrameworkService: Partial<CslFrameworkService> = {
+    getFrameworkCategories: jest.fn(),
+    setDefaultFWforCsl: jest.fn()
+  };
 
     beforeAll(() => {
         component = new CoursePageComponent(
             pageApiService as PageApiService,
-			toasterService as ToasterService,
-			resourceService as ResourceService,
-			configService as ConfigService,
-			activatedRoute as ActivatedRoute,
-			router as Router,
-			utilService as UtilService,
-			orgDetailsService as OrgDetailsService,
-			publicPlayerService as PublicPlayerService,
-			cacheService as CacheService,
-			browserCacheTtlService as BrowserCacheTtlService,
-			userService as UserService,
-			formService as FormService,
-			navigationhelperService as NavigationHelperService,
-			layoutService as LayoutService,
-			coursesService as CoursesService,
-			frameworkService as FrameworkService,
-			playerService as PlayerService,
-			searchService as SearchService,
-			offlineCardService as OfflineCardService,
-			contentManagerService as ContentManagerService,
-			telemetryService as TelemetryService
+						toasterService as ToasterService,
+						resourceService as ResourceService,
+						configService as ConfigService,
+						activatedRoute as ActivatedRoute,
+						router as Router,
+						utilService as UtilService,
+						orgDetailsService as OrgDetailsService,
+						publicPlayerService as PublicPlayerService,
+						cacheService as CacheService,
+						browserCacheTtlService as BrowserCacheTtlService,
+						userService as UserService,
+						formService as FormService,
+						navigationhelperService as NavigationHelperService,
+						layoutService as LayoutService,
+						coursesService as CoursesService,
+						frameworkService as FrameworkService,
+						playerService as PlayerService,
+						searchService as SearchService,
+						offlineCardService as OfflineCardService,
+						contentManagerService as ContentManagerService,
+						telemetryService as TelemetryService,
+						mockCslFrameworkService as CslFrameworkService
         )
     });
 
@@ -92,7 +99,7 @@ describe('CoursePageComponent', () => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
-            
+
     it('should create a instance of component', () => {
         expect(component).toBeTruthy();
     });
@@ -103,10 +110,6 @@ describe('CoursePageComponent', () => {
 		component.onScroll();
         expect(component.addHoverData).toBeCalled();
     });
-
-
-
-
 
 	describe("ngOnDestroy", () => {
         it('should destroy sub', () => {
