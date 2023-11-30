@@ -490,6 +490,7 @@ export class UserService {
   
   /**
     * @description - This method is called in the case where either of onboarding or framework popup is disabled and setGuest value is made true
+    *                and config data is manually returned in the case where onboarding or framework popup is disabled in getGuestUser
   */
   setGuestUser(value: boolean, defaultFormatedName: string): void{
     this.setGuest = value;
