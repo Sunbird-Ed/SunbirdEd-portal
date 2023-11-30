@@ -18,6 +18,7 @@ import { CacheService } from '../app/modules/shared/services/cache-service/cache
 import { DOCUMENT } from '@angular/common';
 import { image } from '../assets/images/tara-bot-icon';
 import { SBTagModule } from 'sb-tag-manager';
+import { CslFrameworkService } from '../app/modules/public/services/csl-framework/csl-framework.service';
 import { PopupControlService } from './service/popup-control.service';
 /**
  * main app component
@@ -147,7 +148,7 @@ export class AppComponent implements OnInit, OnDestroy {
     public formService: FormService, @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
     public changeDetectorRef: ChangeDetectorRef, public layoutService: LayoutService,
     public generaliseLabelService: GeneraliseLabelService, private renderer: Renderer2, private zone: NgZone,
-    private connectionService: ConnectionService, public genericResourceService: GenericResourceService, public popupControlService: PopupControlService) {
+    private connectionService: ConnectionService, public genericResourceService: GenericResourceService, public popupControlService: PopupControlService, private cslFrameworkService: CslFrameworkService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
     const layoutType = localStorage.getItem('layoutType') || 'base';
@@ -439,6 +440,7 @@ export class AppComponent implements OnInit, OnDestroy {
           }            
         }))
       .subscribe(data => {
+        this.cslFrameworkService.setDefaultFWforCsl('', data.hashTagId);
         this.tenantService.getTenantInfo(this.userService.slug);
         this.tenantService.initialize();
         this.setPortalTitleLogo();

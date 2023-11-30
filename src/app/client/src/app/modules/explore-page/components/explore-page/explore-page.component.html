@@ -54,29 +54,12 @@
                   <span class="preference-icon ml-4"><img src="assets/images/icon-info.svg"></span>
                 </p>
                 <p>
-                  <span class="mr-24">
-                    <span *ngIf="userPreference?.framework?.board?.length">{{resourceService?.frmelmnts?.lbl?.boards | transposeTerms: 'frmelmnts.lbl.boards': resourceService?.selectedLang}}:
-                    </span>
-                    <span *ngIf="userPreference?.framework?.board?.length"
-                      class="font-weight-bold">{{convertToString(userPreference?.framework?.board)}}</span>
-                  </span>
 
-                  <span class="mr-24">
-                    <span *ngIf="userPreference?.framework?.medium?.length">{{resourceService?.frmelmnts?.lbl?.medium | transposeTerms: 'frmelmnts.lbl.medium': resourceService?.selectedLang}}:
-                    </span>
-                    <span  *ngIf="userPreference?.framework?.medium?.length" class="font-weight-bold">{{userPreference?.framework?.medium[0]}}</span>
-                    <span class="font-weight-bold" *ngIf="userPreference?.framework?.medium?.length > 1">
-                      ... + {{userPreference?.framework?.medium?.length-1}}
-                    </span>
-                  </span>
 
-                  <span class="mr-24">
-                    <span
-                      *ngIf="userPreference?.framework?.gradeLevel?.length">{{resourceService?.frmelmnts?.lbl?.classes | transposeTerms: 'frmelmnts.lbl.classes': resourceService?.selectedLang}}:
-                    </span>
-                    <span *ngIf="userPreference?.framework?.gradeLevel?.length" class="font-weight-bold">{{userPreference?.framework?.gradeLevel[0]}}</span>
-                    <span class="font-weight-bold" *ngIf="userPreference?.framework?.gradeLevel?.length > 1">
-                      ... + {{userPreference?.framework?.gradeLevel?.length-1}}
+                  <span *ngFor="let category of transformUserPreference" class="mr-24">
+                    <span>{{category?.labels}}:</span>
+                    <span *ngFor="let item of category?.values; let last=last" class="font-weight-bold">
+                      {{item}}{{!last && category.values.length > 1 ? ',' : ''}}
                     </span>
                   </span>
                 </p>

@@ -17,7 +17,6 @@ import { CacheService } from '../../../shared/services/cache-service/cache.servi
 import { DataService } from './../data/data.service';
 import { environment } from '@sunbird/environment';
 
-
 /**
  * Service to fetch user details from server
  *
@@ -99,6 +98,7 @@ export class UserService {
   public orgNames: Array<string> = [];
 
   public rootOrgName: string;
+  public frameworkCategories;
 
   public organizationsDetails: Array<IOrganization>;
   public createManagedUser = new EventEmitter();
@@ -132,6 +132,7 @@ export class UserService {
     this.contentService = contentService;
     this.publicDataService = publicDataService;
     this.isDesktopApp = environment.isDesktopApp;
+    this.frameworkCategories = localStorage.getItem('fwCategoryObjectValues');
     try {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
       DataService.userId = this._userid;
@@ -564,9 +565,9 @@ export class UserService {
       let userDetails = JSON.parse(localStorage.getItem('guestUserDetails'));
       userFramework = _.get(userDetails, 'framework');
     } else {
-      userFramework = (isUserLoggedIn && framework && _.pick(framework, ['medium', 'gradeLevel', 'board', 'id'])) || {};
+      userFramework = (isUserLoggedIn && framework && _.pick(framework, [this.frameworkCategories?.fwCategory2?.code, this.frameworkCategories?.fwCategory3?.code, this.frameworkCategories?.fwCategory1?.code, 'id'])) || {};
     }
   
-    return { board: this.defaultBoard, ...userFramework };
+    return { [this.frameworkCategories?.fwCategory1?.code]: this.defaultBoard, ...userFramework };
   }
 }

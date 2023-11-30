@@ -2301,21 +2301,21 @@
     "@ckeditor/ckeditor5-table" "^28.0.0"
     "@ckeditor/ckeditor5-typing" "^28.0.0"
 
-"@project-sunbird/client-services@5.1.2":
-  version "5.1.2"
-  resolved "https://registry.npmjs.org/@project-sunbird/client-services/-/client-services-5.1.2.tgz#92ac82f3d8e6edeb8b9d9b34900e2381d50e313b"
-  integrity sha512-E2xvnYrenDIyyIMFYLy3xnsWQ0yG46eGEUFXUwmaL5BJK7qsjOU4zHHMqAhQYjEEJTZ9iDhLgcRsjf8oL8RhRQ==
+"@project-sunbird/client-services@7.0.1":
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-7.0.1.tgz#f914a60fc0b5b4e644e383638770409456ee46ac"
+  integrity sha512-XqiThrJOAFAOmENTce2vnBU3hghVejPwplVKjEsZE8mr8Xtt0hcvDRkQYZ/cHvsTHd0oVMjt6wIIW0Tk+L0JfQ==
   dependencies:
     "@project-sunbird/telemetry-sdk" "0.0.26"
-    dayjs "^1.8.20"
-    inversify "^5.0.1"
+    dayjs "^1.9.8"
+    inversify "^5.1.1"
     jsonld "^5.2.0"
     jsonld-signatures "^6.0.0"
     jszip "^3.7.1"
-    node-fetch "2.6.5"
+    node-fetch "2.6.7"
     qs "^6.9.7"
     reflect-metadata "^0.1.13"
-    whatwg-fetch "^3.1.0"
+    whatwg-fetch "^3.6.2"
 
 "@project-sunbird/common-consumption@6.0.0":
   version "6.0.0"
@@ -5242,10 +5242,15 @@ dateformat@^2.0.0:
   resolved "https://registry.npmjs.org/dateformat/-/dateformat-2.2.0.tgz#4065e2013cf9fb916ddfd82efb506ad4c6769062"
   integrity sha512-GODcnWq3YGoTnygPfi02ygEiRxqUxpJwuRHjdhJYuxpcZmDq4rjBiXYmbCCzStxo176ixfLT6i4NPwQooRySnw==
 
-dayjs@^1.11.5, dayjs@^1.8.20, dayjs@^1.8.26:
+dayjs@^1.11.5, dayjs@^1.8.26:
   version "1.11.9"
   resolved "https://registry.npmjs.org/dayjs/-/dayjs-1.11.9.tgz#9ca491933fadd0a60a2c19f6c237c03517d71d1a"
   integrity sha512-QvzAURSbQ0pKdIye2txOzNaHmxtUBXerpY0FJsFXUMKbIZeFm5ht1LS/jFsrncjnmtv8HsG0W2g6c0zUjZWmpA==
+
+dayjs@^1.9.8:
+  version "1.11.10"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.10.tgz#68acea85317a6e164457d6d6947564029a6a16a0"
+  integrity sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==
 
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3:
   version "2.6.9"
@@ -7605,9 +7610,9 @@ interpret@^1.4.0:
   resolved "https://registry.npmjs.org/interpret/-/interpret-1.4.0.tgz#665ab8bc4da27a774a40584e812e3e0fa45b1a1e"
   integrity sha512-agE4QfB2Lkp9uICn7BAqoscw4SZP9kTE2hxiFI3jBPmXJfdqiahTbUuKGsMoN2GtqL9AxhYioAcVvgsb1HvRbA==
 
-inversify@^5.0.1:
+inversify@^5.0.1, inversify@^5.1.1:
   version "5.1.1"
-  resolved "https://registry.npmjs.org/inversify/-/inversify-5.1.1.tgz#6fbd668c591337404e005a1946bfe0d802c08730"
+  resolved "https://registry.yarnpkg.com/inversify/-/inversify-5.1.1.tgz#6fbd668c591337404e005a1946bfe0d802c08730"
   integrity sha512-j8grHGDzv1v+8T1sAQ+3boTCntFPfvxLCkNcxB1J8qA0lUN+fAlSyYd+RXKvaPRL4AGyPxViutBEJHNXOyUdFQ==
 
 invert-kv@^1.0.0:
@@ -9844,10 +9849,10 @@ node-addon-api@^3.0.0:
   resolved "https://registry.npmjs.org/node-addon-api/-/node-addon-api-3.2.1.tgz#81325e0a2117789c0128dab65e7e38f07ceba161"
   integrity sha512-mmcei9JghVNDYydghQmeDX8KoAm0FAiYyIcUt/N4nhyAipB17pllZQDOJD2fotxABnt4Mdz+dKTO7eftLg4d0A==
 
-node-fetch@2.6.5:
-  version "2.6.5"
-  resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.5.tgz#42735537d7f080a7e5f78b6c549b7146be1742fd"
-  integrity sha512-mmlIVHJEu5rnIxgEgez6b9GgWXbkZj5YZ7fx+2r94a2E+Uirsp6HsPTPlomfdHtpt/B0cdKviwkoaM6pyvUOpQ==
+node-fetch@2.6.7:
+  version "2.6.7"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"
+  integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
   dependencies:
     whatwg-url "^5.0.0"
 
@@ -13727,6 +13732,11 @@ whatwg-fetch@^3.1.0:
   version "3.6.2"
   resolved "https://registry.npmjs.org/whatwg-fetch/-/whatwg-fetch-3.6.2.tgz#dced24f37f2624ed0281725d51d0e2e3fe677f8c"
   integrity sha512-bJlen0FcuU/0EMLrdbJ7zOnW6ITZLrZMIarMUVmdKtsGvZna8vxKYaexICWPfZ8qwf9fzNq+UEIZrnSaApt6RA==
+
+whatwg-fetch@^3.6.2:
+  version "3.6.19"
+  resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-3.6.19.tgz#caefd92ae630b91c07345537e67f8354db470973"
+  integrity sha512-d67JP4dHSbm2TrpFj8AbO8DnL1JXL5J9u0Kq2xW6d0TFDbCA3Muhdt8orXC22utleTVj7Prqt82baN6RBvnEgw==
 
 whatwg-mimetype@^3.0.0:
   version "3.0.0"

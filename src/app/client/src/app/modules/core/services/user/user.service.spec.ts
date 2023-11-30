@@ -239,6 +239,35 @@ describe('UserService', () => {
     expect(mockLearnerService.get).toBeCalled();
   });
 
+  it('should return defaultFrameworkFilters with user logged in', () => {
+    const mockUserProfile = {
+      framework: {
+        [userService.frameworkCategories?.fwCategory2?.code]: 'MockCategory2',
+        [userService.frameworkCategories?.fwCategory3?.code]: 'MockCategory3',
+        [userService.frameworkCategories?.fwCategory1?.code]: 'MockCategory1',
+        id: 'MockUserId',
+      },
+    };
+
+    Object.defineProperty(userService, 'loggedIn', { get: jest.fn(() => true) });
+    Object.defineProperty(userService, 'userProfile', { get: jest.fn(() => mockUserProfile) });
+    const result = userService.defaultFrameworkFilters;
+    expect(result).toEqual({
+      [userService.frameworkCategories?.fwCategory1?.code]: userService.defaultBoard,
+      [userService.frameworkCategories?.fwCategory2?.code]: 'MockCategory2',
+      [userService.frameworkCategories?.fwCategory3?.code]: 'MockCategory3',
+      [userService.frameworkCategories?.fwCategory1?.code]: 'MockCategory1',
+      id: 'MockUserId',
+    });
+  });
+
+  it('should return defaultFrameworkFilters with user not logged in', () => {
+    Object.defineProperty(userService, 'loggedIn', { get: jest.fn(() => false) });
+    const result = userService.defaultFrameworkFilters;
+    expect(result[userService.frameworkCategories?.fwCategory1?.code]).toEqual(userService.defaultBoard);
+    expect(result['undefined']).toBeUndefined();
+  });
+
   it('should set the guest user value to true', () => {
     userService.setGuestUser(true,"guest");
     expect(userService['setGuest']).toBe(true);
