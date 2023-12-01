@@ -7,6 +7,7 @@ import { UserService } from '../../../core';
 import { ResourceService, UtilService, ConnectionService } from '../../../shared';
 import { GlobalSearchFilterComponent } from './global-search-filter.component';
 import { MockData } from './global-search-filter.component.spec.data';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 describe('GlobalSearchFilterComponent', () => {
     let globalSearchFilterComponent: GlobalSearchFilterComponent;
@@ -22,6 +23,10 @@ describe('GlobalSearchFilterComponent', () => {
     const mockUtilService: Partial<UtilService> = {
         isDesktopApp: true
     };
+    const mockCslFrameworkService: Partial<CslFrameworkService> = {
+        getFrameworkCategories: jest.fn(),
+        setDefaultFWforCsl: jest.fn()
+    };
 
     beforeAll(() => {
         globalSearchFilterComponent = new GlobalSearchFilterComponent(
@@ -32,7 +37,8 @@ describe('GlobalSearchFilterComponent', () => {
             mockUtilService as UtilService,
             mockUserService as UserService,
             mockCacheService as CacheService,
-            mockConnectionService as ConnectionService
+            mockConnectionService as ConnectionService,
+            mockCslFrameworkService as CslFrameworkService
         );
     });
 
