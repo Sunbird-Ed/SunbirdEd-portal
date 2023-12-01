@@ -63,6 +63,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   showBackButton = false;
   frameworkCategories;
   globalFilterCategories;
+  categoryKeys;
 
   constructor(public searchService: SearchService, public router: Router,
     public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
@@ -78,7 +79,9 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   }
   ngOnInit() {
     this.frameworkCategories = this.cslFrameworkService.getFrameworkCategories();
-    this.globalFilterCategories = this.cslFrameworkService?.getGlobalFilterCategories();
+    this.globalFilterCategories = this.cslFrameworkService?.getAlternativeCodeForFilter();
+    this.categoryKeys = this.cslFrameworkService.transformDataForCC();
+    console.log('onit-explore', this.globalFilterCategories)
     this.isDesktopApp = this.utilService.isDesktopApp;
     this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe$)).subscribe(queryParams => {
       this.queryParams = { ...queryParams };
@@ -256,12 +259,11 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     if (this.frameworkId) {
       option.params.framework = this.frameworkId;
     }
-    let globalFilterAltCat1 = this.globalFilterCategories.fwCategory1?.alternativeCode ?? this.globalFilterCategories.fwCategory4?.code;
 
     // Replacing cbse/ncert value with cbse
-    const cbseNcertExists = [_.get(filters, `${this.frameworkCategories?.fwCategory1?.code}[0]`), _.get(filters, this.frameworkCategories?.fwCategory1?.code), _.get(filters, `${globalFilterAltCat1}[0]`), _.get(filters, globalFilterAltCat1)].some(board => _.toLower(board) === 'cbse/ncert');
+    const cbseNcertExists = [_.get(filters, `${this.frameworkCategories?.fwCategory1?.code}[0]`), _.get(filters, this.frameworkCategories?.fwCategory1?.code), _.get(filters, `${this.globalFilterCategories[0]}[0]`), _.get(filters, this.globalFilterCategories[0])].some(board => _.toLower(board) === 'cbse/ncert');
     if (cbseNcertExists) {
-      option.filters[globalFilterAltCat1] = ['CBSE'];
+      option.filters[this.globalFilterCategories[0]] = ['CBSE'];
     }
     this.searchService.contentSearch(option)
       .pipe(

@@ -202,7 +202,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       value: node.name,
     }));
     this.optionData.push({
-      label: this.optionLabel.Board,
+      label: this.frameworkCategories?.fwCategory1?.label,
       value: this.frameworkCategories?.fwCategory1?.code,
       option: this.fwCategory1
     });
@@ -210,7 +210,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     if (this.fwCategory1.length) {
       const selectedOption = _.find(this.fwCategory1, { name: _.get(this.queryFilters, `${this.frameworkCategories?.fwCategory1?.code}[0]`) }) ||
         _.find(this.fwCategory1, { name: _.get(this.defaultFilters, `${this.frameworkCategories?.fwCategory1?.code}[0]`) }) || this.fwCategory1[0];
-      this.selectedBoard = { label: this.optionLabel.Board, value: this.frameworkCategories?.fwCategory1?.code, selectedOption: _.get(selectedOption, 'name') };
+      this.selectedBoard = { label: this.frameworkCategories?.fwCategory1?.label, value: this.frameworkCategories?.fwCategory1?.code, selectedOption: _.get(selectedOption, 'name') };
       this.selectedOption = this.selectedBoard;
     }
   }

@@ -158,20 +158,20 @@
             <sb-library-cards-grid *ngIf="!isDesktopApp" [layoutConfig]="layoutConfiguration"
               [type]="'infinite_card_grid'" [title]="section.name"
               [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3"
-              (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)" (enterKey)="playContent($event, section.name)">
+              (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)" (enterKey)="playContent($event, section.name)" [categoryKeys]="categoryKeys">
             </sb-library-cards-grid>
             <div class="sb-desktop-library-card relative9">
               <sb-library-cards-grid *ngIf="isDesktopApp" [layoutConfig]="layoutConfiguration"
                 [type]="'infinite_card_grid_with_hover'" [title]="section?.name"
                 [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3"
-                (hoverActionClick)="hoverActionClicked($event)" (viewMoreClick)="viewAll(section)">
+                (hoverActionClick)="hoverActionClicked($event)" (viewMoreClick)="viewAll(section)" [categoryKeys]="categoryKeys"> 
               </sb-library-cards-grid>
             </div>
           </div>
         </div>
         <div *ngIf="showLoader && getSelectedTab() !== 'explore'">
           <sb-library-cards-grid [layoutConfig]="layoutConfiguration" *ngFor="let i of numberOfSections"
-            [type]="'infinite_card_grid'" [isLoading]="true" [maxCardCount]="!isUserLoggedIn() ? 4: 3">
+            [type]="'infinite_card_grid'" [isLoading]="true" [maxCardCount]="!isUserLoggedIn() ? 4: 3" [categoryKeys]="categoryKeys">
           </sb-library-cards-grid>
         </div>
         <div

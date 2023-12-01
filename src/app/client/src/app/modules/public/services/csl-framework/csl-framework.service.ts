@@ -6,22 +6,16 @@ import { ConfigService } from '../../../shared/services/config/config.service';
 import { FormService } from '../../../core/services/form/form.service';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
-// Interface for framework category data
 interface FrameworkCategory {
   code: string;
   label: string;
   placeHolder: string;
 }
-
-// Interface for framework categories object
 interface FrameworkCategories {
   fwCategory1?: {
     code: string;
   };
-  // Add more properties if needed
 }
-
-// Interface for transformed data object
 interface TransformedData {
   category: string;
   type: string;
@@ -41,6 +35,9 @@ export class CslFrameworkService {
   selectedFramework;
   rootOrgId;
   searchFilterConfig;
+  public globalFilterCategories;
+  public frameworkCategoriesList;
+  public defaultFwCategories;
   constructor(@Inject('CS_FRAMEWORK_SERVICE') private csFrameworkService: CsFrameworkService, private channelService: ChannelService, private configService: ConfigService, public formService: FormService
   ) {
     this.selectedFramework = localStorage.getItem('selectedFramework');
@@ -99,6 +96,32 @@ export class CslFrameworkService {
     return transformedArray;
   }
 
+
+  /**
+ * @description Transforms content data based on framework (FW) category data.
+ * Iterates through the FW category data and content data to create a new array.
+ * Filters and constructs a transformed array based on the provided FW category data and content data.
+ * @param {any[]} fwCatData Array containing framework (FW) category data.
+ * @param {any} contentData Object containing content data.
+ * @returns {any[]} Transformed array based on FW category and content data.
+ */
+  transformContentDataFwBased(fwCatData: any[], contentData: any): any[] {
+    const result: any[] = [];
+    fwCatData.forEach(fwData => {
+      let fwCode = fwData?.alternativeCode ? fwData?.alternativeCode : fwData?.code
+      let typeCheck = fwData?.type === 'filter' ? false : true
+      if (fwCode && typeCheck && contentData[fwCode]) {
+        const keyValueObj = {
+          labels: fwData?.label,
+          value: contentData[fwCode],
+          index: fwData?.index
+        };
+        result.push(keyValueObj);
+      }
+    });
+    console.log('contentData', result);
+    return result;
+  }
   /**
  * Sets framework categories based on the provided user-selected framework,
  * updates local storage, and resolves/rejects a Promise accordingly.
@@ -184,6 +207,7 @@ export class CslFrameworkService {
       return null;
     }
   }
+
   /**
  * Transforms framework categories object into page filter data.
  * @param frameworkCategoriesObject - Object containing framework categories data.
@@ -212,6 +236,8 @@ export class CslFrameworkService {
     return pageFilterData;
   }
 
+
+
   /**
    * @description Fetches form details relevant to global search filters.
    *              It utilizes framework category object string to initiate the form service request.
@@ -219,19 +245,18 @@ export class CslFrameworkService {
    *                         In case of an error, returns a  framework default data (fwCategoryObjectString).
    */
   private getFormDetails() {
-    const fwCategoryObjectString = this.getFrameworkCategoriesObject();
+    this.defaultFwCategories = this.getFrameworkCategoriesObject();
     const formServiceInputParams = {
-      formType: 'searchfilterconfig1',
-      formAction: 'globalsearch',
+      formType: 'contentcategory',
+      formAction: 'menubar',
       contentType: 'global',
-      framework: this.selectedFramework,
-      component: 'portal'
+      // framework: this.selectedFramework,
+      // component: 'portal'
     };
-
     return this.formService.getFormConfig(formServiceInputParams, this.rootOrgId).pipe(
       catchError(error => {
         console.error('Error fetching form config:', error);
-        return of(fwCategoryObjectString); // Return default data in case of error
+        return of(this.defaultFwCategories); // Return default data in case of error
       })
     );
   }
@@ -243,25 +268,34 @@ export class CslFrameworkService {
  *               Additionally, it manages the storage of the transformed data and original response data.
  */
   setTransFormGlobalFilterConfig() {
-    this.getFormDetails().subscribe(responeData => {
+    let filterResponseData;
+    this.getFormDetails().subscribe(responseData => {
+      const allTabData = _.find(responseData, (o) => o.title === 'frmelmnts.tab.all');
+      if (allTabData) {
+        filterResponseData = _.get(allTabData, 'metaData.globalFilterConfig') ? _.get(allTabData, 'metaData.globalFilterConfig') : this.defaultFwCategories
+      }
+      else {
+        filterResponseData = this.defaultFwCategories;
+      }
       let transformedObject: any = {};
-      responeData.map((filter, index) => {
+      filterResponseData.map((filter, index) => {
         transformedObject[`fwCategory${index + 1}`] = {
           index: filter?.index,
           code: filter?.code,
-          alternativeCode: filter.alternativeCode ? filter.alternativeCode : null,
+          alternativeCode: filter?.alternativeCode ? filter?.alternativeCode : filter?.code,
           label: filter?.label,
           translation: filter?.translation,
         };
       });
-      localStorage.removeItem('globalFilterConfig');
+      localStorage.removeItem('globalFilterObject');
       localStorage.removeItem('globalFilterObjectValues');
-      localStorage.setItem('globalFilterObjectValues', JSON.stringify(responeData))
+      localStorage.setItem('globalFilterObjectValues', JSON.stringify(filterResponseData))
       localStorage.setItem('globalFilterObject', JSON.stringify(transformedObject))
-
+      console.log('SetTransform', localStorage.getItem('globalFilterObject'))
 
     })
   }
+
   /**
  * @description Retrieves the global filter categories object (non-values) from local storage.
  * @returns {Object|null} - Returns the global filter categories object if found in local storage, otherwise returns null.
@@ -274,6 +308,7 @@ export class CslFrameworkService {
       return null;
     }
   }
+
   /**
  * @description Retrieves the global filter categories object from local storage.
  * @returns {Object|null} - Returns the global filter categories object if found in local storage, otherwise returns null.
@@ -286,4 +321,67 @@ export class CslFrameworkService {
       return null;
     }
   }
+
+  /**
+   * @description Retrieves alternative codes for specific filter categories.
+   * Populates globalFilterCategories based on retrieved filter categories.
+   * - alternativeCode is a property that holds the alternative code for each filter category.
+   * @returns {string[]} An array containing alternative codes for specified filter categories.
+   */
+  getAlternativeCodeForFilter() {
+    this.globalFilterCategories = this.getGlobalFilterCategories();
+    return [
+      this.globalFilterCategories.fwCategory1?.alternativeCode,
+      this.globalFilterCategories.fwCategory2?.alternativeCode,
+      this.globalFilterCategories.fwCategory3?.alternativeCode,
+      this.globalFilterCategories.fwCategory4?.alternativeCode
+    ];
+  }
+
+  /**
+   * @description Retrieves names of first 4 framework categories.
+   * Populates frameworkCategoriesList based on retrieved framework categories.
+   * - code is a property that holds the name for each framework category.
+   * @returns {string[]} An array containing names of first 4 framework categories.
+   */
+
+  getAllFwCatName() {
+    this.frameworkCategoriesList = this.getFrameworkCategories();
+    return [
+      this.frameworkCategoriesList?.fwCategory1?.code,
+      this.frameworkCategoriesList?.fwCategory2?.code,
+      this.frameworkCategoriesList?.fwCategory3?.code,
+      this.frameworkCategoriesList?.fwCategory4?.code,
+    ]
+
+  }
+
+
+  /**
+ * @description Transforms data for Common Consumption (CC) by filtering and mapping global filter categories.
+ * Retrieves global filter categories object using getGlobalFilterCategoriesObject().
+ * Constructs a transformed array for Common Consumption object based on the retrieved data.
+ * @returns {any[]} Transformed array for Common Consumption object (CC).
+ */
+  transformDataForCC() {
+    let transformData = this.getGlobalFilterCategoriesObject();
+    let resCCdata: any[] = [{
+      "code": "lastPublishedBy",
+      "name": "Published by"
+    }];
+    transformData?.forEach((filter) => {
+      let typeCheck = filter?.type === 'filter' ? true : false;
+      if (!typeCheck) {
+        let resObj = {
+          index: filter?.index,
+          code: filter?.code,
+          alternativeCode: filter?.alternativeCode || filter?.code,
+          label: filter?.label,
+        };
+        resCCdata.push(resObj);
+      }
+    });
+    return resCCdata;
+  }
+
 }

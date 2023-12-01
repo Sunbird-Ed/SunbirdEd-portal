@@ -61,6 +61,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   showBackButton = false;
   frameworkCategories;
   globalFilterCategories;
+  categoryKeys: any[];
 
   constructor(public searchService: SearchService, public router: Router,
     public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
@@ -78,8 +79,9 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.setTelemetryData();
   }
   ngOnInit() {
+    this.categoryKeys = this.cslFrameworkService.transformDataForCC();
     this.frameworkCategories = this.cslFrameworkService.getFrameworkCategories();
-    this.globalFilterCategories = this.cslFrameworkService.getGlobalFilterCategories();
+    this.globalFilterCategories = this.cslFrameworkService.getAlternativeCodeForFilter();
     this.isDesktopApp = this.utilService.isDesktopApp;
     this.listenLanguageChange();
     this.contentManagerService.contentDownloadStatus$
@@ -533,18 +535,14 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.cacheService.exists('searchFiltersAll') && Object.keys(filterData).length > 0 && !_.get(filterData, 'key') 
     
     && _.get(this.activatedRoute, 'snapshot.queryParams.ignoreSavedFilter') !== 'true' ) {
-      let globalFilterAltCat1 = this.globalFilterCategories.fwCategory1?.alternativeCode ?? this.globalFilterCategories.fwCategory1?.code;
-      let globalFilterAltCat2 = this.globalFilterCategories.fwCategory2?.alternativeCode ?? this.globalFilterCategories.fwCategory2?.code;
-      let globalFilterAltCat3 = this.globalFilterCategories.fwCategory3?.alternativeCode ?? this.globalFilterCategories.fwCategory3?.code;
-      let globalFilterAltCat4 = this.globalFilterCategories.fwCategory4?.alternativeCode ?? this.globalFilterCategories.fwCategory4?.code;
         const _searchFilters = this.cacheService.get('searchFiltersAll');
       let _cacheFilters = {
         primaryCategory: [..._.intersection(filterData['primaryCategory'], _searchFilters['primaryCategory']), ..._.difference(filterData['primaryCategory'], _searchFilters['primaryCategory'])],
-        [globalFilterAltCat1]  : (_.get(filterData, globalFilterAltCat1) && filterData[globalFilterAltCat1].length > 0) ? [_.union(_searchFilters[globalFilterAltCat1], filterData[globalFilterAltCat1])[0]] : [],
-        [globalFilterAltCat2]: [..._.intersection(filterData[globalFilterAltCat2], _searchFilters[globalFilterAltCat2]), ..._.difference(filterData[globalFilterAltCat2], _searchFilters[globalFilterAltCat2])],
-        [globalFilterAltCat3]: [..._.intersection(filterData[globalFilterAltCat3], _searchFilters[globalFilterAltCat3]), ..._.difference(filterData[globalFilterAltCat3], _searchFilters[globalFilterAltCat3])],
-        [globalFilterAltCat4]: [..._.intersection(filterData[globalFilterAltCat3], _searchFilters[globalFilterAltCat3]),
-        ..._.difference(filterData[globalFilterAltCat3], _searchFilters[globalFilterAltCat3])].map((e) => { return _.startCase(e) }),
+        [this.globalFilterCategories[0]]  : (_.get(filterData, this.globalFilterCategories[0]) && filterData[this.globalFilterCategories[0]].length > 0) ? [_.union(_searchFilters[this.globalFilterCategories[0]], filterData[this.globalFilterCategories[0]])[0]] : [],
+        [this.globalFilterCategories[1]]: [..._.intersection(filterData[this.globalFilterCategories[1]], _searchFilters[this.globalFilterCategories[1]]), ..._.difference(filterData[this.globalFilterCategories[1]], _searchFilters[this.globalFilterCategories[1]])],
+        [this.globalFilterCategories[2]]: [..._.intersection(filterData[this.globalFilterCategories[2]], _searchFilters[this.globalFilterCategories[2]]), ..._.difference(filterData[this.globalFilterCategories[2]], _searchFilters[this.globalFilterCategories[2]])],
+        [this.globalFilterCategories[3]]: [..._.intersection(filterData[this.globalFilterCategories[3]], _searchFilters[this.globalFilterCategories[3]]),
+        ..._.difference(filterData[this.globalFilterCategories[3]], _searchFilters[this.globalFilterCategories[3]])].map((e) => { return _.startCase(e) }),
         selectedTab: _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'all'
       };
       for (const key in _cacheFilters) {
@@ -570,7 +568,6 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 public viewAll(event) {
-  let globalFilterAltCat4 = this.globalFilterCategories.fwCategory4?.alternativeCode ?? this.globalFilterCategories.fwCategory4?.code;
     this.moveToTop();
     this.logViewAllTelemetry(event);
      const searchQueryParams: any = {};
@@ -579,7 +576,7 @@ public viewAll(event) {
     searchQueryParams['primaryCategory'] = (this.queryParams.primaryCategory && this.queryParams.primaryCategory.length)
      ? this.queryParams.primaryCategory : [event.name];
      (this.queryParams.primaryCategory && this.queryParams.primaryCategory.length) ? (searchQueryParams['subject'] = [event.name]) :
-    (searchQueryParams[globalFilterAltCat4] = this.queryParams[globalFilterAltCat4]);
+    (searchQueryParams[this.globalFilterCategories[3]] = this.queryParams[this.globalFilterCategories[3]]);
     searchQueryParams['selectedTab'] = 'all';
   if (this.queryParams.channel) {
     searchQueryParams['channel'] = this.queryParams.channel;

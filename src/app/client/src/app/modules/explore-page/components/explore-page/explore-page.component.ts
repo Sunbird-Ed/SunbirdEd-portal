@@ -97,6 +97,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     Categorytheme: any;
     filterResponseData = {};
     refreshFilter: boolean = true;
+    public categoryKeys;
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     }
@@ -217,6 +218,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.cslFrameworkService.setTransFormGlobalFilterConfig();
         this.frameworkCategories = this.cslFrameworkService?.getFrameworkCategories();
         this.frameworkCategoriesObject = this.cslFrameworkService?.getFrameworkCategoriesObject();
+        this.categoryKeys = this.cslFrameworkService.transformDataForCC();
         this.isDesktopApp = this.utilService.isDesktopApp;
         this.setUserPreferences();
         this.subscription$ = this.activatedRoute.queryParams.subscribe(queryParams => {
@@ -644,12 +646,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private getContentSection(section, searchOptions) {
-        this.globalFilterCategories = this.cslFrameworkService?.getGlobalFilterCategories();
-        let globalFilterAltCat1 = this.globalFilterCategories.fwCategory1?.alternativeCode ?? this.globalFilterCategories.fwCategory4?.code;
-        let globalFilterAltCat2 = this.globalFilterCategories.fwCategory2?.alternativeCode ?? this.globalFilterCategories.fwCategory3?.code;
-        let globalFilterAltCat3 = this.globalFilterCategories.fwCategory3?.alternativeCode ?? this.globalFilterCategories.fwCategory2?.code;
+        this.globalFilterCategories = this.cslFrameworkService.getAlternativeCodeForFilter();
+        console.log('getContentSection-explore', this.globalFilterCategories)
         const sectionFilters = _.get(section, 'apiConfig.req.request.filters');
-        const requiredProps = [globalFilterAltCat1, globalFilterAltCat2, globalFilterAltCat3];
+        const requiredProps = [this.globalFilterCategories[0], this.globalFilterCategories[1], this.globalFilterCategories[2]];
         if (_.has(sectionFilters, ...requiredProps) && searchOptions.filters) {
             const preferences = _.pick(searchOptions.filters, requiredProps);
             section.apiConfig.req.request.filters = { ...section.apiConfig.req.request.filters, ...preferences };
