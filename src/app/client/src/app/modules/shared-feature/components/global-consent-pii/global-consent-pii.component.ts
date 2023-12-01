@@ -31,7 +31,7 @@ export class GlobalConsentPiiComponent implements OnInit {
   lastUpdatedOn = '';
   userInformation = [];
   editSetting = false;
-  isTncAgreed = false;
+  isTncAgreed = true;
   // showConsentPopup = false;
   showTncPopup = false;
   termsAndConditionLink: string;
@@ -59,7 +59,6 @@ export class GlobalConsentPiiComponent implements OnInit {
     this.usersProfile = _.cloneDeep(this.userService.userProfile);
     this.getUserInformation();
     this.getUserConsent();
-    this.consentPii = 'Yes';
     if (this.isglobalConsent) {
       this.showSettingsPage = false;
     } else {
@@ -249,7 +248,7 @@ export class GlobalConsentPiiComponent implements OnInit {
         this.close.emit();
         this.popupControlService.changePopupStatus(true);
       }, error => {
-        this.isTncAgreed = false;
+        this.isTncAgreed = true;
         this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
         console.error('Error while updating user consent', error);
       });
