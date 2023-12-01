@@ -181,6 +181,11 @@ describe('HomeSearch Component', () => {
     );
   });
 
+
+  beforeEach(() => {
+    jest.spyOn(component, 'moveToTop').mockImplementation(() => {});
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -246,6 +251,51 @@ describe('HomeSearch Component', () => {
       component.checkForBack();
       expect(component.showBackButton).toBe(true);
   });
+
+  it('should not navigate to an invalid page', () => {
+    const invalidPage = -1;
+    component.navigateToPage(invalidPage);
+    expect(mockRouter.navigate).not.toHaveBeenCalled();
+    expect(component.moveToTop).not.toHaveBeenCalled();
+  });
+
+  it('should not navigate to an invalid page', () => {
+    const invalidPage = -1;
+    component.paginationDetails = {
+      totalPages: 5,
+    } as any;
+    component.navigateToPage(invalidPage);
+    expect(mockRouter.navigate).not.toHaveBeenCalled();
+    expect(component.moveToTop).not.toHaveBeenCalled();
+  });
+
+  it('should navigate to the specified page', () => {
+    const validPage = 2;
+    const mockRouter = {
+      url: '/mock-url?param1=value1',
+      navigate: jest.fn(),
+    };
+
+    const mockQueryParams = { param1: 'value1' };
+    component.router = mockRouter as any;
+    component.queryParams = mockQueryParams;
+    component.paginationDetails = {
+      totalPages: 5,
+    } as any;
+    component.navigateToPage(validPage);
+    const expectedUrl = '/2';
+    expect(mockRouter.navigate).toHaveBeenCalledWith([expectedUrl], { queryParams: mockQueryParams });
+    expect(component.moveToTop).toHaveBeenCalled();
+  });
+
+  it('should set noResultMessage in setNoResultMessage', () => {
+    component['setNoResultMessage']();
+    expect(component.noResultMessage).toEqual({
+      message: 'messages.stmsg.m0007',
+      messageText: 'messages.stmsg.m0006',
+    });
+  });
+
 });
 
 
