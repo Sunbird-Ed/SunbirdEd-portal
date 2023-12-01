@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { ConfigService,RequestParam,ServerResponse } from '@sunbird/shared';
 import { LearnerService } from '../../../core/services/learner/learner.service';
-import { Observable,of } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { get } from 'lodash-es';
+import { of } from 'rxjs';
 import { ManageService } from './manage.service';
 
 describe('ManageService', () => {
@@ -68,43 +66,41 @@ describe('ManageService', () => {
         });
     });
     
-    it('should call httpClient.get with correct parameters and return mapped response', () => {
-        const slug = 'example-slug';
-        const fileName = 'example-file';
-        const downloadFileName = 'example-download-file';
-    
-        const expectedUrl = `/admin-reports/${slug}/${fileName}`;
-        const expectedHeaders = new HttpHeaders({
-          'Content-Disposition': 'attachment',
-          'filename': downloadFileName,
-        });
-    
-        const mockApiResponse = { result: 'mocked data' };
-    
-        (mockHttpClient.get as jest.Mock).mockReturnValue(of(mockApiResponse));
-    
-        manageService.getData(slug, fileName, downloadFileName).subscribe((result) => {
-          expect(mockHttpClient.get).toHaveBeenCalledWith(expectedUrl, { headers: expectedHeaders });
-          expect(result).toEqual({ responseCode: 'OK', result: mockApiResponse.result });
-        });
-    });
+    describe('getData', () => {
+      it('should call httpClient.get with correct parameters and return mapped response', () => {
+          const slug = 'example-slug';
+          const fileName = 'example-file';
+          const downloadFileName = 'example-download-file';
+          const expectedUrl = `/admin-reports/${slug}/${fileName}`;
+          const expectedHeaders = new HttpHeaders({
+            'Content-Disposition': 'attachment',
+            'filename': downloadFileName,
+          });
+      
+          const mockApiResponse = { result: 'mocked data' };
+          (mockHttpClient.get as jest.Mock).mockReturnValue(of(mockApiResponse));
+      
+          manageService.getData(slug, fileName, downloadFileName).subscribe((result) => {
+            expect(mockHttpClient.get).toHaveBeenCalledWith(expectedUrl, { headers: expectedHeaders });
+            expect(result).toEqual({ responseCode: 'OK', result: mockApiResponse.result });
+          });
+      });
 
-    it('should call httpClient.get with correct parameters when downloadFileName is not provided', () => {
-        const slug = 'example-slug';
-        const fileName = 'example-file';
-    
-        const expectedUrl = `/admin-reports/${slug}/${fileName}`;
-        const expectedHeaders = new HttpHeaders();
-    
-        const mockApiResponse = { result: 'mocked data' };
-    
-        (mockHttpClient.get as jest.Mock).mockReturnValue(of(mockApiResponse));
-    
-        manageService.getData(slug, fileName).subscribe((result) => {
-          expect(mockHttpClient.get).toHaveBeenCalledWith(expectedUrl, { headers: expectedHeaders });
-          expect(result).toEqual({ responseCode: 'OK', result: mockApiResponse.result });
-        });
-    });
+      it('should call httpClient.get with correct parameters when downloadFileName is not provided', () => {
+          const slug = 'example-slug';
+          const fileName = 'example-file';
+          const expectedUrl = `/admin-reports/${slug}/${fileName}`;
+          const expectedHeaders = new HttpHeaders();
+
+          const mockApiResponse = { result: 'mocked data' };
+          (mockHttpClient.get as jest.Mock).mockReturnValue(of(mockApiResponse));
+      
+          manageService.getData(slug, fileName).subscribe((result) => {
+            expect(mockHttpClient.get).toHaveBeenCalledWith(expectedUrl, { headers: expectedHeaders });
+            expect(result).toEqual({ responseCode: 'OK', result: mockApiResponse.result });
+          });
+      });
+  });
 
     describe('updateRoles', () => {
         it('should call learnerService.post with the correct options', () => {
