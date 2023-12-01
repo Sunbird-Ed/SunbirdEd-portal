@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { ProfileService } from '../../services';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { MatDialog } from '@angular/material/dialog';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-delete-account',
@@ -32,7 +33,8 @@ export class DeleteAccountComponent implements OnInit, OnDestroy {
   constructor(public resourceService: ResourceService, public userService: UserService,
     public otpService: OtpService, public toasterService: ToasterService,
     public profileService: ProfileService, private matDialog: MatDialog,
-    public configService: ConfigService,private cacheService:CacheService) { }
+    public configService: ConfigService,private cacheService:CacheService,
+    public deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit() {
     this.validateAndEditContact();
@@ -117,6 +119,10 @@ export class DeleteAccountComponent implements OnInit, OnDestroy {
           if(_.get(data, 'result.response') === 'SUCCESS'){
             window.location.replace('/logoff');
             this.cacheService.removeAll();
+            if(this.deviceDetectorService.isMobile()){
+              const url ='dev.sunbird.app://mobile?userId'+ this.userProfile.userId;
+              window.open(url, '_blank');
+            }
           }
         },
         (err) => {
