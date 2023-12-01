@@ -23,19 +23,6 @@ const _ = require('lodash');
 
 module.exports = function (app) {
   require('./accountRecoveryRoute.js')(app) // account recovery route
-  app.get('/learner/user/deletefromMobile', (req, res) => {
-    logger.info({msg: 'in the deletefromMobile method ' });
-    const redirectUrl = 'dev.sunbird.app://mobile' + '?userId:b8e9cf1d-7a51-4edf-98d8-d47b3fc262e1';
-    try{
-      logger.info({msg:'in the try block of /learner/user/v1/delete'});
-      
-    }  catch (err) {
-      logger.info({msg:'in the catch block of /learner/user/v1/delete'});
-    }finally {
-      logger.info({msg:'in the finally block of /learner/user/v1/delete'});
-      res.redirect(redirectUrl);
-    }
-  });
   // Helper route to enable enable admin to update user fields
   app.patch('/learner/portal/user/v1/update',
     proxyUtils.verifyToken(),
