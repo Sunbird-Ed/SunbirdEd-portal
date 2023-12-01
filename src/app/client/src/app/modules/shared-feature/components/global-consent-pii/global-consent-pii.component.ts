@@ -59,6 +59,7 @@ export class GlobalConsentPiiComponent implements OnInit {
     this.usersProfile = _.cloneDeep(this.userService.userProfile);
     this.getUserInformation();
     this.getUserConsent();
+    this.consentPii = 'Yes';
     if (this.isglobalConsent) {
       this.showSettingsPage = false;
     } else {
