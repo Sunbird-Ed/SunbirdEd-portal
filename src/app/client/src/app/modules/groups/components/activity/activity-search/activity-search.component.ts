@@ -60,6 +60,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   public ADD_ACTIVITY_TO_GROUP = ADD_ACTIVITY_TO_GROUP;
   private csGroupAddableBloc: CsGroupAddableBloc;
   public frameworkCategories;
+  public categoryKeys;
 
 
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
@@ -93,6 +94,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.frameworkCategories = this.cslFrameworkService.getFrameworkCategories();
+    this.categoryKeys = this.cslFrameworkService.transformDataForCC();
     CsGroupAddableBloc.instance.state$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       if(data){
         sessionStorage.setItem(sessionKeys.GROUPADDABLEBLOCDATA, JSON.stringify((data)))

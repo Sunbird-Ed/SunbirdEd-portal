@@ -293,20 +293,18 @@ export class SearchService {
   * @param {option}
   **/
   public updateOption(option: any) {
-    this.globalFilterCategories = this.cslFrameworkService.getGlobalFilterCategories();
-    let globalFilterAltCat1 = this.globalFilterCategories.fwCategory1?.alternativeCode ?? this.globalFilterCategories.fwCategory1?.code;
-    let globalFilterAltCat2 = this.globalFilterCategories.fwCategory2?.alternativeCode ?? this.globalFilterCategories.fwCategory2?.code;
-    let globalFilterAltCat3 = this.globalFilterCategories.fwCategory3?.alternativeCode ?? this.globalFilterCategories.fwCategory3?.code;
+    this.globalFilterCategories = this.cslFrameworkService.getAlternativeCodeForFilter();
+    console.log('updateOption', this.globalFilterCategories);
     if (_.get(option, `data.request.filters.${this.frameworkCategories?.fwCategory1?.code}`)) {
-      option.data.request.filters[globalFilterAltCat1] = option.data.request.filters[this.frameworkCategories?.fwCategory1?.code];
+      option.data.request.filters[this.globalFilterCategories[0]] = option.data.request.filters[this.frameworkCategories?.fwCategory1?.code];
       delete option.data.request.filters[this.frameworkCategories?.fwCategory1?.code];
     }
     if (_.get(option, `data.request.filters.${this.frameworkCategories?.fwCategory3?.code}`)) {
-      option.data.request.filters[globalFilterAltCat3] = option.data.request.filters[this.frameworkCategories?.fwCategory3?.code];
+      option.data.request.filters[this.globalFilterCategories[2]] = option.data.request.filters[this.frameworkCategories?.fwCategory3?.code];
       delete option.data.request.filters[this.frameworkCategories?.fwCategory3?.code];
     }
     if (_.get(option, `data.request.filters.${this.frameworkCategories?.fwCategory2?.code}`)) {
-      option.data.request.filters[globalFilterAltCat2] = option.data.request.filters[this.frameworkCategories?.fwCategory2?.code];
+      option.data.request.filters[this.globalFilterCategories[1]] = option.data.request.filters[this.frameworkCategories?.fwCategory2?.code];
       delete option.data.request.filters[this.frameworkCategories?.fwCategory2?.code];
     }
     // if (_.get(option, 'data.request.filters.subject')) {

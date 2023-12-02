@@ -36,8 +36,7 @@ export class ContentSearchService {
   constructor(private frameworkService: FrameworkService, private channelService: ChannelService, private cslFrameworkService:CslFrameworkService) { 
     this.frameworkCategories = this.cslFrameworkService.getFrameworkCategories();
     this.frameworkCategoriesObject = this.cslFrameworkService.getFrameworkCategoriesObject();
-    this.globalFilterCategories = this.cslFrameworkService.getGlobalFilterCategories();
-    requiredCategories = { categories: `${this.frameworkCategories?.fwCategory1?.code,this.frameworkCategories?.fwCategory2?.code,this.frameworkCategories?.fwCategory3?.code,this.frameworkCategories?.fwCategory4?.code}}` };
+   requiredCategories = { categories: `${this.frameworkCategories?.fwCategory1?.code,this.frameworkCategories?.fwCategory2?.code,this.frameworkCategories?.fwCategory3?.code,this.frameworkCategories?.fwCategory4?.code}}` };
   }
 
   public initialize(channelId: string, custodianOrg = false, defaultBoard: string) {
@@ -98,16 +97,13 @@ export class ContentSearchService {
   }
 
   get getCategoriesMapping() {
-    this.globalFilterCategories = this.cslFrameworkService.getGlobalFilterCategories();
-    let globalFilterAltCat1 = this.globalFilterCategories.fwCategory1?.alternativeCode ?? this.globalFilterCategories.fwCategory1?.code;
-    let globalFilterAltCat2 = this.globalFilterCategories.fwCategory2?.alternativeCode ?? this.globalFilterCategories.fwCategory2?.code;
-    let globalFilterAltCat3 = this.globalFilterCategories.fwCategory3?.alternativeCode ?? this.globalFilterCategories.fwCategory3?.code;
-    let globalFilterAltCat4 = this.globalFilterCategories.fwCategory4?.alternativeCode ?? this.globalFilterCategories.fwCategory4?.code;
+    this.globalFilterCategories = this.cslFrameworkService.getAlternativeCodeForFilter();
+    console.log('getCategoriesMapping', this.globalFilterCategories);
     return {
-      [this.frameworkCategories?.fwCategory4?.code]: globalFilterAltCat4,
-      [this.frameworkCategories?.fwCategory3?.code]: globalFilterAltCat3,
-      [this.frameworkCategories?.fwCategory2?.code]: globalFilterAltCat2,
-      [this.frameworkCategories?.fwCategory1?.code]: globalFilterAltCat1
+      [this.frameworkCategories?.fwCategory4?.code]: this.globalFilterCategories[3],
+      [this.frameworkCategories?.fwCategory3?.code]: this.globalFilterCategories[2],
+      [this.frameworkCategories?.fwCategory2?.code]: this.globalFilterCategories[1],
+      [this.frameworkCategories?.fwCategory1?.code]: this.globalFilterCategories[0]
     };
   }
 

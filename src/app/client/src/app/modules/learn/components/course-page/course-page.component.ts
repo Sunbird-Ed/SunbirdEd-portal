@@ -82,6 +82,8 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
   contentData;
   downloadIdentifier: string;
   globalFilterCategoriesObject;
+  public frameworkCategoriesList;
+  public categoryKeys;
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -158,6 +160,10 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.globalFilterCategoriesObject = this.cslFrameworkService.getGlobalFilterCategoriesObject();
+    this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
+    this.categoryKeys = this.cslFrameworkService.transformDataForCC();
+    console.log('course-page-alt', this.frameworkCategoriesList)
+
     this.initialize();
     this.subscription$ = this.mergeObservables();
     this.isDesktopApp = this.utilService.isDesktopApp;
@@ -223,7 +229,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       name: 'Course',
       organisationId: hashTagId || '*',
       filters,
-      facets: _.get(currentPageData, 'search.facets') || ['channel', 'gradeLevel', 'subject', 'medium'],
+      facets: _.get(currentPageData, 'search.facets') || ['channel', this.frameworkCategoriesList[1],this.frameworkCategoriesList[2],this.frameworkCategoriesList[3]],
       params: _.get(this.configService, 'appConfig.CoursePageSection.contentApiQueryParams'),
       ...(!this.isUserLoggedIn() && {
         params: _.get(this.configService, 'appConfig.ExplorePage.contentApiQueryParams'),
@@ -326,7 +332,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       exists: ['batches.batchId'],
       sort_by: { 'me_averageRating': 'desc', 'batches.startDate': 'desc' },
       organisationId: this.hashTagId || '*',
-      facets: _.get(currentPageData, 'search.facets') || ['channel', 'gradeLevel', 'subject', 'medium'],
+      facets: _.get(currentPageData, 'search.facets') || ['channel', this.frameworkCategoriesList[1],this.frameworkCategoriesList[2],this.frameworkCategoriesList[3]],
       fields: this.configService.urlConFig.params.CourseSearchField
     };
     return this.searchService.contentSearch(option)
@@ -455,8 +461,8 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.selectedFilters = filterData;
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
-      if (element && element.code === 'board') {
-        collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
+      if (element && element.code === this.frameworkCategoriesList[0]) {
+        collector[this.frameworkCategoriesList[0]] = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
       }
       return collector;
     }, {});

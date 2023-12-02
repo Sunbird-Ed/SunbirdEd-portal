@@ -1480,7 +1480,7 @@
       "updateContactTemplate": "otpContactUpdateTemplate"
   },
   "frameworkCatConfig": {
-    "changeChannel": false,
+    "changeChannel": true,
     "channel":"0138934136407244800",
     "defaultFW": "agriculture_framework",
     "updateContactTemplate": "otpContactUpdateTemplate",

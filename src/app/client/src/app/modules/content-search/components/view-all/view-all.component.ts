@@ -145,6 +145,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   private _enrolledSectionNames: string[];
   public frameworkCategories;
   public globalFilterCategoriesObject;
+  public categoryKeys;
 
   constructor(searchService: SearchService, router: Router, private playerService: PlayerService, private formService: FormService,
     activatedRoute: ActivatedRoute, paginationService: PaginationService,
@@ -170,6 +171,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.frameworkCategories = this.cslFrameworkService.getFrameworkCategories();
     this.globalFilterCategoriesObject = this.cslFrameworkService.getGlobalFilterCategoriesObject();
+    this.categoryKeys = this.cslFrameworkService.transformDataForCC();
     this.facetsList = ['channel', this.frameworkCategories?.fwCategory2?.code,this.frameworkCategories?.fwCategory3?.code,this.frameworkCategories?.fwCategory4?.code];
     this.initLayout();
     if (!this.userService.loggedIn) {
