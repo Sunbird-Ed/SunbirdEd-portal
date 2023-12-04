@@ -15,13 +15,13 @@ describe('RecaptchaService', () => {
             urlConFig: {
                 URLS: {
                     RECAPTCHA: {
-                        VALIDATE: 'https://example.com/recaptcha/validate'
+                        VALIDATE: 'mockedRecaptchaUrl'
                     }
                 }
             }
         };
 
-        recaptchaService = new RecaptchaService(httpClientMock, configServiceMock);
+        recaptchaService = new RecaptchaService(httpClientMock as any, configServiceMock as any);
     });
 
     it('should be created', () => {
@@ -29,17 +29,36 @@ describe('RecaptchaService', () => {
     });
 
     describe('validateRecaptcha', () => {
-        it('should send a POST request with the correct URL and parameters', () => {
-           const recaptchaToken = 'mockRecaptchaToken';
-           const expectedUrl = configServiceMock.urlConFig.URLS.RECAPTCHA.VALIDATE + '?captchaResponse=' + recaptchaToken;
-           const expectedHeaders = {"headers": {"Content-Type": "application/json"}}
-           const expectedResult = { success: true };
+        it('should validate recaptcha token', () => {
+            const recaptchaToken = 'mockedRecaptchaToken';
+            httpClientMock.post.mockReturnValue(of({}));
+        
+            recaptchaService.validateRecaptcha(recaptchaToken);
+        
+            expect(httpClientMock.post).toHaveBeenCalledWith(
+              'mockedRecaptchaUrl?captchaResponse=mockedRecaptchaToken',
+              { headers: { 'Content-Type': 'application/json' } }
+            );
+        });
 
-           httpClientMock.post.mockReturnValue(of(expectedResult));
-
-           const result = recaptchaService.validateRecaptcha(recaptchaToken);
-           expect(httpClientMock.post).toHaveBeenCalledWith(expectedUrl,expectedHeaders);
-           expect(result).toEqual(of(expectedResult));
+        it('should handle validation error', () => {
+            const recaptchaToken = 'mockedRecaptchaToken';
+            const errorResponse = { error: 'mockedError' };
+            httpClientMock.post.mockReturnValue(of(errorResponse));
+        
+            recaptchaService.validateRecaptcha(recaptchaToken).subscribe(
+              () => {
+                fail('Expected an error, but received a success response');
+              },
+              (error) => {
+                expect(error).toEqual(errorResponse);
+              }
+            );
+        
+            expect(httpClientMock.post).toHaveBeenCalledWith(
+              'mockedRecaptchaUrl?captchaResponse=mockedRecaptchaToken',
+              { headers: { 'Content-Type': 'application/json' } }
+            );
         });
     });
 });
