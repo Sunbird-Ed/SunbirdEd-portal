@@ -98,7 +98,6 @@
               "src/assets/libs/semantic-ui/modal.min.js",
               "node_modules/video.js/dist/video.js",
               "node_modules/dictrigyn-video-player/lib/assets/videojs-markers.js",
-              "node_modules/videojs-contrib-quality-levels/dist/videojs-contrib-quality-levels.min.js",
               "node_modules/videojs-http-source-selector/dist/videojs-http-source-selector.min.js",
               {
                 "inject": false,
