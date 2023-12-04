@@ -23,6 +23,9 @@ describe('DeleteAccountComponent', () => {
 
     const resourceService :Partial<ResourceService> ={
         messages: {
+            fmsg:{
+                m0085:'There was a technical error. Try again.'
+            },
             imsg: {
                 m0092: 'Please accept all terms and conditions'
             }
@@ -200,13 +203,29 @@ describe('DeleteAccountComponent', () => {
           //expect(component.prepareOtpData).toBeCalled();
     });
 
-    xit('should create a instance of component and call the verificationSuccess method', () => {
+    it('should create a instance of component and call the verificationSuccess method', () => {
         global.window = Object.create(window);
         const url = 'http://localhost/';
         const data = {}
+        userService.deleteUser = jest.fn().mockReturnValue(of(mockResponse.resendOtpSuccess));
         component.verificationSuccess(data);
         expect(window.location.href).toEqual(url);
-        //expect(cacheService.removeAll).toBeCalled();    
+    });
+    it('should create a instance of component and call the verificationSuccess method with mobile is true', () => {
+        global.window = Object.create(window);
+        const url = 'http://localhost/';
+        mockDeviceDetectorService.isMobile = jest.fn().mockReturnValue(true);
+        const data = {}
+        userService.deleteUser = jest.fn().mockReturnValue(of(mockResponse.resendOtpSuccess));
+        component.verificationSuccess(data);
+        expect(window.location.href).toEqual(url);
+    });
+    it('should create a instance of component and call the verificationSuccess method with error', () => {
+        
+        const data = {}
+        userService.deleteUser = jest.fn().mockReturnValue(throwError({error:'erroroccured'}));
+        component.verificationSuccess(data);
+        expect(toasterService.error).toBeCalled();
     });
 
     it('should create a instance of component and call the setInteractEventData method', () => {
