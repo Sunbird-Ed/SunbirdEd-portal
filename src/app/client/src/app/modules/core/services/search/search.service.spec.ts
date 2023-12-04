@@ -81,6 +81,7 @@ describe('SearchService', () => {
   };
 
   const mockCslFrameworkService: Partial<CslFrameworkService> = {
+    getAlternativeCodeForFilter: jest.fn(),
     getFrameworkCategories: jest.fn(),
     setDefaultFWforCsl: jest.fn(),
     getGlobalFilterCategoriesObject: jest.fn(()=> [

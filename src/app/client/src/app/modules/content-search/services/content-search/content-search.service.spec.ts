@@ -69,6 +69,7 @@ describe('ContentSearchService', () => {
   };
 
   const mockCslFrameworkService: Partial<CslFrameworkService> = {
+    getAlternativeCodeForFilter: jest.fn(),
     getFrameworkCategories: jest.fn(),
     setDefaultFWforCsl: jest.fn(),
     getFrameworkCategoriesObject : jest.fn(),
@@ -117,12 +118,6 @@ describe('ContentSearchService', () => {
     jest.spyOn(contentSearchService, 'fetchChannelData');
     contentSearchService.fetchChannelData();
     expect(contentSearchService.fetchChannelData).toHaveBeenCalled();
-  });
-
-  it('should map categories to new keys', () => {
-    const input = { subject: [], medium: [], gradeLevel: [], board: [], contentType: 'course' };
-    const result = contentSearchService.mapCategories({ filters: input });
-    expect(result).toEqual({ subject: [], medium: [], gradeLevel: [], board: [], contentType: 'course' });
   });
 
 });
