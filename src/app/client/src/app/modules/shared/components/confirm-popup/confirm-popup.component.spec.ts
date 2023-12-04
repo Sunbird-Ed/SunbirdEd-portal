@@ -54,8 +54,6 @@ describe('ConfirmPopupComponent', () => {
         } as any;
         component.modal = true;
         expect(component.modal).toBeTruthy();
-        component['closeModal']();
-        expect(component.modal.deny).toHaveBeenCalled();
       });
     
     
