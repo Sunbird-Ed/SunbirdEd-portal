@@ -12,6 +12,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { ContentManagerService } from '../../../public/module/offline/services';
 import { ContentActionsComponent } from './content-actions.component';
 import { actionsData } from './content-actions.component.spec.data';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 describe("ContentActionsComponent", () => {
     let contentActionsComponent: ContentActionsComponent;
@@ -75,6 +76,10 @@ describe("ContentActionsComponent", () => {
         isDesktopApp: true,
     };
 
+    const mockCslFrameworkService: Partial<CslFrameworkService> = {
+        getAllFwCatName: jest.fn()
+    };
+
     beforeAll(() => {
         contentActionsComponent = new ContentActionsComponent(
             mockRouter as Router,
@@ -87,8 +92,8 @@ describe("ContentActionsComponent", () => {
             mockDeviceDetectorService as DeviceDetectorService,
             mockContentManagerService as ContentManagerService,
             mockOfflineCardService as OfflineCardService,
-            mockUtilService as UtilService
-
+            mockUtilService as UtilService,
+            mockCslFrameworkService as CslFrameworkService
         );
     });
 

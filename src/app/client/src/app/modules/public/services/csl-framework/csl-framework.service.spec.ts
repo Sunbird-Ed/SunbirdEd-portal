@@ -29,7 +29,9 @@ describe('CslFrameworkService', () => {
     }
   };
 
-  const mockFormService: Partial<FormService> = {};
+  const mockFormService: Partial<FormService> = {
+    getFormConfig: jest.fn() as any,
+  };
 
   beforeEach(() => {
     service = new CslFrameworkService(
@@ -176,4 +178,68 @@ describe('CslFrameworkService', () => {
     consoleErrorSpy.mockRestore();
   });
 
+  it('should handle form details retrieval with success', (done) => {
+    const formConfigMock = { code: 'persona1', name: 'Persona 1' };
+    const rootOrgIdMock = 'mockRootOrgId';
+    (mockFormService.getFormConfig as jest.Mock).mockReturnValue(of(formConfigMock));
+    service['getFormDetails']().subscribe((result) => {
+      expect(result).toEqual(formConfigMock);
+      done();
+    });
+  });
+
+  it('should handle form details retrieval with error', (done) => {
+    const errorMock = new Error('Form config retrieval failed');
+    const fwCategoryObjectStringMock = { key: 'value' };
+    (mockFormService.getFormConfig as jest.Mock).mockReturnValue(throwError(errorMock));
+    service['getFormDetails']().subscribe((result) => {
+      expect(result).toEqual(fwCategoryObjectStringMock);
+      done();
+    });
+  });
+
+  it('should transform framework categories data correctly', () => {
+    const frameworkCategoriesObject = [
+      { code: '1', label: 'Category 1', placeHolder: 'Select Option 1' },
+      { code: '2', label: 'Category 2', placeHolder: 'Select Option 2' },
+    ];
+
+    const frameworkCategories = {
+      fwCategory1: { code: '1' },
+    };
+    const transformedData = service.transformPageLevelFilter(frameworkCategoriesObject, frameworkCategories);
+    expect(transformedData).toHaveLength(frameworkCategoriesObject.length);
+
+    transformedData.forEach((transformData, index) => {
+      const originalData = frameworkCategoriesObject[index];
+      expect(transformData.category).toBe(originalData.code);
+      expect(transformData.labelText).toBe(originalData.label);
+      expect(transformData.placeholderText).toBe(originalData.placeHolder);
+      expect(transformData.dataSource).toBe('framework');
+    });
+  });
+
+  it('should return null for getGlobalFilterCategories when no data in local storage', () => {
+    const result = service.getGlobalFilterCategories();
+    expect(result).toBeNull();
+  });
+
+  it('should return global filter categories object for getGlobalFilterCategories when data in local storage', () => {
+    const mockCategoriesObject = { category1: 'value1', category2: 'value2' };
+    localStorage.setItem('globalFilterObject', JSON.stringify(mockCategoriesObject));
+    const result = service.getGlobalFilterCategories();
+    expect(result).toEqual(mockCategoriesObject);
+  });
+
+  it('should return null for getGlobalFilterCategoriesObject when no data in local storage', () => {
+    const result = service.getGlobalFilterCategoriesObject();
+    expect(result).toBeNull();
+  });
+
+  it('should return global filter categories object for getGlobalFilterCategoriesObject when data in local storage', () => {
+    const mockCategoriesObject = [{ index: 1, code: 'category1', label: 'Category 1' }];
+    localStorage.setItem('globalFilterObjectValues', JSON.stringify(mockCategoriesObject));
+    const result = service.getGlobalFilterCategoriesObject();
+    expect(result).toEqual(mockCategoriesObject);
+  });
 });
