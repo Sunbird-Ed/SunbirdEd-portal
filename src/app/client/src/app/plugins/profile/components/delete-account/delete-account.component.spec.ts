@@ -204,7 +204,7 @@ describe('DeleteAccountComponent', () => {
     });
 
     it('should create a instance of component and call the verificationSuccess method', () => {
-        (global as any).window = Object.create(window);
+        //(global as any).window = Object.create(window);
         const url = 'http://localhost/';
         const data = {}
         userService.deleteUser = jest.fn().mockReturnValue(of(mockResponse.resendOtpSuccess));
@@ -212,7 +212,7 @@ describe('DeleteAccountComponent', () => {
         expect(window.location.href).toEqual(url);
     });
     it('should create a instance of component and call the verificationSuccess method with mobile is true', () => {
-        (global as any).window = Object.create(window);
+        //(global as any).window = Object.create(window);
         const url = 'http://localhost/';
         mockDeviceDetectorService.isMobile = jest.fn().mockReturnValue(true);
         const data = {}
