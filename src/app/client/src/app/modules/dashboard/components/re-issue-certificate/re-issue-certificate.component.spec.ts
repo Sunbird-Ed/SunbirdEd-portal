@@ -102,7 +102,6 @@ describe("ReIssueCertificateComponent", () => {
             expect(mockToasterService.error).toBeCalledWith(mockResourceService.messages.dashboard.emsg.m003)
         });
     });
-
     it('should call closeModal on onPopState call', () => {
         //arrange
         reIssueCertificateComponent.showModal = true;

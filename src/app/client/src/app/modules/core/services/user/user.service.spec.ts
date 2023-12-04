@@ -6,6 +6,7 @@ import { ContentService, DataService, LearnerService, PublicDataService } from '
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { Inject } from '@angular/core';
 import { mockUserData } from './user.mock.spec.data';
+import { combineAll } from 'rxjs/operators';
 
 describe('UserService', () => {
   let userService: UserService;
@@ -25,7 +26,9 @@ describe('UserService', () => {
           GET_PROFILE: 'user/v5/read/',
           USER_MIGRATE: 'user/v1/migrate',
           END_SESSION: 'endSession',
-          GET_USER_FEED: 'user/v1/feed/'
+          GET_USER_FEED: 'user/v1/feed/',
+          DELETE: '/user/v1/delete',
+          TNC_ACCEPT: 'user/v1/tnc/accept'
         },
         OFFLINE: {
           READ_USER: 'desktop/user/v1/read',
@@ -40,6 +43,7 @@ describe('UserService', () => {
   const mockLearnerService: Partial<LearnerService> = {
     post: jest.fn().mockImplementation(() => { }),
     get: jest.fn().mockImplementation(() => { }),
+    delete: jest.fn().mockImplementation(() => { }),
     getWithHeaders: jest.fn().mockImplementation(() => {
       return of(mockUserData.success)
     })
@@ -73,6 +77,10 @@ describe('UserService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.resetAllMocks();
+    userService._appId = 'sunbirdApp';
+    userService._sessionId = 'daxeVBKC8xKVn8lbMUB5AVcw5yjLnNbZ';
+    userService._cloudStorageUrls = ['https://sunbird.sunbird'];
+    userService._userProfile = mockUserData.userProfile;
   });
 
   it('should create a instance of UserService', () => {
@@ -99,7 +107,7 @@ describe('UserService', () => {
 
   it('should emit error on api failure', () => {
     jest.spyOn(mockLearnerService, 'getWithHeaders').mockImplementation(() => {
-      return of(mockUserData.error)
+      return throwError(mockUserData.error)
     });
     userService.initialize(true);
     userService.userData$.subscribe(userData => {

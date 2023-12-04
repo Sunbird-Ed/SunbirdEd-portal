@@ -130,7 +130,8 @@ export class UserService {
     this.contentService = contentService;
     this.publicDataService = publicDataService;
     this.isDesktopApp = environment.isDesktopApp;
-    this.frameworkCategories = localStorage.getItem('fwCategoryObjectValues');
+    let fwObj = localStorage.getItem('fwCategoryObject');
+    this.frameworkCategories = JSON.parse(fwObj);
     try {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
       DataService.userId = this._userid;
@@ -334,6 +335,16 @@ export class UserService {
       }
     ));
   }
+
+    /**
+   * This method invokes learner service to delete tthe user account
+   */
+    public deleteUser() {
+      const options = {
+        url: this.config.urlConFig.URLS.USER.DELETE+"/"+this.userid,
+      };
+      return this.learnerService.delete(options);
+    }
 
   get orgIdNameMap() {
     const mapOrgIdNameData = {};

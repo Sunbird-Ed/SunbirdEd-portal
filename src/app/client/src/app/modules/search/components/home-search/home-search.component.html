@@ -44,7 +44,7 @@
                   [layoutConfig]="layoutConfiguration" appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata"
                   [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
                   (cardClick)="playContent($event)" (enterKey)="playContent($event)" [content]="content"
-                  [cardImg]="content?.appIcon || 'assets/images/book.png'">
+                  [cardImg]="content?.appIcon || 'assets/images/book.png'" [categoryKeys]="categoryKeys">
                 </sb-library-card>
                 <ng-template #desktopCard>
                   <div class="sb-desktop-library-card relative9">
@@ -52,7 +52,7 @@
                       [telemetryInteractEdata]="cardIntractEdata"
                       [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
                       [hover-template]="hoverTemplate" [content]="content"
-                      [cardImg]="content?.appIcon || 'assets/images/book.png'">
+                      [cardImg]="content?.appIcon || 'assets/images/book.png'" [categoryKeys]="categoryKeys">
                       <ng-template #hoverTemplate let-hoverData="hoverData" let-content="content">
                         <sb-card-hover class="card-hover" [content]="content" [hoverData]="hoverData"
                           (hoverActionClick)="hoverActionClicked($event)">

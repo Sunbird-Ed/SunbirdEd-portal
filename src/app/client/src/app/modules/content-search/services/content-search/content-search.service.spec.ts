@@ -1,7 +1,7 @@
 import { FrameworkService, ChannelService } from '../../../core';
 import { ContentSearchService } from './content-search.service';
 import { of } from "rxjs";
-
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 describe('ContentSearchService', () => {
 
@@ -68,10 +68,21 @@ describe('ContentSearchService', () => {
     })),
   };
 
+  const mockCslFrameworkService: Partial<CslFrameworkService> = {
+    getAlternativeCodeForFilter: jest.fn(),
+    getFrameworkCategories: jest.fn(),
+    setDefaultFWforCsl: jest.fn(),
+    getFrameworkCategoriesObject : jest.fn(),
+    getGlobalFilterCategories: jest.fn(() => ({
+      fwCategory1: { },
+    })),
+  };
+
   beforeAll(() => {
     contentSearchService = new ContentSearchService(
       mockFrameworkService as FrameworkService,
-      mockChannelService as ChannelService
+      mockChannelService as ChannelService,
+      mockCslFrameworkService as CslFrameworkService
     );
   });
 
@@ -107,12 +118,6 @@ describe('ContentSearchService', () => {
     jest.spyOn(contentSearchService, 'fetchChannelData');
     contentSearchService.fetchChannelData();
     expect(contentSearchService.fetchChannelData).toHaveBeenCalled();
-  });
-
-  it('should map categories to new keys', () => {
-    const input = { subject: [], medium: [], gradeLevel: [], board: [], contentType: 'course' };
-    const result = contentSearchService.mapCategories({ filters: input });
-    expect(result).toEqual({ subject: [], se_mediums: [], se_gradeLevels: [], se_boards: [], contentType: 'course' });
   });
 
 });

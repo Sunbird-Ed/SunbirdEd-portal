@@ -42,6 +42,7 @@ import {
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
 import {Location} from '@angular/common';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 @Component({
   selector: 'app-observation-listing',
@@ -79,6 +80,7 @@ export class ObservationListingComponent
   showEditUserDetailsPopup: any = true;
   payload: any;
   public limit  = 50;
+  public categoryKeys;
   constructor(
     public searchService: SearchService,
     public router: Router,
@@ -105,6 +107,7 @@ export class ObservationListingComponent
     config: ConfigService,
     private observationUtil: ObservationUtilService,
     private location: Location,
+    public cslFrameworkService: CslFrameworkService
   ) {
     this.config = config;
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -113,6 +116,7 @@ export class ObservationListingComponent
 
   async ngOnInit() {
     this.initLayout();
+    this.categoryKeys = this.cslFrameworkService.transformDataForCC();
     this.showEditUserDetailsPopup = await this.observationUtil.getProfileInfo();
      if (!this.showEditUserDetailsPopup) {
        const metaData = this.observationUtil.getAlertMetaData();

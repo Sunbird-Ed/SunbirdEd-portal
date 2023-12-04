@@ -392,6 +392,7 @@ export class AppComponent implements OnInit, OnDestroy {
         localStorage.setItem('joyThemePopup', 'true');
         this.joyThemePopup();
         this.changeDetectorRef.detectChanges();
+        this.cslFrameworkService.setTransFormGlobalFilterConfig();
       }, error => {
         this.initApp = true;
         this.changeDetectorRef.detectChanges();

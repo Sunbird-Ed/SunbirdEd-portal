@@ -34,7 +34,7 @@
                   <div class="sb-desktop-library-card relative9">
                     <sb-library-cards-grid *ngIf="section?.name !== 'Recently Added'" [layoutConfig]="layoutConfiguration"
                       [type]="'infinite_card_grid_with_hover'" [title]="section?.name" [contentList]="section?.contents"
-                      [maxCardCount]="3" (hoverActionClick)="hoverActionClicked($event)">
+                      [maxCardCount]="3" (hoverActionClick)="hoverActionClicked($event)" [categoryKeys]="categoryKeys">
                     </sb-library-cards-grid>
                   </div>
                 </section>
