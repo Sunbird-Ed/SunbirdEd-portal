@@ -2060,6 +2060,7 @@ const API_LIST = {
     '/kendra/resource/mlreports/v1/filtervalues',
     '/assessment/programs/mlcore/v1/join/:id',
     '/assessment/users/mlcore/v1/solutions/:id',
+    '/learner/user/v1/delete',
   ]
 };
 module.exports = API_LIST;
