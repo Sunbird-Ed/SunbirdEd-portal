@@ -120,13 +120,14 @@ export class DeleteAccountComponent implements OnInit, OnDestroy {
             window.location.replace('/logoff');
             this.cacheService.removeAll();
             if(this.deviceDetectorService.isMobile()){
+              //TODO changes need to be done on the Mobile Deeplink
               const url ='dev.sunbird.app://mobile?userId'+ this.userProfile.userId;
               window.open(url, '_blank');
             }
           }
         },
         (err) => {
-          console.log('------>',err);
+          //TODO we need to update the error 
           const errorMessage =  this.resourceService.messages.fmsg.m0085;
           this.toasterService.error(errorMessage);
         }

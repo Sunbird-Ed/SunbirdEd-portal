@@ -345,7 +345,6 @@ export class UserService {
           }
         }
       };
-      console.log('------>',options);
       return this.learnerService.post(options);
     }
 

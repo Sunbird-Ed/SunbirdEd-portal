@@ -56,14 +56,13 @@ module.exports = function (app) {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
       proxyReqPathResolver: (req) => {
         logger.info({ msg: '/learner/user/v1/delete called upstream url /user/v1/delete in request path resolver' });
-        logger.info(envHelper.LEARNER_URL + req.originalUrl.replace('/learner/', ''));
         return require('url').parse(envHelper.LEARNER_URL + req.originalUrl.replace('/learner/', '')).path
       },
       userResDecorator: (proxyRes, proxyResData, req, res) => {
         logger.info({ msg: '/learner/user/v1/delete called upstream url /user/v1/delete' });
         try {
           const data = JSON.parse(proxyResData.toString('utf8'));
-          if (req.method === 'DELETE' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+          if (req.method === 'POST' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
           else return proxyUtils.handleSessionExpiry(proxyRes, data, req, res, data);
         } catch (err) {
           logger.error({ msg: 'learner route : userResDecorator json parse error:', proxyResData });
@@ -235,7 +234,6 @@ function proxyObj() {
     },
     userResDecorator: function (proxyRes, proxyResData, req, res) {
       try {
-        logger.info({ msg: 'proxyObj' });
         let data = JSON.parse(proxyResData.toString('utf8'));
         let response = data.result.response;
         data.result.response = { id: '', rootOrgId: '', isUserExists: '' };
