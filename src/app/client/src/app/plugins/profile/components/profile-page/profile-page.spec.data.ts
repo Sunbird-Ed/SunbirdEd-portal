@@ -586,7 +586,21 @@ export const Response = {
       'userId': '3730d46a-2f28-4b98-b39a-1b4bd440025f',
       'promptTnC': false,
       'emailVerified': true,
-      userRoles:['PUBLIC'],
+      'userRoles':['PUBLIC'],
+      "roles": [
+        {
+            "role": "BOOK_CREATOR",
+            "createdDate": null,
+            "updatedBy": "fbe926ac-a395-40e4-a65b-9b4f711d7642",
+            "createdBy": "4cd4c690-eab6-4938-855a-447c7b1b8ea9",
+            "scope": [
+                {
+                    "organisationId": "01269878797503692810"
+                }
+            ],
+            "updatedDate": "2022-03-23 10:14:23:517+0000"
+        },
+        ],
       'framework': {
           'gradeLevel': [
               'Class 5'

@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { ProfileService } from '../../services';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { MatDialog } from '@angular/material/dialog';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-delete-account',
@@ -32,7 +33,8 @@ export class DeleteAccountComponent implements OnInit, OnDestroy {
   constructor(public resourceService: ResourceService, public userService: UserService,
     public otpService: OtpService, public toasterService: ToasterService,
     public profileService: ProfileService, private matDialog: MatDialog,
-    public configService: ConfigService,private cacheService:CacheService) { }
+    public configService: ConfigService,private cacheService:CacheService,
+    public deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit() {
     this.validateAndEditContact();
@@ -60,7 +62,6 @@ export class DeleteAccountComponent implements OnInit, OnDestroy {
           this.resourceService.frmelmnts.lbl.wrongEmailOTP
       };
       this.verifiedUser = false;
-
       this.generateOTP({ request }, otpData);
     }
   }
@@ -113,8 +114,25 @@ export class DeleteAccountComponent implements OnInit, OnDestroy {
   }
 
   verificationSuccess(data) {
-      window.location.replace('/logoff');
-      this.cacheService.removeAll();
+      this.userService.deleteUser().subscribe(
+        (data: ServerResponse) => {
+          if(_.get(data, 'result.response') === 'SUCCESS'){
+            window.location.replace('/logoff');
+            this.cacheService.removeAll();
+            if(this.deviceDetectorService.isMobile()){
+              //TODO changes need to be done on the Mobile Deeplink
+              const url ='dev.sunbird.app://mobile?userId'+ this.userProfile.userId;
+              window.open(url, '_blank');
+            }
+          }
+        },
+        (err) => {
+          //TODO we need to update the error 
+          const errorMessage =  this.resourceService.messages.fmsg.m0085;
+          this.toasterService.error(errorMessage);
+        }
+      );
+       
   }
 
   setInteractEventData() {
@@ -124,7 +142,6 @@ export class DeleteAccountComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: 'delete-account'
     };
-
     this.telemetryInteractObject = {
       id: this.userService.userid,
       type: 'User',
