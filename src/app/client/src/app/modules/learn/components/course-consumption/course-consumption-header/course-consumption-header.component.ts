@@ -247,6 +247,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   resumeCourse(showExtUrlMsg?: boolean) {
+    this.ngOnInit();
+    return
     const IsStoredLocally = localStorage.getItem('isCertificateNameUpdated_' + this.profileInfo.id) || 'false' ;
     const certificateDescription = this.courseBatchService.getcertificateDescription(this.enrolledBatchInfo);
     if (IsStoredLocally !== 'true'
