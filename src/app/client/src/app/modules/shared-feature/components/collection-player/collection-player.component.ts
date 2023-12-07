@@ -283,7 +283,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     }
     this.activeMimeTypeFilter = event.data.value;  
     this.sortChildrenByCreatedOn(this.collectionData, event.sortBy);
-    console.log("CollectionData---",event.sortBy+".....",this.collectionData);
   }
 
   sortChildrenByCreatedOn(item:any, sortKey:string) {
@@ -323,19 +322,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
             child1.children.sort((a:any, b:any) =>{ 
               let playSessionCount1 = this.getContentPlaySessionCount(b.me_totalPlaySessionCount).sum,
               playSessionCount2 = this.getContentPlaySessionCount(a.me_totalPlaySessionCount).sum;
-              // if(playSessionCount1 && playSessionCount1?.portal) {
-              //   playSessionCount1.portal = playSessionCount1?.portal;
-              //   console.log(b?.me_totalPlaySessionCount.portal);
-              // } else {
-              //   playSessionCount1.me_totalPlaySessionCount = {portal :0}
-              // }
-
-              // if(playSessionCount2 && playSessionCount2?.portal) {
-              //   playSessionCount2.portal = playSessionCount2?.portal;
-              //   console.log(a?.me_totalPlaySessionCount?.portal);
-              // } else {
-              //   playSessionCount2.me_totalPlaySessionCount = {portal :0}
-              // }
               return playSessionCount1 - playSessionCount2;
             });
           });
@@ -359,7 +345,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       return { sum: 0 }
     }
   }
-  
+
   showNoContent(event) {
     if (event.message === 'No Content Available') {
       this.isContentPresent = false;
