@@ -15,7 +15,7 @@ import * as TreeModel from 'tree-model';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { PopupControlService } from '../../../../service/popup-control.service';
 import { PublicPlayerService } from '@sunbird/public';
-import { TocCardType, PlatformType } from '@project-sunbird/common-consumption';
+import { TocCardType, PlatformType } from 'library-filters-common-consumption';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 import { ContentManagerService } from '../../../public/module/offline/services';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -278,7 +278,72 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   selectedFilter(event) {
-    this.activeMimeTypeFilter = event.data.value;
+    if(!event.data) {
+      event.data={'value' : ['all'] };
+    }
+    this.activeMimeTypeFilter = event.data.value;  
+    this.sortChildrenByCreatedOn(this.collectionData, event.sortBy);
+  }
+
+  sortChildrenByCreatedOn(item:any, sortKey:string) {
+    if (item.children && item.children.length > 0) {
+      if(sortKey ==="Newly Added") {
+        item.children.forEach(child =>{ 
+          child.children.forEach(child1 =>{
+            if(child1.children) {
+              child1.children.sort((a:any, b:any) =>{ return new Date(b.createdOn).valueOf() - new Date(a.createdOn).valueOf();});
+            }
+          });
+        });
+            // item.children.forEach(child => this.sortChildrenByCreatedOn(child, sortKey));
+      } else if(sortKey ==="Most Rated") {
+        // item.children.sort((a:any, b:any) =>{ return b.me_totalRatingsCount - a.me_totalRatingsCount;});
+        // item.children.forEach(child => this.sortChildrenByCreatedOn(child, sortKey));
+        item.children.forEach(child =>{ 
+          child.children.forEach(child1 =>{
+            
+            child1.children.sort((a:any, b:any) =>{ 
+              if(!a.me_totalRatingsCount) {
+                a.me_totalRatingsCount =0;
+              }
+              if(!b.me_totalRatingsCount) {
+                b.me_totalRatingsCount =0;
+              }
+              return b.me_totalRatingsCount - a.me_totalRatingsCount;
+            });
+          });
+        });
+      } else if(sortKey ==="Most Viewed") {
+        // item.children.sort((a:any, b:any) =>{ return b.me_totalRatingsCount - a.me_totalRatingsCount;});
+        // item.children.forEach(child => this.sortChildrenByCreatedOn(child, sortKey));  
+        item.children.forEach(child =>{ 
+          child.children.forEach(child1 =>{
+            
+            child1.children.sort((a:any, b:any) =>{ 
+              let playSessionCount1 = this.getContentPlaySessionCount(b.me_totalPlaySessionCount).sum,
+              playSessionCount2 = this.getContentPlaySessionCount(a.me_totalPlaySessionCount).sum;
+              return playSessionCount1 - playSessionCount2;
+            });
+          });
+        });
+      } 
+    } 
+  }
+
+  getContentPlaySessionCount(playSessionCountString: string): any {
+    try {
+      const parsedData = JSON.parse(playSessionCountString);
+      if (parsedData.portal && parsedData.app) {
+        return {
+          sum: parsedData.portal + parsedData.app
+        };
+      } else {
+        return { sum: parsedData.portal || parsedData.app || 0};
+      }
+    } catch (e) {
+      console.error('Error parsing play session count JSON', e);
+      return { sum: 0 }
+    }
   }
 
   showNoContent(event) {
