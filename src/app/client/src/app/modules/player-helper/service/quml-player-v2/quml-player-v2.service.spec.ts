@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { PublicPlayerService } from '@sunbird/public';
 import { questionListResponse, hierarchyResponse, questionsetRead } from './quml-player-v2.service.spec.data'
 import { of } from 'rxjs';
+import { ConfigService } from '@sunbird/shared';
 describe('QumlPlayerV2Service', () => {
   let qumlPlayerV2Service: QumlPlayerV2Service;
 
@@ -22,10 +23,14 @@ describe('QumlPlayerV2Service', () => {
     })
   }
 
+  const mockConfigService: Partial<PublicPlayerService> = {
+  }
+
   beforeAll(() => {
     qumlPlayerV2Service = new QumlPlayerV2Service(
       mockHttpClient as HttpClient,
-      mockPublicPlayerService as PublicPlayerService
+      mockPublicPlayerService as PublicPlayerService,
+      mockConfigService as ConfigService
     );
   });
 

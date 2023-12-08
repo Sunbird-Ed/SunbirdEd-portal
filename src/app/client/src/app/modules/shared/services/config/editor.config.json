@@ -1282,6 +1282,7 @@
         ]
     },
     "QUESTIONSET_EDITOR": {
-        "mimeCollection": "application/vnd.sunbird.questionset"
+        "mimeCollection": "application/vnd.sunbird.questionset",
+        "externalProperties": ["instructions", "outcomeDeclaration"]
       }
 }

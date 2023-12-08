@@ -6,6 +6,7 @@ import { QuestionCursor } from '@project-sunbird/sunbird-quml-player';
 import { EditorCursor } from '@project-sunbird/sunbird-questionset-editor';
 import * as _ from 'lodash-es';
 import { PublicPlayerService } from '@sunbird/public';
+import { ConfigService } from '@sunbird/shared';
 @Injectable({
   providedIn: 'root'
 })
@@ -13,7 +14,8 @@ import { PublicPlayerService } from '@sunbird/public';
 export class QumlPlayerV2Service implements QuestionCursor, EditorCursor {
   public questionMap = new Map();
   constructor(private http: HttpClient,
-    public playerService: PublicPlayerService) { }
+    public playerService: PublicPlayerService,
+    public configService: ConfigService) { }
 
   getQuestion(questionId: string): Observable<any> {
     if (_.isEmpty(questionId)) { return of({}); }
@@ -38,15 +40,9 @@ export class QumlPlayerV2Service implements QuestionCursor, EditorCursor {
     const questionSetResponse = this.playerService.getQuestionSetRead(identifier);
 
     return forkJoin([hierarchy, questionSetResponse]).pipe(map(res => {
-      const questionSet = _.get(res[0], 'questionset');
-      const instructions = _.get(res[1], 'result.questionset.instructions');
-      const outcomeDeclaration = _.get(res[1], 'result.questionset.outcomeDeclaration');
-      if (questionSet && instructions) {
-        questionSet['instructions'] = instructions;
-      }
-      if (questionSet && outcomeDeclaration) {
-        questionSet['outcomeDeclaration'] = outcomeDeclaration;
-      }
+      const questionSet = _.get(res[0], 'result.questionset');
+      const questionsetData = _.get(res[1], 'result.questionset');
+      _.merge(questionSet, this.playerService.getProperties(questionsetData, this.configService.editorConfig.QUESTIONSET_EDITOR.externalProperties))
       return { questionSet };
     }));
   }

@@ -2386,10 +2386,10 @@
   dependencies:
     ally.js "1.4.1"
 
-"@project-sunbird/sunbird-questionset-editor@7.0.0":
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-questionset-editor/-/sunbird-questionset-editor-7.0.0.tgz#8b5b475bb6298fc85db3491f601e5c50f4306de7"
-  integrity sha512-fZs3ifJio+1KUjzwKdQenESrx5TMUDQBam2QxUqEWCHTuTHmrNKMdFXWFSglBAkI9jRmLWmWsQyCAIsYXT9jxA==
+"@project-sunbird/sunbird-questionset-editor@7.0.1":
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-questionset-editor/-/sunbird-questionset-editor-7.0.1.tgz#854d8c167d4c5dc4702f30a028c6d62c6fff5432"
+  integrity sha512-wrhTf0fyamwzPPzCoF0HvVYktYGJKxXDF4ApER1qjtIVSxbsBGxWfbRKZC3j7RbwXLFQQBbhZNYziLTcZR6E/A==
   dependencies:
     tslib "^2.0.0"
 

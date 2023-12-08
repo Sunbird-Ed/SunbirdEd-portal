@@ -1,4 +1,4 @@
-<ng-container *ngIf="!showLoader && editorConfig && showCollectionEditor">
+<ng-container *ngIf="!showLoader && editorConfig && !showQuestionsetEditor">
   <lib-editor [editorConfig]="editorConfig" (editorEmitter)="editorEventListener($event)" ></lib-editor>
 </ng-container>
 <ng-container *ngIf="!showLoader && editorConfig && showQuestionsetEditor">

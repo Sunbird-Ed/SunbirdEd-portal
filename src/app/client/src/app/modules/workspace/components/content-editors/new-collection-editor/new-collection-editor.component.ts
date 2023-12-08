@@ -20,7 +20,6 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
   public portalVersion: string;
   public userProfile: any;
   public showLoader = false;
-  public showCollectionEditor = false;
   public showQuestionsetEditor = false;
   private routeParams: any;
   public queryParams: object;
@@ -220,7 +219,6 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
           this.editorConfig.context['targetFWIds'] = _.get(this.collectionDetails, 'targetFWIds');
         }
         this.showLoader = false;
-        this.showCollectionEditor = true;
       } else {
         this.setEditorConfig();
         this.showLoader = false;
