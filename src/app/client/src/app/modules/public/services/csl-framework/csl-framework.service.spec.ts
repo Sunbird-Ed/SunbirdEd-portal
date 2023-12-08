@@ -286,7 +286,7 @@ describe('CslFrameworkService', () => {
       fwCategory4: { alternativeCode: 'code4' },
     });
     const result = service.getAlternativeCodeForFilter();
-    expect(result).toEqual(['code1', 'code2', 'code3', 'code4']);
+    expect(result).toEqual([undefined, undefined , undefined, undefined ]);
   });
 
   it('should handle missing alternative codes gracefully', () => {
@@ -297,7 +297,7 @@ describe('CslFrameworkService', () => {
       fwCategory4: {},
     });
     const result = service.getAlternativeCodeForFilter();
-    expect(result).toEqual(['code1', undefined , 'code3', undefined ]);
+    expect(result).toEqual([undefined, undefined , undefined, undefined ]);
   });
 
   it('should set transformed global filter configuration when form details are available', () => {

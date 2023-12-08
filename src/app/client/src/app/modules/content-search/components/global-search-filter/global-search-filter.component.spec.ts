@@ -25,7 +25,8 @@ describe('GlobalSearchFilterComponent', () => {
     };
     const mockCslFrameworkService: Partial<CslFrameworkService> = {
         getFrameworkCategories: jest.fn(),
-        setDefaultFWforCsl: jest.fn()
+        setDefaultFWforCsl: jest.fn(),
+        getAllFwCatName: jest.fn(),
     };
 
     beforeAll(() => {
@@ -315,6 +316,11 @@ describe('GlobalSearchFilterComponent', () => {
                     chhanel: ''
                 }
             };
+            globalSearchFilterComponent.frameworkCategoriesList = [
+            'Category1',
+            'Category2',
+            'Category3',
+            ];
             mockUtilService._isDesktopApp = true;
             mockUserService.anonymousUserPreference = {
                 framework: {
