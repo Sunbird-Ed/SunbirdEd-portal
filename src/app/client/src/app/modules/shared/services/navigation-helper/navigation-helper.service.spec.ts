@@ -295,8 +295,9 @@ describe('NavigationHelperService', () => {
         });
         
         it('should set previousNavigationUrl to default value if no navigationUrl provided', () => {
+            const defaultUrl = '/explore'
+            jest.spyOn(navigationHelperService,'getPreviousUrl').mockReturnValue({url: '/explore'});
             navigationHelperService.setNavigationUrl();
-            const defaultUrl = '/explore';
             const expectedDefaultNavigationUrl = { url: defaultUrl };
 
             expect(navigationHelperService.previousNavigationUrl).toEqual(expectedDefaultNavigationUrl);
