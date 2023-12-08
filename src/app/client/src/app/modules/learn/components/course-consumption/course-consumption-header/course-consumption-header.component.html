@@ -126,14 +126,14 @@
             (click)="resumeCourse(true); this.logTelemetry('course-start', courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.startLearning}}</button>
         </div>
 
-        <!-- <div class="certified-course__btn py-8" *ngIf="enrolledCourse && progress>0 && progress<100 && !viewDashboard">
+        <div class="certified-course__btn py-8" *ngIf="enrolledCourse && progress>0 && progress<100 && !viewDashboard">
           <button class="sb-btn sb-btn-secondary sb-btn-normal textbook__addbtn ml-8 sb-btn-icon-fix"
             [disabled]="showResumeCourse" tabindex="0"
             (click)="resumeCourse(true); this.logTelemetry('course-resume', courseHierarchy)">
             <i class="icon-svg icon-svg--xs icon-play mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="assets/images/sprite.svg#play-continue"></use>
               </svg></i>{{resourceService?.frmelmnts?.btn?.continueLearning}}</button>
-        </div> -->
+        </div>
 
         <!-- <h5 class="sb-color-primary font-weight-bold mb-0 sb__ellipsis" tabindex="0" *ngIf="progress===100">You have completed this course</h5> -->
 
