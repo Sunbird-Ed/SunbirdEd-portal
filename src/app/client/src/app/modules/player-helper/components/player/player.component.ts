@@ -461,12 +461,14 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       contentProgress = CsContentProgressCalculator.calculate(playerSummary, contentMimeType);
     }
 
-    if (event.detail.telemetryData.eid === 'END' && contentProgress === 100 && this.currentPageType === "END" && this.currentPage === this.totalPage) {
-        this.contentRatingModal = !this.isFullScreenView;
+    if (event.detail.telemetryData.eid === 'END' && contentProgress === 100 && this.currentPageType === "END") {
+      if(this.currentPage  && this.currentPage === this.totalPage){  
+      this.contentRatingModal = !this.isFullScreenView;
         this.showRatingModalAfterClose = true;
         if (this.modal) {
           this.modal.showContentRatingModal = true;
         }
+      }
     }
     
 
