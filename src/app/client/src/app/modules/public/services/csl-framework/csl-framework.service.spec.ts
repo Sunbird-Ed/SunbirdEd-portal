@@ -278,26 +278,15 @@ describe('CslFrameworkService', () => {
     expect(result).toEqual([ { code: 'lastPublishedBy', name: 'Published by' }]);
   });
 
-  it('should return an array of alternative codes for filter categories', () => {
+  it('should return an array of filter category names', () => {
     jest.spyOn(service, 'getGlobalFilterCategories').mockReturnValue({
-      fwCategory1: { alternativeCode: 'code1' },
-      fwCategory2: { alternativeCode: 'code2' },
-      fwCategory3: { alternativeCode: 'code3' },
-      fwCategory4: { alternativeCode: 'code4' },
+      fwCategory1: { code: 'code1' },
+      fwCategory2: { code: 'code2' },
+      fwCategory3: { code: 'code3' },
+      fwCategory4: { code: 'code4' },
     });
     const result = service.getAlternativeCodeForFilter();
-    expect(result).toEqual([undefined, undefined , undefined, undefined ]);
-  });
-
-  it('should handle missing alternative codes gracefully', () => {
-    jest.spyOn(service, 'getGlobalFilterCategories').mockReturnValue({
-      fwCategory1: { alternativeCode: 'code1' },
-      fwCategory2: {},
-      fwCategory3: { alternativeCode: 'code3' },
-      fwCategory4: {},
-    });
-    const result = service.getAlternativeCodeForFilter();
-    expect(result).toEqual([undefined, undefined , undefined, undefined ]);
+    expect(result).toEqual(['code1', 'code2', 'code3', 'code4']);
   });
 
   it('should set transformed global filter configuration when form details are available', () => {
