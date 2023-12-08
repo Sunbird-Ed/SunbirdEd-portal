@@ -146,10 +146,7 @@ module.exports = function (app) {
   app.get([
     '/action/questionset/v2/read/:do_id',
     '/action/question/v2/read/:do_id',
-    '/action/questionset/v2/hierarchy/:do_id',
-    '/action/questionset/v2/read/:do_id',
-    '/action/question/v2/read/:do_id',
-    '/action/questionset/v2/hierarchy/:do_id',
+    '/action/questionset/v2/hierarchy/:do_id'
     ],
     isAPIWhitelisted.isAllowed(),
     addCorsHeaders,
