@@ -43,8 +43,8 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
   @Input() isOpen;
   @Output() filterChange: EventEmitter<{ status: string, filters?: any }> = new EventEmitter();
   @Input() cachedFilters?: any;
-  public frameworkCategories;
   public frameworkCategoriesObject;
+  public frameworkCategoriesList;
 
   @ViewChild('sbSearchFacetFilterComponent') searchFacetFilterComponent: any;
 
@@ -115,7 +115,8 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
   }
 
   ngOnInit() {
-    this.frameworkCategories = this.cslFrameworkService.getFrameworkCategories();
+    this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
+    this.supportedFilterAttributes = [ ...this.frameworkCategoriesList, 'primaryCategory', 'mediaType', 'additionalCategories', 'channel'];
     this.setResetFilterInteractData();
     this.fetchSelectedFilterAndFilterOption();
     this.handleFilterChange();
@@ -133,7 +134,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
     if (this.utilService.isDesktopApp) {
       const userPreferences: any = this.userService.anonymousUserPreference;
       if (userPreferences) {
-        _.forEach([this.frameworkCategories?.fwCategory1?.code, this.frameworkCategories?.fwCategory2?.code, this.frameworkCategories?.fwCategory3?.code, 'channel'], (item) => {
+        _.forEach([this.frameworkCategoriesList[0],this.frameworkCategoriesList[1],this.frameworkCategoriesList[2], 'channel'], (item) => {
           if (!_.has(this.selectedFilters, item)) {
             this.selectedFilters[item] = _.isArray(userPreferences.framework[item]) ?
             userPreferences.framework[item] : _.split(userPreferences.framework[item], ', ');
@@ -164,7 +165,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
       map((queryParams) => {
         const queryFilters: any = {};
         _.forIn(queryParams, (value, key) => {
-          if ([this.frameworkCategories?.fwCategory1?.code, this.frameworkCategories?.fwCategory2?.code, this.frameworkCategories?.fwCategory3?.code,this.frameworkCategories?.fwCategory4?.code,'channel', 'primaryCategory', 'key', 'mediaType', 'se_boards', 'se_mediums', 'se_gradeLevels', 'se_subjects', 'additionalCategories'].includes(key)) {
+          if ([...this.frameworkCategoriesList,'channel', 'primaryCategory', 'key', 'mediaType', 'se_boards', 'se_mediums', 'se_gradeLevels', 'se_subjects', 'additionalCategories'].includes(key)) {
             queryFilters[key] = key === 'key' || _.isArray(value) ? value : [value];
           }
         });
@@ -299,7 +300,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
       queryParams: {
         ...(() => {
           const queryParams = _.cloneDeep(this.activatedRoute.snapshot.queryParams);
-          const queryFilters = [...this.supportedFilterAttributes, ...[this.frameworkCategories?.fwCategory1?.code, this.frameworkCategories?.fwCategory2?.code, this.frameworkCategories?.fwCategory3?.code, 'channel']];
+          const queryFilters = [...this.supportedFilterAttributes, ...[this.frameworkCategoriesList[0],this.frameworkCategoriesList[1],this.frameworkCategoriesList[2], 'channel']];
           queryFilters.forEach((attr) => delete queryParams[attr]);
           return queryParams;
         })()
