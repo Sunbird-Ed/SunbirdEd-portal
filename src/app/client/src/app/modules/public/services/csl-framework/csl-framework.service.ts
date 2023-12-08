@@ -218,7 +218,7 @@ export class CslFrameworkService {
     frameworkCategoriesObject: FrameworkCategory[],
     frameworkCategories: FrameworkCategories
   ): TransformedData[] {
-    const pageFilterData: TransformedData[] = frameworkCategoriesObject.map(filterData => {
+    const pageFilterData: TransformedData[] = frameworkCategoriesObject?.map(filterData => {
       const transformData: TransformedData = {
         category: filterData.code,
         type: "dropdown",
@@ -330,12 +330,14 @@ export class CslFrameworkService {
    */
   getAlternativeCodeForFilter() {
     this.globalFilterCategories = this.getGlobalFilterCategories();
-    return [
-      this.globalFilterCategories.fwCategory1?.alternativeCode,
-      this.globalFilterCategories.fwCategory2?.alternativeCode,
-      this.globalFilterCategories.fwCategory3?.alternativeCode,
-      this.globalFilterCategories.fwCategory4?.alternativeCode
-    ];
+    const filterCatNames: string[] = [];
+    for (const key in this.globalFilterCategories) {
+      if (Object.prototype.hasOwnProperty.call(this.globalFilterCategories, key)) {
+        filterCatNames.push(this.globalFilterCategories[key].code);
+      }
+    }
+
+    return filterCatNames;
   }
 
   /**
@@ -344,16 +346,16 @@ export class CslFrameworkService {
    * - code is a property that holds the name for each framework category.
    * @returns {string[]} An array containing names of first 4 framework categories.
    */
-
   getAllFwCatName() {
     this.frameworkCategoriesList = this.getFrameworkCategories();
-    return [
-      this.frameworkCategoriesList?.fwCategory1?.code,
-      this.frameworkCategoriesList?.fwCategory2?.code,
-      this.frameworkCategoriesList?.fwCategory3?.code,
-      this.frameworkCategoriesList?.fwCategory4?.code,
-    ]
+    const fwCatNames: string[] = [];
+    for (const key in this.frameworkCategoriesList) {
+      if (Object.prototype.hasOwnProperty.call(this.frameworkCategoriesList, key)) {
+        fwCatNames.push(this.frameworkCategoriesList[key].code);
+      }
+    }
 
+    return fwCatNames;
   }
 
 
