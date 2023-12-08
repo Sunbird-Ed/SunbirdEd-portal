@@ -63,7 +63,7 @@ describe('NavigationHelperService', () => {
             navigationHelperService.history[navigationHelperService['_history'].length - 2]
         );
         mockDateNow.mockRestore();
-      });
+    });
     
     
     describe('storeResourceCloseUrl', () => {
