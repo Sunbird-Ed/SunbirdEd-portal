@@ -282,7 +282,6 @@ export class UserService {
     if (!this._userProfile.managedBy) {
       this.cacheService.set('userProfile', this._userProfile);
     }
-
     if (window['TagManager']) {
       window['TagManager'].SBTagService.pushTag({ userLoocation: profileData.userLocations, userTyep: profileData.profileUserType }, 'USERLOCATION_', true);
       window['TagManager'].SBTagService.pushTag(profileData.framework, 'USERFRAMEWORK_', true);
@@ -341,9 +340,14 @@ export class UserService {
    */
     public deleteUser() {
       const options = {
-        url: this.config.urlConFig.URLS.USER.DELETE+"/"+this.userid,
+        url: this.config.urlConFig.URLS.USER.DELETE,
+        data: {
+          request: {
+            'userId': this.userid
+          }
+        }
       };
-      return this.learnerService.delete(options);
+      return this.learnerService.post(options);
     }
 
   get orgIdNameMap() {

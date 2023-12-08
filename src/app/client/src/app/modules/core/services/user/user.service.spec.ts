@@ -247,6 +247,108 @@ describe('UserService', () => {
     expect(mockLearnerService.get).toBeCalled();
   });
 
+  it('should call slug method', () => {
+    const obj = userService.slug;
+    expect(obj).toEqual('sunbird');
+  });
+
+  it('should call anonymousSid method', () => {
+    const obj = userService.anonymousSid;
+    expect(obj).toBeDefined();
+  });
+
+  it('should call loggedIn method', () => {
+    const obj = userService.loggedIn;
+    expect(obj).toBeFalsy();
+  });
+
+  it('should call userid method', () => {
+    userService.setUserId('0008ccab-2103-46c9-adba-6cdf84d37f06');
+    const obj = userService.userid;
+    expect(obj).toBe('0008ccab-2103-46c9-adba-6cdf84d37f06');
+  });
+
+  it('should call sessionId method', () => {
+    const obj = userService.sessionId;
+    expect(obj).toBe('daxeVBKC8xKVn8lbMUB5AVcw5yjLnNbZ');
+  });
+
+  it('should call setIsCustodianUser method and also get the value isCustodianUser', () => {
+    userService.setIsCustodianUser(true);
+    const obj = userService.isCustodianUser;
+    expect(obj).toBeTruthy();
+  });
+
+  it('should call appId method', () => {
+    const obj = userService.appId;
+    expect(obj).toEqual('sunbirdApp');
+  });
+
+  it('should call cloudStorageUrls method', () => {
+    const obj = userService.cloudStorageUrls;
+    expect(obj).toEqual(['https://sunbird.sunbird']);
+  });
+
+  it('should call userProfile method', () => {
+    const obj = userService.userProfile;
+    expect(obj).toEqual(mockUserData.userProfile);
+  });
+
+  it('should call rootOrgId method', () => {
+    const obj = userService.rootOrgId;
+    expect(obj).toEqual('ORG_001');
+  });
+
+  it('should call hashTagId method', () => {
+    const obj = userService.hashTagId;
+    expect(obj).toEqual('b00bc992ef25f1a9a8d63291e20efc8d');
+  });
+
+  it('should call getServerTimeDiff method', () => {
+    const obj = userService.getServerTimeDiff;
+    expect(obj).toEqual('2018-02-28 12:07:33:518+0000');
+  });
+
+  it('should call dims method', () => {
+    const res = [
+      'ORG_001',
+      '0123653943740170242',
+      'b00bc992ef25f1a9a8d63291e20efc8d'
+    ];
+    const obj = userService.dims;
+    expect(obj).toEqual(res);
+  });
+
+  it('should call UserOrgDetails method', () => {
+    const obj = userService.UserOrgDetails;
+    expect(obj).toBe(undefined);
+  });
+
+  it('should call RoleOrgMap method', () => {
+    const obj = userService.RoleOrgMap;
+    expect(obj).toBe(undefined);
+  });
+
+  it('should call deleteUser method', () => {
+    const opt = { url: '/user/v1/delete/0008ccab-2103-46c9-adba-6cdf84d37f06' }
+    userService.deleteUser();
+    expect(mockLearnerService.delete).toHaveBeenCalledWith(opt)
+  });
+
+  it('should call acceptTermsAndConditions method', () => {
+    jest.spyOn(mockLearnerService, 'post').mockImplementation(() => {return of(mockUserData.success) as any
+    });
+    const opt = {
+      url: 'user/v1/tnc/accept',
+      data: {  version: '4', identifier: 'adminTnC'}
+    }
+    const request = {
+      version: '4',
+      identifier: 'adminTnC'
+    }
+    userService.acceptTermsAndConditions(request);
+    expect(mockLearnerService.post).toHaveBeenCalledWith(opt)
+  });
   it('should return defaultFrameworkFilters with user logged in', () => {
     const mockUserProfile = {
       framework: {

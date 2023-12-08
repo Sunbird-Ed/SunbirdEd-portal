@@ -4,6 +4,8 @@ import { ResourceService, ConfigService, NavigationHelperService } from '@sunbir
 import { FrameworkService, PermissionService, UserService } from '@sunbird/core';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { WorkSpaceService } from './../../services';
+import * as _ from 'lodash-es';
+// import { categoriesConfig } from '../../newConfig';
 @Component({
   selector: 'app-create-content',
   templateUrl: './create-content.component.html'
@@ -67,6 +69,15 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
 
   * @param {ResourceService} resourceService Reference of ResourceService
  */
+
+  public categoriesConfig: any = []
+  enableWorkspaceData: any = {
+    request: {
+      formType: "workspace",
+      subType: "categories",
+      formAction: "get"
+    }
+  }
   constructor(configService: ConfigService, resourceService: ResourceService,
     frameworkService: FrameworkService, permissionService: PermissionService,
     private activatedRoute: ActivatedRoute, public userService: UserService,
@@ -92,6 +103,9 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
         this.enableQuestionSetCreation = response.questionSetEnablement;
       }
     );
+    this.workSpaceService.getFormData(this.enableWorkspaceData.request).subscribe((resp: any)=>{
+      this.categoriesConfig = resp.result.form.data.fields;
+    })
   }
 
 
@@ -110,5 +124,11 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
         }
       };
     });
+  }
+
+  showCategory(category){
+    if(this.categoriesConfig.length > 0){
+      return this.categoriesConfig.some( cat => cat.code == category && cat.visible == true);
+    }
   }
 }
