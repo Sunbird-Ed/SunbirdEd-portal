@@ -378,4 +378,13 @@ describe('UserService', () => {
     expect(result['undefined']).toBeUndefined();
   });
 
+  it('should call learnerService.delete with the correct options', async () => {
+    const mockedUserId = undefined;
+    const expectedOptions = {
+      url: `/user/v1/delete/${mockedUserId}`,
+    };
+    await userService.deleteUser();
+    expect(userService.learnerService.delete).toHaveBeenCalledWith(expectedOptions);
+  });
+
 });

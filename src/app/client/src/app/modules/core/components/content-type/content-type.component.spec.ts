@@ -5,6 +5,8 @@ import { of } from 'rxjs';
 import { ContentTypeComponent } from './content-type.component';
 import { mockData } from './content-type.component.spec.data';
 import { TelemetryService } from '../../../telemetry/services';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
+
 
 describe('ContentTypeComponent', () => {
   let component: ContentTypeComponent;
@@ -48,6 +50,13 @@ describe('ContentTypeComponent', () => {
   const mockUtilService: Partial<UtilService> = {};
   const mockNavigationhelperService: Partial<NavigationHelperService> = {};
 
+  const mockCslFrameworkService: Partial<CslFrameworkService> = {
+    getFrameworkCategories: jest.fn(),
+    setDefaultFWforCsl: jest.fn(),
+    getAlternativeCodeForFilter: jest.fn(),
+    getAllFwCatName: jest.fn()
+  };
+
   beforeAll(() => {
     component = new ContentTypeComponent(
       mockFormService as FormService,
@@ -59,6 +68,7 @@ describe('ContentTypeComponent', () => {
       mockLayoutService as LayoutService,
       mockUtilService as UtilService,
       mockNavigationhelperService as NavigationHelperService,
+      mockCslFrameworkService as CslFrameworkService
     )
   });
 

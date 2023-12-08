@@ -29,7 +29,9 @@ describe('CslFrameworkService', () => {
     }
   };
 
-  const mockFormService: Partial<FormService> = {};
+  const mockFormService: Partial<FormService> = {
+    getFormConfig: jest.fn() as any,
+  };
 
   beforeEach(() => {
     service = new CslFrameworkService(
@@ -176,4 +178,166 @@ describe('CslFrameworkService', () => {
     consoleErrorSpy.mockRestore();
   });
 
+  it('should handle form details retrieval with success', (done) => {
+    const formConfigMock = { code: 'persona1', name: 'Persona 1' };
+    const rootOrgIdMock = 'mockRootOrgId';
+    (mockFormService.getFormConfig as jest.Mock).mockReturnValue(of(formConfigMock));
+    service['getFormDetails']().subscribe((result) => {
+      expect(result).toEqual(formConfigMock);
+      done();
+    });
+  });
+
+  it('should handle form details retrieval with error', (done) => {
+    const errorMock = new Error('Form config retrieval failed');
+    const fwCategoryObjectStringMock = { key: 'value' };
+    (mockFormService.getFormConfig as jest.Mock).mockReturnValue(throwError(errorMock));
+    service['getFormDetails']().subscribe((result) => {
+      expect(result).toEqual(fwCategoryObjectStringMock);
+      done();
+    });
+  });
+
+  it('should transform framework categories data correctly', () => {
+    const frameworkCategoriesObject = [
+      { code: '1', label: 'Category 1', placeHolder: 'Select Option 1' },
+      { code: '2', label: 'Category 2', placeHolder: 'Select Option 2' },
+    ];
+
+    const frameworkCategories = {
+      fwCategory1: { code: '1' },
+    };
+    const transformedData = service.transformPageLevelFilter(frameworkCategoriesObject, frameworkCategories);
+    expect(transformedData).toHaveLength(frameworkCategoriesObject.length);
+
+    transformedData.forEach((transformData, index) => {
+      const originalData = frameworkCategoriesObject[index];
+      expect(transformData.category).toBe(originalData.code);
+      expect(transformData.labelText).toBe(originalData.label);
+      expect(transformData.placeholderText).toBe(originalData.placeHolder);
+      expect(transformData.dataSource).toBe('framework');
+    });
+  });
+
+  it('should return null for getGlobalFilterCategories when no data in local storage', () => {
+    const result = service.getGlobalFilterCategories();
+    expect(result).toBeNull();
+  });
+
+  it('should return global filter categories object for getGlobalFilterCategories when data in local storage', () => {
+    const mockCategoriesObject = { category1: 'value1', category2: 'value2' };
+    localStorage.setItem('globalFilterObject', JSON.stringify(mockCategoriesObject));
+    const result = service.getGlobalFilterCategories();
+    expect(result).toEqual(mockCategoriesObject);
+  });
+
+  it('should return null for getGlobalFilterCategoriesObject when no data in local storage', () => {
+    const result = service.getGlobalFilterCategoriesObject();
+    expect(result).toBeNull();
+  });
+
+  it('should return global filter categories object for getGlobalFilterCategoriesObject when data in local storage', () => {
+    const mockCategoriesObject = [{ index: 1, code: 'category1', label: 'Category 1' }];
+    localStorage.setItem('globalFilterObjectValues', JSON.stringify(mockCategoriesObject));
+    const result = service.getGlobalFilterCategoriesObject();
+    expect(result).toEqual(mockCategoriesObject);
+  });
+
+  it('should handle missing framework categories gracefully', () => {
+    jest.spyOn(service, 'getFrameworkCategories').mockReturnValue(null);
+    const result = service.getAllFwCatName();
+    expect(result).toEqual([]);
+  });
+
+  it('should return an array of framework category names', () => {
+    jest.spyOn(service, 'getFrameworkCategories').mockReturnValue({
+      fwCategory1: { code: 'Category1' },
+      fwCategory2: { code: 'Category2' },
+      fwCategory3: { code: 'Category3' },
+      fwCategory4: { code: 'Category4' },
+    });
+    const result = service.getAllFwCatName();
+    expect(result).toEqual(['Category1', 'Category2', 'Category3', 'Category4']);
+  });
+
+  it('should transform data for Common Consumption (CC)', () => {
+    jest.spyOn(service, 'getGlobalFilterCategoriesObject').mockReturnValue([
+      { code: 'filter1', type: 'filter', index: 1, label: 'Filter 1' },
+      { code: 'filter2', type: 'other', index: 2, label: 'Filter 2' },
+    ]);
+    const result = service.transformDataForCC();
+    expect(result).toEqual([
+      { code: 'lastPublishedBy', name: 'Published by' },
+      { index: 2, code: 'filter2', alternativeCode: 'filter2', label: 'Filter 2' },
+    ]);
+  });
+
+  it('should handle missing global filter data gracefully', () => {
+    jest.spyOn(service, 'getGlobalFilterCategoriesObject').mockReturnValue(null);
+    const result = service.transformDataForCC();
+    expect(result).toEqual([ { code: 'lastPublishedBy', name: 'Published by' }]);
+  });
+
+  it('should return an array of alternative codes for filter categories', () => {
+    jest.spyOn(service, 'getGlobalFilterCategories').mockReturnValue({
+      fwCategory1: { alternativeCode: 'code1' },
+      fwCategory2: { alternativeCode: 'code2' },
+      fwCategory3: { alternativeCode: 'code3' },
+      fwCategory4: { alternativeCode: 'code4' },
+    });
+    const result = service.getAlternativeCodeForFilter();
+    expect(result).toEqual(['code1', 'code2', 'code3', 'code4']);
+  });
+
+  it('should handle missing alternative codes gracefully', () => {
+    jest.spyOn(service, 'getGlobalFilterCategories').mockReturnValue({
+      fwCategory1: { alternativeCode: 'code1' },
+      fwCategory2: {},
+      fwCategory3: { alternativeCode: 'code3' },
+      fwCategory4: {},
+    });
+    const result = service.getAlternativeCodeForFilter();
+    expect(result).toEqual(['code1', undefined , 'code3', undefined ]);
+  });
+
+  it('should set transformed global filter configuration when form details are available', () => {
+    jest.spyOn(service, 'getFormDetails' as any).mockReturnValue(of([{ title: 'frmelmnts.tab.all', metaData: { globalFilterConfig: [{}] } }]));
+    service.setTransFormGlobalFilterConfig();
+    expect(localStorage.getItem('globalFilterObject')).not.toBeNull();
+    expect(localStorage.getItem('globalFilterObjectValues')).not.toBeNull();
+  });
+
+  it('should set default global filter configuration when form details are not available', () => {
+    jest.spyOn(service, 'getFormDetails' as any).mockReturnValue(of([]));
+    service.setTransFormGlobalFilterConfig();
+    expect(localStorage.getItem('globalFilterObject')).not.toBeNull();
+    expect(localStorage.getItem('globalFilterObjectValues')).not.toBeNull();
+  });
+
+  it('should transform content data based on framework category data', () => {
+    const fwCatData = [
+      { code: 'category1', alternativeCode: 'altCode1', type: 'filter', label: 'Label1', index: 1 },
+      { code: 'category2', alternativeCode: 'altCode2', type: 'non-filter', label: 'Label2', index: 2 },
+    ];
+
+    const contentData = {
+      altCode1: 'Value1',
+      altCode2: 'Value2',
+    };
+    const result = service.transformContentDataFwBased(fwCatData, contentData);
+    expect(result).toEqual([
+      { labels: 'Label2', value: 'Value2', index: 2 },
+    ]);
+  });
+
+  it('should handle missing content data gracefully', () => {
+    const fwCatData = [
+      { code: 'category1', alternativeCode: 'altCode1', type: 'filter', label: 'Label1', index: 1 },
+      { code: 'category2', alternativeCode: 'altCode2', type: 'non-filter', label: 'Label2', index: 2 },
+    ];
+
+    const contentData = {};
+    const result = service.transformContentDataFwBased(fwCatData, contentData);
+    expect(result).toEqual([]);
+  });
 });
