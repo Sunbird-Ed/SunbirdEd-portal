@@ -1283,6 +1283,6 @@
     },
     "QUESTIONSET_EDITOR": {
         "mimeCollection": "application/vnd.sunbird.questionset",
-        "externalProperties": ["instructions", "outcomeDeclaration"]
+        "additionalProperties": ["instructions", "outcomeDeclaration"]
       }
 }

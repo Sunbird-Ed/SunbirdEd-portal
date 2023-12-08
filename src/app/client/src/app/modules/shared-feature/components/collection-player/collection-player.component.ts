@@ -218,8 +218,9 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       if(this.activeContent.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
         const contentDetails = {contentId: id, contentData: content.questionset };
         content = this.playerServiceReference.getConfig(contentDetails);
-        const questionsetAdditionalData = this.publicPlayerService.fetchQuestionsetAdditionalProperties(id);
-        _.merge(content.metadata, questionsetAdditionalData)
+        this.publicPlayerService.getQuestionSetRead(id).subscribe((data: any) => {
+          _.merge(content.metadata, this.publicPlayerService.getProperties(data.questionset, this.configService.editorConfig.QUESTIONSET_EDITOR.additionalProperties))
+        });
       }
 
       const CData: Array<{}> = this.dialCode ? [{ id: this.dialCode, type: 'dialCode' }] : [];

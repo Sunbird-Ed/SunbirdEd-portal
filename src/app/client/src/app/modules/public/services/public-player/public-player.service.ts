@@ -255,15 +255,6 @@ export class PublicPlayerService {
         this._libraryFilters = filters;
     }
 
-    fetchQuestionsetAdditionalProperties(questionSetId) {
-      this.getQuestionSetRead(questionSetId).subscribe((data) => {
-        const questionsetData = this.getProperties(data.result.questionset, this.configService.editorConfig.QUESTIONSET_EDITOR.externalProperties);
-        return questionsetData;
-      }, error => {
-        console.log('Error in fetching questionset data');
-      });
-    }
-
     getProperties(data, properties) {
       return _.pickBy( _.pick(data, properties), _.identity);
     }

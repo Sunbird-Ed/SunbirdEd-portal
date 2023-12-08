@@ -255,7 +255,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.playerConfig.config.sideMenu.showDownload = false;
       if (!_.get(this.playerConfig, 'metadata.instructions')) {
         this.playerService.getQuestionSetRead(_.get(this.playerConfig, 'metadata.identifier')).subscribe((data: any) => {
-          _.merge(this.playerConfig.metadata, this.playerService.getProperties(data.result.questionset, this.configService.editorConfig.QUESTIONSET_EDITOR.externalProperties));
+          _.merge(this.playerConfig.metadata, this.playerService.getProperties(data.result.questionset, this.configService.editorConfig.QUESTIONSET_EDITOR.additionalProperties));
           this.showQumlPlayer = true;
         }, (error) => {
           this.showQumlPlayer = true;
