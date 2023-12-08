@@ -20,7 +20,6 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
   public portalVersion: string;
   public userProfile: any;
   public showLoader = false;
-  public showQuestionsetEditor = false;
   private routeParams: any;
   public queryParams: object;
   public collectionDetails: any;
@@ -222,7 +221,6 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
       } else {
         this.setEditorConfig();
         this.showLoader = false;
-        this.showQuestionsetEditor = true;
       }
     }, err => {
       this.toasterService.error(this.resourceService.messages.emsg.m0015);

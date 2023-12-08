@@ -1,7 +1,7 @@
-<ng-container *ngIf="!showLoader && editorConfig && !showQuestionsetEditor">
+<ng-container *ngIf="!showLoader && editorConfig && !showQuestionEditor">
   <lib-editor [editorConfig]="editorConfig" (editorEmitter)="editorEventListener($event)" ></lib-editor>
 </ng-container>
-<ng-container *ngIf="!showLoader && editorConfig && showQuestionsetEditor">
+<ng-container *ngIf="!showLoader && editorConfig && showQuestionEditor">
   <lib-questionset-editor [editorConfig]="editorConfig" (editorEmitter)="editorEventListener($event)"></lib-questionset-editor>
 </ng-container>
 
