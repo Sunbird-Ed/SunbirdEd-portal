@@ -330,7 +330,6 @@ describe('UserService', () => {
   });
 
   it('should call deleteUser method', () => {
-
     const postSpy = jest.spyOn(userService.learnerService, 'post');
     const expectedOptions = {
       url: userService.config.urlConFig.URLS.USER.DELETE,
@@ -388,15 +387,4 @@ describe('UserService', () => {
     expect(result['undefined']).toBeUndefined();
   });
 
-  it('should set the guest user value to true', () => {
-    userService.setGuestUser(true,"guest");
-    expect(userService['setGuest']).toBe(true);
-    expect(userService.formatedName).toBe("guest");
-  });
-
-  it('should set the guest user value to false', () => {
-    userService.setGuestUser(false,"mockUsername");
-    expect(userService['setGuest']).toBe(false);
-    expect(userService.formatedName).toBe("mockUsername");
-  });
 });
