@@ -330,6 +330,7 @@ describe('UserService', () => {
   });
 
   it('should call deleteUser method', () => {
+
     const postSpy = jest.spyOn(userService.learnerService, 'post');
     const expectedOptions = {
       url: userService.config.urlConFig.URLS.USER.DELETE,
