@@ -58,6 +58,10 @@
                 <li class="mb-0" tabindex="0"><a href="/screenreaderaccess.html" class="cursor-pointer">Screen Reader Access</a></li><li class="mx-4 mb-0">|</li>
                 <li class="mb-0" tabindex="0"><a href="/sitemap.html" class="cursor-pointer">Sitemap</a></li><li class="mx-4 mb-0">|</li>
               </ul>
+              <a [attr.aria-label]="resourceService.frmelmnts?.lnk?.dikshaHelp"
+              href="https://support.diksha.gov.in/" target="_blank">{{resourceService.frmelmnts?.lnk?.dikshaHelp}}</a>|
+              <a  [attr.aria-label]="resourceService.frmelmnts?.lnk?.teacherSupport"
+              href="https://teachersupport.diksha.gov.in/" target="_blank">{{resourceService.frmelmnts?.lnk?.teacherSupport}}</a>|
               <a *ngIf="!isDesktopApp" [attr.aria-label]="resourceService.frmelmnts?.lnk?.footerTnC" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
                 href="/term-of-use.html">{{resourceService.frmelmnts?.lnk?.footerTnC}}</a>
               <a *ngIf="isDesktopApp" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
