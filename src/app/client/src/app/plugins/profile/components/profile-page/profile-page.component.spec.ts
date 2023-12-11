@@ -190,6 +190,30 @@ describe("ProfilePageComponent", () => {
         });
     });
 
+    describe('calling the org details method',() =>{
+        it('should return the org details with the role and disableDelete as true', () => {
+            //arrange
+            profilePageComponent.userProfile = Response.userProfileforDeleteUser
+            profilePageComponent.userProfile['roles'] = [{
+                "role": "ORG_ADMIN",
+            }];
+            profilePageComponent.userRoles = ['ORG_ADMIN', 'CONTENT_CREATOR', 'PUBLIC'];
+            //act
+            profilePageComponent.getOrgDetails();
+            expect(profilePageComponent.disableDelete).toBeTruthy();
+        });
+        it('should return the org details with the role and disableDelete as false', () => {
+            //arrange
+            profilePageComponent.userRoles = ['PUBLIC'];
+            profilePageComponent.userProfile['roles'] = [{
+                "role": "PUBLIC",
+            }];
+            //act
+            profilePageComponent.getOrgDetails();
+            expect(profilePageComponent.disableDelete).toBeFalsy();
+        });
+    });
+
     describe('setNonCustodianUserLocation', () => {
         it('should assign location data to nonCustodianUserLocation through setNonCustodianUserLocation', () => {
             //arrange
@@ -646,6 +670,8 @@ describe("ProfilePageComponent", () => {
         });
     });
 
+   
+
     describe("ngOnDestroy", () => {
         it('should destroy sub', () => {
             //arrange
@@ -871,20 +897,5 @@ describe("ProfilePageComponent", () => {
             expect(mockToasterService.warning).toBeCalledWith(msg)
         });
     });
-    describe('calling the org details method',() =>{
-        xit('should return the org details with the role and disableDelete as true', () => {
-            //arrange
-            profilePageComponent.userRoles = ['ORG_ADMIN', 'CONTENT_CREATOR', 'PUBLIC'];
-            //act
-            profilePageComponent.getOrgDetails();
-            expect(profilePageComponent.disableDelete).toBeTruthy();
-        });
-        it('should return the org details with the role and disableDelete as false', () => {
-            //arrange
-            profilePageComponent.userRoles = ['COURSE_MENTOR', 'CONTENT_CREATOR', 'PUBLIC'];
-            //act
-            profilePageComponent.getOrgDetails();
-            expect(profilePageComponent.disableDelete).toBeFalsy();
-        });
-    })
+    
 });
