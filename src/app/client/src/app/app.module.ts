@@ -24,6 +24,14 @@ import { SbSearchFilterModule } from '@project-sunbird/common-form-elements-full
 import { UserOnboardingModule} from '../app/modules/user-onboarding';
 import { MatStepperModule} from '@angular/material/stepper';
 import { CdkStepperModule} from '@angular/cdk/stepper';
+import { CsModule } from '@project-sunbird/client-services';
+import { CsLibInitializerService } from '../app/service/CsLibInitializer/cs-lib-initializer.service';
+export const csFrameworkServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
+  if (!CsModule.instance.isInitialised) {
+    csLibInitializerService.initializeCs();
+  }
+  return CsModule.instance.frameworkService;
+};
 
 @NgModule({
     declarations: [
@@ -63,7 +71,9 @@ import { CdkStepperModule} from '@angular/cdk/stepper';
         TranslateStore,
         DeviceDetectorService,
         { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true },
-        { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy }
+        { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy },
+        {provide: 'CS_FRAMEWORK_SERVICE',useFactory: csFrameworkServiceFactory,deps: [CsLibInitializerService]}
+        
     ],
 })
 export class AppModule {

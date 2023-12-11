@@ -4,6 +4,7 @@ import { Component, Input, EventEmitter, Output, OnDestroy, ChangeDetectorRef, O
 import * as _ from 'lodash-es';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { Subscription } from 'rxjs';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 /**
  * This display a a section
  */
@@ -43,8 +44,9 @@ export class PageSectionComponent implements OnInit, OnDestroy, OnChanges {
   contentList = [];
 
   maxSlide = 0;
+  public categoryKeys;
 
-  constructor(public config: ConfigService, public activatedRoute: ActivatedRoute, public resourceService: ResourceService,
+  constructor(public config: ConfigService, public activatedRoute: ActivatedRoute, public resourceService: ResourceService, public cslFrameworkService: CslFrameworkService,
     private cdr: ChangeDetectorRef) {
     // console.log(slick);
     this.pageid = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
@@ -55,6 +57,7 @@ export class PageSectionComponent implements OnInit, OnDestroy, OnChanges {
   }
   ngOnInit() {
     this.updateSlick();
+    this.categoryKeys = this.cslFrameworkService.transformDataForCC();
     this.slideConfig = this.cardType === 'batch'
       ? _.cloneDeep(this.config.appConfig.CourseBatchPageSection.slideConfig)
       : _.cloneDeep(this.config.appConfig.CoursePageSection.slideConfig);
