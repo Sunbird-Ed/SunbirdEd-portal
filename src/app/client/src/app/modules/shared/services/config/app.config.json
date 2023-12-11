@@ -1477,10 +1477,12 @@
     "book": "./assets/images/book.png"
   },
   "OTPTemplate": {
-      "updateContactTemplate": "otpContactUpdateTemplate"
+      "updateContactTemplate": "otpContactUpdateTemplate",
+      "userDeleteTemplate": "otpDeleteUserTemplate"
+
   },
   "frameworkCatConfig": {
-    "changeChannel": false,
+    "changeChannel": true,
     "channel":"0138934136407244800",
     "defaultFW": "agriculture_framework"
   }

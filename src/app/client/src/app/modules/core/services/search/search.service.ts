@@ -1,6 +1,6 @@
 
 import { map } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { UserService } from './../user/user.service';
 import { ContentService } from './../content/content.service';
 import { ConfigService, ServerResponse, ResourceService } from '@sunbird/shared';
@@ -10,6 +10,8 @@ import { LearnerService } from './../learner/learner.service';
 import { PublicDataService } from './../public-data/public-data.service';
 import * as _ from 'lodash-es';
 import { FormService } from './../form/form.service';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
+import { CsFrameworkService } from '@project-sunbird/client-services/services/framework';
 /**
  * Service to search content
  */
@@ -49,6 +51,9 @@ export class SearchService {
   public publicDataService: PublicDataService;
   public resourceService: ResourceService;
   private _subjectThemeAndCourse: object;
+  public frameworkCategories;
+  public globalFilterCategoriesObject;
+  public globalFilterCategories;
   /**
    * Default method of OrganisationService class
    *
@@ -59,7 +64,9 @@ export class SearchService {
    */
   constructor(user: UserService, content: ContentService, config: ConfigService,
     learnerService: LearnerService, publicDataService: PublicDataService,
-    resourceService: ResourceService, private formService: FormService) {
+    resourceService: ResourceService, private formService: FormService, public cslFrameworkService :CslFrameworkService, @Inject('CS_FRAMEWORK_SERVICE') private csFrameworkService: CsFrameworkService) {
+    this.frameworkCategories = this.cslFrameworkService.getFrameworkCategories();
+    this.globalFilterCategoriesObject = this.cslFrameworkService.getGlobalFilterCategoriesObject();
     this.user = user;
     this.content = content;
     this.config = config;
@@ -286,17 +293,19 @@ export class SearchService {
   * @param {option}
   **/
   public updateOption(option: any) {
-    if (_.get(option, 'data.request.filters.board')) {
-      option.data.request.filters['se_boards'] = option.data.request.filters.board;
-      delete option.data.request.filters.board;
+    this.globalFilterCategories = this.cslFrameworkService.getAlternativeCodeForFilter();
+    console.log('updateOption', this.globalFilterCategories);
+    if (_.get(option, `data.request.filters.${this.frameworkCategories?.fwCategory1?.code}`)) {
+      option.data.request.filters[this.globalFilterCategories[0]] = option.data.request.filters[this.frameworkCategories?.fwCategory1?.code];
+      delete option.data.request.filters[this.frameworkCategories?.fwCategory1?.code];
     }
-    if (_.get(option, 'data.request.filters.gradeLevel')) {
-      option.data.request.filters['se_gradeLevels'] = option.data.request.filters.gradeLevel;
-      delete option.data.request.filters.gradeLevel;
+    if (_.get(option, `data.request.filters.${this.frameworkCategories?.fwCategory3?.code}`)) {
+      option.data.request.filters[this.globalFilterCategories[2]] = option.data.request.filters[this.frameworkCategories?.fwCategory3?.code];
+      delete option.data.request.filters[this.frameworkCategories?.fwCategory3?.code];
     }
-    if (_.get(option, 'data.request.filters.medium')) {
-      option.data.request.filters['se_mediums'] = option.data.request.filters.medium;
-      delete option.data.request.filters.medium;
+    if (_.get(option, `data.request.filters.${this.frameworkCategories?.fwCategory2?.code}`)) {
+      option.data.request.filters[this.globalFilterCategories[1]] = option.data.request.filters[this.frameworkCategories?.fwCategory2?.code];
+      delete option.data.request.filters[this.frameworkCategories?.fwCategory2?.code];
     }
     // if (_.get(option, 'data.request.filters.subject')) {
     //   option.data.request.filters['se_subjects'] = option.data.request.filters.subject;
@@ -498,70 +507,41 @@ export class SearchService {
     }));
   }
 
+  /**
+ * @description Updates properties within an array of 'facets' based on 'globalFilterCategoriesObject' criteria.
+ * @param {Array} facets - An array of facets to be updated.
+ * @returns {Array} - Returns the updated 'facets' array.
+ */
   updateFacetsData(facets) {
-    return _.map(facets, facet => {
-      switch (_.get(facet, 'name')) {
-        case 'se_boards':
-        case 'board':
-          facet['index'] = '2';
-          facet['label'] = this.resourceService.frmelmnts.lbl.boards;
-          facet['placeholder'] = this.resourceService.frmelmnts.lbl.selectBoard;
-          break;
-        case 'se_mediums':
-        case 'medium':
-          facet['index'] = '3';
-          facet['label'] = this.resourceService.frmelmnts.lbl.medium;
-          facet['placeholder'] = this.resourceService.frmelmnts.lbl.selectMedium;
-          break;
-        case 'se_gradeLevels':
-        case 'gradeLevel':
-          facet['index'] = '4';
-          facet['label'] = this.resourceService.frmelmnts.lbl.class;
-          facet['placeholder'] = this.resourceService.frmelmnts.lbl.selectClass;
-          break;
-        case 'se_subjects':
-        case 'subject':
-          facet['index'] = '5';
-          facet['label'] = this.resourceService.frmelmnts.lbl.subject;
-          facet['placeholder'] = this.resourceService.frmelmnts.lbl.selectSubject;
-          break;
-        case 'publisher':
-          facet['index'] = '6';
-          facet['label'] = this.resourceService.frmelmnts.lbl.publisher;
-          facet['placeholder'] = this.resourceService.frmelmnts.lbl.selectPublisher;
-          break;
-        case 'primaryCategory':
-          facet['index'] = '7';
-          facet['label'] = this.resourceService.frmelmnts.lbl.contentType;
-          facet['placeholder'] = this.resourceService.frmelmnts.lbl.selectContentType;
-          break;
-        case 'mimeType':
-          facet['index'] = '8';
-          facet['name'] = 'mediaType';
-          facet['label'] = this.resourceService.frmelmnts.lbl.mediaType;
-          facet['mimeTypeList'] = this.mimeTypeList;
-          break;
-        case 'mediaType':
-            facet['index'] = '8';
-            facet['label'] = this.resourceService.frmelmnts.lbl.mediaType;
+    this.globalFilterCategoriesObject = this.cslFrameworkService.getGlobalFilterCategoriesObject();
+    return facets.map((facet) => {
+      const foundFilter = this.globalFilterCategoriesObject.find((filter) => filter?.code === facet?.name || filter?.alternativeCode === facet?.name);
+      if (foundFilter) {
+        const { index, label, placeHolder } = foundFilter;
+        facet['index'] = index.toString();
+        facet['label'] = label;
+        facet['placeholder'] = placeHolder;
+
+        switch (facet.name) {
+          case 'channel':
+            facet['values'] = _.map(facet.values || [], value => ({ ...value, name: value.orgName }));
+            break;
+          case 'mediaType':
             facet['mimeTypeList'] = this.mimeTypeList;
             break;
-        case 'audience':
-            facet['index'] = '9';
-            facet['label'] =  this.resourceService.frmelmnts.lbl.userType;
-            facet['placeholder'] =  this.resourceService.frmelmnts.lbl.selectMeantFor;
+          case 'mimeType':
+            facet['name'] = 'mediaType';
+            facet['mimeTypeList'] = this.mimeTypeList;
             break;
-        case 'channel':
-          facet['index'] = '1';
-          facet['label'] = _.get(this.resourceService, 'frmelmnts.lbl.orgname');
-          facet['placeholder'] =  _.get(this.resourceService, 'frmelmnts.lbl.orgname');
-          facet['values'] = _.map(facet.values || [], value => ({ ...value, name: value.orgName }));
-          break;
-          case 'additionalCategories':
-            facet['index'] = '71';
-            facet['label'] = this.resourceService.frmelmnts.lbl.additionalCategories;
-            facet['placeholder'] = this.resourceService.frmelmnts.lbl.selectAdditionalCategory;
+          // case 'audience':
+          //   facet['placeholder'] = this.resourceService.frmelmnts.lbl.selectMeantFor;
+          //   break;
+          // case 'additionalCategories':
+          //   facet['placeholder'] = this.resourceService.frmelmnts.lbl.selectAdditionalCategory;
+          //   break;
+          default:
             break;
+        }
       }
       return facet;
     });

@@ -434,6 +434,10 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+    '/learner/user/v1/delete': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
     '/learner/user/v1/managed': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
@@ -2056,6 +2060,7 @@ const API_LIST = {
     '/kendra/resource/mlreports/v1/filtervalues',
     '/assessment/programs/mlcore/v1/join/:id',
     '/assessment/users/mlcore/v1/solutions/:id',
+    '/learner/user/v1/delete',
   ]
 };
 module.exports = API_LIST;

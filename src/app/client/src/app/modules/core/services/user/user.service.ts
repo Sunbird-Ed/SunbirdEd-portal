@@ -132,7 +132,8 @@ export class UserService {
     this.contentService = contentService;
     this.publicDataService = publicDataService;
     this.isDesktopApp = environment.isDesktopApp;
-    this.frameworkCategories = localStorage.getItem('fwCategoryObjectValues');
+    let fwObj = localStorage.getItem('fwCategoryObject');
+    this.frameworkCategories = JSON.parse(fwObj);
     try {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
       DataService.userId = this._userid;
@@ -283,7 +284,6 @@ export class UserService {
     if (!this._userProfile.managedBy) {
       this.cacheService.set('userProfile', this._userProfile);
     }
-
     if (window['TagManager']) {
       window['TagManager'].SBTagService.pushTag({ userLoocation: profileData.userLocations, userTyep: profileData.profileUserType }, 'USERLOCATION_', true);
       window['TagManager'].SBTagService.pushTag(profileData.framework, 'USERFRAMEWORK_', true);
@@ -336,6 +336,21 @@ export class UserService {
       }
     ));
   }
+
+    /**
+   * This method invokes learner service to delete tthe user account
+   */
+    public deleteUser() {
+      const options = {
+        url: this.config.urlConFig.URLS.USER.DELETE,
+        data: {
+          request: {
+            'userId': this.userid
+          }
+        }
+      };
+      return this.learnerService.post(options);
+    }
 
   get orgIdNameMap() {
     const mapOrgIdNameData = {};

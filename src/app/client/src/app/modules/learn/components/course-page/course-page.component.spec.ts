@@ -19,10 +19,12 @@ import { OfflineCardService } from '@sunbird/shared';
 import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
 import { CoursePageComponent } from './course-page.component';
 import { Response } from './course-page.component.spec.data';
-describe('CoursePageComponent', () => {
-    let component: CoursePageComponent;
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
-    const pageApiService :Partial<PageApiService> ={};
+describe('CoursePageComponent', () => {
+  let component: CoursePageComponent;
+
+  const pageApiService :Partial<PageApiService> ={};
 	const toasterService :Partial<ToasterService> ={};
 	const resourceService :Partial<ResourceService> ={};
 	const configService :Partial<ConfigService> ={};
@@ -43,16 +45,23 @@ describe('CoursePageComponent', () => {
 	const utilService :Partial<UtilService> ={
 		addHoverData:jest.fn()
 	};
-	const orgDetailsService :Partial<OrgDetailsService> ={};
+	const orgDetailsService :Partial<OrgDetailsService> ={
+		getOrgDetails: jest.fn(),
+	};
 	const publicPlayerService :Partial<PublicPlayerService> ={};
 	const cacheService :Partial<CacheService> ={};
 	const browserCacheTtlService :Partial<BrowserCacheTtlService> ={};
-	const userService :Partial<UserService> ={};
+	const userService: Partial<UserService> = {
+    slug: jest.fn().mockReturnValue('tn') as any,
+	}
 	const formService :Partial<FormService> ={};
 	const navigationhelperService :Partial<NavigationHelperService> ={
 		getPageLoadTime:jest.fn().mockReturnValue(10)
 	};
-	const layoutService :Partial<LayoutService> ={};
+	const layoutService :Partial<LayoutService> ={
+		initlayoutConfig: jest.fn(),
+		redoLayoutCSS: jest.fn(),
+	};
 	const coursesService :Partial<CoursesService> ={};
 	const frameworkService :Partial<FrameworkService> ={};
 	const playerService :Partial<PlayerService> ={};
@@ -60,63 +69,69 @@ describe('CoursePageComponent', () => {
 	const offlineCardService :Partial<OfflineCardService> ={};
 	const contentManagerService :Partial<ContentManagerService> ={};
 	const telemetryService :Partial<TelemetryService> ={};
+  const mockCslFrameworkService: Partial<CslFrameworkService> = {
+    getFrameworkCategories: jest.fn(),
+    setDefaultFWforCsl: jest.fn(),
+		getGlobalFilterCategoriesObject: jest.fn(),
+		getAllFwCatName: jest.fn(),
+		transformDataForCC: jest.fn(),
+  };
 
-    beforeAll(() => {
-        component = new CoursePageComponent(
-            pageApiService as PageApiService,
-			toasterService as ToasterService,
-			resourceService as ResourceService,
-			configService as ConfigService,
-			activatedRoute as ActivatedRoute,
-			router as Router,
-			utilService as UtilService,
-			orgDetailsService as OrgDetailsService,
-			publicPlayerService as PublicPlayerService,
-			cacheService as CacheService,
-			browserCacheTtlService as BrowserCacheTtlService,
-			userService as UserService,
-			formService as FormService,
-			navigationhelperService as NavigationHelperService,
-			layoutService as LayoutService,
-			coursesService as CoursesService,
-			frameworkService as FrameworkService,
-			playerService as PlayerService,
-			searchService as SearchService,
-			offlineCardService as OfflineCardService,
-			contentManagerService as ContentManagerService,
-			telemetryService as TelemetryService
-        )
-    });
+	beforeAll(() => {
+			component = new CoursePageComponent(
+					pageApiService as PageApiService,
+					toasterService as ToasterService,
+					resourceService as ResourceService,
+					configService as ConfigService,
+					activatedRoute as ActivatedRoute,
+					router as Router,
+					utilService as UtilService,
+					orgDetailsService as OrgDetailsService,
+					publicPlayerService as PublicPlayerService,
+					cacheService as CacheService,
+					browserCacheTtlService as BrowserCacheTtlService,
+					userService as UserService,
+					formService as FormService,
+					navigationhelperService as NavigationHelperService,
+					layoutService as LayoutService,
+					coursesService as CoursesService,
+					frameworkService as FrameworkService,
+					playerService as PlayerService,
+					searchService as SearchService,
+					offlineCardService as OfflineCardService,
+					contentManagerService as ContentManagerService,
+					telemetryService as TelemetryService,
+					mockCslFrameworkService as CslFrameworkService
+			)
+	});
 
-    beforeEach(() => {
-        jest.clearAllMocks();
-        jest.resetAllMocks();
-    });
-            
-    it('should create a instance of component', () => {
-        expect(component).toBeTruthy();
-    });
+	beforeEach(() => {
+			jest.clearAllMocks();
+			jest.resetAllMocks();
+	});
+
+	it('should create a instance of component', () => {
+			expect(component).toBeTruthy();
+	});
+
 	it('should call the method onScroll to be called', () => {
 		jest.spyOn(component,'addHoverData');
 		component.pageSections = Response.pageSections as any
 		component.carouselMasterData = Response.pageSectionsNew as any
 		component.onScroll();
-        expect(component.addHoverData).toBeCalled();
-    });
-
-
-
-
+				expect(component.addHoverData).toBeCalled();
+		});
 
 	describe("ngOnDestroy", () => {
-        it('should destroy sub', () => {
-            component.unsubscribe$ = {
-                next: jest.fn(),
-                complete: jest.fn()
-            } as any;
-            component.ngOnDestroy();
-            expect(component.unsubscribe$.next).toHaveBeenCalled();
-            expect(component.unsubscribe$.complete).toHaveBeenCalled();
-        });
-    });
+		it('should destroy sub', () => {
+				component.unsubscribe$ = {
+						next: jest.fn(),
+						complete: jest.fn()
+				} as any;
+				component.ngOnDestroy();
+				expect(component.unsubscribe$.next).toHaveBeenCalled();
+				expect(component.unsubscribe$.complete).toHaveBeenCalled();
+		});
+	});
+
 });
