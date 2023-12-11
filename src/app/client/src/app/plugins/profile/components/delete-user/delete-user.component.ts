@@ -27,7 +27,7 @@ export class DeleteUserComponent implements OnInit {
   public unsubscribe = new Subject<void>();
   pageId = 'delete-user';
   userProfile: any;
-
+  deepLink;
   constructor(public resourceService: ResourceService, public toasterService: ToasterService, public router: Router,
     public userService: UserService,
     private activatedRoute: ActivatedRoute, public navigationhelperService: NavigationHelperService,
@@ -44,6 +44,9 @@ export class DeleteUserComponent implements OnInit {
       .map(key => obj[key]);
     this.navigationhelperService.setNavigationUrl();
     this.setTelemetryData();
+    if (_.get(this.activatedRoute, 'snapshot.queryParams.deeplink')) {
+      this.deepLink =_.get(this.activatedRoute, 'snapshot.queryParams.deeplink')
+    } 
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().
       pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig => {
