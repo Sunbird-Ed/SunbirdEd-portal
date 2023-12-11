@@ -330,9 +330,18 @@ describe('UserService', () => {
   });
 
   it('should call deleteUser method', () => {
-    const opt = { url: '/user/v1/delete/0008ccab-2103-46c9-adba-6cdf84d37f06' }
+    const postSpy = jest.spyOn(userService.learnerService, 'post');
+    const expectedOptions = {
+      url: userService.config.urlConFig.URLS.USER.DELETE,
+      data: {
+        request: {
+          userId: '0008ccab-2103-46c9-adba-6cdf84d37f06'
+        }
+      }
+    };
     userService.deleteUser();
-    expect(mockLearnerService.delete).toHaveBeenCalledWith(opt)
+    expect(postSpy).toHaveBeenCalledWith(expectedOptions);
+    postSpy.mockClear();
   });
 
   it('should call acceptTermsAndConditions method', () => {
@@ -400,14 +409,4 @@ describe('UserService', () => {
     });
     expect(guestUserProfile.name).toEqual(configData.formatedName);
   });
-
-  it('should call learnerService.delete with the correct options', async () => {
-    const mockedUserId = undefined;
-    const expectedOptions = {
-      url: `/user/v1/delete/${mockedUserId}`,
-    };
-    await userService.deleteUser();
-    expect(userService.learnerService.delete).toHaveBeenCalledWith(expectedOptions);
-  });
-
 });
