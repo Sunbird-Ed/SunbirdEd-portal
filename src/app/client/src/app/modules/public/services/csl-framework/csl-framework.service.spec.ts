@@ -280,10 +280,10 @@ describe('CslFrameworkService', () => {
 
   it('should return an array of alternative codes for filter categories', () => {
     jest.spyOn(service, 'getGlobalFilterCategories').mockReturnValue({
-      fwCategory1: { alternativeCode: 'code1' },
-      fwCategory2: { alternativeCode: 'code2' },
-      fwCategory3: { alternativeCode: 'code3' },
-      fwCategory4: { alternativeCode: 'code4' },
+      fwCategory1: { code: 'code1' },
+      fwCategory2: { code: 'code2' },
+      fwCategory3: { code: 'code3' },
+      fwCategory4: { code: 'code4' },
     });
     const result = service.getAlternativeCodeForFilter();
     expect(result).toEqual(['code1', 'code2', 'code3', 'code4']);
@@ -291,9 +291,9 @@ describe('CslFrameworkService', () => {
 
   it('should handle missing alternative codes gracefully', () => {
     jest.spyOn(service, 'getGlobalFilterCategories').mockReturnValue({
-      fwCategory1: { alternativeCode: 'code1' },
+      fwCategory1: { code: 'code1' },
       fwCategory2: {},
-      fwCategory3: { alternativeCode: 'code3' },
+      fwCategory3: { code: 'code3' },
       fwCategory4: {},
     });
     const result = service.getAlternativeCodeForFilter();

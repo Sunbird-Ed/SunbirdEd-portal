@@ -6,6 +6,7 @@ import { isObservable, Observable, of, throwError } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
 import { OnboardingUserSelectionComponent } from "./onboarding-user-selection.component";
 import { HttpErrorResponse } from "@angular/common/http";
+import { PopupControlService } from '../../../../service/popup-control.service';
 
 describe('OnboardingUserSelection component', () => {
   let onboardingUserSelectionComponent: OnboardingUserSelectionComponent;
@@ -38,6 +39,9 @@ describe('OnboardingUserSelection component', () => {
     loggedIn:false
   };
   const mockToasterService: Partial<ToasterService> = {};
+  const mockPopupControlService: Partial<PopupControlService> = {
+    getOnboardingData: jest.fn()
+  };
 
   beforeAll(() => {
     onboardingUserSelectionComponent = new OnboardingUserSelectionComponent(
@@ -50,7 +54,8 @@ describe('OnboardingUserSelection component', () => {
       mockFormService as FormService,
       mockProfileService as ProfileService,
       mockUserService as UserService,
-      mockToasterService as ToasterService
+      mockToasterService as ToasterService,
+      mockPopupControlService as PopupControlService
     );
   });
 
@@ -68,6 +73,7 @@ describe('OnboardingUserSelection component', () => {
       //@ts-ignore
       const initializeSpy=jest.spyOn(onboardingUserSelectionComponent,'initialize');
       const setPopupInteractEdataSpy=jest.spyOn(onboardingUserSelectionComponent,'setPopupInteractEdata');
+      jest.spyOn(onboardingUserSelectionComponent['popupControlService'], 'getOnboardingData').mockReturnValue(of({"response": true}));
       //act
       onboardingUserSelectionComponent.ngOnInit();
       //assert
@@ -75,6 +81,32 @@ describe('OnboardingUserSelection component', () => {
       expect(initializeSpy).toBeCalled();
       expect( setPopupInteractEdataSpy).toBeCalled();
     });
+
+    it('should set usertype enabled value to be true', () => {
+      const formConfigResponse = {
+        userTypePopup: {
+          isVisible: true,
+          defaultUserType: "Teacher",
+          defaultGuestUserType: "Teacher"
+        },
+      };
+      jest.spyOn(onboardingUserSelectionComponent['popupControlService'], 'getOnboardingData').mockReturnValue(of(formConfigResponse));
+      onboardingUserSelectionComponent.ngOnInit();
+      expect(onboardingUserSelectionComponent.isUserTypeEnabled).toBe(true);
+    });
+    it('should set usertype enabled value to be false', () => {
+      const formConfigResponse = {
+        userTypePopup: {
+          isVisible: false,
+          defaultUserType: "Teacher",
+          defaultGuestUserType: "Teacher"
+        },
+      };
+      jest.spyOn(onboardingUserSelectionComponent['popupControlService'], 'getOnboardingData').mockReturnValue(of(formConfigResponse));
+      onboardingUserSelectionComponent.ngOnInit();
+      expect(onboardingUserSelectionComponent.isUserTypeEnabled).toBe(false);
+    });
+    
   });
 
 
