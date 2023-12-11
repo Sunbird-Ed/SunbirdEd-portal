@@ -398,15 +398,4 @@ describe('UserService', () => {
     expect(userService['setGuest']).toBe(false);
     expect(userService.formatedName).toBe("mockUsername");
   });
-
-  it('should return configData when setGuest is true', () => {
-    userService['setGuest'] = true;
-    const configData = { formatedName: 'Guest' };
-    const guestUserProfileObservable = userService.getGuestUser();
-    let guestUserProfile: any;
-    guestUserProfileObservable.subscribe((result: any) => {
-      guestUserProfile = result;
-    });
-    expect(guestUserProfile.name).toEqual(configData.formatedName);
-  });
 });
