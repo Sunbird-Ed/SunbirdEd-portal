@@ -57,10 +57,9 @@
         </dd>
     </dl>
     <dl class="sb-meta-data" *ngFor= "let transformMetadataInfo of transformMetadata">
-        <dt>{{transformMetadataInfo?.labels}}</dt>
+        <dt>{{transformMetadataInfo?.labels | translateJson}}</dt>
         <dd *ngIf="transformMetadataInfo?.value">{{transformMetadataInfo?.value}}</dd>
     </dl>
-    
     <dl class="sb-meta-data" *ngIf="metadata.createdOn">
         <dt>{{resourceService.frmelmnts.lbl.createdon}}</dt>
         <dd>{{metadata.createdOn | dateFormat }}</dd>

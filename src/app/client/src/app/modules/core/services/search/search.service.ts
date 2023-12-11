@@ -487,7 +487,7 @@ export class SearchService {
       contentType: 'global'
     };
 
-    return this.formService.getFormConfig(formServiceInputParams, '*').pipe(map((response) => {
+    return this.formService.getFormConfig(formServiceInputParams).pipe(map((response) => {
       const allTabData = _.find(response, (o) => o.title === 'frmelmnts.tab.all');
       this.mimeTypeList = _.map(_.get(allTabData, 'search.filters.mimeType'), 'name');
 

@@ -166,7 +166,7 @@
       <div class="d-flex flex-jc-center flex-ai-center flex-dc" *ngIf="userProfile && userProfile.framework ">
         <div class="max-w-400 computer only">
           <div class="mb-15 d-flex flex-jc-center" *ngFor="let category of transormUserProfile">
-            <span class="fmedium white-space-nowrap">{{category?.labels}} : </span>
+            <span class="fmedium white-space-nowrap">{{category?.labels | translateJson}} : </span>
             <span class="fmedium font-w-bold pl-4" *ngFor="let item of category?.values" 
               >{{item}}</span>
           </div>
@@ -183,7 +183,7 @@
     <div class="max-w-300 mobile only">
 
       <div class="mb-15 d-flex flex-ai-center flex-dc" *ngFor="let category of transormUserProfile">
-        <span class="fmedium white-space-nowrap">{{category?.labels}} : </span>
+        <span class="fmedium white-space-nowrap">{{category?.labels | translateJson}} : </span>
         <span class="fmedium font-w-bold text-center" *ngFor="let item of category?.values" 
           >{{item}}</span>
       </div>
