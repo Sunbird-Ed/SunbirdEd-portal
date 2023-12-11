@@ -37,7 +37,7 @@
               *ngFor="let content of contentList;let i = index;">
               <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" *ngIf="!isDesktopApp;else desktopCard"
               appContentDirection appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType||'Content',ver:'1.0'}"
-              (cardClick)="playContent($event)" [content]="content" [cardImg]="'assets/images/book.png'" ></sb-library-card>
+              (cardClick)="playContent($event)" [content]="content" [cardImg]="'assets/images/book.png'" [categoryKeys]="categoryKeys"></sb-library-card>
             </div>
             </div>
           </div>
@@ -51,7 +51,7 @@
             <div class="sb-grid">
               <div [id]="i" [data]="content" class="sb-grid--item"
                 *ngFor="let i of numberOfSections">
-                <sb-library-card [layoutConfig]="layoutConfiguration" [isLoading]="true"></sb-library-card>
+                <sb-library-card [layoutConfig]="layoutConfiguration" [isLoading]="true" [categoryKeys]="categoryKeys"></sb-library-card>
               </div>
             </div>
           </div>

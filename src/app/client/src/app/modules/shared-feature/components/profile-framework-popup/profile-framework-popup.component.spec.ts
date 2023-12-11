@@ -9,6 +9,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ProfileService } from '@sunbird/profile';
 import { Response } from './profile-framework-popup.component.spec.data';
 import { ProfileFrameworkPopupComponent } from './profile-framework-popup.component';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
+import { ConfigService } from '../../../shared/services/config/config.service';
 
 describe('ProfileFrameworkPopupComponent', () => {
     let component: ProfileFrameworkPopupComponent;
@@ -66,6 +68,27 @@ describe('ProfileFrameworkPopupComponent', () => {
         getDialogById: jest.fn().mockReturnValue(dialogRefData)
     };
     const profileService: Partial<ProfileService> = {};
+    const mockCslFrameworkService: Partial<CslFrameworkService> = {
+        getFrameworkCategories: jest.fn(),
+        getFrameworkCategoriesObject: jest.fn(),
+        setFWCatConfigFromCsl: jest.fn()
+    };
+    const mockConfigService: Partial<ConfigService> = {
+    appConfig: {
+      layoutConfiguration: 'joy',
+      TELEMETRY: {
+        PID: 'sample-page-id'
+      }
+    },
+    urlConFig: {
+      URLS: {
+        TELEMETRY: {
+          SYNC: true
+        },
+        CONTENT_PREFIX: ''
+      }
+    }
+  };
     beforeAll(() => {
         component = new ProfileFrameworkPopupComponent(
             router as Router,
@@ -79,8 +102,10 @@ describe('ProfileFrameworkPopupComponent', () => {
             orgDetailsService as OrgDetailsService,
             popupControlService as PopupControlService,
             matDialog as MatDialog,
-            profileService as ProfileService
-        )
+            profileService as ProfileService,
+            mockCslFrameworkService as CslFrameworkService,
+            mockConfigService as ConfigService,
+        );
     });
 
     beforeEach(() => {
@@ -195,15 +220,109 @@ describe('ProfileFrameworkPopupComponent', () => {
         component.onSubmitForm();
         expect(toasterService.error).toBeCalledWith(resourceService.messages.emsg.m0005);
     });
+
     it('should call getFormDetails method', () => {
-        component['_formFieldProperties'] = Response.formFields1;
-        component['getFormDetails']();
-        expect(formService.getFormConfig).toHaveBeenCalled();
+       component['_formFieldProperties'] = Response.formFields1;
+       jest.spyOn(formService, 'getFormConfig').mockReturnValue(of({
+        id: 'id',
+        params: {
+          resmsgid: '',
+          status: 'status'
+        },
+        responseCode: 'OK',
+        result: {},
+        ts: '',
+        ver: ''
+      }));
+       component['getFormDetails']();
+       expect(formService.getFormConfig).toHaveBeenCalled();
     });
-    it('should call getFormDetails method with admin user', () => {
+
+    it('should call getFormDetails method with admin user', async () => {
         component['_formFieldProperties'] = Response.formFields1;
         localStorage.setItem('userType', 'administrator');
-        component['getFormDetails']();
+        jest.spyOn(formService, 'getFormConfig').mockReturnValue(of({
+        id: 'id',
+        params: {
+          resmsgid: '',
+          status: 'status'
+        },
+        responseCode: 'OK',
+        result: {},
+        ts: '',
+        ver: ''
+      }));
+        await component['getFormDetails']();
         expect(formService.getFormConfig).toHaveBeenCalled();
     });
+
+    it('should handle error and return default value in catch block', async () => {
+        const formServiceInputParams = {
+            contentType: "admin_framework",
+            formAction: "create",
+            formType: "user",
+            };
+        const hashTagId = 1234;
+        const mockError = new Error('Mocked error message');
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+        jest.spyOn(formService, 'getFormConfig').mockImplementation(() => throwError(mockError));
+        const result = await component['getFormDetails']().toPromise();
+        expect(formService.getFormConfig).toHaveBeenCalledWith(formServiceInputParams, hashTagId);
+        expect(consoleErrorSpy).toHaveBeenCalledWith('Error fetching form config:', expect.objectContaining({ message: 'Mocked error message' })
+        );
+        consoleErrorSpy.mockRestore();
+        expect(result).toEqual(component.frameworkCategoriesObject);
+    });
+
+    it('should update frameworkCategories and frameworkCategoriesObject when setFWCatConfigFromCsl succeeds', async () => {
+        const frameWorkId = 'sampleFrameworkId';
+        const mockCategories = 'mockCategories';
+        const mockCategoriesObject = 'mockCategoriesObject';
+        jest.spyOn((component as any).cslFrameworkService, 'setFWCatConfigFromCsl').mockResolvedValueOnce(undefined);
+        jest.spyOn((component as any).cslFrameworkService, 'getFrameworkCategories').mockReturnValueOnce(mockCategories);
+        jest.spyOn((component as any).cslFrameworkService, 'getFrameworkCategoriesObject').mockReturnValueOnce(mockCategoriesObject);
+        await component['updateFrameworkCategories'](frameWorkId);
+        expect((component as any).cslFrameworkService.setFWCatConfigFromCsl).toHaveBeenCalledWith(frameWorkId);
+        expect(component['frameworkCategories']).toEqual(mockCategories);
+        expect(component['frameworkCategoriesObject']).toEqual(mockCategoriesObject);
+    });
+
+    it('should log an error when setFWCatConfigFromCsl fails', async () => {
+        const frameWorkId = 'sampleFrameworkId';
+        const mockError = new Error('Sample error message');
+        jest.spyOn((component as any).cslFrameworkService, 'setFWCatConfigFromCsl').mockRejectedValueOnce(mockError);
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+        await component['updateFrameworkCategories'](frameWorkId);
+        expect((component as any).cslFrameworkService.setFWCatConfigFromCsl).toHaveBeenCalledWith(frameWorkId);
+        expect(consoleErrorSpy).toHaveBeenCalledWith('Error updating framework categories:', mockError);
+        consoleErrorSpy.mockRestore();
+    });
+
+    it('should set frameworkCategories, frameworkCategoriesObject, popup status, and guestUserHashTagId when ngOnInit is called', () => {
+        jest.spyOn(mockCslFrameworkService, 'getFrameworkCategories').mockReturnValue('mock-framework-categories');
+        jest.spyOn(mockCslFrameworkService, 'getFrameworkCategoriesObject').mockReturnValue('mock-framework-categories-object');
+        jest.spyOn(orgDetailsService, 'getCustodianOrgDetails').mockReturnValue(of({ result: { response: { value: 'mock-custodian-org-value' } } }));
+        component.ngOnInit();
+        expect(component.frameworkCategories).toEqual('mock-framework-categories');
+        expect(component.frameworkCategoriesObject).toEqual('mock-framework-categories-object');
+        expect(component.popupControlService.changePopupStatus).toHaveBeenCalledWith(false);
+        expect(component.guestUserHashTagId).toEqual(1234);
+    });
+
+    it('should get custodian org data for guest', (done) => {
+        const mockChannelData = {
+        result: {
+            channel: {
+            defaultFramework: 'channelDefaultFramework'
+            }
+        }
+        };
+        jest.spyOn(component['channelService'], 'getFrameWork').mockReturnValue(of(mockChannelData as any));
+        component['getCustodianOrgDataForGuest']().subscribe((result) => {
+        expect(result).toEqual( {"code": undefined, "index": 1, "label": undefined, "range": []});
+        done();
+        });
+    });
+
+
 });

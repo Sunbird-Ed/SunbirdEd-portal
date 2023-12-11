@@ -16,6 +16,7 @@ import * as _ from 'lodash-es';
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { ProfileService } from '@sunbird/profile';
 import { SegmentationTagService } from '../../../core/services/segmentation-tag/segmentation-tag.service';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 @Component({
     selector: 'app-explore-page-component',
@@ -65,6 +66,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public enrolledCourses: Array<any>;
     public enrolledSection: any;
     public selectedCourseBatches: any;
+    frameworkCategories;
+    frameworkCategoriesObject;
+    transformUserPreference;
+    globalFilterCategories;
     private myCoursesSearchQuery = JSON.stringify({
         'request': { 'filters': { 'contentType': ['Course'], 'objectType': ['Content'], 'status': ['Live'] }, 'sort_by': { 'lastPublishedOn': 'desc' }, 'limit': 10, 'organisationId': _.get(this.userService.userProfile, 'organisationIds') }
     });
@@ -92,6 +97,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     Categorytheme: any;
     filterResponseData = {};
     refreshFilter: boolean = true;
+    public categoryKeys;
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     }
@@ -122,7 +128,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         public contentManagerService: ContentManagerService, private cacheService: CacheService,
         private browserCacheTtlService: BrowserCacheTtlService, private profileService: ProfileService,
         private segmentationTagService: SegmentationTagService, private observationUtil: ObservationUtilService,
-        private genericResourceService: GenericResourceService, private cdr: ChangeDetectorRef) {
+        private genericResourceService: GenericResourceService, private cdr: ChangeDetectorRef, private cslFrameworkService:CslFrameworkService) {
         this.genericResourceService.initialize();
         this.instance = (<HTMLInputElement>document.getElementById('instance'))
             ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
@@ -186,7 +192,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         });
                     }
                     this._addFiltersInTheQueryParams();
-                    return this.contentSearchService.initialize(this.channelId, this.custodianOrg, get(this.defaultFilters, 'board[0]'));
+                    return this.contentSearchService.initialize(this.channelId, this.custodianOrg, get(this.defaultFilters, this.frameworkCategories?.fwCategory1.code[0]));
                 }),
                 tap(data => {
                     this.initFilter = true;
@@ -209,6 +215,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit() {
+        this.cslFrameworkService.setTransFormGlobalFilterConfig();
+        this.frameworkCategories = this.cslFrameworkService?.getFrameworkCategories();
+        this.frameworkCategoriesObject = this.cslFrameworkService?.getFrameworkCategoriesObject();
+        this.categoryKeys = this.cslFrameworkService?.transformDataForCC();
         this.isDesktopApp = this.utilService.isDesktopApp;
         this.setUserPreferences();
         this.subscription$ = this.activatedRoute.queryParams.subscribe(queryParams => {
@@ -392,7 +402,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     setDesktopFilters(isDefaultFilters) {
         const userPreferences: any = this.userService.anonymousUserPreference;
         if (userPreferences) {
-            _.forEach(['board', 'medium', 'gradeLevel', 'subject'], (item) => {
+            _.forEach([this.frameworkCategories?.fwCategory1?.code, this.frameworkCategories?.fwCategory2?.code, this.frameworkCategories?.fwCategory3?.code, this.frameworkCategories?.fwCategory4?.code], (item) => {
                 if (!_.has(this.selectedFilters, item) || !_.get(this.selectedFilters[item], 'length')) {
                     const itemData = _.isArray(userPreferences.framework[item]) ?
                         userPreferences.framework[item] : _.split(userPreferences.framework[item], ', ');
@@ -636,8 +646,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private getContentSection(section, searchOptions) {
+        this.globalFilterCategories = this.cslFrameworkService.getAlternativeCodeForFilter();
+        console.log('getContentSection-explore', this.globalFilterCategories)
         const sectionFilters = _.get(section, 'apiConfig.req.request.filters');
-        const requiredProps = ['se_boards', 'se_gradeLevels', 'se_mediums'];
+        const requiredProps = [this.globalFilterCategories[0], this.globalFilterCategories[1], this.globalFilterCategories[2]];
         if (_.has(sectionFilters, ...requiredProps) && searchOptions.filters) {
             const preferences = _.pick(searchOptions.filters, requiredProps);
             section.apiConfig.req.request.filters = { ...section.apiConfig.req.request.filters, ...preferences };
@@ -1075,9 +1087,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         try {
             if (this.isUserLoggedIn()) {
                 this.userPreference = { framework: this.userService.defaultFrameworkFilters };
+                this.transformUserPreference = this.cslFrameworkService.frameworkLabelTransform(this.frameworkCategoriesObject,this.userPreference);
             } else {
                 this.userService.getGuestUser().subscribe((response) => {
                     this.userPreference = response;
+                    this.transformUserPreference = this.cslFrameworkService.frameworkLabelTransform(this.frameworkCategoriesObject,this.userPreference);
                 });
             }
         } catch (error) {
@@ -1171,6 +1185,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.isUserLoggedIn()) {
             this.profileService.updateProfile({ framework: event }).subscribe(res => {
                 this.userPreference.framework = event;
+                this.transformUserPreference = this.cslFrameworkService.frameworkLabelTransform(this.frameworkCategoriesObject,this.userPreference);
                 this.getFormConfigs();
                 this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
                 this._addFiltersInTheQueryParams(event);
@@ -1185,6 +1200,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             const req = { ...this.userPreference, framework: event };
             this.userService.updateGuestUser(req).subscribe(res => {
                 this.userPreference.framework = event;
+                this.transformUserPreference = this.cslFrameworkService.frameworkLabelTransform(this.frameworkCategoriesObject,this.userPreference);
                 this.getFormConfigs();
                 this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
                 this.showorHideBanners();
@@ -1324,27 +1340,32 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             const _filter = this.cacheService.get('searchFilters');
             if (defaultFilters) {
                 return {
-                    board: this.isUserLoggedIn() ? _.get(this.userService.defaultFrameworkFilters, 'board') : _.get(_filter, 'board'),
-                    gradeLevel: _.get(_filter, 'gradeLevel'),
-                    medium: _.get(_filter, 'medium'),
-                    subject: _.get(_filter, 'subject')
+                    [this.frameworkCategories?.fwCategory1?.code]: this.isUserLoggedIn() ? _.get(this.userService.defaultFrameworkFilters, this.frameworkCategories?.fwCategory1?.code) : _.get(_filter, this.frameworkCategories?.fwCategory1?.code),
+                    [this.frameworkCategories?.fwCategory3?.code]: _.get(_filter, this.frameworkCategories?.fwCategory3?.code,),
+                    [this.frameworkCategories?.fwCategory2?.code]: _.get(_filter, this.frameworkCategories?.fwCategory2?.code),
+                    [this.frameworkCategories?.fwCategory4?.code]: _.get(_filter, this.frameworkCategories?.fwCategory4?.code)
                 };
             }
         }
     }
     /**
-     * @description - Method to get the filterconfig from current page metadata for search filter component and set the value
+     * Sets the filter configuration based on the current page data or retrieves it from the framework based data
+     * @param currentPage - Optional parameter representing the current page data.
      */
     private setFilterConfig(currentPage) {
         this.filterResponseData = {};
         const currentPageData = currentPage ? currentPage : this.getCurrentPageData();
         if (currentPageData) {
             const filterResponseData = _.get(currentPageData, 'metaData.searchFilterConfig');
-            this.filterResponseData = filterResponseData;
-            this.userSelectedPreference=_.get(this, 'userPreference.framework');
+            this.filterResponseData = filterResponseData ? filterResponseData :
+                this.cslFrameworkService.transformPageLevelFilter(this.frameworkCategoriesObject, this.frameworkCategories);
+            this.userSelectedPreference = _.get(this, 'userPreference.framework');
             this.refreshFilter = false;
             this.cdr.detectChanges();
             this.refreshFilter = true;
         }
     }
-}
+    capitalizeFirstLetter(str: string): string {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+} 

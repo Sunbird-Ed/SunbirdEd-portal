@@ -17,7 +17,6 @@ import { CacheService } from '../../../shared/services/cache-service/cache.servi
 import { DataService } from './../data/data.service';
 import { environment } from '@sunbird/environment';
 
-
 /**
  * Service to fetch user details from server
  *
@@ -44,6 +43,8 @@ export class UserService {
    * Contains root org id
    */
   public _rootOrgId: string;
+  private setGuest: boolean;
+  public formatedName: string;
   /**
    * Contains user profile.
    */
@@ -97,6 +98,7 @@ export class UserService {
   public orgNames: Array<string> = [];
 
   public rootOrgName: string;
+  public frameworkCategories;
 
   public organizationsDetails: Array<IOrganization>;
   public createManagedUser = new EventEmitter();
@@ -130,6 +132,8 @@ export class UserService {
     this.contentService = contentService;
     this.publicDataService = publicDataService;
     this.isDesktopApp = environment.isDesktopApp;
+    let fwObj = localStorage.getItem('fwCategoryObject');
+    this.frameworkCategories = JSON.parse(fwObj);
     try {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
       DataService.userId = this._userid;
@@ -499,7 +503,15 @@ export class UserService {
       return response;
     }));
   }
-
+  
+  /**
+    * @description - This method is called in the case where either of onboarding or framework popup is disabled and setGuest value is made true
+  */
+  setGuestUser(value: boolean, defaultFormatedName: string): void{
+    this.setGuest = value;
+    this.formatedName = defaultFormatedName;
+  }
+  
   getGuestUser(): Observable<any> {
     if (this.isDesktopApp) {
       return this.getAnonymousUserPreference().pipe(map((response: ServerResponse) => {
@@ -512,12 +524,16 @@ export class UserService {
       }));
     } else {
       const guestUserDetails = localStorage.getItem('guestUserDetails');
-
       if (guestUserDetails) {
         this.guestUserProfile = JSON.parse(guestUserDetails);
         this._guestData$.next({ userProfile: this.guestUserProfile });
         return of(this.guestUserProfile);
-      } else {
+      } 
+      else if(this.setGuest){
+        const configData = {"formatedName": this.formatedName}
+        return of(configData);
+      }
+      else{
         return throwError(undefined);
       }
     }
@@ -563,9 +579,9 @@ export class UserService {
       let userDetails = JSON.parse(localStorage.getItem('guestUserDetails'));
       userFramework = _.get(userDetails, 'framework');
     } else {
-      userFramework = (isUserLoggedIn && framework && _.pick(framework, ['medium', 'gradeLevel', 'board', 'id'])) || {};
+      userFramework = (isUserLoggedIn && framework && _.pick(framework, [this.frameworkCategories?.fwCategory2?.code, this.frameworkCategories?.fwCategory3?.code, this.frameworkCategories?.fwCategory1?.code, 'id'])) || {};
     }
   
-    return { board: this.defaultBoard, ...userFramework };
+    return { [this.frameworkCategories?.fwCategory1?.code]: this.defaultBoard, ...userFramework };
   }
 }
