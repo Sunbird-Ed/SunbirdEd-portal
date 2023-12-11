@@ -23,8 +23,21 @@ describe('QumlPlayerV2Service', () => {
     })
   }
 
-  const mockConfigService: Partial<PublicPlayerService> = {
-  }
+  const mockConfigService: Partial<ConfigService> = {
+    appConfig: {
+      layoutConfiguration: 'joy',
+      TELEMETRY: {
+        PID: 'sample-page-id'
+      }
+    },
+    urlConFig: {
+      URLS: {
+        QUESTIONSET: {
+          LIST_API: 'api/question/v2/list'
+        }
+      }
+    }
+  };
 
   beforeAll(() => {
     qumlPlayerV2Service = new QumlPlayerV2Service(
