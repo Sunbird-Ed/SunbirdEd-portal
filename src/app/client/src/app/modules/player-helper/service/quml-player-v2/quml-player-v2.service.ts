@@ -68,7 +68,7 @@ export class QumlPlayerV2Service implements QuestionCursor, EditorCursor {
       headers: { 'Content-Type': 'application/json' }
     };
     const requestParam = {
-      url: 'api/question/v2/list',
+      url: this.configService.urlConFig.URLS.QUESTIONSET.LIST_API,
       data: {
         request: {
           search: {
