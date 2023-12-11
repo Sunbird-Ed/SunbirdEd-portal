@@ -1,4 +1,4 @@
-<div class="sb-mat__modal" [appTelemetryImpression]="telemetryImpression">
+<div class="sb-mat__modal" *ngIf="isUserTypeEnabled" [appTelemetryImpression]="telemetryImpression">
 
   <div mat-dialog-title class="flex-jc-center">
     <div class="sb-onboard__header">

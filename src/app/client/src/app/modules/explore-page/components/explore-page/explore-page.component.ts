@@ -218,7 +218,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.cslFrameworkService.setTransFormGlobalFilterConfig();
         this.frameworkCategories = this.cslFrameworkService?.getFrameworkCategories();
         this.frameworkCategoriesObject = this.cslFrameworkService?.getFrameworkCategoriesObject();
-        this.categoryKeys = this.cslFrameworkService.transformDataForCC();
+        this.categoryKeys = this.cslFrameworkService?.transformDataForCC();
         this.isDesktopApp = this.utilService.isDesktopApp;
         this.setUserPreferences();
         this.subscription$ = this.activatedRoute.queryParams.subscribe(queryParams => {

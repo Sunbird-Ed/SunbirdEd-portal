@@ -1478,7 +1478,7 @@
   },
   "OTPTemplate": {
       "updateContactTemplate": "otpContactUpdateTemplate",
-      "userDeleteTemplate": "otpContactUpdateTemplate"
+      "userDeleteTemplate": "otpDeleteUserTemplate"
   },
   "frameworkCatConfig": {
     "changeChannel": true,

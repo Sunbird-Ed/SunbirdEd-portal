@@ -1,7 +1,7 @@
 import { ConfigService } from '@sunbird/shared';
 import { SearchService, PlayerService, UserService, PublicDataService } from '@sunbird/core';
 import * as _ from 'lodash-es';
-import { of, Observable, iif, forkJoin } from 'rxjs';
+import { of, Observable, iif, forkJoin , throwError} from 'rxjs';
 import TreeModel from 'tree-model';
 import { CslFrameworkService } from '../../../../modules/public/services/csl-framework/csl-framework.service';
 import { DialCodeService } from './dial-code.service';
@@ -24,7 +24,15 @@ describe('DialCodeService', () => {
   };
 
   const configServiceMock: Partial<ConfigService> = {
+    urlConFig: {
+      URLS: {
+        DIAL_ASSEMBLE_PREFIX: 'your-dial-assemble-prefix-url',
+      },
+    },
     appConfig: {
+      DialAssembleSearch: {
+        contentType: 'your-content-type',
+      },
       frameworkCatConfig: {
         changeChannel: true,
         defaultFW: 'someDefaultFramework'
@@ -37,17 +45,12 @@ describe('DialCodeService', () => {
   };
 
   const userServiceMock: Partial<UserService> = {
-    userData$: of({
-      userProfile: {
-        userId: 'sample-uid',
-        rootOrgId: 'sample-root-id',
-        rootOrg: {},
-        hashTagIds: ['id'],
-        profileUserType: {
-          type: 'student'
-        }
-      } as any
-    }) as any
+    loggedIn: true,
+    userProfile: {
+      framework: {
+        'your-fw-category-code': 'your-fw-category-value',
+      },
+    },
   };
 
   const publicDataServiceMock: Partial<PublicDataService> = {
@@ -185,6 +188,103 @@ describe('DialCodeService', () => {
       expect(result).toEqual(mockResponse.result.content);
     });
     expect(playerServiceMock.getCollectionHierarchy).toHaveBeenCalledWith(collectionId, mockOption);
+  });
+
+  it('should add model to contents array if mimeType is present and not "application/vnd.ekstep.content-collection"', () => {
+    const mockCollection = {
+      identifier: 'mockId',
+      mimeType: 'mockMimeType',
+    };
+
+    const mockNode = {
+      model: mockCollection,
+    };
+
+    const mockParsedCollection = {
+      walk: jest.fn((callback) => {
+        callback(mockNode);
+      }),
+    };
+    const treeModel = new TreeModel();
+    jest.spyOn(treeModel, 'parse' as any).mockReturnValue(mockParsedCollection);
+
+    const result = dialCodeService.parseCollection(mockCollection);
+
+    expect(result).toHaveLength(1);
+    expect(result[0].l1Parent).toEqual(mockCollection.identifier);
+    jest.restoreAllMocks();
+  });
+
+  it('should return the correct request object', () => {
+    const dialCode = 'your-dial-code';
+    const result = dialCodeService.getRequest(dialCode);
+    expect(result).toEqual({
+      url: 'your-dial-assemble-prefix-url',
+      data: {
+        request: {
+          source: 'web',
+          name: 'DIAL Code Consumption',
+          filters: {
+            dialcodes: 'your-dial-code',
+            contentType: 'your-content-type',
+          },
+          userProfile: {
+          },
+        },
+      },
+    });
+  });
+
+  it('should return empty array if collectionIds is empty', (done) => {
+    const option = {
+        courseId: 'sample-courseId',
+        batchId: 'sample-batch-id',
+    };
+    dialCodeService.getAllPlayableContent([], option).subscribe((result) => {
+      expect(result).toEqual([]);
+      done();
+    });
+  });
+
+  it('should handle errors gracefully and return empty array', (done) => {
+    const collectionIds = ['collectionId1', 'collectionId2'];
+    const option = {
+        courseId: 'sample-courseId',
+        batchId: 'sample-batch-id',
+    };
+    jest.spyOn(dialCodeService, 'getCollectionHierarchy').mockReturnValue(throwError({ error: 'error' })) as any;
+    dialCodeService.getAllPlayableContent(collectionIds, option).subscribe((result) => {
+      expect(result).toEqual([]);
+      done();
+    });
+  });
+
+  it('should flatten and parse the results', async () => {
+    const mockHierarchy = {
+      identifier: 'collectionId1',
+      name: 'Mock Collection',
+      children: [
+        {
+          identifier: 'contentId1',
+          name: 'Mock Content 1',
+          mimeType: 'application/pdf',
+        },
+        {
+          identifier: 'contentId2',
+          name: 'Mock Content 2',
+          mimeType: 'video/mp4',
+        },
+      ],
+   };
+    const collectionIds = ['collectionId1', 'collectionId2'];
+    const option = {
+          courseId: 'sample-courseId',
+          batchId: 'sample-batch-id',
+      };
+    jest.spyOn(dialCodeService, 'getCollectionHierarchy' as any).mockResolvedValue(mockHierarchy);
+    jest.spyOn(dialCodeService, 'parseCollection').mockReturnValue(['parsedCollection']);
+    const result = await dialCodeService.getAllPlayableContent(collectionIds, option).toPromise();
+    expect(result).toEqual(['parsedCollection', 'parsedCollection']);
   });
 
 });

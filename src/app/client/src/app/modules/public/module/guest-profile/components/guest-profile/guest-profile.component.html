@@ -86,7 +86,7 @@
       <div class="d-flex flex-jc-center flex-ai-center flex-dc">
         <div class="max-w-400 computer only">
           <div class="mb-15 d-flex flex-jc-center" *ngFor="let category of transFormGuestUser">
-            <span class="fmedium white-space-nowrap">{{category?.labels}} : </span>
+            <span class="fmedium white-space-nowrap">{{category?.labels | translate}} : </span>
             <span class="fmedium font-w-bold pl-4" *ngFor="let item of category?.values let last=last" class="font-weight-bold" >{{item}}{{!last && category.values.length > 1 ? ',' : ''}}</span>
           </div>
         </div>
@@ -122,7 +122,7 @@
   </ng-template>
 </app-modal-wrapper>
 
-<app-location-selection (close)="closeEditDetailsPopup()" *ngIf="showEditUserDetailsPopup">
+<app-location-selection (close)="closeEditDetailsPopup()" [showEditLocationDetailsPopup]="true" *ngIf="showEditUserDetailsPopup">
   <div slot="popup-sub-header">
     <p class="subtitle">{{resourceService?.frmelmnts?.lbl?.editPersonalDetails}}&lrm;</p>
   </div>
