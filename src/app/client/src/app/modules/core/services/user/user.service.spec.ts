@@ -330,9 +330,19 @@ describe('UserService', () => {
   });
 
   it('should call deleteUser method', () => {
-    const opt = { url: '/user/v1/delete/0008ccab-2103-46c9-adba-6cdf84d37f06' }
+
+    const postSpy = jest.spyOn(userService.learnerService, 'post');
+    const expectedOptions = {
+      url: userService.config.urlConFig.URLS.USER.DELETE,
+      data: {
+        request: {
+          userId: '0008ccab-2103-46c9-adba-6cdf84d37f06'
+        }
+      }
+    };
     userService.deleteUser();
-    expect(mockLearnerService.delete).toHaveBeenCalledWith(opt)
+    expect(postSpy).toHaveBeenCalledWith(expectedOptions);
+    postSpy.mockClear();
   });
 
   it('should call acceptTermsAndConditions method', () => {
@@ -378,13 +388,15 @@ describe('UserService', () => {
     expect(result['undefined']).toBeUndefined();
   });
 
-  it('should call learnerService.delete with the correct options', async () => {
-    const mockedUserId = undefined;
-    const expectedOptions = {
-      url: `/user/v1/delete/${mockedUserId}`,
-    };
-    await userService.deleteUser();
-    expect(userService.learnerService.delete).toHaveBeenCalledWith(expectedOptions);
+  it('should set the guest user value to true', () => {
+    userService.setGuestUser(true,"guest");
+    expect(userService['setGuest']).toBe(true);
+    expect(userService.formatedName).toBe("guest");
   });
 
+  it('should set the guest user value to false', () => {
+    userService.setGuestUser(false,"mockUsername");
+    expect(userService['setGuest']).toBe(false);
+    expect(userService.formatedName).toBe("mockUsername");
+  });
 });

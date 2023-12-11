@@ -25,7 +25,8 @@ describe('GlobalSearchFilterComponent', () => {
     };
     const mockCslFrameworkService: Partial<CslFrameworkService> = {
         getFrameworkCategories: jest.fn(),
-        setDefaultFWforCsl: jest.fn()
+        setDefaultFWforCsl: jest.fn(),
+        getAllFwCatName: jest.fn()
     };
 
     beforeAll(() => {
@@ -211,6 +212,7 @@ describe('GlobalSearchFilterComponent', () => {
                     }
                 }
             }) as any;
+            jest.spyOn(globalSearchFilterComponent.cslFrameworkService, 'getAllFwCatName').mockReturnValue([]);
             // act
             globalSearchFilterComponent.ngOnInit();
             setTimeout(() => {
@@ -242,6 +244,7 @@ describe('GlobalSearchFilterComponent', () => {
             mockConnectionService.monitor = jest.fn(() => of(true));
             mockCacheService.exists = jest.fn(() => true);
             // act
+            jest.spyOn(globalSearchFilterComponent.cslFrameworkService, 'getAllFwCatName').mockReturnValue([]);
             globalSearchFilterComponent.ngOnInit();
             setTimeout(() => {
                 expect(globalSearchFilterComponent.refresh).toBeTruthy();
@@ -269,6 +272,7 @@ describe('GlobalSearchFilterComponent', () => {
             mockConnectionService.monitor = jest.fn(() => of(true));
             mockCacheService.exists = jest.fn(() => false);
             // act
+            jest.spyOn(globalSearchFilterComponent.cslFrameworkService, 'getAllFwCatName').mockReturnValue([]);
             globalSearchFilterComponent.ngOnInit();
             setTimeout(() => {
                 expect(globalSearchFilterComponent.refresh).toBeTruthy();
@@ -293,6 +297,7 @@ describe('GlobalSearchFilterComponent', () => {
             mockConnectionService.monitor = jest.fn(() => of(true));
             mockCacheService.exists = jest.fn(() => false);
             // act
+            jest.spyOn(globalSearchFilterComponent.cslFrameworkService, 'getAllFwCatName').mockReturnValue([]);
             globalSearchFilterComponent.ngOnInit();
             setTimeout(() => {
                 expect(globalSearchFilterComponent.refresh).toBeTruthy();
@@ -326,6 +331,7 @@ describe('GlobalSearchFilterComponent', () => {
                     }
                 }
             };
+            globalSearchFilterComponent.frameworkCategoriesList = ['Category1', 'Category2', 'Category3'];
             mockActivatedRoute.snapshot = {
                 queryParams: {
                     board: ['board'],

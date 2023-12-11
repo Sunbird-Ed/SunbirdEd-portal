@@ -13,6 +13,7 @@ import { CsCourseService } from '@project-sunbird/client-services/services/cours
 import { FieldConfig, FieldConfigOption } from '@project-sunbird/common-form-elements-full';
 import { CsCertificateService } from '@project-sunbird/client-services/services/certificate/interface';
 import { CslFrameworkService } from '../../../../modules/public/services/csl-framework/csl-framework.service';
+
 @Component({
   templateUrl: './profile-page.component.html',
   styleUrls: ['./profile-page.component.scss'],

@@ -20,6 +20,7 @@ export class DeleteAccountComponent implements OnInit, OnDestroy {
   @Input() userProfile: any;
   @Output() close = new EventEmitter<any>();
   @Input() dialogProps;
+  @Input() deepLink:string = ''
   contactTypeForm: UntypedFormGroup;
   enableSubmitBtn = false;
   showUniqueError = '';
@@ -117,9 +118,9 @@ export class DeleteAccountComponent implements OnInit, OnDestroy {
       this.userService.deleteUser().subscribe(
         (data: ServerResponse) => {
           if(_.get(data, 'result.response') === 'SUCCESS'){
-            if(this.deviceDetectorService.isMobile()){
+            if(this.deviceDetectorService.isMobile() && this.deepLink !== ''){
               //TODO changes need to be done on the Mobile Deeplink
-              const url ='dev.sunbird.app://mobile?userId'+ this.userProfile.userId;
+              const url = this.deepLink+'?userId='+ this.userProfile.userId;
               window.open(url, '_blank');
             }
             window.location.replace('/logoff');

@@ -1479,6 +1479,5 @@
   "OTPTemplate": {
       "updateContactTemplate": "otpContactUpdateTemplate",
       "userDeleteTemplate": "otpDeleteUserTemplate"
-
   }
 }
