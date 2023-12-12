@@ -715,7 +715,9 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
           "do_3138319389948067841420",
           "do_3138319270610862081369",
           "do_3138319631372943361537",
-          "do_3138319174463160321327"
+          "do_3138319174463160321327",
+          "do_3135592933571133441228",
+          "do_3135592386048983041176",
         ];
         break;
       case 'tvProgram':
