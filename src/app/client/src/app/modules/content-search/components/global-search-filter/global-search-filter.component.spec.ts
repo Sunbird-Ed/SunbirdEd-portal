@@ -26,7 +26,8 @@ describe('GlobalSearchFilterComponent', () => {
     const mockCslFrameworkService: Partial<CslFrameworkService> = {
         getFrameworkCategories: jest.fn(),
         setDefaultFWforCsl: jest.fn(),
-        getAllFwCatName: jest.fn()
+        getAllFwCatName: jest.fn(),
+        getAlternativeCodeForFilter: jest.fn()
     };
 
     beforeAll(() => {
@@ -214,6 +215,8 @@ describe('GlobalSearchFilterComponent', () => {
             }) as any;
             jest.spyOn(globalSearchFilterComponent.cslFrameworkService, 'getAllFwCatName').mockReturnValue([]);
             // act
+            jest.spyOn(globalSearchFilterComponent.cslFrameworkService, 'getAllFwCatName').mockReturnValue([]);
+            jest.spyOn(mockCslFrameworkService, 'getAlternativeCodeForFilter').mockReturnValue(['code1', 'code2', 'code3', 'code4']);
             globalSearchFilterComponent.ngOnInit();
             setTimeout(() => {
                 expect(globalSearchFilterComponent.refresh).toBeTruthy();
@@ -245,6 +248,7 @@ describe('GlobalSearchFilterComponent', () => {
             mockCacheService.exists = jest.fn(() => true);
             // act
             jest.spyOn(globalSearchFilterComponent.cslFrameworkService, 'getAllFwCatName').mockReturnValue([]);
+            jest.spyOn(mockCslFrameworkService, 'getAlternativeCodeForFilter').mockReturnValue(['code1', 'code2', 'code3', 'code4']);
             globalSearchFilterComponent.ngOnInit();
             setTimeout(() => {
                 expect(globalSearchFilterComponent.refresh).toBeTruthy();
@@ -273,6 +277,7 @@ describe('GlobalSearchFilterComponent', () => {
             mockCacheService.exists = jest.fn(() => false);
             // act
             jest.spyOn(globalSearchFilterComponent.cslFrameworkService, 'getAllFwCatName').mockReturnValue([]);
+            jest.spyOn(mockCslFrameworkService, 'getAlternativeCodeForFilter').mockReturnValue(['code1', 'code2', 'code3', 'code4']);
             globalSearchFilterComponent.ngOnInit();
             setTimeout(() => {
                 expect(globalSearchFilterComponent.refresh).toBeTruthy();
@@ -298,6 +303,7 @@ describe('GlobalSearchFilterComponent', () => {
             mockCacheService.exists = jest.fn(() => false);
             // act
             jest.spyOn(globalSearchFilterComponent.cslFrameworkService, 'getAllFwCatName').mockReturnValue([]);
+            jest.spyOn(mockCslFrameworkService, 'getAlternativeCodeForFilter').mockReturnValue(['code1', 'code2', 'code3', 'code4']);
             globalSearchFilterComponent.ngOnInit();
             setTimeout(() => {
                 expect(globalSearchFilterComponent.refresh).toBeTruthy();
@@ -331,7 +337,6 @@ describe('GlobalSearchFilterComponent', () => {
                     }
                 }
             };
-            globalSearchFilterComponent.frameworkCategoriesList = ['Category1', 'Category2', 'Category3'];
             mockActivatedRoute.snapshot = {
                 queryParams: {
                     board: ['board'],

@@ -24,7 +24,7 @@ describe('CslFrameworkService', () => {
     appConfig: {
       frameworkCatConfig: {
         changeChannel: true,
-        defaultFW: 'someDefaultFramework'
+        defaultFW: 'channelDefaultFramework'
       }
     }
   };
@@ -122,7 +122,7 @@ describe('CslFrameworkService', () => {
     const setFWCatConfigFromCslSpy = jest.spyOn(service, 'setFWCatConfigFromCsl');
     service.setDefaultFWforCsl(undefined, 'someChannelId');
     expect(channelServiceMock.getFrameWork).toHaveBeenCalledWith('someChannelId');
-    expect(setFWCatConfigFromCslSpy).toHaveBeenCalledWith('someDefaultFramework');
+    expect(setFWCatConfigFromCslSpy).toHaveBeenCalledWith('channelDefaultFramework');
   });
 
   it('should reject the Promise when fetching framework configuration fails', async () => {
@@ -182,7 +182,7 @@ describe('CslFrameworkService', () => {
     const formConfigMock = { code: 'persona1', name: 'Persona 1' };
     const rootOrgIdMock = 'mockRootOrgId';
     (mockFormService.getFormConfig as jest.Mock).mockReturnValue(of(formConfigMock));
-    service['getFormDetails']().subscribe((result) => {
+    service['getFormDetails'](rootOrgIdMock).subscribe((result) => {
       expect(result).toEqual(formConfigMock);
       done();
     });
@@ -191,8 +191,9 @@ describe('CslFrameworkService', () => {
   it('should handle form details retrieval with error', (done) => {
     const errorMock = new Error('Form config retrieval failed');
     const fwCategoryObjectStringMock = { key: 'value' };
+    const rootOrgIdMock = 'mockRootOrgId';
     (mockFormService.getFormConfig as jest.Mock).mockReturnValue(throwError(errorMock));
-    service['getFormDetails']().subscribe((result) => {
+    service['getFormDetails'](rootOrgIdMock).subscribe((result) => {
       expect(result).toEqual(fwCategoryObjectStringMock);
       done();
     });
@@ -278,26 +279,21 @@ describe('CslFrameworkService', () => {
     expect(result).toEqual([ { code: 'lastPublishedBy', name: 'Published by' }]);
   });
 
-  it('should return an array of alternative codes for filter categories', () => {
-    jest.spyOn(service, 'getGlobalFilterCategories').mockReturnValue({
-      fwCategory1: { code: 'code1' },
-      fwCategory2: { code: 'code2' },
-      fwCategory3: { code: 'code3' },
-      fwCategory4: { code: 'code4' },
-    });
+  it('should return alternative codes for framework filter categories', () => {
+    const mockGlobalFilterCategories = {
+      fwCategory1: { type: 'framework', alternativeCode: 'code1' },
+      fwCategory2: { type: 'framework', alternativeCode: 'code2' },
+      fwCategory3: { type: 'other', alternativeCode: 'code3' },
+    };
+    jest.spyOn(service, 'getGlobalFilterCategories').mockReturnValue(mockGlobalFilterCategories);
     const result = service.getAlternativeCodeForFilter();
-    expect(result).toEqual(['code1', 'code2', 'code3', 'code4']);
+    expect(result).toEqual(['code1', 'code2']);
   });
 
-  it('should handle missing alternative codes gracefully', () => {
-    jest.spyOn(service, 'getGlobalFilterCategories').mockReturnValue({
-      fwCategory1: { code: 'code1' },
-      fwCategory2: {},
-      fwCategory3: { code: 'code3' },
-      fwCategory4: {},
-    });
+  it('should return an empty array if there are no framework filter categories', () => {
+    jest.spyOn(service, 'getGlobalFilterCategories').mockReturnValue(null);
     const result = service.getAlternativeCodeForFilter();
-    expect(result).toEqual(['code1', undefined , 'code3', undefined ]);
+    expect(result).toEqual([]);
   });
 
   it('should set transformed global filter configuration when form details are available', () => {

@@ -45,6 +45,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
   @Input() cachedFilters?: any;
   public frameworkCategoriesObject;
   public frameworkCategoriesList;
+  public globalFilterCategories;
 
   @ViewChild('sbSearchFacetFilterComponent') searchFacetFilterComponent: any;
 
@@ -116,7 +117,8 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
 
   ngOnInit() {
     this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
-    this.supportedFilterAttributes = [ ...this.frameworkCategoriesList, 'primaryCategory', 'mediaType', 'additionalCategories', 'channel'];
+    this.globalFilterCategories = this.cslFrameworkService.getAlternativeCodeForFilter();
+    this.supportedFilterAttributes = [ ...this.globalFilterCategories, 'primaryCategory', 'mediaType', 'additionalCategories', 'channel'];
     this.setResetFilterInteractData();
     this.fetchSelectedFilterAndFilterOption();
     this.handleFilterChange();

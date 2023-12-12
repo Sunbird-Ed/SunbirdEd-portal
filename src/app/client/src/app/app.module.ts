@@ -26,6 +26,7 @@ import { MatStepperModule} from '@angular/material/stepper';
 import { CdkStepperModule} from '@angular/cdk/stepper';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../app/service/CsLibInitializer/cs-lib-initializer.service';
+import { TranslateJsonPipe } from '../app/modules/shared/pipes/TranslateJsonPipe/translate-json.pipe';
 export const csFrameworkServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
   if (!CsModule.instance.isInitialised) {
     csLibInitializerService.initializeCs();
@@ -72,7 +73,8 @@ export const csFrameworkServiceFactory = (csLibInitializerService: CsLibInitiali
         DeviceDetectorService,
         { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true },
         { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy },
-        {provide: 'CS_FRAMEWORK_SERVICE',useFactory: csFrameworkServiceFactory,deps: [CsLibInitializerService]}
+        {provide: 'CS_FRAMEWORK_SERVICE',useFactory: csFrameworkServiceFactory,deps: [CsLibInitializerService]},
+        TranslateJsonPipe
         
     ],
 })

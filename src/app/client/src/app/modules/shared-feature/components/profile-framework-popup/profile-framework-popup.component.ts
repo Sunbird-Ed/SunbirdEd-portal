@@ -66,14 +66,14 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     this.selectedOption = _.pickBy(_.cloneDeep(this.formInput), 'length') || {}; // clone selected field inputs from parent
     if (this.isGuestUser && !this.isStepper) {
       this.orgDetailsService.getOrgDetails(this.userService.slug).subscribe((data: any) => {
-        this.guestUserHashTagId = this.configService.appConfig.frameworkCatConfig.changeChannel ? this.configService.appConfig.frameworkCatConfig.channel: data.hashTagId;
+        this.guestUserHashTagId = data.hashTagId;
       });
       this.guestUserHashTagId =this.guestUserHashTagId || this.hashId;
       this.allowedFields = [this.frameworkCategories?.fwCategory1?.code, this.frameworkCategories?.fwCategory2?.code, this.frameworkCategories?.fwCategory3?.code];
     }
     if (this.isGuestUser && this.isStepper) {
       this.orgDetailsService.getCustodianOrgDetails().subscribe((custodianOrg) => {
-        this.guestUserHashTagId = this.configService.appConfig.frameworkCatConfig.changeChannel ? this.configService.appConfig.frameworkCatConfig.channel: custodianOrg.result.response.value;
+        this.guestUserHashTagId = custodianOrg.result.response.value;
 
       });
       this.allowedFields = [this.frameworkCategories?.fwCategory1?.code, this.frameworkCategories?.fwCategory2?.code, this.frameworkCategories?.fwCategory3?.code];
@@ -124,24 +124,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       }
     }));
   }
-  // private getFwCateogoriesForDefault(channelID) {
-  //   this.channelService.getFrameWork(channelID).subscribe((channelData: any) => {
-  //     if(this.configService.appConfig.frameworkCatConfig.changeChannel) {
-  //       this.defaultFramework = this.configService.appConfig.frameworkCatConfig.defaultFW;
-  //     }
-  //     else 
-  //     {
-  //       this.defaultFramework = this.selectedOption.id ? this.selectedOption.id : _.get(channelData, 'result.channel.defaultFramework');
-  //     }
-  //     // this.defaultFramework = 'agriculture_framework';
-  //     console.log('prrcheck', this.defaultFramework);
-  //     this.frameworkCategories = '';
-  //     this.frameworkCategoriesObject = '';
-  //     // this.cslFrameworkService.setUserSelectedFramework(this.defaultFramework, '')
-  //       this.frameworkCategories = this.cslFrameworkService.getFrameworkCategories();
-  //       this.frameworkCategoriesObject = this.cslFrameworkService.getFrameworkCategoriesObject();
-  //   });
-  // }
+
   private getCustodianOrgDataForGuest() {
     return this.channelService.getFrameWork(this.guestUserHashTagId).pipe(map((channelData: any) => {
       this.custOrgFrameworks = _.get(channelData, 'result.channel.frameworks') || [];

@@ -41,7 +41,6 @@ export class CslFrameworkService {
   constructor(@Inject('CS_FRAMEWORK_SERVICE') private csFrameworkService: CsFrameworkService, private channelService: ChannelService, private configService: ConfigService, public formService: FormService
   ) {
     this.selectedFramework = localStorage.getItem('selectedFramework');
-    this.rootOrgId = localStorage.getItem('orgHashTagId');
 
   }
 
@@ -54,7 +53,7 @@ export class CslFrameworkService {
     if (!userSelFramework && channelId) {
       this.channelService.getFrameWork(channelId).subscribe((channelData: any) => {
         this.defaultFramework = _.get(channelData, 'result.channel.defaultFramework');
-        let selectedFW = this.configService.appConfig.frameworkCatConfig.changeChannel ? this.configService.appConfig.frameworkCatConfig.defaultFW : this.defaultFramework;
+        let selectedFW = this.defaultFramework;
         this.setFWCatConfigFromCsl(selectedFW);
       });
     } else {
@@ -244,7 +243,7 @@ export class CslFrameworkService {
    * @returns {Observable} - Returns an Observable containing form details for global search filters.
    *                         In case of an error, returns a  framework default data (fwCategoryObjectString).
    */
-  private getFormDetails() {
+  private getFormDetails(rooOrgID) {
     this.defaultFwCategories = this.getFrameworkCategoriesObject();
     const formServiceInputParams = {
       formType: 'contentcategory',
@@ -267,9 +266,10 @@ export class CslFrameworkService {
  *               It maps over the array of objects and creates a transformed structure to store in localStorage.
  *               Additionally, it manages the storage of the transformed data and original response data.
  */
-  setTransFormGlobalFilterConfig() {
+  setTransFormGlobalFilterConfig(rooOrgID?) {
     let filterResponseData;
-    this.getFormDetails().subscribe(responseData => {
+    this.rootOrgId =  rooOrgID;
+    this.getFormDetails(rooOrgID).subscribe(responseData => {
       const allTabData = _.find(responseData, (o) => o.title === 'frmelmnts.tab.all');
       if (allTabData) {
         filterResponseData = _.get(allTabData, 'metaData.globalFilterConfig') ? _.get(allTabData, 'metaData.globalFilterConfig') : this.defaultFwCategories
@@ -285,6 +285,8 @@ export class CslFrameworkService {
           alternativeCode: filter?.alternativeCode ? filter?.alternativeCode : filter?.code,
           label: filter?.label,
           translation: filter?.translation,
+          type: filter?.type
+
         };
       });
       localStorage.removeItem('globalFilterObject');
@@ -333,7 +335,9 @@ export class CslFrameworkService {
     const filterCatNames: string[] = [];
     for (const key in this.globalFilterCategories) {
       if (Object.prototype.hasOwnProperty.call(this.globalFilterCategories, key)) {
-        filterCatNames.push(this.globalFilterCategories[key].code);
+        this.globalFilterCategories = this.getGlobalFilterCategories();
+        if (this.globalFilterCategories[key].type === 'framework')
+          filterCatNames.push(this.globalFilterCategories[key].alternativeCode);
       }
     }
 

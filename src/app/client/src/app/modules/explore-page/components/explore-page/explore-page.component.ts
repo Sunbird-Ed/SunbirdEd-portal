@@ -215,7 +215,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit() {
-        this.cslFrameworkService.setTransFormGlobalFilterConfig();
+        this.cslFrameworkService?.setTransFormGlobalFilterConfig();
         this.frameworkCategories = this.cslFrameworkService?.getFrameworkCategories();
         this.frameworkCategoriesObject = this.cslFrameworkService?.getFrameworkCategoriesObject();
         this.categoryKeys = this.cslFrameworkService?.transformDataForCC();
