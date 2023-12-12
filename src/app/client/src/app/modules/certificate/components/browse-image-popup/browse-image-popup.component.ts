@@ -71,40 +71,21 @@ export class BrowseImagePopupComponent implements OnInit {
   }
 
   async fileChange(ev) {
-    console.log('ev---------------->', ev);
     this.uploadForm.reset();
     const imageProperties = await this.getImageProperties(ev.target.files[0]);
-    console.log('imageProperties---------------->', imageProperties);
-
     const isDimensionMatched = this.dimentionCheck(imageProperties);
-    console.log('isDimensionMatched---------------->', isDimensionMatched);
-
     const isTypeMatched = _.get(imageProperties, 'type').includes('png');
-    console.log('isTypeMatched---------------->', isTypeMatched);
-
     const isSizeMatched = _.get(imageProperties, 'size') < 1;
-    console.log('isSizeMatched---------------->', isSizeMatched);
-
-    console.log('outside if---------------->', imageProperties && isSizeMatched && isTypeMatched && isDimensionMatched);
-
     if (imageProperties && isSizeMatched && isTypeMatched && isDimensionMatched) {
-    console.log('inside if---------------->', imageProperties && isSizeMatched && isTypeMatched && isDimensionMatched);
       this.fileObj = ev.target.files[0];
-    console.log('fileObj---------------->', this.fileObj);
-
       const fileName = _.get(this.fileObj, 'name').split('.')[0];
-    console.log('fileName---------------->', fileName);
-
       const userName = `${_.get(this.userService, 'userProfile.firstName') || ''} ${_.get(this.userService, 'userProfile.lastName') || ''}`;
-    console.log('userName---------------->', userName);
       this.uploadForm.patchValue({
         'assetCaption': fileName,
         'creator': userName,
         'creatorId': _.get(this.userService, 'userProfile.id')
       });
-      console.log('uploadForm---------------->', this.uploadForm);
     } else {
-      console.log('else---------------->', this.resourceService);
       this.toasterService.error(_.get(this.resourceService, 'frmelmnts.cert.lbl.imageErrorMsg'));
 
     }
