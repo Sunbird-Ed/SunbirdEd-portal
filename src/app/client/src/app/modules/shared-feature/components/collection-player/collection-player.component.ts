@@ -15,6 +15,7 @@ import * as TreeModel from 'tree-model';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { PopupControlService } from '../../../../service/popup-control.service';
 import { PublicPlayerService } from '@sunbird/public';
+// import { TocCardType, PlatformType } from '@project-sunbird/common-consumption';
 import { TocCardType, PlatformType } from 'library-filters-common-consumption';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 import { ContentManagerService } from '../../../public/module/offline/services';
@@ -301,7 +302,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
         // item.children.forEach(child => this.sortChildrenByCreatedOn(child, sortKey));
         item.children.forEach(child =>{ 
           child.children.forEach(child1 =>{
-            
+
             child1.children.sort((a:any, b:any) =>{ 
               if(!a.me_totalRatingsCount) {
                 a.me_totalRatingsCount =0;
@@ -318,10 +319,23 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
         // item.children.forEach(child => this.sortChildrenByCreatedOn(child, sortKey));  
         item.children.forEach(child =>{ 
           child.children.forEach(child1 =>{
-            
+
             child1.children.sort((a:any, b:any) =>{ 
               let playSessionCount1 = this.getContentPlaySessionCount(b.me_totalPlaySessionCount).sum,
               playSessionCount2 = this.getContentPlaySessionCount(a.me_totalPlaySessionCount).sum;
+              // if(playSessionCount1 && playSessionCount1?.portal) {
+              //   playSessionCount1.portal = playSessionCount1?.portal;
+              //   console.log(b?.me_totalPlaySessionCount.portal);
+              // } else {
+              //   playSessionCount1.me_totalPlaySessionCount = {portal :0}
+              // }
+
+              // if(playSessionCount2 && playSessionCount2?.portal) {
+              //   playSessionCount2.portal = playSessionCount2?.portal;
+              //   console.log(a?.me_totalPlaySessionCount?.portal);
+              // } else {
+              //   playSessionCount2.me_totalPlaySessionCount = {portal :0}
+              // }
               return playSessionCount1 - playSessionCount2;
             });
           });

@@ -545,4 +545,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
       });
   }
+
+  redirectToDeetya(){
+    window.open("https://university.deetya.org/deetya/deekashuser.php?firstname=Deeksha&lastname=Teacher&email=deeksha.t@ncert.in","_blank");
+  }
 }
