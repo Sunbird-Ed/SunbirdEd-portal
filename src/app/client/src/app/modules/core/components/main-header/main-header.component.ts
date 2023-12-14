@@ -170,6 +170,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   showReportMenu = false;
   showingDescription: string;
   showSwitchTheme = false
+  isMlConfigured = environment.sunbirdMlConfigured;
+  isUciConfigured = environment.sunbirdUciConfigured;
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
     public orgDetailsService: OrgDetailsService, public formService: FormService,
