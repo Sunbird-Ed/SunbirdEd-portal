@@ -105,6 +105,30 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
   }
 
   openWebview() {
+    
+    this.setTelemetryData();
+
+    var generateUniqueId = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ-abcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < 20; i++ ) {
+      generateUniqueId += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+
+    const event = {
+      context: {
+        env: 'CollabGeo logs env'
+      },
+      edata: {
+        type: 'CollabGeo_Click',
+        level: generateUniqueId,
+        message: 'Collabgeo logs recieving',
+        pageid: this.router.url.split('?')[0]
+      }
+    };
+
+    this.telemetryService.log(event);
+    
     let siteUrl = 'https://collabgeo.nic.in/collabGeo';
     localStorage.setItem('siteUrl',siteUrl);
 
