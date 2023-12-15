@@ -9,7 +9,7 @@ import { PublicPlayerService } from '@sunbird/public';
 import { IInteractEventEdata,IImpressionEventInput,TelemetryService } from '@sunbird/telemetry';
 import { ContentManagerService,SystemInfoService } from '../../services';
 import { LibraryComponent } from './library.component';
-import { response }  from './library.component.spec.data'
+import { response } from './library.component.spec.data';
 
 describe('LibraryComponent', () => {
     let component: LibraryComponent;
@@ -110,7 +110,7 @@ describe('LibraryComponent', () => {
 	const mockOrgDetailsService :Partial<OrgDetailsService> ={
 		getOrgDetails: jest.fn(),
 	};
-	
+
     beforeAll(() => {
         component = new LibraryComponent(
             mockActivatedRoute as ActivatedRoute,
@@ -129,7 +129,7 @@ describe('LibraryComponent', () => {
 			mockSystemInfoService as SystemInfoService,
 			mockLayoutService as LayoutService,
 			mockUserService as UserService,
-			mockOrgDetailsService as OrgDetailsService
+			mockOrgDetailsService as OrgDetailsService,
         )
     });
 
@@ -157,15 +157,15 @@ describe('LibraryComponent', () => {
 
 			component.updateCardData();
 		
-			response..forEach((pageSection) => {
+			response.mockPageSections.forEach((pageSection) => {
 			  pageSection.contents.forEach((pageData) => {
-				expect(mockPublicPlayerService.updateDownloadStatus).toHaveBeenCalledWith(mockContentDownloadStatus, pageData);
+				expect(mockPublicPlayerService.updateDownloadStatus).toHaveBeenCalledWith(response.mockContentDownloadStatus, pageData);
 			  });
 			});
 			expect(component.addHoverData).toHaveBeenCalled();
 		});
 	});
-	
+
 	describe('downloadContent', ()=> {
 		it('should download content successfully', () => {
 		  const contentId = '';
@@ -208,7 +208,7 @@ describe('LibraryComponent', () => {
 		  	expect(mockContentManagerService.downloadContentData).toEqual({});
 		  	expect(mockContentManagerService.failedContentName).toBe('');
 		  	expect(component.showDownloadLoader).toBe(false);
-			response..forEach((pageSection) => {
+			response.mockPageSections.forEach((pageSection) => {
 				pageSection.contents.forEach((pageData) => {
 				expect(pageData['downloadStatus']).toBe(undefined);
 				});
