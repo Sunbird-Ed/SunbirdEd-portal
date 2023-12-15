@@ -104,9 +104,23 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
       });
   }
 
+  sendInteractDataToTelemetry(uniqueId) {
+    const data = {
+      context: {
+        env: 'Dev - Collabgeo interact',
+        cdata: []
+      },
+      edata: {
+        id: uniqueId,
+        type: 'collabgeo click interact',
+        pageid: this.router.url.split('?')[0],
+        subtype: 'Dev - Collabgeo interact'
+      }
+    };
+    this.telemetryService.interact(data);
+  }
+
   openWebview() {
-    
-    this.setTelemetryData();
 
     var generateUniqueId = '';
     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ-abcdefghijklmnopqrstuvwxyz0123456789';
@@ -114,21 +128,9 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
     for ( var i = 0; i < 20; i++ ) {
       generateUniqueId += characters.charAt(Math.floor(Math.random() * charactersLength));
    }
-
-    const event = {
-      context: {
-        env: 'CollabGeo logs env'
-      },
-      edata: {
-        type: 'CollabGeo_Click',
-        level: generateUniqueId,
-        message: 'Collabgeo logs recieving',
-        pageid: this.router.url.split('?')[0]
-      }
-    };
-
-    this.telemetryService.log(event);
     
+   this.sendInteractDataToTelemetry(generateUniqueId)
+   
     let siteUrl = 'https://collabgeo.nic.in/collabGeo';
     localStorage.setItem('siteUrl',siteUrl);
 
