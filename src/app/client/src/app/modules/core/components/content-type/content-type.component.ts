@@ -6,7 +6,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TelemetryService } from '@sunbird/telemetry';
-import { environment } from '@sunbird/environment';
 
 
 @Component({
@@ -161,7 +160,9 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   }
   makeFormChange() {
     const index = this.contentTypes.findIndex(cty => cty.contentType === 'observation');
-    if (this.userType != 'administrator' || !(environment.sunbirdMlConfigured)) {
+    const isMlConfigured = (<HTMLInputElement>document.getElementById('isMlConfigured'))
+    ? (<HTMLInputElement>document.getElementById('isMlConfigured')).value == 'true' : false;
+    if (this.userType != 'administrator' || !(isMlConfigured)) {
       this.contentTypes[index].isEnabled = false;
     } else {
       this.contentTypes[index].isEnabled = true;
