@@ -8,6 +8,4 @@ export const environment = {
   production: false,
   enableTelemetryValidation: true,
   isDesktopApp: false,
-  sunbirdMlConfigured: false,
-  sunbirdUciConfigured: true
 };
