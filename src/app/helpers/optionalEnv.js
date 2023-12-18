@@ -191,7 +191,7 @@ let optionalEnvVariables = {
 
     // UCI / Chatbot
     // The env variable is used to set the config of chat bot.
-    sunbird_bot_configured: env.sunbird_bot_configured,
+    sunbird_bot_configured: env.sunbird_bot_configured || true,
     sunbird_bot_service_URL: env.sunbird_bot_service_URL,
     sunbird_portal_uci_bot_phone_number: env.sunbird_portal_uci_bot_phone_number || '',
     uci_service_base_url: env.uci_service_base_url || "http://kong:8000",
@@ -204,6 +204,7 @@ let optionalEnvVariables = {
     ML_SERVICE_BASE_URL: env.ml_survey_url || 'https://survey.preprod.ntp.net.in/staging',
     REPORT_SERVICE_URL: env.sunbird_report_service_url || SB_DOMAIN + '/api/data/v1/report-service',
     reportsListVersion: env.reportsListVersion || 'v1',
+    sunbird_ml_configured: false,
 
     // Desktop Application
     // Desktop OAuth  Config
@@ -296,4 +297,8 @@ let optionalEnvVariables = {
     sunbird_portal_preview_cdn_url: env.sunbird_portal_preview_cdn_url,
     sunbird_portal_cdn_blob_url: env.sunbird_portal_cdn_blob_url || '',
 }
+const isMLConfigured = Boolean(optionalEnvVariables.ML_URL && optionalEnvVariables.ML_SERVICE_BASE_URL && optionalEnvVariables.REPORT_SERVICE_URL);
+optionalEnvVariables.sunbird_ml_configured = isMLConfigured;
+const isBotConfigured =Boolean(optionalEnvVariables.sunbird_bot_service_URL && optionalEnvVariables.sunbird_portal_uci_bot_phone_number && optionalEnvVariables.uci_service_base_url);
+optionalEnvVariables.sunbird_bot_configured = isBotConfigured;
 module.exports = optionalEnvVariables;
