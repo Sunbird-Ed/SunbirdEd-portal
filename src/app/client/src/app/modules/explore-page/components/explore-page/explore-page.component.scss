@@ -108,3 +108,7 @@
     z-index: 1;
   }
 }
+
+::ng-deep sb-library-cards-grid .layout-library .header .title{
+	font-weight: bold !important;
+}

@@ -77,7 +77,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     selectedFacet: { facet: any; value: any; };
     showEdit = false;
     isFilterEnabled = true;
-    defaultTab = 'Textbook';
+    defaultTab = 'Home';
     userProfile: any;
     targetedCategory: any = [];
     subscription: any;
@@ -151,7 +151,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     private _addFiltersInTheQueryParams(updatedFilters = {}) {
         this.getCurrentPageData();
         const params = _.get(this.activatedRoute, 'snapshot.queryParams');
-        const queryParams = { ...this.defaultFilters, selectedTab: _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook', ...updatedFilters, ...params };
+        const queryParams = { ...this.defaultFilters, selectedTab: _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'home', ...updatedFilters, ...params };
         this.router.navigate([], { queryParams, relativeTo: this.activatedRoute });
     }
 
@@ -347,7 +347,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public getCurrentPageData() {
-        return this.getPageData(get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook');
+        return this.getPageData(get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'home');
     }
 
     public getFilters({ filters, status }) {
@@ -646,6 +646,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         return {
             isEnabled: Boolean(_.get(section, 'isEnabled')),
             searchRequest: _.get(section, 'apiConfig.req'),
+            pageTitle:section.title,
             title: get(this.resourceService, section.title) || section.defaultTitle
         };
     }

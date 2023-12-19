@@ -129,7 +129,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     } else if (url.indexOf('explore-groups') >= 0) {
       this.selectedContentType = null;
     } else if (url.indexOf('resources') >= 0 || url.indexOf('explore') >= 0) {
-      this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : 'textbook';
+      this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : 'home';
     } else if (url.indexOf('mydownloads') >= 0) {
       this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : 'mydownloads';
     } else if (url.indexOf('observation') >= 0) {
@@ -182,7 +182,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   processFormData(formData) {
     this.contentTypes = _.sortBy(formData, 'index');
     const defaultTab = _.find(this.contentTypes, ['default', true]);
-    this.selectedContentType = this.activatedRoute.snapshot.queryParams.selectedTab || _.get(defaultTab, 'contentType') || 'textbook';
+    this.selectedContentType = this.activatedRoute.snapshot.queryParams.selectedTab || _.get(defaultTab, 'contentType') || 'home';
   }
 
   getTitle(contentType) {
