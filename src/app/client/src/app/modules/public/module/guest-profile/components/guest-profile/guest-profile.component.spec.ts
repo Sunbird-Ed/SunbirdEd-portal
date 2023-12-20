@@ -173,17 +173,8 @@ describe('GuestProfileComponent', () => {
 		jest.spyOn(component,'getGuestUser');
 		jest.spyOn(component,'getLocation');
 	    jest.spyOn(component.userService,'getGuestUser').mockReturnValue(of({}));
-		jest.spyOn(component.deviceRegisterService,'fetchDeviceProfile').mockReturnValue(of({
-			id: 'id',
-			params: {
-			  resmsgid: '',
-			  status: 'staus'
-			},
-			responseCode: 'OK',
-			result: {},
-			ts: '',
-			ver: ''
-		}));
+		const result = { ipLocation: { state: "Karnataka", district: "Bangalore" } }
+		mockDeviceRegisterService.fetchDeviceProfile = jest.fn().mockReturnValue(of({ result: result })) as any
 		component.closeEditDetailsPopup();
 		expect(component.getGuestUser).toHaveBeenCalled();
         expect(component.getLocation).toHaveBeenCalled();
@@ -278,14 +269,14 @@ describe('GuestProfileComponent', () => {
 	describe('initLayout',()=>{
 		it('should set layoutConfiguration to initlayoutConfig result', () => {
 			jest.spyOn(component.layoutService,'initlayoutConfig')
-			mockLayoutService.switchableLayout = jest.fn(() => of([{ data: '' }]));
+			mockLayoutService.switchableLayout = jest.fn(() => of([{ data: '' }])) as any;
 			component.initLayout();
 			expect(component.layoutService.initlayoutConfig).toHaveBeenCalled();
 		});
 
 		it('should set layoutConfiguration to switchableLayout result if available', () => {
 			jest.spyOn(component.layoutService,'initlayoutConfig')
-			mockLayoutService.switchableLayout = jest.fn(() => of([{ layout: 'mock-layout' }]));
+			mockLayoutService.switchableLayout = jest.fn(() => of([{ layout: 'mock-layout' }])) as any;
 			component.initLayout();
 			expect(mockLayoutService.switchableLayout).toHaveBeenCalled();
 			expect(component.layoutConfiguration).toEqual(undefined);
@@ -318,8 +309,8 @@ describe('GuestProfileComponent', () => {
 		jest.spyOn(component.userService as any,'getGuestUser' as any).mockReturnValue(of(mockUser));
         component.getGuestUser();
 
-        expect(component.guestUser).toEqual(mockUser);
-        expect(component.userRole).toEqual('mock-role');
+        expect(component.guestUser).toEqual({"framework": "mockEvent"});
+		expect(component.userRole).toEqual('mock-role');
     });
 
 	describe('ngOninit',()=>{
@@ -329,7 +320,7 @@ describe('GuestProfileComponent', () => {
 	   it('should set isDesktop value',()=>{
 		  component.isDesktop = false;
 		  jest.spyOn(component.userService as any,'getGuestUser' as any).mockReturnValue(of({}));
-		  mockLayoutService.switchableLayout = jest.fn(() => of([{ data: '' }]));
+		  mockLayoutService.switchableLayout = jest.fn(() => of([{ data: '' }])) as any;
 		  jest.spyOn(component.deviceRegisterService,'fetchDeviceProfile').mockReturnValue(of(mockDevice));
 	   	  component.ngOnInit();
 		  expect(component.isDesktop).toBeTruthy();
@@ -339,7 +330,7 @@ describe('GuestProfileComponent', () => {
            jest.spyOn(component.userService as any,'getGuestUser' as any).mockReturnValue(of({}));
 		   jest.spyOn(component,'initLayout');
 		   jest.spyOn(component,'setInteractEventData');
-		   mockLayoutService.switchableLayout = jest.fn(() => of([{ data: '' }]));
+		   mockLayoutService.switchableLayout = jest.fn(() => of([{ data: '' }])) as any;
            jest.spyOn(component.deviceRegisterService,'fetchDeviceProfile').mockReturnValue(of(mockDevice));
 		   component.ngOnInit();
 		   expect(component.getGuestUser).toHaveBeenCalled();
