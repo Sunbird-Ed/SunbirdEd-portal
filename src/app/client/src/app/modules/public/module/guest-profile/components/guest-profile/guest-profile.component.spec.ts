@@ -34,7 +34,7 @@ describe('GuestProfileComponent', () => {
 	};
 	const mockLayoutService :Partial<LayoutService> ={
 		initlayoutConfig: jest.fn(() => 'mockInitialLayout'),
-		switchableLayout: jest.fn(() => of({ layout: 'mockLayout' })),
+		switchableLayout: jest.fn(),
 	};
 	const mockDeviceRegisterService :Partial<DeviceRegisterService> ={
 		fetchDeviceProfile: jest.fn(),
