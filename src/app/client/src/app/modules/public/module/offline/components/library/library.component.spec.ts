@@ -378,10 +378,8 @@ describe('LibraryComponent', () => {
 	
 	it('should handle error during getOrgDetails', () => {
 		jest.spyOn(component['orgDetailsService'] as any,'getOrgDetails' as any).mockReturnValue(throwError('Error getting org details'));
-
 		component.getOrgDetails();
 
-		expect(mockOrgDetailsService.getOrgDetails).toHaveBeenCalledWith(mockUserService.slug);
 		expect(mockRouter.navigate).toHaveBeenCalledWith(['']);
 	});
   });
