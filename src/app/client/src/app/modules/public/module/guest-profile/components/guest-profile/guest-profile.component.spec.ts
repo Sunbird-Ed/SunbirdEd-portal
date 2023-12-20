@@ -278,14 +278,14 @@ describe('GuestProfileComponent', () => {
 	describe('initLayout',()=>{
 		it('should set layoutConfiguration to initlayoutConfig result', () => {
 			jest.spyOn(component.layoutService,'initlayoutConfig')
-			jest.spyOn(component.layoutService,'switchableLayout').mockReturnValue(of([]));
+			mockLayoutService.switchableLayout = jest.fn(() => of([{ data: '' }]));
 			component.initLayout();
 			expect(component.layoutService.initlayoutConfig).toHaveBeenCalled();
 		});
 
 		it('should set layoutConfiguration to switchableLayout result if available', () => {
 			jest.spyOn(component.layoutService,'initlayoutConfig')
-			jest.spyOn(component.layoutService,'switchableLayout').mockReturnValue(of({layout: 'mockLayout'}));
+			mockLayoutService.switchableLayout = jest.fn(() => of([{ layout: 'mock-layout' }]));
 			component.initLayout();
 			expect(mockLayoutService.switchableLayout).toHaveBeenCalled();
 			expect(component.layoutConfiguration).toEqual(undefined);
@@ -329,7 +329,7 @@ describe('GuestProfileComponent', () => {
 	   it('should set isDesktop value',()=>{
 		  component.isDesktop = false;
 		  jest.spyOn(component.userService as any,'getGuestUser' as any).mockReturnValue(of({}));
-		  jest.spyOn(component.layoutService,'switchableLayout').mockReturnValue(of([]));
+		  mockLayoutService.switchableLayout = jest.fn(() => of([{ data: '' }]));
 		  jest.spyOn(component.deviceRegisterService,'fetchDeviceProfile').mockReturnValue(of(mockDevice));
 	   	  component.ngOnInit();
 		  expect(component.isDesktop).toBeTruthy();
@@ -339,7 +339,7 @@ describe('GuestProfileComponent', () => {
            jest.spyOn(component.userService as any,'getGuestUser' as any).mockReturnValue(of({}));
 		   jest.spyOn(component,'initLayout');
 		   jest.spyOn(component,'setInteractEventData');
-		   jest.spyOn(component.layoutService,'switchableLayout').mockReturnValue(of([]));
+		   mockLayoutService.switchableLayout = jest.fn(() => of([{ data: '' }]));
            jest.spyOn(component.deviceRegisterService,'fetchDeviceProfile').mockReturnValue(of(mockDevice));
 		   component.ngOnInit();
 		   expect(component.getGuestUser).toHaveBeenCalled();
