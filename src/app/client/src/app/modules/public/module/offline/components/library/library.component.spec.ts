@@ -377,6 +377,7 @@ describe('LibraryComponent', () => {
 	});
 	
 	it('should handle error during getOrgDetails', () => {
+		jest.spyOn(mockRouter,'navigate');
 		jest.spyOn(component['orgDetailsService'] as any,'getOrgDetails' as any).mockReturnValue(throwError('Error getting org details'));
 		component.getOrgDetails();
 
