@@ -3,7 +3,7 @@ import { DeviceRegisterService,UserService } from '@sunbird/core';
 import { ResourceService,UtilService,NavigationHelperService,ToasterService,ConfigService } from '@sunbird/shared';
 import { IInteractEventEdata,IImpressionEventInput } from '@sunbird/telemetry';
 import { _ } from 'lodash-es';
-import { Subject, of, throwError } from 'rxjs';
+import { Subject, of, throwError,of as observableOf, Observable, } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LayoutService } from '../../../../../shared/services/layoutconfig/layout.service';
 import { ActivatedRoute,Router } from '@angular/router';
