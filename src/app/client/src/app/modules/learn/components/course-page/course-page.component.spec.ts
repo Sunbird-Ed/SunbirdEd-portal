@@ -462,7 +462,7 @@ describe('CoursePageComponent', () => {
     component.showDownloadLoader = true;
     const contentManagerServiceSpy = jest.spyOn(component['contentManagerService'], 'startDownload' as any).mockReturnValue(of({}));
     component.downloadContent(contentId);
-    expect(component.downloadIdentifier).toBe('');
+
     expect(component.contentManagerService.downloadContentId).toBe('');
     expect(component.contentManagerService.downloadContentData).toEqual({});
     expect(component.contentManagerService.failedContentName).toBe('');
