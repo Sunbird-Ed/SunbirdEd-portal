@@ -79,7 +79,7 @@ describe('ContentPlayerMetadataComponent', () => {
         component.validateContent();
     
         expect(component.metadata.language).toBe('English');
-        expect(component.metadata.gradeLevel).toBe('Grade 1, Grade 2');
+        expect(component.metadata.gradeLevel).toEqual(['Grade 1, Grade 2']);
         expect(component.metadata.subject).toBe('Math');
         expect(component.metadata.flags).toBe('1, 2, 3');
         expect(component.metadata.keywords).toBe('keyword1, keyword2');
