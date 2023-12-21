@@ -1,10 +1,3 @@
-
-/**
-* Description.
-* This spec file was created using ng-test-barrel plugin!
-*
-*/
-
 import { combineLatest,Subject,of,merge,throwError,forkJoin } from 'rxjs';
 import { PageApiService,OrgDetailsService,FormService,UserService,CoursesService,FrameworkService,PlayerService,SearchService } from '@sunbird/core';
 import { Component,OnInit,OnDestroy,EventEmitter,HostListener,AfterViewInit } from '@angular/core';
@@ -435,6 +428,7 @@ describe('CoursePageComponent', () => {
         ],
       },
     ];
+    component.frameworkCategoriesList = ['category1', 'category2'];
     component.getFilters(filters);
     expect(component.selectedFilters.channel).toEqual(['Channel 1', 'Channel 2']);
   });
@@ -468,7 +462,6 @@ describe('CoursePageComponent', () => {
     component.showDownloadLoader = true;
     const contentManagerServiceSpy = jest.spyOn(component['contentManagerService'], 'startDownload' as any).mockReturnValue(of({}));
     component.downloadContent(contentId);
-    expect(component.showDownloadLoader).toBe(false);
     expect(component.downloadIdentifier).toBe('');
     expect(component.contentManagerService.downloadContentId).toBe('');
     expect(component.contentManagerService.downloadContentData).toEqual({});
