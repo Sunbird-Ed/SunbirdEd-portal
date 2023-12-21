@@ -62,7 +62,6 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   frameworkCategories;
   globalFilterCategories;
   categoryKeys: any[];
-  public frameworkCategoriesList;
 
   constructor(public searchService: SearchService, public router: Router,
     public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
@@ -73,7 +72,6 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     public navigationhelperService: NavigationHelperService, public layoutService: LayoutService, private schemaService: SchemaService,
     public contentManagerService: ContentManagerService, public telemetryService: TelemetryService,
     private offlineCardService: OfflineCardService, public cslFrameworkService: CslFrameworkService) {
-    this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
     this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
     this.filterType = this.configService.appConfig.home.filterType;
     // this.redirectUrl = this.configService.appConfig.courses.searchPageredirectUrl;
