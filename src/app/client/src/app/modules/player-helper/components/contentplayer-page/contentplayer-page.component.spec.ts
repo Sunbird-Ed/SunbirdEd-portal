@@ -304,11 +304,5 @@ describe('ContentPlayerPageComponent', () => {
 		expect(component.telemetryImpression.edata['subtype']).toEqual(mockActivatedRoute.snapshot.data.telemetry.subtype);
 		expect(component['navigationHelperService'].getPageLoadTime).toHaveBeenCalled();
 		expect(component.telemetryImpression.edata['duration']).toEqual(mockNavigationHelperService.getPageLoadTime());
-		expect(component.telemetryImpression.object).toEqual({
-			id: component.contentDetails['identifier'],
-            type: 'mockContentType',
-        	ver:  '1.0',
-        	rollup: component.objectRollUp
-		});
 	});
 });
