@@ -2404,10 +2404,10 @@
   dependencies:
     ally.js "1.4.1"
 
-"@project-sunbird/sunbird-questionset-editor@7.0.2":
-  version "7.0.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-questionset-editor/-/sunbird-questionset-editor-7.0.2.tgz#85901999cb096b5718a144218b8dbf0c45e31383"
-  integrity sha512-K1cnjBjN5f9NZVTuHZs63zyFrzsy6ZdSQaHiAk8VmLX0Jki68W1ccDOvsrmiCxGqv/Pe41y0KQnznnwcme+o8w==
+"@project-sunbird/sunbird-questionset-editor@7.0.3":
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-questionset-editor/-/sunbird-questionset-editor-7.0.3.tgz#d792908fb38713988085fc16d48d1b3b8479a603"
+  integrity sha512-SamQhP+KIWnTBRE1rejahKVH/440Y+fdVVTKoY4heytpbwM+LeswwOkSkIFsPLrjuNgCcJT990jUwhyQfSICDw==
   dependencies:
     tslib "^2.0.0"
 
@@ -2419,18 +2419,18 @@
     "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
     tslib "^2.2.0"
 
-"@project-sunbird/sunbird-quml-player@7.0.1":
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player/-/sunbird-quml-player-7.0.1.tgz#26522ce5920b79c73997789d23e08928dd6ca6df"
-  integrity sha512-9nx81Pei10JaERfp/5aSJCsaKfzoOiPT6QIBZFK/1WlExD8egIycc2F0FYsDi0VGwPp6gM2Y6SVcCOiFiHJ2og==
+"@project-sunbird/sunbird-quml-player@7.0.2":
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player/-/sunbird-quml-player-7.0.2.tgz#b8e91dc1deb17ed71bdba6866066d089b8ab9515"
+  integrity sha512-mjnVY1DySBCGtm59IqPVkaTWpG0qXHIXNI8O2PAXhdPVjyUQVe4pnCjm8WyU20f0j1nDmQkL+Rn3m4aVQbHm8g==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "6.0.0"
     tslib "^2.3.0"
 
-"@project-sunbird/sunbird-resource-library@7.0.1":
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-resource-library/-/sunbird-resource-library-7.0.1.tgz#69875d95aaafca9d0bd2522299253eaadd501a36"
-  integrity sha512-YF78pQH9eFMPdKXONqwT5VB8Q6OD4LTyoJBPsX8TuPPhjJrYfhK5gylGuBdX5DLLUKAPdM/+D9Z/pOJoNvnftQ==
+"@project-sunbird/sunbird-resource-library@7.0.2":
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-resource-library/-/sunbird-resource-library-7.0.2.tgz#8adc97622ed9a568cee3c5e9f5b2b8da2035094b"
+  integrity sha512-BTHJQCLWL93GKU1oK9Qb/dcqFOkDh1oJEzNlp/XtmUSXmq0v5rfBHAFf3PRWHokehv+StbOQBKqYEAZmy4JmyA==
   dependencies:
     tslib "^2.0.0"
 
