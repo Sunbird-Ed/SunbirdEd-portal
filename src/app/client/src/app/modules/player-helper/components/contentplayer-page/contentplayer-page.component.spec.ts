@@ -299,6 +299,18 @@ describe('ContentPlayerPageComponent', () => {
 	it('should call setTelemetryData method',()=>{
 		component.tocPage = false;
 		component.contentDetails = {contentType: 'mockContent', identifier: 'mock-identifier', pkgVersion: '1.0'};
+		component.telemetryImpression={
+			context: {
+				env: 'mock-env',
+			},
+			edata:{
+			type: 'mock-type',
+  			pageid: 'mock-page-id',
+ 		    uri: 'mock-url',
+			subtype: 'mock-subtype',
+			duration: 1,
+		  }
+		}
 		component.setTelemetryData();
         
 		expect(component.telemetryImpression.edata['subtype']).toEqual(mockActivatedRoute.snapshot.data.telemetry.subtype);
