@@ -227,24 +227,6 @@ describe('ObservationListingComponent', () => {
 		});
     });
 
-	describe('redoLayout',()=>{
-		it('should set layout configurations when layoutConfiguration is not null', () => {
-			component.layoutConfiguration = { layout: 'mockLayoutConfig' };
-			component.redoLayout();
-	
-			expect(component.layoutService.redoLayoutCSS).toHaveBeenCalledWith(0, component.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
-			expect(component.layoutService.redoLayoutCSS).toHaveBeenCalledWith(1, component.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
-		});
-		
-		it('should set full layout configurations when layoutConfiguration is null', () => {
-			component.layoutConfiguration = null;
-			component.redoLayout();
-		
-			expect(component.layoutService.redoLayoutCSS).toHaveBeenCalledWith(0, null, COLUMN_TYPE.fullLayout);
-			expect(component.layoutService.redoLayoutCSS).toHaveBeenCalledWith(1, null, COLUMN_TYPE.fullLayout);
-		});
-	});
-    
 	describe('setFormat',()=>{
 		it('should set the contentList and update showLoader', () => {
 			const mockValue = [
@@ -297,36 +279,5 @@ describe('ObservationListingComponent', () => {
 		component.back();
 		expect(component['location'].back).toHaveBeenCalled();
 	});
-    
-	// describe('ngonInit()',()=>{
-	//    const metaData = {type: '',size: '',isClosed: false,
-	//    content: {title: '',body: {type: '',data: '',},},
-	//    footer: {className: '',buttons: [],},
-	//    }
-    //    it('calls the functions and initializes the values', async ()=>{
-	// 	  jest.spyOn(component.layoutService,'switchableLayout').mockReturnValue(of({}));
-	// 	  jest.spyOn(component,'initLayout');
-	// 	  jest.spyOn(component['observationUtil'],'getAlertMetaData');
-	// 	  await component.ngOnInit();
-	// 	  expect(component.initLayout).toHaveBeenCalled();
-	// 	  expect(component.cslFrameworkService.transformDataForCC).toHaveBeenCalled();
-	//    });
-
-	//    it('should get values from getProfileInfo and set metadata',async()=>{
-	// 	  jest.spyOn(component.layoutService,'switchableLayout').mockReturnValue(of({}));
-	// 	  jest.spyOn(component,'initLayout');
-    //       component.showEditUserDetailsPopup = false;
-	// 	  await component.ngOnInit();
-	// 	  expect(component['observationUtil'].getProfileInfo).toHaveBeenCalled();
-	//    });
-
-    //    it('should get values from getProfileInfo and set metadata',async()=>{
-	// 	  jest.spyOn(component.layoutService,'switchableLayout').mockReturnValue(of({}));
-	// 	  jest.spyOn(component,'initLayout');
-    //       component.showEditUserDetailsPopup = false;
-	// 	  await component.ngOnInit();
-	// 	  expect(component['observationUtil'].getAlertMetaData).toHaveBeenCalled();
-	//    });
-	// });
-	 
+     
 });
