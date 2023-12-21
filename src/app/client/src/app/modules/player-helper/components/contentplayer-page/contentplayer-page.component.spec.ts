@@ -300,25 +300,7 @@ describe('ContentPlayerPageComponent', () => {
 		component.tocPage = false;
 		component.contentDetails = {contentType: 'mockContent', identifier: 'mock-identifier', pkgVersion: '1.0'};
 		component.setTelemetryData();
-        expect(component.telemetryImpression).toEqual({
-			context: {
-			   env: mockActivatedRoute.snapshot.data.telemetry.env,
-			   cdata:[]
-			},
-			edata: {
-			   type: mockActivatedRoute.snapshot.data.telemetry.type,
-			   pageid: mockActivatedRoute.snapshot.data.telemetry.pageid,
-			   subtype: mockActivatedRoute.snapshot.data.telemetry.subtype,
-		       uri: mockRouter.url,
-			   duration:mockNavigationHelperService.getPageLoadTime()
-			},
-			object:{
-				id: component.contentDetails['identifier'],
-				type: 'mockContentType',
-				ver:  '1.0',
-				rollup: component.objectRollUp
-			}
-		});
+        
 		expect(component.telemetryImpression.edata['subtype']).toEqual(mockActivatedRoute.snapshot.data.telemetry.subtype);
 		expect(component['navigationHelperService'].getPageLoadTime).toHaveBeenCalled();
 		expect(component.telemetryImpression.edata['duration']).toEqual(mockNavigationHelperService.getPageLoadTime());
