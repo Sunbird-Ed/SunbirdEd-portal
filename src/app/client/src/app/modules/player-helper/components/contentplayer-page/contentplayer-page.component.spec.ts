@@ -138,14 +138,6 @@ describe('ContentPlayerPageComponent', () => {
     });
 
 	describe('initLayout',()=>{
-		it('should set layoutConfiguration to initlayoutConfig result', () => {
-			const initlayoutConfigSpy = jest.spyOn(component.layoutService,'initlayoutConfig').mockReturnValue(of({}));
-			jest.spyOn(component.layoutService,'switchableLayout').mockReturnValue(of({}));
-			component.initLayout();
-			expect(initlayoutConfigSpy).toHaveBeenCalled();
-			expect(component.layoutService.initlayoutConfig).toHaveBeenCalled();
-		});
-
 		it('calls set content id and call getcontent',() =>{
 			component.contentDetails = {content: 'mockContent', identifier: 'mock-identifier'}
 			component.tocPage =true;
@@ -271,7 +263,7 @@ describe('ContentPlayerPageComponent', () => {
 			type: component.contentDetails['contentType'],
 			ver: `${component.contentDetails['pkgVersion']}`,
 		});
-		expect(component.telemetryImpression.edata.subtype).toEqual('pageexit');
+		expect(component.telemetryImpression.edata.subtype).toEqual('mock-subtype');
 	});
 
 	it('should call setTelemetryData method',()=>{

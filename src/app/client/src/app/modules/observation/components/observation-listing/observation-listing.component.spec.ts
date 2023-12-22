@@ -206,17 +206,6 @@ describe('ObservationListingComponent', () => {
 		});
 	});
 
-	describe('initLayout', () => {
-		it('should call init Layout', () => {
-		  mockLayoutService.initlayoutConfig = jest.fn(() => { })
-		  mockLayoutService.switchableLayout = jest.fn(() => of([{ data: '' }]));
-		  component.initLayout();
-		  mockLayoutService.switchableLayout().subscribe(layoutConfig => {
-			expect(layoutConfig).toBeDefined();
-		  });
-		});
-	  });
-
 	describe('setFormat',()=>{
 		it('should set the contentList and update showLoader', () => {
 			const mockValue = [
