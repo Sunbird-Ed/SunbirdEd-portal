@@ -27,7 +27,8 @@ describe('ProfileFrameworkPopupComponent', () => {
         getServerTimeDiff: '',
         userProfile: Response.userProfile,
         setUserFramework: jest.fn(),
-        createGuestUser: jest.fn()
+        createGuestUser: jest.fn(),
+        hashTagId: 'mockedHashTagId',
     };
     const frameworkService: Partial<FrameworkService> = {};
     const formService: Partial<FormService> = {
@@ -52,7 +53,7 @@ describe('ProfileFrameworkPopupComponent', () => {
         error: jest.fn()
     };
     const channelService: Partial<ChannelService> = {
-        getFrameWork:jest.fn()
+        getFrameWork: jest.fn(),
     };
     const orgDetailsService: Partial<OrgDetailsService> = {
         getOrgDetails: jest.fn(),
@@ -363,8 +364,7 @@ describe('ProfileFrameworkPopupComponent', () => {
 
         component.selectedOption = selectedOptionMock;
         component['custOrgFrameworks'] = custOrgFrameworksMock;
-        jest.spyOn(component['channelService'], 'getFrameWork').mockReturnValue(of({})as any);
-        jest.spyOn(component, 'getCustodianOrgData' as any).mockReturnValue(of({}));
+        jest.spyOn(component['channelService'], 'getFrameWork').mockReturnValue(of({}) as any);
         await component['getFormOptionsForCustodianOrgForGuestUser']().toPromise();
 
         expect(spyOnGet).toHaveBeenCalledWith(selectedOptionMock, `${component.frameworkCategories.fwCategory1.code}[0]`);
@@ -429,17 +429,14 @@ describe('ProfileFrameworkPopupComponent', () => {
 
     it('should return custodian organization data', async () => {
         jest.spyOn(channelService, 'getFrameWork').mockReturnValue(of({} as any));
-        component['userService'] = { hashTagId: 'mockedHashTagId' } as any;
-        const getCustodianOrgDataSpy = jest.spyOn(component, 'getCustodianOrgData' as any);
         const result = await component['getCustodianOrgData']().toPromise();
         expect(result).toEqual({
-        range: [],
-        label: component.frameworkCategories?.fwCategory1?.label,
-        code: component.frameworkCategories?.fwCategory1?.code,
-        index: 1
+            range: [],
+            label: component.frameworkCategories?.fwCategory1?.label,
+            code: component.frameworkCategories?.fwCategory1?.code,
+            index: 1,
         });
-        expect(component['channelService'].getFrameWork).toHaveBeenCalledWith(component['userService'].hashTagId);
-        expect(getCustodianOrgDataSpy).toHaveBeenCalled();
+        expect(channelService.getFrameWork).toHaveBeenCalledWith('mockedHashTagId');
     });
 
 });
