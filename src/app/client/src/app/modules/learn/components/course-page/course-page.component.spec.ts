@@ -393,8 +393,6 @@ describe('CoursePageComponent', () => {
       },
     ]);
   });
-
-	describe('ngOnInit', () => {
 	
 	it('should transform filters with channel data correctly', () => {
     const filters = {
