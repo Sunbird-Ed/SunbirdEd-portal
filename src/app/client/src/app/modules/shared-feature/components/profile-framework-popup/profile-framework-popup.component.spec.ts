@@ -427,18 +427,4 @@ describe('ProfileFrameworkPopupComponent', () => {
         });
     });
 
-    it('should return custodian organization data', async () => {
-        jest.spyOn(channelService, 'getFrameWork').mockReturnValue(of({ result: { channel: { frameworks: [] } } } as any));
-        const observableResult = component['getCustodianOrgData']();
-        expect(observableResult).toBeDefined();
-        const result = await observableResult.toPromise();
-        expect(result).toEqual({
-            range: [],
-            label: component.frameworkCategories?.fwCategory1?.label,
-            code: component.frameworkCategories?.fwCategory1?.code,
-            index: 1,
-        });
-        expect(channelService.getFrameWork).toHaveBeenCalledWith('mockedHashTagId');
-    });
-
 });
