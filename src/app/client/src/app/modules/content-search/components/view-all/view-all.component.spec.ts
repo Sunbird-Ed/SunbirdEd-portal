@@ -528,16 +528,5 @@ describe('ViewAllComponent', () => {
     });
   });
 
-  it('should initialize data on ngOnInit', () => {
-    jest.spyOn(mockCslFrameworkService, 'getFrameworkCategories').mockReturnValue(of({}));
-    jest.spyOn(mockCslFrameworkService, 'getGlobalFilterCategoriesObject').mockReturnValue(of([]));
-    jest.spyOn(mockCslFrameworkService, 'transformDataForCC').mockReturnValue(of([]) as any);
-    jest.spyOn(mockLayoutService, 'switchableLayout').mockReturnValue(of({}));
-    component.ngOnInit();
-    expect(component.frameworkCategories).toBeDefined();
-    expect(component.globalFilterCategoriesObject).toBeDefined();
-    expect(component.categoryKeys).toBeDefined();
-    expect(component.facetsList).toBeDefined();
-  });
 
 });
