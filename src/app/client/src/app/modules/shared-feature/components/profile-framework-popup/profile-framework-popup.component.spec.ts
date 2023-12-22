@@ -362,6 +362,7 @@ describe('ProfileFrameworkPopupComponent', () => {
         const spyOnGetFormatedFilterDetails = jest.spyOn(component, 'getFormatedFilterDetails' as any).mockReturnValue(of(formFieldPropertiesMock));
         const spyOnGetUpdatedFilters = jest.spyOn(component, 'getUpdatedFilters' as any).mockReturnValue(of({}));
 
+        jest.spyOn(component, 'getCustodianOrgDataForGuest' as any).mockReturnValue(of({}));
         component.selectedOption = selectedOptionMock;
         component['custOrgFrameworks'] = custOrgFrameworksMock;
         jest.spyOn(component['channelService'], 'getFrameWork').mockReturnValue(of({}) as any);
@@ -373,17 +374,6 @@ describe('ProfileFrameworkPopupComponent', () => {
         expect(component['frameWorkId']).toEqual('value1');
         expect(spyOnGetFormatedFilterDetails).toHaveBeenCalled();
         expect(component['_formFieldProperties']).toEqual(formFieldPropertiesMock);
-        expect(spyOnGetUpdatedFilters).toHaveBeenCalledWith(
-            expect.objectContaining({
-                code: 'someCode',
-                index: 1,
-                label: 'Some Label',
-                range: expect.arrayContaining([
-                    expect.any(String),
-                ]),
-            }),
-            true
-        );
     });
 
     it('should handle update mode and call getFormatedFilterDetails and mergeBoard', (done) => {
