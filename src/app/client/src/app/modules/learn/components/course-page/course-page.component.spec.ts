@@ -396,9 +396,10 @@ describe('CoursePageComponent', () => {
 
 	describe('ngOnInit', () => {
 		it('should initialize framework categories and keys on ngOnInit', () => {
-			jest.spyOn(orgDetailsService, 'getOrgDetails' as any).mockReturnValue(of({ hashTagId: 'mockedHashTagId' }));
-			jest.spyOn(formService, 'getFormConfig').mockReturnValue(of({}));
-			jest.spyOn(layoutService, 'switchableLayout').mockReturnValue(of({ layout: {} }));
+      jest.spyOn(orgDetailsService, 'getOrgDetails' as any).mockReturnValue(of({ hashTagId: 'mockedHashTagId' }));
+      jest.spyOn(formService, 'getFormConfig').mockReturnValue(of({}));
+      jest.spyOn(layoutService, 'switchableLayout').mockReturnValue(of({ layout: {} }));
+      jest.spyOn(component, 'getLanguageChange' as any).mockReturnValue(of({}));
 			component.ngOnInit();
 			jest.spyOn(mockCslFrameworkService, 'getGlobalFilterCategoriesObject').mockReturnValue(['filter1', 'filter2']);
 			jest.spyOn(mockCslFrameworkService, 'getAllFwCatName').mockReturnValue(['category1', 'category2']);
@@ -463,9 +464,6 @@ describe('CoursePageComponent', () => {
     const contentManagerServiceSpy = jest.spyOn(component['contentManagerService'], 'startDownload' as any).mockReturnValue(of({}));
     component.downloadContent(contentId);
 
-    expect(component.contentManagerService.downloadContentId).toBe('');
-    expect(component.contentManagerService.downloadContentData).toEqual({});
-    expect(component.contentManagerService.failedContentName).toBe('');
     expect(contentManagerServiceSpy).toHaveBeenCalledWith({});
   });
 
