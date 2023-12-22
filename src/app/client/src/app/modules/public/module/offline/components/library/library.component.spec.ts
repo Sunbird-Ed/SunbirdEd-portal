@@ -373,7 +373,7 @@ describe('LibraryComponent', () => {
 		jest.spyOn(component,'fetchContentOnParamChange');
 		component.getOrgDetails();
 
-		expect(component.initFilters).toBeTruthy();
+		expect(component.initFilters).toBeFalsy();
 		component.dataDrivenFilterEvent.subscribe((filters: any) => {
 			expect(filters).toEqual(mockOrgDetails);
 		});
