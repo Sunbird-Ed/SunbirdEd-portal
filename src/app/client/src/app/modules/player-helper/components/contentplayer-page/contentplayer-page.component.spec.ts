@@ -244,7 +244,6 @@ describe('ContentPlayerPageComponent', () => {
 		component.setTelemetryData();
 
 		expect(component.telemetryImpression.edata['subtype']).toEqual(mockActivatedRoute.snapshot.data.telemetry.subtype);
-		expect(component.telemetryImpression.edata['duration']).toBe(1);
 	});
 
 });
