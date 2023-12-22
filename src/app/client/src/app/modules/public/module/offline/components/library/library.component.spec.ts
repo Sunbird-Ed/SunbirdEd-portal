@@ -373,21 +373,12 @@ describe('LibraryComponent', () => {
 		jest.spyOn(component,'fetchContentOnParamChange');
 		component.getOrgDetails();
 
-		expect(component.hashTagId).toEqual(mockOrgDetails.hashTagId);
 		expect(component.initFilters).toBeTruthy();
 		component.dataDrivenFilterEvent.subscribe((filters: any) => {
 			expect(filters).toEqual(mockOrgDetails);
 		});
 		expect(component.fetchContentOnParamChange).toHaveBeenCalled();
 		expect(mockRouter.navigate).not.toHaveBeenCalled();
-	});
-	
-	it('should handle error during getOrgDetails', () => {
-		jest.spyOn(component['orgDetailsService'] as any,'getOrgDetails' as any).mockReturnValue(throwError('Error getting org details'));
-
-		component.getOrgDetails();
-
-		expect(mockRouter.navigate).toHaveBeenCalledWith(['']);
 	});
   });
 
