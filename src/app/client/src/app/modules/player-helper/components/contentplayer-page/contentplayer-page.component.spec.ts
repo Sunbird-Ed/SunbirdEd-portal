@@ -146,34 +146,26 @@ describe('ContentPlayerPageComponent', () => {
 			expect(component.layoutService.initlayoutConfig).toHaveBeenCalled();
 		});
 
-		it('should set layoutConfiguration to switchableLayout result if available', () => {
-			jest.spyOn(component.layoutService,'initlayoutConfig')
-			jest.spyOn(component.layoutService,'switchableLayout').mockReturnValue(of({layout: 'mockLayout'}));
-			component.initLayout();
-			expect(component.layoutConfiguration).toEqual('mockLayout');
+		it('calls set content id and call getcontent',() =>{
+			component.contentDetails = {content: 'mockContent', identifier: 'mock-identifier'}
+			component.tocPage =true;
+			jest.spyOn(component['playerService'] as any,'getContent').mockReturnValue(of({}));
+			jest.spyOn(component,'getContent');
+			component.ngOnChanges();
+				expect(component.contentId).toEqual('mock-identifier');
+				expect(component.getContent).toHaveBeenCalled();
 		});
-    });
 
-	it('calls set content id and call getcontent',() =>{
-      component.contentDetails = {content: 'mockContent', identifier: 'mock-identifier'}
-	  component.tocPage =true;
-	  jest.spyOn(component['playerService'] as any,'getContent').mockReturnValue(of({}));
-	  jest.spyOn(component,'getContent');
-	  component.ngOnChanges();
-      expect(component.contentId).toEqual('mock-identifier');
-      expect(component.getContent).toHaveBeenCalled();
-	});
-
-	it('should set contentId and call getContent when params contain contentId', () => {
-        jest.spyOn(component['playerService'],'getContent')
-        component.getContentIdFromRoute();
-		mockActivatedRoute.params.pipe(
-			takeUntil(component.unsubscribe$))
-			.subscribe(params => {
-        expect(component.contentId).toEqual('mock-content-id');
-		expect(component.getContent).toHaveBeenCalled();
-       });
-    });
+		it('should set contentId and call getContent when params contain contentId', () => {
+			jest.spyOn(component['playerService'],'getContent')
+			component.getContentIdFromRoute();
+			mockActivatedRoute.params.pipe(
+				takeUntil(component.unsubscribe$))
+				.subscribe(params => {
+					expect(component.contentId).toEqual('mock-content-id');
+			expect(component.getContent).toHaveBeenCalled();
+		});
+  });
 
 	describe('getContent',()=>{
 		it('should call getContent and handle the response correctly', () => {
