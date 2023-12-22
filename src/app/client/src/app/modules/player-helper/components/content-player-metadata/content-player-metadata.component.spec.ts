@@ -82,12 +82,12 @@ describe('ContentPlayerMetadataComponent', () => {
         expect(component.metadata.gradeLevel).toContain('Grade 1');
         expect(component.metadata.gradeLevel).toContain('Grade 2');
         expect(component.metadata.subject).toBe('Math');
-        expect(component.metadata.flags).toBe('1, 2, 3');
+        expect(component.metadata.flags).toEqual([1, 2, 3]);
         expect(component.metadata.keywords).toBe('keyword1, keyword2');
-        expect(component.metadata.resourceTypes).toBe('Type1, Type2');
+        expect(component.metadata.resourceTypes).toEqual(['Type1', 'Type2']);
         expect(component.metadata.attributions).toBe('Attribution 1, Attribution 2');
         expect(component.metadata.primaryCategory).toBe('Category1');
-        expect(component.metadata.additionalCategories).toBe('Category2, Category3');
+        expect(component.metadata.additionalCategories).toBe(['Category2', 'Category3']);
         expect(component.metadata.invalidField).toBe('Invalid Field');
       });
     

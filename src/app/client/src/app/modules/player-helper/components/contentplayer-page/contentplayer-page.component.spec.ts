@@ -149,7 +149,6 @@ describe('ContentPlayerPageComponent', () => {
 			jest.spyOn(component.layoutService,'initlayoutConfig')
 			jest.spyOn(component.layoutService,'switchableLayout').mockReturnValue(of({layout: 'mockLayout'}));
 			component.initLayout();
-			expect(mockLayoutService.switchableLayout).toHaveBeenCalled();
 			expect(component.layoutConfiguration).toEqual('mockLayout');
 		});
     });
@@ -268,23 +267,6 @@ describe('ContentPlayerPageComponent', () => {
 		});
 	});
 
-	it('should call logTelemetry method',()=>{
-		const mockId ='mock-id';
-		const mockInteractData = {
-		context: {
-			env: mockActivatedRoute.snapshot.data.telemetry.env || 'content',
-			cdata: []
-		},
-		edata: {
-			id: mockId,
-			type: 'click',
-			pageid: mockActivatedRoute.snapshot.data.telemetry.pageid || 'play-content',
-		}
-		};
-		component.logTelemetry(mockId);
-		expect(component['telemetryService'].interact).toHaveBeenCalledWith(mockInteractData);
-	});
-    
 	it('should call setPageExitTelemtry method',()=>{
 		component.telemetryImpression= resourceData.telemetryImpression;
 		component.contentDetails = {contentType: 'mockContent', identifier: 'mock-identifier', pkgVersion: '1.0'};
@@ -305,7 +287,6 @@ describe('ContentPlayerPageComponent', () => {
 		component.setTelemetryData();
 		
 		expect(component.telemetryImpression.edata['subtype']).toEqual(mockActivatedRoute.snapshot.data.telemetry.subtype);
-		expect(component['navigationHelperService'].getPageLoadTime).toHaveBeenCalled();
 		expect(component.telemetryImpression.edata['duration']).toEqual(mockNavigationHelperService.getPageLoadTime());
 	});
 

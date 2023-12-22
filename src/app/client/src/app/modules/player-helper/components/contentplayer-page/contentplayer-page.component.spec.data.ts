@@ -303,8 +303,8 @@ export const resourceData = {
             env: 'mock-env',
         },
         object: {
-            id: '1',
-            type: 'mock-type',
+            id: 'mock-identifier',
+            type: 'mockContent',
             ver: '1.0',
         },
         edata:{
