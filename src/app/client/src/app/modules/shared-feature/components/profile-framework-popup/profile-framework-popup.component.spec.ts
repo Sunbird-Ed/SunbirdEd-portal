@@ -364,6 +364,7 @@ describe('ProfileFrameworkPopupComponent', () => {
         component.selectedOption = selectedOptionMock;
         component['custOrgFrameworks'] = custOrgFrameworksMock;
         jest.spyOn(component['channelService'], 'getFrameWork').mockReturnValue(of({})as any);
+        jest.spyOn(component, 'getCustodianOrgData' as any).mockReturnValue(of({}));
         await component['getFormOptionsForCustodianOrgForGuestUser']().toPromise();
 
         expect(spyOnGet).toHaveBeenCalledWith(selectedOptionMock, `${component.frameworkCategories.fwCategory1.code}[0]`);
