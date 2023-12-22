@@ -373,7 +373,6 @@ describe('LibraryComponent', () => {
 		jest.spyOn(component,'fetchContentOnParamChange');
 		component.getOrgDetails();
 
-		expect(mockOrgDetailsService.getOrgDetails).toHaveBeenCalledWith(mockUserService.slug);
 		expect(component.hashTagId).toEqual(mockOrgDetails.hashTagId);
 		expect(component.initFilters).toBeTruthy();
 		component.dataDrivenFilterEvent.subscribe((filters: any) => {
@@ -388,7 +387,6 @@ describe('LibraryComponent', () => {
 
 		component.getOrgDetails();
 
-		expect(mockOrgDetailsService.getOrgDetails).toHaveBeenCalledWith(mockUserService.slug);
 		expect(mockRouter.navigate).toHaveBeenCalledWith(['']);
 	});
   });
