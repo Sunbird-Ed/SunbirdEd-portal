@@ -164,8 +164,10 @@ describe('ContentPlayerPageComponent', () => {
 				.subscribe(params => {
 					expect(component.contentId).toEqual('mock-content-id');
 			expect(component.getContent).toHaveBeenCalled();
-		});
+			});
+  	});
   });
+
 
 	describe('getContent',()=>{
 		it('should call getContent and handle the response correctly', () => {
