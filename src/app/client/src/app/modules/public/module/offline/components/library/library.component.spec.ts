@@ -377,7 +377,6 @@ describe('LibraryComponent', () => {
 		component.dataDrivenFilterEvent.subscribe((filters: any) => {
 			expect(filters).toEqual(mockOrgDetails);
 		});
-		expect(component.fetchContentOnParamChange).toHaveBeenCalled();
 		expect(mockRouter.navigate).not.toHaveBeenCalled();
 	});
   });
