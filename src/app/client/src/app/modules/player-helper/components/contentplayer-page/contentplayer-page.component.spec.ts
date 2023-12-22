@@ -96,7 +96,7 @@ describe('ContentPlayerPageComponent', () => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
-            
+
     it('should create a instance of component', () => {
         expect(component).toBeTruthy();
     });
@@ -114,7 +114,7 @@ describe('ContentPlayerPageComponent', () => {
         const nextSpy = jest.spyOn(mockContentProgressEvents$, 'next');
 
         component.ngOnInit();
-        
+
 		expect(component.cslFrameworkService.getFrameworkCategoriesObject).toHaveBeenCalled;
         expect(component.cslFrameworkService.transformContentDataFwBased).toHaveBeenCalledWith(
             component.frameworkCategoriesList,
@@ -139,9 +139,10 @@ describe('ContentPlayerPageComponent', () => {
 
 	describe('initLayout',()=>{
 		it('should set layoutConfiguration to initlayoutConfig result', () => {
-			jest.spyOn(component.layoutService,'initlayoutConfig')
+			const initlayoutConfigSpy = jest.spyOn(component.layoutService,'initlayoutConfig').mockReturnValue(of({}));
 			jest.spyOn(component.layoutService,'switchableLayout').mockReturnValue(of({}));
 			component.initLayout();
+			expect(initlayoutConfigSpy).toHaveBeenCalled();
 			expect(component.layoutService.initlayoutConfig).toHaveBeenCalled();
 		});
 
@@ -184,7 +185,7 @@ describe('ContentPlayerPageComponent', () => {
 				params: mockConfigService.appConfig.PublicPlayer.contentApiQueryParams
 			});
 		});
-	    
+
 		it('should handle error response correctly', () => {
 			const mockResponse = resourceData.getContentResponse;
 			mockPlayerService.getContent = jest.fn().mockImplementation(() => throwError('mock-Error'));
@@ -192,17 +193,17 @@ describe('ContentPlayerPageComponent', () => {
 				next: jest.fn(),
 			} as any;
 			component.getContent();
-	
+
 			expect(component['playerService'].getContent).toHaveBeenCalledWith(component.contentId, {
 				params: mockConfigService.appConfig.PublicPlayer.contentApiQueryParams
 			});
-	
+
 			expect(component.contentDetails).toEqual({});
 			expect(component.isContentDeleted.next).toHaveBeenCalledWith({ value: true });
 	        expect(component.setTelemetryData).toHaveBeenCalled();
 		});
 	});
-    
+
 	it('should call checkContentDeleted method',()=>{
        const mockEvent = { event: 'mock-Event-name'};
 	   component.isContentDeleted = {
@@ -278,14 +279,14 @@ describe('ContentPlayerPageComponent', () => {
 		});
 		expect(component.telemetryImpression.edata.subtype).toEqual('pageexit');
 	});
-	
+
 	it('should call setTelemetryData method',()=>{
 		component.telemetryImpression= resourceData.telemetryImpression;
 		component.tocPage = false;
 		component.contentDetails = {contentType: 'mockContent', identifier: 'mock-identifier', pkgVersion: '1.0'};
-		
+
 		component.setTelemetryData();
-		
+
 		expect(component.telemetryImpression.edata['subtype']).toEqual(mockActivatedRoute.snapshot.data.telemetry.subtype);
 		expect(component.telemetryImpression.edata['duration']).toEqual(mockNavigationHelperService.getPageLoadTime());
 	});
