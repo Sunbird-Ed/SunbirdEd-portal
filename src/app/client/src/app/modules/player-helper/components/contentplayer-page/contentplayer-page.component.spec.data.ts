@@ -297,6 +297,23 @@ export const resourceData = {
                 }
             }
         }
-    }
+    },
+    telemetryImpression: {
+        context: {
+            env: 'mock-env',
+        },
+        object: {
+            id: '1',
+            type: 'mock-type',
+            ver: '1.0',
+        },
+        edata:{
+        type: 'mock-type',
+        pageid: 'mock-page-id',
+        uri: 'mock-url',
+        subtype: 'mock-subtype',
+        duration: 1,
+        }
+}
 };
 

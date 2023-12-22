@@ -17,7 +17,7 @@ describe('ContentPlayerPageComponent', () => {
 		snapshot: {
 			data: {
 			  telemetry: {
-				env: 'mock-env', pageid: 'mock-page-id', type: 'mock-type',subtype: 'mock-sub-type',uuid: '9545879'
+				env: 'mock-env', pageid: 'mock-page-id', type: 'mock-type',subtype: 'mock-subtype',uuid: '9545879'
 			  }
 			},
 			queryParams: {
@@ -284,37 +284,29 @@ describe('ContentPlayerPageComponent', () => {
 		component.logTelemetry(mockId);
 		expect(component['telemetryService'].interact).toHaveBeenCalledWith(mockInteractData);
 	});
-
+    
 	it('should call setPageExitTelemtry method',()=>{
+		component.telemetryImpression= resourceData.telemetryImpression;
 		component.contentDetails = {contentType: 'mockContent', identifier: 'mock-identifier', pkgVersion: '1.0'};
 		component.setPageExitTelemtry();
-        expect(component.telemetryImpression.object).toEqual({
+		expect(component.telemetryImpression.object).toEqual({
 			id: component.contentDetails['identifier'],
-            type: component.contentDetails['contentType'],
-            ver: `${component.contentDetails['pkgVersion']}`,
+			type: component.contentDetails['contentType'],
+			ver: `${component.contentDetails['pkgVersion']}`,
 		});
 		expect(component.telemetryImpression.edata.subtype).toEqual('pageexit');
 	});
 	
 	it('should call setTelemetryData method',()=>{
+		component.telemetryImpression= resourceData.telemetryImpression;
 		component.tocPage = false;
 		component.contentDetails = {contentType: 'mockContent', identifier: 'mock-identifier', pkgVersion: '1.0'};
-		component.telemetryImpression={
-			context: {
-				env: 'mock-env',
-			},
-			edata:{
-			type: 'mock-type',
-  			pageid: 'mock-page-id',
- 		    uri: 'mock-url',
-			subtype: 'mock-subtype',
-			duration: 1,
-		  }
-		}
+		
 		component.setTelemetryData();
-        
+		
 		expect(component.telemetryImpression.edata['subtype']).toEqual(mockActivatedRoute.snapshot.data.telemetry.subtype);
 		expect(component['navigationHelperService'].getPageLoadTime).toHaveBeenCalled();
 		expect(component.telemetryImpression.edata['duration']).toEqual(mockNavigationHelperService.getPageLoadTime());
 	});
+
 });
