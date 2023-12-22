@@ -208,7 +208,7 @@ describe('ObservationListingComponent', () => {
 
 	describe('initLayout',()=>{
 		it('should initialize layout configuration and call redoLayout', () => {
-			jest.spyOn(component.layoutService,'switchableLayout').mockReturnValue(of({}));
+			jest.spyOn(component.layoutService,'switchableLayout').mockReturnValue(of([{}]));
 			jest.spyOn(component,'redoLayout');
 			component.initLayout();
 		
@@ -219,7 +219,7 @@ describe('ObservationListingComponent', () => {
 
 		it('should handle switchableLayout observable with non-null layout configuration', () => {
 			const layoutConfig = { layout: 'mockLayoutConfig'};
-			jest.spyOn(component.layoutService,'switchableLayout').mockReturnValue(of({ layout: 'mockLayoutConfig' }));
+			jest.spyOn(component.layoutService,'switchableLayout').mockReturnValue(of([{layout: 'demo'}]));
 		    jest.spyOn(component,'redoLayout');
 			component.initLayout();
 		
