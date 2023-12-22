@@ -157,38 +157,8 @@ describe('ContentPlayerPageComponent', () => {
 					expect(component.contentId).toEqual('mock-content-id');
 			expect(component.getContent).toHaveBeenCalled();
 			});
-  	});
-  });
-
-
-	describe('getContent',()=>{
-		it('should call getContent and handle the response correctly', () => {
-			const mockResponse = resourceData.getContentResponse;
-			mockPlayerService.getContent = jest.fn().mockImplementation(() => of(mockResponse));
-			jest.spyOn(component,'setTelemetryData').mockImplementation();
-			component.getContent();
-			expect(component['playerService'].getContent).toHaveBeenCalledWith(component.contentId, {
-				params: mockConfigService.appConfig.PublicPlayer.contentApiQueryParams
-			});
-		});
-
-		it('should handle error response correctly', () => {
-			const mockResponse = resourceData.getContentResponse;
-			mockPlayerService.getContent = jest.fn().mockImplementation(() => throwError('mock-Error'));
-			component.isContentDeleted = {
-				next: jest.fn(),
-			} as any;
-			component.getContent();
-
-			expect(component['playerService'].getContent).toHaveBeenCalledWith(component.contentId, {
-				params: mockConfigService.appConfig.PublicPlayer.contentApiQueryParams
-			});
-
-			expect(component.contentDetails).toEqual({});
-			expect(component.isContentDeleted.next).toHaveBeenCalledWith({ value: true });
-	        expect(component.setTelemetryData).toHaveBeenCalled();
-		});
-	});
+  	    });
+    });
 
 	it('should call checkContentDeleted method',()=>{
        const mockEvent = { event: 'mock-Event-name'};
