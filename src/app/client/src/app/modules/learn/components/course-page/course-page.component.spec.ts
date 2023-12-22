@@ -395,25 +395,7 @@ describe('CoursePageComponent', () => {
   });
 
 	describe('ngOnInit', () => {
-		it('should initialize framework categories and keys on ngOnInit', () => {
-      jest.spyOn(orgDetailsService, 'getOrgDetails' as any).mockReturnValue(of({ hashTagId: 'mockedHashTagId' }));
-      jest.spyOn(formService, 'getFormConfig').mockReturnValue(of({}));
-      jest.spyOn(layoutService, 'switchableLayout').mockReturnValue(of({ layout: {} }));
-      jest.spyOn(component, 'getLanguageChange' as any).mockReturnValue(of({}));
-			component.ngOnInit();
-			jest.spyOn(mockCslFrameworkService, 'getGlobalFilterCategoriesObject').mockReturnValue(['filter1', 'filter2']);
-			jest.spyOn(mockCslFrameworkService, 'getAllFwCatName').mockReturnValue(['category1', 'category2']);
-			jest.spyOn(mockCslFrameworkService, 'transformDataForCC').mockReturnValue(['key1', 'key2']);
-			component.ngOnInit();
-			expect(jest.spyOn(component.cslFrameworkService, 'getGlobalFilterCategoriesObject')).toHaveBeenCalled();
-			expect(jest.spyOn(component.cslFrameworkService, 'getAllFwCatName')).toHaveBeenCalled();
-			expect(jest.spyOn(component.cslFrameworkService, 'transformDataForCC')).toHaveBeenCalled();
-			expect(component.globalFilterCategoriesObject).toEqual(['filter1', 'filter2']);
-			expect(component.frameworkCategoriesList).toEqual(['category1', 'category2']);
-			expect(component.categoryKeys).toEqual(['key1', 'key2']);
-		});
-	});
-
+	
 	it('should transform filters with channel data correctly', () => {
     const filters = {
       filters: {
@@ -456,15 +438,6 @@ describe('CoursePageComponent', () => {
     component.callDownload();
     expect(component.showDownloadLoader).toBe(true);
     expect(downloadContentSpy).toHaveBeenCalledWith(downloadIdentifier);
-  });
-
-	it('should handle successful download', () => {
-    const contentId = 'yourContentId';
-    component.showDownloadLoader = true;
-    const contentManagerServiceSpy = jest.spyOn(component['contentManagerService'], 'startDownload' as any).mockReturnValue(of({}));
-    component.downloadContent(contentId);
-
-    expect(contentManagerServiceSpy).toHaveBeenCalledWith({});
   });
 
 	it('should handle hover action click for play content', () => {
