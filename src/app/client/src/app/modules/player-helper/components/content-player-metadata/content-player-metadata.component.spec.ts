@@ -87,7 +87,7 @@ describe('ContentPlayerMetadataComponent', () => {
         expect(component.metadata.resourceTypes).toEqual(['Type1', 'Type2']);
         expect(component.metadata.attributions).toBe('Attribution 1, Attribution 2');
         expect(component.metadata.primaryCategory).toBe('Category1');
-        expect(component.metadata.additionalCategories).toBe(['Category2', 'Category3']);
+        expect(component.metadata.additionalCategories).toEqual(['Category2', 'Category3']);
         expect(component.metadata.invalidField).toBe('Invalid Field');
       });
     
