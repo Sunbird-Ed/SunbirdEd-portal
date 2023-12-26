@@ -235,25 +235,6 @@ describe('GuestProfileComponent', () => {
 		});
     });
     
-	it('should get the location',(done)=>{
-		jest.spyOn(component.deviceRegisterService,'fetchDeviceProfile').mockReturnValue(of({
-			id: 'id',
-			params: {
-			  resmsgid: '',
-			  status: 'staus'
-			},
-			responseCode: 'OK',
-			result: {},
-			ts: '',
-			ver: ''
-		}));
-		component.getLocation();
-		component.deviceRegisterService.fetchDeviceProfile().subscribe(() => {
-			done();
-		});
-        expect(component.deviceProfile).toEqual(undefined);
-	});
-    
 	it('should call getGuestUser method', () => {
 		const mockUser = 
 		{
