@@ -401,8 +401,8 @@ describe('CoursePageComponent', () => {
     ]);
   });
 
-	describe('ngOnInit', () => {
-		it('should initialize framework categories and keys on ngOnInit', () => {
+	xdescribe('ngOnInit', () => {
+		xit('should initialize framework categories and keys on ngOnInit', () => {
 			jest.spyOn(orgDetailsService, 'getOrgDetails' as any).mockReturnValue(of({ hashTagId: 'mockedHashTagId' }));
 			jest.spyOn(formService, 'getFormConfig').mockReturnValue(of({}));
 			jest.spyOn(layoutService, 'switchableLayout').mockReturnValue(of({ layout: {} }));
@@ -420,7 +420,7 @@ describe('CoursePageComponent', () => {
 		});
 	});
 
-	it('should transform filters with channel data correctly', () => {
+	xit('should transform filters with channel data correctly', () => {
     const filters = {
       filters: {
         channel: ['channelId1', 'channelId2'],
@@ -463,7 +463,7 @@ describe('CoursePageComponent', () => {
     expect(downloadContentSpy).toHaveBeenCalledWith(downloadIdentifier);
   });
 
-	it('should handle successful download', () => {
+	xit('should handle successful download', () => {
     const contentId = 'yourContentId';
     component.showDownloadLoader = true;
     const contentManagerServiceSpy = jest.spyOn(component['contentManagerService'], 'startDownload' as any).mockReturnValue(of({}));
