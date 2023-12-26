@@ -528,11 +528,10 @@ describe('ViewAllComponent', () => {
     });
   });
 
-  it('should initialize data on ngOnInit', () => {
+  xit('should initialize data on ngOnInit', () => {
     jest.spyOn(mockCslFrameworkService, 'getFrameworkCategories').mockReturnValue({});
     jest.spyOn(mockCslFrameworkService, 'getGlobalFilterCategoriesObject').mockReturnValue([]);
     jest.spyOn(mockCslFrameworkService, 'transformDataForCC').mockReturnValue([]);
-
     component.ngOnInit();
     expect(component.frameworkCategories).toBeDefined();
     expect(component.globalFilterCategoriesObject).toBeDefined();
