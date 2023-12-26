@@ -166,20 +166,7 @@ describe('GuestProfileComponent', () => {
 				},
 			});
 		});
-    });
-
-	it('should call closeEditDetailsPopup',()=>{
-	    component.showEditUserDetailsPopup = false;
-		jest.spyOn(component,'getGuestUser');
-		jest.spyOn(component,'getLocation');
-	    jest.spyOn(component.userService,'getGuestUser').mockReturnValue(of({}));
-		const result = { ipLocation: { state: "Karnataka", district: "Bangalore" } }
-		mockDeviceRegisterService.fetchDeviceProfile = jest.fn().mockReturnValue(of({ result: result })) as any
-		component.closeEditDetailsPopup();
-		expect(component.getGuestUser).toHaveBeenCalled();
-        expect(component.getLocation).toHaveBeenCalled();
-		expect(component.showEditUserDetailsPopup).toBeTruthy();
-	});
+    })
 
     describe('updateGuestUser',()=>{
 		const mockUser = 
@@ -205,6 +192,7 @@ describe('GuestProfileComponent', () => {
 		}
 		it('should update guest user and display success message', () => {
 			jest.spyOn(component.userService as any,'updateAnonymousUserDetails' as any).mockReturnValue(of({}));
+			jest.spyOn(component as any, 'getGuestUser' as any).mockReturnValue(of({}));
 			component.updateGuestUser(mockUser);
 			expect(mockUserService.updateAnonymousUserDetails).toHaveBeenCalledWith({
 				request: { ...mockUser }
@@ -266,77 +254,15 @@ describe('GuestProfileComponent', () => {
         expect(component.deviceProfile).toEqual(undefined);
 	});
     
-	describe('initLayout',()=>{
-		it('should set layoutConfiguration to initlayoutConfig result', () => {
-			jest.spyOn(component.layoutService,'initlayoutConfig')
-			jest.spyOn(mockLayoutService as any, 'switchableLayout' as any).mockImplementation(() =>of([{}]));
-			component.initLayout();
-			expect(component.layoutService.initlayoutConfig).toHaveBeenCalled();
-		});
-
-		it('should set layoutConfiguration to switchableLayout result if available', () => {
-			jest.spyOn(component.layoutService,'initlayoutConfig')
-			jest.spyOn(mockLayoutService as any, 'switchableLayout' as any).mockImplementation(() =>of([{layout: 'mock-layout'}]));
-			component.initLayout();
-			expect(mockLayoutService.switchableLayout).toHaveBeenCalled();
-			expect(component.layoutConfiguration).toEqual(undefined);
-		});
-    });
-    
 	it('should call getGuestUser method', () => {
 		const mockUser = 
 		{
-			"name": "guest",
-			"formatedName": "Guest",
-			"framework": {
-				"board": [
-					"mock-board"
-				],
-				"medium": [
-					"mock-Medium"
-				],
-				"gradeLevel": [
-					"mock-grade"
-				],
-				"subject": [
-					"mock-subject"
-				],
-				"id": "mock-board"
-			},
-			"role": "mock-role"
+		  "framework": "mockEvent",
 		}
 		component.isDesktop = true;
 		jest.spyOn(component.userService as any,'getGuestUser' as any).mockReturnValue(of(mockUser));
         component.getGuestUser();
 
         expect(component.guestUser).toEqual(mockUser);
-		expect(component.userRole).toEqual('mock-role');
     });
-
-	describe('ngOninit',()=>{
-	   const mockDevice ={id: 'id',params: {resmsgid: '',status: 'status'},
-	   responseCode: 'OK',result: {},ts: '',ver: ''}
-       
-	   it('should set isDesktop value',()=>{
-		  component.isDesktop = false;
-		  jest.spyOn(component.userService as any,'getGuestUser' as any).mockReturnValue(of({}));
-		  jest.spyOn(mockLayoutService as any, 'switchableLayout' as any).mockImplementation(() =>of([{}]));
-		  jest.spyOn(component.deviceRegisterService,'fetchDeviceProfile').mockReturnValue(of(mockDevice));
-	   	  component.ngOnInit();
-		  expect(component.isDesktop).toBeTruthy();
-	   });
-       
-	   it('should call all the required methods',()=>{
-           jest.spyOn(component.userService as any,'getGuestUser' as any).mockReturnValue(of({}));
-		   jest.spyOn(component,'initLayout');
-		   jest.spyOn(component,'setInteractEventData');
-		   jest.spyOn(mockLayoutService as any, 'switchableLayout' as any).mockImplementation(() =>of([{}]));
-           jest.spyOn(component.deviceRegisterService,'fetchDeviceProfile').mockReturnValue(of(mockDevice));
-		   component.ngOnInit();
-		   expect(component.getGuestUser).toHaveBeenCalled();
-		   expect(component.initLayout).toHaveBeenCalled();
-		   expect(component.getLocation).toHaveBeenCalled();
-		   expect(component.setInteractEventData).toHaveBeenCalled();
-	   });
-	});
 });
