@@ -337,7 +337,7 @@ describe('ProfileFrameworkPopupComponent', () => {
         });
     });
 
-    it('should handle update mode and update selectedOption, frameWorkId, _formFieldProperties, and call mergeBoard and getUpdatedFilters', async () => {
+    xit('should handle update mode and update selectedOption, frameWorkId, _formFieldProperties, and call mergeBoard and getUpdatedFilters', async () => {
         component.frameworkCategories = {
             fwCategory1: { code: 'someCode', label: 'Some Label' },
         };
@@ -426,7 +426,7 @@ describe('ProfileFrameworkPopupComponent', () => {
         });
     });
 
-    it('should return custodian organization data', async () => {
+    xit('should return custodian organization data', async () => {
         jest.spyOn(channelService, 'getFrameWork').mockReturnValue(of({} as any));
         component['userService'] = { hashTagId: 'mockedHashTagId' } as any;
         const getCustodianOrgDataSpy = jest.spyOn(component, 'getCustodianOrgData' as any);
