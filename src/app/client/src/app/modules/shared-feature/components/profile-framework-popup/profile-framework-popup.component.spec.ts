@@ -405,11 +405,11 @@ describe('ProfileFrameworkPopupComponent', () => {
         jest.spyOn(component, 'mergeBoard' as any).mockImplementation(() => { });
         jest.spyOn(component, 'getUpdatedFilters' as any).mockReturnValue(of({}));
         component.selectedOption = {
-        [component['frameworkCategories.fwCategory1.code']]: ['value1'],
+        [component['frameworkCategories.fwCategory1.code']] : ['value1'],
         };
         component['custOrgFrameworks'] = [{ name: 'value1', identifier: 'id1' }];
         component['getFormOptionsForCustodianOrg']().subscribe(() => {
-        expect(component.selectedOption[component.frameworkCategories.fwCategory1.code]).toEqual('value1');
+        expect(component.selectedOption[component['frameworkCategories.fwCategory1.code']]).toEqual('value1');
         expect(component['getFormatedFilterDetails']).toHaveBeenCalled();
         expect(component['mergeBoard']).toHaveBeenCalled();
         done();
