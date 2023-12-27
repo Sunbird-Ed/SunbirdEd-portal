@@ -70,6 +70,13 @@ describe('RouterNavigationService', () => {
                 
                 expect(layoutService.redoLayoutFilterCSS).toHaveBeenCalled();
             });
+
+            it('should generate CSS classes for filter layout with layoutConfigExternal true', () => {
+                jest.spyOn(layoutService,'redoLayoutFilterCSS');
+                const result = layoutService.redoLayoutCSS(panelIndex, layoutConfigExternal, columnType);
+                
+                expect(result).toEqual('sb-g-col-xs-12 sb-g-col-md-undefined sb-g-col-lg-undefined sb-g-col-xxxl-4');
+            });
         })
         
         describe('should generate CSS classes for filter layout with layoutConfigExternal false', () => {
@@ -82,29 +89,17 @@ describe('RouterNavigationService', () => {
             
                 expect(result).toEqual('sb-g-col-xs-12 sb-g-col-md-12 sb-g-col-lg-12 sb-g-col-xxxl-12');
             });  
-        });
-    });
 
-    describe('redoLayoutFilterCSS',()=>{
-        it('should generate CSS classes for filter layout with layoutConfigExternal true', () => {
-            const panelIndex = 0;
-            const layoutConfigExternal = true;
-            const columnType = {panelIndex: 'mock-result-layout'};
-        
-            const result = layoutService.redoLayoutFilterCSS(panelIndex, layoutConfigExternal, columnType);
-             
-            expect(result).toEqual('sb-g-col-xs-12 sb-g-col-md-0 sb-g-col-lg-undefined sb-g-col-xxxl-4');
+            it('should generate CSS classes for filter layout with columnType equal to total', () => {
+                const panelIndex = 1;
+                const layoutConfigExternal = false;
+                const columnType = [12,10];
+            
+                const result = layoutService.redoLayoutCSS(panelIndex, layoutConfigExternal, columnType);
+            
+                expect(result).toEqual('sb-g-col-xs-12 sb-g-col-md-12 sb-g-col-lg-12 sb-g-col-xxxl-16');
+            });  
         });
-        
-        it('should generate CSS classes for filter layout with layoutConfigExternal false', () => {
-            const panelIndex = 1;
-            const layoutConfigExternal = false;
-            const columnType = {panelIndex: 'mock-result-layout'};
-        
-            const result = layoutService.redoLayoutFilterCSS(panelIndex, layoutConfigExternal, columnType);
-        
-            expect(result).toEqual('sb-g-col-xs-12 sb-g-col-md-12 sb-g-col-lg-12 sb-g-col-xxxl-16');
-        });  
     });
 
     describe('isLayoutAvailable',()=>{
