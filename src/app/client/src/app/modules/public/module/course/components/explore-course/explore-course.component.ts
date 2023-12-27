@@ -12,6 +12,7 @@ import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, debounceTime, catchError, tap, delay } from 'rxjs/operators';
 import { CacheService } from '../../../../../shared/services/cache-service/cache.service';
+import { CslFrameworkService } from '../../../../services/csl-framework/csl-framework.service';
 
 @Component({
     templateUrl: './explore-course.component.html'
@@ -48,17 +49,23 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
     public totalCount;
     public searchAll;
     public allMimeType;
+    public frameworkCategoriesList;
+    public categoryKeys;
+ 
+    
     constructor(public searchService: SearchService, public router: Router,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
         public resourceService: ResourceService, public toasterService: ToasterService,
         public configService: ConfigService, public utilService: UtilService, public orgDetailsService: OrgDetailsService,
         private publicPlayerService: PublicPlayerService, public userService: UserService, public cacheService: CacheService,
         public formService: FormService, public browserCacheTtlService: BrowserCacheTtlService,
-        public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
+        public navigationhelperService: NavigationHelperService, public layoutService: LayoutService, public cslFrameworkService: CslFrameworkService) {
         this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.filterType = this.configService.appConfig.exploreCourse.filterType;
     }
     ngOnInit() {
+        this.categoryKeys = this.cslFrameworkService.transformDataForCC();
+        this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
         this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
             this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
             this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
@@ -132,8 +139,8 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
         }
         this.selectedFilters = filterData;
         const defaultFilters = _.reduce(filters, (collector: any, element) => {
-            if (element.code === 'board') {
-                collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
+            if (element.code === this.frameworkCategoriesList[0] ) {
+                collector[this.frameworkCategoriesList[0]] = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
             }
             return collector;
         }, {});
@@ -183,7 +190,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
         filters.mimeType = _.get(mimeType, 'values');
         const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
         if (this.queryParams.key) {
-            delete softConstraints['board'];
+            delete softConstraints[this.frameworkCategoriesList[0]];
         }
         const option: any = {
             filters: filters,

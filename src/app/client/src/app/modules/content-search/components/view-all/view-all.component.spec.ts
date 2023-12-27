@@ -9,6 +9,7 @@ import { Location } from '@angular/common';
 import { BrowserCacheTtlService, LayoutService, UtilService } from '../../../shared';
 import { OrgDetailsService, UserService } from '../../../core';
 import { Response } from './view-all.component.spec.data';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 describe('ViewAllComponent', () => {
   let component: ViewAllComponent;
@@ -88,14 +89,14 @@ describe('ViewAllComponent', () => {
     getOrgDetails:jest.fn()
   };
   const mockUserService: Partial<UserService> = {
-    // userData$: {
-    //   userProfile: {
-    //     userId: 'sample-uid',
-    //     rootOrgId: 'sample-root-id',
-    //     rootOrg: {},
-    //     hashTagIds: ['id']
-    //   }
-    // } as any,
+    loggedIn: true,
+    slug: jest.fn().mockReturnValue('tn') as any,
+    userData$: of({userProfile: {
+      userId: 'sample-uid',
+      rootOrgId: 'sample-root-id',
+      rootOrg: {},
+      hashTagIds: ['id']
+    } as any}) as any,
   };
   const mockBrowserCacheTtlService: Partial<BrowserCacheTtlService> = {};
   const mockConfigService: Partial<ConfigService> = {
@@ -126,6 +127,20 @@ describe('ViewAllComponent', () => {
     redoLayoutCSS: jest.fn(),
     switchableLayout: jest.fn()
   };
+  const mockCslFrameworkService: Partial<CslFrameworkService> = {
+    getFrameworkCategories: jest.fn(),
+    setDefaultFWforCsl: jest.fn(),
+    transformDataForCC: jest.fn(),
+    getGlobalFilterCategoriesObject: jest.fn(() =>[
+      { index: 1,label: 'Organization Name', placeHolder: 'Organization Name',code:'channel', name: 'channel'},
+      { index: 1,label: 'Board',placeHolder: 'Select Board', code: 'board', name: 'Board' },
+      { index: 2 ,label: 'Medium',placeHolder: 'Select Medium', code: 'medium', name: 'Medium' },
+      { index: 3,label: 'Classes', placeHolder: 'Select Classes',code:'gradeLevel', name: 'gradeLevel'},
+      { index: 4,label: 'Subjects', placeHolder: 'Select Subjects',code:'subject', name: 'subject'},
+      { index: 5,label: 'Publisher', placeHolder: 'Select publisher',code:'publisher', name: 'publisher'},
+      { index: 6,label: 'Content type', placeHolder: 'Select content type',code:'contentType', name: 'contentType'},
+    ] ),
+  };
 
   beforeAll(() => {
     component = new ViewAllComponent(
@@ -146,12 +161,14 @@ describe('ViewAllComponent', () => {
       mockBrowserCacheTtlService as BrowserCacheTtlService,
       mockNavigationHelperService as NavigationHelperService,
       mockLayoutService as LayoutService,
+      mockCslFrameworkService as CslFrameworkService
     );
 
   });
 
   beforeEach(() => {
     jest.clearAllMocks();
+    component.globalFilterCategoriesObject = component.cslFrameworkService.getGlobalFilterCategoriesObject();
   });
 
   it('should be create a instance of View All Component', () => {
@@ -409,36 +426,40 @@ describe('ViewAllComponent', () => {
     const returnValue = component.updateFacetsData(Response.facetContentType);
     expect(JSON.stringify(returnValue)).toEqual(JSON.stringify(obj));
   });
+
   it('should call updateFacetsData method channel', () => {
-    const obj = [
-      {
-        index: '1',
-        label: 'Organization Name',
-        placeholder: 'Organization Name',
-        values: ['1', 'channel', 'channel', 'channel'],
-        name: 'channel'
-      }
-    ]
-    const returnValue = component.updateFacetsData(Response.facetChannel);
-    expect(JSON.stringify(returnValue)).toEqual(JSON.stringify(obj));
+    const mockGlobalFilterCategoriesObject = [
+    { index: 1, label: 'Organization Name', placeHolder: 'Organization Name', code: 'channel', name: 'channel' },
+    ];
+    const mockFacets = {
+       channel: ['Chattisgarh']
+    };
+    jest.spyOn(component.cslFrameworkService, 'getGlobalFilterCategoriesObject')
+    .mockReturnValue(mockGlobalFilterCategoriesObject);
+    const returnValue = component.updateFacetsData(mockFacets);
+    expect(returnValue).toEqual([{"index": "1", "label": "Organization Name", "name": "channel", "placeholder": "Organization Name", "values": ["Chattisgarh"]}]);
   });
+
   it('should call processEnrolledCourses method', () => {
     component.processEnrolledCourses(Response.enrolledCourseData, Response.pageData);
     expect(component.noResult).toBeFalsy();
     expect(component.totalCount).toEqual(0);
   });
+
   it('should call updateCardData method', () => {
     component.searchList = Response.successData as any;
     component.updateCardData(Response.enrolledCourseData);
     expect(mockPublicPlayerService.updateDownloadStatus).toBeCalled();
   });
+
   it('should call getframeWorkData method', () => {
     mockFormService.getFormConfig = jest.fn(() => of({
       id: 'sample-id'
-  }));
+    }));
     component['getframeWorkData']();
     expect(mockFormService.getFormConfig).toBeCalled();
   });
+
   it('should call getframeWorkData method with error', () => {
     // jest.spyOn(mockToasterService,'error');
      mockFormService.getFormConfig = jest.fn(() => throwError({
@@ -506,4 +527,16 @@ describe('ViewAllComponent', () => {
       expect(component.unsubscribe.complete).toHaveBeenCalled();
     });
   });
+
+  xit('should initialize data on ngOnInit', () => {
+    jest.spyOn(mockCslFrameworkService, 'getFrameworkCategories').mockReturnValue({});
+    jest.spyOn(mockCslFrameworkService, 'getGlobalFilterCategoriesObject').mockReturnValue([]);
+    jest.spyOn(mockCslFrameworkService, 'transformDataForCC').mockReturnValue([]);
+    component.ngOnInit();
+    expect(component.frameworkCategories).toBeDefined();
+    expect(component.globalFilterCategoriesObject).toBeDefined();
+    expect(component.categoryKeys).toBeDefined();
+    expect(component.facetsList).toBeDefined();
+  });
+
 });

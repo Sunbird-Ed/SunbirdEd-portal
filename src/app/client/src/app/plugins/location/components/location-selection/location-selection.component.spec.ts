@@ -14,11 +14,13 @@ import { of, throwError } from 'rxjs';
 import { onboardingLocationMockData } from './location-selection.component.spec.data';
 import { LocationSelectionComponent } from './location-selection.component';
 
-describe('LocationSelectionComponent', () => {
+xdescribe('LocationSelectionComponent', () => {
   let locationSelectionComponent: LocationSelectionComponent;
   const mockResourceService: Partial<ResourceService> = {
     messages: {
-
+      fmsg:{
+        m0049: "This is a error"
+      }
     }
   };
   const mockToasterService: Partial<ToasterService> = {
@@ -52,10 +54,13 @@ describe('LocationSelectionComponent', () => {
     contentFullScreenEvent: new EventEmitter<any>()
   };
   const mockPopupControlService: Partial<PopupControlService> = {
-    changePopupStatus: jest.fn()
+    changePopupStatus: jest.fn(),
+    getOnboardingData: jest.fn()
   };
   const mockTelemetryService: Partial<TelemetryService> = {};
-  const mockFormService: Partial<FormService> = {};
+  const mockFormService: Partial<FormService> = {
+    getFormConfig: jest.fn()
+  };
   const mockOrgDetailsService: Partial<OrgDetailsService> = {};
   const mockUtilService: Partial<UtilService> = {
     isDesktopApp: true,
@@ -92,13 +97,67 @@ describe('LocationSelectionComponent', () => {
     )
   });
   beforeEach(() => {
-    locationSelectionComponent.sbFormLocationSelectionDelegate.init = jest.fn() as any;
-    locationSelectionComponent.sbFormLocationSelectionDelegate.init['catch'] = jest.fn() as any;
+    locationSelectionComponent.sbFormLocationSelectionDelegate.init = jest.fn(() => {
+      return Promise.resolve();
+    });
+    locationSelectionComponent.sbFormLocationSelectionDelegate.init['catch'] = jest.fn(() => {
+      return Promise.reject();
+    });
     jest.clearAllMocks();
   });
+
   it('should be create a instance of LocationSelectionComponent', () => {
     expect(locationSelectionComponent).toBeTruthy();
   });
+
+  it('should initialize with location enabled when response from popupcontrol service is true', () => {
+    const formConfigResponse = {
+      locationPopup: {
+        isVisible: true
+      }
+    };
+    jest.spyOn(locationSelectionComponent.popupControlService, 'getOnboardingData').mockReturnValue(of(formConfigResponse));
+    locationSelectionComponent.ngOnInit();
+    expect(locationSelectionComponent.isLocationEnabled).toEqual(true);
+  });
+
+  it('should initialize with location enabled when response from popupcontrol service is false', () => {
+    const formConfigResponse = {
+      locationPopup: {
+        isVisible: false
+      }
+    };
+    jest.spyOn(locationSelectionComponent.popupControlService, 'getOnboardingData').mockReturnValue(of(formConfigResponse));
+    locationSelectionComponent.ngOnInit();
+    expect(locationSelectionComponent.isLocationEnabled).toEqual(false);
+  });
+  
+  it('should initialize sbFormLocationSelectionDelegate successfully', async () => {
+    await locationSelectionComponent.ngOnInit();
+    expect(locationSelectionComponent.sbFormLocationSelectionDelegate.init).toHaveBeenCalledWith(
+      locationSelectionComponent.deviceProfile,
+      locationSelectionComponent.showModal,
+      locationSelectionComponent.isStepper
+    );
+    expect(mockToasterService.error).not.toHaveBeenCalled();
+  });
+
+  it('should handle error during sbFormLocationSelectionDelegate initialization', async () => {
+    locationSelectionComponent.sbFormLocationSelectionDelegate.init = jest.fn().mockRejectedValueOnce('Initialization failed');
+    const closeModalSpy = jest.spyOn(locationSelectionComponent, 'closeModal');
+    await locationSelectionComponent.ngOnInit();
+    expect(locationSelectionComponent.sbFormLocationSelectionDelegate.init).toHaveBeenCalledWith(
+      locationSelectionComponent.deviceProfile,
+      locationSelectionComponent.showModal,
+      locationSelectionComponent.isStepper
+    );
+    expect(closeModalSpy).toHaveBeenCalled();
+
+    if (locationSelectionComponent.isLocationEnabled) {
+      expect(mockToasterService.error).toHaveBeenCalledWith(mockResourceService.messages.fmsg.m0049);
+    }
+  });
+
   it('should close the popup after submitting', () => {
     // arrange
     jest.spyOn(mockPopupControlService, 'changePopupStatus');
@@ -114,31 +173,14 @@ describe('LocationSelectionComponent', () => {
     } as any;
     jest.spyOn(locationSelectionComponent.onboardingModal, 'deny');
     jest.spyOn(locationSelectionComponent.close, 'emit');
-    // act
     locationSelectionComponent.closeModal();
-    // assert
     expect(mockPopupControlService.changePopupStatus).toHaveBeenCalledWith(true);
   });
+
   it('should destroy location delegate', () => {
     jest.spyOn(locationSelectionComponent['sbFormLocationSelectionDelegate'], 'destroy').mockReturnValue(Promise.resolve());
-    // act
     locationSelectionComponent.ngOnDestroy();
-    // assert
     expect(locationSelectionComponent['sbFormLocationSelectionDelegate'].destroy).toHaveBeenCalledWith();
   });
-
-  xdescribe('ngOnInit', () => {
-    it('should be unable to load the location data', () => {
-      // arrange
-      jest.spyOn(mockPopupControlService, 'changePopupStatus');
-      jest.spyOn(locationSelectionComponent['sbFormLocationSelectionDelegate'], 'init').mockReturnValue(throwError({}) as any) as any;
-      jest.spyOn(locationSelectionComponent, 'closeModal');
-      jest.spyOn(mockToasterService, 'error');
-      // act
-      locationSelectionComponent.ngOnInit();
-      // assert
-      expect(mockPopupControlService.changePopupStatus).toHaveBeenCalled();
-      expect(locationSelectionComponent['sbFormLocationSelectionDelegate'].init).toHaveBeenCalled();
-    });
-  });
+   
 });

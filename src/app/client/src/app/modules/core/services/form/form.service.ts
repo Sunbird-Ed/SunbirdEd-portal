@@ -95,7 +95,7 @@ export class FormService {
         return this.orgDetailsService.getCustodianOrgDetails().pipe(
           map((orgDetails: any) => {
             return _.get(orgDetails, 'result.response.value') || '*'
-          }))     
+          }))
       }
     }
   }

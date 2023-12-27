@@ -9,6 +9,7 @@ import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@s
 import {mergeMap, tap, retry, catchError, map, finalize, debounceTime, takeUntil} from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { DialCodeService } from '../../services/dial-code/dial-code.service';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 @Component({
   selector: 'app-dial-code',
@@ -63,18 +64,20 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   courseList = [];
   isTextbookDetailsPage = false;
   layoutConfiguration: any;
+  public categoryKeys;
 
   constructor(public resourceService: ResourceService, public userService: UserService,
     public coursesService: CoursesService, public router: Router, public activatedRoute: ActivatedRoute,
     public searchService: SearchService, public toasterService: ToasterService, public configService: ConfigService,
     public utilService: UtilService, public navigationHelperService: NavigationHelperService,
     public playerService: PlayerService, public telemetryService: TelemetryService,
-    public publicPlayerService: PublicPlayerService, private dialCodeService: DialCodeService,
+    public publicPlayerService: PublicPlayerService, private dialCodeService: DialCodeService, public cslFrameworkService: CslFrameworkService,
     public layoutService: LayoutService) {
   }
 
   ngOnInit() {
     this.initLayout();
+    this.categoryKeys = this.cslFrameworkService.transformDataForCC();
     observableCombineLatest(this.activatedRoute.params, this.activatedRoute.queryParams,
       (params, queryParams) => {
         return { ...params, ...queryParams };
