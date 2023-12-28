@@ -120,7 +120,7 @@
             (click)="showJoinModal(true); this.logTelemetry(courseHierarchy?.primaryCategory.toLowerCase() === 'course' ? 'join-course' : 'join', courseHierarchy)">{{resourceService?.frmelmnts?.btn?.enroll}}</button>
         </div>
         <div class="d-flex">
-          <div class="certified-course__btn py-8 mx-8" *ngIf="enrolledCourse && progress<100 && !viewDashboard">
+          <div class="certified-course__btn py-8 mx-8" *ngIf="enrolledCourse && !viewDashboard">
             <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn" tabindex="0"
             (click)="redirectToDeetya();">Launch Course</button>
           </div>
