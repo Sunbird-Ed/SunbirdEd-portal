@@ -1,5 +1,8 @@
-<ng-container *ngIf="!showLoader && editorConfig">
+<ng-container *ngIf="!showLoader && editorConfig && !showQuestionEditor">
   <lib-editor [editorConfig]="editorConfig" (editorEmitter)="editorEventListener($event)" ></lib-editor>
+</ng-container>
+<ng-container *ngIf="!showLoader && editorConfig && showQuestionEditor">
+  <lib-questionset-editor [editorConfig]="editorConfig" (editorEmitter)="editorEventListener($event)"></lib-questionset-editor>
 </ng-container>
 
 <sui-dimmer class="page" *ngIf="showLoader" [isDimmed]="showLoader">
