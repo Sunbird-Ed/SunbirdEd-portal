@@ -105,6 +105,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   ngOnInit() {
     this.checkForQumlPlayer()
+    console.log("player.component.ts playerConfig.....", this.playerConfig)
     // If `sessionStorage` has UTM data; append the UTM data to context.cdata
     if (this.playerConfig && sessionStorage.getItem('UTM')) {
       let utmData;
@@ -114,6 +115,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         throw new Error('JSON Parse Error => UTM data');
       }
       if (utmData && _.get(this.playerConfig, 'context.cdata')) {
+        console.log("utmData...", utmData);
         this.playerConfig.context.cdata = _.union(this.playerConfig.context.cdata, utmData);
       }
       if (utmData && !_.get(this.playerConfig, 'context.cdata')) {
@@ -162,6 +164,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
    */
   ngAfterViewInit() {
     if (this.playerConfig) {
+      console.log("player.component.ts ngAfterViewInit called");
       this.loadPlayer();
     }
   }
@@ -171,6 +174,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.showNewPlayer = false;
     this.cdr.detectChanges();
     if (this.playerConfig) {
+      console.log("player.component.ts ngOnChanges called");
       this.playerOverlayImage = this.overlayImagePath ? this.overlayImagePath : _.get(this.playerConfig, 'metadata.appIcon');
       this.loadPlayer();
     }
@@ -198,6 +202,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }, 0);
   }
   loadDefaultPlayer(url = this.configService.appConfig.PLAYER_CONFIG.baseURL) {
+    console.log("calling loadDefaultPlayer");
     const iFrameSrc = url + '&build_number=' + this.buildNumber;
     setTimeout(() => {
       const playerElement = this.contentIframe.nativeElement;
@@ -216,6 +221,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         } catch (err) {
           const prevUrls = this.navigationHelperService.history;
           if (this.isCdnWorking.toLowerCase() === 'yes' && prevUrls[prevUrls.length - 2]) {
+            console.log("player.component.ts in loadDefaultPlayer catch block ", prevUrls);
             history.back();
           }
         }
@@ -249,6 +255,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         }
       },
       (error) => {
+        console.log("player.component.ts old player loaded with error", error);
         this.loadOldPlayer();
       }
     );
@@ -271,6 +278,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   loadOldPlayer() {
+    console.log("player.component.ts called loadOldPlayer");
     this.showNewPlayer = false;
     if (this.isDesktopApp) {
       this.updateMetadataForDesktop();
@@ -286,6 +294,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.rotatePlayer();
     }
     if (this.previewCdnUrl !== '' && (this.isCdnWorking).toLowerCase() === 'yes') {
+      console.log("player.component.ts called loadCdnPlayer");
       this.loadCdnPlayer();
       return;
     }
@@ -294,6 +303,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   loadNewPlayer() {
+    console.log("player.component.ts called loadNewPlayer");
     const downloadStatus = Boolean(_.get(this.playerConfig, 'metadata.desktopAppMetadata.isAvailable'));
     const artifactUrl = _.get(this.playerConfig, 'metadata.artifactUrl');
     this.contentId = _.get(this.playerConfig, 'metadata.identifier');
@@ -317,6 +327,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
           const varName = (userId + '_' + (this.collectionId ? this.collectionId : '') + '_' + (this.contentId ? this.contentId : '') + '_config');
           const playerConfig: any = JSON.parse(localStorage.getItem(varName)) || {};
           this.playerConfig['config'] = { ...this.playerConfig['config'], ...playerConfig };
+          console.log("player.component.ts this.playerConfig['config']", this.playerConfig['config'])
         }
       });
     } else {
