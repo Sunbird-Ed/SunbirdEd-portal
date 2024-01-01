@@ -5,7 +5,7 @@ import { FaqComponent, OfflineHelpVideosComponent } from './components';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
+import { CommonConsumptionModule } from '@dicdikshaorg/common-consumption';
 import { FaqReportComponent } from './components/faq-report/faq-report.component';
 import { CommonFormElementsModule } from '@dictrigyn/common-form-elements';
 import { SuiModalModule } from 'ng2-semantic-ui-v9';

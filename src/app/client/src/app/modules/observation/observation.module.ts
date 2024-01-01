@@ -10,7 +10,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { AvatarModule } from 'ngx-avatar';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
+import { CommonConsumptionModule } from '@dicdikshaorg/common-consumption';
 import { ContentSearchModule } from '@sunbird/content-search';
 import { TranslateModule } from '@ngx-translate/core';
 import {

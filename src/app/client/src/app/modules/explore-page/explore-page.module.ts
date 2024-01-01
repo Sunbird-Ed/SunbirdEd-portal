@@ -11,7 +11,7 @@ import {
   SuiRatingModule, SuiCollapseModule, SuiDimmerModule
 } from 'ng2-semantic-ui-v9';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
+import { CommonConsumptionModule } from '@dicdikshaorg/common-consumption';
 import { ContentSearchModule } from '@sunbird/content-search';
 import { SlickModule } from 'ngx-slick';
 import { ExplorePageComponent } from './components';

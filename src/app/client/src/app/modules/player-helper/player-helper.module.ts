@@ -13,7 +13,7 @@ import {
 import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
 import { FormsModule } from '@angular/forms';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
+import { CommonConsumptionModule } from '@dicdikshaorg/common-consumption';
 // import {SunbirdPdfPlayerModule} from '@project-sunbird/sunbird-pdf-player-v9';
 import { SunbirdPdfPlayerModule} from '@dictrigyn/pdf-player';
 import { SunbirdVideoPlayerModule } from 'dictrigyn-video-player';
