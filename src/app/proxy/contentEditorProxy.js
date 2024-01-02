@@ -169,7 +169,8 @@ module.exports = function (app) {
     '/action/questionset/v2/reject/:do_id',
     '/action/question/v2/create',
     '/action/question/v2/review/:do_id',
-    '/action/question/v2/publish/:do_id'
+    '/action/question/v2/publish/:do_id',
+    '/action/question/v2/list'
     ],
     isAPIWhitelisted.isAllowed(),
     addCorsHeaders,
@@ -189,8 +190,7 @@ module.exports = function (app) {
     '/action/questionset/v2/hierarchy/update',
     '/action/questionset/v2/update/:do_id',
     '/action/questionset/v2/add',
-    '/action/question/v2/update/:do_id',
-    '/action/question/v2/list'
+    '/action/question/v2/update/:do_id'
     ],
     isAPIWhitelisted.isAllowed(),
     addCorsHeaders,
