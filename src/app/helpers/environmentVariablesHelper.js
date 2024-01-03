@@ -12,7 +12,7 @@ let envVariables = {
   DEFAULT_CHANNEL: env.sunbird_default_channel,
   PORTAL_API_WHITELIST_CHECK: env.sunbird_enable_api_whitelist || 'true',
   PORTAL_SESSION_SECRET_KEY: (env.sunbird_portal_session_secret && env.sunbird_portal_session_secret !== '')
-  ? env.sunbird_portal_session_secret.split(',') : 'sunbird,ed48b0ce-5a92-11ed-9b6a-0242ac120002'.split(','),
+    ? env.sunbird_portal_session_secret.split(',') : 'sunbird,ed48b0ce-5a92-11ed-9b6a-0242ac120002'.split(','),
 
   // discussion forum
   discussions_middleware: env.discussions_middleware || 'http://discussionsmw-service:3002',
@@ -42,7 +42,7 @@ let envVariables = {
   ENABLE_PERMISSION_CHECK: env.sunbird_enabless_permission_check || 0,
   CONFIG_SERVICE_ENABLED: env.config_service_enabled || false,
   CRYPTO_ENCRYPTION_KEY: env.crypto_encryption_key || '030702bc8696b8ee2aa71b9f13e4251e',
-  CRYPTO_ENCRYPTION_KEY_EXTERNAL:env.crypto_encryption_key_external || '030702me8696b8ee2aa71x9n13l4251e',
+  CRYPTO_ENCRYPTION_KEY_EXTERNAL: env.crypto_encryption_key_external || '030702me8696b8ee2aa71x9n13l4251e',
   LOG_FINGERPRINT_DETAILS: env.sunbird_log_fingerprint_details || 'true',
   REPORT_SERVICE_URL: env.sunbird_report_service_url || SB_DOMAIN + '/api/data/v1/report-service',
   SUNBIRD_PORTAL_BASE_URL: env.sunbird_portal_base_url,
@@ -117,9 +117,17 @@ let envVariables = {
     clientId: env.sunbird_google_oauth_clientId,
     clientSecret: env.sunbird_google_oauth_clientSecret
   },
+  GOOGLE_OAUTH_TEST_CONFIG: {
+    clientId: env.sunbird_google_oauth_test_clientId || '382823555712-j0aksv0v5n9t23lgmlbnbsea1vfss8m3.apps.googleusercontent.com',
+    clientSecret: env.sunbird_google_oauth_test_clientSecret || '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'
+  },
   GOOGLE_OAUTH_CONFIG_IOS: {
     clientId: env.sunbird_google_oauth_ios_clientId,
     clientSecret: env.sunbird_google_oauth_ios_clientSecret
+  },
+  GOOGLE_OAUTH_TEST_CONFIG_IOS: {
+    clientId: env.sunbird_google_oauth_ios_test_clientId,
+    clientSecret: env.sunbird_google_oauth_ios_test_clientSecret
   },
   sunbird_google_captcha_site_key: env.sunbird_google_captcha_site_key,
   google_captcha_private_key: env.google_captcha_private_key,
@@ -139,7 +147,7 @@ let envVariables = {
   SUNBIRD_PUBLIC_STORAGE_ACCOUNT_NAME: env.sunbird_azure_storage_account_name,
   PORTAL_CASSANDRA_CONSISTENCY_LEVEL: env.sunbird_cassandra_consistency_level || 'one',
   PORTAL_CASSANDRA_REPLICATION_STRATEGY: env.sunbird_cassandra_replication_strategy || '{"class":"SimpleStrategy","replication_factor":1}',
-  
+
   // ############# CSP Configuration #############
   // Common key for Uploading Desktop Crash logs
   desktop_azure_crash_container_name: env.cloud_storage_desktopCrash_bucketname || 'desktopappcrashlogs',
@@ -284,13 +292,13 @@ let envVariables = {
   PORTAL_REDIS_PASSWORD: env.sunbird_redis_password,
   PORTAL_REDIS_CONNECTION_STRING: env.portal_redis_connection_string,
   // VDN URL
-  vdnURL:env.vdnURL || '',
+  vdnURL: env.vdnURL || '',
 
   // Add below variable for Apple Login
   APPLE_SIGNIN_KEY_URL: "https://appleid.apple.com/auth/keys",
 
   //Redirect and ErrorCallback domain
-  REDIRECT_ERROR_CALLBACK_DOMAIN:env.portal_redirect_error_callback_domain || '',
+  REDIRECT_ERROR_CALLBACK_DOMAIN: env.portal_redirect_error_callback_domain || '',
 
   // UCI
   sunbird_portal_uci_bot_phone_number: env.sunbird_portal_uci_bot_phone_number || '',
@@ -298,6 +306,9 @@ let envVariables = {
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
   ? env.sunbird_cassandra_urls.split(',') : ['localhost']
+
+envVariables.GOOGLE_TEST_EMAILS = (env.google_test_emails && env.google_test_emails !== '')
+  ? env.google_test_emails.split(',') : ['dikshatestuser1@gmail.com', 'dikshatestuser2@gmail.com']
 
 // Path to dev config file
 const devConfig = __dirname + '/devConfig.js';
@@ -310,7 +321,7 @@ try {
     // console.log('local---->',devVariables);
   } else {
     module.exports = envVariables;
-   // console.log('env---->',envVariables);
+    // console.log('env---->',envVariables);
   }
 } catch (error) {
   module.exports = envVariables;
