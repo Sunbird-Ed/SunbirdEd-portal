@@ -89,14 +89,14 @@ describe('ViewAllComponent', () => {
     getOrgDetails:jest.fn()
   };
   const mockUserService: Partial<UserService> = {
-    // userData$: {
-    //   userProfile: {
-    //     userId: 'sample-uid',
-    //     rootOrgId: 'sample-root-id',
-    //     rootOrg: {},
-    //     hashTagIds: ['id']
-    //   }
-    // } as any,
+    loggedIn: true,
+    slug: jest.fn().mockReturnValue('tn') as any,
+    userData$: of({userProfile: {
+      userId: 'sample-uid',
+      rootOrgId: 'sample-root-id',
+      rootOrg: {},
+      hashTagIds: ['id']
+    } as any}) as any,
   };
   const mockBrowserCacheTtlService: Partial<BrowserCacheTtlService> = {};
   const mockConfigService: Partial<ConfigService> = {
@@ -130,6 +130,7 @@ describe('ViewAllComponent', () => {
   const mockCslFrameworkService: Partial<CslFrameworkService> = {
     getFrameworkCategories: jest.fn(),
     setDefaultFWforCsl: jest.fn(),
+    transformDataForCC: jest.fn(),
     getGlobalFilterCategoriesObject: jest.fn(() =>[
       { index: 1,label: 'Organization Name', placeHolder: 'Organization Name',code:'channel', name: 'channel'},
       { index: 1,label: 'Board',placeHolder: 'Select Board', code: 'board', name: 'Board' },
@@ -526,4 +527,16 @@ describe('ViewAllComponent', () => {
       expect(component.unsubscribe.complete).toHaveBeenCalled();
     });
   });
+
+  xit('should initialize data on ngOnInit', () => {
+    jest.spyOn(mockCslFrameworkService, 'getFrameworkCategories').mockReturnValue({});
+    jest.spyOn(mockCslFrameworkService, 'getGlobalFilterCategoriesObject').mockReturnValue([]);
+    jest.spyOn(mockCslFrameworkService, 'transformDataForCC').mockReturnValue([]);
+    component.ngOnInit();
+    expect(component.frameworkCategories).toBeDefined();
+    expect(component.globalFilterCategoriesObject).toBeDefined();
+    expect(component.categoryKeys).toBeDefined();
+    expect(component.facetsList).toBeDefined();
+  });
+
 });

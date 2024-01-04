@@ -168,10 +168,11 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       return o.name === (selectedMediaType || 'all');
     });
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
+    const omitKeys = ['key', 'sort_by', 'sortType', 'appliedFilters', 'selectedTab', 'mediaType', 'contentType', 'description'];
     filters = this.schemaService.schemaValidator({
       inputObj: filters || {},
       properties: _.get(this.schemaService.getSchema('content'), 'properties') || {},
-      omitKeys: ['key', 'sort_by', 'sortType', 'appliedFilters', 'selectedTab', 'mediaType', 'contentType', , 'description', this.frameworkCategories?.fwCategory1?.code,this.frameworkCategories?.fwCategory2?.code,this.frameworkCategories?.fwCategory3?.code,this.frameworkCategories?.fwCategory4?.code]
+      omitKeys: omitKeys
     });
     filters.primaryCategory = filters.primaryCategory || _.get(this.allTabData, 'search.filters.primaryCategory');
     filters.mimeType = filters.mimeType || _.get(mimeType, 'values');

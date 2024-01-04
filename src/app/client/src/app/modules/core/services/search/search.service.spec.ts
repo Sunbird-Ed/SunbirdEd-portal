@@ -34,7 +34,7 @@ describe('SearchService', () => {
   };
 
   const mockContentService: Partial<ContentService> = {
-    post: jest.fn(() => of({})) as any
+    post: jest.fn(() => of({})) as any,
   };
 
   const mockLearnerService: Partial<LearnerService> = {};
@@ -290,6 +290,16 @@ describe('SearchService', () => {
   it('should call the updateOption method with data', () => {
     const obj = serviceMockData.option;
     const newObj = searchService.updateOption(obj);
+  });
+
+  it('should handle the response from formService.getFormConfig', (done) => {
+    const formConfigResponse = serviceMockData.formData;
+    jest.spyOn(mockFormService, 'getFormConfig').mockReturnValue(of(formConfigResponse));
+
+    searchService.getContentTypes().subscribe((response) => {
+      expect(response).toEqual(formConfigResponse);
+      done();
+    });
   });
 
 });

@@ -274,7 +274,7 @@ export class SearchService {
         }
       }
     };
-    option['data'] = this.updateOption(option);
+    // option['data'] = this.updateOption(option);
     if (requestParam['pageNumber'] && requestParam['limit']) {
       option.data.request['offset'] = (requestParam.pageNumber - 1) * requestParam.limit;
     }
