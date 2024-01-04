@@ -6,7 +6,6 @@ import { ConfigService } from '../../../shared/services/config/config.service';
 import { FormService } from '../../../core/services/form/form.service';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { CacheService } from '../../../shared/services/cache-service/cache.service';
 interface FrameworkCategory {
   code: string;
   label: string;
@@ -39,7 +38,7 @@ export class CslFrameworkService {
   public globalFilterCategories;
   public frameworkCategoriesList;
   public defaultFwCategories;
-  constructor(@Inject('CS_FRAMEWORK_SERVICE') private csFrameworkService: CsFrameworkService, private channelService: ChannelService, private configService: ConfigService, public formService: FormService, public cacheService: CacheService
+  constructor(@Inject('CS_FRAMEWORK_SERVICE') private csFrameworkService: CsFrameworkService, private channelService: ChannelService, private configService: ConfigService, public formService: FormService
   ) {
   }
 
