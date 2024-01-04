@@ -10,7 +10,7 @@ const uuid = require('uuid/v1')
 const bodyParser = require('body-parser');
 const REQUIRED_STATE_FIELD = ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version', 'merge_account_process'];
 const envHelper = require('../helpers/environmentVariablesHelper.js');
-const { GOOGLE_OAUTH_CONFIG, GOOGLE_OAUTH_CONFIG_IOS, GOOGLE_TEST_EMAILS } = require('../helpers/environmentVariablesHelper.js')
+const { GOOGLE_OAUTH_CONFIG, GOOGLE_OAUTH_CONFIG_IOS, GOOGLE_TEST_EMAILS, GOOGLE_OAUTH_TEST_CONFIG_IOS, GOOGLE_OAUTH_TEST_CONFIG } = require('../helpers/environmentVariablesHelper.js')
 const { OAuth2Client } = require('google-auth-library');
 
 /**
