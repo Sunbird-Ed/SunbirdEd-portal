@@ -84,7 +84,7 @@ export class FormService {
   }
   getHashTagID() {
     if (this.userService.loggedIn) {
-      return of(this.userService.hashTagId);
+      return of(this.userService.hashTagId || this.cacheService.get('channelId'));
     } else {
       if (this.userService.slug) {
         return this.orgDetailsService.getOrgDetails(this.userService.slug).pipe(

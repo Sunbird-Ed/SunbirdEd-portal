@@ -440,7 +440,9 @@ export class AppComponent implements OnInit, OnDestroy {
           }            
         }))
       .subscribe(data => {
-        this.cslFrameworkService.setDefaultFWforCsl('', data.hashTagId?data.hashTagId:data.rootOrgId);
+        const channelId = data.hashTagId || data.rootOrgId;
+        this.cacheService.set('channelId', channelId);        
+        this.cslFrameworkService.setDefaultFWforCsl('',channelId );
         this.tenantService.getTenantInfo(this.userService.slug);
         this.tenantService.initialize();
         this.setPortalTitleLogo();
@@ -451,7 +453,7 @@ export class AppComponent implements OnInit, OnDestroy {
         localStorage.setItem('joyThemePopup', 'true');
         this.joyThemePopup();
         this.changeDetectorRef.detectChanges();
-        this.cslFrameworkService.setTransFormGlobalFilterConfig(data.hashTagId?data.hashTagId:data.rootOrgId);
+        this.cslFrameworkService.setTransFormGlobalFilterConfig(channelId);
       }, error => {
         this.initApp = true;
         this.changeDetectorRef.detectChanges();
