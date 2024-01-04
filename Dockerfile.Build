@@ -1,5 +1,5 @@
 #Dockerfile for the player setup
-FROM node:16.19.0
+FROM node:18.19.0
 MAINTAINER "Rajesh Rajendran <rajesh.r@optit.co>"
 RUN sed -i '/jessie-updates/d' /etc/apt/sources.list
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils \
