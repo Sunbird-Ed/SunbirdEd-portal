@@ -71,7 +71,9 @@ describe('ProfileFrameworkPopupComponent', () => {
     const mockCslFrameworkService: Partial<CslFrameworkService> = {
         getFrameworkCategories: jest.fn(),
         getFrameworkCategoriesObject: jest.fn(),
-        setFWCatConfigFromCsl: jest.fn()
+        setFWCatConfigFromCsl: jest.fn(),
+        transformSelectedData: jest.fn(),
+        setTransFormGlobalFilterConfig: jest.fn()
     };
     const mockConfigService: Partial<ConfigService> = {
     appConfig: {
@@ -175,16 +177,39 @@ describe('ProfileFrameworkPopupComponent', () => {
         expect(component.showButton).toBeFalsy();
     });
     it('should call onSubmitForm method', () => {
+        const selectedData = { fw1: 'test1', fw2: 'test2'};
+        const transformedData = { fw1: 'test1'};
+        const cloneDeepMock = jest.spyOn(_, 'cloneDeep').mockReturnValue(selectedData);
+        const codeValue = 'code1';
         jest.spyOn(userService, 'setUserFramework');
         profileService.updateProfile = jest.fn(() => of({
             'result': {
                 'response': 'SUCCESS'
             }
         })) as any;
+        mockCslFrameworkService.transformSelectedData = jest.fn(() => of(transformedData));
+        component.selectedOption = selectedData;
+        component.frameworkCategoriesObject = {fw1: 'test1'}
+        component.frameworkCategories = {
+            fwCategory1: {
+              code: codeValue,
+            },
+          };
         component.onSubmitForm();
+        expect(cloneDeepMock).toHaveBeenCalledWith(component.selectedOption);
+        expect(mockCslFrameworkService.transformSelectedData).toHaveBeenCalledWith(
+            selectedData,
+            component.frameworkCategoriesObject
+          );
         expect(userService.setUserFramework).toBeCalled();
     });
+
+
     it('should call onSubmitForm method', () => {
+        const selectedData = { fw1: 'test1', fw2: 'test2'};
+        const transformedData = { fw1: 'test1'};
+        const cloneDeepMock = jest.spyOn(_, 'cloneDeep').mockReturnValue(selectedData);
+        const codeValue = 'code1';
         jest.spyOn(userService, 'setUserFramework');
         localStorage.setItem('userType', 'student');
         profileService.updateProfile = jest.fn(() => of({
@@ -199,10 +224,29 @@ describe('ProfileFrameworkPopupComponent', () => {
         })) as any;
         component.isStepper = true;
         component.isGuestUser = true;
+        mockCslFrameworkService.transformSelectedData = jest.fn(() => of(transformedData));
+        component.selectedOption = selectedData;
+        component.frameworkCategoriesObject = {fw1: 'test1'}
+        component.frameworkCategories = {
+            fwCategory1: {
+              code: codeValue,
+            },
+          };
+
         component.onSubmitForm();
+        expect(cloneDeepMock).toHaveBeenCalledWith(component.selectedOption);
+        expect(mockCslFrameworkService.transformSelectedData).toHaveBeenCalledWith(
+            selectedData,
+            component.frameworkCategoriesObject
+          );
+
         expect(toasterService.success).toBeCalledWith(resourceService.messages.smsg.m0058);
     });
     it('should call onSubmitForm method with error', () => {
+        const selectedData = { fw1: 'test1', fw2: 'test2'};
+        const transformedData = { fw1: 'test1'};
+        const cloneDeepMock = jest.spyOn(_, 'cloneDeep').mockReturnValue(selectedData);
+        const codeValue = 'code1';
         jest.spyOn(userService, 'setUserFramework');
         localStorage.setItem('userType', 'student');
         profileService.updateProfile = jest.fn(() => of({
@@ -217,7 +261,20 @@ describe('ProfileFrameworkPopupComponent', () => {
         })) as any;
         component.isStepper = true;
         component.isGuestUser = true;
+        mockCslFrameworkService.transformSelectedData = jest.fn(() => of(transformedData));
+        component.selectedOption = selectedData;
+        component.frameworkCategoriesObject = {fw1: 'test1'}
+        component.frameworkCategories = {
+            fwCategory1: {
+              code: codeValue,
+            },
+          };
         component.onSubmitForm();
+        expect(cloneDeepMock).toHaveBeenCalledWith(component.selectedOption);
+        expect(mockCslFrameworkService.transformSelectedData).toHaveBeenCalledWith(
+            selectedData,
+            component.frameworkCategoriesObject
+          );
         expect(toasterService.error).toBeCalledWith(resourceService.messages.emsg.m0005);
     });
 
@@ -281,8 +338,10 @@ describe('ProfileFrameworkPopupComponent', () => {
         jest.spyOn((component as any).cslFrameworkService, 'setFWCatConfigFromCsl').mockResolvedValueOnce(undefined);
         jest.spyOn((component as any).cslFrameworkService, 'getFrameworkCategories').mockReturnValueOnce(mockCategories);
         jest.spyOn((component as any).cslFrameworkService, 'getFrameworkCategoriesObject').mockReturnValueOnce(mockCategoriesObject);
+        jest.spyOn((component as any).cslFrameworkService, 'setTransFormGlobalFilterConfig').mockResolvedValueOnce(undefined);
         await component['updateFrameworkCategories'](frameWorkId);
         expect((component as any).cslFrameworkService.setFWCatConfigFromCsl).toHaveBeenCalledWith(frameWorkId);
+        expect((component as any).cslFrameworkService.setTransFormGlobalFilterConfig).toHaveBeenCalledWith();
         expect(component['frameworkCategories']).toEqual(mockCategories);
         expect(component['frameworkCategoriesObject']).toEqual(mockCategoriesObject);
     });

@@ -3,7 +3,7 @@ import { CsFrameworkService } from '@project-sunbird/client-services/services/fr
 import { ChannelService } from '@sunbird/core';
 import { ConfigService } from '../../../shared/services/config/config.service';
 import _ from 'lodash';
-import { of ,throwError} from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { FormService } from '../../../core/services/form/form.service';
 
 describe('CslFrameworkService', () => {
@@ -276,7 +276,7 @@ describe('CslFrameworkService', () => {
   it('should handle missing global filter data gracefully', () => {
     jest.spyOn(service, 'getGlobalFilterCategoriesObject').mockReturnValue(null);
     const result = service.transformDataForCC();
-    expect(result).toEqual([ { code: 'lastPublishedBy', name: 'Published by' }]);
+    expect(result).toEqual([{ code: 'lastPublishedBy', name: 'Published by' }]);
   });
 
   it('should return alternative codes for framework filter categories', () => {
@@ -336,4 +336,33 @@ describe('CslFrameworkService', () => {
     const result = service.transformContentDataFwBased(fwCatData, contentData);
     expect(result).toEqual([]);
   });
+
+  it('should return an empty object if obj1 is empty', () => {
+    const obj1 = {};
+    const obj2 = [{ code: 'key1' }, { code: 'key2' }];
+    const result = service.transformSelectedData(obj1, obj2);
+    expect(result).toEqual({});
+  });
+
+  it('should return an empty object if obj1 is undefined', () => {
+    const obj1 = undefined;
+    const obj2 = [{ code: 'key1' }, { code: 'key2' }];
+    const result = service.transformSelectedData(obj1, obj2);
+    expect(result).toEqual({});
+  });
+
+  it('should filter keys from obj1 based on obj2', () => {
+    const obj1 = { key1: 'value1', key2: 'value2', key3: 'value3' };
+    const obj2 = [{ code: 'key1' }, { code: 'key3' }];
+    const result = service.transformSelectedData(obj1, obj2);
+    expect(result).toEqual({ key1: 'value1', key3: 'value3' });
+  });
+
+  it('should return an empty object if obj2 has no codes', () => {
+    const obj1 = { key1: 'value1', key2: 'value2' };
+    const obj2 = [];
+    const result = service.transformSelectedData(obj1, obj2);
+    expect(result).toEqual({});
+  });
+
 });
