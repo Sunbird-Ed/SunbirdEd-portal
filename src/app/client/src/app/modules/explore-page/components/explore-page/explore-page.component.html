@@ -138,7 +138,7 @@
               <sb-content-section *ngIf="section?.isEnabled" (cardClick)="playContent($event, section?.title)"
                 [sortBy]="section?.apiConfig?.sortBy" [searchRequest]="section?.searchRequest" [title]="getContentSectionTitle(section?.title)"
                 [layoutConfig]="layoutConfiguration" (viewMoreClick)="viewAll($event, section)"
-                [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall">
+                [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall" [categoryKeys]="categoryKeys">
               </sb-content-section>
             </div>
           </div>

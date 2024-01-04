@@ -63,7 +63,7 @@
     "@project-sunbird/common-consumption": "7.0.1",
     "@project-sunbird/common-form-elements-full": "6.0.0",
     "@project-sunbird/discussions-ui": " 5.3.0-beta.1",
-    "@project-sunbird/sb-content-section": "6.0.0",
+    "@project-sunbird/sb-content-section": "7.0.0",
     "@project-sunbird/sb-dashlet": "6.0.5",
     "@project-sunbird/sb-notification": "6.0.0",
     "@project-sunbird/sb-styles": "0.0.15",

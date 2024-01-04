@@ -6,6 +6,7 @@ import { ConfigService } from '../../../shared/services/config/config.service';
 import { FormService } from '../../../core/services/form/form.service';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 interface FrameworkCategory {
   code: string;
   label: string;
@@ -38,10 +39,8 @@ export class CslFrameworkService {
   public globalFilterCategories;
   public frameworkCategoriesList;
   public defaultFwCategories;
-  constructor(@Inject('CS_FRAMEWORK_SERVICE') private csFrameworkService: CsFrameworkService, private channelService: ChannelService, private configService: ConfigService, public formService: FormService
+  constructor(@Inject('CS_FRAMEWORK_SERVICE') private csFrameworkService: CsFrameworkService, private channelService: ChannelService, private configService: ConfigService, public formService: FormService, public cacheService: CacheService
   ) {
-    this.selectedFramework = localStorage.getItem('selectedFramework');
-
   }
 
   /**
@@ -54,6 +53,7 @@ export class CslFrameworkService {
       this.channelService.getFrameWork(channelId).subscribe((channelData: any) => {
         this.defaultFramework = _.get(channelData, 'result.channel.defaultFramework');
         let selectedFW = this.defaultFramework;
+        localStorage.setItem('selectedFramework', selectedFW);
         this.setFWCatConfigFromCsl(selectedFW);
       });
     } else {
@@ -118,7 +118,6 @@ export class CslFrameworkService {
         result.push(keyValueObj);
       }
     });
-    console.log('contentData', result);
     return result;
   }
   /**
@@ -135,7 +134,6 @@ export class CslFrameworkService {
           apiPath: '/api/framework/v1/'
         }).subscribe(
           (fwData) => {
-            console.log('getFrameworkConfigMap success', fwData);
             localStorage.removeItem('fwCategoryObject');
             localStorage.setItem('fwCategoryObject', JSON.stringify(fwData));
             localStorage.setItem('selectedFramework', userSelFramework);
@@ -180,7 +178,6 @@ export class CslFrameworkService {
         apiPath: '/api/framework/v1/'
       }).subscribe(
         (fwData) => {
-          console.log('getFrameworkConfig success', fwData);
           localStorage.removeItem('fwCategoryObjectValues');
           localStorage.setItem('fwCategoryObjectValues', JSON.stringify(fwData));
         },
@@ -245,11 +242,12 @@ export class CslFrameworkService {
    */
   private getFormDetails(rooOrgID) {
     this.defaultFwCategories = this.getFrameworkCategoriesObject();
+    let slectedFw = localStorage.getItem('selectedFramework');
     const formServiceInputParams = {
       formType: 'contentcategory',
       formAction: 'menubar',
       contentType: 'global',
-      // framework: this.selectedFramework,
+      framework: slectedFw
       // component: 'portal'
     };
     return this.formService.getFormConfig(formServiceInputParams, this.rootOrgId).pipe(
@@ -293,7 +291,6 @@ export class CslFrameworkService {
       localStorage.removeItem('globalFilterObjectValues');
       localStorage.setItem('globalFilterObjectValues', JSON.stringify(filterResponseData))
       localStorage.setItem('globalFilterObject', JSON.stringify(transformedObject))
-      console.log('SetTransform', localStorage.getItem('globalFilterObject'))
 
     })
   }
@@ -389,5 +386,20 @@ export class CslFrameworkService {
     });
     return resCCdata;
   }
-
+  /**
+ * @description Transforms the keys of obj1 based on exclusion criteria from obj2.
+ * @param {Object} obj1 - The source object to filter keys from.
+ * @param {Array<Object>} obj2 - The array of objects containing keys to be excluded.
+ * @returns {Object} - The filtered object with keys from obj1, excluding those present in obj2.
+ */
+  transformSelectedData(obj1, obj2) {
+    const excludedKeys = obj2.map(item => item.code);
+    const filteredObject = {};
+    for (const key in obj1) {
+      if (excludedKeys.includes(key)) {
+        filteredObject[key] = obj1[key];
+      }
+    }
+    return filteredObject;
+  }
 }

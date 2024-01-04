@@ -194,7 +194,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
           const frameworkData = _.get(frameworkDetails.frameworkdata, framework);
           this.frameWorkId = frameworkData.identifier;
           this.categoryMasterList = frameworkData.categories;
-          console.log('getFormDetails', this.getFormDetails());
+          this.updateFrameworkCategories(this.frameWorkId);
           return this.getFormDetails();
         } else {
           return throwError(frameworkDetails.err);
@@ -221,7 +221,6 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     if (this.unsubscribe) { // cancel if any previous api call in progress
       this.unsubscribe.unsubscribe();
     }
-    this.updateFrameworkCategories(this.frameWorkId);
     this.unsubscribe = this.getFormatedFilterDetails().pipe().subscribe(
       (formFieldProperties) => {
         if (!formFieldProperties.length) {
@@ -238,13 +237,14 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   }
   public async updateFrameworkCategories(frameWorkId) {
     try {
-      this.frameworkCategories = '';
-      this.frameworkCategoriesObject = '';
+      this.frameworkCategories = this.frameworkCategoriesObject = '';
+     localStorage.setItem('selectedFramework', frameWorkId);
       await this.cslFrameworkService.setFWCatConfigFromCsl(frameWorkId);
-      // Further processing using fwCategoryObjectString...
-      // Assign to frameworkCategories and frameworkCategoriesObject as needed
-      this.frameworkCategories = this.cslFrameworkService.getFrameworkCategories();
-      this.frameworkCategoriesObject = this.cslFrameworkService.getFrameworkCategoriesObject();
+      [this.frameworkCategories, this.frameworkCategoriesObject] = [
+        this.cslFrameworkService.getFrameworkCategories(),
+        this.cslFrameworkService.getFrameworkCategoriesObject()
+      ];
+      this.cslFrameworkService.setTransFormGlobalFilterConfig();
     } catch (error) {
       console.error('Error updating framework categories:', error);
       // Handle error if needed
@@ -326,7 +326,8 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     );
   }
   onSubmitForm() {
-      const selectedOption = _.cloneDeep(this.selectedOption);
+      let selectedData = _.cloneDeep(this.selectedOption);
+      let selectedOption:any = this.cslFrameworkService.transformSelectedData(selectedData,this.frameworkCategoriesObject);
       selectedOption[this.frameworkCategories?.fwCategory1?.code] = _.get(this.selectedOption,  `${this.frameworkCategories?.fwCategory1?.code}`) ? [this.selectedOption[this.frameworkCategories?.fwCategory1?.code]] : [];
       selectedOption.id = this.frameWorkId;
       if (this.dialogRef && this.dialogRef.close) {

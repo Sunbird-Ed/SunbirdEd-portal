@@ -2310,10 +2310,10 @@
   dependencies:
     tslib "^2.0.0"
 
-"@project-sunbird/sb-content-section@6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-content-section/-/sb-content-section-6.0.0.tgz#1100c2b9fd2735faacb44cf6de9e1f8ce3cc4606"
-  integrity sha512-DmUhDk6wfvqyGIFF95rVcuPiTElycyUO3tqp45QPkUnVkh2HXdri77cbmt8pXXg/S9y5APZ5TR4ajwcxof67+Q==
+"@project-sunbird/sb-content-section@7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-content-section/-/sb-content-section-7.0.0.tgz#6986bed664cbfce524a873cd352831c6653720bc"
+  integrity sha512-i0lpuZzt8ZA41LWlsHlI6ef1RVldmuWGhy1GZT0XAa1USStlfwKFCndgBgzsdHfZ1eQ5RR/40DigZOWrkuDG/Q==
   dependencies:
     tslib "^2.0.0"
 
