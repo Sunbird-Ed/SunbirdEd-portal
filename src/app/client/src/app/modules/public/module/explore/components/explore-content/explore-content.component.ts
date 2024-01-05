@@ -190,6 +190,18 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         this.fetchContents();
       });
   }
+
+  private generateRandomString(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+  
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      result += characters.charAt(randomIndex);
+    }
+  
+    return result;
+  }
   private fetchContents() {
     const selectedMediaType = _.isArray(_.get(this.queryParams, 'mediaType')) ? _.get(this.queryParams, 'mediaType')[0] :
       _.get(this.queryParams, 'mediaType');
@@ -224,9 +236,24 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     if (this.queryParams.key) {
       delete softConstraints['board'];
     }
+
+    // added dummy field in ES query request
+    let queryFields = _.get(this.allTabData, 'search.fields');
+    const baseFieldName = "dummy_field_";
+    const randomString = this.generateRandomString(20);
+    const dummyFieldName = baseFieldName + randomString;
+
+    const existingIndex = queryFields.findIndex(field => field.startsWith(baseFieldName));
+
+    if (existingIndex !== -1) {
+      queryFields[existingIndex] = dummyFieldName;
+    } else {
+      queryFields.push(dummyFieldName);
+    }
+	
     const option: any = {
       filters: _.omitBy(filters || {}, value => _.isArray(value) ? (!_.get(value, 'length') ? true : false) : false),
-      fields: _.get(this.allTabData, 'search.fields'),
+      fields: queryFields,//_.get(this.allTabData, 'search.fields'),
       limit: _.get(this.allTabData, 'search.limit') ?  _.get(this.allTabData, 'search.limit')
       : this.configService.appConfig.SEARCH.PAGE_LIMIT,
       pageNumber: this.paginationDetails.currentPage,
