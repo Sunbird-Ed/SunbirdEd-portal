@@ -8,6 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 import { LayoutService } from '../../../../../shared/services/layoutconfig/layout.service';
 import { ActivatedRoute,Router } from '@angular/router';
 import { GuestProfileComponent } from './guest-profile.component';
+import { CslFrameworkService } from '../../../../../public/services/csl-framework/csl-framework.service';
 
 describe('GuestProfileComponent', () => {
     let component: GuestProfileComponent;
@@ -68,6 +69,7 @@ describe('GuestProfileComponent', () => {
 			}
 		  }
 	};
+	const mockCslFrameworkService: Partial<CslFrameworkService> = {};
 
     beforeAll(() => {
         component = new GuestProfileComponent(
@@ -81,6 +83,7 @@ describe('GuestProfileComponent', () => {
 			mockNavigationHelperService as NavigationHelperService,
 			mockToasterService as ToasterService,
 			mockConfig as ConfigService,
+			mockCslFrameworkService as CslFrameworkService
         )
     });
 
