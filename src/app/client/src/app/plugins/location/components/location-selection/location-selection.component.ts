@@ -93,6 +93,7 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   async updateUserLocation() {
+    console.log("this.userservice---",this.userService);
     if (this.showModal) {
       try {
         const result: any = await this.sbFormLocationSelectionDelegate.updateUserLocation();
@@ -132,7 +133,9 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
       const payload: any = {
         userId: _.get(this.userService, 'userid'),
         profileLocation: locationDetails,
-        profileUserTypes: userTypes
+        profileUserTypes: userTypes,
+        gender: 'Male',
+        email: 'abc@yopmail.com'
       };
       this.locationService.updateProfile(payload).toPromise()
         .then((res) => {

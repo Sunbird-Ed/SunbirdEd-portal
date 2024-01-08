@@ -197,6 +197,7 @@ export class SbFormLocationSelectionDelegate {
     }
 
     if (this.shouldUserProfileLocationUpdate && this.userService.loggedIn) {
+      console.log("Logged in user...");
       const formValue = this.formGroup.value;
       const profileUserTypes = [];
       let userType;
@@ -217,10 +218,13 @@ export class SbFormLocationSelectionDelegate {
       } else {
         profileUserTypes.push({ type: formValue.persona });
       }
+      console.log("updateUserLocation--- this.userService---",this.userService);
       const payload: any = {
         userId: _.get(this.userService, 'userid'),
         profileLocation: locationDetails,
         profileUserTypes,
+        gender: _.get(formValue, 'gender'),
+        email: _.get(formValue, 'email'),
         ...(_.get(formValue, 'name') ? { firstName: _.get(formValue, 'name') } : {} )
       };
 
@@ -310,6 +314,30 @@ export class SbFormLocationSelectionDelegate {
         } else if (this.guestUserDetails) {
           config.templateOptions.hidden = false;
           config.default = (_.get(this.guestUserDetails, 'formatedName') || 'Guest');
+        } else {
+          config.validations = [];
+        }
+      }
+
+      if (config.code === 'gender') {
+        if (this.userService.loggedIn) {
+          config.templateOptions.hidden = false;
+          config.default = (_.get(this.userService.userProfile, 'gender') || '') || null;
+        } else if (this.guestUserDetails) {
+          config.templateOptions.hidden = true;
+          config.default = (_.get(this.guestUserDetails, 'gender') || 'Guest');
+        } else {
+          config.validations = [];
+        }
+      }
+
+      if (config.code === 'email') {
+        if (this.userService.loggedIn) {
+          config.templateOptions.hidden = false;
+          config.default = (_.get(this.userService.userProfile, 'email') || '') || null;
+        } else if (this.guestUserDetails) {
+          config.templateOptions.hidden = true;
+          config.default = (_.get(this.guestUserDetails, 'email') || 'Guest');
         } else {
           config.validations = [];
         }
