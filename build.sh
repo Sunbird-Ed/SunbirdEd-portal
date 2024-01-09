@@ -5,12 +5,9 @@ NODE_VERSION=18.19.0
 echo "Starting portal build from build.sh"
 set -euo pipefail
 echo $HOME
-
 export NVM_DIR="$HOME/.nvm"
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-
-
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 echo "value of one "$1
 echo "value of two "$2
@@ -32,12 +29,11 @@ then
 fi
 echo "I am testing the build"
 echo "-------------"
+echo "I am testing the build"
+echo "-------------"
 commit_hash=$(git rev-parse --short HEAD)
 echo "commit_hash ---->" $commit_hash
-
-# Ensure nvm is available in the script
-. "$NVM_DIR/nvm.sh"
-
+nvm uninstall $NODE_VERSION
 nvm install $NODE_VERSION # same is used in client and server
 npm i -g yarn
 cd src/app
@@ -63,7 +59,7 @@ build_client_cdn(){
 # function to run client build
 build_client(){
     echo "Building client in background"
-    nvm use $NODE_VERSION
+    #npm use $NODE_VERSION
     cd client
     echo "starting client yarn install"
     yarn install --no-progress --production=true
