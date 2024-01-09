@@ -1,4 +1,3 @@
-#!/bin/bash
 STARTTIME=$(date +%s)
 export PYTHON=/usr/bin/python3.7
 NODE_VERSION=18.19.0
@@ -6,6 +5,12 @@ echo "Starting portal build from build.sh"
 set -euo pipefail
 echo $HOME
 export NVM_DIR="$HOME/.nvm"
+
+# Install nvm if not already installed
+if [ ! -s "$NVM_DIR/nvm.sh" ]; then
+    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+fi
+
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
@@ -33,6 +38,10 @@ echo "I am testing the build"
 echo "-------------"
 commit_hash=$(git rev-parse --short HEAD)
 echo "commit_hash ---->" $commit_hash
+
+# Ensure nvm is available in the script
+source ~/.nvm/nvm.sh
+
 nvm install $NODE_VERSION # same is used in client and server
 npm i -g yarn
 cd src/app
