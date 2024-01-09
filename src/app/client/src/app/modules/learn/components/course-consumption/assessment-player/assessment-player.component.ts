@@ -209,8 +209,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     combineLatest([this.activatedRoute.params, this.activatedRoute.queryParams])
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(([params, queryParams]) => {
-        this.consumedContents = 0;
-        this.totalContents = 0;
+        //this.consumedContents = 0;
+        //this.totalContents = 0;
         this.collectionId = params.collectionId;
         this.batchId = queryParams.batchId;
         this.courseId = queryParams.courseId;
