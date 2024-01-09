@@ -33,7 +33,6 @@ echo "I am testing the build"
 echo "-------------"
 commit_hash=$(git rev-parse --short HEAD)
 echo "commit_hash ---->" $commit_hash
-nvm uninstall $NODE_VERSION
 nvm install $NODE_VERSION # same is used in client and server
 npm i -g yarn
 cd src/app
@@ -59,7 +58,7 @@ build_client_cdn(){
 # function to run client build
 build_client(){
     echo "Building client in background"
-    #npm use $NODE_VERSION
+    nvm use $NODE_VERSION
     cd client
     echo "starting client yarn install"
     yarn install --no-progress --production=true
