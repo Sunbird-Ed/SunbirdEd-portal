@@ -3,10 +3,20 @@ STARTTIME=$(date +%s)
 export PYTHON=/usr/bin/python3.7
 NODE_VERSION=18.19.0
 echo "Starting portal build from build.sh"
-set -euo pipefail	
+set -euo pipefail
+echo $HOME
+
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+
+
+echo "value of one "$1
+echo "value of two "$2
+echo "value of three "$3
+echo "value of four "$4
+echo "value of five "$5
 build_tag=$1
 name=player
 node=$2
@@ -20,10 +30,16 @@ then
     cdnUrl=$6
     echo "cdnUrl: " $cdnUrl
 fi
-
+echo "I am testing the build"
+echo "-------------"
 commit_hash=$(git rev-parse --short HEAD)
-nvm install $NODE_VERSION # same is used in client and server
+echo "commit_hash ---->" $commit_hash
 
+# Ensure nvm is available in the script
+. "$NVM_DIR/nvm.sh"
+
+nvm install $NODE_VERSION # same is used in client and server
+npm i -g yarn
 cd src/app
 mkdir -p app_dist/ # this folder should be created prior server and client build
 rm -rf dist-cdn # remove cdn dist folder
@@ -54,7 +70,7 @@ build_client(){
     echo "completed client yarn install"
     if [ $buildDockerImage == true ]
     then
-    build_client_docker & # run client local build in background 
+    build_client_docker & # run client local build in background
     fi
     if [ $buildCdnAssests == true ]
     then
@@ -70,21 +86,21 @@ build_server(){
     echo "copying requied files to app_dist"
     cp -R libs helpers proxy resourcebundles package.json framework.config.js sunbird-plugins routes constants controllers server.js ./../../Dockerfile app_dist
     cd app_dist
-    nvm use $NODE_VERSION
+    #nvm use $NODE_VERSION
     echo "starting server yarn install"
     yarn install --no-progress --production=true
     echo "completed server yarn install"
     node helpers/resourceBundles/build.js -task="phraseAppPull"
 }
 
-build_client & # run client build in background 
+build_client & # run client build in background
 if [ $buildDockerImage == true ]
 then
    build_server & # run client build in background
 fi
 
 ## wait for both build to complete
-wait 
+wait
 
 BUILD_ENDTIME=$(date +%s)
 echo "Client and Server Build complete Took $[$BUILD_ENDTIME - $STARTTIME] seconds to complete."
@@ -92,8 +108,10 @@ echo "Client and Server Build complete Took $[$BUILD_ENDTIME - $STARTTIME] secon
 if [ $buildDockerImage == true ]
 then
 cd app_dist
-sed -i "/version/a\  \"buildHash\": \"${commit_hash}\"," package.json
+# echo "/version/a\  \"buildHash\": \"${commit_hash}\"," package.json
+# sed -i "/version/a\  \"buildHash\": \"${commit_hash}\"," package.json
 echo "starting docker build"
+echo "--->" docker build --no-cache --label commitHash=$(git rev-parse --short HEAD) -t ${org}/${name}:${build_tag}
 docker build --no-cache --label commitHash=$(git rev-parse --short HEAD) -t ${org}/${name}:${build_tag} .
 echo "completed docker build"
 cd ../../..
