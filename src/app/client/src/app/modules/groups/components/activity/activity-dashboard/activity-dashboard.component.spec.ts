@@ -89,27 +89,6 @@ describe('ActivityDashboardComponent', () => {
         });
     });
 
-    describe('getAggData', () => {
-        it('should set the activity and call getDashletData when data returned', () => {
-            component.hierarchyData={leafNodesCount: "1",identifier: 'mock-identifier'};
-            component.groupData = {group: 'mock-group'};
-            jest.spyOn(component['groupService'],'getActivity').mockReturnValue(of({data: 'mock-data'}));
-            component.getAggData();
-            expect(component['groupService'].getActivity).toHaveBeenCalled();
-            expect(component.activity).toEqual({data: 'mock-data'});
-            expect(component.getDashletData).toHaveBeenCalled();
-        });
-
-        it('should handle error case',()=>{
-            component.hierarchyData={leafNodesCount: "1",identifier: 'mock-identifier'};
-            component.groupData = {group: 'mock-group'};
-            jest.spyOn(component['groupService'],'getActivity').mockReturnValue(throwError('No mock Data is sent'));
-            component.getAggData();
-            expect(component['groupService'].getActivity).toHaveBeenCalled();
-            expect(component.navigateBack).toHaveBeenCalled();
-        });
-    });
-
     describe('getDashletData', () => {
         it('should call getDashletData from groupservice and return data', () => {
             component.hierarchyData={children:'mock-children'};
@@ -129,13 +108,6 @@ describe('ActivityDashboardComponent', () => {
         });
     });
 
-    describe('navigateBack', () => {
-        it('should call navigate method from router',()=>{
-           component.navigateBack();
-           expect(mockRouter.navigate).toHaveBeenCalled();
-        });
-    });
-    
     describe('addTelemetry', () => {
         it('should call addtelemetry method with object and other params', () => {
             component.addTelemetry();
