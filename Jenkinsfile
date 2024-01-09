@@ -34,21 +34,7 @@ node('build-slave') {
                 }
 
                 stage('Build') {
-                    steps {
-                        script {
-                            // Install and use the specified Node.js version
-                            nvm(nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh',
-                                nvmIoJsOrgMirror: 'https://iojs.org/dist',
-                                nvmNodeJsOrgMirror: 'https://nodejs.org/dist',
-                                version: '8.1.2') {
-                                sh "npm install"
-                                echo "Build main site distribution"
-                                sh "npm run build:dist"
-                            }
-                            // Outside the nvm block, perform additional shell commands
-                            sh "bash ./build.sh ${build_tag} ${env.NODE_NAME} ${hub_org} ${params.buildDockerImage} ${params.buildCdnAssests} ${params.cdnUrl}"
-                        }
-                    }
+                    sh("bash ./build.sh  ${build_tag} ${env.NODE_NAME} ${hub_org} ${params.buildDockerImage} ${params.buildCdnAssests} ${params.cdnUrl}")
                 }
 
                 stage('ArchiveArtifacts') {
