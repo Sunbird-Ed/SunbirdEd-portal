@@ -36,7 +36,7 @@
       "fields": "rootOrgId,rootOrgName"
     },
     "contentGet": "transcripts,ageGroup,appIcon,artifactUrl,attributions,attributions,audience,author,badgeAssertions,board,body,channel,code,concepts,contentCredits,contentType,contributors,copyright,copyrightYear,createdBy,createdOn,creator,creators,description,displayScore,domain,editorState,flagReasons,flaggedBy,flags,framework,gradeLevel,identifier,itemSetPreviewUrl,keywords,language,languageCode,lastUpdatedOn,license,mediaType,medium,mimeType,name,originData,osId,owner,pkgVersion,publisher,questions,resourceType,scoreDisplayConfig,status,streamingUrl,subject,template,templateId,totalQuestions,totalScore,versionKey,visibility,year,primaryCategory,additionalCategories,interceptionPoints,interceptionType",
-    "questionSetRead": "instructions",
+    "questionSetRead": "instructions,outcomeDeclaration",
     "enrolledCourses": {
       "fields": "contentType,topic,name,channel,mimeType,appIcon,gradeLevel,resourceType,identifier,medium,pkgVersion,board,subject,trackable,primaryCategory,organisation",
       "batchDetails": "name,endDate,startDate,status,enrollmentType,createdBy,certificates"
@@ -124,7 +124,8 @@
       "GET_MANAGED_USER": "user/v1/managed",
       "USER_EXISTS_GET_USER_BY_KEY": "isUserExists/user/v1/get",
       "USER_DECLARATION": "user/v1/declarations",
-      "GET_SESSION": "get/user/sessionId"
+      "GET_SESSION": "get/user/sessionId",
+      "DELETE":"user/v1/delete"
     },
     "CERTIFICATE": {
       "FETCH_CERTIFICATES": "v1/certs/search",
@@ -343,10 +344,15 @@
       "READ": "org/v2/preferences/read"
     },
     "QUESTIONSET": {
-      "CREATE": "questionset/v1/create",
-      "READ": "questionset/v1/read",
-      "HIERARCHY_READ": "questionset/v1/hierarchy",
-      "COPY": "questionset/v1/copy"
+      "V1": {
+        "HIERARCHY_READ": "questionset/v1/hierarchy",
+        "READ": "questionset/v1/read"
+      },
+      "CREATE": "questionset/v2/create",
+      "READ": "questionset/v2/read",
+      "HIERARCHY_READ": "questionset/v2/hierarchy",
+      "COPY": "questionset/v2/copy",
+      "LIST_API": "api/question/v2/list"
     },
     "OBJECTCATEGORY": {
       "READ": "object/category/definition/v1/read"

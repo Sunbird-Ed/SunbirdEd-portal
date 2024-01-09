@@ -1477,6 +1477,7 @@
     "book": "./assets/images/book.png"
   },
   "OTPTemplate": {
-      "updateContactTemplate": "otpContactUpdateTemplate"
+      "updateContactTemplate": "otpContactUpdateTemplate",
+      "userDeleteTemplate": "otpDeleteUserTemplate"
   }
 }

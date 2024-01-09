@@ -1,24 +1,7 @@
 import {ProfileService} from '../../services';
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild, Inject } from '@angular/core';
-import {
-  CertRegService,
-  CoursesService,
-  OrgDetailsService,
-  PlayerService,
-  SearchService,
-  UserService,
-  FormService
-} from '@sunbird/core';
-import {
-  ConfigService,
-  IUserData, LayoutService,
-  NavigationHelperService,
-  ResourceService,
-  ServerResponse,
-  ToasterService,
-  UtilService,
-  ConnectionService
-} from '@sunbird/shared';
+import { CertRegService, CoursesService, OrgDetailsService, PlayerService, SearchService, UserService, FormService } from '@sunbird/core';
+import { ConfigService, IUserData, LayoutService, NavigationHelperService, ResourceService, ServerResponse, ToasterService, UtilService, ConnectionService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import {Subject, Subscription} from 'rxjs';
 import {IImpressionEventInput, IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
@@ -29,6 +12,7 @@ import { CertificateDownloadAsPdfService } from 'sb-svg2pdf-v13';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 import { FieldConfig, FieldConfigOption } from '@project-sunbird/common-form-elements-full';
 import { CsCertificateService } from '@project-sunbird/client-services/services/certificate/interface';
+import { CslFrameworkService } from '../../../../modules/public/services/csl-framework/csl-framework.service';
 
 @Component({
   templateUrl: './profile-page.component.html',
@@ -47,6 +31,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   totalContributions: Number;
   attendedTraining: Array<object>;
   roles: Array<string>;
+  userRoles;
   showMoreRoles = true;
   showMoreTrainings = true;
   showMoreCertificates = true;
@@ -59,9 +44,11 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   orgDetails: any = [];
   showContactPopup = false;
   showEditUserDetailsPopup = false;
+  disableDelete=true
   userFrameWork: any;
   telemetryImpression: IImpressionEventInput;
   myFrameworkEditEdata: IInteractEventEdata;
+  deleteAccountEdata: IInteractEventEdata;
   editProfileInteractEdata: IInteractEventEdata;
   editMobileInteractEdata: IInteractEventEdata;
   editEmailInteractEdata: IInteractEventEdata;
@@ -97,6 +84,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   subPersona: string[];
   isConnected = true;
   showFullScreenLoader = false;
+  transormUserProfile;
+  frameworkCategoriesObject;
   avatarConfig = {
     size: this.configService.constants.SIZE.LARGE,
     view: this.configService.constants.VIEW.VERTICAL,
@@ -110,7 +99,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     private playerService: PlayerService, private activatedRoute: ActivatedRoute, public orgDetailsService: OrgDetailsService,
     public navigationhelperService: NavigationHelperService, public certRegService: CertRegService,
     private telemetryService: TelemetryService, public layoutService: LayoutService, private formService: FormService,
-    private certDownloadAsPdf: CertificateDownloadAsPdfService, private connectionService: ConnectionService,
+    private certDownloadAsPdf: CertificateDownloadAsPdfService, private connectionService: ConnectionService, private cslFrameworkService:CslFrameworkService,
     @Inject('CS_CERTIFICATE_SERVICE') private CsCertificateService: CsCertificateService) {
     this.getNavParams();
   }
@@ -121,7 +110,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.isDesktopApp = this.utilService.isDesktopApp;
-
+    this.frameworkCategoriesObject = this.cslFrameworkService.getFrameworkCategoriesObject();
     this.activatedRoute.queryParams.subscribe((params) => {
       if (params['showEditUserDetailsPopup']) {
         this.showEditUserDetailsPopup = true;
@@ -142,6 +131,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.showFullScreenLoader = false;
       if (user.userProfile) {
         this.userProfile = user.userProfile;
+        this.transormUserProfile = this.cslFrameworkService.frameworkLabelTransform(this.frameworkCategoriesObject,this.userProfile);
         const role: string = (!this.userProfile.profileUserType.type ||
           (this.userProfile.profileUserType.type && this.userProfile.profileUserType.type === 'OTHER')) ? '' : this.userProfile.profileUserType.type;
         this.userLocation = this.getUserLocation(this.userProfile);
@@ -223,11 +213,15 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     });
-    let userRoles;
     if (_.get(this.userProfile, 'roles') && !_.isEmpty(this.userProfile.roles)) {
-      userRoles = _.map(this.userProfile.roles, 'role');
+      this.userRoles = _.map(this.userProfile.roles, 'role');
     }
-    _.forEach(userRoles, (value, key) => {
+    if (_.includes(this.userRoles, 'ORG_ADMIN')) {
+      this.disableDelete = true
+    } else {
+      this.disableDelete = false
+    }
+    _.forEach(this.userRoles, (value, key) => {
       if (value !== 'PUBLIC') {
         const roleName = _.find(this.userProfile.roleList, { id: value });
         if (roleName) {
@@ -500,10 +494,24 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       type: 'click',
       pageid: 'profile-read'
     };
+    this.deleteAccountEdata={
+      id: 'delete-user-account',
+      type: 'click',
+      pageid: 'profile-read'
+    };
   }
 
   navigate(url, formAction) {
     this.router.navigate([url], {queryParams: {formaction: formAction}});
+  }
+
+  navigatetoRoute(url) {
+    if (_.includes(this.userProfile.userRoles, 'PUBLIC')&& this.userProfile.userRoles.length===1) {
+      this.router.navigate([url]);
+    }else{
+      const msg = 'Your role doesnot allow you to delete your account. Please contact support!'
+      this.toasterService.warning(msg);
+    }
   }
 
   ngAfterViewInit() {

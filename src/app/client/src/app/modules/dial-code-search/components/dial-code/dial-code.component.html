@@ -21,7 +21,7 @@
 <div class="ui container py-24" [appTelemetryImpression]="telemetryImpression">
   <div class="sb-grid" *ngIf="showLoader">
     <div [id]="i" [data]=[] class="sb-grid--item" *ngFor="let i of numberOfSections">
-      <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" [type]="'portal_qrcode_flatresult'" [isLoading]="true"></sb-library-card>
+      <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" [type]="'portal_qrcode_flatresult'" [isLoading]="true" [categoryKeys]="categoryKeys"></sb-library-card>
     </div>
   </div>
   <div class="dial-code-section-result">
@@ -66,7 +66,7 @@
               [moreInfoLabel]="resourceService?.frmelmnts?.lbl?.section"
               [section]="content?.metaData?.childTextbookUnit?.name || ''"
               [telemetryInteractObject]="{id:content.metaData.identifier,type:content.contentType,ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}"
-              [telemetryInteractEdata]="content.telemetryInteractEdata"
+              [telemetryInteractEdata]="content.telemetryInteractEdata" [categoryKeys]="categoryKeys"
               [telemetryInteractCdata]="[{ 'type': 'DialCode', 'id': dialCode}]">
             </sb-library-card>
             <!-- END - Results page -->
@@ -77,7 +77,7 @@
               (cardClick)="getEvent($event)" (enterKey)="getEvent($event)"  [content]="content" [cardImg]="content?.image || 'assets/images/book.png'"
               appTelemetryInteract appContentDirection [data]="content"
               [telemetryInteractObject]="{id:content.metaData.identifier,type:content.contentType,ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}"
-              [telemetryInteractEdata]="content.telemetryInteractEdata"
+              [telemetryInteractEdata]="content.telemetryInteractEdata" [categoryKeys]="categoryKeys"
               [telemetryInteractCdata]="[{ 'type': 'DialCode', 'id': dialCode}]">
             </sb-library-card>
             <!-- END - Flattened page -->

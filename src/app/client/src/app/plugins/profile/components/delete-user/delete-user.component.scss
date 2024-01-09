@@ -1,0 +1,50 @@
+@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use 'pages/user-mgmt' as *;
+
+@use 'pages/page-center-view' as *;
+@use 'pages/custom-carousel.scss' as *;
+
+  /* can be remove, comes from CC */
+  .close {
+    width:calculateRem(32px);
+    height:calculateRem(32px);
+    border-radius:50%;
+    position:absolute;
+    right:calculateRem(8px);
+    top:calculateRem(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor:pointer;
+  }
+
+  h4 {
+    color: var(--gray-800);
+    font-size: calculateRem(20px);
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: calculateRem(28px);
+  }
+
+  p {
+    color: var(--gray-800);
+    font-size: calculateRem(14px) !important;
+    letter-spacing: 0;
+    font-size: calculateRem(22px);
+  }
+
+.box {
+    max-width: 45rem;
+    width: 100%;
+    margin: 2% auto 0 auto !important;
+    border-radius: 2rem !important;
+}
+
+.delete__title{
+    margin: auto;
+    color: #dd4841;
+}
+li{
+  margin-bottom:1rem ;
+}
+

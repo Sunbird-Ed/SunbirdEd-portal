@@ -11,6 +11,7 @@ import * as _ from 'lodash-es';
 import { Observable, of, forkJoin } from 'rxjs';
 import  dayjs from 'dayjs';
 import { v4 as UUID } from 'uuid';
+import { CslFrameworkService } from '../../../../../app/modules/public/services/csl-framework/csl-framework.service';
 
 const PRE_DEFINED_PARAMETERS = ['$slug', '$board', '$state', '$channel'];
 
@@ -23,16 +24,18 @@ export class ReportService  {
   private _superAdminSlug: string;
 
   private cachedMapping = {};
+  private frameworkCategories;
 
   constructor(private sanitizer: DomSanitizer, private usageService: UsageService, private userService: UserService,
     private configService: ConfigService, private baseReportService: BaseReportService, private permissionService: PermissionService,
     private courseProgressService: CourseProgressService, private searchService: SearchService,
-    private frameworkService: FrameworkService, private profileService: ProfileService ) {
+    private frameworkService: FrameworkService, private profileService: ProfileService, private cslFrameworkService:CslFrameworkService ) {
     try {
       this._superAdminSlug = (<HTMLInputElement>document.getElementById('superAdminSlug')).value;
     } catch (error) {
       this._superAdminSlug = 'sunbird';
     }
+    this.frameworkCategories = this.cslFrameworkService.getFrameworkCategories();
   }
 
   public fetchDataSource(filePath: string, id?: string | number): Observable<any> {
@@ -423,7 +426,7 @@ export class ReportService  {
         }
       },
       $board: {
-        value: _.get(this.userService, 'userProfile.framework.board[0]'),
+        value: _.get(this.userService, 'userProfile.framework.[this.frameworkCategories.fwCategory1.code][0]'),
         masterData: () => {
           if (!this.cachedMapping.hasOwnProperty('$board')) {
             this.cachedMapping['$board'] = this.frameworkService.getChannel(_.get(this.userService, 'hashTagId'))
@@ -432,7 +435,7 @@ export class ReportService  {
                   .pipe(
                     map(framework => {
                       const frameworkData = _.get(framework, 'result.framework');
-                      const boardCategory = _.find(frameworkData.categories, ['code', 'board']);
+                      const boardCategory = _.find(frameworkData.categories, ['code', this.frameworkCategories?.fwCategory1?.code]);
                       if (!boardCategory) { return of([]); }
                       return _.map(boardCategory.terms, 'name');
                     }),

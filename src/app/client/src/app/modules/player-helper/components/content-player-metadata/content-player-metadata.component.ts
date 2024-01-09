@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import * as _ from 'lodash-es';
 import { ContentData, ResourceService } from '@sunbird/shared';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 @Component({
   selector: 'app-content-player-metadata',
@@ -16,12 +17,16 @@ export class ContentPlayerMetadataComponent implements OnInit {
   // conceptNames: any;
   // filteredConcepts: any;
   showContentCreditsModal: boolean;
+  public frameworkCategoriesList;
+  public transformMetadata;
 
   @Input() contentData: ContentData;
-  constructor(public resourceService: ResourceService) { }
+  constructor(public resourceService: ResourceService, public cslFrameworkService: CslFrameworkService) { }
 
   ngOnInit() {
     this.metadata = { ...this.contentData };
+    this.frameworkCategoriesList = this.cslFrameworkService.getGlobalFilterCategoriesObject();
+    this.transformMetadata = this.cslFrameworkService.transformContentDataFwBased(this.frameworkCategoriesList,this.metadata);
     this.validateContent();
     this.instance = _.upperCase(this.resourceService.instance);
   }

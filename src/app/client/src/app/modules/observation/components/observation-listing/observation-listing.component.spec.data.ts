@@ -1,4 +1,17 @@
 export const Response = {
+  mockTelemetryImpression: {
+		context: {
+			env: 'mock-env'
+		},
+		edata: {
+			type: 'mock-Type',
+			pageid: 'mock-page-id',
+			uri: '/library/mock',
+			subtype: 'mock-sub-type',
+			duration: 1,
+			visits: []
+		}
+	},
   successData: {
     count: 5,
     data: [

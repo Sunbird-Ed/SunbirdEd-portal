@@ -1,4 +1,12 @@
 'use strict'
+
+if (process.env.NODE_ENV === 'development') {
+  const processEnv = require('dotenv').config();
+  console.log(`Running in ${process.env.NODE_ENV} node`);
+} else {
+  console.log("Running in production mode");
+}
+
 const { enableLogger } = require('@project-sunbird/logger');
 const envHelper = require('./helpers/environmentVariablesHelper.js');
 const path = require('path');
@@ -6,6 +14,7 @@ const fs = require('fs');
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const utils = require('./helpers/utils.js');
 const LEARNER_URL = utils?.defaultHost(utils?.envVariables?.LEARNER_URL);
+
 enableLogger({
   logBasePath: path.join(__dirname, 'logs'),
   logLevel: envHelper.sunbird_portal_log_level,
