@@ -10,13 +10,6 @@ export NVM_DIR="$HOME/.nvm"
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
-
-
-echo "value of one "$1
-echo "value of two "$2
-echo "value of three "$3
-echo "value of four "$4
-echo "value of five "$5
 build_tag=$1
 name=player
 node=$2
@@ -30,12 +23,8 @@ then
     cdnUrl=$6
     echo "cdnUrl: " $cdnUrl
 fi
-echo "I am testing the build"
-echo "-------------"
-echo "I am testing the build"
-echo "-------------"
+
 commit_hash=$(git rev-parse --short HEAD)
-echo "commit_hash ---->" $commit_hash
 
 # Ensure nvm is available in the script
 . "$NVM_DIR/nvm.sh"
@@ -110,7 +99,6 @@ echo "Client and Server Build complete Took $[$BUILD_ENDTIME - $STARTTIME] secon
 if [ $buildDockerImage == true ]
 then
 cd app_dist
-# echo "/version/a\  \"buildHash\": \"${commit_hash}\"," package.json
 # sed -i "/version/a\  \"buildHash\": \"${commit_hash}\"," package.json
 echo "starting docker build"
 echo "--->" docker build --no-cache --label commitHash=$(git rev-parse --short HEAD) -t ${org}/${name}:${build_tag}
