@@ -732,7 +732,9 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         ];
         break;
       case 'tvProgram':
-        filters.primaryCategory = ['TVLesson'];
+        //filters.primaryCategory = ['TVLesson'];
+        filters.primaryCategory = ['Explanation Content'];
+        filters.additionalCategories = ['TV Lesson'];
         break;
       case 'home':
         this.router.navigateByUrl('/exploren?selectedTab=home')
