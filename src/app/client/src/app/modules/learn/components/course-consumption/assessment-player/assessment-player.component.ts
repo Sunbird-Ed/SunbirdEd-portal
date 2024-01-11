@@ -151,7 +151,11 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
           }
         }
       }
-      this.router.navigate(['/learn/course/play', _.get(collectionUnit, 'identifier')], navigationExtras);
+      // this.router.navigate(['/learn/course/play', _.get(collectionUnit, 'identifier')], navigationExtras);
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        console.log('the application is being called successfully');
+        this.router.navigate(['/learn/course/play', _.get(collectionUnit, 'identifier')], navigationExtras);
+      });
   }
 
   ngOnInit() {
