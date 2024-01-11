@@ -25,7 +25,9 @@ describe('GeneraliseLabelService', () => {
       }
     }
   };
-  const mockUsageService: Partial<UsageService> = {};
+  const mockUsageService: Partial<UsageService> = {
+    getData: jest.fn()
+  };
   const mockResourceService: Partial<ResourceService> = {};
   const mockFormService: Partial<FormService> = {
     getFormConfig: jest.fn().mockReturnValue(of(MockResponse.resourceBundleConfig)) as any
@@ -76,5 +78,14 @@ describe('GeneraliseLabelService', () => {
       expect(generaliseLabelService.formService.getFormConfig).toHaveBeenCalled();
     });
    });
+
+   it('should initialize with the provided content data and language', () => {
+    const contentData = {};
+    const lang = 'en';
+    const mockGetLabels = jest.spyOn(generaliseLabelService, 'getLabels' as any);
+    mockGetLabels.mockImplementation(() => {});
+    generaliseLabelService.initialize(contentData, lang);
+    expect(mockGetLabels).toHaveBeenCalledWith(contentData, lang);
+  });
 
 });
