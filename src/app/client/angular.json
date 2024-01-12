@@ -105,6 +105,7 @@
               "node_modules/videojs-http-source-selector/dist/videojs-http-source-selector.min.js",
               "node_modules/@project-sunbird/sunbird-file-upload-library/sunbird-file-upload-library.js",
               "node_modules/@project-sunbird/sunbird-video-player-v9/lib/assets/videojs-markers.js",
+              "src/assets/sunbird-folder/sunbird-epub-player/sunbird-epub-player.js",
               {
                 "inject": false,
                 "input": "src/assets/libs/semantic-ui/transition.min.js",

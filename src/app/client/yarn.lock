@@ -2367,14 +2367,6 @@
   dependencies:
     tslib "^2.0.0"
 
-"@project-sunbird/sunbird-epub-player-v9@5.6.0":
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v9/-/sunbird-epub-player-v9-5.6.0.tgz#ec65487f5099ecdd3b4d5fbcbe8cfc23872eaf24"
-  integrity sha512-TP3CXN+eXonhOQl/zij1XUrb7LPBEf78J2dXYwLSxuNCSMUM5j1XuFfMsWjs5lobf9ZU6lUNEqLRYWcVh/CodA==
-  dependencies:
-    "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
-    tslib "^2.0.0"
-
 "@project-sunbird/sunbird-file-upload-library@1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-file-upload-library/-/sunbird-file-upload-library-1.0.2.tgz#331465c478d4df45cdbaa813c597296609892517"
