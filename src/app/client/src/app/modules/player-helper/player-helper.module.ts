@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -14,7 +14,6 @@ import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
 import { FormsModule } from '@angular/forms';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
-import {SunbirdPdfPlayerModule} from '@project-sunbird/sunbird-pdf-player-v9';
 import {QumlPlayerV2Service} from './service/quml-player-v2/quml-player-v2.service';
 import { QumlPlayerService } from './service/quml-player/quml-player.service';
 import { QumlLibraryModule as QsLibModule, QuestionCursor as QsCursor} from '@project-sunbird/sunbird-quml-player';
@@ -39,7 +38,6 @@ import { SunbirdVideoPlayerModule } from '@project-sunbird/sunbird-video-player-
     CoreModule,
     FormsModule,
     CommonConsumptionModule,
-    SunbirdPdfPlayerModule,
     QsLibModule,
     QumlLibraryModule,
     SunbirdEpubPlayerModule,
@@ -57,5 +55,6 @@ import { SunbirdVideoPlayerModule } from '@project-sunbird/sunbird-video-player-
     CommingSoonComponent, CreditsAndLicenceComponent, ContentActionsComponent,
     ContentPlayerComponent, ContentPlayerPageComponent, ContentChapterlistComponent,
     ContentLicenceComponent, CurriculumInfoComponent, CourseInfoComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class PlayerHelperModule { }

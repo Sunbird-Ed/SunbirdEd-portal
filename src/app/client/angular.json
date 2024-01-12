@@ -24,14 +24,16 @@
               "src/assets/SampleUserCsv.csv",
               "src/thirdparty",
               "src/favicon.png",
+              "src/favicon.ico",
+              "src/assets",
               {
                 "glob": "**/*.*",
                 "input": "./node_modules/@project-sunbird/common-consumption/assets",
                 "output": "./assets/common-consumption"
               },
               {
-                "glob": "**/*",
-                "input": "./node_modules/@project-sunbird/sunbird-pdf-player-v9/lib/assets/",
+                "glob": "**/*.*",
+                "input": "./node_modules/@project-sunbird/sunbird-pdf-player-web-component/assets",
                 "output": "/assets/"
               },
               {
@@ -81,7 +83,8 @@
               "./node_modules/@project-sunbird/sb-themes/themes/themes-portal.scss",
               "node_modules/videojs-http-source-selector/dist/videojs-http-source-selector.css",
               "node_modules/@project-sunbird/sunbird-video-player-v9/lib/assets/videojs.markers.min.css",
-              "./node_modules/@project-sunbird/discussions-ui/assets/styles/global.scss"
+              "./node_modules/@project-sunbird/discussions-ui/assets/styles/global.scss",
+              "node_modules/@project-sunbird/sunbird-pdf-player-web-component/styles.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -105,6 +108,8 @@
               "node_modules/videojs-http-source-selector/dist/videojs-http-source-selector.min.js",
               "node_modules/@project-sunbird/sunbird-file-upload-library/sunbird-file-upload-library.js",
               "node_modules/@project-sunbird/sunbird-video-player-v9/lib/assets/videojs-markers.js",
+              "node_modules/reflect-metadata/Reflect.js",
+              "node_modules/@project-sunbird/sunbird-pdf-player-web-component/sunbird-pdf-player.js",
               {
                 "inject": false,
                 "input": "src/assets/libs/semantic-ui/transition.min.js",
