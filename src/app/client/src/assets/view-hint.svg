@@ -1,0 +1,6 @@
+<svg width="14px" height="20px" viewBox="0 0 14 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <title>hint</title>
+  <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+      <path d="M4,19 C4,19.55 4.45,20 5,20 L9,20 C9.55,20 10,19.55 10,19 L10,18 L4,18 L4,19 L4,19 Z M7,0 C3.14,0 0,3.14 0,7 C0,9.38 1.19,11.47 3,12.74 L3,15 C3,15.55 3.45,16 4,16 L10,16 C10.55,16 11,15.55 11,15 L11,12.74 C12.81,11.47 14,9.38 14,7 C14,3.14 10.86,0 7,0 L7,0 Z M9.85,11.1 L9,11.7 L9,14 L5,14 L5,11.7 L4.15,11.1 C2.8,10.16 2,8.63 2,7 C2,4.24 4.24,2 7,2 C9.76,2 12,4.24 12,7 C12,8.63 11.2,10.16 9.85,11.1 L9.85,11.1 Z" id="hint" fill="#31A679"></path>
+  </g>
+</svg>
