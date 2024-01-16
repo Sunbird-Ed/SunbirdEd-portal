@@ -62,7 +62,7 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
       * @description - popupcontrol service returned value is used to enable/disable the location popup based on the isvisible value
     */
     this.popupControlService.getOnboardingData().subscribe((formResponsedata)=>{
-      this.isLocationEnabled= formResponsedata.locationPopup? formResponsedata.locationPopup.isVisible : true;
+      this.isLocationEnabled= formResponsedata?.locationPopup? formResponsedata?.locationPopup?.isVisible : true;
     })
     this.sbFormLocationSelectionDelegate.init(this.deviceProfile, this.showModal, this.isStepper )
       .catch(() => {

@@ -265,7 +265,7 @@ export class CslFrameworkService {
  */
   setTransFormGlobalFilterConfig(rooOrgID?) {
     let filterResponseData;
-    this.rootOrgId =  rooOrgID;
+    this.rootOrgId = rooOrgID;
     this.getFormDetails(rooOrgID).subscribe(responseData => {
       const allTabData = _.find(responseData, (o) => o.title === 'frmelmnts.tab.all');
       if (allTabData) {
@@ -275,17 +275,19 @@ export class CslFrameworkService {
         filterResponseData = this.defaultFwCategories;
       }
       let transformedObject: any = {};
-      filterResponseData.map((filter, index) => {
-        transformedObject[`fwCategory${index + 1}`] = {
-          index: filter?.index,
-          code: filter?.code,
-          alternativeCode: filter?.alternativeCode ? filter?.alternativeCode : filter?.code,
-          label: filter?.label,
-          translation: filter?.translation,
-          type: filter?.type
+      if (filterResponseData) {
+        filterResponseData.map((filter, index) => {
+          transformedObject[`fwCategory${index + 1}`] = {
+            index: filter?.index,
+            code: filter?.code,
+            alternativeCode: filter?.alternativeCode ? filter?.alternativeCode : filter?.code,
+            label: filter?.label,
+            translation: filter?.translation,
+            type: filter?.type
 
-        };
-      });
+          };
+        });
+      }
       localStorage.removeItem('globalFilterObject');
       localStorage.removeItem('globalFilterObjectValues');
       localStorage.setItem('globalFilterObjectValues', JSON.stringify(filterResponseData))
