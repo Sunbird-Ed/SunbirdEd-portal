@@ -2382,6 +2382,14 @@
   dependencies:
     axios "^1.4.0"
 
+"@project-sunbird/sunbird-pdf-player-v9@5.5.0":
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-pdf-player-v9/-/sunbird-pdf-player-v9-5.5.0.tgz#1c0d6b784beda45e579c07765591f9efd47d38e5"
+  integrity sha512-4bhoxB2lEKvd71hBXplz6s1cAxFYiseyCDJCsh783pnXjwgNpB6auETUiEsEIpS30ARPILmZDVmInLvCWausVA==
+  dependencies:
+    "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
+    tslib "^2.0.0"
+
 "@project-sunbird/sunbird-pdf-player-web-component@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-pdf-player-web-component/-/sunbird-pdf-player-web-component-1.1.0.tgz#ccdfc67e04dc78883b8c5c331daf0d9a233d3378"
