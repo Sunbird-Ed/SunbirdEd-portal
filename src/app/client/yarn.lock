@@ -11896,10 +11896,10 @@ sb-svg2pdf-v13@1.0.0:
   dependencies:
     tslib "^2.0.0"
 
-sb-tag-manager@3.9.15:
-  version "3.9.15"
-  resolved "https://registry.yarnpkg.com/sb-tag-manager/-/sb-tag-manager-3.9.15.tgz#eb3eb76253eb705899d423643fc9569183bc1b23"
-  integrity sha512-/ZukSpRPwTRAJHhZuXNtdZrAzHcvYXWIkN2vvn4eNBEbM25p1Y0GCp4cjaIpUknmckXWyj3R4FOKNHSgVWa0sg==
+sb-tag-manager@3.9.19:
+  version "3.9.19"
+  resolved "https://registry.yarnpkg.com/sb-tag-manager/-/sb-tag-manager-3.9.19.tgz#f9ca802c7b6618b9c5e694f8a17e525091d06077"
+  integrity sha512-0G/gpKcInDNXzTs68jBKIGdj6vZLWZJF1UJtWU8qZiRoIWVOUyUl4RKFuzobix6kvZuHvu2kww/j4IdJ3GYWLw==
   dependencies:
     inversify "^5.0.1"
     qs "^6.9.4"
