@@ -58,11 +58,11 @@ export class OnboardingUserSelectionComponent implements OnInit, OnDestroy {
     /**
       * @description - popupcontrol service returned value is used to enable/disable the usertype popup based on the isvisible value
     */
-    this.popupControlService.getOnboardingData().subscribe((formResponsedata)=>{
-      this.isUserTypeEnabled =formResponsedata.userTypePopup? formResponsedata.userTypePopup.isVisible: true;
-      if(!(this.isUserTypeEnabled)){
-        localStorage.setItem('userType',formResponsedata.userTypePopup.defaultUserType);
-        localStorage.setItem('guestUserType',formResponsedata.userTypePopup.defaultGuestUserType);
+    this.popupControlService.getOnboardingData().subscribe((formResponsedata) => {
+        this.isUserTypeEnabled = formResponsedata?.userTypePopup ? formResponsedata?.userTypePopup?.isVisible : true;
+        if (!(this.isUserTypeEnabled)) {
+          localStorage.setItem('userType', formResponsedata?.userTypePopup?.defaultUserType);
+          localStorage.setItem('guestUserType', formResponsedata?.userTypePopup?.defaultGuestUserType);
       }
     });
     this.setPopupInteractEdata();

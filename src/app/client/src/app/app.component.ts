@@ -357,13 +357,13 @@ export class AppComponent implements OnInit, OnDestroy {
   /**
     * @description - This method sets the popup show values to true/false based on values from form config
   */
-  checkPopupVisiblity(onboardingData){
-    this.isOnboardingEnabled= onboardingData.onboardingPopups? onboardingData.onboardingPopups.isVisible : true;
-    this.isFWSelectionEnabled = onboardingData.frameworkPopup? onboardingData.frameworkPopup.isVisible : true;
-    this.isUserTypeEnabled =onboardingData.userTypePopup? onboardingData.userTypePopup.isVisible: true;
-    if(!(this.isOnboardingEnabled) || !(this.isFWSelectionEnabled)){
-      this.userService.setGuestUser(true,onboardingData.frameworkPopup.defaultFormatedName); //user service method is set to true in case either of onboarding or framework popup is disabled
-    }
+  checkPopupVisiblity(onboardingData) {
+      this.isOnboardingEnabled = onboardingData?.onboardingPopups ? onboardingData?.onboardingPopups?.isVisible : true;
+      this.isFWSelectionEnabled = onboardingData?.frameworkPopup ? onboardingData?.frameworkPopup?.isVisible : true;
+      this.isUserTypeEnabled = onboardingData?.userTypePopup ? onboardingData?.userTypePopup?.isVisible : true;
+      if (!(this.isOnboardingEnabled) || !(this.isFWSelectionEnabled)) {
+        this.userService.setGuestUser(true, onboardingData?.frameworkPopup?.defaultFormatedName); //user service method is set to true in case either of onboarding or framework popup is disabled
+      }
   }
 
   ngOnInit() {

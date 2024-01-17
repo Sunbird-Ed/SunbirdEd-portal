@@ -194,7 +194,6 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
           const frameworkData = _.get(frameworkDetails.frameworkdata, framework);
           this.frameWorkId = frameworkData.identifier;
           this.categoryMasterList = frameworkData.categories;
-          this.updateFrameworkCategories(this.frameWorkId);
           return this.getFormDetails();
         } else {
           return throwError(frameworkDetails.err);
@@ -221,6 +220,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     if (this.unsubscribe) { // cancel if any previous api call in progress
       this.unsubscribe.unsubscribe();
     }
+    this.updateFrameworkCategories(this.frameWorkId);
     this.unsubscribe = this.getFormatedFilterDetails().pipe().subscribe(
       (formFieldProperties) => {
         if (!formFieldProperties.length) {
