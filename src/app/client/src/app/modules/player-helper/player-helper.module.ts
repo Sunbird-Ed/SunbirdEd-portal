@@ -47,6 +47,5 @@ import { EditorCursor as QsEditorCursor } from '@project-sunbird/sunbird-questio
     CommingSoonComponent, CreditsAndLicenceComponent, ContentActionsComponent,
     ContentPlayerComponent, ContentPlayerPageComponent, ContentChapterlistComponent,
     ContentLicenceComponent, CurriculumInfoComponent, CourseInfoComponent],
-  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
 })
 export class PlayerHelperModule { }
