@@ -2367,6 +2367,19 @@
   dependencies:
     tslib "^2.0.0"
 
+"@project-sunbird/sunbird-epub-player-v9@5.6.0":
+  version "5.6.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v9/-/sunbird-epub-player-v9-5.6.0.tgz#ec65487f5099ecdd3b4d5fbcbe8cfc23872eaf24"
+  integrity sha512-TP3CXN+eXonhOQl/zij1XUrb7LPBEf78J2dXYwLSxuNCSMUM5j1XuFfMsWjs5lobf9ZU6lUNEqLRYWcVh/CodA==
+  dependencies:
+    "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
+    tslib "^2.0.0"
+
+"@project-sunbird/sunbird-epub-player-web-component@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-web-component/-/sunbird-epub-player-web-component-1.1.0.tgz#e6a0c70583d5e1d64b085664136b78d0df36aba2"
+  integrity sha512-eIVa8oT7RHSKiKK+bj/Gu9/2F3La6klomK6h8rtJcyVtWf71BVAGO8q7D7Z8caR07sROaO7JOBs6Uid8OjfteQ==
+
 "@project-sunbird/sunbird-file-upload-library@1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-file-upload-library/-/sunbird-file-upload-library-1.0.2.tgz#331465c478d4df45cdbaa813c597296609892517"
@@ -11458,6 +11471,11 @@ reflect-metadata@^0.1.13, reflect-metadata@^0.1.2:
   version "0.1.13"
   resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.13.tgz#67ae3ca57c972a2aa1642b10fe363fe32d49dc08"
   integrity sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==
+
+reflect-metadata@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.2.1.tgz#8d5513c0f5ef2b4b9c3865287f3c0940c1f67f74"
+  integrity sha512-i5lLI6iw9AU3Uu4szRNPPEkomnkjRTaVt9hy/bn5g/oSzekBSMeLZblcjP74AW0vBabqERLLIrz+gR8QYR54Tw==
 
 regenerate-unicode-properties@^10.1.0:
   version "10.1.1"
