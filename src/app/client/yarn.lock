@@ -2345,7 +2345,7 @@
     "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
     tslib "^2.0.0"
 
-"@project-sunbird/sunbird-epub-player-web-component@^1.1.0":
+"@project-sunbird/sunbird-epub-player-web-component@1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-web-component/-/sunbird-epub-player-web-component-1.1.0.tgz#e6a0c70583d5e1d64b085664136b78d0df36aba2"
   integrity sha512-eIVa8oT7RHSKiKK+bj/Gu9/2F3La6klomK6h8rtJcyVtWf71BVAGO8q7D7Z8caR07sROaO7JOBs6Uid8OjfteQ==
@@ -2365,7 +2365,7 @@
     "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
     tslib "^2.0.0"
 
-"@project-sunbird/sunbird-pdf-player-web-component@^1.1.0":
+"@project-sunbird/sunbird-pdf-player-web-component@1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-pdf-player-web-component/-/sunbird-pdf-player-web-component-1.1.0.tgz#ccdfc67e04dc78883b8c5c331daf0d9a233d3378"
   integrity sha512-upzGIRzRh8iOrkCFnmey/1DI9h9iyw110sXj6DluoobyonN0uXhrBwxk+oOiROGVAgm7hpTtrobGVzhGpEf40A==
@@ -6363,7 +6363,7 @@ figures@^3.0.0:
   dependencies:
     escape-string-regexp "^1.0.5"
 
-"file-saver@github:eligrey/FileSaver.js#1.3.8":
+file-saver@eligrey/FileSaver.js#1.3.8:
   version "1.3.8"
   resolved "https://codeload.github.com/eligrey/FileSaver.js/tar.gz/e865e37af9f9947ddcced76b549e27dc45c1cb2e"
 
@@ -11260,20 +11260,15 @@ rechoir@^0.6.2:
   dependencies:
     resolve "^1.1.6"
 
+reflect-metadata@0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.2.1.tgz#8d5513c0f5ef2b4b9c3865287f3c0940c1f67f74"
+  integrity sha512-i5lLI6iw9AU3Uu4szRNPPEkomnkjRTaVt9hy/bn5g/oSzekBSMeLZblcjP74AW0vBabqERLLIrz+gR8QYR54Tw==
+
 reflect-metadata@^0.1.13, reflect-metadata@^0.1.2:
   version "0.1.14"
   resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.14.tgz#24cf721fe60677146bb77eeb0e1f9dece3d65859"
   integrity sha512-ZhYeb6nRaXCfhnndflDK8qI6ZQ/YcWZCISRAWICW9XYqMUwjZM9Z0DveWX/ABN01oxSHwVxKQmxeYZSsm0jh5A==
-
-reflect-metadata@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.2.1.tgz#8d5513c0f5ef2b4b9c3865287f3c0940c1f67f74"
-  integrity sha512-i5lLI6iw9AU3Uu4szRNPPEkomnkjRTaVt9hy/bn5g/oSzekBSMeLZblcjP74AW0vBabqERLLIrz+gR8QYR54Tw==
-
-reflect-metadata@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.2.1.tgz#8d5513c0f5ef2b4b9c3865287f3c0940c1f67f74"
-  integrity sha512-i5lLI6iw9AU3Uu4szRNPPEkomnkjRTaVt9hy/bn5g/oSzekBSMeLZblcjP74AW0vBabqERLLIrz+gR8QYR54Tw==
 
 regenerate-unicode-properties@^10.1.0:
   version "10.1.1"
