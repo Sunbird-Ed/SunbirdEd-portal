@@ -14,7 +14,6 @@ import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
 import { FormsModule } from '@angular/forms';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
-import {SunbirdPdfPlayerModule} from '@project-sunbird/sunbird-pdf-player-v9';
 import {QumlPlayerV2Service} from './service/quml-player-v2/quml-player-v2.service';
 import { QumlPlayerService } from './service/quml-player/quml-player.service';
 import { EditorCursor } from '@project-sunbird/sunbird-collection-editor';
@@ -34,7 +33,6 @@ import { EditorCursor as QsEditorCursor } from '@project-sunbird/sunbird-questio
     CoreModule,
     FormsModule,
     CommonConsumptionModule,
-    SunbirdPdfPlayerModule,
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   declarations: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,

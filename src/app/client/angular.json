@@ -80,7 +80,8 @@
               "node_modules/videojs-http-source-selector/dist/videojs-http-source-selector.css",
               "src/assets/sunbird-folder/sunbird-video-player/styles.css",
               "./node_modules/@project-sunbird/discussions-ui/assets/styles/global.scss",
-              "node_modules/@project-sunbird/sunbird-epub-player-web-component/styles.css"
+              "node_modules/@project-sunbird/sunbird-epub-player-web-component/styles.css",
+              "node_modules/@project-sunbird/sunbird-pdf-player-web-component/styles.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -107,6 +108,8 @@
               "node_modules/reflect-metadata/Reflect.js",
               "node_modules/@project-sunbird/sunbird-epub-player-web-component/sunbird-epub-player.js",
               "src/assets/sunbird-quml-player/sunbird-quml-player.js",
+              "node_modules/reflect-metadata/Reflect.js",
+              "node_modules/@project-sunbird/sunbird-pdf-player-web-component/sunbird-pdf-player.js",
               {
                 "inject": false,
                 "input": "src/assets/libs/semantic-ui/transition.min.js",
