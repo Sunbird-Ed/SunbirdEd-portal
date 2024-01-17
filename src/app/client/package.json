@@ -132,7 +132,7 @@
     "ngx-device-detector": "4.0.1",
     "ngx-filesize": "3.0.1",
     "ngx-infinite-scroll": "8.0.2",
-    "reflect-metadata": "^0.2.1",
+    "reflect-metadata": "0.2.1",
     "rxjs": "6.5.5",
     "sass": "1.56.1",
     "sb-svg2pdf-v13": "1.0.0",
