@@ -647,7 +647,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private getContentSection(section, searchOptions) {
         this.globalFilterCategories = this.cslFrameworkService.getAlternativeCodeForFilter();
-        console.log('getContentSection-explore', this.globalFilterCategories)
         const sectionFilters = _.get(section, 'apiConfig.req.request.filters');
         const requiredProps = [this.globalFilterCategories[0], this.globalFilterCategories[1], this.globalFilterCategories[2]];
         if (_.has(sectionFilters, ...requiredProps) && searchOptions.filters) {
