@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule,CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -20,7 +20,6 @@ import { QumlLibraryModule as QsLibModule, QuestionCursor as QsCursor} from '@pr
 import { QumlLibraryModule, QuestionCursor } from '@project-sunbird/sunbird-quml-player-v9';
 import { EditorCursor as QsEditorCursor } from '@project-sunbird/sunbird-questionset-editor';
 import { SunbirdEpubPlayerModule } from '@project-sunbird/sunbird-epub-player-v9';
-import { SunbirdVideoPlayerModule } from '@project-sunbird/sunbird-video-player-v9';
 
 @NgModule({
   providers: [
@@ -39,8 +38,8 @@ import { SunbirdVideoPlayerModule } from '@project-sunbird/sunbird-video-player-
     QsLibModule,
     QumlLibraryModule,
     SunbirdEpubPlayerModule,
-    SunbirdVideoPlayerModule,
   ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   declarations: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
     FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent,
     CommingSoonComponent, CreditsAndLicenceComponent, ContentActionsComponent,
