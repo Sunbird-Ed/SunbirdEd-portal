@@ -17,8 +17,6 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import {SunbirdPdfPlayerModule} from '@project-sunbird/sunbird-pdf-player-v9';
 import {QumlPlayerV2Service} from './service/quml-player-v2/quml-player-v2.service';
 import { QumlPlayerService } from './service/quml-player/quml-player.service';
-import { QumlLibraryModule as QsLibModule, QuestionCursor as QsCursor} from '@project-sunbird/sunbird-quml-player';
-import { QumlLibraryModule, QuestionCursor } from '@project-sunbird/sunbird-quml-player-v9';
 import { EditorCursor } from '@project-sunbird/sunbird-collection-editor';
 import { EditorCursor as QsEditorCursor } from '@project-sunbird/sunbird-questionset-editor';
 
@@ -26,8 +24,6 @@ import { EditorCursor as QsEditorCursor } from '@project-sunbird/sunbird-questio
 @NgModule({
   providers: [
     { provide: QsEditorCursor, useExisting: QumlPlayerV2Service },
-    { provide: QsCursor, useExisting: QumlPlayerV2Service },
-    { provide: QuestionCursor, useExisting: QumlPlayerService },
     { provide: EditorCursor, useExisting: QumlPlayerService },
   ],
   imports: [
@@ -39,8 +35,6 @@ import { EditorCursor as QsEditorCursor } from '@project-sunbird/sunbird-questio
     FormsModule,
     CommonConsumptionModule,
     SunbirdPdfPlayerModule,
-    QsLibModule,
-    QumlLibraryModule,
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   declarations: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
