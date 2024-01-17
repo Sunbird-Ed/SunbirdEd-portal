@@ -4,7 +4,6 @@ import { Observable, BehaviorSubject, of } from 'rxjs';
 import { skipWhile, mergeMap, first, map } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
-let requiredCategories = { categories: 'board,gradeLevel,medium,class,subject' };
 @Injectable({ providedIn: 'root' })
 export class ContentSearchService {
   private channelId: string;
@@ -24,6 +23,7 @@ export class ContentSearchService {
   get filters() {
     return _.cloneDeep(this._filters);
   }
+  requiredCategories = { categories: 'board,gradeLevel,medium,class,subject' };
   private _searchResults$ = new BehaviorSubject<any>(undefined);
   public frameworkCategories;
   public frameworkCategoriesObject;
@@ -36,7 +36,6 @@ export class ContentSearchService {
   constructor(private frameworkService: FrameworkService, private channelService: ChannelService, private cslFrameworkService:CslFrameworkService) { 
     this.frameworkCategories = this.cslFrameworkService.getFrameworkCategories();
     this.frameworkCategoriesObject = this.cslFrameworkService.getFrameworkCategoriesObject();
-   requiredCategories = { categories: `${this.frameworkCategories?.fwCategory1?.code,this.frameworkCategories?.fwCategory2?.code,this.frameworkCategories?.fwCategory3?.code,this.frameworkCategories?.fwCategory4?.code}}` };
   }
 
   public initialize(channelId: string, custodianOrg = false, defaultBoard: string) {
@@ -48,7 +47,8 @@ export class ContentSearchService {
     return this.fetchChannelData();
   }
   fetchChannelData() {
-    return this.channelService.getFrameWork(this.channelId)
+    this.requiredCategories = {categories: `${this.frameworkCategories?.fwCategory1?.code},${this.frameworkCategories?.fwCategory2?.code},${this.frameworkCategories?.fwCategory3?.code},${this.frameworkCategories?.fwCategory4?.code}`};
+        return this.channelService.getFrameWork(this.channelId)
       .pipe(mergeMap((channelDetails) => {
         if (this.custodianOrg) {
           this._filters[this.frameworkCategories?.fwCategory1?.code] = _.get(channelDetails, 'result.channel.frameworks') || [{
@@ -63,7 +63,7 @@ export class ContentSearchService {
         if (_.get(channelDetails, 'result.channel.publisher')) {
           this._filters.publisher = JSON.parse(_.get(channelDetails, 'result.channel.publisher'));
         }
-        return this.frameworkService.getSelectedFrameworkCategories(this._frameworkId, requiredCategories);
+        return this.frameworkService.getSelectedFrameworkCategories(this._frameworkId, this.requiredCategories);
       }), map(frameworkDetails => {
         const frameworkCategories: any[] = _.get(frameworkDetails, 'result.framework.categories');
         frameworkCategories.forEach(category => {
@@ -83,7 +83,7 @@ export class ContentSearchService {
     const selectedBoard = this._filters[this.frameworkCategories?.fwCategory1?.code].find((fwCategory1) => fwCategory1.name === boardName)
       || this._filters[this.frameworkCategories?.fwCategory1?.code].find((fwCategory1) => fwCategory1.name === this.defaultBoard) || this._filters[this.frameworkCategories?.fwCategory1?.code][0];
     this._frameworkId = this._frameworkId = _.get(selectedBoard, 'identifier');
-    return this.frameworkService.getSelectedFrameworkCategories(this._frameworkId, requiredCategories).pipe(map(frameworkDetails => {
+    return this.frameworkService.getSelectedFrameworkCategories(this._frameworkId, this.requiredCategories).pipe(map(frameworkDetails => {
       const frameworkCategories: any[] = _.get(frameworkDetails, 'result.framework.categories');
       frameworkCategories.forEach(category => {
         if ([this.frameworkCategories?.fwCategory2?.code,this.frameworkCategories?.fwCategory3?.code,this.frameworkCategories?.fwCategory4?.code].includes(category.code)) {
@@ -98,7 +98,6 @@ export class ContentSearchService {
 
   get getCategoriesMapping() {
     this.globalFilterCategories = this.cslFrameworkService.getAlternativeCodeForFilter();
-    console.log('getCategoriesMapping', this.globalFilterCategories);
     return {
       [this.frameworkCategories?.fwCategory4?.code]: this.globalFilterCategories[3],
       [this.frameworkCategories?.fwCategory3?.code]: this.globalFilterCategories[2],
