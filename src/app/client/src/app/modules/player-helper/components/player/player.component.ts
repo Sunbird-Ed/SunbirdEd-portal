@@ -27,6 +27,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   @Output() questionScoreSubmitEvents = new EventEmitter<any>();
   @Output() questionScoreReviewEvents = new EventEmitter<any>();
   @ViewChild('contentIframe') contentIframe: ElementRef;
+  @ViewChild('pdf') pdf: ElementRef;
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
   @Output() sceneChangeEvent = new EventEmitter<any>();
   @Input() contentProgressEvents$: Subject<any>;
@@ -240,6 +241,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         if (isNewPlayer) {
           this.playerLoaded = false;
           this.loadNewPlayer();
+          switch(this.playerType){
+            case 'pdf-player':
+              this.loadPdfPlayer();
+              break
+          }
         } else {
           this.loadOldPlayer();
         }
@@ -248,6 +254,26 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         this.loadOldPlayer();
       }
     );
+  }
+  
+  /**
+    * @description - A method to create and set attributes in a custom element to load pdf player as a web component
+  */
+  loadPdfPlayer(){
+    if(this.pdf){
+      const playerConfig = this.playerConfig;
+      const pdfElement = document.createElement('sunbird-pdf-player');
+      pdfElement.setAttribute('player-config', JSON.stringify(playerConfig));
+
+      pdfElement.addEventListener('playerEvent', (event) => {
+        console.log("On playerEvent", event);
+      });
+
+      pdfElement.addEventListener('telemetryEvent', (event) => {
+        console.log("On telemetryEvent", event);
+      });
+      this.pdf.nativeElement.append(pdfElement);
+    }
   }
 
   checkForQumlPlayer() {
