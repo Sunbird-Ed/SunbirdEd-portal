@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as  _ from "lodash";
-import { AutoWired, Inject, Singleton } from "typescript-ioc";
+import { Inject, Singleton } from "typescript-ioc";
 import * as path from "path";
 import DatabaseSDK from "../../sdk/database";
 import { logger } from "@project-sunbird/logger";
