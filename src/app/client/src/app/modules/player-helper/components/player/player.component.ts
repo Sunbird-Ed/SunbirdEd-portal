@@ -27,6 +27,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   @Output() questionScoreSubmitEvents = new EventEmitter<any>();
   @Output() questionScoreReviewEvents = new EventEmitter<any>();
   @ViewChild('contentIframe') contentIframe: ElementRef;
+  @ViewChild('epubPlayer') epubPlayer: ElementRef;
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
   @Output() sceneChangeEvent = new EventEmitter<any>();
   @Input() contentProgressEvents$: Subject<any>;
@@ -240,6 +241,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         if (isNewPlayer) {
           this.playerLoaded = false;
           this.loadNewPlayer();
+          this.loadEpubPlayer();
         } else {
           this.loadOldPlayer();
         }
@@ -248,6 +250,25 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         this.loadOldPlayer();
       }
     );
+  }
+
+  loadEpubPlayer() {
+    if (this.epubPlayer) {
+      const epubElement = document.createElement('sunbird-epub-player');
+      const playerConfig = this.playerConfig;
+
+      epubElement.setAttribute('player-config', JSON.stringify(playerConfig));
+      epubElement.setAttribute('showFullScreen', this.isFullScreenView.toString());
+
+      epubElement.addEventListener('playerEvent', (event) => {
+        console.log("On playerEvent", event);
+      });
+      epubElement.addEventListener('telemetryEvent', (event) => {
+        console.log("On telemetryEvent", event);
+      });
+
+      this.epubPlayer.nativeElement.append(epubElement);
+    }
   }
 
   checkForQumlPlayer() {
