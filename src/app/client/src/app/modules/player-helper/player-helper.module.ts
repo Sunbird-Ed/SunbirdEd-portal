@@ -19,7 +19,6 @@ import { QumlPlayerService } from './service/quml-player/quml-player.service';
 import { QumlLibraryModule as QsLibModule, QuestionCursor as QsCursor} from '@project-sunbird/sunbird-quml-player';
 import { QumlLibraryModule, QuestionCursor } from '@project-sunbird/sunbird-quml-player-v9';
 import { EditorCursor as QsEditorCursor } from '@project-sunbird/sunbird-questionset-editor';
-import { SunbirdEpubPlayerModule } from '@project-sunbird/sunbird-epub-player-v9';
 
 @NgModule({
   providers: [
@@ -37,7 +36,6 @@ import { SunbirdEpubPlayerModule } from '@project-sunbird/sunbird-epub-player-v9
     CommonConsumptionModule,
     QsLibModule,
     QumlLibraryModule,
-    SunbirdEpubPlayerModule,
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   declarations: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
