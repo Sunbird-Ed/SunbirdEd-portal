@@ -40,11 +40,6 @@
                 "output": "/assets/"
               },
               {
-                "glob": "**/*",
-                "input": "./node_modules/@project-sunbird/sunbird-collection-editor/lib/assets/",
-                "output": "/assets/"
-              },
-              {
                 "glob": "**/*.*",
                 "input": "./node_modules/@project-sunbird/discussions-ui/assets",
                 "output": "./assets/discussion-ui"
