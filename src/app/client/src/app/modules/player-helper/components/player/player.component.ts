@@ -28,6 +28,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   @Output() questionScoreReviewEvents = new EventEmitter<any>();
   @ViewChild('contentIframe') contentIframe: ElementRef;
   @ViewChild('pdf') pdf: ElementRef;
+  @ViewChild('epubPlayer') epubPlayer: ElementRef;
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
   @Output() sceneChangeEvent = new EventEmitter<any>();
   @Input() contentProgressEvents$: Subject<any>;
@@ -245,6 +246,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
             case 'pdf-player':
               this.loadPdfPlayer();
               break
+            case 'epub-player':
+              this.loadEpubPlayer();
+              break
           }
         } else {
           this.loadOldPlayer();
@@ -273,8 +277,28 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         console.log("On telemetryEvent", event);
       });
       this.pdf.nativeElement.append(pdfElement);
-      console.log("My player config",this.playerConfig);
-      console.log("My pdf",this.pdf.nativeElement);
+    }
+  }
+   
+  /**
+    * @description - A method to create and set attributes in a custom element to load epub player as a web component
+  */
+  loadEpubPlayer() {
+    if (this.epubPlayer) {
+      const epubElement = document.createElement('sunbird-epub-player');
+      const playerConfig = this.playerConfig;
+
+      epubElement.setAttribute('player-config', JSON.stringify(playerConfig));
+      epubElement.setAttribute('showFullScreen', this.isFullScreenView.toString());
+
+      epubElement.addEventListener('playerEvent', (event) => {
+        console.log("On playerEvent", event);
+      });
+      
+      epubElement.addEventListener('telemetryEvent', (event) => {
+        console.log("On telemetryEvent", event);
+      });
+      this.epubPlayer.nativeElement.append(epubElement);
     }
   }
 
