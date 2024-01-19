@@ -19,7 +19,6 @@ import {QumlPlayerV2Service} from './service/quml-player-v2/quml-player-v2.servi
 import { QumlPlayerService } from './service/quml-player/quml-player.service';
 import { QumlLibraryModule as QsLibModule, QuestionCursor as QsCursor} from '@project-sunbird/sunbird-quml-player';
 import { QumlLibraryModule, QuestionCursor } from '@project-sunbird/sunbird-quml-player-v9';
-import { EditorCursor } from '@project-sunbird/sunbird-collection-editor';
 import { EditorCursor as QsEditorCursor } from '@project-sunbird/sunbird-questionset-editor';
 import { SunbirdEpubPlayerModule } from '@project-sunbird/sunbird-epub-player-v9';
 
@@ -28,7 +27,6 @@ import { SunbirdEpubPlayerModule } from '@project-sunbird/sunbird-epub-player-v9
     { provide: QsEditorCursor, useExisting: QumlPlayerV2Service },
     { provide: QsCursor, useExisting: QumlPlayerV2Service },
     { provide: QuestionCursor, useExisting: QumlPlayerService },
-    { provide: EditorCursor, useExisting: QumlPlayerService },
   ],
   imports: [
     CommonModule,
