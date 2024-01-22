@@ -20,7 +20,7 @@
           (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)">
         </sunbird-video-player>
 
-        <quml-main-player *ngIf="playerType === 'quml-player' && showQumlPlayer" [playerConfig]="playerConfig" (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></quml-main-player>
+        <div #qumlPlayer *ngIf="playerType === 'quml-player'" class="custom-quml-player"></div>
 
         <div #epubPlayer *ngIf="playerType === 'epub-player'" class="custom-epub-player"></div>
 
