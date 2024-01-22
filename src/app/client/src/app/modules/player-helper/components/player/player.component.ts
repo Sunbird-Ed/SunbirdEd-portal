@@ -29,6 +29,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   @ViewChild('contentIframe') contentIframe: ElementRef;
   @ViewChild('pdf') pdf: ElementRef;
   @ViewChild('epubPlayer') epubPlayer: ElementRef;
+  @ViewChild('qumlPlayer') qumlPlayer: ElementRef;
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
   @Output() sceneChangeEvent = new EventEmitter<any>();
   @Input() contentProgressEvents$: Subject<any>;
@@ -236,6 +237,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
           if (_.includes(_.get(value, 'mimeType'), _.get(this.playerConfig, 'metadata.mimeType')) && _.get(value, 'version') === 2) {
             this.playerConfig.context.threshold = _.get(value, 'threshold');
             this.playerType = _.get(value, 'type');
+            console.log("My Player type",this.playerType);
             isNewPlayer = true;
           }
         });
@@ -249,6 +251,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
             case 'epub-player':
               this.loadEpubPlayer();
               break
+            case 'quml-player':
+              this.loadQumlPlayer();
+              break;
           }
         } else {
           this.loadOldPlayer();
@@ -299,6 +304,27 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         console.log("On telemetryEvent", event);
       });
       this.epubPlayer.nativeElement.append(epubElement);
+    }
+  }
+  
+  /**
+    * @description - A method to create and set attributes in a custom element to load quml player as a web component
+  */
+  loadQumlPlayer(){
+    if(this.qumlPlayer){
+      const playerConfig = this.playerConfig;
+      (window as any).questionListUrl = "https://dev.inquiry.sunbird.org/api/question/v2/list";
+      const qumlElement = document.createElement('sunbird-quml-player');
+      qumlElement.setAttribute('player-config', JSON.stringify(playerConfig));
+
+      qumlElement.addEventListener('playerEvent', (event) => {
+        console.log("On playerEvent", event);
+      });
+
+      qumlElement.addEventListener('telemetryEvent', (event) => {
+        console.log("On telemetryEvent", event);
+      });
+      this.qumlPlayer.nativeElement.append(qumlElement);
     }
   }
 
