@@ -1705,6 +1705,13 @@ const API_LIST = {
         ROLE.CONTENT_CREATOR
       ]
     },
+    '/action/question/v2/list': {
+      description: 'Question List',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR
+      ]
+    },
     '/action/object/category/definition/v1/read': {
       description: 'Object category read',
       checksNeeded: ['ROLE_CHECK'],
@@ -2025,6 +2032,7 @@ const API_LIST = {
     '/action/question/v2/review/:do_id',
     '/action/question/v2/publish/:do_id',
     '/action/question/v2/update/:do_id',
+    '/action/question/v2/list',
     '/report/request/list/:tag',
     '/dataset/v1/request/list/:tag',
     '/dataset/v1/request/read/:tag',
