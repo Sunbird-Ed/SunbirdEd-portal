@@ -24,7 +24,6 @@ import { ReviewCommentsComponent } from './components/review-comments/review-com
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { ContentSearchModule } from '@sunbird/content-search';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { QuestionsetEditorLibraryModule } from '@project-sunbird/sunbird-questionset-editor';
 @NgModule({
   imports: [
     CommonModule,
@@ -38,7 +37,6 @@ import { QuestionsetEditorLibraryModule } from '@project-sunbird/sunbird-questio
     PlayerHelperModule,
     ContentSearchModule,
     MatTooltipModule,
-    QuestionsetEditorLibraryModule
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent, DateFilterXtimeAgoPipe,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,

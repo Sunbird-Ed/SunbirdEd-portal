@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable, forkJoin, of, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map, mergeMap } from 'rxjs/operators';
-import { QuestionCursor } from '@project-sunbird/sunbird-quml-player';
-import { EditorCursor } from '@project-sunbird/sunbird-questionset-editor';
 import * as _ from 'lodash-es';
 import { PublicPlayerService } from '@sunbird/public';
 import { ConfigService } from '@sunbird/shared';
@@ -11,7 +9,7 @@ import { ConfigService } from '@sunbird/shared';
   providedIn: 'root'
 })
 
-export class QumlPlayerV2Service implements QuestionCursor, EditorCursor {
+export class QumlPlayerV2Service{
   public questionMap = new Map();
   constructor(private http: HttpClient,
     public playerService: PublicPlayerService,
