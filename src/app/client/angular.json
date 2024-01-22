@@ -37,8 +37,8 @@
                 "output": "/assets/"
               },
               {
-                "glob": "**/*",
-                "input": "./node_modules/@project-sunbird/sunbird-quml-player-v9/lib/assets/",
+                "glob": "**/*.*",
+                "input": "./node_modules/@project-sunbird/sunbird-quml-player-web-component/assets",
                 "output": "/assets/"
               },
               {
@@ -64,7 +64,6 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/assets/quml-styles/quml-carousel.css",
               "node_modules/datatables.net-dt/css/jquery.dataTables.min.css",
               "src/assets/styles/semantic/semantic.min.css",
               "node_modules/font-awesome/css/font-awesome.css",
@@ -80,7 +79,8 @@
               "src/assets/sunbird-folder/sunbird-video-player/styles.css",
               "./node_modules/@project-sunbird/discussions-ui/assets/styles/global.scss",
               "node_modules/@project-sunbird/sunbird-pdf-player-web-component/styles.css",
-              "node_modules/@project-sunbird/sunbird-epub-player-web-component/styles.css"
+              "node_modules/@project-sunbird/sunbird-epub-player-web-component/styles.css",
+              "node_modules/@project-sunbird/sunbird-quml-player-web-component/styles.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -107,6 +107,7 @@
               "node_modules/reflect-metadata/Reflect.js",
               "node_modules/@project-sunbird/sunbird-pdf-player-web-component/sunbird-pdf-player.js",
               "node_modules/@project-sunbird/sunbird-epub-player-web-component/sunbird-epub-player.js",
+              "node_modules/@project-sunbird/sunbird-quml-player-web-component/sunbird-quml-player.js",
               {
                 "inject": false,
                 "input": "src/assets/libs/semantic-ui/transition.min.js",
