@@ -183,7 +183,7 @@ let optionalEnvVariables = {
 
     // Service(s) Base URL(s)
     content_Service_Local_BaseUrl: env.sunbird_content_service_local_base_url || 'http://content-service:5000',
-    learner_Service_Local_BaseUrl: env.sunbird_learner_service_local_base_url || 'http://learner-service:9000',
+    learner_Service_Local_BaseUrl: env.sunbird_learner_service_local_base_url || 'http://userorg-service:9000',
     CONTENT_SERVICE_UPSTREAM_URL: env.sunbird_content_service_upstream_url || 'http://localhost:5000/',
     LEARNER_SERVICE_UPSTREAM_URL: env.sunbird_learner_service_upstream_url || 'http://localhost:9000/',
     PORTAL_EXT_PLUGIN_URL: process.env.sunbird_ext_plugin_url || 'http://player_player:3000/plugin/',
