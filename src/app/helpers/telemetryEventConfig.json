@@ -7,7 +7,7 @@
   "default_userid": "public",
   "default_did": "sunbird-portal",
   "env": "portal-backend",
-  "learnerServiceEnv": "learner-service",
+  "learnerServiceEnv": "userorg-service",
   "contentServiceEnv": "content-service",
   "URL": {
     "data/v1/role/read": {
