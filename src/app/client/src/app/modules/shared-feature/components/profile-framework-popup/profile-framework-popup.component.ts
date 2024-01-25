@@ -50,6 +50,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   private boardOptions;
   frameworkCategories;
   frameworkCategoriesObject;
+  showLoader = true; 
   constructor(private router: Router, private userService: UserService, private frameworkService: FrameworkService,
     private formService: FormService, public resourceService: ResourceService, private cacheService: CacheService,
     private toasterService: ToasterService, private channelService: ChannelService, private orgDetailsService: OrgDetailsService,
@@ -95,7 +96,6 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         this.toasterService.warning(this.resourceService.messages.emsg.m0012);
         this.navigateToLibrary();
       });
-      this.enableSubmitButton(); //to enable submit button if all are non-mandatory fields
     this.setInteractEventData();
   }
   private getFormOptionsForCustodianOrgForGuestUser() {
@@ -236,6 +236,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       });
   }
   public async updateFrameworkCategories(frameWorkId) {
+    this.showLoader = false;
     try {
       this.frameworkCategories = this.frameworkCategoriesObject = '';
      localStorage.setItem('selectedFramework', frameWorkId);
@@ -245,6 +246,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         this.cslFrameworkService.getFrameworkCategoriesObject()
       ];
       this.cslFrameworkService.setTransFormGlobalFilterConfig();
+      this.showLoader = true;
     } catch (error) {
       console.error('Error updating framework categories:', error);
       // Handle error if needed

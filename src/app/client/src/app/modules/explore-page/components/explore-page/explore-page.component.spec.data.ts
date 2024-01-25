@@ -2631,7 +2631,7 @@ export const RESPONSE = {
       },
       {
         'index': 0,
-        'title': 'frmelmnts.lbl.boards',
+        'title': 'frmelmnts.lbl.board',
         'desc': 'Section for explore',
         'facetKey': 'se_boards',
         'isEnabled': true,

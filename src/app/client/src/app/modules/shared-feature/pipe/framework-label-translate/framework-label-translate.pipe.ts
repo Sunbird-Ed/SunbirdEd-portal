@@ -8,7 +8,7 @@ import { ResourceService } from '@sunbird/shared';
 export class FrameworkCatLabelTranslatePipe implements PipeTransform {
 
   private _mapping = {
-    board: get(this.resourceService, 'frmelmnts.lbl.boards'),
+    board: get(this.resourceService, 'frmelmnts.lbl.board'),
     medium: get(this.resourceService, 'frmelmnts.lbl.medium'),
     gradeLevel: get(this.resourceService, 'frmelmnts.lbl.class'),
     publisher: get(this.resourceService, 'frmelmnts.lbl.publishedBy'),
