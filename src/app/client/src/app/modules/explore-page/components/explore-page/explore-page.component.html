@@ -54,7 +54,6 @@
                   <span class="preference-icon ml-4"><img src="assets/images/icon-info.svg"></span>
                 </p>
                 <p>
-
                   <span *ngFor="let category of transformUserPreference" class="mr-24">
                   <span>{{ resourceService?.frmelmnts?.lbl[category?.labels.toLowerCase()] | transposeTerms: resourceService?.frmelmnts?.lbl[category?.labels.toLowerCase()] : resourceService?.selectedLang }}:</span>
                   <span class="font-weight-bold mb-8" *ngIf="category?.values?.length > 1">{{category?.values[0]}} ...+ {{category?.values?.length-1}}</span>
