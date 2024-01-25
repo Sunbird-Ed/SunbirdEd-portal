@@ -55,12 +55,10 @@
                 </p>
                 <p>
 
-
                   <span *ngFor="let category of transformUserPreference" class="mr-24">
-                    <span>{{category?.labels | translateJson}}:</span>
-                    <span *ngFor="let item of category?.values; let last=last" class="font-weight-bold">
-                      {{item}}{{!last && category.values.length > 1 ? ',' : ''}}
-                    </span>
+                  <span>{{ resourceService?.frmelmnts?.lbl[category?.labels.toLowerCase()] | transposeTerms: resourceService?.frmelmnts?.lbl[category?.labels.toLowerCase()] : resourceService?.selectedLang }}:</span>
+                  <span class="font-weight-bold mb-8" *ngIf="category?.values?.length > 1">{{category?.values[0]}} ...+ {{category?.values?.length}}</span>
+                    <span class="font-weight-bold mb-8" *ngIf="category?.values?.length === 1">{{category?.values[0]}}</span>
                   </span>
                 </p>
               </div>

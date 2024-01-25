@@ -519,9 +519,8 @@ export class SearchService {
       if (foundFilter) {
         const { index, label, placeHolder } = foundFilter;
         facet['index'] = index.toString();
-        facet['label'] = label;
-        facet['placeholder'] = placeHolder;
-
+        facet['label'] = this.resourceService.frmelmnts.lbl[label];
+        facet['placeholder'] = this.resourceService.frmelmnts.lbl[placeHolder];
         switch (facet.name) {
           case 'channel':
             facet['values'] = _.map(facet.values || [], value => ({ ...value, name: value.orgName }));
