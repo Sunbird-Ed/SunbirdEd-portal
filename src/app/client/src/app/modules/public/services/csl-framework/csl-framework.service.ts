@@ -370,8 +370,8 @@ export class CslFrameworkService {
   transformDataForCC() {
     let transformData = this.getGlobalFilterCategoriesObject();
     let resCCdata: any[] = [{
-      "code": "lastPublishedBy",
-      "name": "Published by"
+      "code": "organisation",
+      "name": "Publisher"
     }];
     transformData?.forEach((filter) => {
       let typeCheck = filter?.type === 'filter' ? true : false;
