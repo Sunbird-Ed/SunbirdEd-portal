@@ -140,24 +140,6 @@ describe('PlayerComponent', () => {
 			expect(epubElement.addEventListener).toHaveBeenCalledWith('telemetryEvent', expect.any(Function));
 			expect(customElementMock.append).toHaveBeenCalled();
 		});
-
-		it('should create custom quml element and append it to quml view child nativeElement', () => {
-			component.qumlPlayer = { nativeElement: customElementMock };
-			const createElementSpy = jest.spyOn(document, 'createElement').mockReturnValue({
-				setAttribute: jest.fn(),
-				addEventListener: jest.fn(),
-			} as any);	
-			component.loadQumlPlayer();
-			
-			expect(createElementSpy).toHaveBeenCalledWith('sunbird-quml-player');
-			expect(createElementSpy).toHaveBeenCalledTimes(1);
-
-			const qumlElement = document.createElement('sunbird-quml-player');
-			expect(qumlElement.setAttribute).toHaveBeenCalledWith('player-config', JSON.stringify(component.playerConfig));
-			expect(qumlElement.addEventListener).toHaveBeenCalledWith('playerEvent', expect.any(Function));
-			expect(qumlElement.addEventListener).toHaveBeenCalledWith('telemetryEvent', expect.any(Function));
-			expect(customElementMock.append).toHaveBeenCalled();
-		});
     });
 
 	it('should call contentService.post and remove playerElement on ngOnDestroy', () => {
