@@ -71,8 +71,19 @@ describe('SearchService', () => {
   const mockResourceService: Partial<ResourceService> = {
     frmelmnts: {
       lbl: {
-        oneCourse: 'COURSE'
-      }
+        oneCourse: 'COURSE',
+        board:'Board',
+        medium: 'Medium',
+        class:'Classes',
+        subject:'Subjects',
+        selectBoard: 'Select Board',
+        selectMedium: 'Select Medium',
+        selectClass: 'Select Classes',
+        selectSubject: 'Select Subjects',
+        publisher:'Publisher',
+        selectPublisher: 'Select publisher'
+      },
+      
     }
   };
 
@@ -85,12 +96,12 @@ describe('SearchService', () => {
     getFrameworkCategories: jest.fn(),
     setDefaultFWforCsl: jest.fn(),
     getGlobalFilterCategoriesObject: jest.fn(()=> [
-      { index: 1,label: 'Board',placeHolder: 'Select Board', code: 'board', name: 'Board' },
-      { index: 2 ,label: 'Medium',placeHolder: 'Select Medium', code: 'medium', name: 'Medium' },
-      { index: 3,label: 'Classes', placeHolder: 'Select Classes',code:'gradeLevel', name: 'gradeLevel'},
-      { index: 4,label: 'Subjects', placeHolder: 'Select Subjects',code:'subject', name: 'subject'},
-      { index: 5,label: 'Publisher', placeHolder: 'Select publisher',code:'publisher', name: 'publisher'},
-      { index: 6,label: 'Content type', placeHolder: 'Select content type',code:'contentType', name: 'contentType'}]
+      { index: 1,label: 'board',placeHolder: 'selectBoard', code: 'board', name: 'Board' },
+      { index: 2 ,label: 'medium',placeHolder: 'selectMedium', code: 'medium', name: 'Medium' },
+      { index: 3,label: 'class', placeHolder: 'selectClass',code:'gradeLevel', name: 'gradeLevel'},
+      { index: 4,label: 'subject', placeHolder: 'selectSubject',code:'subject', name: 'subject'},
+      { index: 5,label: 'publisher', placeHolder: 'selectPublisher',code:'publisher', name: 'publisher'},
+      { index: 6,label: 'contentType', placeHolder: 'selectContentType',code:'contentType', name: 'contentType'}]
     ),
     getGlobalFilterCategories: jest.fn(() => ({
       fwCategory1: { },

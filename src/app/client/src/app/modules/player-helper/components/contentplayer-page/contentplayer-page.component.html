@@ -18,11 +18,11 @@
                 </mat-expansion-panel-header>
                 <div class="sb-mat-accordion__content" *ngFor="let transformCollection of transformCollectionData">
                     <div class="training-relevant__class mb-4 sb-color-gray-400 fnormal">
-                        <span>{{transformCollection?.labels | translateJson}}:&nbsp;</span><span>{{
+                        <span>{{ (resourceService?.frmelmnts?.lbl[transformCollection?.labels.toLowerCase()] | transposeTerms: resourceService?.frmelmnts?.lbl[transformCollection?.labels.toLowerCase()] : resourceService?.selectedLang) || transformCollection?.labels }}:
+                            :&nbsp;</span><span>{{
                             transformCollection?.value}}</span>
                     </div>
                 </div>
-
                     <div class="training-relevant__medium mb-4 sb-color-gray-400 fnormal"
                         *ngIf="collectionData?.audience">
                         <span>{{resourceService?.frmelmnts?.lbl?.userType}}:&nbsp;</span><span>{{

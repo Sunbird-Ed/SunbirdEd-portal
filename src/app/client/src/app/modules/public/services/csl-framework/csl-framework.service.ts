@@ -282,7 +282,6 @@ export class CslFrameworkService {
             code: filter?.code,
             alternativeCode: filter?.alternativeCode ? filter?.alternativeCode : filter?.code,
             label: filter?.label,
-            translation: filter?.translation,
             type: filter?.type
 
           };

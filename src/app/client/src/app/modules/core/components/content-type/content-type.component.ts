@@ -81,7 +81,6 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   showContentType(data) {
     this.globalFilterCategories = this.cslFrameworkService.getAlternativeCodeForFilter();
     this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
-    console.log('content-type', this.globalFilterCategories, this.frameworkCategoriesList)
     this.generateTelemetry(data.contentType);
     let userPreference;
     let params;

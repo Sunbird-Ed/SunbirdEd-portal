@@ -85,8 +85,8 @@
     <div class="ui container">
       <div class="d-flex flex-jc-center flex-ai-center flex-dc">
         <div class="max-w-400 computer only">
-          <div class="mb-15 d-flex flex-jc-center" *ngFor="let category of transFormGuestUser">
-            <span class="fmedium white-space-nowrap">{{category?.labels | translateJson}} : </span>
+          <div class="mb-15 d-flex flex-jc-center flex-w-wrap flex-ai-center" *ngFor="let category of transFormGuestUser">
+            <span class="fmedium white-space-nowrap">{{ (resourceService?.frmelmnts?.lbl[category?.labels.toLowerCase()] | transposeTerms: resourceService?.frmelmnts?.lbl[category?.labels.toLowerCase()] : resourceService?.selectedLang) || category?.labels }}: </span>
             <span class="fmedium font-w-bold pl-4" *ngFor="let item of category?.values let last=last" class="font-weight-bold" >{{item}}{{!last && category.values.length > 1 ? ',' : ''}}</span>
           </div>
         </div>
@@ -99,14 +99,13 @@
 
     <!-- User info mobile view starts-->
     <div class="max-w-300 mobile only">
-      <div class="mb-15 d-flex flex-ai-center flex-dc" *ngFor="let category of transFormGuestUser">
-        <span class="fmedium white-space-nowrap">{{category?.labels | translateJson}} : </span>
+      <div class="mb-15 d-flex flex-ai-center flex-w-wrap flex-jc-center" *ngFor="let category of transFormGuestUser">
+        <span class="fmedium white-space-nowrap">{{ (resourceService?.frmelmnts?.lbl[category?.labels.toLowerCase()] | transposeTerms: resourceService?.frmelmnts?.lbl[category?.labels.toLowerCase()] : resourceService?.selectedLang) || category?.labels }}:</span>
         <span class="fmedium font-w-bold text-center" *ngFor="let item of category?.values let last=last" >{{item}}{{!last && category.values.length > 1 ? ',' : ''}}</span>
       </div>
       <div class="d-flex flex-ai-center flex-jc-center" appTelemetryInteract
         [telemetryInteractEdata]="editFrameworkInteractEData" tabindex="0" (click)="showEdit = !showEdit">
-        <button appOnlineOnly attr.aria-label="{{resourceService?.frmelmnts?.lbl?.edit}} {{resourceService?.frmelmnts?.lbl?.boards}},{{resourceService?.frmelmnts?.lbl?.medium}},{{resourceService?.frmelmnts?.lbl?.classes}},{{resourceService?.frmelmnts?.lbl?.subjects}}"
-          class="sb-btn sb-btn-primary sb-btn-xs mt-30">{{resourceService?.frmelmnts?.lbl?.edit}}</button>
+        <button appOnlineOnly attr.aria-label="{{resourceService?.frmelmnts?.lbl?.edit}} {{resourceService?.frmelmnts?.lbl[frameworkCategories[0]]}},{{resourceService?.frmelmnts?.lbl[frameworkCategories[1]]}},{{resourceService?.frmelmnts?.lbl[frameworkCategories[2]]}},{{resourceService?.frmelmnts?.lbl[frameworkCategories[3]]}}"  class="sb-btn sb-btn-primary sb-btn-xs mt-30">{{resourceService?.frmelmnts?.lbl?.edit}}</button>
       </div>
     </div>
     <!-- User info mobile view ends-->

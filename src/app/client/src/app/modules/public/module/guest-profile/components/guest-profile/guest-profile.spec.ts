@@ -33,7 +33,7 @@ describe('GuestProfileModule', () => {
     getGuestUser: jest.fn(() => of({role: 'teacher'})),
   };
   const mockCslFrameworkService: Partial<CslFrameworkService> = {
-    getFrameworkCategories: jest.fn(),
+    getAllFwCatName: jest.fn(),
     getFrameworkCategoriesObject: jest.fn(),
   };
   const mockRouter: Partial<Router> = {
@@ -84,9 +84,9 @@ describe('GuestProfileModule', () => {
     jest.spyOn(window, 'localStorage', 'get').mockReturnValue(localStorageMock as any);
     const mockGuestUser = {role: 'teacher'};
     const mockGetFrameworkCategories = jest.fn().mockReturnValue(mockFrameworkCategories);
-    (mockCslFrameworkService.getFrameworkCategories as any).mockImplementation(mockGetFrameworkCategories);
+    (mockCslFrameworkService.getAllFwCatName as any).mockImplementation(mockGetFrameworkCategories);
     component.ngOnInit();
-    expect(mockCslFrameworkService.getFrameworkCategories).toHaveBeenCalled();
+    expect(mockCslFrameworkService.getAllFwCatName).toHaveBeenCalled();
     expect(mockCslFrameworkService.getFrameworkCategoriesObject).toHaveBeenCalled();
     expect(mockUserService.getGuestUser).toHaveBeenCalled();
     expect(component.guestUser).toEqual(mockGuestUser);

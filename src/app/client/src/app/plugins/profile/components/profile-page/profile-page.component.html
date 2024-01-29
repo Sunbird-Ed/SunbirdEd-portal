@@ -165,15 +165,14 @@
     <div class="ui container">
       <div class="d-flex flex-jc-center flex-ai-center flex-dc" *ngIf="userProfile && userProfile.framework ">
         <div class="max-w-400 computer only">
-          <div class="mb-15 d-flex flex-jc-center" *ngFor="let category of transormUserProfile">
-            <span class="fmedium white-space-nowrap">{{category?.labels | translateJson}} : </span>
-            <span class="fmedium font-w-bold pl-4" *ngFor="let item of category?.values" 
-              >{{item}}</span>
+          <div class="mb-15 d-flex flex-jc-center flex-w-wrap flex-ai-center" *ngFor="let category of transormUserProfile">
+            <span class="fmedium white-space-nowrap">{{ (resourceService?.frmelmnts?.lbl[category?.labels.toLowerCase()] | transposeTerms: resourceService?.frmelmnts?.lbl[category?.labels.toLowerCase()] : resourceService?.selectedLang) || category?.labels }}:</span>
+            <span class="fmedium font-w-bold pl-4" *ngFor="let item of category?.values let last=last" >{{item}}{{!last && category.values.length > 1 ? ',' : ''}}</span>
           </div>
         </div>
         <button class="sb-btn sb-btn-primary sb-btn-normal my-16 sb-btn-border computer only"
           appTelemetryInteract appOnlineOnly
-          [telemetryInteractEdata]="myFrameworkEditEdata" attr.aria-label="{{resourceService.frmelmnts.lbl.edit}} {{resourceService.frmelmnts.lbl.boards}},{{resourceService.frmelmnts.lbl.medium}},{{resourceService.frmelmnts.lbl.classes}},{{convertToString(userProfile.framework.gradeLevel)}},{{resourceService.frmelmnts.lbl.subjects}}"
+          [telemetryInteractEdata]="myFrameworkEditEdata" attr.aria-label="{{resourceService.frmelmnts.lbl.edit}} {{resourceService.frmelmnts.lbl.board}},{{resourceService.frmelmnts.lbl.medium}},{{resourceService.frmelmnts.lbl.classes}},{{convertToString(userProfile.framework.gradeLevel)}},{{resourceService.frmelmnts.lbl.subjects}}"
           (click)="showEdit = !showEdit" tabindex="0">{{resourceService.frmelmnts.lbl.edit}}</button>
       </div>
     </div>
@@ -182,10 +181,9 @@
     <!-- User info mobile view starts-->
     <div class="max-w-300 mobile only">
 
-      <div class="mb-15 d-flex flex-ai-center flex-dc" *ngFor="let category of transormUserProfile">
-        <span class="fmedium white-space-nowrap">{{category?.labels | translateJson}} : </span>
-        <span class="fmedium font-w-bold text-center" *ngFor="let item of category?.values" 
-          >{{item}}</span>
+      <div class="mb-15 d-flex flex-ai-center flex-w-wrap flex-jc-center" *ngFor="let category of transormUserProfile">
+        <span class="fmedium mb-8 white-space-nowrap">{{ (resourceService?.frmelmnts?.lbl[category?.labels.toLowerCase()] | transposeTerms: resourceService?.frmelmnts?.lbl[category?.labels.toLowerCase()] : resourceService?.selectedLang) || category?.labels }}: </span>
+        <span class="fmedium font-w-bold text-center" *ngFor="let item of category?.values let last=last" >{{item}}{{!last && category.values.length > 1 ? ',' : ''}}</span>
       </div>
       <div class="d-flex flex-ai-center flex-jc-center" appTelemetryInteract
         [telemetryInteractEdata]="myFrameworkEditEdata" tabindex="0"

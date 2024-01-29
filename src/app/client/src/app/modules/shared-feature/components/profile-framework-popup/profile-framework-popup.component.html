@@ -1,4 +1,4 @@
-<div class="sb-mat__modal" *ngIf="formFieldOptions.length">
+<div class="sb-mat__modal" *ngIf="formFieldOptions.length && showLoader">
   <!--Header-->
   <div mat-dialog-title>
     <div class="title" role="heading" aria-level="2">
@@ -25,7 +25,7 @@
             *ngIf="field.code === this.frameworkCategories?.fwCategory1?.code">
             <div class="sb-field">
                 <mat-form-field id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
-                  <mat-label>{{field?.label | translateJson}}
+                  <mat-label>{{ (resourceService?.frmelmnts?.lbl[field?.label?.toLowerCase()] | transposeTerms: resourceService?.frmelmnts?.lbl[field?.label?.toLowerCase()] : resourceService?.selectedLang) || field?.label }}
                     <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
                   </mat-label>
                   <mat-select name={{field.code}} role="listbox" aria-label="field?.label"
@@ -40,7 +40,7 @@
             [ngClass]="field.code === this.frameworkCategories?.fwCategory4?.code ? '' : 'required'">
             <div class="sb-field">
                 <mat-form-field *ngIf="field.code ===this.frameworkCategories?.fwCategory3?.code" id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
-                  <mat-label>{{field?.label | translateJson}}
+                  <mat-label>{{ (resourceService?.frmelmnts?.lbl[field?.label?.toLowerCase()] | transposeTerms: resourceService?.frmelmnts?.lbl[field?.label?.toLowerCase()] : resourceService?.selectedLang) || field?.label }}
                     <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
                   </mat-label>
                   <mat-select multiple name={{field.code}} role="listbox" aria-label="field?.label"
@@ -57,7 +57,7 @@
                 </mat-form-field>
 
                 <mat-form-field *ngIf="field.code !== this.frameworkCategories?.fwCategory3?.code" id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
-                  <mat-label>{{field?.label | translateJson}}
+                  <mat-label>{{ (resourceService?.frmelmnts?.lbl[field?.label?.toLowerCase()] | transposeTerms: resourceService?.frmelmnts?.lbl[field?.label?.toLowerCase()] : resourceService?.selectedLang) || field?.label }}
                     <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
                   </mat-label>
                   <mat-select multiple name={{field.code}} role="listbox" aria-label="field?.label"
@@ -90,6 +90,6 @@
   </mat-dialog-actions>
   <!--/Actions-->
 </div>
-<div *ngIf="!formFieldOptions || !formFieldOptions.length" class="sb-mat__modal">
+<div *ngIf="!formFieldOptions || !formFieldOptions.length || !showLoader" class="sb-mat__modal">
   <app-loader></app-loader>
 </div>

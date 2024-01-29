@@ -3,7 +3,7 @@
   <div class="training-relevant mb-16">
     <h6 class="mt-0 mb-8 fsmall training-relevant__heading">{{resourceService?.frmelmnts?.lbl?.courseRelevantFor}}</h6>
     <div class="training-relevant__class mb-4 sb-color-gray-400 fnormal" *ngFor="let transformCourse of transformCourseHierarchy" >
-      <span>{{transformCourse?.labels | translateJson}}:&nbsp;</span><span>{{transformCourse?.value}}</span>
+      <span>{{ (resourceService?.frmelmnts?.lbl[transformCourse?.labels.toLowerCase()] | transposeTerms: resourceService?.frmelmnts?.lbl[transformCourse?.labels.toLowerCase()] : resourceService?.selectedLang) || transformCourse?.labels }}:&nbsp;</span><span>{{transformCourse?.value}}</span>
     </div>
     <div class="training-relevant__medium mb-4 sb-color-gray-400 fnormal" *ngIf="courseHierarchy?.audience">
       <span>{{resourceService?.frmelmnts?.lbl?.userType}}:&nbsp;</span><span>{{ courseHierarchy?.audience?.join(', ')}}</span>

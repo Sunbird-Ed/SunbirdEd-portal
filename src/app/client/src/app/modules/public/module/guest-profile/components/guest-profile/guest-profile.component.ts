@@ -62,7 +62,7 @@ export class GuestProfileComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.frameworkCategories = this.cslFrameworkService.getFrameworkCategories();
+    this.frameworkCategories = this.cslFrameworkService.getAllFwCatName();
     this.frameworkCategoriesObject = this.cslFrameworkService.getFrameworkCategoriesObject();
     this.isDesktop = this.utilService.isDesktopApp;
     this.getGuestUser();
