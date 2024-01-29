@@ -268,7 +268,7 @@ describe('CslFrameworkService', () => {
     ]);
     const result = service.transformDataForCC();
     expect(result).toEqual([
-      { code: 'lastPublishedBy', name: 'Published by' },
+      { code: 'organisation', name: 'Publisher' },
       { index: 2, code: 'filter2', alternativeCode: 'filter2', label: 'Filter 2' },
     ]);
   });
@@ -276,7 +276,7 @@ describe('CslFrameworkService', () => {
   it('should handle missing global filter data gracefully', () => {
     jest.spyOn(service, 'getGlobalFilterCategoriesObject').mockReturnValue(null);
     const result = service.transformDataForCC();
-    expect(result).toEqual([{ code: 'lastPublishedBy', name: 'Published by' }]);
+    expect(result).toEqual([{ code: 'organisation', name: 'Publisher' }]);
   });
 
   it('should return alternative codes for framework filter categories', () => {
