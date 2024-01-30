@@ -130,7 +130,7 @@ export class CslFrameworkService {
     return new Promise<void>((resolve, reject) => {
       if (userSelFramework) {
         this.csFrameworkService.getFrameworkConfigMap(userSelFramework, {
-          apiPath: '/api/framework/v1/'
+          apiPath: '/api/framework/v1'
         }).subscribe(
           (fwData) => {
             localStorage.removeItem('fwCategoryObject');
@@ -174,7 +174,7 @@ export class CslFrameworkService {
   public setFwCatObjConfigFromCsl(userSelFramework: any): void {
     if (userSelFramework) {
       this.csFrameworkService.getFrameworkConfig(userSelFramework, {
-        apiPath: '/api/framework/v1/'
+        apiPath: '/api/framework/v1'
       }).subscribe(
         (fwData) => {
           localStorage.removeItem('fwCategoryObjectValues');

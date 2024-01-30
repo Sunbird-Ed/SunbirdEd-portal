@@ -50,8 +50,8 @@ export default class BatchDetails {
 
         if (_.get(courses, 'length')) {
           const currentCourse = _.find(courses, { userId, batchId });
-          if (currentCourse.batch) {
-            res.status(200).send(Response.success(API_ID, { response: currentCourse.batch }, req));
+          if (currentCourse['batch']) {
+            res.status(200).send(Response.success(API_ID, { response: currentCourse['batch'] }, req));
           }
         }
         res.status(500).send(Response.error(API_ID, 500));

@@ -126,3 +126,15 @@
   }
 }
 
+.custom-pdf-player {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.custom-epub-player {
+  height: 100%;
+  width: 100%;
+  background-color: #fff;
+}

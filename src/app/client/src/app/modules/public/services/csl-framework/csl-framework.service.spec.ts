@@ -136,7 +136,7 @@ describe('CslFrameworkService', () => {
       expect(error).toEqual(errorMock);
     }
     expect(csFrameworkServiceMock.getFrameworkConfigMap).toHaveBeenCalledWith('userSelectedFramework', {
-      apiPath: '/api/framework/v1/'
+      apiPath: '/api/framework/v1'
     });
   });
 
@@ -148,7 +148,7 @@ describe('CslFrameworkService', () => {
 
     expect(csFrameworkServiceMock.getFrameworkConfigMap).toHaveBeenCalledTimes(3);
     expect(csFrameworkServiceMock.getFrameworkConfigMap).toHaveBeenCalledWith('userSelectedFramework', {
-      apiPath: '/api/framework/v1/'
+      apiPath: '/api/framework/v1'
     });
     expect(setFwCatObjConfigFromCslSpy).toHaveBeenCalledWith('userSelectedFramework');
     expect(localStorage.getItem('fwCategoryObject')).toBe(JSON.stringify(fwDataMock));

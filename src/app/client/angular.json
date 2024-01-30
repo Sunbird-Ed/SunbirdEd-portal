@@ -24,14 +24,16 @@
               "src/assets/SampleUserCsv.csv",
               "src/thirdparty",
               "src/favicon.png",
+              "src/favicon.ico",
+              "src/assets",
               {
                 "glob": "**/*.*",
                 "input": "./node_modules/@project-sunbird/common-consumption/assets",
                 "output": "./assets/common-consumption"
               },
               {
-                "glob": "**/*",
-                "input": "./node_modules/@project-sunbird/sunbird-pdf-player-v9/lib/assets/",
+                "glob": "**/*.*",
+                "input": "./node_modules/@project-sunbird/sunbird-pdf-player-web-component/assets",
                 "output": "/assets/"
               },
               {
@@ -40,19 +42,14 @@
                 "output": "/assets/"
               },
               {
-                "glob": "**/*",
-                "input": "./node_modules/@project-sunbird/sunbird-collection-editor/lib/assets/",
-                "output": "/assets/"
-              },
-              {
-                "glob": "**/*",
-                "input": "node_modules/@project-sunbird/sunbird-video-player-v9/lib/assets/",
-                "output": "/assets/"
-              },
-              {
                 "glob": "**/*.*",
                 "input": "./node_modules/@project-sunbird/discussions-ui/assets",
                 "output": "./assets/discussion-ui"
+              },
+              {
+                "glob": "**/*.*",
+                "input": "./node_modules/@project-sunbird/sunbird-epub-player-web-component/assets",
+                "output": "/assets/"
               },
               {
                 "glob": "**/*.*",
@@ -80,8 +77,10 @@
               "./node_modules/@project-sunbird/sb-themes/themes/themes-df.scss",
               "./node_modules/@project-sunbird/sb-themes/themes/themes-portal.scss",
               "node_modules/videojs-http-source-selector/dist/videojs-http-source-selector.css",
-              "node_modules/@project-sunbird/sunbird-video-player-v9/lib/assets/videojs.markers.min.css",
-              "./node_modules/@project-sunbird/discussions-ui/assets/styles/global.scss"
+              "src/assets/sunbird-folder/sunbird-video-player/styles.css",
+              "./node_modules/@project-sunbird/discussions-ui/assets/styles/global.scss",
+              "node_modules/@project-sunbird/sunbird-pdf-player-web-component/styles.css",
+              "node_modules/@project-sunbird/sunbird-epub-player-web-component/styles.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -104,7 +103,10 @@
               "node_modules/videojs-contrib-quality-levels/dist/videojs-contrib-quality-levels.min.js",
               "node_modules/videojs-http-source-selector/dist/videojs-http-source-selector.min.js",
               "node_modules/@project-sunbird/sunbird-file-upload-library/sunbird-file-upload-library.js",
-              "node_modules/@project-sunbird/sunbird-video-player-v9/lib/assets/videojs-markers.js",
+              "src/assets/sunbird-folder/sunbird-video-player/sunbird-video-player.js",
+              "node_modules/reflect-metadata/Reflect.js",
+              "node_modules/@project-sunbird/sunbird-pdf-player-web-component/sunbird-pdf-player.js",
+              "node_modules/@project-sunbird/sunbird-epub-player-web-component/sunbird-epub-player.js",
               {
                 "inject": false,
                 "input": "src/assets/libs/semantic-ui/transition.min.js",
