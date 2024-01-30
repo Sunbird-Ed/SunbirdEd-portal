@@ -310,10 +310,10 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   /**
     * @description - A method to create and set attributes in a custom element to load quml player as a web component
   */
-  loadQumlPlayer(){
+  async loadQumlPlayer(){
     if(this.qumlPlayer){
       const playerConfig = this.playerConfig;
-      (window as any).questionListUrl = "https://dev.inquiry.sunbird.org/api/question/v2/list";
+      (window as any).questionListUrl = await(this.configService.urlConFig.URLS.QUESTIONSET.LIST_API); 
       const qumlElement = document.createElement('sunbird-quml-player');
       qumlElement.setAttribute('player-config', JSON.stringify(playerConfig));
 
