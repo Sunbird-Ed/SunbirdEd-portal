@@ -158,68 +158,68 @@
   }
 
   &__textbooks {
-    -webkit-mask-image: url(/assets/images/mask-image/textbooks.svg);
-    mask-image: url(/assets/images/mask-image/textbooks.svg);
+    -webkit-mask-image: url(/assets/images/mask-image/textbooks.svg) !important;
+    // mask-image: url(/assets/images/mask-image/textbooks.svg);
   }
 
   &__courses {
-    -webkit-mask-image: url(/assets/images/mask-image/courses.svg);
-    mask-image: url(/assets/images/mask-image/courses.svg);
+    -webkit-mask-image: url(/assets/images/mask-image/courses.svg) !important;
+    // mask-image: url(/assets/images/mask-image/courses.svg);
   }
 
   &__quizzes {
-    -webkit-mask-image: url(/assets/images/mask-image/quizzes.svg);
-    mask-image: url(/assets/images/mask-image/quizzes.svg);
+    -webkit-mask-image: url(/assets/images/mask-image/quizzes.svg) !important;
+    // mask-image: url(/assets/images/mask-image/quizzes.svg);
   }
 
   &__tests {
-    -webkit-mask-image: url(/assets/images/mask-image/observation.svg);
-    mask-image: url(/assets/images/mask-image/observation.svg);
+    -webkit-mask-image: url(/assets/images/mask-image/observation.svg) !important;
+    // mask-image: url(/assets/images/mask-image/observation.svg);
   }
 
   &__stories {
-    -webkit-mask-image: url(/assets/images/mask-image/stories.svg);
-    mask-image: url(/assets/images/mask-image/stories.svg);
+    -webkit-mask-image: url(/assets/images/mask-image/stories.svg) !important;
+    // mask-image: url(/assets/images/mask-image/stories.svg);
   }
 
   &__poems {
-    -webkit-mask-image: url(/assets/images/mask-image/poems.svg);
-    mask-image: url(/assets/images/mask-image/poems.svg);
+    -webkit-mask-image: url(/assets/images/mask-image/poems.svg) !important;
+    // mask-image: url(/assets/images/mask-image/poems.svg);
   }
 
   &__tv {
-    -webkit-mask-image: url(/assets/images/mask-image/tv.svg);
-    mask-image: url(/assets/images/mask-image/tv.svg);
+    -webkit-mask-image: url(/assets/images/mask-image/tv.svg) !important;
+    // mask-image: url(/assets/images/mask-image/tv.svg);
   }
 
   &__podcasts {
-    -webkit-mask-image: url(/assets/images/mask-image/podcasts.svg);
-    mask-image: url(/assets/images/mask-image/podcasts.svg);
+    -webkit-mask-image: url(/assets/images/mask-image/podcasts.svg) !important;
+    // mask-image: url(/assets/images/mask-image/podcasts.svg);
   }
 
   &__all {
-    -webkit-mask-image: url(/assets/images/mask-image/all.svg);
-    mask-image: url(/assets/images/mask-image/all.svg);
+    -webkit-mask-image: url(/assets/images/mask-image/all.svg) !important;
+    // mask-image: url(/assets/images/mask-image/all.svg);
   }
   &__myDownloads   {
-    -webkit-mask-image: url(/assets/images/mask-image/download.svg);
-    mask-image: url(/assets/images/mask-image/download.svg);
+    -webkit-mask-image: url(/assets/images/mask-image/download.svg) !important;
+    // mask-image: url(/assets/images/mask-image/download.svg);
   }
   &__home   {
-    -webkit-mask-image: url(/assets/images/mask-image/home.svg);
-    mask-image: url(/assets/images/mask-image/home.svg);
+    -webkit-mask-image: url(/assets/images/mask-image/home.svg) !important;
+    // mask-image: url(/assets/images/mask-image/home.svg);
   }
   &__explore {
-    -webkit-mask-image: url(/assets/images/mask-image/explore.svg);
-    mask-image: url(/assets/images/mask-image/explore.svg);
+    -webkit-mask-image: url(/assets/images/mask-image/explore.svg) !important;
+    // mask-image: url(/assets/images/mask-image/explore.svg);
   }
   &__questionSet {
-    -webkit-mask-image: url(/assets/images/mask-image/question_set.svg);
-    mask-image: url(/assets/images/mask-image/question_set.svg);
+    -webkit-mask-image: url(/assets/images/mask-image/question_set.svg) !important;
+    // mask-image: url(/assets/images/mask-image/question_set.svg);
   }
 }
 html[layout=joy] .help-page .help-page__header {
   border-radius: 1.5rem 1.5rem 0 0 !important;
-  width: 100%;
+   width: 100%;
   background: var(--sbt-page-header-bg) !important;
-}
+ }
