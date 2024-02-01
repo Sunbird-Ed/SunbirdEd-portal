@@ -842,7 +842,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
             if (response && response.context) {
               response.context.objectRollup = this.objectRollUp;
             }
-            const contentDetails = {contentId: id, contentData: response?.questionset };
+            const contentDetails = {contentId: id, contentData: response?.questionset || response?.questionSet };
             this.playerConfig = serveiceRef.getConfig(contentDetails);
             this.publicPlayerService.getQuestionSetRead(id).subscribe((data: any) => {
               this.playerConfig['metadata']['instructions'] = _.get(data, 'result.questionset.instructions');
