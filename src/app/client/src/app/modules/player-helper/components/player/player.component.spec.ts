@@ -23,6 +23,9 @@ describe('PlayerComponent', () => {
 			URLS:{
 				TELEMETRY:{
 			        SYNC: 'mock-id'
+				},
+				QUESTIONSET:{
+					LIST_API: 'mock-list-api'
 				}
 			}
 		},
@@ -140,23 +143,29 @@ describe('PlayerComponent', () => {
 			expect(epubElement.addEventListener).toHaveBeenCalledWith('telemetryEvent', expect.any(Function));
 			expect(customElementMock.append).toHaveBeenCalled();
 		});
-
-		it('should create custom quml element and append it to quml view child nativeElement', () => {
+        
+		it('should create custom quml element and append it to quml view child nativeElement', async () => {
 			component.qumlPlayer = { nativeElement: customElementMock };
 			const createElementSpy = jest.spyOn(document, 'createElement').mockReturnValue({
-				setAttribute: jest.fn(),
-				addEventListener: jest.fn(),
-			} as any);	
-			component.loadQumlPlayer();
-			
+			  setAttribute: jest.fn(),
+			  addEventListener: jest.fn(),
+			} as any);
+			const appendSpy = jest.spyOn(customElementMock, 'append');
+			const qumlElementMock = document.createElement('sunbird-quml-player');
+			jest.spyOn(document, 'createElement').mockReturnValueOnce(qumlElementMock);
+		  
+			await component.loadQumlPlayer.call({
+			  qumlPlayer: component.qumlPlayer,
+			  playerConfig: component.playerConfig,
+			  configService: mockConfigService
+			});
+		  
 			expect(createElementSpy).toHaveBeenCalledWith('sunbird-quml-player');
-			expect(createElementSpy).toHaveBeenCalledTimes(1);
-
-			const qumlElement = document.createElement('sunbird-quml-player');
-			expect(qumlElement.setAttribute).toHaveBeenCalledWith('player-config', JSON.stringify(component.playerConfig));
-			expect(qumlElement.addEventListener).toHaveBeenCalledWith('playerEvent', expect.any(Function));
-			expect(qumlElement.addEventListener).toHaveBeenCalledWith('telemetryEvent', expect.any(Function));
-			expect(customElementMock.append).toHaveBeenCalled();
+		  
+			expect(qumlElementMock.setAttribute).toHaveBeenCalledWith('player-config', JSON.stringify(component.playerConfig));
+			expect(qumlElementMock.addEventListener).toHaveBeenCalledWith('playerEvent', expect.any(Function));
+			expect(qumlElementMock.addEventListener).toHaveBeenCalledWith('telemetryEvent', expect.any(Function));
+			expect(appendSpy).toHaveBeenCalledWith(qumlElementMock);
 		});
     });
 
