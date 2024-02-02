@@ -25,8 +25,8 @@ export class SchemaService {
     return this._schemas[type];
   }
 
-  public fetchSchemas(config = { formType: 'schemas', formAction: 'get', contentType: 'search' }, hashTagId = '*'): Observable<ISchema[]> {
-    return this.formService.getFormConfig(config, hashTagId)
+  public fetchSchemas(config = { formType: 'schemas', formAction: 'get', contentType: 'search' }): Observable<ISchema[]> {
+    return this.formService.getFormConfig(config)
       .pipe(
         tap((fields: ISchema[]) => {
           this._schemas = fields.reduce((acc, { id, schema }) => {

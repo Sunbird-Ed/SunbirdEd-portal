@@ -81,7 +81,8 @@ export class GenericResourceService {
             action: 'list',
             subType: 'global',
             component: 'portal',
-            rootOrgId: rootOrgId
+            rootOrgId: rootOrgId,
+            framework: localStorage.getItem('selectedFramework') || '*'
           }
         };
         return this.http.post(this.config.urlConFig.URLS.CUSTOM_RESOURCE_BUNDLE, formServiceInputParams).pipe(
