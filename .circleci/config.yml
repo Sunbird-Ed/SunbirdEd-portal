@@ -42,13 +42,13 @@ jobs:
           name: Install Sonar Scanner
           command: |
             cd /tmp
-            wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
+            wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
             unzip || sudo apt install unzip -y
-            unzip sonar-scanner-cli-4.6.2.2472-linux.zip
+            unzip sonar-scanner-cli-5.0.1.3006-linux.zip
             cd -
       - run:
          name: run sonar scanner
-         command: 'cd ~/portal && /tmp/sonar-scanner-4.6.2.2472-linux/bin/sonar-scanner'
+         command: 'cd ~/portal && /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner'
 workflows:
   version: 2
   build_and_test:
