@@ -211,7 +211,7 @@ export class PublicPlayerService {
 
   getQuestionSetHierarchy(contentId: string) {
     return this.contentCsService.getQuestionSetHierarchy(contentId).pipe(map((response: any) => {
-      this.contentData = response?.questionset;
+      this.contentData = response?.questionset || response?.questionSet;
       return response;
     }));
   }
