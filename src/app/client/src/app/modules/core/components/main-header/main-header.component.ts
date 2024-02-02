@@ -543,6 +543,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
 
   logout() {
     window.location.replace('/logoff');
+    this.cacheService.remove('reloadOnFwChange')
     this.cacheService.remove('orgHashTagId');
     this.cacheService.remove('userProfile');
   }
@@ -812,9 +813,12 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     };
   }
 
-  clearFiltersCache () {
+  clearFiltersCache() {
     if (this.cacheService.exists('searchFilters')) {
       this.cacheService.remove('searchFilters');
+    }
+    if (localStorage.getItem('selectedFramework')) {
+      localStorage.removeItem('selectedFramework');
     }
   }
 }

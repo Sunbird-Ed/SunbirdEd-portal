@@ -699,6 +699,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         setTimeout(() => {
             this.setTelemetryData();
         });
+        if (this.isUserLoggedIn() && !(this.cacheService.get('reloadOnFwChange'))) {
+            this.cacheService.set('reloadOnFwChange', true)
+            window.location.reload();
+        }
+
     }
 
     ngOnDestroy() {

@@ -246,10 +246,8 @@ export class CslFrameworkService {
       formType: 'contentcategory',
       formAction: 'menubar',
       contentType: 'global',
-      framework: slectedFw
-      // component: 'portal'
     };
-    return this.formService.getFormConfig(formServiceInputParams, this.rootOrgId).pipe(
+    return this.formService.getFormConfig(formServiceInputParams).pipe(
       catchError(error => {
         console.error('Error fetching form config:', error);
         return of(this.defaultFwCategories); // Return default data in case of error
