@@ -20,6 +20,7 @@
     .preference {
       position: relative;
       z-index: 1;
+      flex: 1;
       .header {
         font-size: calculateRem(16px);
       }
