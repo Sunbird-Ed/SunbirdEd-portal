@@ -1504,13 +1504,13 @@
     joi "^13.4.0"
     lodash "^4.17.10"
 
-"@project-sunbird/logger@0.0.11":
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/logger/-/logger-0.0.11.tgz#f807378b1ff43f9b3fe299c49123d820124ac1dc"
-  integrity sha512-otVKFXuPGoMtaCllA7JPPU6b6/ThQrcJQzE6Ktzwp5Uvlft7c9JDfUk3aXPdS/P2A2/40I9VVIPEYhTSzav+xw==
+"@project-sunbird/logger@0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/logger/-/logger-0.0.12.tgz#aa40a427e8712634a087431e9b4fd0f11a8225be"
+  integrity sha512-yJWoN6WDyXP4k7D1fnwQEBjugiK4Ya3zdfafqCQrCFemhaq9K7anHVec21+tqMlGA9PLtqumXI/7onPY5nFBaA==
   dependencies:
     "@types/lodash" "^4.14.149"
-    "@types/node" "^13.9.0"
+    "@types/node" "13.9.0"
     json-stringify-safe "^5.0.1"
     lodash "^4.17.15"
     winston "^3.2.1"
@@ -1699,6 +1699,11 @@
   integrity sha512-f8nQs3cLxbAFc00vEU59yf9UyGUftkPaLGfvbVOIDdx2i1b8epBqj2aNGyP19fiyXWvlmZ7qC1XLjAzw/OKIeA==
   dependencies:
     undici-types "~5.26.4"
+
+"@types/node@13.9.0":
+  version "13.9.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.9.0.tgz#5b6ee7a77faacddd7de719017d0bc12f52f81589"
+  integrity sha512-0ARSQootUG1RljH2HncpsY2TJBfGQIKOOi7kxzUY6z54ePu/ZD+wJA8zI2Q6v8rol2qpG/rvqsReco8zNMPvhQ==
 
 "@types/node@^13.9.0":
   version "13.13.52"
