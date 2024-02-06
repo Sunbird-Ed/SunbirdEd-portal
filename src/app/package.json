@@ -70,7 +70,7 @@
     "@project-sunbird/discussion-service": "0.0.6",
     "@project-sunbird/ext-framework-server": "0.1.28",
     "@project-sunbird/form-service": "0.0.15",
-    "@project-sunbird/logger": "0.0.9",
+    "@project-sunbird/logger": "0.0.11",
     "@project-sunbird/review-comment": "0.0.8",
     "async": "2.6.4",
     "axios": "0.20.0",
