@@ -127,7 +127,7 @@ describe("ProfilePageComponent", () => {
     const mockCslFrameworkService: Partial<CslFrameworkService> = {
         getFrameworkCategoriesObject: jest.fn(),
         frameworkLabelTransform: jest.fn(),
-        getAllFwCatName: jest.fn()
+        getAllFwCatName: jest.fn(),
     };
 
 
@@ -302,6 +302,7 @@ describe("ProfilePageComponent", () => {
             jest.spyOn(profilePageComponent, 'getOtherCertificates').mockImplementation(() => {
                 return {}
             });
+            jest.spyOn(mockCslFrameworkService, 'getAllFwCatName').mockReturnValue(['category1', 'category2']);
             const expectedFormConfig = { code: 'persona1', name: 'Persona 1' };
             //act
             profilePageComponent.ngOnInit();
@@ -314,6 +315,7 @@ describe("ProfilePageComponent", () => {
                 expect(profilePageComponent.getContribution).toHaveBeenCalled();
                 expect(profilePageComponent.getTrainingAttended).toHaveBeenCalled();
                 expect(mockFormService.getFormConfig).toHaveBeenCalledTimes(2);
+		        expect(mockCslFrameworkService.getAllFwCatName).toHaveBeenCalled();
                 done();
             });
         });

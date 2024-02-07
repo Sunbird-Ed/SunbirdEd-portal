@@ -33,4 +33,13 @@ describe("DialCodeCardComponent", () => {
     component.ngOnInit();
     expect(component.onAction).toBeCalled();
   });
+
+  describe("ngOnInit", () => {
+    it("should call getAllFwCatName on cslFrameworkService if dialCode is provided", () => {
+      const testDialCode = "testDialCode";
+      component.dialCode = testDialCode;
+      component.ngOnInit();
+      expect(mockCslFrameworkService.getAllFwCatName).toHaveBeenCalled();
+    });
+  });
 });

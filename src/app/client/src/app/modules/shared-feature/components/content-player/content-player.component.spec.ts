@@ -205,4 +205,14 @@ describe('ContentPlayerComponent', () => {
     expect(component.unsubscribe$.next).toHaveBeenCalled();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
+
+  it('should set frameworkCategoriesList correctly', () => {
+    const mockFrameworkCategories = ['category1', 'category2'];
+    mockLayoutService.switchableLayout = jest.fn(() => of([{ data: '' }]));
+    const mockSpy=jest.spyOn(mockCslFrameworkService, 'getAllFwCatName')
+    mockSpy.mockReturnValue(mockFrameworkCategories);
+    component.ngOnInit();
+    expect(component.frameworkCategoriesList).toEqual(mockFrameworkCategories);
+  });
+
 });
