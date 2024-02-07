@@ -23,11 +23,13 @@ import { EditorCursor } from '@project-sunbird/sunbird-collection-editor';
 import { EditorCursor as QsEditorCursor } from '@project-sunbird/sunbird-questionset-editor';
 import { SunbirdEpubPlayerModule } from '@project-sunbird/sunbird-epub-player-v9';
 import { SunbirdVideoPlayerModule } from '@project-sunbird/sunbird-video-player-v9';
+import { CslFrameworkService } from '../public/services/csl-framework/csl-framework.service';
 
 @NgModule({
   providers: [
     { provide: QsEditorCursor, useExisting: QumlPlayerV2Service },
     { provide: QsCursor, useExisting: QumlPlayerV2Service },
+    CslFrameworkService
     // { provide: QuestionCursor, useExisting: QumlPlayerService },
     // { provide: EditorCursor, useExisting: QumlPlayerService },
   ],
