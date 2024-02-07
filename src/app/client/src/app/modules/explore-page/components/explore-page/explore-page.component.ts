@@ -576,7 +576,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                     });
                                 }), tap(data => {
                                     // this.userPreference = this.setUserPreferences();
-                                    this.showLoader = false;                  
+                                    this.showLoader = false;              
                                     const userProfileSubjects = _.get(this.userService,  `userProfile.framework.${this.frameworkCategoriesList[3]}`) || [];
                                     const [userSubjects, notUserSubjects] = partition(sortBy(data, ['name']), value => {
                                         const { name = null } = value || {};
