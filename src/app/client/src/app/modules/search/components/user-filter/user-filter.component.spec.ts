@@ -5,7 +5,7 @@ import { UserService,OrgDetailsService,RolesAndPermissions,PermissionService,Fra
 import { _ } from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
 import { map,catchError } from 'rxjs/operators';
-import { of,combineLatest } from 'rxjs';
+import { of, throwError, combineLatest } from 'rxjs';
 import { UserSearchService } from './../../services';
 import { IInteractEventObject,IInteractEventEdata } from '@sunbird/telemetry';
 import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
@@ -274,5 +274,70 @@ describe('UserFilterComponent', () => {
 		  expect(result).toBe('District API success');
 		});
 	});
+
+  describe('applyFilters', () => {
+    it('should navigate with queryParams when inputData is not empty', () => {
+      component.inputData = {
+          key1: 'value1',
+          key2: ['value2']
+      };
+
+      component.applyFilters();
+
+      expect(mockRouter.navigate).toHaveBeenCalledWith([], { relativeTo: mockActivatedRoute.parent, queryParams: {
+          key1: 'value1',
+          key2: ['value2'],
+          appliedFilters: true
+      } });
+    });
+
+    it('should not navigate when inputData is empty', () => {
+        component.inputData = {};
+
+        component.applyFilters();
+
+        expect(mockRouter.navigate).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('subscribeToQueryParams', () => {
+    it('should subscribe to queryParams and set inputData and queryParams', () => {
+        const queryParams = { Usertype: 'administrator' };
+        const mockActivatedRoute = {
+            queryParams: of(queryParams)
+        };
+        component['activatedRoute'] = mockActivatedRoute as any;
+        component['subscribeToQueryParams']();
+        expect(component.queryParams).toEqual(queryParams);
+        expect(component.inputData).toEqual({ Usertype: ['School head or officials'] });
+    });
+
+    it('should handle empty queryParams', () => {
+        const queryParams = {};
+        const mockActivatedRoute = {
+            queryParams: of(queryParams)
+        };
+        component['activatedRoute'] = mockActivatedRoute as any;
+        component['subscribeToQueryParams']();
+        expect(component.queryParams).toEqual(queryParams);
+        expect(component.inputData).toEqual({});
+    });
+
+  });
+
+  describe('combineAllApis', () => {
+    it('should call getUserType, getDistrict, getRoles, and getFormatedFilterDetails and set showFilters to true', () => {
+        jest.spyOn(component, 'getUserType').mockReturnValue(of('User type API success'));
+        jest.spyOn(component, 'getDistrict').mockReturnValue(of('District API success'));
+        jest.spyOn(component, 'getRoles').mockReturnValue(of('Roles API success'));
+        jest.spyOn(component, 'getFormatedFilterDetails' as any).mockReturnValue(of('Framework API success'));
+        component.combineAllApis();
+        expect(component.showFilters).toBe(true);
+        expect(component.getUserType).toHaveBeenCalled();
+        expect(component.getDistrict).toHaveBeenCalled();
+        expect(component.getRoles).toHaveBeenCalled();
+        expect(component['getFormatedFilterDetails']).toHaveBeenCalled();
+    });
+  });
 
 });
