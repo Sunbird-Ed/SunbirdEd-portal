@@ -307,10 +307,7 @@ export class SearchService {
       option.data.request.filters[this.globalFilterCategories[1]] = option.data.request.filters[this.frameworkCategories?.fwCategory2?.code];
       delete option.data.request.filters[this.frameworkCategories?.fwCategory2?.code];
     }
-    // if (_.get(option, 'data.request.filters.subject')) {
-    //   option.data.request.filters['se_subjects'] = option.data.request.filters.subject;
-    //   delete option.data.request.filters.subject;
-    // }
+
     return option.data;
   }
   /**

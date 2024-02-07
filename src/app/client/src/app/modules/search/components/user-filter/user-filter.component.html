@@ -3,7 +3,7 @@
 
     <!--Header-->
     <h5 class="sb-prominent-filter-header">
-      {{resourceService.frmelmnts?.lbl?.userFilterForm | translate}}
+      {{resourceService?.frmelmnts?.lbl?.userFilterForm | translate}}
       <i class="mobile only large angle down icon link right-floated" 
         [ngStyle]="{'transform': collapse === true ? 'rotate(0deg)' : 'rotate(180deg)'}"
         tabindex="0" (click)="collapse = !collapse"
@@ -19,8 +19,8 @@
       <div *ngIf="allUserType" class="sb-prominent-filter-field">
 
         <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
-          <mat-label>{{resourceService.frmelmnts?.lbl?.userType | translate}}</mat-label>
-          <mat-select [(ngModel)]="inputData.Usertype" role="listbox" multiple [aria-label]="resourceService.frmelmnts?.lbl?.userType" 
+          <mat-label>{{resourceService?.frmelmnts?.lbl?.userType | translate}}</mat-label>
+          <mat-select [(ngModel)]="inputData.Usertype" role="listbox" multiple [aria-label]="resourceService?.frmelmnts?.lbl?.userType" 
             class="selection" (selectionChange)="selectedMultiValues($event, allUserType?.code)">
             <mat-select-trigger>
               {{inputData.Usertype ? inputData.Usertype[0] : ''}}
@@ -31,19 +31,20 @@
             <mat-option class="mat-dropdown__options" role="option" *ngFor="let userType of allUserType?.range" [value]="userType.name"
             attr.aria-label="{{userType.name}}">{{userType.name}}</mat-option>
           </mat-select>
+
         </mat-form-field>
       </div>
 
       <div *ngIf="medium" class="sb-prominent-filter-field">
         
         <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
-          <mat-label>{{resourceService.frmelmnts?.lbl?.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang | translate}}</mat-label>
-          <mat-select [(ngModel)]="inputData.medium" role="listbox" multiple [aria-label]="resourceService.frmelmnts?.lbl?.medium"
+          <mat-label>{{resourceService?.frmelmnts?.lbl[frameworkCategoriesList[1]] | transposeTerms: resourceService?.frmelmnts?.lbl[frameworkCategoriesList[1]] : resourceService?.selectedLang | translate}}</mat-label>
+          <mat-select [(ngModel)]="inputData[frameworkCategoriesList[1]]" role="listbox" multiple [aria-label]="resourceService?.frmelmnts?.lbl[frameworkCategoriesList[1]]"
             class="selection" (selectionChange)="selectedMultiValues($event, medium?.code)">
             <mat-select-trigger>
-              {{inputData.medium ? inputData.medium[0] : ''}}
-              <span *ngIf="inputData.medium?.length > 1" class="example-additional-selection">
-                (+{{inputData.medium.length - 1}} {{inputData.medium?.length === 2 ? 'other' : 'others'}})
+              {{inputData[frameworkCategoriesList[1]] ? inputData[frameworkCategoriesList[1]][0] : ''}}
+              <span *ngIf="inputData && inputData[frameworkCategoriesList[1]]?.length > 1" class="example-additional-selection">
+                (+{{inputData[frameworkCategoriesList[1]]?.length - 1}} {{inputData[frameworkCategoriesList[1]]?.length === 2 ? 'other' : 'others'}})
               </span>
             </mat-select-trigger>
             <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of medium?.range" [value]="option.name"
@@ -56,13 +57,13 @@
       <div *ngIf="class" class="sb-prominent-filter-field">
 
          <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
-          <mat-label>{{resourceService.frmelmnts?.lbl?.class | transposeTerms: 'frmelmnts.lbl.class' : resourceService?.selectedLang | translate}}</mat-label>
-          <mat-select [(ngModel)]="inputData.gradeLevel" role="listbox" multiple [aria-label]="resourceService.frmelmnts?.lbl?.class"
+          <mat-label>{{resourceService?.frmelmnts?.lbl[frameworkCategoriesList[2]] | transposeTerms: resourceService?.frmelmnts?.lbl[frameworkCategoriesList[2]] : resourceService?.selectedLang | translate}}</mat-label>
+          <mat-select [(ngModel)]="inputData[frameworkCategoriesList[2]]" role="listbox" multiple [aria-label]="resourceService?.frmelmnts?.lbl[frameworkCategoriesList[2]]"
             class="selection" (selectionChange)="selectedMultiValues($event, class?.code)">
             <mat-select-trigger>
-              {{inputData.gradeLevel ? inputData.gradeLevel[0] : ''}}
-              <span *ngIf="inputData.gradeLevel?.length > 1" class="example-additional-selection">
-                (+{{inputData.gradeLevel.length - 1}} {{inputData.gradeLevel?.length === 2 ? 'other' : 'others'}})
+              {{inputData[frameworkCategoriesList[2]] ? inputData[frameworkCategoriesList[2]][0] : ''}}
+              <span *ngIf="inputData && inputData[frameworkCategoriesList[2]]?.length > 1" class="example-additional-selection">
+                (+{{inputData[frameworkCategoriesList[2]]?.length - 1}} {{inputData[frameworkCategoriesList[2]]?.length === 2 ? 'other' : 'others'}})
               </span>
             </mat-select-trigger>
             <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of getSortedList(class?.range, 'name')" [value]="option.name"
@@ -74,13 +75,13 @@
       <div *ngIf="subject" class="sb-prominent-filter-field">
         
          <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
-          <mat-label>{{resourceService.frmelmnts?.lbl?.subject | transposeTerms: 'frmelmnts.lbl.subject': resourceService?.selectedLang | translate}}</mat-label>
-          <mat-select [(ngModel)]="inputData.subject" role="listbox" multiple [aria-label]="resourceService.frmelmnts?.lbl?.subject"
+          <mat-label>{{resourceService?.frmelmnts?.lbl[frameworkCategoriesList[3]] | transposeTerms: resourceService?.frmelmnts?.lbl[frameworkCategoriesList[3]]: resourceService?.selectedLang | translate}}</mat-label>
+          <mat-select [(ngModel)]="inputData[frameworkCategoriesList[3]]" role="listbox" multiple [aria-label]="resourceService?.frmelmnts?.lbl[frameworkCategoriesList[3]]"
             class="selection" (selectionChange)="selectedMultiValues($event, subject?.code)">
             <mat-select-trigger>
-              {{inputData.subject ? inputData.subject[0] : ''}}
-              <span *ngIf="inputData.subject?.length > 1" class="example-additional-selection">
-                (+{{inputData.subject.length - 1}} {{inputData.subject?.length === 2 ? 'other' : 'others'}})
+              {{inputData[frameworkCategoriesList[3]] ? inputData[frameworkCategoriesList[3]][0] : ''}}
+              <span *ngIf=" inputData && inputData[frameworkCategoriesList[3]]?.length > 1" class="example-additional-selection">
+                (+{{inputData[frameworkCategoriesList[3]]?.length - 1}} {{inputData[frameworkCategoriesList[3]]?.length === 2 ? 'other' : 'others'}})
               </span>
             </mat-select-trigger>
             <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of subject?.range" [value]="option.name"
@@ -92,8 +93,8 @@
 
       <div class="sb-prominent-filter-field">
          <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
-          <mat-label>{{resourceService.frmelmnts?.lbl?.district}}</mat-label>
-          <mat-select role="listbox" [aria-label]="resourceService.frmelmnts?.lbl?.district"
+          <mat-label>{{resourceService?.frmelmnts?.lbl?.district}}</mat-label>
+          <mat-select role="listbox" [aria-label]="resourceService?.frmelmnts?.lbl?.district"
             class="selection" (selectionChange)="districtSelected($event)">
             <mat-option class="mat-dropdown__options" role="option" *ngFor="let district of allDistricts" [value]="district"
             attr.aria-label="{{district.name}}">{{district.name}}</mat-option>
@@ -103,8 +104,8 @@
 
       <div class="sb-prominent-filter-field">
          <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
-          <mat-label>{{resourceService.frmelmnts?.lbl?.block | translate}}</mat-label>
-          <mat-select role="listbox" [aria-label]="resourceService.frmelmnts?.lbl?.block"
+          <mat-label>{{resourceService?.frmelmnts?.lbl?.block | translate}}</mat-label>
+          <mat-select role="listbox" [aria-label]="resourceService?.frmelmnts?.lbl?.block"
             class="selection" (selectionChange)="blockSelected($event)">
             <mat-option class="mat-dropdown__options" role="option" *ngFor="let block of allBlocks" [value]="block"
             attr.aria-label="{{block.name}}">{{block.name}}</mat-option>
@@ -114,8 +115,8 @@
 
       <div class="sb-prominent-filter-field">
          <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
-          <mat-label>{{resourceService.frmelmnts?.lbl?.school | translate}}</mat-label>
-          <mat-select role="listbox" [aria-label]="resourceService.frmelmnts?.lbl?.school"
+          <mat-label>{{resourceService?.frmelmnts?.lbl?.school | translate}}</mat-label>
+          <mat-select role="listbox" [aria-label]="resourceService?.frmelmnts?.lbl?.school"
             class="selection" (selectionChange)="schoolSelected($event)">
             <mat-option class="mat-dropdown__options" role="option" *ngFor="let school of allSchools" [value]="school"
             attr.aria-label="{{school.orgName}}">{{school.orgName}}</mat-option>
@@ -125,8 +126,8 @@
 
       <div *ngIf="allRoles" class="sb-prominent-filter-field">
         <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
-          <mat-label>{{resourceService.frmelmnts?.lbl?.role | translate}}</mat-label>
-          <mat-select [(ngModel)]="inputData.Roles" role="listbox" multiple [aria-label]="resourceService.frmelmnts?.lbl?.role"
+          <mat-label>{{resourceService?.frmelmnts?.lbl?.role | translate}}</mat-label>
+          <mat-select [(ngModel)]="inputData.Roles" role="listbox" multiple [aria-label]="resourceService?.frmelmnts?.lbl?.role"
             class="selection" (selectionChange)="selectedMultiValues($event, allRoles?.code)">
             <mat-select-trigger>
               {{inputData.Roles ? inputData.Roles[0] : ''}}
@@ -143,11 +144,11 @@
       <div class="sb-prominent-filter-field">
         <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="resetInteractEdata" 
           class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="resetFilters()">
-            {{resourceService.frmelmnts?.btn?.reset | translate}}
+            {{resourceService?.frmelmnts?.btn?.reset | translate}}
         </button>
         <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="submitInteractEdata" 
           class="sb-btn sb-btn-normal sb-btn-primary ml-8" tabindex="0" (click)="applyFilters()">
-            {{resourceService.frmelmnts?.btn?.submit | translate}}
+            {{resourceService?.frmelmnts?.btn?.submit | translate}}
         </button>
       </div>
 

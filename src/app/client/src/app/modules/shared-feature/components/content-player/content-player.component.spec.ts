@@ -12,6 +12,7 @@ import { PopupControlService } from '../../../../service/popup-control.service';
 import { of } from 'rxjs';
 import { PublicPlayerService } from '@sunbird/public';
 import { ContentPlayerComponent } from './content-player.component';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 describe('ContentPlayerComponent', () => {
   let component: ContentPlayerComponent;
@@ -126,6 +127,9 @@ describe('ContentPlayerComponent', () => {
   };
   const mockLayoutService: Partial<LayoutService> = {};
   const mockTelemetryService: Partial<TelemetryService> = {};
+  const mockCslFrameworkService: Partial<CslFrameworkService> = {
+    getAllFwCatName: jest.fn(),
+  };
 
   beforeAll(() => {
     component = new ContentPlayerComponent(
@@ -144,7 +148,9 @@ describe('ContentPlayerComponent', () => {
       mockPopupControlService as PopupControlService,
       mockConfigService as ConfigService,
       mockLayoutService as LayoutService,
-      mockTelemetryService as TelemetryService
+      mockTelemetryService as TelemetryService,
+      mockCslFrameworkService as CslFrameworkService,
+
     )
   });
 

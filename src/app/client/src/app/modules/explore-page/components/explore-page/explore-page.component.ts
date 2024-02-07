@@ -98,6 +98,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     filterResponseData = {};
     refreshFilter: boolean = true;
     public categoryKeys;
+    frameworkCategoriesList;
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     }
@@ -219,6 +220,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.frameworkCategories = this.cslFrameworkService?.getFrameworkCategories();
         this.frameworkCategoriesObject = this.cslFrameworkService?.getFrameworkCategoriesObject();
         this.categoryKeys = this.cslFrameworkService?.transformDataForCC();
+        this.frameworkCategoriesList = this.cslFrameworkService?.getAllFwCatName();
         this.isDesktopApp = this.utilService.isDesktopApp;
         this.setUserPreferences();
         this.subscription$ = this.activatedRoute.queryParams.subscribe(queryParams => {
@@ -574,8 +576,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                     });
                                 }), tap(data => {
                                     // this.userPreference = this.setUserPreferences();
-                                    this.showLoader = false;
-                                    const userProfileSubjects = _.get(this.userService, 'userProfile.framework.subject') || [];
+                                    this.showLoader = false;                  
+                                    const userProfileSubjects = _.get(this.userService,  `userProfile.framework.${this.frameworkCategoriesList[3]}`) || [];
                                     const [userSubjects, notUserSubjects] = partition(sortBy(data, ['name']), value => {
                                         const { name = null } = value || {};
                                         if (!name) { return false; }

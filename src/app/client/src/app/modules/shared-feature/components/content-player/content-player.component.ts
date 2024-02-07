@@ -13,6 +13,7 @@ import { takeUntil, mergeMap } from 'rxjs/operators';
 import { Subject, of, throwError } from 'rxjs';
 import { PublicPlayerService, ComponentCanDeactivate } from '@sunbird/public';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 @Component({
   selector: 'app-content-player',
@@ -48,6 +49,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
   isQuestionSet = false;
   isDesktopApp = false;
   isTypeCopyQuestionset:boolean = false;
+  frameworkCategoriesList;
 
   @HostListener('window:beforeunload')
     canDeactivate() {
@@ -64,7 +66,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
     public copyContentService: CopyContentService, public permissionService: PermissionService,
     public contentUtilsServiceService: ContentUtilsServiceService, public popupControlService: PopupControlService,
     private configService: ConfigService,
-    public layoutService: LayoutService, public telemetryService: TelemetryService) {
+    public layoutService: LayoutService, public telemetryService: TelemetryService, public cslFrameworkService: CslFrameworkService) {
     this.playerOption = {
       showContentRating: true
     };
@@ -72,6 +74,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
 
   ngOnInit() {
     console.log('content');
+    this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
     this.isQuestionSet = _.includes(this.router.url, 'questionset');
     this.isDesktopApp = this.userService.isDesktopApp;
     this.initLayout();

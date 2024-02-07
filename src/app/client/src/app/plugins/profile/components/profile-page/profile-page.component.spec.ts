@@ -127,6 +127,7 @@ describe("ProfilePageComponent", () => {
     const mockCslFrameworkService: Partial<CslFrameworkService> = {
         getFrameworkCategoriesObject: jest.fn(),
         frameworkLabelTransform: jest.fn(),
+        getAllFwCatName: jest.fn()
     };
 
 

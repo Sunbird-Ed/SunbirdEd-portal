@@ -172,7 +172,7 @@
         </div>
         <button class="sb-btn sb-btn-primary sb-btn-normal my-16 sb-btn-border computer only"
           appTelemetryInteract appOnlineOnly
-          [telemetryInteractEdata]="myFrameworkEditEdata" attr.aria-label="{{resourceService.frmelmnts.lbl.edit}} {{resourceService.frmelmnts.lbl.board}},{{resourceService.frmelmnts.lbl.medium}},{{resourceService.frmelmnts.lbl.classes}},{{convertToString(userProfile.framework.gradeLevel)}},{{resourceService.frmelmnts.lbl.subjects}}"
+          [telemetryInteractEdata]="myFrameworkEditEdata" attr.aria-label="{{resourceService.frmelmnts.lbl.edit}} {{resourceService.frmelmnts.lbl[frameworkCategoriesList[0]]}},{{resourceService.frmelmnts.lbl[frameworkCategoriesList[1]]}},{{resourceService.frmelmnts.lbl[frameworkCategoriesList[2]]}},{{convertToString(userProfile?.framework?.[frameworkCategoriesList[2]])}},{{resourceService.frmelmnts.lbl[frameworkCategoriesList[3]]}}"
           (click)="showEdit = !showEdit" tabindex="0">{{resourceService.frmelmnts.lbl.edit}}</button>
       </div>
     </div>

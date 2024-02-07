@@ -1,14 +1,19 @@
 import { ResourceService } from "../../../shared";
 import { Response } from "./dial-code-card.component.spec.data";
 import { DialCodeCardComponent } from "./dial-code-card.component";
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 describe("DialCodeCardComponent", () => {
   let component: DialCodeCardComponent;
   const mockResourceService: Partial<ResourceService> = {};
-
+  const mockCslFrameworkService: Partial<CslFrameworkService> = {
+    getAllFwCatName: jest.fn(),
+  };
   beforeAll(() => {
     component = new DialCodeCardComponent(
-      mockResourceService as ResourceService
+      mockResourceService as ResourceService,
+      mockCslFrameworkService as CslFrameworkService,
+
     );
   });
 

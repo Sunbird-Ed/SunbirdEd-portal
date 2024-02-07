@@ -35,7 +35,7 @@
             <div class="sb-field mb-0"><label>
                 <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels[this.frameworkCategories?.fwCategory4?.code]"
                   (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: this.frameworkCategories?.fwCategory4?.code})"
-                  defaultSelectionText={{resourceService?.frmelmnts?.lbl?.subject}}
+                  defaultSelectionText={{resourceService?.frmelmnts?.lbl[this.frameworkCategories?.fwCategory4?.code]}}
                   zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
                   class="selection sbt-dropdown-tick text-cencapitalize"
                   [ngClass]="!layoutConfiguration ? 'state-selection' : 'sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg'">
