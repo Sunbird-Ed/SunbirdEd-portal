@@ -695,6 +695,10 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ANONYMOUS]
     },
+    '/learner/anonymous/delete/otp/v1/generate': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
+    },
     '/learner/data/v1/form/read': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]

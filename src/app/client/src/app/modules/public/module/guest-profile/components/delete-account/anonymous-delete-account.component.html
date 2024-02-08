@@ -1,0 +1,9 @@
+<div class="sb-mat__modal">
+  <div mat-dialog-title class="mb-0">
+  </div>
+  <mat-dialog-content>
+    <app-otp-popup [otpData]="otpData" [redirectToLogin]="false" (verificationSuccess)="verificationSuccess($event)"
+      (closeContactForm)="closeModal()" [delete]="true">
+    </app-otp-popup>
+  </mat-dialog-content>
+  <router-outlet></router-outlet>
