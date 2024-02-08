@@ -271,7 +271,8 @@
       "GENERATE": "otp/v1/generate",
       "VERIFY": "otp/v1/verify",
       "ANONYMOUS": {
-        "GENERATE": "anonymous/otp/v1/generate"
+        "GENERATE": "anonymous/otp/v1/generate",
+        "GENERATE_USERDELETE":"anonymous/delete/otp/v1/generate"
       }
     },
     "OFFLINE": {

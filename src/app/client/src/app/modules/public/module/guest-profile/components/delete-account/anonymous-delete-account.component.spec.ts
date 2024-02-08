@@ -5,21 +5,17 @@
 *
 */
 
-import { Component,OnInit,OnDestroy,Input,Output,EventEmitter } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
 import { _ } from 'lodash-es';
 import { UserService,OtpService } from '@sunbird/core';
-import { ResourceService,ServerResponse,ToasterService,ConfigService,CacheService } from '@sunbird/shared';
+import { ResourceService,ToasterService,ConfigService,CacheService } from '@sunbird/shared';
 import { of, throwError } from 'rxjs';
-import { ProfileService } from '../../services';
-import { IInteractEventObject,IInteractEventEdata } from '@sunbird/telemetry';
 import { MatDialog } from '@angular/material/dialog';
-import { DeleteAccountComponent } from './delete-account.component'
-import { mockResponse } from './delete-account.component.spec.data';
+import { AnonymousDeleteAccountComponent } from './anonymous-delete-account.component'
+import { mockResponse } from './anonymous-delete-account.component.spec.data';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
-describe('DeleteAccountComponent', () => {
-    let component: DeleteAccountComponent;
+describe('AnonymousDeleteAccountComponent', () => {
+    let component: AnonymousDeleteAccountComponent;
 
     const resourceService :Partial<ResourceService> ={
         messages: {
@@ -47,33 +43,19 @@ describe('DeleteAccountComponent', () => {
                 unableToDeleteAccount: 'Unable to delete the account',
                 wrongPhoneOTP: 'You have entered an incorrect OTP. Enter the OTP received on your mobile number. The OTP is valid only for 30 minutes.'
             },
-             instn: {
+            instn: {
                 t008: "You will receive an SMS with the OTP for Mobile Number verification",
                 t0084: "You will receive an email with the OTP to verify your email address"
             }
         }
     };
-	const userService :Partial<UserService> ={
-        loggedIn: true,
-    slug: jest.fn().mockReturnValue('tn') as any,
-    userData$: of({userProfile: {
-      userId: 'sample-uid',
-      rootOrgId: 'sample-root-id',
-      rootOrg: {},
-      hashTagIds: ['id']
-    } as any}) as any,
-    setIsCustodianUser: jest.fn(),
-    userid: 'sample-uid',
-    appId: 'sample-id',
-    getServerTimeDiff: '',
-    };
+	
 	const otpService :Partial<OtpService> ={
-        generateOTP: jest.fn().mockReturnValue(of())
+        generateAnonymousOTP: jest.fn().mockReturnValue(of())
     };
 	const toasterService :Partial<ToasterService> ={
         error:jest.fn()
     };
-	const profileService :Partial<ProfileService> ={};
 	const matDialog :Partial<MatDialog> ={
         getDialogById:jest.fn()
     };
@@ -93,12 +75,10 @@ describe('DeleteAccountComponent', () => {
     };
 
     beforeAll(() => {
-        component = new DeleteAccountComponent(
+        component = new AnonymousDeleteAccountComponent(
             resourceService as ResourceService,
-			userService as UserService,
 			otpService as OtpService,
 			toasterService as ToasterService,
-			profileService as ProfileService,
 			matDialog as MatDialog,
 			configService as ConfigService,
 			cacheService as CacheService,
@@ -114,6 +94,7 @@ describe('DeleteAccountComponent', () => {
     it('should create a instance of component', () => {
         expect(component).toBeTruthy();
     });
+
     it('should call prepareOtpData for email', () => {
         component.otpData = null
         component.contactType = 'email'
@@ -146,7 +127,7 @@ describe('DeleteAccountComponent', () => {
         component.prepareOtpData();
     });
 
-    it('should create a instance of component and call the generateOTP method without req object with error', () => {
+    it('should create a instance of component and call the generateOTP method without req object', () => {
         jest.spyOn(component,'prepareOtpData');
         component.contactType='email'
         component.contactTypeForm = {
@@ -161,65 +142,18 @@ describe('DeleteAccountComponent', () => {
         } as any;
         const req =  null
         const otpData = {
-            type: 'phone',
-            value: '1234567890',
+            type: 'email',
+            value: 'abcd@test.com',
             instructions: 'An OTP has been sent you your registered mobile number. Please enter the OTP to proceed with account deletion.',
             retryMessage: 'Unable to delete the account',
             wrongOtpMessage: 'You have entered an incorrect OTP. Enter the OTP received on your mobile number. The OTP is valid only for 30 minutes.'
           }
-          otpService.generateOTP=jest.fn().mockReturnValue(throwError(mockResponse.resendOtpError));
+          otpService.generateAnonymousOTP=jest.fn().mockReturnValue(of(mockResponse.resendOtpSuccess));
+
           component.generateOTP(req, otpData);
-          //expect(component.prepareOtpData).toBeCalled();
-    });
-    it('should create a instance of component and call the validateAndEditContact method', () => {
-        jest.spyOn(component,'generateOTP');
-        otpService.generateOTP=jest.fn().mockReturnValue(of(mockResponse.resendOtpSuccess));
-        component.userProfile = mockResponse.userMockData;
-        component['validateAndEditContact']();
-        expect(component.generateOTP).toBeCalled();
-    });
-    it('should create a instance of component and call the validateAndEditContact method', () => {
-        jest.spyOn(component,'generateOTP');
-        otpService.generateOTP=jest.fn().mockReturnValue(of(mockResponse.resendOtpSuccess));
-        component.userProfile = mockResponse.userMockData1;
-        component['validateAndEditContact']();
-        expect(component.generateOTP).toBeCalled();
-    });
-    it('should create a instance of component and call the ngOnInit method', () => {
-        component['validateAndEditContact']=jest.fn();
-        component.ngOnInit();
-        expect(component).toBeTruthy();
-        expect(component['validateAndEditContact']).toBeCalled();
+          expect(component.prepareOtpData).toBeCalled();
     });
 
-    it('should create a instance of component and call the closeModal method', () => {
-        component.dialogProps = { id: 'dialog-id' };
-        const dialogRef = {
-            close: jest.fn()
-        };
-        (matDialog.getDialogById as jest.Mock).mockReturnValue(dialogRef);
-        component.closeMatDialog();
-        expect(dialogRef.close).toHaveBeenCalled();
-    });
-    it('should create a instance of component and call the generateOTP method', () => {
-        jest.spyOn(component,'prepareOtpData');
-        const req =  {
-            key: '1234567890',
-            userId: '874ed8a5-782e-4f6c-8f36-e0288455901e',
-            templateId: 'otpEmailDeleteUserTemplate',
-            type: 'phone'
-          }
-        const otpData = {
-            type: 'phone',
-            value: '1234567890',
-            instructions: 'An OTP has been sent you your registered mobile number. Please enter the OTP to proceed with account deletion.',
-            retryMessage: 'Unable to delete the account',
-            wrongOtpMessage: 'You have entered an incorrect OTP. Enter the OTP received on your mobile number. The OTP is valid only for 30 minutes.'
-          }
-          otpService.generateOTP=jest.fn().mockReturnValue(of(mockResponse.resendOtpSuccess));
-          component.generateOTP(req, otpData);
-          //expect(component.prepareOtpData).toBeCalled();
-    });
     it('should create a instance of component and call the generateOTP method without req object', () => {
         jest.spyOn(component,'prepareOtpData');
         component.contactType='phone'
@@ -241,41 +175,166 @@ describe('DeleteAccountComponent', () => {
             retryMessage: 'Unable to delete the account',
             wrongOtpMessage: 'You have entered an incorrect OTP. Enter the OTP received on your mobile number. The OTP is valid only for 30 minutes.'
           }
+          otpService.generateAnonymousOTP=jest.fn().mockReturnValue(of(mockResponse.resendOtpSuccess));
+          component.generateOTP(req, otpData);
+          expect(component.prepareOtpData).toBeCalled();
+    });
+
+    it('should create a instance of component and call the generateOTP method without req object with error', () => {
+        jest.spyOn(component,'prepareOtpData');
+        component.contactType='email'
+        component.contactTypeForm = {
+            controls:{
+                email:{
+                    value:'abcd@test.com'
+                },
+                phone:{
+                    value: 1234567890
+                }
+            }
+        } as any;
+        const req =  null
+        const otpData = {
+            type: 'phone',
+            value: '1234567890',
+            instructions: 'An OTP has been sent you your registered mobile number. Please enter the OTP to proceed with account deletion.',
+            retryMessage: 'Unable to delete the account',
+            wrongOtpMessage: 'You have entered an incorrect OTP. Enter the OTP received on your mobile number. The OTP is valid only for 30 minutes.'
+          }
+          otpService.generateAnonymousOTP=jest.fn().mockReturnValue(throwError(mockResponse.resendOtpError));
+          component.generateOTP(req, otpData);
+          expect(component.prepareOtpData).toBeCalled();
+    });
+
+    it('should create a instance of component and call the generateOTP method without req object with error', () => {
+        jest.spyOn(component,'prepareOtpData');
+        component.contactType='email'
+        component.contactTypeForm = {
+            controls:{
+                email:{
+                    value:'abcd@test.com'
+                },
+                phone:{
+                    value: 1234567890
+                }
+            }
+        } as any;
+        const req =  null
+        const otpData = {
+            type: 'email',
+            value: 'abc@gmail',
+            instructions: 'An OTP has been sent you your registered mobile number. Please enter the OTP to proceed with account deletion.',
+            retryMessage: 'Unable to delete the account',
+            wrongOtpMessage: 'You have entered an incorrect OTP. Enter the OTP received on your mobile number. The OTP is valid only for 30 minutes.'
+          }
+          otpService.generateAnonymousOTP=jest.fn().mockReturnValue(throwError(mockResponse.resendEmailOtpError));
+          component.generateOTP(req, otpData);
+          expect(component.prepareOtpData).toBeCalled();
+    });
+
+    it('should create a instance of component and call the generateOTP method without req object with error', () => {
+        jest.spyOn(component,'prepareOtpData');
+        component.contactType='email'
+        component.contactTypeForm = {
+            controls:{
+                email:{
+                    value:'abcd@test.com'
+                },
+                phone:{
+                    value: 1234567890
+                }
+            }
+        } as any;
+        const req =  null
+        const otpData = {
+            type: 'phone',
+            value: '1234567890',
+            instructions: 'An OTP has been sent you your registered mobile number. Please enter the OTP to proceed with account deletion.',
+            retryMessage: 'Unable to delete the account',
+            wrongOtpMessage: 'You have entered an incorrect OTP. Enter the OTP received on your mobile number. The OTP is valid only for 30 minutes.'
+          }
+          otpService.generateAnonymousOTP=jest.fn().mockReturnValue(throwError((mockResponse.resendOtpError)));
+          component.generateOTP(req, otpData);
+          expect(component.prepareOtpData).toBeCalled();
+    });
+
+    it('should create a instance of component and call the validateAndEditContact method', () => {
+        jest.spyOn(component,'generateOTP');
+        component.contactType='email';
+        component.userId='sample'
+        otpService.generateAnonymousOTP=jest.fn().mockReturnValue(of(mockResponse.resendOtpSuccess));
+        component['validateAndEditContact']();
+        expect(component.generateOTP).toBeCalled();
+    });
+    it('should create a instance of component and call the validateAndEditContact method for phone', () => {
+        jest.spyOn(component,'generateOTP');
+        component.contactType='recoveryPhone';
+        component.userId='sample'
+        otpService.generateAnonymousOTP=jest.fn().mockReturnValue(of(mockResponse.resendOtpSuccess));
+        component['validateAndEditContact']();
+        expect(component.generateOTP).toBeCalled();
+    });
+    it('should create a instance of component and call the validateAndEditContact method for recovery phone', () => {
+        jest.spyOn(component,'generateOTP');
+        component.contactType='phone';
+        component.userId='sample'
+        otpService.generateAnonymousOTP=jest.fn().mockReturnValue(of(mockResponse.resendOtpSuccess));
+        component['validateAndEditContact']();
+        expect(component.generateOTP).toBeCalled();
+    });
+    it('should create a instance of component and call the ngOnInit method', () => {
+        component['validateAndEditContact']=jest.fn();
+        component.ngOnInit();
+        expect(component).toBeTruthy();
+        expect(component['validateAndEditContact']).toBeCalled();
+    });
+    it('should create a instance of component and call the closeModal method', () => {
+        component.dialogProps = { id: 'dialog-id' };
+        const dialogRef = {
+            close: jest.fn()
+        };
+        (matDialog.getDialogById as jest.Mock).mockReturnValue(dialogRef);
+        component.closeMatDialog();
+        expect(dialogRef.close).toHaveBeenCalled();
+    });
+
+    it('should create a instance of component and call the generateOTP method', () => {
+        jest.spyOn(component,'prepareOtpData');
+        const req =  {
+            key: '1234567890',
+            userId: '874ed8a5-782e-4f6c-8f36-e0288455901e',
+            templateId: 'otpEmailDeleteUserTemplate',
+            type: 'phone'
+          }
+        const otpData = {
+            type: 'phone',
+            value: '1234567890',
+            instructions: 'An OTP has been sent you your registered mobile number. Please enter the OTP to proceed with account deletion.',
+            retryMessage: 'Unable to delete the account',
+            wrongOtpMessage: 'You have entered an incorrect OTP. Enter the OTP received on your mobile number. The OTP is valid only for 30 minutes.'
+          }
           otpService.generateOTP=jest.fn().mockReturnValue(of(mockResponse.resendOtpSuccess));
           component.generateOTP(req, otpData);
-          //expect(component.prepareOtpData).toBeCalled();
     });
 
     it('should create a instance of component and call the verificationSuccess method', () => {
         //(global as any).window = Object.create(window);
         const url = 'http://localhost/';
         const data = {}
-        userService.deleteUser = jest.fn().mockReturnValue(of(mockResponse.resendOtpSuccess));
         component.verificationSuccess(data);
         expect(window.location.href).toEqual(url);
     });
     it('should create a instance of component and call the verificationSuccess method with mobile is true', () => {
-        //(global as any).window = Object.create(window);
         const url = 'http://localhost/';
         mockDeviceDetectorService.isMobile = jest.fn().mockReturnValue(true);
         component.deepLink='deepLink'
         const data = {}
-        userService.deleteUser = jest.fn().mockReturnValue(of(mockResponse.resendOtpSuccess));
         component.verificationSuccess(data);
         expect(window.location.href).toEqual(url);
     });
-    it('should create a instance of component and call the verificationSuccess method with error', () => {
-        const data = {}
-        userService.deleteUser = jest.fn().mockReturnValue(throwError({error:'erroroccured'}));
-        component.verificationSuccess(data);
-        expect(toasterService.error).toBeCalled();
-    });
-
     it('should create a instance of component and call the setInteractEventData method', () => {
         component.setInteractEventData();
-        expect(component.submitInteractEdata).toEqual({ id: 'delete-account', type: 'click', pageid: 'delete-account' }); 
-        expect(component.telemetryInteractObject).toEqual({ id: 'sample-uid', type: 'User', ver: '1.0' });   
-    });
+        expect(component.submitInteractEdata).toEqual({ id: 'delete-anonymous-account', type: 'click', pageid: 'delete-anonymous-account' });     });
     describe("ngOnDestroy", () => {
         it('should destroy sub', () => {
             component.unsubscribe = {
