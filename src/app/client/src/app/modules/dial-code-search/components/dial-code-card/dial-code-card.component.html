@@ -33,14 +33,14 @@
           <img src="{{data.ribbon.left.image}}" class="sb-card-badge ml-auto"
             *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.image" alt="{{data.ribbon.left.name}}">
         </div>
-        <div class="sb-card-meta-item ellipsis" *ngIf="data.subject" title="{{data.subject}}">
-          {{resourceService.frmelmnts.lbl.subject | transposeTerms: 'frmelmnts.lbl.subject': resourceService?.selectedLang}} : {{data.subject}}
+        <div class="sb-card-meta-item ellipsis" *ngIf="data?.[frameworkCategoriesList[3]]" title="{{data?.[frameworkCategoriesList[3]]}}">
+          {{resourceService.frmelmnts.lbl[frameworkCategoriesList[3]] | transposeTerms: resourceService.frmelmnts.lbl[frameworkCategoriesList[3]]: resourceService?.selectedLang}} : {{data?.[frameworkCategoriesList[3]]}}
         </div>
-        <div class="sb-card-meta-item ellipsis mt-4" *ngIf="data.gradeLevel" title="{{data.gradeLevel}}">
-          {{resourceService.frmelmnts.lbl.class | transposeTerms: 'frmelmnts.lbl.class': resourceService?.selectedLang}} : {{data.gradeLevel}}
+        <div class="sb-card-meta-item ellipsis mt-4" *ngIf="data?.[frameworkCategoriesList[2]]" title="{{data?.[frameworkCategoriesList[2]]}}">
+          {{resourceService.frmelmnts.lbl[frameworkCategoriesList[2]] | transposeTerms: resourceService.frmelmnts.lbl[frameworkCategoriesList[2]]: resourceService?.selectedLang}} : {{data?.[frameworkCategoriesList[2]]}}
         </div>
-        <div class="sb-card-meta-item ellipsis mt-4" *ngIf="data.medium" title="{{data.medium}}">
-          {{resourceService.frmelmnts.lbl.medium | transposeTerms: 'frmelmnts.lbl.medium': resourceService?.selectedLang}} : {{data.medium}}
+        <div class="sb-card-meta-item ellipsis mt-4" *ngIf="data?.[frameworkCategoriesList[1]]" title="{{data?.[frameworkCategoriesList[1]]}}">
+          {{resourceService.frmelmnts.lbl[frameworkCategoriesList[1]] | transposeTerms: resourceService.frmelmnts.lbl[frameworkCategoriesList[1]] : resourceService?.selectedLang}} : {{data?.[frameworkCategoriesList[1]]}}
         </div>
       </div>
       <!--/Meta Details - Non-Course-->

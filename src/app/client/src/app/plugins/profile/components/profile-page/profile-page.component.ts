@@ -86,6 +86,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   showFullScreenLoader = false;
   transormUserProfile;
   frameworkCategoriesObject;
+  frameworkCategoriesList;
   avatarConfig = {
     size: this.configService.constants.SIZE.LARGE,
     view: this.configService.constants.VIEW.VERTICAL,
@@ -111,6 +112,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.isDesktopApp = this.utilService.isDesktopApp;
     this.frameworkCategoriesObject = this.cslFrameworkService.getFrameworkCategoriesObject();
+    this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
     this.activatedRoute.queryParams.subscribe((params) => {
       if (params['showEditUserDetailsPopup']) {
         this.showEditUserDetailsPopup = true;

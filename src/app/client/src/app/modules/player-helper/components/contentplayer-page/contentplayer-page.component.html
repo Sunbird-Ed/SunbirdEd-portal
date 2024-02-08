@@ -18,7 +18,7 @@
                 </mat-expansion-panel-header>
                 <div class="sb-mat-accordion__content" *ngFor="let transformCollection of transformCollectionData">
                     <div class="training-relevant__class mb-4 sb-color-gray-400 fnormal">
-                        <span>{{ (resourceService?.frmelmnts?.lbl[transformCollection?.labels.toLowerCase()] | transposeTerms: resourceService?.frmelmnts?.lbl[transformCollection?.labels.toLowerCase()] : resourceService?.selectedLang) || transformCollection?.labels }}:
+                        <span>{{ (resourceService?.frmelmnts?.lbl[transformCollection?.code] | transposeTerms: resourceService?.frmelmnts?.lbl[transformCollection?.code] : resourceService?.selectedLang) || transformCollection?.labels }}
                             :&nbsp;</span><span>{{
                             transformCollection?.value}}</span>
                     </div>
