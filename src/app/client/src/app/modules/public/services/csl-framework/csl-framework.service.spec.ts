@@ -106,6 +106,7 @@ describe('CslFrameworkService', () => {
     expect(transformedArray[0]).toEqual({
       labels: 'Category 1',
       values: ['Value1', 'Value2'],
+      code:'category1'
     });
   });
 
@@ -322,7 +323,7 @@ describe('CslFrameworkService', () => {
     };
     const result = service.transformContentDataFwBased(fwCatData, contentData);
     expect(result).toEqual([
-      { labels: 'Label2', value: 'Value2', index: 2 },
+      { labels: 'Label2', value: 'Value2', index: 2 , code:'category2'},
     ]);
   });
 
