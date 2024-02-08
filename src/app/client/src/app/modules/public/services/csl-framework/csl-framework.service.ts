@@ -84,8 +84,9 @@ export class CslFrameworkService {
     userDefinedFwCategory.forEach(field => {
       if (userPreference.framework[field.code] && userPreference.framework[field.code][0]) {
         let data = {
-          labels: field.label,
-          values: userPreference.framework[field.code]
+          labels: field?.label,
+          values: userPreference.framework[field.code],
+          code: field?.code
         };
         transformedArray.push(data);
       }
@@ -112,7 +113,8 @@ export class CslFrameworkService {
         const keyValueObj = {
           labels: fwData?.label,
           value: contentData[fwCode],
-          index: fwData?.index
+          index: fwData?.index,
+          code: fwData?.code
         };
         result.push(keyValueObj);
       }
