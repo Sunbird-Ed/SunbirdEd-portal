@@ -113,7 +113,7 @@ module.exports = function (app) {
         let urlParam = req.params['0']
         let query = require('url').parse(req.url).query
         if (urlParam.indexOf('anonymous') > -1) urlParam = urlParam.replace('anonymous/', '');
-        if (urlParam.indexOf('delete/otp') > -1) urlParam = urlParam.replace('delete/otp', 'otp/');
+        if (urlParam.indexOf('delete/otp') > -1) urlParam = urlParam.replace('delete/otp', 'otp');
         if (req.url.indexOf('/otp/') > 0) {
           proxyUtils.addReqLog(req);
         }       
@@ -130,6 +130,7 @@ module.exports = function (app) {
         if (query) {
           return require('url').parse(learnerURL + urlParam + '?' + query).path
         } else {
+          console.log('Request URL:',learnerURL + urlParam)
           return require('url').parse(learnerURL + urlParam).path
         }
       },
