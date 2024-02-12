@@ -305,7 +305,6 @@ describe('ObservationListingComponent', () => {
             expect(component.contentList[0]).toEqual({
                 name: 'Mockobservation',
                 contentType: 'Observation',
-                metaData: { identifier: '1' },
                 entityType: 'mockEntityType',
                 identifier: '1',
                 solutionId: '1',
