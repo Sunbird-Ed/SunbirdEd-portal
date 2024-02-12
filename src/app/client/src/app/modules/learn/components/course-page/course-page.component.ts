@@ -165,7 +165,6 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
     this.categoryKeys = this.cslFrameworkService.transformDataForCC();
     this.globalFilterCategories = this.cslFrameworkService.getAlternativeCodeForFilter();
-    console.log('course-page-alt', this.frameworkCategoriesList)
     this.CourseSearchFieldCategory = [...this.globalFilterCategories, ...this.frameworkCategoriesList]
     this.initialize();
     this.subscription$ = this.mergeObservables();
@@ -236,7 +235,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       params: _.get(this.configService, 'appConfig.CoursePageSection.contentApiQueryParams'),
       ...(!this.isUserLoggedIn() && {
         params: _.get(this.configService, 'appConfig.ExplorePage.contentApiQueryParams'),
-        fields: _.get(currentPageData, 'search.fields') || [_.get(this.configService, 'urlConFig.params.CourseSearchField'), ...this.CourseSearchFieldCategory],
+        fields: _.get(currentPageData, 'search.fields') || [..._.get(this.configService, 'urlConFig.params.CourseSearchField'), ...this.CourseSearchFieldCategory],
       })
     };
 
@@ -336,7 +335,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       sort_by: { 'me_averageRating': 'desc', 'batches.startDate': 'desc' },
       organisationId: this.hashTagId || '*',
       facets: _.get(currentPageData, 'search.facets') || ['channel', this.frameworkCategoriesList[1],this.frameworkCategoriesList[2],this.frameworkCategoriesList[3]],
-      fields: [_.get(this.configService, 'urlConFig.params.CourseSearchField'), ...this.CourseSearchFieldCategory]
+      fields: [ ...this.configService.urlConFig.params.CourseSearchField, ...this.CourseSearchFieldCategory]
     };
     return this.searchService.contentSearch(option)
       .pipe(
