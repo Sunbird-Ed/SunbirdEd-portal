@@ -4,27 +4,12 @@ import { UserService, ContentService, PublicDataService } from '..';
 import { PlayerService } from './player.service';
 import { of } from 'rxjs';
 import { MockResponse } from './player.service.spec.data';
-import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
+
 describe('PlayerService', () => {
     let playerService: PlayerService;
 
     const mockActivatedRoute: Partial<ActivatedRoute> = {};
-    const mockConfigService: Partial<ConfigService> = {
-        urlConFig: {
-            params: {
-                contentGet: 'mock-content1,mock-content2'
-            } as any,
-            URLS: {
-                CONTENT: {
-                    GET: 'sample-get'
-                } as any
-            } as any
-        } as any,
-        appConfig: {
-        } as any
-    };
-
-
+    const mockConfigService: Partial<ConfigService> = {};
     const mockContentService: Partial<ContentService> = {};
     const mockNavigationHelperService: Partial<NavigationHelperService> = {};
     const mockPublicDataService: Partial<PublicDataService> = {};
@@ -44,9 +29,6 @@ describe('PlayerService', () => {
     };
     const mockUtilService: Partial<UtilService> = {};
 
-    const mockCslFrameworkService: Partial<CslFrameworkService> = {
-        getAllFwCatName: jest.fn(),
-    };
     beforeAll(() => {
         playerService = new PlayerService(
             mockUserService as UserService,
@@ -56,8 +38,7 @@ describe('PlayerService', () => {
             mockNavigationHelperService as NavigationHelperService,
             mockPublicDataService as PublicDataService,
             mockUtilService as UtilService,
-             mockActivatedRoute as ActivatedRoute,
-            mockCslFrameworkService as CslFrameworkService
+            mockActivatedRoute as ActivatedRoute
         );
     });
 
@@ -82,17 +63,6 @@ describe('PlayerService', () => {
             mockConfigService.urlConFig = {
                 params: {
                     contentGet: { id: 'content-id' }
-                },
-                URLS: {
-                    CONTENT: {
-                        GET: 'sample-get'
-                    }
-                }
-            };
-            jest.spyOn(playerService.cslFrameworkService, 'getAllFwCatName').mockReturnValue(['category1', 'category2']);
-            mockConfigService.urlConFig = {
-                params: {
-                  contentGet: 'content1, content2 ,content3'
                 },
                 URLS: {
                     CONTENT: {
@@ -203,17 +173,6 @@ describe('PlayerService', () => {
                 }
             };
             mockUserService.isDesktopApp = true;
-            jest.spyOn(playerService.cslFrameworkService, 'getAllFwCatName').mockReturnValue(['category1', 'category2']);
-            mockConfigService.urlConFig = {
-                params: {
-                  contentGet: 'content1, content2 ,content3'
-                },
-                URLS: {
-                    CONTENT: {
-                        GET: 'sample-get'
-                    }
-                }
-            };
             jest.spyOn(document, 'getElementById').mockImplementation(() => {
                 return {
                     deviceId: 'sample-device-id',
@@ -233,7 +192,7 @@ describe('PlayerService', () => {
     });
 
     describe('getCollectionHierarchy', () => {
-        it('should return collection Hierarchy', async() => {
+        it('should return collection Hierarchy', (done) => {
             const identifier = 'content-id';
             const option = {
                 courseId: 'sample-courseId',
@@ -262,7 +221,7 @@ describe('PlayerService', () => {
                 identifier: 'domain_66675',
                 versionKey: '1497028761823'
             }));
-            await playerService.getCollectionHierarchy(identifier, option).subscribe(() => {
+            playerService.getCollectionHierarchy(identifier, option).subscribe(() => {
                 expect(mockPublicDataService.get).toHaveBeenCalled();
                 expect(mockUtilService.sortChildrenWithIndex).toHaveBeenCalled();
                 expect(playerService.contentData).toStrictEqual({
@@ -271,6 +230,7 @@ describe('PlayerService', () => {
                     identifier: 'domain_66675',
                     versionKey: '1497028761823'
                 });
+                done();
             });
         });
     });
@@ -317,15 +277,8 @@ describe('PlayerService', () => {
     });
 
     describe('playContent', () => {
-        it('should navigate to collection page', (done) => {
-            // Arrange
-            const content = {
-                mimeType: 'application/vnd.ekstep.content-collection',
-                body: 'body',
-                identifier: 'domain_66675',
-                versionKey: '1497028761823'
-            };
-            const queryParams = {};
+        it('should be navigate to collection page', (done) => {
+            // arrange
             mockNavigationHelperService.storeResourceCloseUrl = jest.fn(() => { });
             mockConfigService.appConfig = {
                 PLAYER_CONFIG: {
@@ -334,21 +287,21 @@ describe('PlayerService', () => {
                     }
                 }
             };
-            mockRouter.navigate = jest.fn(() => Promise.resolve(true));
-            playerService.contentData = {
-                mimeType: 'application/vnd.ekstep.ecml-archive',
+            const content = {
+                mimeType: 'application/vnd.ekstep.content-collection',
                 body: 'body',
                 identifier: 'domain_66675',
                 versionKey: '1497028761823'
-            } as any;
-            playerService.playContent(content, queryParams);
+            };
+            const queryParams = {};
+            mockRouter.navigate = jest.fn(() => Promise.resolve(true));
+            playerService.playContent(content, queryParams)
             setTimeout(() => {
                 expect(mockNavigationHelperService.storeResourceCloseUrl).toHaveBeenCalled();
                 expect(mockRouter.navigate).toHaveBeenCalled();
                 done();
             }, 10);
         });
-
 
         it('should be navigate to collection page for trackable content', (done) => {
             // arrange
