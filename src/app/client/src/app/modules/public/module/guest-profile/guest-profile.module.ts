@@ -7,8 +7,10 @@ import { GuestProfileRoutingModule } from './guest-profile-routing.module';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { LocationModule } from '../../../../plugins/location/location.module';
 import {CommonConsumptionModule} from '@project-sunbird/common-consumption';
+import { AnonymousDeleteAccountComponent } from './components/delete-account/anonymous-delete-account.component';
+import { AnonymousDeleteUserComponent } from './components/delete-user/anonymous-delete-user.component';
 @NgModule({
-  declarations: [GuestProfileComponent],
+  declarations: [GuestProfileComponent,AnonymousDeleteAccountComponent,AnonymousDeleteUserComponent],
   imports: [
     CommonModule,
     SharedModule,

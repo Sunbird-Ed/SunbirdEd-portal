@@ -113,9 +113,10 @@ module.exports = function (app) {
         let urlParam = req.params['0']
         let query = require('url').parse(req.url).query
         if (urlParam.indexOf('anonymous') > -1) urlParam = urlParam.replace('anonymous/', '');
+        if (urlParam.indexOf('delete/otp') > -1) urlParam = urlParam.replace('delete/otp', 'otp');
         if (req.url.indexOf('/otp/') > 0) {
           proxyUtils.addReqLog(req);
-        }
+        }       
         if (req.originalUrl === '/learner/data/v1/role/read') {
           urlParam = req.originalUrl.replace('/learner/', '')
         }
@@ -129,6 +130,7 @@ module.exports = function (app) {
         if (query) {
           return require('url').parse(learnerURL + urlParam + '?' + query).path
         } else {
+          console.log('Request URL:',learnerURL + urlParam)
           return require('url').parse(learnerURL + urlParam).path
         }
       },
@@ -235,7 +237,7 @@ function proxyObj() {
     userResDecorator: function (proxyRes, proxyResData, req, res) {
       try {
         let data = JSON.parse(proxyResData.toString('utf8'));
-        let response = data.result.response;
+       let response = data.result.response;
         data.result.response = { id: '', rootOrgId: '', isUserExists: '' };
         if (data.responseCode === 'OK') {
           data.result.response.id = response.id;

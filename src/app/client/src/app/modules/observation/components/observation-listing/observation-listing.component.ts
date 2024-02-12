@@ -232,22 +232,22 @@ export class ObservationListingComponent
       const obj = {
         name: solution_name,
         contentType: 'Observation',
-        metaData: {
-          identifier: value.solutionId,
-        },
         entityType:value.entityType,
         identifier: value.solutionId,
         solutionId: value.solutionId,
         programId: value.programId,
-        medium: value.language,
+        metaData: {
+          identifier: value.solutionId,
+        },
         organization: value.creator,
         _id: value._id,
-        subject: subject
+        [this.categoryKeys[2].code]: value.language,
+        [this.categoryKeys[4].code]: value.programName,
       };
       if (value.creator && value.creator.length) {
         const creator: any = [];
         creator.push(value.creator);
-        obj['gradeLevel'] = creator;
+        obj[this.categoryKeys[3].code] = creator;
       }
       result.push(obj);
       this.contentList = result;

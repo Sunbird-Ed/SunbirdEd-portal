@@ -170,7 +170,7 @@ export default (app, proxyURL) => {
     }
   });
 
-    app.post(["/learner/anonymous/otp/v1/generate"], (req, res, next) => {
+    app.post(["/learner/anonymous/otp/v1/generate","/learner/anonymous/delete/otp/v1/generate"], (req, res, next) => {
         if (req.url.indexOf('anonymous') > -1) {
             req.originalUrl = req.originalUrl.replace('anonymous/', '');
         }

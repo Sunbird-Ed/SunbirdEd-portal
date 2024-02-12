@@ -462,10 +462,10 @@ const updateRequestBody = (req) => {
         `ReqId = "${req.headers["X-msgid"]}": Updating request body filters`,
     );
     if (_.get(req, "body.request.filters")) {
-        req.body.request.filters.compatibilityLevel = {
-            "<=": config.get("CONTENT_COMPATIBILITY_LEVEL"),
-        };
-    }
+      req.body.request.filters.compatibilityLevel = {
+          "<=": config.get("CONTENT_COMPATIBILITY_LEVEL"),
+      };
+  }
     return req;
 };
 
