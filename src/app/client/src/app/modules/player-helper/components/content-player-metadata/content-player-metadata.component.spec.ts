@@ -14,8 +14,7 @@ describe('ContentPlayerMetadataComponent', () => {
     };
 	const cslFrameworkService :Partial<CslFrameworkService> ={
         getGlobalFilterCategoriesObject: jest.fn(),
-        transformContentDataFwBased: jest.fn(),
-        getAllFwCatName: jest.fn(),
+        transformContentDataFwBased: jest.fn()
     };
 
     beforeAll(() => {

@@ -6,7 +6,7 @@ import { ContentService } from './../content/content.service';
 import { LearnerService } from './../learner/learner.service';
 import { ContentDetailsModule } from "@project-sunbird/common-consumption";
 import { Console } from "console";
-import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
+
 
 describe('CoursesService', () => {
   let coursesService: CoursesService;
@@ -60,17 +60,12 @@ describe('CoursesService', () => {
     post: jest.fn().mockImplementation(() => { }),
     get: jest.fn()
   };
-  const mockCslFrameworkService: Partial<CslFrameworkService> = {
-    getAllFwCatName: jest.fn(),
-  };
-
   beforeAll(() => {
     coursesService = new CoursesService(
       mockUserService as UserService,
       mockLearnerService as LearnerService,
       mockConfigService as ConfigService,
-      mockContentService as ContentService,
-      mockCslFrameworkService as CslFrameworkService
+      mockContentService as ContentService
     );
   });
   const  ServerResponse = {
@@ -111,6 +106,39 @@ const  error = {
     expect(coursesService).toBeTruthy();
   });
 
+  describe('should get the enrolled courses for a user', () => {
+    it('should call the getEnrolledCourses method and get the enrolled courses', (done) => {
+      jest.spyOn(coursesService['learnerService'], 'get').mockReturnValue(of({
+        id: 'id',
+        params: {
+          resmsgid: '',
+          status: 'staus'
+        },
+        responseCode: 'OK',
+        result: {},
+        ts: '',
+        ver: ''
+      }));
+      // act
+      coursesService.initialize();
+      coursesService.getEnrolledCourses().subscribe(() => {
+        done();
+      });
+      expect(coursesService['learnerService'].get).toHaveBeenCalled();
+    });
+
+    it('should call the getEnrolledCourses method and get the enrolled courses and should throw error', () => {
+      // arrange
+      jest.spyOn(coursesService['learnerService'], 'get').mockImplementation(() => {
+        return throwError({ error: {} });
+      });
+      // act
+      coursesService.initialize();
+      coursesService.getEnrolledCourses().subscribe(() => {
+      });
+      expect(coursesService['learnerService'].get).toHaveBeenCalled();
+    });
+  });
   describe('getCourseSectionDetails', () => {
     it('should call the get course section details method', () => {
       jest.spyOn(coursesService, 'getCourseSection').mockReturnValue(of(
