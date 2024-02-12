@@ -274,7 +274,7 @@ export class SearchService {
         }
       }
     };
-    // option['data'] = this.updateOption(option);
+    option['data'] = this.updateOption(option);
     if (requestParam['pageNumber'] && requestParam['limit']) {
       option.data.request['offset'] = (requestParam.pageNumber - 1) * requestParam.limit;
     }
@@ -294,7 +294,6 @@ export class SearchService {
   **/
   public updateOption(option: any) {
     this.globalFilterCategories = this.cslFrameworkService.getAlternativeCodeForFilter();
-    console.log('updateOption', this.globalFilterCategories);
     if (_.get(option, `data.request.filters.${this.frameworkCategories?.fwCategory1?.code}`)) {
       option.data.request.filters[this.globalFilterCategories[0]] = option.data.request.filters[this.frameworkCategories?.fwCategory1?.code];
       delete option.data.request.filters[this.frameworkCategories?.fwCategory1?.code];
@@ -417,7 +416,7 @@ export class SearchService {
 
   getFilterValues(contents) {
     let subjects = _.map(contents, content => {
-      return (_.get(content, 'subject'));
+      return (_.get(content, this.frameworkCategories?.fwCategory4?.code));
     });
     subjects = _.values(_.groupBy(_.compact(subjects))).map((subject) => {
       return ({

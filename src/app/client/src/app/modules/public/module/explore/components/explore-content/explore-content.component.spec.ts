@@ -12,7 +12,7 @@ import { takeUntil, map, mergeMap, first, debounceTime, tap, delay } from 'rxjs/
 import { CacheService } from '../../../../../shared/services/cache-service/cache.service';
 import { ContentManagerService } from '../../../offline/services';
 import {omit, groupBy, get, uniqBy, toLower, find, map as _map, forEach, each} from 'lodash-es';
-import { CslFrameworkService } from '../../../../../public/services/csl-framework/csl-framework.service';
+import { CslFrameworkService } from '../../../../services/csl-framework/csl-framework.service';
 import { ExploreContentComponent } from './explore-content.component';
 
 describe('ExploreContentComponent', () => {
@@ -68,7 +68,6 @@ describe('ExploreContentComponent', () => {
   const mockTelemetryService: Partial<TelemetryService> = {};
   const mockSchemaService: Partial<SchemaService> = {};
   const mockCslFrameworkService: Partial<CslFrameworkService> = {
-        getFrameworkCategories: jest.fn(),
         setDefaultFWforCsl: jest.fn(),
         getAllFwCatName: jest.fn(),
         getAlternativeCodeForFilter: jest.fn(),
@@ -111,7 +110,7 @@ describe('ExploreContentComponent', () => {
   });
 
   it('should initialize component properties on ngOnInit', () => {
-    jest.spyOn(mockCslFrameworkService, 'getFrameworkCategories' as any).mockReturnValue(of({}));
+    jest.spyOn(mockCslFrameworkService, 'getAllFwCatName' as any).mockReturnValue(of({}));
     jest.spyOn(mockCslFrameworkService, 'getAlternativeCodeForFilter' as any).mockReturnValue(of({}));
     jest.spyOn(mockCslFrameworkService, 'transformDataForCC' as any).mockReturnValue(['key1', 'key2']);
     const mockFormData = [
@@ -120,7 +119,7 @@ describe('ExploreContentComponent', () => {
     jest.spyOn(mockSearchService, 'getContentTypes').mockReturnValue(of(mockFormData));
     const goBackSpy = jest.spyOn(mockNavigationHelperService, 'goBack');
     component.ngOnInit();
-    expect(jest.spyOn(component.cslFrameworkService, 'getFrameworkCategories')).toHaveBeenCalled();
+    expect(jest.spyOn(component.cslFrameworkService, 'getAllFwCatName')).toHaveBeenCalled();
     expect(jest.spyOn(component.cslFrameworkService, 'getAlternativeCodeForFilter')).toHaveBeenCalled();
     expect(jest.spyOn(component.cslFrameworkService, 'transformDataForCC')).toHaveBeenCalled();
     expect(jest.spyOn(mockSearchService, 'getContentTypes')).toHaveBeenCalled();

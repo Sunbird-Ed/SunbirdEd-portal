@@ -49,6 +49,8 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   public refreshSearchFilterComponent = true;
   public frameworkCategories;
   public frameworkCategoriesObject;
+  public globalFilterCategories;
+  public frameworkCategoriesList;
 
   @ViewChild('sbSearchFrameworkFilterComponent') searchFrameworkFilterComponent: any;
   filterFormTemplateConfig: IFrameworkCategoryFilterFieldTemplateConfig[];
@@ -60,7 +62,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     private cacheService: CacheService, private utilService: UtilService, private cslFrameworkService: CslFrameworkService ) { }
 
   get filterData() {
-    return _.get(this.pageData, 'metaData.filters') || [ this.frameworkCategories?.fwCategory1?.code,this.frameworkCategories?.fwCategory2?.code,this.frameworkCategories?.fwCategory3?.code,this.frameworkCategories?.fwCategory4?.code, 'channel', 'audience', 'publisher', 'se_subjects', 'se_boards', 'se_gradeLevels', 'se_mediums'];
+    return _.get(this.pageData, 'metaData.filters') || [ ...this.frameworkCategoriesList, ...this.globalFilterCategories, 'channel', 'audience', 'publisher'];
   }
 
   public getChannelId(index) {
@@ -118,6 +120,8 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.frameworkCategories = this.cslFrameworkService.getFrameworkCategories();
+    this.globalFilterCategories = this.cslFrameworkService.getAlternativeCodeForFilter();
+    this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
     this.getFilterForm$();
     this.checkForWindowSize();
     merge(this.boardChangeHandler(), this.fetchSelectedFilterOptions(), this.handleFilterChange(), this.getFacets(), this.filterConfig$)

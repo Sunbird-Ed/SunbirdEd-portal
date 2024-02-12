@@ -8,6 +8,7 @@ import { IEnrolledCourses, ICourses } from './../../interfaces';
 import { ContentService } from '../content/content.service';
 import {throwError as observableThrowError, of } from 'rxjs';
 import * as _ from 'lodash-es';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 /**
  *  Service for course API calls.
  */
@@ -43,6 +44,7 @@ export class CoursesService {
    * Notification message for external content onclick of Resume course button
    */
   showExtContentMsg = false;
+  frameworkCategoriesList;
   public revokeConsent = new EventEmitter<void>();
   /**
   * the "constructor"
@@ -52,7 +54,7 @@ export class CoursesService {
   * @param {ConfigService} config Reference of ConfigService
   */
   constructor(userService: UserService, learnerService: LearnerService,
-    config: ConfigService, contentService: ContentService) {
+    config: ConfigService, contentService: ContentService, public cslFrameworkService: CslFrameworkService) {
     this.config = config;
     this.userService = userService;
     this.learnerService = learnerService;
@@ -61,9 +63,14 @@ export class CoursesService {
    *  api call for enrolled courses.
    */
   public getEnrolledCourses() {
+    this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
+    let contentGetConfig = {
+      "fields": `${this.config.urlConFig.params.enrolledCourses.fields},${this.frameworkCategoriesList.join(",")}`,
+      "batchDetails": this.config.urlConFig.params.enrolledCourses.batchDetails
+    };    
     const option = {
       url: this.config.urlConFig.URLS.COURSE.GET_ENROLLED_COURSES + '/' + this.userService.userid,
-      param: { ...this.config.appConfig.Course.contentApiQueryParams, ...this.config.urlConFig.params.enrolledCourses }
+      param: { ...this.config.appConfig.Course.contentApiQueryParams, ...contentGetConfig }
     };
     return this.learnerService.get(option).pipe(
       map((apiResponse: ServerResponse) => {
