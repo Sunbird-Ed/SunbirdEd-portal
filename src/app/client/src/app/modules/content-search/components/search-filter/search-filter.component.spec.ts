@@ -50,7 +50,9 @@ describe('SearchFilterComponent', () => {
     };
     const mockCslFrameworkService: Partial<CslFrameworkService> = {
         getFrameworkCategories: jest.fn(),
-        setDefaultFWforCsl: jest.fn()
+        setDefaultFWforCsl: jest.fn(),
+        getAlternativeCodeForFilter: jest.fn(),
+        getAllFwCatName: jest.fn(),
     };
 
     beforeAll(() => {
@@ -137,13 +139,11 @@ describe('SearchFilterComponent', () => {
     });
 
     it('should call filterData', () => {
+        component.frameworkCategoriesList = ['mock-framework1','mock-framework2'];
+        component.globalFilterCategories = ['categories1','categories2'];
         const returnData = component.filterData;
-        expect(returnData).toEqual([
-            component.frameworkCategories?.fwCategory1?.code,
-            component.frameworkCategories?.fwCategory2?.code,
-            component.frameworkCategories?.fwCategory3?.code,
-            component.frameworkCategories?.fwCategory4?.code,
-            'channel', 'audience', 'publisher', 'se_subjects', 'se_boards', 'se_gradeLevels', 'se_mediums'
+        expect(returnData).toEqual(["mock-framework1", "mock-framework2","categories1",
+            "categories2", "channel","audience", "publisher",
         ]);
     });
 
@@ -186,10 +186,22 @@ describe('SearchFilterComponent', () => {
                 audience: ['sample-audience'],
                 publisher: 'publisher'
             };
+            const getFilterSpy = jest.spyOn(component as any,'getFilterForm$' as any);
+            const checkWindowSpy = jest.spyOn(component as any,'checkForWindowSize' as any);
+            const boardChangeSpy =  jest.spyOn(component as any,'boardChangeHandler' as any);
+            const fetchSelectedFilterSpy = jest.spyOn(component as any,'fetchSelectedFilterOptions' as any);
+            const handleFilterSpy = jest.spyOn(component as any,'handleFilterChange' as any);
+            const getFacetSpy = jest.spyOn(component as any,'getFacets' as any);
             component.ngOnInit();
-            expect(mockContentSearchService.fetchFilter).toHaveBeenCalled();
-            expect(mockFormService.getFormConfig).toHaveBeenCalled();
-            expect(mockChangeDetectionRef.detectChanges).toHaveBeenCalled();
+            expect(component['cslFrameworkService'].getFrameworkCategories).toHaveBeenCalled();
+            expect(component['cslFrameworkService'].getAlternativeCodeForFilter).toHaveBeenCalled();
+            expect(component['cslFrameworkService'].getAllFwCatName).toHaveBeenCalled();
+            expect(getFilterSpy).toHaveBeenCalled();
+            expect(checkWindowSpy).toHaveBeenCalled();
+            expect(boardChangeSpy).toHaveBeenCalled();
+            expect(fetchSelectedFilterSpy).toHaveBeenCalled();
+            expect(handleFilterSpy).toHaveBeenCalled();
+            expect(getFacetSpy).toHaveBeenCalled();
         });
 
         it('should return error for catch part', () => {
@@ -197,9 +209,14 @@ describe('SearchFilterComponent', () => {
             mockFormService.getFormConfig = jest.fn(() => throwError([{ visibility: { data: {} } }]));
             component.facets$ = of({ id: 'sample-id' }) as any;
             mockChangeDetectionRef.detectChanges = jest.fn();
+            const getFilterSpy = jest.spyOn(component as any,'getFilterForm$' as any);
+            const checkWindowSpy = jest.spyOn(component as any,'checkForWindowSize' as any);
             component.ngOnInit();
-            expect(mockContentSearchService.fetchFilter).toHaveBeenCalled();
-            expect(mockFormService.getFormConfig).toHaveBeenCalled();
+            expect(component['cslFrameworkService'].getFrameworkCategories).toHaveBeenCalled();
+            expect(component['cslFrameworkService'].getAlternativeCodeForFilter).toHaveBeenCalled();
+            expect(component['cslFrameworkService'].getAllFwCatName).toHaveBeenCalled();
+            expect(getFilterSpy).toHaveBeenCalled();
+            expect(checkWindowSpy).toHaveBeenCalled();
         });
     });
 

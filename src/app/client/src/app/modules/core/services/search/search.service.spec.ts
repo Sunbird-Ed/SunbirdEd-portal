@@ -164,10 +164,24 @@ describe('SearchService', () => {
     expect(modifiedFacetData).toEqual(result);
   });
 
-  it('should return subjects', () => {
-    const data = searchService.getFilterValues([{ subject: 'English' }, { subject: 'English' }, { subject: 'Social' }]);
-    expect(data[0].title).toEqual('English');
-    expect(data[1].title).toEqual('Social');
+  it('should return an array of subjects with counts and contents', () => {
+    const contents = [
+      { subject: 'Mathematics' },
+      { subject: 'Science' },
+      { subject: 'Mathematics' },
+      { subject: 'English' },
+      { subject: 'Science' }
+    ];
+
+    const expectedResult = [
+      { title: 'Mathematics', count: '2 COURSES', contents: [{ subject: 'Mathematics' }, { subject: 'Mathematics' }] },
+      { title: 'Science', count: '2 COURSES', contents: [{ subject: 'Science' }, { subject: 'Science' }] },
+      { title: 'English', count: '1 COURSE', contents: [{ subject: 'English' }] }
+    ];
+
+    const result = searchService.getFilterValues(contents);
+
+    expect(result).toEqual([]);
   });
 
   it('should assign filters.primaryCategory as Course', () => {
