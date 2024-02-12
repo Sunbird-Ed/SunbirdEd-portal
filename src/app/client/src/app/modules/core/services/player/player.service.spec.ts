@@ -4,20 +4,12 @@ import { UserService, ContentService, PublicDataService } from '..';
 import { PlayerService } from './player.service';
 import { of } from 'rxjs';
 import { MockResponse } from './player.service.spec.data';
-import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 describe('PlayerService', () => {
     let playerService: PlayerService;
 
     const mockActivatedRoute: Partial<ActivatedRoute> = {};
-    const mockConfigService: Partial<ConfigService> = {
-        urlConFig:
-        {
-            params:{
-                contentGet: ['mock-content1','mock-content2'],
-            }
-        }
-    };
+    const mockConfigService: Partial<ConfigService> = {};
     const mockContentService: Partial<ContentService> = {};
     const mockNavigationHelperService: Partial<NavigationHelperService> = {};
     const mockPublicDataService: Partial<PublicDataService> = {};
@@ -36,9 +28,6 @@ describe('PlayerService', () => {
         channel: 'sample-channel'
     };
     const mockUtilService: Partial<UtilService> = {};
-    const mockCslFrameworkService: Partial<CslFrameworkService> = {
-        getAllFwCatName: jest.fn(),
-    };
 
     beforeAll(() => {
         playerService = new PlayerService(
@@ -49,8 +38,7 @@ describe('PlayerService', () => {
             mockNavigationHelperService as NavigationHelperService,
             mockPublicDataService as PublicDataService,
             mockUtilService as UtilService,
-            mockActivatedRoute as ActivatedRoute,
-            mockCslFrameworkService as CslFrameworkService
+            mockActivatedRoute as ActivatedRoute
         );
     });
 
@@ -63,6 +51,145 @@ describe('PlayerService', () => {
         expect(playerService).toBeTruthy();
     });
 
+    describe('getConfigByContent', () => {
+        it('should return content details', (done) => {
+            // arrange
+            const id = 'content-id';
+            const option = {
+                courseId: 'sample-courseId',
+                batchId: 'sample-batch-id'
+            };
+            mockPublicDataService.get = jest.fn(() => of(MockResponse.successResult) as any);
+            mockConfigService.urlConFig = {
+                params: {
+                    contentGet: { id: 'content-id' }
+                },
+                URLS: {
+                    CONTENT: {
+                        GET: 'sample-get'
+                    }
+                }
+            };
+            mockConfigService.appConfig = {
+                PLAYER_CONFIG: {
+                    playerConfig: {
+                        context: {
+                            contentId: 'sample-id',
+                            sid: '',
+                            uid: '',
+                            timeDiff: '',
+                            contextRollup: {},
+                            channel: '',
+                            did: '',
+                            pdata: {
+                                ver: '',
+                                id: 'sample-id'
+                            },
+                            dims: [],
+                            tags: 'sample-tags',
+                            app: 'sunbird',
+                            cData: [{
+                                id: '',
+                                type: ''
+                            }]
+                        },
+                        config: {
+                            enableTelemetryValidation: true
+                        }
+                    },
+                    MIME_TYPE: {
+                        ecmlContent: {
+                            id: 'sample-id'
+                        }
+                    }
+                }
+            };
+            const configuration = mockConfigService.appConfig.PLAYER_CONFIG.playerConfig;
+            mockUserService.isDesktopApp = true;
+            jest.spyOn(document, 'getElementById').mockImplementation(() => {
+                return {
+                    deviceId: 'sample-device-id',
+                    buildNumber: '12A670B567'
+                } as any;
+            });
+            // act
+            playerService.getConfigByContent(id, option).subscribe(() => {
+                expect(mockPublicDataService.get).toHaveBeenCalled();
+                expect(mockUserService.isDesktopApp).toBeTruthy();
+                expect(configuration.context.contentId).toBe('sample-id');
+                expect(configuration.context.contextRollup).toStrictEqual({});
+                done();
+            });
+        });
+
+        it('should return content details for undefined courseId', (done) => {
+            // arrange
+            const id = 'content-id';
+            const option = {
+                courseId: undefined,
+                batchId: 'sample-batch-id'
+            };
+            mockPublicDataService.get = jest.fn(() => of(MockResponse.successResult) as any);
+            mockConfigService.urlConFig = {
+                params: {
+                    contentGet: { id: 'content-id' }
+                },
+                URLS: {
+                    CONTENT: {
+                        GET: 'sample-get'
+                    }
+                }
+            };
+            mockConfigService.appConfig = {
+                PLAYER_CONFIG: {
+                    playerConfig: {
+                        context: {
+                            contentId: 'sample-id',
+                            sid: '',
+                            uid: '',
+                            timeDiff: '',
+                            contextRollup: {},
+                            channel: '',
+                            did: '',
+                            pdata: {
+                                ver: '',
+                                id: 'sample-id'
+                            },
+                            dims: [],
+                            tags: 'sample-tags',
+                            app: 'sunbird',
+                            cData: [{
+                                id: '',
+                                type: ''
+                            }]
+                        },
+                        config: {
+                            enableTelemetryValidation: true
+                        }
+                    },
+                    MIME_TYPE: {
+                        ecmlContent: undefined
+                    }
+                }
+            };
+            mockUserService.isDesktopApp = true;
+            jest.spyOn(document, 'getElementById').mockImplementation(() => {
+                return {
+                    deviceId: 'sample-device-id',
+                    buildNumber: '12A670B567'
+                } as any;
+            });
+            const configuration = mockConfigService.appConfig.PLAYER_CONFIG.playerConfig;
+            // act
+            playerService.getConfigByContent(id, option).subscribe(() => {
+                expect(mockPublicDataService.get).toHaveBeenCalled();
+                expect(mockUserService.isDesktopApp).toBeTruthy();
+                expect(configuration.context.contentId).toBe('sample-id');
+                expect(configuration.context.contextRollup).toStrictEqual({});
+                done();
+            });
+        });
+    });
 
     describe('getCollectionHierarchy', () => {
         it('should return collection Hierarchy', (done) => {
@@ -97,7 +224,12 @@ describe('PlayerService', () => {
             playerService.getCollectionHierarchy(identifier, option).subscribe(() => {
                 expect(mockPublicDataService.get).toHaveBeenCalled();
                 expect(mockUtilService.sortChildrenWithIndex).toHaveBeenCalled();
-                expect(playerService.contentData).toStrictEqual(undefined);
+                expect(playerService.contentData).toStrictEqual({
+                    mimeType: 'application/vnd.ekstep.ecml-archive',
+                    body: 'body',
+                    identifier: 'domain_66675',
+                    versionKey: '1497028761823'
+                });
                 done();
             });
         });
