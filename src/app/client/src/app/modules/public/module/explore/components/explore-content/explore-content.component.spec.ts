@@ -142,16 +142,18 @@ describe('ExploreContentComponent', () => {
 
 
   it('should handle filterData without channel or facets', () => {
+    component.frameworkCategoriesList = ['mock-framework'];
     const filters = { filters: { otherFilter: 'someValue' } };
     component.getFilters(filters);
     expect(component.selectedFilters).toEqual({ otherFilter: 'someValue' });
   });
 
   it('should emit default filters', () => {
-    const filters =  { filters: { otherFilter: 'someValue' } };
-    const emitSpy = jest.spyOn(component.dataDrivenFilterEvent, 'emit');
-    component.getFilters(filters);
-    expect(emitSpy).toHaveBeenCalled();
+      component.frameworkCategoriesList = ['mock-framework'];
+      const filters =  { filters: { otherFilter: 'someValue' } };
+      const emitSpy = jest.spyOn(component.dataDrivenFilterEvent, 'emit');
+      component.getFilters(filters);
+      expect(emitSpy).toHaveBeenCalled();
   });
 
 });
