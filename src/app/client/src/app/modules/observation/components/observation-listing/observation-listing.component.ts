@@ -236,6 +236,9 @@ export class ObservationListingComponent
         identifier: value.solutionId,
         solutionId: value.solutionId,
         programId: value.programId,
+        metaData: {
+          identifier: value.solutionId,
+        },
         organization: value.creator,
         _id: value._id,
         [this.categoryKeys[2].code]: value.language,

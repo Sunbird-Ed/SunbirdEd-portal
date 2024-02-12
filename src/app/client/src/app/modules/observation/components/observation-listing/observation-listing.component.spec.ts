@@ -306,6 +306,9 @@ describe('ObservationListingComponent', () => {
                 name: 'Mockobservation',
                 contentType: 'Observation',
                 entityType: 'mockEntityType',
+                metaData: {
+                    identifier: '1',
+                  },
                 identifier: '1',
                 solutionId: '1',
                 programId: '123',
