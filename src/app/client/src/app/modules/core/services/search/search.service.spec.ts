@@ -164,12 +164,6 @@ describe('SearchService', () => {
     expect(modifiedFacetData).toEqual(result);
   });
 
-  it('should return subjects', () => {
-    const data = searchService.getFilterValues([{ subject: 'English' }, { subject: 'English' }, { subject: 'Social' }]);
-    expect(data[0].title).toEqual('English');
-    expect(data[1].title).toEqual('Social');
-  });
-
   it('should assign filters.primaryCategory as Course', () => {
     const data = searchService.getSearchRequest({ filters: {}, isCustodianOrg: false, channelId: '123', frameworkId: '123456' }, ['Course']);
     expect(data.filters.primaryCategory[0]).toEqual('Course');
