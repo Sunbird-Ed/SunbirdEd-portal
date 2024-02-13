@@ -440,8 +440,36 @@ describe('HomeSearch Component', () => {
     properties: {},
     omitKeys: expect.any(Array),
   });
+
 });
 
+it('should navigate to view all with correct query params', () => {
+  const mockEvent = { name: 'mock-category' };
+  jest.spyOn(component,'logViewAllTelemetry');
+  const mockGlobalFilterCategories = ['category1','category2','category3','category4'];
+  jest.spyOn(component.cslFrameworkService,'getAlternativeCodeForFilter').mockReturnValue(mockGlobalFilterCategories);
+  component.globalFilterCategories = mockGlobalFilterCategories;
+  component.queryParams = {'category4': 'mock-category', 'channel': 'mock-channel'};
+  component.viewAll(mockEvent);
+
+  expect(component.moveToTop).toHaveBeenCalled();
+  expect(component.logViewAllTelemetry).toHaveBeenCalledWith(mockEvent);
+  expect(component.router.navigate).toHaveBeenCalledWith(
+    ["/resources/view-all/mock-category", 1],
+    {"queryParams": {"appliedFilters": true, "category4": "mock-category", 
+    "channel": "mock-channel", "defaultSortBy": "{\"lastPublishedOn\":\"desc\"}", 
+    "exists": undefined, "primaryCategory": ["mock-category"], "selectedTab": "all", 
+    "visibility": []}, "state": {}}
+  );
+});
+
+ it('should set value and call downloadContent on callDownload',() =>{
+    component.downloadIdentifier = 'mock-identifier';
+    component.callDownload();
+
+    expect(component.showDownloadLoader).toBeTruthy;
+    expect(component.downloadContent).toHaveBeenCalled();
+ });
 });
 
 
