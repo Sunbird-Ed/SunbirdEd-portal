@@ -21,6 +21,7 @@ describe('HomeSearch Component', () => {
 
   const mockSearchService: Partial<SearchService> = {
     getContentTypes: jest.fn(),
+    contentSearch: jest.fn(),
   };
 
   const mockRouter: Partial<Router> = {
@@ -65,7 +66,10 @@ describe('HomeSearch Component', () => {
       },
     },
     appConfig: {
-       SEARCH: { PAGE_LIMIT: 10 },
+      Course: {
+        contentApiQueryParams: {}
+      },
+      SEARCH: { PAGE_LIMIT: 10 },
       home: {
         filterType: 'yourFilterTypeValue',
       },
@@ -417,6 +421,27 @@ describe('HomeSearch Component', () => {
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
     expect(component.unsubscribe$.next).toHaveBeenCalled();
   });
+
+  it('should fetch contents with correct filters', () => {
+  const queryParams = {
+    mediaType: 'video',
+  };
+  component.queryParams = queryParams;
+  const expectedFilters = {
+    mimeType: ['value3', 'value4'],
+  };
+  schemaService.schemaValidator = jest.fn().mockReturnValue(expectedFilters);
+  const mockContentSearchResponse = {};
+  jest.spyOn(mockSearchService as any, 'contentSearch').mockReturnValue(of(mockContentSearchResponse));
+  component['fetchContents']();
+
+  expect(schemaService.schemaValidator).toHaveBeenCalledWith({
+    inputObj: queryParams,
+    properties: {},
+    omitKeys: expect.any(Array),
+  });
+});
+
 });
 
 
