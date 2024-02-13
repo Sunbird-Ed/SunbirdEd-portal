@@ -2367,6 +2367,13 @@
   dependencies:
     ally.js "1.4.1"
 
+"@project-sunbird/sunbird-player-sdk-v9@6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v9/-/sunbird-player-sdk-v9-6.0.1.tgz#bcf1c0bdf5f4602db749dead0d1c346d091833d1"
+  integrity sha512-tQ6X11tQBEjGNhW3n82Bhqhe7YKIb7tWFzOezIdMjuEBjBO6zd6XuIEv/Hm4tHI/ZFZvhXNAKYRWAWP5qbE9Eg==
+  dependencies:
+    ally.js "1.4.1"
+
 "@project-sunbird/sunbird-questionset-editor@7.0.4":
   version "7.0.4"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-questionset-editor/-/sunbird-questionset-editor-7.0.4.tgz#0414564f8c1ebf1e118a1c9a27c17378f858cda8"
@@ -2382,12 +2389,12 @@
     "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
     tslib "^2.2.0"
 
-"@project-sunbird/sunbird-quml-player@7.0.0":
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player/-/sunbird-quml-player-7.0.0.tgz#50f5d6d8d3d2d83d8d8cc7543f4c3c49a8f370d8"
-  integrity sha512-tbQ/RTrsyIRcKx+k8WOJK3PykXHo8bNeleL81S0DvaCDJy76ifxko5AC6Iw7PgzZnPbF9/TuoCFjspq7TG+OPw==
+"@project-sunbird/sunbird-quml-player@7.0.0-beta.4":
+  version "7.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player/-/sunbird-quml-player-7.0.0-beta.4.tgz#f9cc08f29659130542a2f735bbca9d69d2a0cad3"
+  integrity sha512-dlfOzYNF9aAGUWeOoKsGXvQYGSLVTw3vYrGZeB9fTQsz39tCsB8p4E9ABlHT+6CH/gWyYToo659Hhb8rHR2huw==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
+    "@project-sunbird/sunbird-player-sdk-v9" "6.0.1"
     tslib "^2.3.0"
 
 "@project-sunbird/sunbird-resource-library@7.0.3":
