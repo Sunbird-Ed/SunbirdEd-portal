@@ -27,6 +27,17 @@ describe('ExploreContentComponent', () => {
   };
   const mockActivatedRoute: Partial<ActivatedRoute> = {
     queryParams: of({}),
+    snapshot: {
+        data: {
+            telemetry: {
+              env: 'certs',
+              pageid: 'certificate-configuration',
+              type: 'view',
+              subtype: 'paginate',
+              ver: '1.0'
+            }
+        }
+    } as any
   };
   const mockPaginationService: Partial<PaginationService> = {
     getPager: jest.fn(),
@@ -50,7 +61,9 @@ describe('ExploreContentComponent', () => {
   const mockNavigationHelperService: Partial<NavigationHelperService> = {
     goBack: jest.fn(),
   };
-  const mockPublicPlayerService: Partial<PublicPlayerService> = {};
+  const mockPublicPlayerService: Partial<PublicPlayerService> = {
+    playContent: jest.fn(),
+  };
   const mockUserService: Partial<UserService> = {
     slug: 'mockedSlug',
   };
@@ -68,8 +81,12 @@ describe('ExploreContentComponent', () => {
     startDownload: jest.fn().mockReturnValue({}),
     contentDownloadStatus$: of({ enrolledCourses: [{ identifier: 'COMPLETED' }] }),
     } as any;
-  const mockOfflineCardService: Partial<OfflineCardService> = {};
-  const mockTelemetryService: Partial<TelemetryService> = {};
+  const mockOfflineCardService: Partial<OfflineCardService> = {
+    isYoutubeContent: jest.fn(),
+  };
+  const mockTelemetryService: Partial<TelemetryService> = {
+    interact: jest.fn(),
+  };
   const mockSchemaService: Partial<SchemaService> = {};
   const mockCslFrameworkService: Partial<CslFrameworkService> = {
         setDefaultFWforCsl: jest.fn(),
@@ -275,6 +292,106 @@ it('should navigate to the specified page', () => {
     expect(mockContentManagerService.downloadContentData).toEqual({});
     expect(mockContentManagerService.failedContentName).toBe('');
     expect(component.showDownloadLoader).toBe(false);
+  });
+
+  it('should handle open action', () => {
+    const event = {
+        hover: {
+            type: 'OPEN'
+        },
+        content: {
+            name: 'Sample Content',
+            identifier: 'contentId1',
+            mimeType: 'application/pdf'
+        },
+        data: {}
+    };
+
+    jest.spyOn(component, 'playContent');
+    jest.spyOn(component, 'logTelemetry');
+
+    component.hoverActionClicked(event);
+
+    expect(component.contentName).toBe('Sample Content');
+    expect(component.contentData).toEqual(event.content);
+    expect(component.playContent).toHaveBeenCalledWith(event);
+    expect(component.logTelemetry).toHaveBeenCalledWith(event.content, 'play-content');
+  });
+
+   describe('viewAll', () => {
+    it('should navigate to view-all with correct queryParams when queryParams contain primaryCategory', () => {
+      component.frameworkCategoriesList = ['category1', 'category2', 'category3', 'category4'];
+      component.globalFilterCategories = { fwCategory4: { alternativeCode: 'alternative', code: 'code' } };
+      const event = { name: 'TestCategory' };
+      component.queryParams = { primaryCategory: ['SomeCategory'], channel: 'SomeChannel' };
+      component.viewAll(event);
+      expect(mockRouter.navigate).toHaveBeenCalled()
+    });
+
+    it('should navigate to view-all with correct queryParams when queryParams do not contain primaryCategory', () => {
+      component.globalFilterCategories = { fwCategory4: { alternativeCode: 'alternative', code: 'code' } };
+      const event = { name: 'TestCategory' };
+      component.queryParams = { channel: 'SomeChannel' };
+      component.viewAll(event);
+      expect(mockRouter.navigate).toHaveBeenCalledWith(['/explore/view-all/TestCategory', 1], {
+        queryParams: {
+          defaultSortBy: JSON.stringify({ lastPublishedOn: 'desc' }),
+          exists: undefined,
+          primaryCategory: ['TestCategory'],
+          'selectedTab': 'all',
+          'channel': 'SomeChannel',
+          visibility: [],
+          appliedFilters: true
+        },
+        state: {}
+      });
+    });
+  });
+
+  describe('isUserLoggedIn', () => {
+    it('should return false if userService is not defined', () => {
+      component.globalFilterCategories = { fwCategory4: { alternativeCode: 'alternative', code: 'code' } };
+      component.userService = undefined;
+      const result = component.isUserLoggedIn();
+      expect(result).toBeFalsy();
+    });
+
+    it('should return false if userService.loggedIn is false', () => {
+      component.userService = { loggedIn: false } as any;
+      const result = component.isUserLoggedIn();
+      expect(result).toBeFalsy();
+    });
+
+    it('should return true if userService.loggedIn is true', () => {
+      component.userService = { loggedIn: true } as any;
+      const result = component.isUserLoggedIn();
+      expect(result).toBeTruthy();
+    });
+  });
+
+  it('should handle download action for non-Youtube content', () => {
+      const event = {
+          hover: {
+              type: 'DOWNLOAD'
+          },
+          content: {
+              name: 'Sample Content',
+              identifier: 'contentId1',
+              mimeType: 'application/pdf'
+          },
+          data: {}
+      };
+
+      jest.spyOn(component, 'downloadContent');
+      jest.spyOn(component, 'logTelemetry');
+
+      component.hoverActionClicked(event);
+
+      expect(component.contentName).toBe('Sample Content');
+      expect(component.contentData).toEqual(event.content);
+      expect(component.showModal).toBeFalsy();
+      expect(component.downloadContent).toHaveBeenCalledWith('contentId1');
+      expect(component.logTelemetry).toHaveBeenCalledWith(event.content, 'download-content');
   });
 
 });
