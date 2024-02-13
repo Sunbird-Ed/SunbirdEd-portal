@@ -65,6 +65,7 @@ describe('ExploreContentComponent', () => {
 
   };
   const mockContentManagerService: Partial<ContentManagerService> = {
+    startDownload: jest.fn().mockReturnValue({}),
     contentDownloadStatus$: of({ enrolledCourses: [{ identifier: 'COMPLETED' }] }),
     } as any;
   const mockOfflineCardService: Partial<OfflineCardService> = {};
@@ -224,5 +225,56 @@ it('should navigate to the specified page', () => {
     expect(mockRouter.navigate).not.toHaveBeenCalled();
   });
 
+  it('should unsubscribe on ngOnDestroy', () => {
+    jest.spyOn(component.unsubscribe$, 'complete');
+    jest.spyOn(component.unsubscribe$, 'next');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+    expect(component.unsubscribe$.next).toHaveBeenCalled();
+  });
+
+  it('should call downloadContent with the correct contentId', () => {
+    const contentId = 'contentId1';
+    const mockResponse = {};
+    jest.spyOn(mockContentManagerService as any, 'startDownload').mockReturnValueOnce(of(mockResponse));
+    component.downloadIdentifier = contentId;
+    component.contentData = {};
+    component.contentName = 'Sample Content';
+    component.callDownload();
+
+    setTimeout(() => {
+      expect(mockContentManagerService.downloadContentId).toBe(contentId);
+      jest.restoreAllMocks();
+    }, 0);
+  });
+
+   it('should handle successful download', () => {
+    const contentId = 'contentId1';
+    const mockResponse = {};
+
+    jest.spyOn(mockContentManagerService as any, 'startDownload').mockReturnValue(of(mockResponse));
+
+    component.downloadContent(contentId);
+
+    expect(component.downloadIdentifier).toBe('');
+    expect(mockContentManagerService.downloadContentId).toBe('');
+    expect(mockContentManagerService.downloadContentData).toEqual({});
+    expect(mockContentManagerService.failedContentName).toBe('');
+    expect(component.showDownloadLoader).toBe(false);
+  });
+
+  it('should handle download error', () => {
+    const contentId = 'contentId1';
+    const mockError = { error: { params: { err: 'LOW_DISK_SPACE' } } };
+    jest.spyOn(mockContentManagerService as any, 'startDownload').mockReturnValue(throwError(mockError));
+
+    component.downloadContent(contentId);
+
+    expect(component.downloadIdentifier).toBe('');
+    expect(mockContentManagerService.downloadContentId).toBe('');
+    expect(mockContentManagerService.downloadContentData).toEqual({});
+    expect(mockContentManagerService.failedContentName).toBe('');
+    expect(component.showDownloadLoader).toBe(false);
+  });
 
 });
