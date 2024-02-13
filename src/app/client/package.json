@@ -29,7 +29,7 @@
     "build:stats": "ng build --stats-json",
     "analyze": "webpack-bundle-analyzer dist/stats.json",
     "postinstall": "ngcc"
-    },
+  },
   "nodemonConfig": {
     "ext": "png,jpeg,js,ts,html,json,css,scss"
   },
@@ -60,10 +60,10 @@
     "@project-sunbird/chatbot-client": "4.0.0",
     "@project-sunbird/ckeditor-build-classic": "4.1.3",
     "@project-sunbird/client-services": "7.0.2",
-    "@project-sunbird/common-consumption": "7.0.4",
+    "@project-sunbird/common-consumption": "7.0.5",
     "@project-sunbird/common-form-elements-full": "6.0.3",
     "@project-sunbird/discussions-ui": " 5.3.0-beta.1",
-    "@project-sunbird/sb-content-section": "7.0.0",
+    "@project-sunbird/sb-content-section": "7.0.1",
     "@project-sunbird/sb-dashlet": "6.0.5",
     "@project-sunbird/sb-notification": "6.0.0",
     "@project-sunbird/sb-styles": "0.0.15",
