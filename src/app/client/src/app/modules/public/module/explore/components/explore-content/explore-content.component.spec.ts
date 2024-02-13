@@ -21,7 +21,10 @@ describe('ExploreContentComponent', () => {
   const mockSearchService: Partial<SearchService> = {
     getContentTypes: jest.fn(),
   };
-  const mockRouter: Partial<Router> = {};
+  const mockRouter: Partial<Router> = {
+    url: '/current/2',
+    navigate: jest.fn(),
+  };
   const mockActivatedRoute: Partial<ActivatedRoute> = {
     queryParams: of({}),
   };
@@ -62,6 +65,7 @@ describe('ExploreContentComponent', () => {
 
   };
   const mockContentManagerService: Partial<ContentManagerService> = {
+    startDownload: jest.fn().mockReturnValue({}),
     contentDownloadStatus$: of({ enrolledCourses: [{ identifier: 'COMPLETED' }] }),
     } as any;
   const mockOfflineCardService: Partial<OfflineCardService> = {};
@@ -126,6 +130,9 @@ describe('ExploreContentComponent', () => {
     expect(goBackSpy).not.toHaveBeenCalled();
     expect(component.hashTagId).toEqual('MockedHashTagId');
     expect(component.initFilters).toBeTruthy();
+    expect(component.cslFrameworkService?.getAlternativeCodeForFilter).toHaveBeenCalled();
+    expect(component.cslFrameworkService.transformDataForCC).toHaveBeenCalled();
+    expect(component.cslFrameworkService.getAllFwCatName).toHaveBeenCalled();
   });
 
   it('should call goBack if navigation history length is greater than 1', () => {
@@ -154,6 +161,120 @@ describe('ExploreContentComponent', () => {
       const emitSpy = jest.spyOn(component.dataDrivenFilterEvent, 'emit');
       component.getFilters(filters);
       expect(emitSpy).toHaveBeenCalled();
+  });
+
+  it('should handle filters without channel', () => {
+    const mockFrameworkCategoriesList = ['framework1','framework2'];
+    jest.spyOn(component.cslFrameworkService,'getAllFwCatName').mockReturnValue(mockFrameworkCategoriesList);
+    component.frameworkCategoriesList = mockFrameworkCategoriesList;
+    const filters = {
+      filters: {
+        filter: 'mock-filter'
+      }
+    };
+    const expectedDefaultFilters = {
+      [component.frameworkCategoriesList[0]]: ''
+    };
+    jest.spyOn(component.dataDrivenFilterEvent,'emit');
+    component.getFilters(filters);
+    expect(component.selectedFilters).toEqual(filters.filters);
+    expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalled();
+  });
+
+   it('should redo layout when layout configuration is not null', () => {
+    component.layoutConfiguration = { };
+    component.redoLayout();
+    expect(mockLayoutService.redoLayoutCSS).toHaveBeenCalledWith(0, component.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
+    expect(mockLayoutService.redoLayoutCSS).toHaveBeenCalledWith(1, component.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
+  });
+
+  it('should redo layout with full layout when layout configuration is null', () => {
+    component.layoutConfiguration = null;
+    component.redoLayout();
+    expect(mockLayoutService.redoLayoutCSS).toHaveBeenCalledWith(0, null, COLUMN_TYPE.fullLayout);
+    expect(mockLayoutService.redoLayoutCSS).toHaveBeenCalledWith(1, null, COLUMN_TYPE.fullLayout);
+  });
+
+  it('should handle filters correctly', () => {
+    const filters = {
+      filters: {
+        channel: ['value1']
+      }
+    };
+    component.frameworkCategoriesList = ['category1', 'category2'];
+    jest.spyOn(component.dataDrivenFilterEvent, 'emit').mockReturnValue()
+    component.getFilters(filters);
+    expect(component.selectedFilters).toEqual({ channel: ['value1'] });
+    expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({})
+  });
+
+it('should navigate to the specified page', () => {
+    const page = 2;
+    component.paginationDetails = { totalPages: 5 } as any;
+    component.queryParams = {  };
+    component.navigateToPage(page);
+    const expectedUrl = '/current/2';
+    expect(mockRouter.navigate).toHaveBeenCalledWith([expectedUrl], { queryParams: component.queryParams });
+  });
+
+  it('should not navigate if the page is out of range', () => {
+    const page = 10;
+    component.paginationDetails = { totalPages: 5 } as any;
+    component.queryParams = {};
+    component.navigateToPage(page);
+    expect(mockRouter.navigate).not.toHaveBeenCalled();
+  });
+
+  it('should unsubscribe on ngOnDestroy', () => {
+    jest.spyOn(component.unsubscribe$, 'complete');
+    jest.spyOn(component.unsubscribe$, 'next');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+    expect(component.unsubscribe$.next).toHaveBeenCalled();
+  });
+
+  it('should call downloadContent with the correct contentId', () => {
+    const contentId = 'contentId1';
+    const mockResponse = {};
+    jest.spyOn(mockContentManagerService as any, 'startDownload').mockReturnValueOnce(of(mockResponse));
+    component.downloadIdentifier = contentId;
+    component.contentData = {};
+    component.contentName = 'Sample Content';
+    component.callDownload();
+
+    setTimeout(() => {
+      expect(mockContentManagerService.downloadContentId).toBe(contentId);
+      jest.restoreAllMocks();
+    }, 0);
+  });
+
+   it('should handle successful download', () => {
+    const contentId = 'contentId1';
+    const mockResponse = {};
+
+    jest.spyOn(mockContentManagerService as any, 'startDownload').mockReturnValue(of(mockResponse));
+
+    component.downloadContent(contentId);
+
+    expect(component.downloadIdentifier).toBe('');
+    expect(mockContentManagerService.downloadContentId).toBe('');
+    expect(mockContentManagerService.downloadContentData).toEqual({});
+    expect(mockContentManagerService.failedContentName).toBe('');
+    expect(component.showDownloadLoader).toBe(false);
+  });
+
+  it('should handle download error', () => {
+    const contentId = 'contentId1';
+    const mockError = { error: { params: { err: 'LOW_DISK_SPACE' } } };
+    jest.spyOn(mockContentManagerService as any, 'startDownload').mockReturnValue(throwError(mockError));
+
+    component.downloadContent(contentId);
+
+    expect(component.downloadIdentifier).toBe('');
+    expect(mockContentManagerService.downloadContentId).toBe('');
+    expect(mockContentManagerService.downloadContentData).toEqual({});
+    expect(mockContentManagerService.failedContentName).toBe('');
+    expect(component.showDownloadLoader).toBe(false);
   });
 
 });
