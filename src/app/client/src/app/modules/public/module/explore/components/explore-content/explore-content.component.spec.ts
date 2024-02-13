@@ -126,6 +126,9 @@ describe('ExploreContentComponent', () => {
     expect(goBackSpy).not.toHaveBeenCalled();
     expect(component.hashTagId).toEqual('MockedHashTagId');
     expect(component.initFilters).toBeTruthy();
+    expect(component.cslFrameworkService?.getAlternativeCodeForFilter).toHaveBeenCalled();
+    expect(component.cslFrameworkService.transformDataForCC).toHaveBeenCalled();
+    expect(component.cslFrameworkService.getAllFwCatName).toHaveBeenCalled();
   });
 
   it('should call goBack if navigation history length is greater than 1', () => {
@@ -154,6 +157,24 @@ describe('ExploreContentComponent', () => {
       const emitSpy = jest.spyOn(component.dataDrivenFilterEvent, 'emit');
       component.getFilters(filters);
       expect(emitSpy).toHaveBeenCalled();
+  });
+
+  it('should handle filters without channel', () => {
+    const mockFrameworkCategoriesList = ['framework1','framework2'];
+    jest.spyOn(component.cslFrameworkService,'getAllFwCatName').mockReturnValue(mockFrameworkCategoriesList);
+    component.frameworkCategoriesList = mockFrameworkCategoriesList;
+    const filters = {
+      filters: {
+        filter: 'mock-filter'
+      }
+    };
+    const expectedDefaultFilters = {
+      [component.frameworkCategoriesList[0]]: ''
+    };
+    jest.spyOn(component.dataDrivenFilterEvent,'emit');
+    component.getFilters(filters);
+    expect(component.selectedFilters).toEqual(filters.filters);
+    expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalled();
   });
 
 });
