@@ -146,6 +146,9 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   public frameworkCategories;
   public globalFilterCategoriesObject;
   public categoryKeys;
+  public frameworkCategoriesList;
+  public globalFilterCategories;
+  public CourseSearchFieldCategory;
 
   constructor(searchService: SearchService, router: Router, private playerService: PlayerService, private formService: FormService,
     activatedRoute: ActivatedRoute, paginationService: PaginationService,
@@ -172,6 +175,9 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     this.frameworkCategories = this.cslFrameworkService.getFrameworkCategories();
     this.globalFilterCategoriesObject = this.cslFrameworkService.getGlobalFilterCategoriesObject();
     this.categoryKeys = this.cslFrameworkService.transformDataForCC();
+    this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
+    this.globalFilterCategories = this.cslFrameworkService.getAlternativeCodeForFilter();
+    this.CourseSearchFieldCategory = [...this.globalFilterCategories, ...this.frameworkCategoriesList];
     this.facetsList = ['channel', this.frameworkCategories?.fwCategory2?.code,this.frameworkCategories?.fwCategory3?.code,this.frameworkCategories?.fwCategory4?.code];
     this.initLayout();
     if (!this.userService.loggedIn) {
@@ -367,7 +373,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     const requestParams = {
       filters: _.get(this.queryParams, 'appliedFilters') ? this.filters : { ..._.get(manipulatedData, 'filters'), ...this.filters },
       limit: this.pageLimit,
-      fields: this.configService.urlConFig.params.CourseSearchField,
+      fields: [...this.configService.urlConFig.params.CourseSearchField, ...this.CourseSearchFieldCategory],
       pageNumber: Number(request.params.pageNumber),
       mode: _.get(manipulatedData, 'mode'),
       params: this.configService.appConfig.ViewAll.contentApiQueryParams,

@@ -317,7 +317,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
             if (searchRes) {
                 const facets = this.searchService.updateFacetsData(_.get(searchRes, 'result.facets'));
                 this.facets = facets.filter(facet => facet.values.length > 0);
-                const filteredContents = _.omit(_.groupBy(searchRes['result'].content, 'subject'), ['undefined']);
+                const filteredContents = _.omit(_.groupBy(searchRes['result'].content, this.frameworkCategoriesList[3]), ['undefined']);
                 const otherContents = _.filter(searchRes['result'].content, (content) => !content.subject );
                 // Check for multiple subjects
                 for (const [key, value] of Object.entries(filteredContents)) {

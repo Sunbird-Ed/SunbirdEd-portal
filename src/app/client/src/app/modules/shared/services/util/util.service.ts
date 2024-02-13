@@ -24,8 +24,9 @@ export class UtilService {
   public formData: any;
   public roleChanged = new BehaviorSubject('');
   public currentRole = this.roleChanged.asObservable();
+  public  frameworkCategories;
 
-  constructor(private resourceService: ResourceService, private genericResourceService: GenericResourceService,) {
+  constructor(private resourceService: ResourceService, private genericResourceService: GenericResourceService) {
     if (!UtilService.singletonInstance) {
       UtilService.singletonInstance = this;
     }
@@ -55,6 +56,8 @@ export class UtilService {
   }
 
   processContent(data, staticData, dynamicFields, metaData) {
+    let fwObj = localStorage.getItem('fwCategoryObject');
+    this.frameworkCategories = JSON.parse(fwObj);
     let fieldValue: any;
     let content: any = {
       name: data.name || data.courseName,
@@ -62,10 +65,10 @@ export class UtilService {
       downloadStatus: data.downloadStatus,
       description: data.description,
       rating: data.me_averageRating || '0',
-      subject: data.subject,
-      medium: data.medium,
+      [this.frameworkCategories?.fwCategory4?.code]: data[this.frameworkCategories?.fwCategory4?.code],
+      [this.frameworkCategories?.fwCategory2?.code]: data[this.frameworkCategories?.fwCategory2?.code],
       orgDetails: data.orgDetails || {},
-      gradeLevel: '',
+      [this.frameworkCategories?.fwCategory3?.code]: '',
       contentType: data.contentType,
       topic: this.getTopicSubTopic('topic', data.topic),
       subTopic: this.getTopicSubTopic('subTopic', data.topic),
@@ -77,7 +80,7 @@ export class UtilService {
       badgeAssertions: data.badgeAssertions,
       organisation: data.organisation,
       hoverData: data.hoverData,
-      board: data.board || '',
+      [this.frameworkCategories?.fwCategory1?.code]: data[this.frameworkCategories?.fwCategory1?.code] || '',
       identifier: data.identifier,
       mimeType: data.mimeType,
       primaryCategory: data.primaryCategory,
@@ -97,11 +100,11 @@ export class UtilService {
       content['contentType'] = _.get(data.content, 'contentType') || '';
       content['organisation'] = _.get(data.content, 'orgDetails.orgName') || {};
       content['primaryCategory'] = _.get(data.content, 'primaryCategory');
-      content = { ...content, ..._.pick(data.content, ['subject', 'medium', 'gradeLevel']) };
+      content = { ...content, ..._.pick(data.content, [this.frameworkCategories?.fwCategory2?.code, this.frameworkCategories?.fwCategory3?.code,this.frameworkCategories?.fwCategory4?.code]) };
     }
 
-    if (data.gradeLevel && data.gradeLevel.length) {
-      content['gradeLevel'] = _.isString(data.gradeLevel) ? data.gradeLevel : data.gradeLevel.join(',');
+    if (data[this.frameworkCategories?.fwCategory3?.code] && data[this.frameworkCategories?.fwCategory3?.code].length) {
+      content[this.frameworkCategories?.fwCategory3?.code] = _.isString(data[this.frameworkCategories?.fwCategory3?.code]) ? data[this.frameworkCategories?.fwCategory3?.code] : data[this.frameworkCategories?.fwCategory3?.code].join(',');
     }
     _.forIn(staticData, (value, key1) => {
       content[key1] = value;

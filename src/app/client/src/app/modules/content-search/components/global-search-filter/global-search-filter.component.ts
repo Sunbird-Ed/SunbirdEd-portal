@@ -167,7 +167,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
       map((queryParams) => {
         const queryFilters: any = {};
         _.forIn(queryParams, (value, key) => {
-          if ([...this.frameworkCategoriesList,'channel', 'primaryCategory', 'key', 'mediaType', 'se_boards', 'se_mediums', 'se_gradeLevels', 'se_subjects', 'additionalCategories'].includes(key)) {
+          if ([...this.frameworkCategoriesList,...this.globalFilterCategories,'channel', 'primaryCategory', 'key', 'mediaType', 'additionalCategories'].includes(key)) {
             queryFilters[key] = key === 'key' || _.isArray(value) ? value : [value];
           }
         });

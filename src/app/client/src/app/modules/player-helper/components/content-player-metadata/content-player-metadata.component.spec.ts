@@ -14,7 +14,8 @@ describe('ContentPlayerMetadataComponent', () => {
     };
 	const cslFrameworkService :Partial<CslFrameworkService> ={
         getGlobalFilterCategoriesObject: jest.fn(),
-        transformContentDataFwBased: jest.fn()
+        transformContentDataFwBased: jest.fn(),
+        getAllFwCatName: jest.fn(),
     };
 
     beforeAll(() => {
@@ -59,6 +60,7 @@ describe('ContentPlayerMetadataComponent', () => {
         expect(component.cslFrameworkService.transformContentDataFwBased).toHaveBeenCalledWith(component.frameworkCategoriesList,component.metadata);
         expect(component.validateContent).toHaveBeenCalled();
         expect(component.instance).toEqual(component.resourceService.instance.toUpperCase());
+        expect(component.validateContent).toHaveBeenCalled();
     });
 
     it('should validate content fields', () => {
@@ -79,14 +81,8 @@ describe('ContentPlayerMetadataComponent', () => {
         component.validateContent();
     
         expect(component.metadata.language).toBe('English');
-        //expect(component.metadata.gradeLevel).toEqual(['Grade 1, Grade 2']);
         expect(component.metadata.subject).toBe('Math');
-        //expect(component.metadata.flags).toBe(['1, 2, 3']);
-        // expect(component.metadata.keywords).toBe('keyword1, keyword2');
-        // expect(component.metadata.resourceTypes).toBe('Type1, Type2');
-        // expect(component.metadata.attributions).toBe('Attribution 1, Attribution 2');
         expect(component.metadata.primaryCategory).toBe('Category1');
-       // expect(component.metadata.additionalCategories).toBe('Category2, Category3');
         expect(component.metadata.invalidField).toBe('Invalid Field');
       });
     
@@ -95,5 +91,70 @@ describe('ContentPlayerMetadataComponent', () => {
         component.showContentCreditsPopup();
         expect(component.showContentCreditsModal).toBe(true);
     });
+    
+    describe('validateContent',()=>{
+        it('should compact string values and join them with comma', () => {
+            component.metadata = {
+            language: 'English',
+            frameworkCategory2: 'Math',
+            frameworkCategory3: 'Science'
+            };
+            component.validateContent();
+        
+            expect(component.metadata.language).toBe('English');
+            expect(component.metadata.frameworkCategory2).toBe('Math');
+            expect(component.metadata.frameworkCategory3).toBe('Science');
+        });
+
+        it('should compact array values and join them with comma', () => {
+            component.metadata = {
+            keywords: ['keyword1', 'keyword2'],
+            resourceTypes: ['type1', 'type2']
+            };
+            component.validateContent();
+        
+            expect(component.metadata.keywords).toEqual(['keyword1', 'keyword2']);
+            expect(component.metadata.resourceTypes).toEqual(['type1', 'type2']);
+        });
+        
+        it('should handle null or undefined values', () => {
+            component.metadata = {
+            language: null,
+            frameworkCategory2: undefined
+            };
+            component.validateContent();
+        
+            expect(component.metadata.language).toBe(null);
+            expect(component.metadata.frameworkCategory2).toBeUndefined;
+        });
+
+        it('should handle non-string and non-array values', () => {
+            component.metadata = {
+            flagReasons: 123,
+            flaggedBy: { name: 'User' }
+            };
+            component.validateContent();
+
+            expect(component.metadata.flagReasons).toBe(123);
+            expect(component.metadata.flaggedBy).toEqual({"name": "User"});
+        });
+        
+        it('should handle empty metadata', () => {
+            component.metadata = {};
+            component.validateContent();
+
+            expect(component.metadata).toEqual({});
+        });
+        
+        it('should compact string values and join them with comma', () => {
+            component.frameworkCategories = ['framework1','framework2','framework3','framework4'];
+            component.fieldData = ['language', component.frameworkCategories[2], component.frameworkCategories[3], 'flagReasons', 'flaggedBy', 'flags', 'keywords',
+            'resourceTypes', 'attributions', 'primaryCategory', 'additionalCategories'];
+            component.metadata=[{'language': 'english'}];
+            component.validateContent();
+        
+            expect(component.fieldData).toEqual(["language", "framework3", "framework4", "flagReasons", "flaggedBy", "flags", "keywords", "resourceTypes", "attributions", "primaryCategory","additionalCategories"]);
+        });
+    })
     
 });

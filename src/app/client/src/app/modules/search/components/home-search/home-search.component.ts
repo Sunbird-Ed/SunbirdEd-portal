@@ -61,6 +61,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   showBackButton = false;
   frameworkCategories;
   globalFilterCategories;
+  frameworkCategoriesList;
   categoryKeys: any[];
 
   constructor(public searchService: SearchService, public router: Router,
@@ -80,8 +81,8 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   ngOnInit() {
     this.categoryKeys = this.cslFrameworkService.transformDataForCC();
-    this.frameworkCategories = this.cslFrameworkService.getFrameworkCategories();
     this.globalFilterCategories = this.cslFrameworkService.getAlternativeCodeForFilter();
+    this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
     this.isDesktopApp = this.utilService.isDesktopApp;
     this.listenLanguageChange();
     this.contentManagerService.contentDownloadStatus$
@@ -560,8 +561,8 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
-      if (element.code === this.frameworkCategories?.fwCategory1?.code) {
-        collector[this.frameworkCategories?.fwCategory1?.code] = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
+      if (element.code === this.frameworkCategoriesList[0]) {
+        collector[this.frameworkCategoriesList[0]] = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
       }
       return collector;
     }, {});
@@ -576,7 +577,7 @@ public viewAll(event) {
     searchQueryParams['exists'] = undefined;
     searchQueryParams['primaryCategory'] = (this.queryParams.primaryCategory && this.queryParams.primaryCategory.length)
      ? this.queryParams.primaryCategory : [event.name];
-     (this.queryParams.primaryCategory && this.queryParams.primaryCategory.length) ? (searchQueryParams['subject'] = [event.name]) :
+     (this.queryParams.primaryCategory && this.queryParams.primaryCategory.length) ? (searchQueryParams[this.frameworkCategoriesList[3]] = [event.name]) :
     (searchQueryParams[this.globalFilterCategories[3]] = this.queryParams[this.globalFilterCategories[3]]);
     searchQueryParams['selectedTab'] = 'all';
   if (this.queryParams.channel) {

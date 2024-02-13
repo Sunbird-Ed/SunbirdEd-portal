@@ -19,7 +19,7 @@ export class ContentPlayerMetadataComponent implements OnInit {
   showContentCreditsModal: boolean;
   public frameworkCategoriesList;
   public transformMetadata;
-
+  public frameworkCategories;
   @Input() contentData: ContentData;
   constructor(public resourceService: ResourceService, public cslFrameworkService: CslFrameworkService) { }
 
@@ -27,12 +27,13 @@ export class ContentPlayerMetadataComponent implements OnInit {
     this.metadata = { ...this.contentData };
     this.frameworkCategoriesList = this.cslFrameworkService.getGlobalFilterCategoriesObject();
     this.transformMetadata = this.cslFrameworkService.transformContentDataFwBased(this.frameworkCategoriesList,this.metadata);
+    this.frameworkCategories = this.cslFrameworkService.getAllFwCatName();
     this.validateContent();
     this.instance = _.upperCase(this.resourceService.instance);
   }
 
   validateContent() {
-    this.fieldData = ['language', 'gradeLevel', 'subject', 'flagReasons', 'flaggedBy', 'flags', 'keywords',
+    this.fieldData = ['language', this.frameworkCategories[2], this.frameworkCategories[3], 'flagReasons', 'flaggedBy', 'flags', 'keywords',
       'resourceTypes', 'attributions', 'primaryCategory', 'additionalCategories'];
     _.forEach(this.metadata, (value, key) => {
       if (_.compact(key) && _.includes(this.fieldData, key)) {
