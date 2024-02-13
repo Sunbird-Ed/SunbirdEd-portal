@@ -491,5 +491,3 @@ describe('viewAll',()=>{
     expect(component.downloadContent).toHaveBeenCalled();
  });
 });
-
-
