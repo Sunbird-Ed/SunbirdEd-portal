@@ -443,24 +443,44 @@ describe('HomeSearch Component', () => {
 
 });
 
-it('should navigate to view all with correct query params', () => {
-  const mockEvent = { name: 'mock-category' };
-  jest.spyOn(component,'logViewAllTelemetry');
-  const mockGlobalFilterCategories = ['category1','category2','category3','category4'];
-  jest.spyOn(component.cslFrameworkService,'getAlternativeCodeForFilter').mockReturnValue(mockGlobalFilterCategories);
-  component.globalFilterCategories = mockGlobalFilterCategories;
-  component.queryParams = {'category4': 'mock-category', 'channel': 'mock-channel'};
-  component.viewAll(mockEvent);
+describe('viewAll',()=>{
+  it('should navigate to view all with correct query params', () => {
+    const mockEvent = { name: 'mock-category' };
+    jest.spyOn(component,'logViewAllTelemetry');
+    const mockGlobalFilterCategories = ['category1','category2','category3','category4'];
+    jest.spyOn(component.cslFrameworkService,'getAlternativeCodeForFilter').mockReturnValue(mockGlobalFilterCategories);
+    component.globalFilterCategories = mockGlobalFilterCategories;
+    component.queryParams = {'category4': 'mock-category', 'channel': 'mock-channel'};
+    component.viewAll(mockEvent);
 
-  expect(component.moveToTop).toHaveBeenCalled();
-  expect(component.logViewAllTelemetry).toHaveBeenCalledWith(mockEvent);
-  expect(component.router.navigate).toHaveBeenCalledWith(
-    ["/resources/view-all/mock-category", 1],
-    {"queryParams": {"appliedFilters": true, "category4": "mock-category", 
-    "channel": "mock-channel", "defaultSortBy": "{\"lastPublishedOn\":\"desc\"}", 
-    "exists": undefined, "primaryCategory": ["mock-category"], "selectedTab": "all", 
-    "visibility": []}, "state": {}}
-  );
+    expect(component.moveToTop).toHaveBeenCalled();
+    expect(component.logViewAllTelemetry).toHaveBeenCalledWith(mockEvent);
+    expect(component.router.navigate).toHaveBeenCalledWith(
+      ["/resources/view-all/mock-category", 1],
+      {"queryParams": {"appliedFilters": true, "category4": "mock-category", 
+      "channel": "mock-channel", "defaultSortBy": "{\"lastPublishedOn\":\"desc\"}", 
+      "exists": undefined, "primaryCategory": ["mock-category"], "selectedTab": "all", 
+      "visibility": []}, "state": {}}
+    );
+  });
+
+  it('should navigate to view all with correct query params', () => {
+    const mockEvent = { name: 'mock-category' };
+    jest.spyOn(component,'logViewAllTelemetry');
+    const mockFwName= ['framework1','framework2','framework3','framework4'];
+    jest.spyOn(component.cslFrameworkService,'getAllFwCatName').mockReturnValue(mockFwName);
+    component.frameworkCategoriesList = mockFwName;
+    component.queryParams = {'primaryCategory': 'mock-primary-category', 'channel': 'mock-channel'};
+    component.viewAll(mockEvent);
+
+    expect(component.router.navigate).toHaveBeenCalledWith(
+      ["/resources/view-all/mock-category", 1], 
+      {"queryParams": {"appliedFilters": true, "channel": "mock-channel",
+      "defaultSortBy": "{\"lastPublishedOn\":\"desc\"}", "exists": undefined, 
+      "framework4": ["mock-category"], "primaryCategory": "mock-primary-category", 
+      "selectedTab": "all", "visibility": []}, "state": {}}
+    );
+  });
 });
 
  it('should set value and call downloadContent on callDownload',() =>{
@@ -471,5 +491,3 @@ it('should navigate to view all with correct query params', () => {
     expect(component.downloadContent).toHaveBeenCalled();
  });
 });
-
-
