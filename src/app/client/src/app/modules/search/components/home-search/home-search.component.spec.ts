@@ -52,7 +52,9 @@ describe('HomeSearch Component', () => {
     error: jest.fn(),
   };
 
-  const mockChangeDetectionRef: Partial<ChangeDetectorRef> = {};
+  const mockChangeDetectionRef: Partial<ChangeDetectorRef> = {
+    detectChanges: jest.fn(),
+  };
 
   const mockConfigService: Partial<ConfigService> = {
     dropDownConfig: {
@@ -89,10 +91,18 @@ describe('HomeSearch Component', () => {
 
   const mockCoursesService: Partial<CoursesService> = {
     getSignedCourseCertificate: jest.fn(),
+    findEnrolledCourses: jest.fn().mockReturnValue({
+      onGoingBatchCount: 1,
+      expiredBatchCount: 0,
+      openBatch: { ongoing: [{ batchId: '123' }] },
+      inviteOnlyBatch: { ongoing: [] }
+    }),
     enrolledCourseData$: of({ enrolledCourses: [{ completeOn: '2022-08-03' }] })
   } as any;
 
-  const mockPlayerService: Partial<PlayerService> = {};
+  const mockPlayerService: Partial<PlayerService> = {
+    playContent: jest.fn(),
+  };
 
   const mockUserService: Partial<UserService> = {
     loggedIn: true,
@@ -137,17 +147,21 @@ describe('HomeSearch Component', () => {
         updateContent: jest.fn(),
         exportContent: jest.fn(),
         deleteContent: jest.fn(),
-        startDownload: jest.fn()
+        startDownload: jest.fn().mockReturnValue(of({})),
     } as any;
 
   const mockTelemetryService: Partial<TelemetryService> = {
     interact: jest.fn()
   };
 
-	const mockOfflineCardService :Partial<OfflineCardService> ={};
-
+	const mockOfflineCardService :Partial<OfflineCardService> ={
+    isYoutubeContent: jest.fn(),
+  };
 
   const mockCslFrameworkService: Partial<CslFrameworkService> = {
+    transformDataForCC: jest.fn(),
+    getAlternativeCodeForFilter: jest.fn(),
+    getAllFwCatName: jest.fn(),
     getFrameworkCategories: jest.fn().mockReturnValue(of({})),
     getGlobalFilterCategories: jest.fn().mockReturnValue(of({ fwCategory4:{
       code: "",
@@ -296,6 +310,113 @@ describe('HomeSearch Component', () => {
     });
   });
 
+  it('should call necessary methods during initialization', () => {
+    jest.spyOn(component, 'setNoResultMessage' as any);
+    jest.spyOn(component, 'initLayout');
+    jest.spyOn(component, 'fetchEnrolledCoursesSection' as any).mockReturnValue(of([{ sampleData: 'data' }]));
+    const mockFormData = [
+      { title: 'frmelmnts.tab.all', search: { facets: ['facet1', 'facet2'] } },
+    ];
+    jest.spyOn(mockSearchService, 'getContentTypes').mockReturnValue(of(mockFormData));
+    jest.spyOn(component, 'moveToTop');
+    jest.spyOn(component, 'checkForBack');
+    component.ngOnInit();
+    expect(mockSearchService.getContentTypes).toHaveBeenCalled();
+    expect(component.allTabData).toEqual({ title: 'frmelmnts.tab.all', search: { facets: ['facet1', 'facet2'] } });
+    expect(component.globalSearchFacets).toEqual(['facet1', 'facet2']);
+    expect(component['setNoResultMessage']).toHaveBeenCalled();
+    expect(component.initFilters).toBe(true);
+    expect(component.initLayout).toHaveBeenCalled();
+    expect(component['fetchEnrolledCoursesSection']).toHaveBeenCalled();
+    expect(component['setNoResultMessage']).toHaveBeenCalled();
+    expect(component.checkForBack).toHaveBeenCalled();
+    expect(component.moveToTop).toHaveBeenCalled();
+  });
+
+  it('should initialize layout configuration correctly', () => {
+    jest.spyOn(mockLayoutService, 'initlayoutConfig').mockReturnValue('sampleLayoutConfig');
+    const redoLayoutSpy = jest.spyOn(component, 'redoLayout');
+    component.initLayout();
+    expect(mockLayoutService.initlayoutConfig).toHaveBeenCalled();
+    expect(redoLayoutSpy).toHaveBeenCalledTimes(2);
+  });
+
+  it('should redo layout with layout configuration', () => {
+    component.layoutConfiguration = { };
+    component.redoLayout();
+    expect(mockLayoutService.redoLayoutCSS).toHaveBeenCalledWith(0, component.layoutConfiguration, COLUMN_TYPE.threeToNine);
+    expect(mockLayoutService.redoLayoutCSS).toHaveBeenCalledWith(1, component.layoutConfiguration, COLUMN_TYPE.threeToNine);
+  });
+
+  it('should redo layout with full layout if no configuration provided', () => {
+    component.layoutConfiguration = null;
+    component.redoLayout();
+    expect(mockLayoutService.redoLayoutCSS).toHaveBeenCalledWith(0, null, COLUMN_TYPE.fullLayout);
+    expect(mockLayoutService.redoLayoutCSS).toHaveBeenCalledWith(1, null, COLUMN_TYPE.fullLayout);
+  });
+
+  it('should play content if no enrolled batch present', () => {
+    const eventData = { data: { } };
+    component.playContent(eventData);
+    expect(mockPlayerService.playContent).toHaveBeenCalledWith(eventData.data);
+  });
+
+  it('should update inViewLogs array correctly', () => {
+    const eventData = { inview: [{ data: { metaData: { identifier: '123', contentType: 'content' } }, id: '1' }] };
+    component.inView(eventData);
+    expect(component.inViewLogs).toEqual([{ objid: '123', objtype: 'content', index: '1' }]);
+  });
+
+   it('should call playContent method and log telemetry when hover type is "OPEN"', () => {
+    const event = {
+      hover: { type: 'OPEN' },
+      content: { name: 'Sample Content', identifier: '123', mimeType: 'sample/mime-type' },
+      data: { name: 'Sample Content', identifier: '123', mimeType: 'sample/mime-type' }
+    };
+    const playContentSpy = jest.spyOn(component, 'playContent');
+    const logTelemetrySpy = jest.spyOn(component, 'logTelemetry');
+    component.hoverActionClicked(event);
+    expect(playContentSpy).toHaveBeenCalledWith(event);
+    expect(logTelemetrySpy).toHaveBeenCalledWith(event.data, 'play-content');
+  });
+
+  it('should call downloadContent method and log telemetry when hover type is "DOWNLOAD"', () => {
+    const event = {
+      hover: { type: 'DOWNLOAD' },
+      content: { name: 'Sample Content', identifier: '123', mimeType: 'sample/mime-type' },
+      data: { name: 'Sample Content', identifier: '123', mimeType: 'sample/mime-type' }
+    };
+    const downloadContentSpy = jest.spyOn(component, 'downloadContent');
+    const logTelemetrySpy = jest.spyOn(component, 'logTelemetry');
+    component.hoverActionClicked(event);
+    expect(downloadContentSpy).toHaveBeenCalledWith('123');
+    expect(logTelemetrySpy).toHaveBeenCalledWith(event.data, 'download-content');
+  });
+
+  it('ngAfterViewInit should set telemetryImpression after a timeout', () => {
+    component.ngAfterViewInit();
+    setTimeout(() => {
+      expect(component.telemetryImpression).toEqual({
+        context: { env: 'test-env' },
+        edata: {
+          type: 'test-type',
+          pageid: 'test-pageid',
+          uri: 'test-url',
+          subtype: 'test-subtype',
+          duration: 1000
+        }
+      });
+    });
+  });
+
+  it('ngOnDestroy should unsubscribe from subscriptions', () => {
+    component.ngOnInit();
+    jest.spyOn(component.unsubscribe$, 'complete');
+    jest.spyOn(component.unsubscribe$, 'next');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+    expect(component.unsubscribe$.next).toHaveBeenCalled();
+  });
 });
 
 
