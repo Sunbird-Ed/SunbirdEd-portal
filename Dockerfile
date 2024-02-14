@@ -5,5 +5,5 @@ WORKDIR /home/sunbird
 COPY --chown=sunbird . /home/sunbird/app_dist/
 USER sunbird
 WORKDIR /home/sunbird/app_dist
-EXPOSE 3000
+EXPOSE 4000
 CMD ["node", "server.js", "&"]
