@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - github-workflow-ci
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout
+
+      - name: Build Docker image
+        run: docker build -t <DOCKER_HUB_USERNAME>/<IMAGE_NAME>:latest .
+
+      - name: Push Docker image to Docker Hub
+        run: |
+          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+          docker push <DOCKER_HUB_USERNAME>/<IMAGE_NAME>:latest
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Analyze code with SonarCloud
+        uses: sonarsource/sonarcloud-github-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GIT_HUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Run Snyk
+        run: npx snyk test
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
