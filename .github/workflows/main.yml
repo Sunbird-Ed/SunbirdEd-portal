@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - master
+      - 15Feb-ci-1
 
 jobs:
   build:
@@ -26,11 +26,7 @@ jobs:
 
       - name: Analyze code with SonarCloud
         uses: sonarsource/sonarcloud-github-action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GIT_HUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-      - name: Run Snyk
-        run: npx snyk test
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          githubToken: ${{ secrets.GIT_HUB_TOKEN }}
+          organization: ${{ secrets.SONAR_ORGANIZATION }}
+          projectKey: ${{ secrets.SONAR_PROJECT_KEY }}
