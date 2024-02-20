@@ -30,8 +30,20 @@ describe('BatchCardComponent', () => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
-            
+
     it('should create a instance of component', () => {
         expect(component).toBeTruthy();
     });
+
+    describe('onAction', () => {
+        it('should emit clickEvent with correct action and data', () => {
+            const batchdata = { id: 'batchId', name: 'Batch Name' };
+            const emitSpy = jest.spyOn(component.clickEvent, 'emit');
+
+            component.onAction(batchdata);
+
+            expect(emitSpy).toHaveBeenCalledWith({ 'action': 'batchcardclick', 'data': batchdata });
+        });
+    });
+
 });
