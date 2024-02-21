@@ -112,7 +112,7 @@
     "sb_cache_manager": "file:libs/sb_cache_manager",
     "sb_telemetry_util": "file:libs/sb_telemetry_util",
     "sunbird-localization": "0.0.2",
-    "svg2img": "0.7.0",
+    "svg2img": "0.8.0",
     "ua-parser-js": "0.7.24",
     "uuid": "3.1.0",
     "uuid-validate": "0.0.3"
