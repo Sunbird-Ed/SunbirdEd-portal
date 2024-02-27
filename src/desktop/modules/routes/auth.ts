@@ -7,6 +7,7 @@ const uuidv1 = require('uuid/v1');
 import { ILoggedInUser } from '../../OpenRAP/interfaces/IUser';
 import { customProxy } from '../helper/proxyHandler';
 import { EventManager } from "@project-sunbird/OpenRAP/managers/EventManager";
+const xss = require('xss');
 
 export default (app, proxyURL) => {
 
@@ -42,7 +43,7 @@ export default (app, proxyURL) => {
                 }
             } else {
                 const storedUser = await userSDK.getLoggedInUser(req.params.id);
-                res.status(200).send(Response.success("api.user.read", { response: storedUser }, req));
+                res.status(200).send(xss(JSON.stringify(Response.success("api.user.read", { response: storedUser }, req))));
             }
         });
 
@@ -163,7 +164,7 @@ export default (app, proxyURL) => {
       }
       
       EventManager.emit('user:switched', req.params.userId);
-      res.status(200).send(Response.success("api.user.switch", result, req));
+      res.status(200).send(xss(JSON.stringify(Response.success("api.user.switch", result, req))));
     } catch (error) {
       standardLog.error({ id: 'AUTH_USER_SWITCH_FAILED', message: 'Error while switching user', error });
       res.status(500).send(Response.error("api.user.switch", 500, "failed to switch user"));

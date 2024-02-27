@@ -11,6 +11,7 @@ const API_ID = "api.course.batch.read";
 const BATCH_LIST_API_ID = "api.course.batch.list";
 const course = new Course(manifestObj);
 const userSDK = containerAPI.getUserSdkInstance();
+const xss = require('xss');
 
 export default class BatchDetails {
   @Inject private databaseSdk: DatabaseSDK;
@@ -42,7 +43,7 @@ export default class BatchDetails {
 
       if (_.get(response, 'docs.length')) {
         batchData = response.docs[0];
-        res.status(200).send(Response.success(API_ID, { response: batchData }, req));
+        res.status(200).send(xss(JSON.stringify(Response.success(API_ID, { response: batchData }, req))));
       } else {
         const userId = await this.getCurrentUserId();
         const results = await course.getCourses(userId);
@@ -51,7 +52,7 @@ export default class BatchDetails {
         if (_.get(courses, 'length')) {
           const currentCourse = _.find(courses, { userId, batchId });
           if (currentCourse['batch']) {
-            res.status(200).send(Response.success(API_ID, { response: currentCourse['batch'] }, req));
+            res.status(200).send(xss(JSON.stringify(Response.success(API_ID, { response: currentCourse['batch'] }, req))));
           }
         }
         res.status(500).send(Response.error(API_ID, 500));
@@ -95,7 +96,7 @@ export default class BatchDetails {
           content: response.docs,
           count: response.docs.length
         };
-        res.status(200).send(Response.success(BATCH_LIST_API_ID, { response: batchList }, req));
+        res.status(200).send(xss(JSON.stringify(Response.success(BATCH_LIST_API_ID, { response: batchList }, req))));
       }
       
       res.status(500).send(Response.error(BATCH_LIST_API_ID, 500));

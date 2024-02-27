@@ -9,6 +9,7 @@ import DatabaseSDK from "../sdk/database/index";
 import Response from "../utils/response";
 import { ILocation } from "./ILocation";
 import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
+const xss = require('xss');
 export class Location {
     @Inject private databaseSdk: DatabaseSDK;
     @Inject private telemetryHelper: TelemetryHelper;
@@ -77,7 +78,7 @@ export class Location {
             logger.info(`ReqId =  ${req.headers["X-msgid"]}: got data from db`);
             const responseObj = Response.success("api.location.search", resObj, req);
             this.constructSearchEdata(req, responseObj);
-            return res.send(responseObj);
+            res.send(xss(JSON.stringify(responseObj)));
         }).catch((err) => {
             this.standardLog.error({ id: 'LOCATION_DB_SEARCH_FAILED', mid: req.headers["X-msgid"], message: 'Received error while searching in location database', error: err });
             if (err.status === 404) {
@@ -131,7 +132,7 @@ export class Location {
             logger.debug(`ReqId =  ${req.headers["X-msgid"]}: fetchLocationFromOffline method is calling `);
             const responseObj = Response.success("api.location.search", resObj, req);
             this.constructSearchEdata(req, responseObj);
-            return res.send(responseObj);
+            res.send(xss(JSON.stringify(responseObj)));
         } catch (err) {
             const traceId = _.get(err, 'data.params.msgid');
             this.standardLog.error({ id: 'LOCATION_ONLINE_SEARCH_FAILED', message: `Error Received while getting data from Online, with trace Id= ${traceId}`, error: err, mid: req.headers["X-msgid"] });
@@ -205,7 +206,7 @@ export class Location {
             logger.info(`ReqId =  ${req.headers["X-msgid"]}: saving userlocation data in settingsSdk`);
             const response = await this.settingSDK.put("location", resObj);
             res.status(200);
-            return res.send(Response.success("api.location.save", response, req));
+            return res.send(xss(JSON.stringify(Response.success("api.location.save", response, req))));
         } catch (err) {
             this.standardLog.error({ id: 'LOCATION_DB_INSERT_FAILED', mid: req.headers["X-msgid"], message: 'Received error while saving in location database', error: err });
             if (err.status === 404) {

@@ -9,6 +9,7 @@ import User from "./../controllers/user";
 import { manifest } from "./../manifest";
 import Response from "./../utils/response";
 const proxy = require('express-http-proxy');
+const xss = require('xss');
 
 export default (app, proxyURL) => {
 
@@ -16,7 +17,7 @@ export default (app, proxyURL) => {
     const standardLog = containerAPI.getStandardLoggerInstance();
     app.post("/api/help/v1/report/issue", async (req, res) => {
         ticketSDK.createTicket(req.body).then((successRes) => {
-            res.send(Response.success("api.report.issue", successRes, req));
+            res.send(xss(JSON.stringify(Response.success("api.report.issue", successRes, req))));
         }).catch(({status, message, code}) => {
             standardLog.error({ id: 'DESKTOP_REPORT_ISSUE_FAILED', message: 'Received error while reporting a issue', mid: req.headers["X-msgid"], error: message });
             res.status(status || 500).send(Response.error("api.report.issue", status, message, code));
@@ -54,7 +55,7 @@ export default (app, proxyURL) => {
             const contentLocation = new ContentLocation(manifest.id);
             const status = contentLocation.set(app, path.join(contentPath));
             if (status) {
-                return res.send(Response.success("api.desktop.change-content-location", status, req));
+                return res.send(xss(JSON.stringify(Response.success("api.desktop.change-content-location", status, req))));
             } else {
                 res.status(500);
                 return res.send(Response.error("api.desktop.change-content-location", 500));
