@@ -284,11 +284,13 @@ const renderTenantPage = (req, res) => {
 }
 // in fallback option check always for local tenant folder and redirect to / if not exists
 const loadTenantFromLocal = (req, res) => {
-  const tenantName = _.lowerCase(req.params.tenantName) || envHelper.DEFAULT_CHANNEL
-  if (tenantName && fs.existsSync(path.join(__dirname, './../tenant', tenantName, 'index.html'))) {
-    res.sendFile(path.join(__dirname, './../tenant', tenantName, 'index.html'))
+  let tenantName = _.lowerCase(req.params.tenantName) || envHelper.DEFAULT_CHANNEL;
+  tenantName = tenantName.replace(/(\.\.(\/|\\)?)/g, '');
+  const filePath = path.join(__dirname, './../tenant', tenantName, 'index.html');
+  if (fs.existsSync(filePath)) {
+    res.sendFile(filePath);
   } else {
-    renderDefaultIndexPage(req, res)
+    renderDefaultIndexPage(req, res);
   }
 }
 const redirectTologgedInPage = (req, res) => {
