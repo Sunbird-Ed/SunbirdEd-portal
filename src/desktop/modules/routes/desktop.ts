@@ -17,7 +17,7 @@ export default (app, proxyURL) => {
     const standardLog = containerAPI.getStandardLoggerInstance();
     app.post("/api/help/v1/report/issue", async (req, res) => {
         ticketSDK.createTicket(req.body).then((successRes) => {
-            res.send(xss(JSON.stringify(Response.success("api.report.issue", successRes, req))));
+            res.send(Response.success("api.report.issue", successRes, req));
         }).catch(({status, message, code}) => {
             standardLog.error({ id: 'DESKTOP_REPORT_ISSUE_FAILED', message: 'Received error while reporting a issue', mid: req.headers["X-msgid"], error: message });
             res.status(status || 500).send(Response.error("api.report.issue", status, message, code));
@@ -52,8 +52,9 @@ export default (app, proxyURL) => {
     app.post("/api/desktop/v1/change-content-location", async (req, res) => {
         try {
             const contentPath = _.get(req.body, "request.path");
+            const sanitizedContentPath = contentPath.replace(/\.\.\//g, '')
             const contentLocation = new ContentLocation(manifest.id);
-            const status = contentLocation.set(app, path.join(contentPath));
+            const status = contentLocation.set(app, path.join(__dirname, sanitizedContentPath));
             if (status) {
                 return res.send(xss(JSON.stringify(Response.success("api.desktop.change-content-location", status, req))));
             } else {
