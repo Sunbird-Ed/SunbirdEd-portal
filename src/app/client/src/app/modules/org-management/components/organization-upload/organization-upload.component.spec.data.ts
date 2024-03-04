@@ -1,4 +1,25 @@
 export const mockRes = {
+    frmelementsInstn: {
+        t0002: 'mock-2',
+        t0007: 'mock-7',
+        t0013: 'mock-13',
+        t0021: 'mock-21',
+        t0022: 'mock-22',
+        t0023: 'mock-23',
+        t0024: 'mock-24',
+        t0025: 'mock-25',
+        t0026: 'mock-26',
+        t0027: 'mock-27',
+        t0028: 'mock-28',
+        t0029: 'mock-29',
+        t0030: 'mock-30',
+        t0031: 'mock-31',
+        t0032: 'mock-32',
+        t0049: 'mock-49',
+        t0050: 'mock-50',
+        t0078: 'mock-78',
+        t0079: 'mock-79',
+    },
     validfile: [{
         name: 'organizations.csv',
         orgName: 'new org',
@@ -119,3 +140,4 @@ export const mockRes = {
     emptyFiles: 'Please provide valid csv file.',
     invalidColumnMultipleLines: 'Invalid column: ﻿"firstName".<br/>Valid columns are: firstName, lastName, externalIds.<br/>Please check.'}
 };
+
