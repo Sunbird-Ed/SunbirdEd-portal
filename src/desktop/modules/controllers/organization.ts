@@ -6,6 +6,7 @@ import { Inject } from "typescript-ioc";
 import DatabaseSDK from "../sdk/database";
 import Response from "../utils/response";
 import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
+const xss = require('xss');
 export class Organization {
   @Inject
   private databaseSdk: DatabaseSDK;
@@ -74,7 +75,7 @@ export class Organization {
         logger.info(
           `ReqId = "${req.headers["X-msgid"]}": Received data from organization database`,
         );
-        return res.send(Response.success("api.org.search", resObj, req));
+        return res.send(xss(JSON.stringify(Response.success("api.org.search", resObj, req))));
       })
       .catch((err) => {
         this.standardLog.error({id: 'ORG_DB_SEARCH_FAILED', message: 'Received error while searching in organization database', error: err, mid: req.headers["X-msgid"]});

@@ -8,7 +8,7 @@ import Response from "../../utils/response";
 import { ContentDeleteHelper } from "./contentDeleteHelper";
 import { IContentDelete } from "./IContent";
 import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
-
+const xss = require('xss');
 export default class ContentDelete {
     @Inject
     private databaseSdk: DatabaseSDK;
@@ -65,7 +65,7 @@ export default class ContentDelete {
             if (contentPaths) {
                 await this.add(contentPaths, contentsToDelete[0]["name"]);
             }
-            res.send(Response.success("api.content.delete", {deleted, failed, deletedContentMeta}, req));
+            res.send(xss(JSON.stringify(Response.success("api.content.delete", {deleted, failed, deletedContentMeta}, req))));
             } catch (err) {
                 this.standardLog.error({ id: 'CONTENT_DELETE_FAILED', message: 'Received Error while Deleting content', error: err });
                 res.status(500);

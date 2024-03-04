@@ -11,6 +11,7 @@ import DatabaseSDK from "../../sdk/database";
 import Response from "../../utils/response";
 import { containerAPI, ISystemQueueInstance } from "@project-sunbird/OpenRAP/api";
 import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
+const xss = require('xss');
 const sessionStartTime = Date.now();
 const ContentSearchUrl = `${process.env.APP_BASE_URL}/api/content/v1/search`;
 const DefaultRequestOptions = { headers: { "Content-Type": "application/json" } };
@@ -76,13 +77,13 @@ export default class Content {
         let QRresult = [];
         if (_.get(filters, 'query')) {
             QRresult  = await this.searchForDialCodeContent(_.get(filters, 'query'));
-        } 
+        }
         if(QRresult.length > 0) {
             _.forEach(QRresult, (obj, index) => {
                 dbResult.docs.push(obj);
             });
             dbResult.docs = _.uniqBy(dbResult.docs,'identifier');
-        } 
+        }
         return dbResult;
     }
 
@@ -294,7 +295,7 @@ export default class Content {
 
                 const responseObj = Response.success('api.content.search', resObj, req);
                 this.constructSearchEdata(req, responseObj);
-                return res.send(responseObj);
+                res.send(xss(JSON.stringify(responseObj)));
             })
             .catch(err => {
                 this.standardLog.error({ id: 'CONTENT_SEARCH_FAILED', mid: req.headers['X-msgid'], message: 'Received error while searching content', error: err.message });
@@ -383,7 +384,7 @@ export default class Content {
             logger.debug(
                 `ReqId = "${req.headers['X-msgid']}": returning the response for searchDialCode`
             );
-            return res.send(Response.success(`api.page.assemble`, resObj, req.body.request));
+            return res.send(xss(JSON.stringify(Response.success('api.page.assemble', resObj, req.body.request))));
         } catch (err) {
             this.standardLog.error({ id: 'CONTENT_DIALCODE_SEARCH_FAILED', mid: req.headers['X-msgid'], message: 'Received error while searching content', error: err.message });
             if (err.status === 404) {
@@ -669,9 +670,9 @@ export default class Content {
             return res.status(400).send(Response.error(`api.content.import`, 400, "MISSING_ECAR_PATH"));
         }
         this.contentImportManager.add(ecarFilePaths).then((jobIds) => {
-            res.send(Response.success("api.content.import", {
+            res.send(xss(JSON.stringify(Response.success("api.content.import", {
                 importedJobIds: jobIds,
-            }, req));
+            }, req))));
         }).catch((err) => {
             this.standardLog.error({ id: 'CONTENT_IMPORT_FAILED', message: 'Received error while importing a content', mid: req.headers['X-msgid'], error: err });
             res.status(500);
@@ -680,9 +681,9 @@ export default class Content {
     }
     public async pauseImport(req: any, res: any) {
         this.contentImportManager.pauseImport(req.params.importId).then((jobIds) => {
-            res.send(Response.success("api.content.import", {
+            res.send(xss(JSON.stringify(Response.success("api.content.import", {
                 jobIds,
-            }, req));
+            }, req))));
         }).catch((err) => {
             this.standardLog.error({ id: 'CONTENT_IMPORT_PAUSE_FAILED', message: 'Received error while pausing a content import', mid: req.headers['X-msgid'], error: err });
             res.status(500);
@@ -691,20 +692,20 @@ export default class Content {
     }
     public async resumeImport(req: any, res: any) {
         this.contentImportManager.resumeImport(req.params.importId).then((jobIds) => {
-            res.send(Response.success("api.content.import", {
+            res.send(xss(JSON.stringify(Response.success("api.content.import", {
                 jobIds,
-            }, req));
+            }, req))));
         }).catch((err) => {
             this.standardLog.error({ id: 'CONTENT_IMPORT_RESUME_FAILED', message: 'Received error while resuming a content import', mid: req.headers['X-msgid'], error: err });
             res.status(500);
-            res.send(Response.error(`api.content.import`, 400, err.message));
+            res.send(xss(JSON.stringify(Response.error(`api.content.import`, 400, err.message))));
         });
     }
     public async cancelImport(req: any, res: any) {
         await this.contentImportManager.cancelImport(req.params.importId).then((jobIds) => {
-            res.send(Response.success("api.content.import", {
+            res.send(xss(JSON.stringify(Response.success("api.content.import", {
                 jobIds,
-            }, req));
+            }, req))));
         }).catch((err) => {
             this.standardLog.error({ id: 'CONTENT_IMPORT_CANCEL_FAILED', message: 'Received error while canceling content import process', mid: req.headers['X-msgid'], error: err });
             res.status(500);
@@ -713,9 +714,9 @@ export default class Content {
     }
     public async retryImport(req: any, res: any) {
         this.contentImportManager.retryImport(req.params.importId).then((jobIds) => {
-            res.send(Response.success("api.content.retry", {
+            res.send(xss(JSON.stringify(Response.success("api.content.retry", {
                 jobIds,
-            }, req));
+            }, req))));
         }).catch((err) => {
             this.standardLog.error({ id: 'CONTENT_IMPORT_RETRY_FAILED', message: 'Received error while retrying content import process', mid: req.headers['X-msgid'], error: err });
             res.status(500);
@@ -761,11 +762,11 @@ export default class Content {
                 const exportedChildContentCount = childNode.length - data.skippedContent.length;
                 this.constructShareEvent(content, exportedChildContentCount);
                 res.status(200);
-                res.send(Response.success(`api.content.export`, {
+                res.send(xss(JSON.stringify(Response.success(`api.content.export`, {
                         response: {
                             ecarFilePath: data.ecarFilePath,
                         },
-                    }, req));
+                    }, req))));
             });
         } else {
             res.status(404);

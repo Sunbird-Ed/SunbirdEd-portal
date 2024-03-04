@@ -7,6 +7,7 @@ import DatabaseSDK from "../sdk/database/index";
 import { ImportTelemetry } from "../manager/telemetryImportManager/telemetryImport";
 import { TelemetryImportManager } from "../manager/telemetryImportManager/telemetryImportManager";
 import Response from "../utils/response";
+const xss = require('xss');
 export default class Telemetry {
   @Inject
   private databaseSdk: DatabaseSDK;
@@ -139,9 +140,9 @@ export default class Telemetry {
       return res.status(400).send(Response.error(`api.telemetry.import`, 400, "MISSING_FILE_PATHS"));
     }
     this.telemetryImportManager.add(filePaths).then((jobIds) => {
-      res.send(Response.success("api.telemetry.import", {
+      res.send(xss(JSON.stringify(Response.success("api.telemetry.import", {
         importedJobIds: jobIds,
-      }, req));
+      }, req))));
     }).catch((err) => {
       standardLog.error({ id: 'TELEMETRY_IMPORT_FAILED', mid: req.headers["X-msgid"], message: 'Received error importing telemetry', error: err });
       res.status(500);
@@ -152,9 +153,9 @@ export default class Telemetry {
   public async retryImport(req: any, res: any) {
     const standardLog = containerAPI.getStandardLoggerInstance();
     this.telemetryImportManager.retryImport(req.params.importId).then((jobIds) => {
-      res.send(Response.success("api.telemetry.import.retry", {
+      res.send(xss(JSON.stringify(Response.success("api.telemetry.import.retry", {
         jobIds,
-      }, req));
+      }, req))));
     }).catch((err) => {
       standardLog.error({ id: 'TELEMETRY_IMPORT_RETRY_FAILED', mid: req.headers["X-msgid"], message: 'Received error retrying import', error: err });
       res.status(500);

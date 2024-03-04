@@ -4,6 +4,7 @@ import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import Response from "../utils/response";
 import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
 import { Inject } from 'typescript-ioc';
+const xss = require('xss');
 export default class User {
     private userSDK;
     private settingSDK;
@@ -59,7 +60,7 @@ export default class User {
             logger.info(`ReqId =  ${req.headers["X-msgid"]}: updating user  data in user Sdk`);
             await this.userSDK.update(reqObj);
             res.status(200);
-            return res.send(Response.success("api.desktop.user.update", {identifier: reqObj._id}, req));
+            return res.send(xss(JSON.stringify(Response.success("api.desktop.user.update", {identifier: reqObj._id}, req))));
         } catch (err) {
             this.standardLog.error({ id: 'USER_DB_UPDATED_FAILED', mid: req.headers["X-msgid"], message: 'Received error while updating user database', error: err });
             if (err.status === 404) {

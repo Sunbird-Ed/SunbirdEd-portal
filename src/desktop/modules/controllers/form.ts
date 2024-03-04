@@ -7,6 +7,7 @@ import DatabaseSDK from "../sdk/database/index";
 import Response from "../utils/response";
 const Hashids = require('hashids/cjs')
 import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
+const xss = require('xss');
 
 export class Form {
   @Inject
@@ -90,7 +91,7 @@ export class Form {
         logger.info(
           `ReqId = "${req.headers["X-msgid"]}": Received data  from - form database`,
         );
-        return res.send(Response.success("api.form.read", resObj, req));
+        return res.send(xss(JSON.stringify(Response.success("api.form.read", resObj, req))));
       })
       .catch((err) => {
         this.standardLog.error({ id: 'FORM_DB_SEARCH_FAILED', message: `Received error while searching in form database`, mid: req.headers["X-msgid"], error: err });

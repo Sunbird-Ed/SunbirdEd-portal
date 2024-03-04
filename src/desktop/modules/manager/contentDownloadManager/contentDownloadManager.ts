@@ -12,6 +12,7 @@ import Response from "../../utils/response";
 import uuid from "uuid/v4";
 const DefaultRequestOptions = { headers: { "Content-Type": "application/json" } };
 import HardDiskInfo from "../../utils/hardDiskInfo";
+const xss = require('xss');
 @Singleton
 export class ContentDownloadManager {
   @Inject private dbSDK: DatabaseSDK;
@@ -53,7 +54,7 @@ export class ContentDownloadManager {
         },
       };
       logger.debug(`${reqId} Content mimeType: ${apiContentDetail.mimeType}`);
-  
+
       if (apiContentDetail.mimeType === "application/vnd.ekstep.content-collection") {
         logger.debug(`${reqId} Content childNodes: ${apiContentDetail.childNodes}`);
         let childNodeDetailFromApi = await this.getContentChildNodeDetailsFromApi(apiContentDetail.childNodes);
@@ -155,13 +156,13 @@ export class ContentDownloadManager {
       if (contentDetail.mimeType === "application/vnd.ekstep.content-collection" || contentDetail.mimeType === "application/vnd.sunbird.questionset") {
         logger.debug(`${reqId} Content childNodes: ${contentDetail.childNodes}`);
         const childNodeDetail = await this.getContentDetailsFromChildNode(contentDetail);
-        
+
         for (const content of childNodeDetail) {
 
-          // TODO: Questionset and question should have size property 
-          // as of now it does not have size property so adding it manualy 
+          // TODO: Questionset and question should have size property
+          // as of now it does not have size property so adding it manualy
           if(!content.size) {
-            content['size'] = 1; 
+            content['size'] = 1;
           }
 
           if (content.size && content.downloadUrl) {
@@ -220,7 +221,7 @@ export class ContentDownloadManager {
     const reqId = req.headers["X-msgid"];
     try {
       await this.systemQueue.pause(downloadId);
-      return res.send(Response.success("api.content.pause.download", downloadId, req));
+      return res.send(xss(JSON.stringify(Response.success("api.content.pause.download", downloadId, req))));
     } catch (error) {
       this.standardLog.error({ id: 'CONTENT_DM_PAUSE_FAILED', message: `Error while pausing download process`, error, mid: reqId });
       const status = _.get(error, "status") || 500;
@@ -235,7 +236,7 @@ export class ContentDownloadManager {
     const reqId = req.headers["X-msgid"];
     try {
       await this.systemQueue.resume(downloadId);
-      return res.send(Response.success("api.content.resume.download", downloadId, req));
+      return res.send(xss(JSON.stringify(Response.success("api.content.resume.download", downloadId, req))));
     } catch (error) {
       this.standardLog.error({ id: 'CONTENT_DM_RESUME_FAILED', message: `Error while resuming download process`, error, mid: reqId });
       const status = _.get(error, "status") || 500;
@@ -249,7 +250,7 @@ export class ContentDownloadManager {
     const reqId = req.headers["X-msgid"];
     try {
       await this.systemQueue.cancel(downloadId);
-      return res.send(Response.success("api.content.pause.download", downloadId, req));
+      return res.send(xss(JSON.stringify(Response.success("api.content.pause.download", downloadId, req))));
     } catch (error) {
       this.standardLog.error({ id: 'CONTENT_DM_CANCEL_FAILED', message: `Error while cancelling download process`, error, mid: reqId });
       const status = _.get(error, "status") || 500;
@@ -263,7 +264,7 @@ export class ContentDownloadManager {
     const reqId = req.headers["X-msgid"];
     try {
       await this.systemQueue.retry(downloadId);
-      return res.send(Response.success("api.content.retry.download", downloadId, req));
+      return res.send(xss(JSON.stringify(Response.success("api.content.retry.download", downloadId, req))));
     } catch (error) {
       this.standardLog.error({ id: 'CONTENT_DM_RETRY_FAILED', message: `Error while retrying download process`, error, mid: reqId });
       const status = _.get(error, "status") || 500;
@@ -311,7 +312,7 @@ export class ContentDownloadManager {
     } else {
       childNodeChunks.push(childNodes);
     }
-    
+
     await Promise.all(childNodeChunks.map(async (nodes) => {
       const requestBody = {
         request: {
@@ -325,7 +326,7 @@ export class ContentDownloadManager {
         if(result.length) {
           questionsList = [...questionsList, ...result]
         }
-     })); 
+     }));
     return questionsList;
   }
   private getContentChildNodeDetailsFromDb(childNodes) {
@@ -395,7 +396,7 @@ export class ContentDownloadManager {
     } else if (contentDetail.mimeType === "application/vnd.sunbird.questionset") {
       childNodeDetail = await this.getQuestionsNodes(contentDetail);
     }
-  
+
     return childNodeDetail;
   }
 
@@ -412,7 +413,7 @@ export class ContentDownloadManager {
       }
       questionSetContent.push(questionset);
     });
-    return questionSetContent; 
+    return questionSetContent;
   }
 
   private async getQuestionsetHierarchy(contentId) {
