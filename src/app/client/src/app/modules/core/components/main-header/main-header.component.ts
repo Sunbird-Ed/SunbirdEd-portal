@@ -169,6 +169,10 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   showReportMenu = false;
   showingDescription: string;
   showSwitchTheme = false
+  isMlConfigured = (<HTMLInputElement>document.getElementById('isMlConfigured'))
+  ? (<HTMLInputElement>document.getElementById('isMlConfigured')).value == 'true' : false;
+  isUciConfigured =  (<HTMLInputElement>document.getElementById('isBotConfigured'))
+  ? (<HTMLInputElement>document.getElementById('isBotConfigured')).value == 'true' : false;
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
     public orgDetailsService: OrgDetailsService, public formService: FormService,
