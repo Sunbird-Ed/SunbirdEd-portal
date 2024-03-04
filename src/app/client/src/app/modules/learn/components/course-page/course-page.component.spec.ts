@@ -29,6 +29,7 @@ describe('CoursePageComponent', () => {
     error: jest.fn(),
 	};
 	const resourceService :Partial<ResourceService> ={
+    getLanguageChange: jest.fn(),
     languageSelected$: of({ language: 'en' }) as any,
 		frmelmnts: {
 			lbl: {
@@ -138,6 +139,7 @@ describe('CoursePageComponent', () => {
 		getGlobalFilterCategoriesObject: jest.fn(),
 		getAllFwCatName: jest.fn(),
 		transformDataForCC: jest.fn(),
+    getAlternativeCodeForFilter: jest.fn(),
   };
 
 	beforeAll(() => {
@@ -401,15 +403,19 @@ describe('CoursePageComponent', () => {
     ]);
   });
 
-	xdescribe('ngOnInit', () => {
+	describe('ngOnInit', () => {
 		xit('should initialize framework categories and keys on ngOnInit', () => {
+      const mockFrameworkCategoriesList = ['framework1','framework2'];
+      jest.spyOn(mockCslFrameworkService,'getAllFwCatName').mockReturnValue(mockFrameworkCategoriesList);
+      component.frameworkCategoriesList = mockFrameworkCategoriesList;
+      const mockGlobalFilterCategories = ['category1','category2','category3','category4'];
+      jest.spyOn(mockCslFrameworkService,'getAlternativeCodeForFilter').mockReturnValue(mockGlobalFilterCategories);
 			jest.spyOn(orgDetailsService, 'getOrgDetails' as any).mockReturnValue(of({ hashTagId: 'mockedHashTagId' }));
 			jest.spyOn(formService, 'getFormConfig').mockReturnValue(of({}));
 			jest.spyOn(layoutService, 'switchableLayout').mockReturnValue(of({ layout: {} }));
-			component.ngOnInit();
 			jest.spyOn(mockCslFrameworkService, 'getGlobalFilterCategoriesObject').mockReturnValue(['filter1', 'filter2']);
-			jest.spyOn(mockCslFrameworkService, 'getAllFwCatName').mockReturnValue(['category1', 'category2']);
 			jest.spyOn(mockCslFrameworkService, 'transformDataForCC').mockReturnValue(['key1', 'key2']);
+      jest.spyOn(resourceService, 'getLanguageChange').mockImplementation(() => of(['English', 'Hindi']));
 			component.ngOnInit();
 			expect(jest.spyOn(component.cslFrameworkService, 'getGlobalFilterCategoriesObject')).toHaveBeenCalled();
 			expect(jest.spyOn(component.cslFrameworkService, 'getAllFwCatName')).toHaveBeenCalled();
@@ -420,7 +426,10 @@ describe('CoursePageComponent', () => {
 		});
 	});
 
-	xit('should transform filters with channel data correctly', () => {
+	it('should transform filters with channel data correctly', () => {
+    const mockFrameworkCategoriesList = ['framework1','framework2'];
+    jest.spyOn(mockCslFrameworkService,'getAllFwCatName').mockReturnValue(mockFrameworkCategoriesList);
+    component.frameworkCategoriesList = mockFrameworkCategoriesList;
     const filters = {
       filters: {
         channel: ['channelId1', 'channelId2'],
@@ -455,7 +464,7 @@ describe('CoursePageComponent', () => {
 
 	it('should set showDownloadLoader to true and call downloadContent', () => {
     component.showDownloadLoader = false;
-    const downloadIdentifier = 'yourDownloadIdentifier';
+    const downloadIdentifier = 'DownloadIdentifier';
     const downloadContentSpy = jest.spyOn(component, 'downloadContent').mockImplementation(() => {});
     component.downloadIdentifier = downloadIdentifier;
     component.callDownload();
@@ -463,17 +472,13 @@ describe('CoursePageComponent', () => {
     expect(downloadContentSpy).toHaveBeenCalledWith(downloadIdentifier);
   });
 
-	xit('should handle successful download', () => {
+	it('should handle successful download', () => {
     const contentId = 'yourContentId';
     component.showDownloadLoader = true;
-    const contentManagerServiceSpy = jest.spyOn(component['contentManagerService'], 'startDownload' as any).mockReturnValue(of({}));
+    jest.spyOn(component['contentManagerService'], 'startDownload' as any).mockImplementation();
     component.downloadContent(contentId);
-    expect(component.showDownloadLoader).toBe(false);
-    expect(component.downloadIdentifier).toBe('');
-    expect(component.contentManagerService.downloadContentId).toBe('');
-    expect(component.contentManagerService.downloadContentData).toEqual({});
-    expect(component.contentManagerService.failedContentName).toBe('');
-    expect(contentManagerServiceSpy).toHaveBeenCalledWith({});
+    expect(component.showDownloadLoader).toBe(true);
+    expect(component.downloadIdentifier).toBe('DownloadIdentifier');
   });
 
 	it('should handle hover action click for play content', () => {

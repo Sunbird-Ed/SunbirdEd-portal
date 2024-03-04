@@ -34,6 +34,9 @@ describe('ActivityDetailsComponent', () => {
             },
     },
     messages: {
+        emsg:{
+          m0005:'Something went wrong, try again later'
+        },
         lbl: {
           you: 'You'
         },
@@ -56,7 +59,9 @@ describe('ActivityDetailsComponent', () => {
     switchableLayout: jest.fn(),
     initlayoutConfig: jest.fn(),
   };
-  const mockUtilService: Partial<UtilService> ={};
+  const mockUtilService: Partial<UtilService> ={
+    downloadCSV: jest.fn(),
+  };
   const mockPublicPlayerService: Partial<PublicPlayerService> ={
     getCollectionHierarchy: jest.fn(() => of({
       result: {
@@ -211,4 +216,165 @@ describe('ActivityDetailsComponent', () => {
     expect(activityType).toEqual('sample title');
   });
 
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    jest.spyOn(component.unsubscribe$, 'complete');
+    jest.spyOn(component.unsubscribe$, 'next');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+    expect(component.unsubscribe$.next).toHaveBeenCalled();
+  });
+
+  it('should add telemetry and download CSV file', () => {
+    jest.spyOn(component, 'addTelemetry');
+    jest.spyOn(mockUtilService, 'downloadCSV');
+
+    const selectedCourse = { identifier: 'course1', name: 'Sample Course', primaryCategory: 'Category', pkgVersion: '1.0' };
+    component.selectedCourse = selectedCourse;
+    const memberListToShow = [{ title: 'Member 1', progress: 50 }, { title: 'Member 2', progress: 75 }];
+    component.memberListToShow = memberListToShow;
+
+    component.downloadCSVFile();
+
+    expect(component.addTelemetry).toHaveBeenCalledWith('download-csv', [], {},
+      { id: selectedCourse.identifier, type: selectedCourse.primaryCategory, ver: selectedCourse.pkgVersion });
+
+    const expectedData = memberListToShow.map(member => ({
+      courseName: selectedCourse.name,
+      memberName: member.title.replace('(You)', ''),
+      progress: `${member.progress}%`
+    }));
+    expect(mockUtilService.downloadCSV).toHaveBeenCalledWith(selectedCourse, expectedData);
+  });
+
+  it('should add telemetry and navigate to activity dashboard page', () => {
+    jest.spyOn(component, 'addTelemetry');
+    jest.spyOn(mockRouter, 'navigate');
+
+    component.activity = { identifier: 'activity1', resourceType: 'Resource' } as any;
+    component.groupData = { id: 'group1' };
+    component.courseHierarchy = 'hierarchyData';
+    component.activityDetails = 'activityDetails';
+    component.memberListUpdatedOn = 'memberListUpdatedOn';
+
+    component.navigateToActivityDashboard();
+
+    expect(component.addTelemetry).toHaveBeenCalledWith('activity-detail', [{ id: 'activity1', type: 'Resource' }]);
+    expect(mockRouter.navigate).toHaveBeenCalledWith([`${MY_GROUPS}/${GROUP_DETAILS}`, 'group1', `${ACTIVITY_DASHBOARD}`, 'activity1'],
+      { state: { hierarchyData: 'hierarchyData', activity: 'activityDetails', memberListUpdatedOn: 'memberListUpdatedOn' } });
+  });
+
+   it('should navigate back and show error toast', () => {
+    jest.spyOn(mockToasterService, 'error');
+    jest.spyOn(mockGroupService, 'goBack');
+
+    component.navigateBack();
+
+    expect(component.showLoader).toBe(false);
+    expect(mockToasterService.error).toHaveBeenCalledWith(mockResourceService.messages.emsg.m0005);
+    expect(mockGroupService.goBack).toHaveBeenCalled();
+  });
+
+  it('should process data correctly', () => {
+    const aggResponse = {
+      members: [{ status: 'active', agg: [{ metric: 'completedCount', value: 5 }] }],
+      activity: {
+        agg: [{ metric: 'enrolmentCount', value: 10, lastUpdatedOn: 123456 }],
+      }
+    };
+
+    component.selectedCourse = { leafNodesCount: 10 };
+    component.activity = {} as any;
+    component['userService'] = { userid: '1' } as any;
+    component.resourceService = {
+      frmelmnts: { lbl: { you: 'You' } }
+    } as any;
+    component.processData(aggResponse);
+    expect(component.leafNodesCount).toBe(10);
+    expect(component.enrolmentCount).toBe(10);
+    expect(component.membersCount).toBe(1);
+    expect(component.memberListUpdatedOn).toBe(123456);
+    expect(component.members.length).toBe(1);
+    expect(component.members[0].indexOfMember).toBe(0);
+    expect(component.showLoader).toBe(false);
+  });
+
+  describe('fetchActivity', () => {
+    it('should fetch activity data and validate user', () => {
+      const group = {
+        members: [
+          { userId: 'adminId', role: 'admin', status: 'active' },
+          { userId: 'userId', role: 'member', status: 'active' }
+        ],
+        status: 'active'
+      };
+      const getGroupByIdSpy = jest.spyOn(mockGroupService as any, 'getGroupById').mockReturnValue(of(group));
+      const validateUserSpy = jest.spyOn(component, 'validateUser');
+      component.fetchActivity('someType');
+      expect(getGroupByIdSpy).toHaveBeenCalled();
+      expect(validateUserSpy).toHaveBeenCalledWith(group);
+    });
+
+    it('should call navigateBack on error', () => {
+      const getGroupBySpy = jest.spyOn(mockGroupService as any, 'getGroupById').mockReturnValue(throwError('error'));
+      const navigateBackSpy = jest.spyOn(component, 'navigateBack');
+
+      component.fetchActivity('someType');
+      expect(getGroupBySpy).toHaveBeenCalled();
+
+      expect(navigateBackSpy).toHaveBeenCalled();
+    });
+  });
+
+  it('should handle error case correctly', () => {
+    const course = { identifier: 'courseId' };
+    component.searchInputBox = {
+      nativeElement: {
+        value: '',
+      },
+    };
+    jest.spyOn(mockGroupService, 'getActivity').mockReturnValue(throwError('error'));
+    component.handleSelectedCourse(course);
+
+    expect(component.searchInputBox.nativeElement.value).toBe('');
+    expect(component.selectedCourse).toEqual(course);
+    expect(mockGroupService.getActivity).toHaveBeenCalledWith(
+      component.groupId,
+      { id: course.identifier, type: 'Course' },
+      component.groupData
+      );
+    expect(component.showLoader).toBe(false);
+  });
+
+
+  it('should handle fetching nested courses correctly', () => {
+    const groupData = {};
+    const activityData = { id: 'activityId', type: 'Course' };
+    const mockCollectionHierarchy = {
+      result: {
+        content: {
+          identifier: 'parentId',
+          leafNodesCount: 5,
+          children: [
+            { identifier: 'childCourseId1', contentType: 'Course', leafNodesCount: 2 },
+            { identifier: 'childCourseId2', contentType: 'Course', leafNodesCount: 3 }
+          ]
+        }
+      }
+    };
+    jest.spyOn(mockPublicPlayerService as any, 'getCollectionHierarchy').mockReturnValue(of(mockCollectionHierarchy));
+    component.checkForNestedCourses(groupData, activityData);
+    expect(mockPublicPlayerService.getCollectionHierarchy).toHaveBeenCalledWith(component.activityId, {});
+    expect(component.courseHierarchy).toEqual(mockCollectionHierarchy.result.content);
+    expect(component.parentId).toBe('parentId');
+    expect(component.leafNodesCount).toBe(5);
+  });
+
+  it('should handle error case correctly', () => {
+    const groupData = {};
+    const activityData = { id: 'activityId', type: 'Course' };
+    jest.spyOn(mockPublicPlayerService as any, 'getCollectionHierarchy').mockReturnValue(throwError('error'));
+    component.checkForNestedCourses(groupData, activityData);
+    expect(mockPublicPlayerService.getCollectionHierarchy).toHaveBeenCalledWith(component.activityId, {});
+  });
 });
