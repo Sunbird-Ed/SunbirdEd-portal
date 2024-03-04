@@ -285,8 +285,10 @@ const renderTenantPage = (req, res) => {
 // in fallback option check always for local tenant folder and redirect to / if not exists
 const loadTenantFromLocal = (req, res) => {
   let tenantName = _.lowerCase(req.params.tenantName) || envHelper.DEFAULT_CHANNEL;
+  // Sanitize tenant name to prevent directory traversal attacks
   tenantName = tenantName.replace(/(\.\.(\/|\\)?)/g, '');
   const filePath = path.join(__dirname, './../tenant', tenantName, 'index.html');
+  // Check if the specified index.html file exists
   if (fs.existsSync(filePath)) {
     res.sendFile(filePath);
   } else {
