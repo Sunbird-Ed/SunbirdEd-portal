@@ -4,5 +4,5 @@ RUN useradd -u 1001 -m -s /bin/bash sunbird
 WORKDIR /usr/src/app
 COPY --chown=sunbird . .
 USER sunbird
-EXPOSE 4000
+EXPOSE 3000
 CMD ["node", "server.js"]
