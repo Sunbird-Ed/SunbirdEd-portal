@@ -16,7 +16,7 @@ import { map, takeUntil, switchMap } from 'rxjs/operators';
 import dayjs from 'dayjs';
 import { IInteractEventObject } from '@sunbird/telemetry';
 import { IBigNumberChart } from '../../interfaces/chartData';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
 @Component({
   selector: 'app-data-chart',

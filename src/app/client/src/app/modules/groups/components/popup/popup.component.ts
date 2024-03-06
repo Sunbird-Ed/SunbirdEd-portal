@@ -7,7 +7,7 @@ import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NavigationHelperService } from '@sunbird/shared';
 import { DELETE_POPUP, POP_DEACTIVATE } from '../../interfaces/telemetryConstants';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 @Component({
   selector: 'app-modal',
   templateUrl: './popup.component.html',

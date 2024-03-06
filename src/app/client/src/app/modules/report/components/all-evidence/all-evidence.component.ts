@@ -9,7 +9,7 @@ import {
 import { ResourceService, ConfigService } from '@sunbird/shared';
 import { DhitiService } from '@sunbird/core';
 import { LocationStrategy } from '@angular/common';
-import { MatTabChangeEvent } from '@angular/material/tabs';
+import { MatLegacyTabChangeEvent as MatTabChangeEvent } from '@angular/material/legacy-tabs';
 
 @Component({
   selector: 'app-all-evidence',

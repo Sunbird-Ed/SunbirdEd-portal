@@ -5,7 +5,7 @@ import { OtpService } from '@sunbird/core';
 import { ResourceService, ServerResponse, ToasterService, ConfigService, CacheService } from '@sunbird/shared';
 import { Subject } from 'rxjs';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
