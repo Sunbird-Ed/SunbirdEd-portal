@@ -6,7 +6,7 @@ import { IUserProfile, ILoaderMessage } from '@sunbird/shared';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as _ from 'lodash-es';
 import { PopupControlService } from '../../../../service/popup-control.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
 @Component({
   selector: 'app-tnc-popup',

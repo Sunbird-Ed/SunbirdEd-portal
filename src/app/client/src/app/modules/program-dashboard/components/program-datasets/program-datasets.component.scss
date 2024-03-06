@@ -23,7 +23,9 @@
 }
 
 
-.custom_mat_dd .mat-select-arrow-wrapper {
+/* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version. */
+/* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version. */
+.custom_mat_dd .mat-mdc-select-arrow-wrapper {
   vertical-align: bottom !important;
 }
 
@@ -102,6 +104,8 @@
 }
 
 ::ng-deep {
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
   .exportBtn .mat-form-field-wrapper {
       float: right;
   }
@@ -138,6 +142,8 @@
   }
   
   .customDate{
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
     .mat-form-field-infix{
       width: 8.75rem !important;
     }
@@ -151,7 +157,8 @@
 
   
   .custom_mat_dd{
-    
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
     .mat-form-field-flex{
       display: flex;
       align-items: center !important;
@@ -163,19 +170,22 @@
         font-weight: bold !important;
       }
     }
-
+    /* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version. */
+    /* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version. */
     .mat-select-arrow-wrapper {
       vertical-align: unset !important;
     }
 
   }
-  .mat-select-panel .mat-option {
+  .mat-mdc-select-panel .mat-mdc-option {
     white-space: normal !important;
     display: inline-table !important;
     width: 100% !important;
     line-height: 1.5em !important;
     padding: 0.625rem 1.5em;
   }
+  /* TODO(mdc-migration): The following rule targets internal classes of option that may no longer apply for the MDC version. */
+  /* TODO(mdc-migration): The following rule targets internal classes of option that may no longer apply for the MDC version. */
   .mat-option-text{
     display: flex !important;
   }
@@ -187,7 +197,7 @@
     display: flex !important;
     align-self: flex-end !important;
   }
-  .custom_mat_multi.mat-option{
+  .custom_mat_multi.mat-mdc-option{
     display: flex !important;
   }
 }

@@ -6,7 +6,7 @@ import { ResourceService, ServerResponse, ToasterService, ConfigService,CacheSer
 import { Subject } from 'rxjs';
 import { ProfileService } from '../../services';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({

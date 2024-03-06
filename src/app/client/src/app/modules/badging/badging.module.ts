@@ -5,7 +5,7 @@ import { SharedModule } from '@sunbird/shared';
 import { ContentBadgeComponent, AssignBadgesContentComponent } from './components';
 import { ContentBadgeService } from './services';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 
 @NgModule({
     imports: [
