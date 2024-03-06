@@ -1,9 +1,8 @@
 # Dockerfile for the player setup
 FROM node:14.19.0-slim
-RUN useradd -u 1001 -md /home/sunbird sunbird
-WORKDIR /home/sunbird
-COPY --chown=sunbird . /home/sunbird/app_dist/
+RUN useradd -u 1001 -m -s /bin/bash sunbird
+WORKDIR /usr/src/app
+COPY --chown=sunbird . .
 USER sunbird
-WORKDIR /home/sunbird/app_dist
 EXPOSE 4000
-CMD ["node", "server.js", "&"]
+CMD ["node", "server.js"]
