@@ -88,6 +88,7 @@ export class LoginSessionProvider {
             _.forEach(this.loginConfig.return, (forCase) => {
                 switch (forCase.type) {
                     case 'password':
+                        console.log('we are in the password flow',forCase);
                         this.buildPasswordSessionProvider(forCase);
                         break;
                     case 'state':
@@ -122,6 +123,7 @@ export class LoginSessionProvider {
     }
 
     protected buildPasswordSessionProvider(forCase) {
+        console.log('we are in the buildPasswordSessionProvider method',forCase);
         this.capture({
             host: forCase.when.host,
             path: forCase.when.path,
@@ -129,10 +131,13 @@ export class LoginSessionProvider {
         }).then(async () =>
             await this.success()
         ).then(async (captured) => {
+            console.log('we are in the buildPasswordSessionProvider post success method');
             this.showLoader();
-            logger.debug(`Resolve access token from buildPasswordSessionProvider`);
+            console.log(`Resolve access token from buildPasswordSessionProvider`,captured);
             const userData = await this.resolvePasswordSession(captured);
+            console.log(`Resolve access token from userData`,userData);
             const userTokens = await this.getKongAccessToken(userData);
+            console.log(`Resolve access token from userTokens`,userTokens);
             if(userTokens) {
                 await this.getUsers(userTokens);
             }
@@ -297,6 +302,7 @@ export class LoginSessionProvider {
         return await HTTPService.post(`${process.env.APP_BASE_URL}/${this.loginConfig.target.authUrl}/token`, reqBody, appConfig)
             .toPromise()
             .then(async (response: any) => {
+                console.log('in the resolvePasswordSession method and the response is ', response)
                 if (response.data.access_token && response.data.refresh_token) {
                     return {
                         access_token: response.data.access_token,
