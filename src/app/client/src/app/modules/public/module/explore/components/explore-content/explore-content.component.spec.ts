@@ -63,6 +63,7 @@ describe('ExploreContentComponent', () => {
   };
   const mockPublicPlayerService: Partial<PublicPlayerService> = {
     playContent: jest.fn(),
+    updateDownloadStatus: jest.fn()
   };
   const mockUserService: Partial<UserService> = {
     slug: 'mockedSlug',
@@ -392,6 +393,17 @@ it('should navigate to the specified page', () => {
       expect(component.showModal).toBeFalsy();
       expect(component.downloadContent).toHaveBeenCalledWith('contentId1');
       expect(component.logTelemetry).toHaveBeenCalledWith(event.content, 'download-content');
+  });
+
+  it('should update download status for each content in contentList', () => {
+    const downloadListdata = {  };
+    const contentList = [];
+    component.contentList = contentList;
+    component.updateCardData(downloadListdata);
+    contentList.forEach(content => {
+      expect(mockPublicPlayerService.updateDownloadStatus).toHaveBeenCalledWith(downloadListdata, content);
+    });
+    expect(mockPublicPlayerService.updateDownloadStatus).toHaveBeenCalledTimes(contentList.length);
   });
 
 });
