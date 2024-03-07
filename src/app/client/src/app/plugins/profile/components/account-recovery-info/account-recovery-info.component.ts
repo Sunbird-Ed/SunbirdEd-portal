@@ -5,7 +5,7 @@ import { Component, OnInit, Output, EventEmitter, Input, OnDestroy } from '@angu
 import { ResourceService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
 import { ProfileService } from './../../services';
 import * as _ from 'lodash-es';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-account-recovery-info',
   templateUrl: './account-recovery-info.component.html',

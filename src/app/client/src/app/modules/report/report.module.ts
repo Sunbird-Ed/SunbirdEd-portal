@@ -12,7 +12,7 @@ import { SolutionListingComponent, EntityListComponent, ReportViewComponent, All
 import { DataTablesModule } from 'angular-datatables';
 import { DashletModule } from '@project-sunbird/sb-dashlet';
 import { SlReportsLibraryModule } from '@shikshalokam/sl-reports-library';
-import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 
 
 @NgModule({

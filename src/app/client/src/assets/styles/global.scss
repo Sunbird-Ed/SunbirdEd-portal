@@ -12,16 +12,16 @@
 //  you can delete this line and instead use:
 //    `@include mat.legacy-typography-hierarchy(mat.define-typography-config());`
 /* TODO(mdc-migration): Remove all-legacy-component-typographies once all legacy components are migrated*/
-@include mat.all-legacy-component-typographies();
+@include mat.all-component-typographies();
 @include mat.all-component-typographies();
 /* TODO(mdc-migration): Remove legacy-core once all legacy components are migrated*/
-@include mat.legacy-core();
+@include mat.core();
 @include mat.core();
 
 $custom-typography: mat.define-typography-config($font-family: "var(--font-stack-en) !important",
 );
 
-@include mat.all-legacy-component-typographies($custom-typography);
+@include mat.all-component-typographies($custom-typography);
 
 :root {
   font-size: 16px;

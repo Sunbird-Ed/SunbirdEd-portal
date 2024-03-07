@@ -6,7 +6,7 @@ import { ResourceService, ServerResponse, ToasterService, ConfigService } from '
 import { Subject } from 'rxjs';
 import { ProfileService } from './../../services';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-update-contact-details',
