@@ -30,7 +30,7 @@
         margin-top: calculateRem(8px);
         border-radius: calculateRem(24px);
       }
-
+      /* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
       .mat-checkbox-checkmark-path {
         stroke: var(--sb-dropdown-menu-bg) !important;
       }
@@ -49,9 +49,11 @@
       &.mat-form-field-appearance-legacy {
         /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
         /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
+        /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
         .mat-form-field-wrapper {
           padding-bottom: 0;
         }
+        /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
         /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
         /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
         .mat-form-field-wrapper,
@@ -60,14 +62,17 @@
         }
         /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
         /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
+        /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
         .mat-form-field-flex {
           align-items: center;
         }
         /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
         /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
+        /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
         .mat-form-field-underline {
           height: 0;
         }
+        /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
         /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
         /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
         .mat-form-field-infix {
@@ -78,7 +83,7 @@
       }
 
     }
-
+    /* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
     .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background,
     .mat-checkbox-checked.mat-accent .mat-checkbox-background {
       background-color: var(--primary-color);
@@ -90,6 +95,7 @@
   html[layout="joy"] .sb-autocomp-dropdown .mat-mdc-form-field, .sb-autocomp-dropdown__list {
     border-radius: calculateRem(24px);
   }
+  /* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
   html[data-mode="darkmode"] .sb-mat__checkbox.sb-mat__checkbox--primary .mat-checkbox-frame {
     border-color: var(--gray-100);
   }

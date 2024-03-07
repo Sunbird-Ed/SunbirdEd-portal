@@ -7,7 +7,7 @@ import { IImpressionEventInput, IInteractEventInput, TelemetryService } from '@s
 import { PopupControlService } from '../../../../service/popup-control.service';
 import { IDeviceProfile } from '../../../../modules/shared-feature/interfaces/deviceProfile';
 import { SbFormLocationSelectionDelegate } from '../delegate/sb-form-location-selection.delegate';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import * as _ from 'lodash-es';
 import {Location as SbLocation} from '@project-sunbird/client-services/models/location';
 

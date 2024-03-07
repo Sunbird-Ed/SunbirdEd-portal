@@ -10,7 +10,7 @@ import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { NavigationHelperService } from '@sunbird/shared';
 import { POPUP_LOADED, CREATE_GROUP, SELECT_CLOSE, CLOSE_ICON, SELECT_RESET } from '../../interfaces/telemetryConstants';
 import { UtilService } from '../../../shared/services/util/util.service';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-create-edit-group',
   templateUrl: './create-edit-group.component.html',

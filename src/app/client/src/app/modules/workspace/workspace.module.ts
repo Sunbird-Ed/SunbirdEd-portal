@@ -24,7 +24,7 @@ import { ReviewCommentsComponent } from './components/review-comments/review-com
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { ContentSearchModule } from '@sunbird/content-search';
 import { CollectionEditorLibraryModule } from '@project-sunbird/sunbird-collection-editor'; //commented for infinite-scroll
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { QuestionsetEditorLibraryModule } from '@project-sunbird/sunbird-questionset-editor';
 @NgModule({
   imports: [

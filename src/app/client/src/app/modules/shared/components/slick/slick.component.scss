@@ -82,8 +82,8 @@
 		  width: 20rem !important;
 		}
 	  }
-
-	  .mat-mini-fab .mat-button-wrapper {
+	  /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
+	  .mat-mdc-mini-fab .mat-button-wrapper {
 		width: 2.5rem;
 		height: 2.5rem;
 		display: flex !important;
