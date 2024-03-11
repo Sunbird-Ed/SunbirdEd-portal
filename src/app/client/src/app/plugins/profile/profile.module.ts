@@ -20,7 +20,7 @@ import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
 import { CommonFormElementsModule } from '@project-sunbird/common-form-elements-full';
 import {LocationModule} from '../location';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 export const csCourseServiceFactory = (csLibInitializerService: CsLibInitializerService) => {

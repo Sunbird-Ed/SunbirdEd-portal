@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ProfileService } from '@sunbird/profile';
 import { ConfigService, ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash-es';

@@ -8,7 +8,7 @@ import * as _ from 'lodash-es';
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { PopupControlService } from '../../../../service/popup-control.service';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ProfileService } from '@sunbird/profile';
 import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 import { ConfigService } from '../../../shared/services/config/config.service';
