@@ -197,6 +197,7 @@ function getLocals(req) {
   locals.contentEditorURL = envHelper?.CONTENT_EDITORS_URL?.CONTENT_EDITOR;
   locals.genericEditorURL = envHelper?.CONTENT_EDITORS_URL?.GENERIC_EDITOR;
   locals.botConfigured = envHelper.sunbird_bot_configured;
+  locals.uciConfigured = envHelper.sunbird_uci_configured;
   locals.botServiceURL = envHelper.sunbird_bot_service_URL;
   locals.superAdminSlug = envHelper?.sunbird_super_admin_slug;
   locals.p1reCaptchaEnabled = envHelper.sunbird_p1_reCaptcha_enabled;
