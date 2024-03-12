@@ -24,6 +24,7 @@ import { CacheService } from '../../../shared/services/cache-service/cache.servi
 import { environment } from '@sunbird/environment';
 import { Subject, zip, forkJoin } from 'rxjs';
 import { EXPLORE_GROUPS, MY_GROUPS } from '../../../public/module/group/components/routerLinks';
+import { UciConfigService } from '../../../uci-admin/services/uci-config.service';
 
 
 type reportsListVersionType = 'v1' | 'v2';
@@ -159,6 +160,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   isCustodianUser: boolean;
   isConnected = false;
   isDesktopApp = false;
+  isUciEnabled=false;
   showLoadContentModal = false;
   guestUser;
   subscription: any;
@@ -177,7 +179,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     private courseService: CoursesService, private utilService: UtilService, public layoutService: LayoutService,
     public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef,
     public navigationHelperService: NavigationHelperService, private deviceRegisterService: DeviceRegisterService,
-    private connectionService: ConnectionService, public electronService: ElectronService, private observationUtilService: ObservationUtilService) {
+    private connectionService: ConnectionService, public electronService: ElectronService, private observationUtilService: ObservationUtilService, public uciConfigService:UciConfigService) {
     try {
       this.exploreButtonVisibility = document.getElementById('exploreButtonVisibility')?(<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value:'true';
       this.reportsListVersion = document.getElementById('reportsListVersion')?(<HTMLInputElement>document.getElementById('reportsListVersion')).value as reportsListVersionType:'v1';
@@ -621,6 +623,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.programDashboardRole = this.config.rolesConfig.headerDropdownRoles.programDashboardRole;
+    this.isUciEnabled=  this.uciConfigService.isUciAdminEnabled();
     this.isDesktopApp = this.utilService.isDesktopApp;
     this.connectionService.monitor()
       .pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
