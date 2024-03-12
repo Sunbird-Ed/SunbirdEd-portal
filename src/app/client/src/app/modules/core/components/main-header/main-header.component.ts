@@ -160,7 +160,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   isCustodianUser: boolean;
   isConnected = false;
   isDesktopApp = false;
-  isUciEnabled=false;
+  isUciEnabled;
   showLoadContentModal = false;
   guestUser;
   subscription: any;
@@ -187,6 +187,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       this.exploreButtonVisibility = 'false';
       this.reportsListVersion = 'v1';
     }
+    this.isUciEnabled=   document.getElementById('isUciConfigured')?(<HTMLInputElement>document.getElementById('isUciConfigured')).value:'false';
     this.adminDashboard = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
     this.myActivityRole = this.config.rolesConfig.headerDropdownRoles.myActivityRole;
     this.orgSetupRole = this.config.rolesConfig.headerDropdownRoles.orgSetupRole;
@@ -623,7 +624,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.programDashboardRole = this.config.rolesConfig.headerDropdownRoles.programDashboardRole;
-    this.isUciEnabled=  this.uciConfigService.isUciAdminEnabled();
     this.isDesktopApp = this.utilService.isDesktopApp;
     this.connectionService.monitor()
       .pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
