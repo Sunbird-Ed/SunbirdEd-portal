@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { ErrorPageComponent } from './modules/core/components/error-page/error-page.component';
 import { RouterModule, Routes } from '@angular/router';
 import { MlGuard } from './modules/observation/guards';
-import { UciConfigService } from './modules/uci-admin/uci-config-service';
+import { UciConfigService } from './modules/uci-admin/services/uci-config.service';
 
 export function uciAdminModuleFactory(): Promise<any>{
   const uciConfigService = new UciConfigService();
