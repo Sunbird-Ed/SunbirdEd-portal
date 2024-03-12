@@ -12,6 +12,7 @@ import { mockData } from './main-header.component.spec.data';
 import { DeviceRegisterService, ObservationUtilService, OrgDetailsService, TenantService } from '../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { mockUserData } from './../../services/user/user.mock.spec.data';
+import { UciConfigService } from 'src/app/modules/uci-admin/services/uci-config.service';
 const mockUserRoles = {
   userRoles: ['PUBLIC']
 };
@@ -55,6 +56,8 @@ describe('MainHeaderComponent', () => {
     events: of({}) as any
   };
   const mockpermissionService: Partial<PermissionService> = {};
+  const mockuciConfigService: Partial<UciConfigService> = {};
+
   const mockUserService: Partial<UserService> = {
     getGuestUser: jest.fn(() => of({
       userId: 'sample-uid',
@@ -177,7 +180,8 @@ describe('MainHeaderComponent', () => {
       mockdeviceRegisterService as DeviceRegisterService,
       mockconnectionService as ConnectionService,
       mockelectronService as ElectronService,
-      mockobservationUtilService as ObservationUtilService
+      mockobservationUtilService as ObservationUtilService,
+      mockuciConfigService as UciConfigService
     )
   });
 
