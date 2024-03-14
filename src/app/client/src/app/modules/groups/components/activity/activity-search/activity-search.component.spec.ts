@@ -8,6 +8,7 @@ import { CacheService } from '../../../../shared/services/cache-service/cache.se
 import { GroupsService } from '../../../services/groups/groups.service';
 import { ActivityDashboardService } from '@sunbird/shared';
 import {ActivitySearchComponent} from './activity-search.component';
+import { CslFrameworkService } from '../../../../public/services/csl-framework/csl-framework.service';
 
 xdescribe('ActivitySearchComponent', () => {
   let component: ActivitySearchComponent
@@ -26,6 +27,10 @@ xdescribe('ActivitySearchComponent', () => {
         CONTENT_PREFIX: ''
       }
     }
+  };
+  const mockCslFrameworkService: Partial<CslFrameworkService> = {
+    getFrameworkCategories: jest.fn(),
+    setDefaultFWforCsl: jest.fn()
   };
   const mockFrameworkService: Partial<FrameworkService> = {};
   const mockSearchService: Partial<SearchService> = {};
@@ -99,7 +104,8 @@ beforeAll(async () => {
     mockCourseConsumptionService as CourseConsumptionService,
     mockOrgDetailsService as OrgDetailsService,
     mockGroupService as GroupsService,
-    mockActivityDashboardService as ActivityDashboardService
+    mockActivityDashboardService as ActivityDashboardService,
+    mockCslFrameworkService as CslFrameworkService
   );
 });
 
