@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // Modules
 import { ChartsModule } from 'ng2-charts';
-import { SuiModule } from 'ng2-semantic-ui-v9';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { TelemetryModule } from '@sunbird/telemetry';
 // Custome component(s) and services
@@ -45,7 +44,6 @@ import { MAT_DIALOG_DATA} from '@angular/material/dialog';
     FormsModule,
     ReactiveFormsModule,
     ChartsModule,
-    SuiModule,
     SharedModule,
     CommonConsumptionModule,
     TelemetryModule,
