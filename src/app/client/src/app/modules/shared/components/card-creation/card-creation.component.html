@@ -59,10 +59,11 @@
       <span *ngIf="data.lockInfo" matTooltip="{{resourceService?.frmelmnts?.lbl?.lockPopupTitle | interpolate:'{collaborator}':data?.lockInfo?.creatorInfo?.name | interpolate:'{contentName}':data?.name}}" [matTooltipPosition]="'left'">
         <i class="lock icon large"  ></i>
       </span>
-      <span *ngIf="data.rating">
+      //TODO UI TEAM to replace SUI Items
+      <!-- <span *ngIf="data.rating">
           <sui-rating class="courseHeader-rating star left floated" [ngModel]="data.rating | number:0" [maximum]="5" [isReadonly]="true">
           </sui-rating>
-        </span>
+        </span> -->
     </div>
   </div>
 </div>

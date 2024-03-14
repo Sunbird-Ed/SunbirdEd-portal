@@ -84,17 +84,14 @@
     </div>
 </div>
 <!-- publish warning modal -->
-
-<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+//TODO UI TEAM to replace SUI Items
+<!-- <sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
   appBodyScroll *ngIf="showPublishWarningModal" #publishWarningModal>
-  <!--Header-->
+
   <i class="icon close" (click)="showPublishWarningModal = false" tabindex="0"></i>
   <div class="sb-modal-header">
     &nbsp;
   </div>
-  <!--/Header-->
-
-  <!--Content-->
   <div class="sb-modal-content">
     <div class="ui centered grid">
       <div class="row">
@@ -109,9 +106,6 @@
       </div>
     </div>
   </div>
-  <!--/Content-->
-
-  <!--Actions-->
   <div class="sb-modal-actions">
     <button class="sb-btn sb-btn-normal sb-btn-primary" type="button "
       tabindex="0" (click)="showPublishWarningModal = false; goToPublish();" appTelemetryInteract
@@ -125,7 +119,6 @@
       {{resourceService?.frmelmnts?.btn?.no}}
     </button>
   </div>
-  <!--Actions-->
+</sui-modal> -->
 
-</sui-modal>
 <router-outlet></router-outlet>
