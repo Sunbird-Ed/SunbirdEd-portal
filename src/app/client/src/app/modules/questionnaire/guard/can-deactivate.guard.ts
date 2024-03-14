@@ -1,10 +1,10 @@
 import { HostListener, Injectable, Directive } from '@angular/core';
-import { CanDeactivate } from '@angular/router';
+
 import { ResourceService } from '@sunbird/shared';
 
 @Injectable()
 export class CanDeactivateGuard
-  implements CanDeactivate<ComponentDeactivate> {
+   {
   constructor(public resourceService: ResourceService) {}
   canDeactivate(component: ComponentDeactivate): boolean {
     if (!component.canDeactivate()) {
