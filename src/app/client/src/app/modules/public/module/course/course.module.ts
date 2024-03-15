@@ -7,8 +7,6 @@ import { SharedModule } from '@sunbird/shared';
 import {SharedFeatureModule} from '@sunbird/shared-feature';
 import { PublicCourseConsumptionPageComponent,
   ExploreCourseComponent, PublicCoursePlayerComponent, PublicBatchDetailsComponent } from './components';
-import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
-  SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui-v9';
 import { CourseConsumptionService, CourseBatchService, CourseProgressService } from '@sunbird/learn';
 import { FormsModule } from '@angular/forms';
 import { PlayerHelperModule } from '@sunbird/player-helper';
@@ -23,8 +21,6 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
     SharedModule,
     CourseRoutingModule,
     SharedFeatureModule,
-    SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
-    SuiRatingModule, SuiCollapseModule,
     FormsModule,
     PlayerHelperModule,
     ContentSearchModule,
