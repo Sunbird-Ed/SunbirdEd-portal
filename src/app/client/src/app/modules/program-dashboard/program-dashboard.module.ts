@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SuiModule } from 'ng2-semantic-ui-v9';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
@@ -56,7 +55,6 @@ const TIME_RANGE_DATE_FORMAT = {
     CommonModule,
     SharedModule,
     SharedFeatureModule,
-    SuiModule,
     HttpClientModule,
     TelemetryModule,
     FormsModule,

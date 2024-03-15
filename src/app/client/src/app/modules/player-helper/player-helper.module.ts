@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SuiModule } from 'ng2-semantic-ui-v9';
 import { TelemetryModule } from '@sunbird/telemetry';
 import {
   ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
@@ -35,7 +34,6 @@ import { CslFrameworkService } from '../public/services/csl-framework/csl-framew
   ],
   imports: [
     CommonModule,
-    SuiModule,
     TelemetryModule,
     SharedModule,
     CoreModule,
