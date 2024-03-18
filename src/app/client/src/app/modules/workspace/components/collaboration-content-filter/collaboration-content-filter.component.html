@@ -25,13 +25,12 @@
           <div class="content dropdown-content">
            <span class="ShowFilterSubTitle">{{resourceService?.frmelmnts?.lbl?.sortby}}:&nbsp;</span>
             <div class="ui inline dropdown search-dropdown content-filter-sort" id="sortByDropDown">
-              //TODO UI TEAM to replace SUI Items
-              <!-- <sui-select class="inline" (selectedOptionChange)= "applySorting($event)" [(ngModel)]="sortByOption" [options]="sortingOptions"
+              <sui-select class="inline" (selectedOptionChange)= "applySorting($event)" [(ngModel)]="sortByOption" [options]="sortingOptions"
               valueField="field"
           labelField="name"  #selectSort>
                 <sui-select-option *ngFor="let option of selectSort.filteredOptions" [value]="option" >
                 </sui-select-option>
-              </sui-select> -->
+              </sui-select>
             </div>
             <i *ngIf="sortByOption && sortByOption.length > 0" [ngClass]=" sortIcon === false ? 'sort content ascending icon' : 'sort content descending icon' "
               class="link" tabindex="0" (click)="applySorting(sortByOption)">

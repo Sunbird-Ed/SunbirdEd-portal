@@ -26,15 +26,14 @@
               <div class="ui segments">
                 <div class="ui segment">
                   <p>{{resourceService?.frmelmnts?.lbl?.chooseContentLocationDrive}}</p>
-                  //TODO UI TEAM to replace SUI Items
-                  <!-- <sui-select class="selection min-width-18" [(ngModel)]="selectedDrive"
+                  <sui-select class="selection min-width-18" [(ngModel)]="selectedDrive"
                     [placeholder]="resourceService?.frmelmnts?.lbl?.selectDrive" [options]="drives" #drivesOption
                     labelField="label">
                     <sui-select-option *ngFor="let drive of drivesOption?.filteredOptions" [value]="drive"
                       [ngClass]="{disabled: drive?.isCurrentContentLocation}" appTelemetryInteract
                       [telemetryInteractEdata]="getDriveSelectInteractEdata(drive)">
                     </sui-select-option>
-                  </sui-select> -->
+                  </sui-select>
                 </div>
               </div>
             </div>

@@ -14,14 +14,13 @@
         </span>
       </div>
       <div class="four wide column float-ContentLeft course-dropdown" *ngIf="myCoursesList && myCoursesList.length > 1">
-        //TODO UI TEAM to replace SUI Items
-        <!-- <sui-select class="selection" [(ngModel)]="selectedCourse" (ngModelChange)="onAfterCourseChange($event)" [options]="myCoursesList"
+        <sui-select class="selection" [(ngModel)]="selectedCourse" (ngModelChange)="onAfterCourseChange($event)" [options]="myCoursesList"
           labelField="name" [placeholder]="'Select Course '" [isSearchable]="true" #select>
           <sui-select-option [ngClass]="{'active': course.identifier === identifier }" *ngFor="let course of select.filteredOptions"
             [value]="course" appTelemetryInteract [telemetryInteractObject]="{ id: course.identifier, type: 'Course', ver: '1.0' }"
             [telemetryInteractEdata]="{id:'courseDropdown',type:'click',pageid:'course-creator-dashboard'}">
           </sui-select-option>
-        </sui-select> -->
+        </sui-select>
       </div>
     </div>
     <!-- Filters -->

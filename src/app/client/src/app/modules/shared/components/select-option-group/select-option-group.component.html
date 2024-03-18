@@ -1,13 +1,13 @@
 <ng-container *ngIf="!layoutConfiguration">
   <!-- DUE TO OLD THEME; WE ARE NOT MIGRATING SUI-SELECT -->
-  <!-- <sui-select class="selection state-selection sbt-dropdown-tick" [(ngModel)]="preSelectedValue">
+  <sui-select class="selection state-selection sbt-dropdown-tick" [(ngModel)]="preSelectedValue">
     <div class="state-selection__section" *ngFor="let group of optionData">
       <div class="header">{{group.label | translate}}</div>
       <sui-select-option class="active" *ngFor="let option of group.option"
                          [value]="option.name"
         tabindex="0" (click)="onChange({label: group.label, value: group.value, selectedOption: option.value })"></sui-select-option>
     </div>
-  </sui-select> -->
+  </sui-select>
 </ng-container>
 
 <ng-container *ngIf="layoutConfiguration">
@@ -15,10 +15,10 @@
     <label class="fnormal font-weight-bold d-flex">{{title}}</label>
   <label class="w-100">
     <!-- DUE TO OLD THEME; WE ARE NOT MIGRATING SUI-SELECT -->
-    //TODO UI TEAM to replace SUI Items
-    <!-- <sui-select class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg " [(ngModel)]="preSelectedValue">
+    <sui-select class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg " [(ngModel)]="preSelectedValue">
       <div class="sbt-dropdown-section" *ngIf="showHeader">
         <div *ngFor="let group of optionData">
+          <!-- <div class="header">{{group.label}}</div> -->
           <sui-select-option class="active" *ngFor="let option of group.option"
                              [value]="option.name"
             tabindex="0" (click)="onChange({label: group.label, value: group.value, selectedOption: option.value })"></sui-select-option>
@@ -30,7 +30,7 @@
             tabindex="0" (click)="onChange({label: i, value: option , selectedOption: option })"></sui-select-option>
         </div>
       </div>
-    </sui-select> -->
+    </sui-select>
   </label>
   </div>
 </ng-container>

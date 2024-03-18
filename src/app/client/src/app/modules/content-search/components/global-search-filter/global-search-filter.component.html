@@ -78,8 +78,7 @@
               <div class="sb-prominent-filter-field" *ngFor="let facet of facets | sortBy:'index':'asc'">
                 <!-- <label class="fnormal font-weight-bold d-flex">{{facet.label}} </label> -->
                 <label *ngIf="facet.name !== 'mediaType'">
-                  //TODO UI TEAM to replace SUI Items
-                  <!-- <sui-multi-select *ngIf="facet.name !== 'mediaType'" [hasLabels]="false"
+                  <sui-multi-select *ngIf="facet.name !== 'mediaType'" [hasLabels]="false"
                     defaultSelectionText={{facet.label}} zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
                     labelField="name" valueField="name" class="ui selection dropdown sbt-dropdown-tick multiple"
                     [(ngModel)]="selectedFilters[facet.name]" (ngModelChange)="onChange(facet)">
@@ -93,7 +92,7 @@
                         [value]="dropdownValue">
                       </sui-select-option>
                     </ng-template>
-                  </sui-multi-select> -->
+                  </sui-multi-select>
                 </label>
                 <!-- <div *ngIf="facet.name === 'mediaType'" class="sb-class-bar sb-bg-color-gray-0">
                   <sb-library-filters [list]="facet.mimeTypeList" [layout]="filterLayout.ROUND"

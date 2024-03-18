@@ -3,8 +3,8 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @use 'components/metadata' as *;
  -->
- //TODO UI TEAM to replace SUI Items
-<!-- <sui-modal
+
+<sui-modal
   [mustScroll]="true" 
   [isClosable]="true"
   [transitionDuration]="0"
@@ -14,9 +14,10 @@
   (dismissed)="close()"
   #modal
 >
-
+<!-- sb-success -->
+  <!--Header-->
   <div class="sb-modal-header">Upload .CSV file</div>
-
+  <!--/Header-->
   <div class="sb-modal-content o-y-visible">
       <p class="m-0">Please upload the CSV file in the required format</p>
       <div class="pt-16 sb-bulk-upload-file d-flex flex-ai-center">
@@ -76,4 +77,4 @@
       <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" (click)="modal.approve('done')">Start Upload</button>
       <button class="sb-btn sb-btn-secondary sb-btn-normal mr-8" tabindex="0" (click)="modal.approve('done')"> Download Report </button>
   </div>
-</sui-modal> -->
+</sui-modal>

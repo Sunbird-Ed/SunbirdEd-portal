@@ -2,13 +2,11 @@
 <div *ngIf="!isLayoutAvailable()" class="d-flex flex-ai-center language-selector">
   <div class="computer only fsmall">{{resourceService.frmelmnts?.btn?.selectLanguage}}<span class="mx-8">:</span></div>
   <label *ngIf="!isLayoutAvailable()">
-    //TODO UI TEAM to replace SUI Items
-  <!-- <sui-select class="ui dropdown fsmall language-dropdown-options" (contextmenu)="false" role="combobox" aria-label="Select Language" title="Select Language" [(ngModel)]="selectedLanguage" (ngModelChange)="onLanguageChange($event)" labelField="label" valueField="value">
+  <sui-select class="ui dropdown fsmall language-dropdown-options" (contextmenu)="false" role="combobox" aria-label="Select Language" title="Select Language" [(ngModel)]="selectedLanguage" (ngModelChange)="onLanguageChange($event)" labelField="label" valueField="value">
     <sui-select-option *ngFor="let option of languageRange" appTelemetryInteract
       [telemetryInteractEdata]="getTelemetryInteractEdata(option.value)" [value]="option"  role="option"  title="{{option.accessibleText}}" lang="{{option?.value}}" >
     </sui-select-option>
-  </sui-select> -->
-</label>
+  </sui-select></label>
 </div>
 
 
