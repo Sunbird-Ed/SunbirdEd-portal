@@ -2,7 +2,6 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CertificateRoutingModule } from './certificate-routing.module';
-import { SuiModalModule, SuiSelectModule, SuiDropdownModule, SuiPopupModule } from 'ng2-semantic-ui-v9';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -31,15 +30,11 @@ export const csCertificateServiceFactory = (csLibInitializerService: CsLibInitia
   ],
   imports: [
     CommonModule,
-    SuiModalModule,
     CertificateRoutingModule,
     FormsModule,
     SharedModule,
     TelemetryModule,
     PlayerHelperModule,
-    SuiSelectModule,
-    SuiDropdownModule,
-    SuiPopupModule,
     ReactiveFormsModule,
     CommonConsumptionModule,
     SharedFeatureModule
