@@ -3088,10 +3088,10 @@
   dependencies:
     tslib "^2.0.0"
 
-"@project-sunbird/sb-themes@8.0.0":
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-8.0.0.tgz#80d16f5a61246cc82fe149fe697df070e625b7a3"
-  integrity sha512-9D/C3m9Gr5Mtm1tYkOWy1IO45rcmjimlvyv8nVkWGbRDAsYCXTjK9gtRWp9jm1Y3gY3mGp9PUYn31a2NEQ4j5w==
+"@project-sunbird/sb-themes@8.0.1":
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-8.0.1.tgz#7e9a81d1545c19065f2e74350bb49ed00b6bac30"
+  integrity sha512-/FHhG/37D7+cojRmJAbi4WrfaEC9x9knvsRksQ8Pr3PJCgdBhuq7VlRpjv7QuCy73U8kIJlAE9rvzLxf41RdcA==
   dependencies:
     "@project-sunbird/sb-styles" "0.0.14"
 
