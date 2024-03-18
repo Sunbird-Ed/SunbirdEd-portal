@@ -1,11 +1,14 @@
-//TODO UI TEAM to replace SUI Items
-<!-- <sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'normal'"
+<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'normal'"
   class="sb-modal sb-batch-modal" appBodyScroll *ngIf='showUpdateModal' (dismissed)="redirect()" #updateBatchModal>
+  <!--Header-->
   <i class="close icon" tabindex="0" (click)="redirect()"></i>
   <div class="sb-modal-header">
     <span *ngIf="!showFormInViewMode">{{resourceService?.frmelmnts?.intxt?.t0007}}</span>
     <span *ngIf="showFormInViewMode">{{resourceService?.frmelmnts?.intxt?.t0015}}</span>
   </div>
+  <!--/Header-->
+
+  <!--Content-->
   <div class="sb-modal-content o-y-visible" [appTelemetryImpression]="telemetryImpression">
     <form [formGroup]="batchUpdateForm" class="sb-form batchUpdateForm pt-8 px-8">
       <div class="sb-color-primary font-weight-bold pb-24">Batch Details</div>
@@ -158,6 +161,9 @@
 
     </form>
   </div>
+  <!--/Content-->
+
+  <!--Actions-->
   <div class="sb-modal-actions">
     <button class="sb-btn sb-btn-normal sb-btn-primary"
       [ngClass]="{ 'sb-btn-disabled': batchDetails.status === 2 || disableSubmitBtn || showFormInViewMode }"
@@ -173,4 +179,5 @@
       {{resourceService?.frmelmnts?.btn?.clear}}
     </button>
   </div>
-</sui-modal> -->
+  <!--/Actions-->
+</sui-modal>

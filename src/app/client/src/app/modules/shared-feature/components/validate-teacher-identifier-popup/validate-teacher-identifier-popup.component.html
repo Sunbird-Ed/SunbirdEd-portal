@@ -19,11 +19,10 @@
               <div *ngIf="processValidation && !(extIdVerified || extIdFailed)" class="sb-field-group mb-16 text-left">
                 <div class="sb-field" *ngIf="showStateDropdown">
                   <label>{{resourceService?.frmelmnts?.lbl?.state}}</label>
-                  //TODO UI TEAM to replace SUI Items
-                  <!-- <sui-select id="stateField" [isSearchable]="false" class="selection" [options]="options"
+                  <sui-select id="stateField" [isSearchable]="false" class="selection" [options]="options"
                     formControlName="state">
                     <sui-select-option *ngFor="let option of channelData" [value]="option"></sui-select-option>
-                  </sui-select> -->
+                  </sui-select>
                 </div>
                 <div class="sb-field">
                   <label class="required">{{labels?.fieldLabel}}</label>

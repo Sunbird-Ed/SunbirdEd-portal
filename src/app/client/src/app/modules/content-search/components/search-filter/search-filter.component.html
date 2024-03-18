@@ -33,8 +33,7 @@
         <div class="d-flex flex-ai-center flex-w-wrap">
           <div *ngIf="allValues && allValues[frameworkCategories?.fwCategory4?.code]?.length" class="state-medium-container__dropdown">
             <div class="sb-field mb-0"><label>
-              //TODO UI TEAM to replace SUI Items
-                <!-- <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels[frameworkCategories?.fwCategory4?.code]"
+                <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels[frameworkCategories?.fwCategory4?.code]"
                   (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: frameworkCategories?.fwCategory4?.code})"
                   defaultSelectionText={{resourceService?.frmelmnts?.lbl[frameworkCategories?.fwCategory4?.code]}}
                   zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
@@ -44,15 +43,14 @@
                     <sui-select-option *ngFor="let dropdownValue of allValues[frameworkCategories?.fwCategory4?.code]" [value]="dropdownValue">
                     </sui-select-option>
                   </div>
-                </sui-multi-select> -->
+                </sui-multi-select>
               </label>
             </div>
           </div>
           <div *ngIf="allValues?.publisher?.length" class="state-medium-container__separator"> </div>
           <div *ngIf="allValues?.publisher?.length" class="state-medium-container__dropdown">
             <div class="sb-field mb-0"><label>
-              //TODO UI TEAM to replace SUI Items
-                <!-- <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['publisher']"
+                <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['publisher']"
                   (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'publisher'})"
                   defaultSelectionText={{resourceService?.frmelmnts?.lbl?.publishedBy}}
                   zeroSelectionText={{resourceService?.frmelmnts?.lbl?.Select}}
@@ -62,15 +60,14 @@
                     <sui-select-option *ngFor="let dropdownValue of allValues['publisher']" [value]="dropdownValue">
                     </sui-select-option>
                   </div>
-                </sui-multi-select> -->
+                </sui-multi-select>
               </label>
             </div>
           </div>
           <div *ngIf="allValues?.audience?.length" class="state-medium-container__separator"> </div>
           <div *ngIf="allValues?.audience?.length" class="state-medium-container__dropdown">
             <div class="sb-field mb-0"><label>
-              //TODO UI TEAM to replace SUI Items
-                <!-- <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['audience']"
+                <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['audience']"
                   (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'audience'})"
                   defaultSelectionText={{resourceService?.frmelmnts?.lbl?.userType}}
                   zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} tabindex="0"
@@ -80,7 +77,7 @@
                     <sui-select-option *ngFor="let dropdownValue of allValues['audience']" [value]="dropdownValue">
                     </sui-select-option>
                   </div>
-                </sui-multi-select> -->
+                </sui-multi-select>
               </label>
             </div>
           </div>

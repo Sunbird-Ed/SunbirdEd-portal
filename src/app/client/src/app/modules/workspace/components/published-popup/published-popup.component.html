@@ -1,5 +1,4 @@
-//TODO UI TEAM to replace SUI Items
-<!-- <sui-modal
+<sui-modal
     [mustScroll]="true" 
     [isClosable]="false"
     [transitionDuration]="0"
@@ -8,12 +7,18 @@
     appBodyScroll
     (dismissed)="redirect()" 
     #modal 
-    *ngIf="showModal">
+    *ngIf="showModal"
+    >
 
     <i class="icon close" (click)="modal.deny('denied')" tabindex="0"></i>
+    
+    <!--Header-->
     <div class="sb-modal-header">
         {{resourceService.frmelmnts.btn.checkListPublish}}
     </div>
+    <!--/Header-->
+
+    <!--Content-->
     <div class="sb-modal-content">
         <div *ngIf="publishCheckListData">
             <div class="ui small header">
@@ -40,19 +45,25 @@
             <app-loader></app-loader>
         </div>
     </div>
+    <!--/Content-->
+
+    <!--Actions-->
     <div class="sb-modal-actions">
         <button 
             class="sb-btn sb-btn-normal sb-btn-primary" 
             type="button" 
             [disabled]="isDisabled" 
-            tabindex="0" (click)="submitPublishChanges()">
+            tabindex="0" (click)="submitPublishChanges()"
+        >
             {{resourceService?.frmelmnts?.btn?.checklistPublish}}
         </button>
         <button 
             class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" 
             type="button" 
-            tabindex="0" (click)="redirect();modal.deny();">
+            tabindex="0" (click)="redirect();modal.deny();"
+        >
             {{resourceService?.frmelmnts?.btn?.checklistCancel}}
         </button>
     </div>
-</sui-modal> -->
+    <!--/Actions-->
+</sui-modal>

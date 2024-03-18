@@ -34,31 +34,29 @@
 
         <div class="sb-prominent-filter-field" *ngFor="let field of filtersDetails">
           <div *ngIf="(field.inputType==='select' || field.inputType === 'multi-select') && field.code !== 'channel'">
-            //TODO UI TEAM to replace SUI Items
-            <!-- <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
+            <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
               defaultSelectionText={{field.label}} zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
               class="ui selection dropdown multiple" [(ngModel)]="formInputData[field.code]" [options]="options"
               [hasLabels]="false" #multiSelect *ngIf="field.code !== frameworkCategoriesList[2]">
               <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option.name">
               </sui-select-option>
-            </sui-multi-select> -->
-            <!-- <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
+            </sui-multi-select>
+            <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
               defaultSelectionText={{field.label}} zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
               class="ui selection dropdown multiple" [(ngModel)]="formInputData[field.code]" [options]="options"
               [hasLabels]="false" #multiSelect *ngIf="field.code === frameworkCategoriesList[2]">
               <sui-select-option *ngFor="let option of field.range" [value]="option.name"></sui-select-option>
-            </sui-multi-select> -->
+            </sui-multi-select>
           </div>
           <div *ngIf="field.code === 'channel'">
-            //TODO UI TEAM to replace SUI Items
-            <!-- <sui-multi-select (ngModelChange)="modelChange($event);setFilterInteractData()" id={{field.code}}
+            <sui-multi-select (ngModelChange)="modelChange($event);setFilterInteractData()" id={{field.code}}
               name={{field.code}} defaultSelectionText={{field.name}}
               zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} class="ui selection dropdown multiple"
               [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false" labelField="name"
               valueField="identifier" #multiSelect>
               <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option">
               </sui-select-option>
-            </sui-multi-select> -->
+            </sui-multi-select>
           </div>
           <div *ngIf="field.code==='topic'">
             <app-topic-picker [selectedTopics]="formInputData[field.code]" [formTopic]="field"
@@ -147,26 +145,24 @@
               <div class="" *ngFor="let field of filtersDetails">
                 <div
                   *ngIf="(field.inputType==='select' || field.inputType === 'multi-select') && field.code !== 'channel'">
-                  //TODO UI TEAM to replace SUI Items
-                  <!-- <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
+                  <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
                     defaultSelectionText={{field.label}} zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
                     class="ui selection dropdown multiple selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg w-100 mb-16"
                     [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false" #multiSelect
                     *ngIf="field.code !== frameworkCategoriesList[2]">
                     <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option.name">
                     </sui-select-option>
-                  </sui-multi-select> -->
-                  <!-- <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
+                  </sui-multi-select>
+                  <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
                     defaultSelectionText={{field.label}} zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
                     class="ui selection dropdown multiple selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg w-100 mb-16"
                     [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false" #multiSelect
                     *ngIf="field.code === frameworkCategoriesList[2]">
                     <sui-select-option *ngFor="let option of field.range" [value]="option.name"></sui-select-option>
-                  </sui-multi-select> -->
+                  </sui-multi-select>
                 </div>
                 <div *ngIf="field.code === 'channel'">
-                  //TODO UI TEAM to replace SUI Items
-                  <!-- <sui-multi-select (ngModelChange)="modelChange($event);setFilterInteractData()" id={{field.code}}
+                  <sui-multi-select (ngModelChange)="modelChange($event);setFilterInteractData()" id={{field.code}}
                     name={{field.code}} defaultSelectionText={{field.name}}
                     zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
                     class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg w-100 mb-16"
@@ -174,7 +170,7 @@
                     valueField="identifier" #multiSelect>
                     <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option">
                     </sui-select-option>
-                  </sui-multi-select> -->
+                  </sui-multi-select>
                 </div>
                 <div *ngIf="field.code==='topic'">
                   <app-topic-picker [selectedTopics]="formInputData[field.code]" [formTopic]="field"

@@ -96,10 +96,10 @@
 			*ngIf="!router.isActive('', true) && !isDesktopApp" (click)="showSideBar()" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
 			[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>
 
-      <!-- <a class="item" (click)="showSideBar(false);switchLayout()" tabindex="0">
+      <a class="item" (click)="showSideBar(false);switchLayout()" tabindex="0">
         <span *ngIf="layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToOldLayout}}</span>
         <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToJoyLayout}}</span>
-      </a> -->
+      </a>
     </ng-container>
 		<!--/Not Logged in user-->
 	</div>
