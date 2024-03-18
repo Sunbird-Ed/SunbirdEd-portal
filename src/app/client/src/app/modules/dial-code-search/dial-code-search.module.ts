@@ -5,6 +5,8 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
+import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
+  SuiRatingModule, SuiCollapseModule, SuiDimmerModule } from 'ng2-semantic-ui-v9';
 import { GetComponent, DialCodeComponent, DialCodeCardComponent } from './components';
 import { FormsModule } from '@angular/forms';
 import { PlayerHelperModule } from '@sunbird/player-helper';
@@ -17,6 +19,8 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
     CoreModule,
     SharedModule,
     DialCodeSearchRoutingModule,
+    SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule, SuiDimmerModule,
+    SuiRatingModule, SuiCollapseModule,
     FormsModule,
     PlayerHelperModule,
     SharedFeatureModule,

@@ -5,6 +5,10 @@ import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { ExplorePageRoutingModule } from './explore-page-routing.module';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
+import {
+  SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
+  SuiRatingModule, SuiCollapseModule, SuiDimmerModule
+} from 'ng2-semantic-ui-v9';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { ContentSearchModule } from '@sunbird/content-search';
@@ -21,7 +25,8 @@ import {ObservationModule} from '../observation/observation.module';
     CoreModule,
     SharedModule,
     SharedFeatureModule,
-    WebExtensionModule,
+    SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
+    SuiRatingModule, SuiCollapseModule, SuiDimmerModule, WebExtensionModule,
     CommonConsumptionModule, ContentSearchModule, ContentSectionModule, ObservationModule
   ]
 })

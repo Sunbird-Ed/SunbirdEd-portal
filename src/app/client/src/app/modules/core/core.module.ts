@@ -2,6 +2,10 @@ import { PermissionDirective, BodyScrollDirective, OnlineOnlyDirective, DesktopO
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {
+  SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
+  SuiProgressModule, SuiRatingModule, SuiCollapseModule
+} from 'ng2-semantic-ui-v9';
 import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import {
@@ -22,6 +26,8 @@ import { CslFrameworkService } from '../public/services/csl-framework/csl-framew
 @NgModule({
   imports: [
     CommonModule,
+    SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
+    SuiRatingModule, SuiCollapseModule,
     SharedModule,
     RouterModule,
     FormsModule,
