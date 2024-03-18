@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
+import { SuiModalModule } from 'ng2-semantic-ui-v9';
 import { CommonModule } from '@angular/common';
 import { CoreModule, SessionExpiryInterceptor } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
@@ -42,6 +43,7 @@ export const csFrameworkServiceFactory = (csLibInitializerService: CsLibInitiali
         CoreModule,
         CommonModule,
         HttpClientModule,
+        SuiModalModule,
         SharedModule.forRoot(),
         WebExtensionModule.forRoot(),
         TelemetryModule.forRoot(),
