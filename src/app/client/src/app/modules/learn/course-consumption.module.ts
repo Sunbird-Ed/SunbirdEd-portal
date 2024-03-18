@@ -10,6 +10,10 @@ import {
   CurriculumCardComponent  } from './components';
 import { CoreModule } from '@sunbird/core';
 import { PlayerHelperModule } from '@sunbird/player-helper';
+import {
+  SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
+  SuiProgressModule, SuiRatingModule, SuiCollapseModule
+} from 'ng2-semantic-ui-v9';
 import { BatchDetailsComponent,  } from './components/batch/batch-details/batch-details.component';
 import { UnEnrollBatchComponent} from './components/batch/unenroll-batch/unenroll-batch.component';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
@@ -48,6 +52,8 @@ export const csNotificationServiceFactory = (csLibInitializerService: CsLibIniti
     CommonModule,
     SharedModule,
     SharedFeatureModule,
+    SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
+    SuiProgressModule, SuiRatingModule, SuiCollapseModule,
     FormsModule,
     CourseConsumptionRoutingModule,
     CoreModule,
