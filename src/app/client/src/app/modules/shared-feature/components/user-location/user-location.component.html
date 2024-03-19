@@ -16,13 +16,12 @@
               <p class="mb-8">{{resourceService?.messages?.imsg?.m0074}}</p>
               <div class="sb-field">
                 <label>{{resourceService?.frmelmnts?.lbl?.state}}:</label>
-                //TODO UI TEAM to replace SUI Items
-                <!-- <sui-select class="selection" formControlName="state" [options]="allStates" labelField="name"
+                <sui-select class="selection" formControlName="state" [options]="allStates" labelField="name"
                   id="states" valueField="code" name="state"
                   placeholder="{{resourceService?.frmelmnts?.lbl?.selectState}}" #stateDiv>
                   <sui-select-option *ngFor="let state of stateDiv.filteredOptions | slice:0:100" [value]="state">
                   </sui-select-option>
-                </sui-select> -->
+                </sui-select>
               </div>
               <div class="sb-fielgroup">
                 <label>{{resourceService?.frmelmnts?.lbl?.district}}:</label>
@@ -32,13 +31,12 @@
                       <div class="ui mini text loader">{{resourceService?.messages?.stmsg?.m0130}}</div>
                     </div>
                   </div>
-                  //TODO UI TEAM to replace SUI Items
-                  <!-- <sui-select *ngIf="!showDistrictDivLoader" class="selection" formControlName="district"
+                  <sui-select *ngIf="!showDistrictDivLoader" class="selection" formControlName="district"
                     [options]="allDistricts" id="districts" labelField="name" valueField="code" name="district"
                     placeholder="{{resourceService?.frmelmnts?.lbl?.selectDistrict}}" #districtDiv>
                     <sui-select-option *ngFor="let district of districtDiv.filteredOptions | slice:0:100"
                       [value]="district"></sui-select-option>
-                  </sui-select> -->
+                  </sui-select>
                 </div>
               </div>
             </form>

@@ -13,41 +13,37 @@
     <div *ngIf="field.inputType==='select' && field.code!='year' && field.code!='contentType'" class="sb-field-group" [ngClass]="{ 'disabled':!field.editable}">
       <label>{{field.label}} <span class="sb-color-red" *ngIf="(field.required == true)">*</span></label>
       <div class="sb-field">
-        //TODO UI TEAM to replace SUI Items
-        <!-- <sui-select id={{field.code}}  name={{field.code}} class="selection" [(ngModel)]="formInputData[field.code]" (ngModelChange)="updateForm({index:i, field:field, value:formInputData[field.code],formData:formInputData})">
+        <sui-select id={{field.code}}  name={{field.code}} class="selection" [(ngModel)]="formInputData[field.code]" (ngModelChange)="updateForm({index:i, field:field, value:formInputData[field.code],formData:formInputData})">
           <sui-select-option *ngFor="let option of categoryList[field.code]" [value]="option.name"></sui-select-option>
-        </sui-select> -->
+        </sui-select>
       </div>
     </div>
     <div *ngIf="field.inputType==='select' && field.code==='contentType'"  class="sb-field-group" [ngClass]="{ 'disabled':!field.editable}">
       <label>{{field.label}} <span class="sb-color-red" *ngIf="(field.required == true)">*</span></label>
       <div class="sb-field">
-        //TODO UI TEAM to replace SUI Items
-        <!-- <sui-select id={{field.code}} [options]="categoryList[field.code]"
+        <sui-select id={{field.code}} [options]="categoryList[field.code]"
                     labelField="name" valueField="value" name={{field.code}} class="selection" [(ngModel)]="formInputData[field.code]" (ngModelChange)="updateForm({index:i, field:field, value:formInputData[field.code],formData:formInputData})">
           <sui-select-option *ngFor="let option of categoryList[field.code]" [value]="option"></sui-select-option>
-        </sui-select> -->
+        </sui-select>
       </div>
     </div>
     <div *ngIf="field.inputType==='multiSelect'" class="sb-field-group" [ngClass]="{ 'disabled':!field.editable}">
       <label>{{field.label}} <span class="sb-color-red" *ngIf="(field.required == true)">*</span></label>
       <div class="sb-field">
-        //TODO UI TEAM to replace SUI Items
-        <!-- <sui-multi-select id={{field.code}} name={{field.code}} class="selection" [(ngModel)]="formInputData[field.code]" 
+        <sui-multi-select id={{field.code}} name={{field.code}} class="selection" [(ngModel)]="formInputData[field.code]" 
         labelField="name" valueField="name"
         (ngModelChange)="updateForm({index:i, field:field, value:formInputData[field.code],formData:formInputData})"
         [options]="categoryList[field.code]" #multiSelect>
           <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option"> </sui-select-option>
-        </sui-multi-select> -->
+        </sui-multi-select>
       </div>
     </div>
     <div *ngIf="field.code==='year'" class="sb-field-group" [ngClass]="{ 'disabled':!field.editable}">
       <label>{{field.label}} <span class="sb-color-red" *ngIf="(field.required == true)">*</span></label>
       <div class="sb-field">
-        //TODO UI TEAM to replace SUI Items
-        <!-- <sui-select id={{field.code}}  name={{field.code}} class="selection" [(ngModel)]="formInputData[field.code]">
+        <sui-select id={{field.code}}  name={{field.code}} class="selection" [(ngModel)]="formInputData[field.code]">
           <sui-select-option *ngFor="let option of years"  [value]="option"> </sui-select-option>
-        </sui-select> -->
+        </sui-select>
       </div>
     </div>
     <!-- <div *ngIf="field.code==='concept'" class="field" [ngClass]="{ 'disabled':!field.editable}">

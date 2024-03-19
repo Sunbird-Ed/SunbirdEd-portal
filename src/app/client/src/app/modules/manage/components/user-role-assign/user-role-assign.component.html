@@ -125,26 +125,24 @@
                 <label>{{resourceService.frmelmnts?.lbl?.role}}</label>
               </div>
               <div class="field">
-                //TODO UI TEAM to replace SUI Items
-                <!-- <sui-multi-select [isSearchable]="false" class="selection" [(ngModel)]="role"
+                <sui-multi-select [isSearchable]="false" class="selection" [(ngModel)]="role"
                   (selectedOptionsChange)="enableButton()" formControlName="role" [options]="allRoles"
                   labelField="roleName" valueField="role" name="role"
                   placeholder="{{resourceService?.frmelmnts?.btn?.selrole}}" #allroles>
                   <sui-select-option *ngFor="let role of allroles.filteredOptions"
                     [ngClass]="{disabled: userAssignedRole.includes(role.role)}" [value]="role"></sui-select-option>
-                </sui-multi-select> -->
+                </sui-multi-select>
               </div>
               <div class="field">
                 <label>{{resourceService.frmelmnts?.lbl?.orgname}}</label>
               </div>
               <div class="field">
-                //TODO UI TEAM to replace SUI Items
-                <!-- <sui-multi-select [isSearchable]="false" class="selection" [(ngModel)]="orgName"
+                <sui-multi-select [isSearchable]="false" class="selection" [(ngModel)]="orgName"
                   (selectedOptionsChange)="enableButton()" formControlName="orgName" [options]="orgList"
                   labelField="orgName" valueField="orgId" name="orgName"
                   placeholder="{{resourceService?.frmelmnts?.lbl?.dashboardselectorg}}" #allorgName>
                   <sui-select-option *ngFor="let org of allorgName.filteredOptions" [value]="org"></sui-select-option>
-                </sui-multi-select> -->
+                </sui-multi-select>
               </div>
             </form>
           </div>

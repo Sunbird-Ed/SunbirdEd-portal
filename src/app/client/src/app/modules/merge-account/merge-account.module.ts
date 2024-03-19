@@ -2,6 +2,10 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {MergeAccountRoutingModule} from './merge-account-routing.module';
 import {SharedModule} from '@sunbird/shared';
+import {
+  SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
+  SuiProgressModule, SuiRatingModule, SuiCollapseModule, SuiCheckboxModule
+} from 'ng2-semantic-ui-v9';
 import {MergeAccountStatusComponent} from './components/merge-account-status/merge-account-status.component';
 
 
@@ -10,6 +14,8 @@ import {MergeAccountStatusComponent} from './components/merge-account-status/mer
   imports: [
     CommonModule,
     SharedModule,
+    SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
+    SuiRatingModule, SuiCollapseModule, SuiCheckboxModule,
     MergeAccountRoutingModule
   ]
 })

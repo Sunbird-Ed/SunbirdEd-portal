@@ -121,8 +121,7 @@
     </div>
   </div>
 </ng-template>
-//TODO UI TEAM to replace SUI Items
-<!-- <sui-modal *ngIf="collectionListModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'large'"
+<sui-modal *ngIf="collectionListModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'large'"
 class="sb-modal custom-lg-modal" (dismissed)="this.collectionListModal = false" #modal>
   <div class="sb-modal-header">
   </div>
@@ -158,6 +157,6 @@ class="sb-modal custom-lg-modal" (dismissed)="this.collectionListModal = false" 
     {{resourceService?.frmelmnts?.btn?.close}}
   </button>
   </div>
-</sui-modal> -->
+</sui-modal>
 <app-contentlock-info-popup [content]="lockPopupData" (closeEvent)="onCloseLockInfoPopup($event)" *ngIf="showLockedContentModal"></app-contentlock-info-popup>
 

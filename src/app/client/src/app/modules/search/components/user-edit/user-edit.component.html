@@ -30,13 +30,12 @@
                 <label>{{resourceService.frmelmnts?.lbl?.role | translate}}</label>
               </div>
               <div class="field">
-                //TODO UI TEAM to replace SUI Items
-                <!-- <sui-multi-select [isSearchable]="false" class="selection"
+                <sui-multi-select [isSearchable]="false" class="selection"
                   (selectedOptionsChange)="enableSubmitBtn = true;" formControlName="role" [options]="allRoles"
                   labelField="roleName" valueField="role" name="role"
                   placeholder="{{resourceService?.frmelmnts?.btn?.selrole | translate}}" #allroles>
                   <sui-select-option *ngFor="let role of allroles.filteredOptions" [value]="role"></sui-select-option>
-                </sui-multi-select> -->
+                </sui-multi-select>
               </div>
             </form>
           </div>

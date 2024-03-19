@@ -10,6 +10,10 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { ContentSearchModule } from '@sunbird/content-search';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 
+import {
+  SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
+  SuiRatingModule, SuiCollapseModule
+} from 'ng2-semantic-ui-v9';
 
 @NgModule({
   imports: [
@@ -21,7 +25,8 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
     TelemetryModule,
     SharedFeatureModule,
     ContentSearchModule,
-    CommonConsumptionModule
+    SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
+    SuiRatingModule, SuiCollapseModule, CommonConsumptionModule
   ],
   providers: [],
   declarations: [CoursePageComponent]

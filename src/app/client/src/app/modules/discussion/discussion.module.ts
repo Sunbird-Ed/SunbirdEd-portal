@@ -1,4 +1,5 @@
 import { DiscussionService } from './services/discussion/discussion.service';
+import { SuiModalModule } from 'ng2-semantic-ui-v9';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ForumComponent } from './components/forum/forum.component';
@@ -11,7 +12,7 @@ import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
 
 @NgModule({
-  imports: [CommonModule, DiscussionUiModule, SharedModule.forRoot()],
+  imports: [CommonModule, SuiModalModule, DiscussionUiModule, SharedModule.forRoot()],
   exports: [DiscussionUiModule, AccessDiscussionComponent],
   declarations: [ForumComponent, AccessDiscussionComponent],
   providers: [DiscussionService],
