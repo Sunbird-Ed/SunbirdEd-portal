@@ -192,6 +192,7 @@ let optionalEnvVariables = {
     // UCI / Chatbot
     // The env variable is used to set the config of chat bot.
     sunbird_bot_configured: env.sunbird_bot_configured,
+    sunbird_uci_configured: env.sunbird_uci_configured,
     sunbird_bot_service_URL: env.sunbird_bot_service_URL,
     sunbird_portal_uci_bot_phone_number: env.sunbird_portal_uci_bot_phone_number || '',
     uci_service_base_url: env.uci_service_base_url || "http://kong:8000",
