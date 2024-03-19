@@ -173,59 +173,6 @@
     visibility: visible;
   }
 }
-::ng-deep {
-  .ui.menu .language-selector {
-    font-size: 0.86rem;
-    @include respond-above(md) {
-      color: var(--primary-theme-contrast);
-    }
-    .ui.dropdown {
-      border: calculateRem(1px) solid var(--gray-100);
-      color: var(--primary-color);
-      font-size: 0.86rem;
-      border-radius: calculateRem(3px);
-      font-weight: bold;
-      padding: calculateRem(8px);
-      & > .dropdown.icon {
-        margin: 0 0 0 calculateRem(8px);
-      }
-      @media screen and (min-width: 1024px) {
-        color: var(--primary-theme-contrast);
-        border: 0;
-        font-weight: 500;
-        padding: calculateRem(8px) 0;
-        top:calculateRem(4px);
-      }
-      .menu {
-        width: 100%;
-        right: 0;
-        left: inherit;
-        background: var(--sb-language-dropdown-bg);
-        & > .item {
-          font-size: 0.86rem !important;
-          color: var(--sb-language-dropdown-item) !important;
-          &:hover{
-            background: var(--sb-language-dropdown-item-active) !important;
-          }
-        }
-        & > .active.item {
-          color: var(--primary-color) !important;
-          background: var(--sb-language-dropdown-item-active) !important;
-        }
-      }
-    }
-  }
-  *[dir="rtl"] {
-    .ui.menu .language-selector .ui.dropdown {
-      & > .dropdown.icon {
-        margin: 0 calculateRem(8px) 0 0;
-      }
-      @media screen and (min-width: 1024px) {
-        padding: calculateRem(8px) calculateRem(8px) calculateRem(8px) 0;
-      }
-    }
-  }
-}
 .profile-avtar:hover {
   opacity: 1;
 }
