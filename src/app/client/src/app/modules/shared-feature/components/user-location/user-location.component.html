@@ -14,15 +14,14 @@
           <div class="sb-modal-content o-y-visible" [appTelemetryImpression]="telemetryImpression">
             <form class="sb-form" [formGroup]="userDetailsForm">
               <p class="mb-8">{{resourceService?.messages?.imsg?.m0074}}</p>
-              <div class="sb-field">
-                <label>{{resourceService?.frmelmnts?.lbl?.state}}:</label>
-                <sui-select class="selection" formControlName="state" [options]="allStates" labelField="name"
-                  id="states" valueField="code" name="state"
-                  placeholder="{{resourceService?.frmelmnts?.lbl?.selectState}}" #stateDiv>
-                  <sui-select-option *ngFor="let state of stateDiv.filteredOptions | slice:0:100" [value]="state">
-                  </sui-select-option>
-                </sui-select>
-              </div>
+              <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+                <mat-label>{{resourceService?.frmelmnts?.lbl?.state}}:</mat-label>
+                <mat-select formControlName="state" [options]="allStates" aria-label="name"
+                  class="selection"  id="states" valueField="code" name="state" placeholder="{{resourceService?.frmelmnts?.lbl?.selectState}}" #stateDiv>
+                  <mat-option class="mat-dropdown__options" role="option" *ngFor="let state of stateDiv.filteredOptions | slice:0:100" [value]="state"
+                  attr.aria-label="{{option.name}}">{{option.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
               <div class="sb-fielgroup">
                 <label>{{resourceService?.frmelmnts?.lbl?.district}}:</label>
                 <div class="sb-field">
@@ -31,12 +30,13 @@
                       <div class="ui mini text loader">{{resourceService?.messages?.stmsg?.m0130}}</div>
                     </div>
                   </div>
-                  <sui-select *ngIf="!showDistrictDivLoader" class="selection" formControlName="district"
-                    [options]="allDistricts" id="districts" labelField="name" valueField="code" name="district"
-                    placeholder="{{resourceService?.frmelmnts?.lbl?.selectDistrict}}" #districtDiv>
-                    <sui-select-option *ngFor="let district of districtDiv.filteredOptions | slice:0:100"
-                      [value]="district"></sui-select-option>
-                  </sui-select>
+                  <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16" *ngIf="!showDistrictDivLoader">
+                    <mat-select formControlName="district" [options]="allDistricts" aria-label="name"
+                      class="selection"  id="districts" valueField="code" name="district" placeholder="{{resourceService?.frmelmnts?.lbl?.selectDistrict}}" #districtDiv>
+                      <mat-option class="mat-dropdown__options" role="option" *ngFor="let district of districtDiv.filteredOptions | slice:0:100" [value]="district"
+                      attr.aria-label="{{option.name}}">{{option.name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
                 </div>
               </div>
             </form>
