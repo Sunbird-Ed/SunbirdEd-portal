@@ -21,7 +21,7 @@
     </div>
     <div class="three wide column pt-5">
       <div class="twelve wide column">
-        <div class="field">
+        <!-- <div class="field">
           <div class="content dropdown-content">
            <span class="ShowFilterSubTitle">{{resourceService?.frmelmnts?.lbl?.sortby}}:&nbsp;</span>
             <div class="ui inline dropdown search-dropdown content-filter-sort" id="sortByDropDown">
@@ -36,7 +36,18 @@
               class="link" tabindex="0" (click)="applySorting(sortByOption)">
             </i>
           </div>
-        </div>
+        </div> -->
+        <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16" id="sortByDropDown">
+          <mat-label>{{resourceService?.frmelmnts?.lbl?.sortby}}</mat-label>
+          <mat-select (selectedOptionChange)= "applySorting($event)" [(ngModel)]="sortByOption"
+            class="selection" valueField="field" #selectSort>
+            <mat-option class="mat-dropdown__options" role="option" [options]="sortingOptions" *ngFor="let option of selectSort.filteredOptions" [value]="option"
+            attr.aria-label="{{option}}">{{option}}</mat-option>
+          </mat-select>
+          <i *ngIf="sortByOption && sortByOption.length > 0" [ngClass]=" sortIcon === false ? 'sort content ascending icon' : 'sort content descending icon' "
+            class="link" tabindex="0" (click)="applySorting(sortByOption)">
+          </i>
+        </mat-form-field>
       </div>
     </div>
   </div>
