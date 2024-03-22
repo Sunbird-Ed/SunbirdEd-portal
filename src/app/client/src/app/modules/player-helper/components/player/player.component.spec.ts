@@ -135,6 +135,11 @@ describe('PlayerComponent', () => {
     expect(component.playerConfig.context.cdata).toContain('utm_data');
   });
 
+	it('should throw an error when JSON parsing of UTM data fails', () => {
+		sessionStorage.setItem('UTM', 'invalidJSON');
+		expect(() => component.ngOnInit()).toThrowError('JSON Parse Error => UTM data');
+	});
+
   it('should add user data to player context', () => {
     component.addUserDataToContext();
     expect(component.playerConfig.context.userData).toEqual({
@@ -142,6 +147,29 @@ describe('PlayerComponent', () => {
       lastName: ''
     });
   });
+
+	it('should set showPlayIcon to false when isSingleContent is false', () => {
+		const playerConfig = {
+			metadata: {
+				mimeType: 'questionset',
+				instructions: 'Mock instructions',
+				identifier: 'mockIdentifier'
+			},
+			config: {
+				sideMenu: {
+					showDownload: false
+				}
+			},
+			context: {
+				cdata: []
+			}
+		};
+    sessionStorage.setItem('UTM', JSON.stringify(['utm_data']));
+    component.playerConfig = playerConfig as any;
+		component.isSingleContent = false;
+		component.ngOnInit();
+		expect(component.showPlayIcon).toBe(false);
+	});
 
 	describe("ngOnDestroy", () => {
 		it('should destroy sub', () => {
