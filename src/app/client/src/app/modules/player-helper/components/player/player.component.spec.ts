@@ -693,5 +693,134 @@ describe('PlayerComponent', () => {
 		expect(component.questionScoreReviewEvents.emit).not.toHaveBeenCalled();
 	});
 
+	describe('updateMetadataForDesktop()', () => {
+    it('should update metadata for desktop when download is available', () => {
+      component.playerConfig = {
+        metadata: {
+          desktopAppMetadata: {
+            isAvailable: true
+          },
+          artifactUrl: 'mockArtifactUrl',
+          mimeType: 'mockMimeType'
+        }
+      } as any;
+      component.playerConfig.data = 'mock'
+      component.updateMetadataForDesktop();
+      expect(component.playerConfig.data).toBe('mock');
+      expect(component.playerConfig.metadata.artifactUrl).toBe('mockArtifactUrl');
+    });
+  });
+
+	describe('eventHandler()', () => {
+    it('should store metadata in localStorage for guest user', () => {
+      Object.defineProperty(component['userService'], 'loggedIn', {
+        get: jest.fn(() => false)
+      });
+      component.collectionId = 'mockCollectionId';
+      component.contentId = 'mockContentId';
+      const mockUser = { userProfile: { id: 'guest' } };
+      jest.spyOn(component['userService'], 'userData$' as any, 'get').mockReturnValue(of(mockUser));
+			const localStorageMock = {
+        getItem: jest.fn().mockReturnValue({}),
+        setItem: jest.fn(),
+      };
+      global.localStorage = localStorageMock as any;
+      const eventData = {
+        eid: 'END',
+        metaData: {
+					mimeType: 'application/vnd.ekstep.content-collection',
+				}
+      };
+      component.eventHandler(eventData);
+      const expectedVarName = '';
+      JSON.stringify(eventData.metaData);
+      expect(localStorage.getItem(expectedVarName)).toBe(undefined);
+    });
+  });
+
+	it('should subscribe to contentFullScreenEvent and handle full screen view', () => {
+		 component.playerConfig = {
+			metadata: {
+				mimeType: 'questionset',
+				instructions: 'Mock instructions',
+				identifier: 'mockIdentifier'
+			},
+			config: {
+				sideMenu: {
+					showDownload: false
+				}
+			},
+			context: {
+				cdata: [],
+				userData:[]
+			}
+		} as any;
+		const contentUtilsServiceServiceMock = {
+        contentShareEvent: {
+            emit: jest.fn(),
+            pipe: jest.fn(() => {
+                return of(true)
+            })
+        } as any,
+    };
+    component.contentUtilsServiceService = contentUtilsServiceServiceMock as any;
+		const mockIsFullScreen = true;
+		const navigationHelperServiceSpy = jest.spyOn(component['navigationHelperService'].contentFullScreenEvent, 'pipe').mockReturnValueOnce(of(mockIsFullScreen));
+
+		if (component['navigationHelperService'].handleContentManagerOnFullscreen) {
+			jest.spyOn(component['navigationHelperService'], 'handleContentManagerOnFullscreen').mockImplementation(() => {});
+		}
+		const mockDocument = {
+    getElementsByTagName: jest.fn().mockReturnValue([{ classList: { add: jest.fn() } }]),
+			body: { classList: { add: jest.fn() } }
+		};
+		jest.spyOn(global.document, 'getElementsByTagName').mockImplementation(() => mockDocument.getElementsByTagName());
+		jest.spyOn(mockDocument.body.classList, 'add');
+
+
+		const loadPlayerSpy = jest.spyOn(component, 'loadPlayer').mockImplementation(() => {});
+		component.ngOnInit();
+
+		expect(navigationHelperServiceSpy).toHaveBeenCalled();
+		expect(component.isFullScreenView).toBe(mockIsFullScreen);
+		expect(document.getElementsByTagName).toHaveBeenCalledWith('html');
+		expect(loadPlayerSpy).toHaveBeenCalled();
+	});
+
+
+	it('should subscribe to contentShareEvent and set mobileViewDisplay', () => {
+		component.playerConfig = {
+			metadata: {
+				mimeType: 'questionset',
+				instructions: 'Mock instructions',
+				identifier: 'mockIdentifier'
+			},
+			config: {
+				sideMenu: {
+					showDownload: false
+				}
+			},
+			context: {
+				cdata: [],
+				userData:[]
+			}
+		} as any;
+		const contentUtilsServiceServiceMock = {
+			contentShareEvent: {
+				emit: jest.fn(),
+				pipe: jest.fn(() => {
+					return of(true)
+				})
+			} as any,
+    };
+    component.contentUtilsServiceService = contentUtilsServiceServiceMock as any;
+		component.isMobileOrTab = false;
+		jest.spyOn(component['navigationHelperService'].contentFullScreenEvent, 'pipe').mockReturnValueOnce(of('close'));
+
+		const contentUtilsServiceServiceSpy = jest.spyOn(component['contentUtilsServiceService'].contentShareEvent, 'pipe').mockReturnValueOnce(of('close'));
+
+		component.ngOnInit();
+		expect(contentUtilsServiceServiceSpy).toHaveBeenCalledWith(expect.any(Function));
+	});
 
 });
