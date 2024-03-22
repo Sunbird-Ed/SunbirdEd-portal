@@ -12,6 +12,7 @@ import { OnDestroy } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import { ContentService } from '@sunbird/core';
+import { questionsetRead } from '../../service/quml-player-v2/quml-player-v2.service.spec.data'
 import { PublicPlayerService } from '@sunbird/public';
 import { PlayerComponent } from './player.component';
 
@@ -78,9 +79,10 @@ describe('PlayerComponent', () => {
 	};
 	const playerService :Partial<PublicPlayerService> ={
 		getQuestionSetRead: jest.fn().mockImplementation(() => {
-      return of({})
+      return of(questionsetRead)
     })
-	};
+  };
+
 	const utilService :Partial<UtilService> ={};
 
 	beforeAll(() => {
@@ -566,6 +568,129 @@ describe('PlayerComponent', () => {
 		expect(localStorage.getItem).toHaveBeenCalledTimes(1);
 		expect(userData$Mock.subscribe).toBeInstanceOf(Function);
 		(global as any).location.origin = originalLocationOrigin;
+	});
+
+	it('should set showQumlPlayer to true when mimeType is questionset', () => {
+		component.playerConfig = {
+			metadata: {
+				mimeType: 'mockQuestionSetMimeType',
+				identifier: 'sampleIdentifier',
+				instructions: null
+			},
+			config: {
+				sideMenu: { showDownload: true }
+			}
+		} as any;
+		component.playerService = {
+			getQuestionSetRead: jest.fn().mockImplementation(() => {
+			return of(questionsetRead)
+		})
+		} as any;
+		component.checkForQumlPlayer();
+		expect(component.showQumlPlayer).toBe(false);
+		expect(component.playerConfig.config.sideMenu.showDownload).toBe(false);
+	});
+
+	it('should configure the video player element correctly', () => {
+		component.videoPlayer = {} as any;
+		const nativeElementSpy = document.createElement('div');
+		Object.defineProperty(component.videoPlayer, 'nativeElement', {
+			get: jest.fn().mockReturnValue(nativeElementSpy)
+		});
+		const addEventListenerSpy = jest.spyOn(nativeElementSpy, 'addEventListener');
+		component.videoPlayerConfig();
+		expect(component.videoPlayer.nativeElement.innerHTML).toContain('player-config');
+	});
+
+	it('should emit questionScoreSubmitEvents when event data is ACCESSEVENT', () => {
+		component.questionScoreSubmitEvents = {
+			emit: jest.fn()
+		} as any;
+		component.selfAssessLastAttempt = {
+			emit: jest.fn()
+		} as any;
+		component.questionScoreReviewEvents = {
+			emit: jest.fn()
+		} as any;
+		component.CONSTANT = {
+			ACCESSEVENT: 'ACCESSEVENT',
+			ISLASTATTEMPT: 'ISLASTATTEMPT',
+			MAXATTEMPT: 'MAXATTEMPT',
+			ACCESSREVIEWEVENT: 'ACCESSREVIEWEVENT'
+		} as any;
+
+		const event = { data: 'ACCESSEVENT' };
+		component.generateScoreSubmitEvent(event);
+		expect(component.questionScoreSubmitEvents.emit).toHaveBeenCalledWith(event);
+	});
+
+	it('should emit selfAssessLastAttempt when event data is ISLASTATTEMPT or MAXATTEMPT', () => {
+		component.questionScoreSubmitEvents = {
+			emit: jest.fn()
+		} as any;
+		component.selfAssessLastAttempt = {
+			emit: jest.fn()
+		} as any;
+		component.questionScoreReviewEvents = {
+			emit: jest.fn()
+		} as any;
+		component.CONSTANT = {
+			ACCESSEVENT: 'ACCESSEVENT',
+			ISLASTATTEMPT: 'ISLASTATTEMPT',
+			MAXATTEMPT: 'MAXATTEMPT',
+			ACCESSREVIEWEVENT: 'ACCESSREVIEWEVENT'
+		} as any;
+		const event1 = { data: 'ISLASTATTEMPT' };
+		const event2 = { data: 'MAXATTEMPT' };
+		component.generateScoreSubmitEvent(event1);
+		component.generateScoreSubmitEvent(event2);
+		expect(component.selfAssessLastAttempt.emit).toHaveBeenCalledTimes(2);
+		expect(component.selfAssessLastAttempt.emit).toHaveBeenCalledWith(event1);
+		expect(component.selfAssessLastAttempt.emit).toHaveBeenCalledWith(event2);
+	});
+
+	it('should emit questionScoreReviewEvents when event data is ACCESSREVIEWEVENT', () => {
+		component.questionScoreSubmitEvents = {
+			emit: jest.fn()
+		} as any;
+		component.selfAssessLastAttempt = {
+			emit: jest.fn()
+		} as any;
+		component.questionScoreReviewEvents = {
+			emit: jest.fn()
+		} as any;
+		component.CONSTANT = {
+			ACCESSEVENT: 'ACCESSEVENT',
+			ISLASTATTEMPT: 'ISLASTATTEMPT',
+			MAXATTEMPT: 'MAXATTEMPT',
+			ACCESSREVIEWEVENT: 'ACCESSREVIEWEVENT'
+		} as any;
+		const event = { data: 'ACCESSREVIEWEVENT' };
+		component.generateScoreSubmitEvent(event);
+		expect(component.questionScoreReviewEvents.emit).toHaveBeenCalledWith(event);
+	});
+
+	it('should not emit any event when event data does not match any constant', () => {
+		component.questionScoreSubmitEvents = {
+			emit: jest.fn()
+		} as any;
+		component.selfAssessLastAttempt = {
+			emit: jest.fn()
+		} as any;
+		component.questionScoreReviewEvents = {
+			emit: jest.fn()
+		} as any;
+		component.CONSTANT = {
+			ACCESSEVENT: 'ACCESSEVENT',
+			ISLASTATTEMPT: 'ISLASTATTEMPT',
+			MAXATTEMPT: 'MAXATTEMPT',
+			ACCESSREVIEWEVENT: 'ACCESSREVIEWEVENT'
+		} as any;
+		const event = { data: 'OTHER_EVENT' };
+		component.generateScoreSubmitEvent(event);
+		expect(component.questionScoreSubmitEvents.emit).not.toHaveBeenCalled();
+		expect(component.selfAssessLastAttempt.emit).not.toHaveBeenCalled();
+		expect(component.questionScoreReviewEvents.emit).not.toHaveBeenCalled();
 	});
 
 
