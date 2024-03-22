@@ -602,6 +602,96 @@ describe('PlayerComponent', () => {
 		expect(component.videoPlayer.nativeElement.innerHTML).toContain('player-config');
 	});
 
+	it('should emit questionScoreSubmitEvents when event data is ACCESSEVENT', () => {
+		component.questionScoreSubmitEvents = {
+			emit: jest.fn()
+		} as any;
+		component.selfAssessLastAttempt = {
+			emit: jest.fn()
+		} as any;
+		component.questionScoreReviewEvents = {
+			emit: jest.fn()
+		} as any;
+		component.CONSTANT = {
+			ACCESSEVENT: 'ACCESSEVENT',
+			ISLASTATTEMPT: 'ISLASTATTEMPT',
+			MAXATTEMPT: 'MAXATTEMPT',
+			ACCESSREVIEWEVENT: 'ACCESSREVIEWEVENT'
+		} as any;
+
+		const event = { data: 'ACCESSEVENT' };
+		component.generateScoreSubmitEvent(event);
+		expect(component.questionScoreSubmitEvents.emit).toHaveBeenCalledWith(event);
+	});
+
+	it('should emit selfAssessLastAttempt when event data is ISLASTATTEMPT or MAXATTEMPT', () => {
+		component.questionScoreSubmitEvents = {
+			emit: jest.fn()
+		} as any;
+		component.selfAssessLastAttempt = {
+			emit: jest.fn()
+		} as any;
+		component.questionScoreReviewEvents = {
+			emit: jest.fn()
+		} as any;
+		component.CONSTANT = {
+			ACCESSEVENT: 'ACCESSEVENT',
+			ISLASTATTEMPT: 'ISLASTATTEMPT',
+			MAXATTEMPT: 'MAXATTEMPT',
+			ACCESSREVIEWEVENT: 'ACCESSREVIEWEVENT'
+		} as any;
+		const event1 = { data: 'ISLASTATTEMPT' };
+		const event2 = { data: 'MAXATTEMPT' };
+		component.generateScoreSubmitEvent(event1);
+		component.generateScoreSubmitEvent(event2);
+		expect(component.selfAssessLastAttempt.emit).toHaveBeenCalledTimes(2);
+		expect(component.selfAssessLastAttempt.emit).toHaveBeenCalledWith(event1);
+		expect(component.selfAssessLastAttempt.emit).toHaveBeenCalledWith(event2);
+	});
+
+	it('should emit questionScoreReviewEvents when event data is ACCESSREVIEWEVENT', () => {
+		component.questionScoreSubmitEvents = {
+			emit: jest.fn()
+		} as any;
+		component.selfAssessLastAttempt = {
+			emit: jest.fn()
+		} as any;
+		component.questionScoreReviewEvents = {
+			emit: jest.fn()
+		} as any;
+		component.CONSTANT = {
+			ACCESSEVENT: 'ACCESSEVENT',
+			ISLASTATTEMPT: 'ISLASTATTEMPT',
+			MAXATTEMPT: 'MAXATTEMPT',
+			ACCESSREVIEWEVENT: 'ACCESSREVIEWEVENT'
+		} as any;
+		const event = { data: 'ACCESSREVIEWEVENT' };
+		component.generateScoreSubmitEvent(event);
+		expect(component.questionScoreReviewEvents.emit).toHaveBeenCalledWith(event);
+	});
+
+	it('should not emit any event when event data does not match any constant', () => {
+		component.questionScoreSubmitEvents = {
+			emit: jest.fn()
+		} as any;
+		component.selfAssessLastAttempt = {
+			emit: jest.fn()
+		} as any;
+		component.questionScoreReviewEvents = {
+			emit: jest.fn()
+		} as any;
+		component.CONSTANT = {
+			ACCESSEVENT: 'ACCESSEVENT',
+			ISLASTATTEMPT: 'ISLASTATTEMPT',
+			MAXATTEMPT: 'MAXATTEMPT',
+			ACCESSREVIEWEVENT: 'ACCESSREVIEWEVENT'
+		} as any;
+		const event = { data: 'OTHER_EVENT' };
+		component.generateScoreSubmitEvent(event);
+		expect(component.questionScoreSubmitEvents.emit).not.toHaveBeenCalled();
+		expect(component.selfAssessLastAttempt.emit).not.toHaveBeenCalled();
+		expect(component.questionScoreReviewEvents.emit).not.toHaveBeenCalled();
+	});
 
 
 });
