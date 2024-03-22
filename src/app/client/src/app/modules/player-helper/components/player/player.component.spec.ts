@@ -140,13 +140,26 @@ describe('PlayerComponent', () => {
 		expect(() => component.ngOnInit()).toThrowError('JSON Parse Error => UTM data');
 	});
 
-  it('should add user data to player context', () => {
-    component.addUserDataToContext();
-    expect(component.playerConfig.context.userData).toEqual({
-      firstName: 'Guest',
-      lastName: ''
-    });
-  });
+  describe('addUserDataToContext',() =>{
+	it('should add user data to player context', () => {
+		component.addUserDataToContext();
+		expect(component.playerConfig.context.userData).toEqual({
+		firstName: 'Guest',
+		lastName: ''
+		});
+	});
+
+	it('should add user data to player context when user not logged in',() =>{
+		Object.defineProperty(userService, 'loggedIn', { get: jest.fn(() => false) });
+		component.addUserDataToContext();
+		
+		expect(component['userService'].loggedIn).toBeFalsy;
+		expect(component.playerConfig.context.userData).toEqual({
+			firstName: 'Guest',
+			lastName: ''
+		});
+	});
+   })
 
 	it('should set showPlayIcon to false when isSingleContent is false', () => {
 		const playerConfig = {
@@ -181,6 +194,18 @@ describe('PlayerComponent', () => {
 				expect(component.unsubscribe.next).toHaveBeenCalled();
 				expect(component.unsubscribe.complete).toHaveBeenCalled();
 		});
+
+		it('should call remove of playerElement  when content window not present',() =>{
+			component.contentIframe ={
+				nativeElement:{
+					remove: jest.fn()
+				}
+			} as any 
+			component.ngOnDestroy();
+
+			expect(component.contentIframe.nativeElement.remove).toHaveBeenCalled();
+		});
+
   });
 
 	it('should load player in ngAfterViewInit if playerConfig is set', () => {
@@ -472,6 +497,7 @@ describe('PlayerComponent', () => {
         eid: 'END',
         metaData: {}
     };
+	Object.defineProperty(userService, 'loggedIn', { get: jest.fn(() => true) });
     component['eventHandler'](event);
     expect(userService.loggedIn).toBe(true);
     expect(userService.userData$).toBeTruthy();
