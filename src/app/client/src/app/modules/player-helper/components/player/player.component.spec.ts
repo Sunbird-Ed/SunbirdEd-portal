@@ -12,6 +12,7 @@ import { OnDestroy } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import { ContentService } from '@sunbird/core';
+import { questionsetRead } from '../../service/quml-player-v2/quml-player-v2.service.spec.data'
 import { PublicPlayerService } from '@sunbird/public';
 import { PlayerComponent } from './player.component';
 
@@ -78,9 +79,10 @@ describe('PlayerComponent', () => {
 	};
 	const playerService :Partial<PublicPlayerService> ={
 		getQuestionSetRead: jest.fn().mockImplementation(() => {
-      return of({})
+      return of(questionsetRead)
     })
-	};
+  };
+
 	const utilService :Partial<UtilService> ={};
 
 	beforeAll(() => {
@@ -567,6 +569,39 @@ describe('PlayerComponent', () => {
 		expect(userData$Mock.subscribe).toBeInstanceOf(Function);
 		(global as any).location.origin = originalLocationOrigin;
 	});
+
+	it('should set showQumlPlayer to true when mimeType is questionset', () => {
+		component.playerConfig = {
+			metadata: {
+				mimeType: 'mockQuestionSetMimeType',
+				identifier: 'sampleIdentifier',
+				instructions: null
+			},
+			config: {
+				sideMenu: { showDownload: true }
+			}
+		} as any;
+		component.playerService = {
+			getQuestionSetRead: jest.fn().mockImplementation(() => {
+			return of(questionsetRead)
+		})
+		} as any;
+		component.checkForQumlPlayer();
+		expect(component.showQumlPlayer).toBe(false);
+		expect(component.playerConfig.config.sideMenu.showDownload).toBe(false);
+	});
+
+	it('should configure the video player element correctly', () => {
+		component.videoPlayer = {} as any;
+		const nativeElementSpy = document.createElement('div');
+		Object.defineProperty(component.videoPlayer, 'nativeElement', {
+			get: jest.fn().mockReturnValue(nativeElementSpy)
+		});
+		const addEventListenerSpy = jest.spyOn(nativeElementSpy, 'addEventListener');
+		component.videoPlayerConfig();
+		expect(component.videoPlayer.nativeElement.innerHTML).toContain('player-config');
+	});
+
 
 
 });
