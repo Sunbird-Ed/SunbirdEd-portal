@@ -152,7 +152,7 @@ describe('PlayerComponent', () => {
 	it('should add user data to player context when user not logged in',() =>{
 		Object.defineProperty(userService, 'loggedIn', { get: jest.fn(() => false) });
 		component.addUserDataToContext();
-		
+
 		expect(component['userService'].loggedIn).toBeFalsy;
 		expect(component.playerConfig.context.userData).toEqual({
 			firstName: 'Guest',
@@ -200,7 +200,7 @@ describe('PlayerComponent', () => {
 				nativeElement:{
 					remove: jest.fn()
 				}
-			} as any 
+			} as any
 			component.ngOnDestroy();
 
 			expect(component.contentIframe.nativeElement.remove).toHaveBeenCalled();
@@ -774,11 +774,6 @@ describe('PlayerComponent', () => {
       component.contentId = 'mockContentId';
       const mockUser = { userProfile: { id: 'guest' } };
       jest.spyOn(component['userService'], 'userData$' as any, 'get').mockReturnValue(of(mockUser));
-			const localStorageMock = {
-        getItem: jest.fn().mockReturnValue({}),
-        setItem: jest.fn(),
-      };
-      global.localStorage = localStorageMock as any;
       const eventData = {
         eid: 'END',
         metaData: {
