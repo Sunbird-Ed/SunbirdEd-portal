@@ -166,6 +166,33 @@ describe('PlayerComponent', () => {
 				expect(component.unsubscribe.next).toHaveBeenCalled();
 				expect(component.unsubscribe.complete).toHaveBeenCalled();
 		});
+
+		it('should call remove of playerElement  when content window not present',() =>{
+			component.contentIframe ={
+				nativeElement:{
+					remove: jest.fn()
+				}
+			} as any 
+			component.ngOnDestroy();
+
+			expect(component.contentIframe.nativeElement.remove).toHaveBeenCalled();
+		});
+
+		it('should call post method of contentservice when content window is present',() =>{
+			component.contentIframe ={
+				nativeElement:{
+					remove: jest.fn(),
+					contentWindow:{
+						telemetry_web:{
+							tList: {element1: 'mock-element1',element2: 'mock-element2'}
+						}
+					}
+				}
+			} as any 
+			component.ngOnDestroy();
+
+			expect(component['contentService'].post).toHaveBeenCalledWith('');
+		});
   });
 
 	it('should load player in ngAfterViewInit if playerConfig is set', () => {
