@@ -134,14 +134,27 @@ describe('PlayerComponent', () => {
     component.ngOnInit();
     expect(component.playerConfig.context.cdata).toContain('utm_data');
   });
+  
+	describe('addUserDataToContext',()=>{
+		it('should add user data to player context when user logged in', () => {
+			component.addUserDataToContext();
+			expect(component.playerConfig.context.userData).toEqual({
+			firstName: 'Guest',
+			lastName: ''
+			});
+		});
 
-  it('should add user data to player context', () => {
-    component.addUserDataToContext();
-    expect(component.playerConfig.context.userData).toEqual({
-      firstName: 'Guest',
-      lastName: ''
-    });
-  });
+		it('should add user data to player context when user not logged in',() =>{
+            Object.defineProperty(userService, 'loggedIn', { get: jest.fn(() => false) });
+			component.addUserDataToContext();
+            
+			expect(component['userService'].loggedIn).toBeFalsy;
+			expect(component.playerConfig.context.userData).toEqual({
+				firstName: 'Guest',
+				lastName: ''
+			});
+		});
+	});
 
 	describe("ngOnDestroy", () => {
 		it('should destroy sub', () => {
@@ -444,6 +457,7 @@ describe('PlayerComponent', () => {
         eid: 'END',
         metaData: {}
     };
+	Object.defineProperty(userService, 'loggedIn', { get: jest.fn(() => true) });
     component['eventHandler'](event);
     expect(userService.loggedIn).toBe(true);
     expect(userService.userData$).toBeTruthy();
