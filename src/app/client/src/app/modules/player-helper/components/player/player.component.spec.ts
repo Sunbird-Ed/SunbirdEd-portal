@@ -891,5 +891,35 @@ describe('PlayerComponent', () => {
 		component.generateContentReadEvent(undefined);
 	});
 
+	it('should call videoPlayerConfig after 200ms if playerType is "video-player"', () => {
+		const nativeElementMock = {
+      append: jest.fn()
+    };
+		component.videoPlayer = {
+      nativeElement: nativeElementMock as any
+    };
+    component.playerConfig = true as any;
+    component.playerType = "video-player";
+		component.playerService = {
+			getQuestionSetRead: jest.fn().mockImplementation(() => {
+				return of(questionsetRead)
+			})
+		} as any;
+    jest.useFakeTimers();
+		const spy = jest.spyOn(component, 'videoPlayerConfig');
+    component.ngAfterViewInit();
+    jest.advanceTimersByTime(200);
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should not call videoPlayerConfig if playerType is not "video-player"', () => {
+    component.playerConfig = true as any;
+    component.playerType = "audio-player";
+    jest.useFakeTimers();
+    component.ngAfterViewInit();
+    jest.advanceTimersByTime(200);
+    expect(playerService.getQuestionSetRead).not.toHaveBeenCalled();
+  });
+
 
 });
