@@ -823,4 +823,24 @@ describe('PlayerComponent', () => {
 		expect(contentUtilsServiceServiceSpy).toHaveBeenCalledWith(expect.any(Function));
 	});
 
+	it('should clone event if newPlayerEvent is true', () => {
+    const mockEvent = { };
+    const cloneDeepSpy = jest.spyOn(_, 'cloneDeep');
+    component.generateContentReadEvent(mockEvent, true);
+    expect(cloneDeepSpy).toHaveBeenCalledWith(mockEvent);
+  });
+
+  it('should not clone event if newPlayerEvent is false or not provided', () => {
+    const mockEvent = {  };
+    const cloneDeepSpy = jest.spyOn(_, 'cloneDeep');
+    component.generateContentReadEvent(mockEvent);
+    expect(cloneDeepSpy).not.toHaveBeenCalled();
+  });
+
+	it('should return early if eventCopy is falsy', () => {
+		component.generateContentReadEvent(null);
+		component.generateContentReadEvent(undefined);
+	});
+
+
 });
