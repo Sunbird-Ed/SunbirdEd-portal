@@ -114,7 +114,7 @@
     "jsonld-signatures": "^6.0.0",
     "jspdf": "1.5.3",
     "jszip": "^3.7.1",
-    "katex": "^0.12.0",
+    "katex": "^0.16.10",
     "leaflet": "^1.7.1",
     "lodash-es": "^4.17.15",
     "marked": "1.1.1",
