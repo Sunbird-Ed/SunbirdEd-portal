@@ -135,6 +135,28 @@ describe('PlayerComponent', () => {
     expect(component.playerConfig.context.cdata).toContain('utm_data');
   });
 
+	it('should append UTM data to player context if context.cdata does not exist', () => {
+		const playerConfig = {
+			metadata: {
+				mimeType: 'questionset',
+				instructions: 'Mock instructions',
+				identifier: 'mockIdentifier'
+			},
+			config: {
+				sideMenu: {
+					showDownload: false
+				}
+			},
+			context: {}
+		};
+
+		const utmData = ['utm_data'];
+		sessionStorage.setItem('UTM', JSON.stringify(utmData));
+		component.playerConfig = playerConfig as any;
+		component.ngOnInit();
+		expect(component.playerConfig.context.cdata).toEqual(utmData);
+	});
+
 	it('should throw an error when JSON parsing of UTM data fails', () => {
 		sessionStorage.setItem('UTM', 'invalidJSON');
 		expect(() => component.ngOnInit()).toThrowError('JSON Parse Error => UTM data');
@@ -836,6 +858,50 @@ describe('PlayerComponent', () => {
 		expect(loadPlayerSpy).toHaveBeenCalled();
 	});
 
+	it('should subscribe to contentFullScreenEvent and handle exit full screen view', () => {
+		component.playerConfig = {
+			metadata: {
+				mimeType: 'questionset',
+				instructions: 'Mock instructions',
+				identifier: 'mockIdentifier'
+			},
+			config: {
+				sideMenu: {
+					showDownload: false
+				}
+			},
+			context: {
+				cdata: [],
+				userData:[]
+			}
+		} as any;
+		const contentUtilsServiceServiceMock = {
+        contentShareEvent: {
+            emit: jest.fn(),
+            pipe: jest.fn(() => {
+                return of(false)
+            })
+        } as any,
+    };
+    component.contentUtilsServiceService = contentUtilsServiceServiceMock as any;
+		const mockIsFullScreen = false;
+		const navigationHelperServiceSpy = jest.spyOn(component['navigationHelperService'].contentFullScreenEvent, 'pipe').mockReturnValueOnce(of(mockIsFullScreen));
+
+		if (component['navigationHelperService'].handleContentManagerOnFullscreen) {
+			jest.spyOn(component['navigationHelperService'], 'handleContentManagerOnFullscreen').mockImplementation(() => {});
+		}
+		const mockDocument = {
+    getElementsByTagName: jest.fn().mockReturnValue([{ classList: { remove: jest.fn() } }]),
+			body: { classList: { remove: jest.fn() } }
+		};
+		jest.spyOn(global.document, 'getElementsByTagName').mockImplementation(() => mockDocument.getElementsByTagName());
+		jest.spyOn(mockDocument.body.classList, 'remove');
+		component.ngOnInit();
+
+		expect(navigationHelperServiceSpy).toHaveBeenCalled();
+		expect(component.isFullScreenView).toBe(mockIsFullScreen);
+		expect(document.getElementsByTagName).toHaveBeenCalledWith('html');
+	});
 
 	it('should subscribe to contentShareEvent and set mobileViewDisplay', () => {
 		component.playerConfig = {
@@ -890,6 +956,36 @@ describe('PlayerComponent', () => {
 		component.generateContentReadEvent(null);
 		component.generateContentReadEvent(undefined);
 	});
+
+	it('should call videoPlayerConfig after 200ms if playerType is "video-player"', () => {
+		const nativeElementMock = {
+      append: jest.fn()
+    };
+		component.videoPlayer = {
+      nativeElement: nativeElementMock as any
+    };
+    component.playerConfig = true as any;
+    component.playerType = "video-player";
+		component.playerService = {
+			getQuestionSetRead: jest.fn().mockImplementation(() => {
+				return of(questionsetRead)
+			})
+		} as any;
+    jest.useFakeTimers();
+		const spy = jest.spyOn(component, 'videoPlayerConfig');
+    component.ngAfterViewInit();
+    jest.advanceTimersByTime(200);
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should not call videoPlayerConfig if playerType is not "video-player"', () => {
+    component.playerConfig = true as any;
+    component.playerType = "audio-player";
+    jest.useFakeTimers();
+    component.ngAfterViewInit();
+    jest.advanceTimersByTime(200);
+    expect(playerService.getQuestionSetRead).not.toHaveBeenCalled();
+  });
 
 
 });
