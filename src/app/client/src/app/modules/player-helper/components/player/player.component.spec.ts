@@ -1,3 +1,4 @@
+import { metaData } from './../../../shared/components/alert-modal/alert-modal.component.spec.data';
 import { ConfigService,NavigationHelperService,UtilService } from '@sunbird/shared';
 import { Component,AfterViewInit,ViewChild,ElementRef,Input,Output,EventEmitter,OnChanges,HostListener,OnInit,ChangeDetectorRef } from '@angular/core';
 import { _ } from 'lodash-es';
@@ -43,7 +44,8 @@ describe('PlayerComponent', () => {
 	const resourceService :Partial<ResourceService> ={};
 	const navigationHelperService: Partial<NavigationHelperService> = {
 		contentFullScreenEvent: new EventEmitter<any>(),
-    emitFullScreenEvent: jest.fn(),
+        emitFullScreenEvent: jest.fn(),
+		handleContentManagerOnFullscreen: jest.fn(),
 	};
 	const deviceDetectorService :Partial<DeviceDetectorService> ={
 		isMobile: jest.fn().mockReturnValue(true),
@@ -508,9 +510,16 @@ describe('PlayerComponent', () => {
     const generateLimitedAttemptEventSpy = jest.spyOn(component, 'generatelimitedAttemptEvent');
     const event = {
         eid: 'exdata',
+		metaData: {
+			mimeType: 'application/vnd.ekstep.content-collection',
+		}
     };
     component.eventHandler(event);
     expect(generateLimitedAttemptEventSpy).toHaveBeenCalledWith(event);
+	const expectedVarName = '';
+	JSON.stringify(event.metaData);
+    expect(localStorage.getItem(expectedVarName)).toBeNull;
+	
   });
 
 	it('should handle event of type END', () => {
@@ -986,6 +995,54 @@ describe('PlayerComponent', () => {
     jest.advanceTimersByTime(200);
     expect(playerService.getQuestionSetRead).not.toHaveBeenCalled();
   });
+  
 
+  describe('generateContentReadEvent',() =>{
+	it('should handle generateContentReadEvent method correctly', () => {
+		const event = {
+			detail: {
+				telemetryData: {
+					eid: 'IMPRESSION',
+					object: { id: 'sample-content-id' }
+				}
+			}
+		};
+		jest.spyOn(component as any,'emitSceneChangeEvent' as any).mockReturnValue(of({}));
+		component.generateContentReadEvent(event);
+
+		expect(component.emitSceneChangeEvent).toHaveBeenCalled();
+	});
+
+	it('should call questionScoreSubmitEvents emit method on generateContentReadEvent', () => {
+		const event = {
+			detail: {
+				telemetryData: {
+					eid: 'END',
+					object: { id: 'sample-content-id' }
+				}
+			}
+		};
+		component.playerConfig ={
+			metadata:{
+				mimeType: 'mock-mimetype'
+			}
+		} as any;
+		component.configService ={
+			appConfig: {
+				PLAYER_CONFIG:{
+					MIME_TYPE:{
+						questionset: 'mock-mimetype'
+					}
+				}
+			}
+		} as any,
+		jest.spyOn(component as any,'emitSceneChangeEvent' as any).mockReturnValue(of({}));
+		component.generateContentReadEvent(event);
+
+		expect(component.questionScoreSubmitEvents.emit).toHaveBeenCalled();
+	});
+  });
+  
+  
 
 });
