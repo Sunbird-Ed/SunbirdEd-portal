@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ObservationService, ObservationUtilService } from '@sunbird/core';
 import { Location } from '@angular/common';
 import { ComponentDeactivate } from '../guard/can-deactivate.guard';
-import { AssessmentInfo, Evidence, IAssessmentDetails, Section, SlQuestionnaireService } from '@shikshalokam/sl-questionnaire';
+// import { AssessmentInfo, Evidence, IAssessmentDetails, Section, SlQuestionnaireService } from '@shikshalokam/sl-questionnaire';
 import { QuestionnaireService } from '../questionnaire.service';
 
 @Component({
@@ -27,10 +27,10 @@ export class QuestionnaireComponent
   FIRST_PANEL_LAYOUT;
   SECOND_PANEL_LAYOUT;
   questionnaireForm: UntypedFormGroup;
-  sections: Section[];
-  evidence: Evidence;
-  queryParams: any;
-  assessmentInfo: AssessmentInfo;
+  // sections: Section[];
+  // evidence: Evidence;
+  // queryParams: any;
+  // assessmentInfo: AssessmentInfo;
   canLeave = false;
   constructor(
     public layoutService: LayoutService,
@@ -41,7 +41,7 @@ export class QuestionnaireComponent
     private observationService: ObservationService,
     private location: Location,
     private observationUtilService: ObservationUtilService,
-    private slQService: SlQuestionnaireService,
+    // private slQService: SlQuestionnaireService,
     private questionnaireService: QuestionnaireService
   ) {
     super();
@@ -60,7 +60,7 @@ export class QuestionnaireComponent
   ngOnInit() {
     this.initConfiguration();
     this.activatedRoute.queryParams.subscribe((params) => {
-      this.queryParams = params;
+      // this.queryParams = params;
       this.getQuestionnare();
     });
     this.questionnaireForm = this.fb.group({});
@@ -73,22 +73,22 @@ export class QuestionnaireComponent
 
   getQuestionnare() {
     const paramOptions = {
-      url:
-        this.config.urlConFig.URLS.OBSERVATION.GET_ASSESSMENT +
-        `${this.queryParams.observationId}?entityId=${this.queryParams.entityId}&submissionNumber=${this.queryParams.submissionNumber}&ecmMethod=${this.queryParams.evidenceCode}`,
-    };
-    this.observationService.post(paramOptions).subscribe(
-      (data: IAssessmentDetails) => {
-        this.assessmentInfo = data.result;
-        this.assessmentInfo = this.slQService.mapSubmissionToAssessment(
-          this.assessmentInfo
-        );
-        this.evidence = data.result.assessment.evidences[0];
-        this.evidence.startTime = Date.now();
-        this.sections = this.evidence.sections;
-      },
-      (error) => {}
-    );
+    //   url:
+    //     this.config.urlConFig.URLS.OBSERVATION.GET_ASSESSMENT +
+    //     // `${this.queryParams.observationId}?entityId=${this.queryParams.entityId}&submissionNumber=${this.queryParams.submissionNumber}&ecmMethod=${this.queryParams.evidenceCode}`,
+    // };
+    // this.observationService.post(paramOptions).subscribe(
+      // (data: IAssessmentDetails) => {
+      //   this.assessmentInfo = data.result;
+      //   this.assessmentInfo = this.slQService.mapSubmissionToAssessment(
+      //     this.assessmentInfo
+      //   );
+      //   this.evidence = data.result.assessment.evidences[0];
+      //   this.evidence.startTime = Date.now();
+      //   this.sections = this.evidence.sections;
+     }
+    //   (error) => {}
+    // );
   }
 
   initConfiguration() {
@@ -132,51 +132,51 @@ export class QuestionnaireComponent
     if (!userConfirm) {
       return;
     }
-    const evidenceData = this.slQService.getEvidenceData(
-      this.evidence,
-      this.questionnaireForm.value
-    );
+    // const evidenceData = this.slQService.getEvidenceData(
+    //   this.evidence,
+    //   this.questionnaireForm.value
+    // );
 
-    save ? (evidenceData['status'] = 'draft') : null;
+    // save ? (evidenceData['status'] = 'draft') : null;
     const profile: Object = await this.observationUtilService.getProfileDataList();
     if (!profile) {
       return;
     }
-    const payload = {...profile, ...{evidence: evidenceData} };
+    // const payload = {...profile, ...{evidence: evidenceData} };
 
-    this.submitEvidence(payload);
+    // this.submitEvidence(payload);
   }
 
   submitEvidence(payload) {
-    const paramOptions = {
-      url:
-        this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_SUBMISSION_UPDATE +
-        `${this.assessmentInfo.assessment.submissionId}`,
-      data: payload,
-    };
-    this.observationService.post(paramOptions).subscribe(
-      async (data) => {
-        if (payload.evidence.status === 'draft') {
-          this.backOrContinue();
-          return;
-        }
-       const userResponse = await this.openAlert(
-          this.resourceService.frmelmnts.lbl.successfullySubmitted
-       );
-        if (userResponse) {
-          this.canLeave = true;
-          this.location.back();
-        }
+    // const paramOptions = {
+    //   url:
+    //     this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_SUBMISSION_UPDATE +
+    //     // `${this.assessmentInfo.assessment.submissionId}`,
+    //   // data: payload,
+    // };
+    // this.observationService.post(paramOptions).subscribe(
+      // async (data) => {
+      //   if (payload.evidence.status === 'draft') {
+      //     this.backOrContinue();
+      //     return;
+      //   }
+      //  const userResponse = await this.openAlert(
+      //     this.resourceService.frmelmnts.lbl.successfullySubmitted
+      //  );
+      //   if (userResponse) {
+      //     this.canLeave = true;
+      //     this.location.back();
+      //   }
 
-      },
-      (error) => {
-        this.openAlert(
-          payload.evidence.status === 'draft'
-            ? this.resourceService.frmelmnts.lbl.failedToSave
-            : this.resourceService.frmelmnts.lbl.submissionFailed
-        );
-      }
-    );
+      // },
+    //   (error) => {
+    //     this.openAlert(
+    //       payload.evidence.status === 'draft'
+    //         ? this.resourceService.frmelmnts.lbl.failedToSave
+    //         : this.resourceService.frmelmnts.lbl.submissionFailed
+    //     );
+    //   }
+    // );
   }
 
   async backOrContinue() {

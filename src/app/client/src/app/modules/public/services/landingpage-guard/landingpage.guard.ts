@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { environment } from '@sunbird/environment';
 @Injectable()
-export class LandingpageGuard implements CanActivate {
+export class LandingpageGuard  {
   constructor(private router: Router) { }
   canActivate(
     next: ActivatedRouteSnapshot,

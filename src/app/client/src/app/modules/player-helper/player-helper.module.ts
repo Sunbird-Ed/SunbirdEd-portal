@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SuiModule } from 'ng2-semantic-ui-v9';
+import { SuiModule } from '@project-sunbird/ng2-semantic-ui';
 import { TelemetryModule } from '@sunbird/telemetry';
 import {
   ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
@@ -20,14 +20,14 @@ import {QumlPlayerV2Service} from './service/quml-player-v2/quml-player-v2.servi
 import { QumlLibraryModule as QsLibModule, QuestionCursor as QsCursor} from '@project-sunbird/sunbird-quml-player';
 // import { QumlLibraryModule, QuestionCursor } from '@project-sunbird/sunbird-quml-player-v9';
 import { EditorCursor } from '@project-sunbird/sunbird-collection-editor';
-import { EditorCursor as QsEditorCursor } from '@project-sunbird/sunbird-questionset-editor';
+// import { EditorCursor as QsEditorCursor } from '@project-sunbird/sunbird-questionset-editor';
 import { SunbirdEpubPlayerModule } from '@project-sunbird/sunbird-epub-player-v9';
 import { SunbirdVideoPlayerModule } from '@project-sunbird/sunbird-video-player-v9';
 import { CslFrameworkService } from '../public/services/csl-framework/csl-framework.service';
 
 @NgModule({
   providers: [
-    { provide: QsEditorCursor, useExisting: QumlPlayerV2Service },
+    // { provide: QsEditorCursor, useExisting: QumlPlayerV2Service },
     { provide: QsCursor, useExisting: QumlPlayerV2Service },
     CslFrameworkService
     // { provide: QuestionCursor, useExisting: QumlPlayerService },

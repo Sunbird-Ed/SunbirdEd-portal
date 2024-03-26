@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanLoad } from '@angular/router';
+import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { PermissionService } from './../services';
 import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
 import { Observable } from 'rxjs';
@@ -11,7 +11,7 @@ import * as _ from 'lodash-es';
  * based on roles and permission of logged in user.
 */
 @Injectable()
-export class AuthGuard implements CanActivate, CanLoad {
+export class AuthGuard  {
     /**
       * reference of permissionService service.
     */

@@ -11,7 +11,7 @@ import {
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import * as _ from 'lodash-es';
-import { SuiModalService } from 'ng2-semantic-ui-v9';
+import { SuiModalService } from '@project-sunbird/ng2-semantic-ui';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 /**
  * The upforReview component search for all the upforreview content

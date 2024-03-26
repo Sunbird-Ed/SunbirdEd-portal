@@ -1,5 +1,5 @@
 
-import { SuiModal } from 'ng2-semantic-ui-v9';
+import { SuiModal } from '@project-sunbird/ng2-semantic-ui';
 import { Location, LocationStrategy } from '@angular/common';
 import { ResourceService } from '../../services';
 import * as _ from 'lodash-es';
