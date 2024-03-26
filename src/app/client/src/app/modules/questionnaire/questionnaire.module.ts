@@ -8,7 +8,7 @@ import { CanDeactivateGuard } from './guard/can-deactivate.guard';
 // import {
 //   // SlQuestionnaireModule, //nonn-ivy library
 //   SlTranslateService,
-// } from '@shikshalokam/sl-questionnaire';
+// } from '@shikshalokam/sl-questionnaire'; //commented for ng2-semantic-ui-v9 removal
 
 @NgModule({
   declarations: [QuestionnaireComponent],

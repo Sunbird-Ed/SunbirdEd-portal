@@ -14,7 +14,7 @@ describe("Alert-Modal Component", () => {
   const mockLocation: Partial<Location> = {
     back: jest.fn()
   };
-  const mockModal: Partial<SuiModal<IAlertModalContext, void, void>> = {
+  const mockModal: Partial<SuiModal<void, void>> = {
     deny:jest.fn(),
     approve:jest.fn()
   };
@@ -44,7 +44,7 @@ describe("Alert-Modal Component", () => {
   }
   beforeAll(() => {
     component = new AlertModalComponent(
-      mockModal as SuiModal<IAlertModalContext, void, void>,
+      mockModal as SuiModal<void, void>,
       mockLocation as Location,
       mockResourceService as ResourceService,
       mockLocationStratergy as LocationStrategy
