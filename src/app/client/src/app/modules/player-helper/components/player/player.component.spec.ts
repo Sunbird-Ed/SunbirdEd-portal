@@ -667,13 +667,24 @@ describe('PlayerComponent', () => {
 		expect(component.playerConfig.config.sideMenu.showDownload).toBe(false);
 	});
 
+	it('should configure the pdf player element correctly', () => {
+		component.pdfPlayer = {} as any;
+		const nativeElementSpy = document.createElement('div');
+		Object.defineProperty(component.pdfPlayer, 'nativeElement', {
+			get: jest.fn().mockReturnValue(nativeElementSpy)
+		});
+		jest.spyOn(nativeElementSpy, 'addEventListener');
+		component.pdfPlayerConfig();
+		expect(component.pdfPlayer.nativeElement.innerHTML).toContain('player-config');
+	});
+
 	it('should configure the video player element correctly', () => {
 		component.videoPlayer = {} as any;
 		const nativeElementSpy = document.createElement('div');
 		Object.defineProperty(component.videoPlayer, 'nativeElement', {
 			get: jest.fn().mockReturnValue(nativeElementSpy)
 		});
-		const addEventListenerSpy = jest.spyOn(nativeElementSpy, 'addEventListener');
+		jest.spyOn(nativeElementSpy, 'addEventListener');
 		component.videoPlayerConfig();
 		expect(component.videoPlayer.nativeElement.innerHTML).toContain('player-config');
 	});
@@ -987,5 +998,34 @@ describe('PlayerComponent', () => {
     expect(playerService.getQuestionSetRead).not.toHaveBeenCalled();
   });
 
+	it('should call videoPlayerConfig after 200ms if playerType is "video-player"', () => {
+		const nativeElementMock = {
+      append: jest.fn()
+    };
+		component.pdfPlayer = {
+      nativeElement: nativeElementMock as any
+    };
+    component.playerConfig = true as any;
+    component.playerType = "pdf-player";
+		component.playerService = {
+			getQuestionSetRead: jest.fn().mockImplementation(() => {
+				return of(questionsetRead)
+			})
+		} as any;
+    jest.useFakeTimers();
+		const spy = jest.spyOn(component, 'pdfPlayerConfig');
+    component.ngAfterViewInit();
+    jest.advanceTimersByTime(200);
+    expect(spy).toHaveBeenCalled();
+  });
+
+	it('should not call any player config method for unknown playerType', () => {
+		component.playerType = 'unknown-player';
+		const videoPlayerConfigSpy = jest.spyOn(component, 'videoPlayerConfig');
+		const pdfPlayerConfigSpy = jest.spyOn(component, 'pdfPlayerConfig');
+		component.configurePlayer();
+		expect(videoPlayerConfigSpy).not.toHaveBeenCalled();
+		expect(pdfPlayerConfigSpy).not.toHaveBeenCalled();
+  });
 
 });
