@@ -1,5 +1,7 @@
 
-<app-modal-wrapper *ngIf="!showFrameworkSelection" class="sb-batch-modal" [mustScroll]="true" *ngIf='showUpdateModal' (dismissed)="redirect()" [transitionDuration]="0" [config]="{disableClose: true, size: 'normal', panelClass: 'material-modal'}" #updateBatchModal>
+<app-modal-wrapper *ngIf="showUpdateModal"
+  [config]="{disableClose: false, size: 'normal', width: '47.25rem', panelClass: ['material-modal']}"
+  (dismiss)="redirect()" #updateBatchModal>
     <div mat-dialog-title class="flex-jc-center">
       <span *ngIf="!showFormInViewMode">{{resourceService?.frmelmnts?.intxt?.t0007}}</span>
       <span *ngIf="showFormInViewMode">{{resourceService?.frmelmnts?.intxt?.t0015}}</span>
