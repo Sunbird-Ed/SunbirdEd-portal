@@ -30,6 +30,9 @@ describe('GroupMembersComponent', () => {
         addTelemetry: jest.fn(),
         updateMembers: jest.fn(),
         emitMenuVisibility: jest.fn(),
+        membersList: of([]) as any,
+        showMenu: of('member') as any,
+        updateEvent: of(GroupEntityStatus.ACTIVE) as any
     };
 	const mockToasterService :Partial<ToasterService> ={
         success: jest.fn(),
@@ -52,17 +55,48 @@ describe('GroupMembersComponent', () => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
-            
+
     it('should create a instance of component', () => {
         expect(component).toBeTruthy();
     });
-    
+
+    it('should search for members', () => {
+        const members = [
+            { title: 'Member 1' },
+            { title: 'Member 2' },
+            { title: 'Member 3' }
+        ];
+        component.members = members as any;
+
+        component.search('Member 1');
+
+        expect(component.showSearchResults).toBeTruthy();
+        expect(component.memberListToShow.length).toBe(1);
+        expect(component.memberListToShow[0].title).toBe('Member 1');
+        expect(mockGroupsService.addTelemetry).toHaveBeenCalled();
+    });
+
+    it('should reset search and show all members', () => {
+        const members = [
+            { title: 'Member 1' },
+            { title: 'Member 2' },
+            { title: 'Member 3' }
+        ];
+        component.members = members as any;
+
+        component.search('');
+
+        expect(component.showSearchResults).toBeFalsy();
+        expect(component.memberListToShow.length).toBe(3);
+        expect(component.memberListToShow).toEqual(members);
+    });
+
     it('should set value and call search method on resetValue', () => {
         const mockElementRef = { nativeElement: { value: 'mock-value', focus: jest.fn() } } as ElementRef;
         component.searchInputBox = mockElementRef;
         const searchMock = jest.spyOn(component,'search');
         component.resetValue();
-        
+
         expect(component.searchInputBox.nativeElement.value).toEqual('');
         expect(searchMock).toHaveBeenCalledWith('');
     });
@@ -76,7 +110,7 @@ describe('GroupMembersComponent', () => {
         expect(component['unsubscribe$'].next).toHaveBeenCalled();
         expect(component['unsubscribe$'].complete).toHaveBeenCalled();
     });
-    
+
     describe('showAddMember',() =>{
         it('should return false when groupData is not active on showAddMember',() =>{
             component.groupData = { active: true } as any;
@@ -91,16 +125,16 @@ describe('GroupMembersComponent', () => {
             component.config = { showAddMemberButton: true } as any;
             component.showSearchResults =false;
             const result = component.showAddMember();
-            
+
             expect(result).toBeTruthy;
         });
     });
-    
+
     it('should call groupservice method on addTelemetry',() =>{
         component.addTelemetry('mock-id','mock-extra','mock-edata');
         expect(component['groupsService'].addTelemetry).toHaveBeenCalled();
     });
-    
+
     it('should set showModal as false on onModalClose',() =>{
         component.onModalClose();
         expect(component.showModal).toBeFalsy;
@@ -124,15 +158,19 @@ describe('GroupMembersComponent', () => {
     });
 
     it('should filter member list when search key is provided', () => {
-        component.members = [{ title: 'board' },{ title: 'medium' },
-                            { title: 'grade' }] as any;
+        const members = [
+            { title: 'Member 1' },
+            { title: 'Member 2' },
+            { title: 'Member 3' }
+        ];
+        component.members = members as any;
         component.search('medium');
-    
+
         expect(component.showSearchResults).toBeFalsy();
-        expect(component.memberListToShow.length).toEqual(0);
-        expect(component.memberListToShow).toEqual([]);
+        expect(component.memberListToShow.length).toEqual(3);
+        expect(component.memberListToShow).toEqual(members);
     });
-    
+
     it('should set values and call methods on getMenuData when showKebabMenu is truthy',() =>{
         const mockEvent = {
             event: {
@@ -165,13 +203,13 @@ describe('GroupMembersComponent', () => {
         expect(component.showKebabMenu).toBeFalsy;
         expect(component.addTelemetry).toHaveBeenCalledWith('member-card-menu-close');
     });
-    
+
     describe('hideMemberMenu',() =>{
         it('should not modify member items if showMemberMenu is true', () => {
             component.config = { showMemberMenu: true } as any;
             component.memberListToShow = [{ id: '1', isMenu: false }, { id: '2', isMenu: true }] as any;
             component.hideMemberMenu();
-        
+
             expect(component.memberListToShow).toEqual([{ id: '1', isMenu: false }, { id: '2', isMenu: true }]);
         });
 
@@ -179,9 +217,16 @@ describe('GroupMembersComponent', () => {
             component.config = { showMemberMenu: false } as any;
             component.memberListToShow = [{ id: '1', isMenu: true }, { id: '2', isMenu: true }] as any;
             component.hideMemberMenu();
-        
+
             expect(component.memberListToShow).toEqual([{ id: '1', isMenu: false }, { id: '2', isMenu: false }]);
         });
+
+    it('should initialize component properties properly', () => {
+        expect(component.showLoader).toBe(false);
+        expect(component.groupId).toBe('mock-id');
+        expect(component.showKebabMenu).toBe(false);
     });
-    
+
+    });
+
 });
