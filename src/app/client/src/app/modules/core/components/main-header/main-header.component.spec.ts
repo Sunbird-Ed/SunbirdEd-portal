@@ -55,6 +55,7 @@ describe('MainHeaderComponent', () => {
     events: of({}) as any
   };
   const mockpermissionService: Partial<PermissionService> = {};
+
   const mockUserService: Partial<UserService> = {
     getGuestUser: jest.fn(() => of({
       userId: 'sample-uid',
@@ -177,8 +178,7 @@ describe('MainHeaderComponent', () => {
       mockdeviceRegisterService as DeviceRegisterService,
       mockconnectionService as ConnectionService,
       mockelectronService as ElectronService,
-      mockobservationUtilService as ObservationUtilService
-    )
+      mockobservationUtilService as ObservationUtilService)
   });
 
   beforeEach(() => {

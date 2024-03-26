@@ -8,7 +8,7 @@ import { EnrollBatchComponent } from './components/batch/enroll-batch/enroll-bat
 import { CreateBatchComponent } from './components/batch/create-batch/create-batch.component';
 import { UpdateCourseBatchComponent } from './components/batch/update-course-batch/update-course-batch.component';
 import { BatchRoutingModule } from './batch-routing.module';
-import { SuiModule } from 'ng2-semantic-ui-v9';
+import { SuiModule } from '@project-sunbird/ng2-semantic-ui';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
 

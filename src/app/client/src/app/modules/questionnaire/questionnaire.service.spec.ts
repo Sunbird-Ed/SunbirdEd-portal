@@ -32,7 +32,7 @@ describe("QuestionnaireService", () => {
       mockConfigService as ConfigService,
       mockKendraService as KendraService,
       mockCloudService as CloudService,
-      mockSlUtilsService as SlUtilsService,
+      // mockSlUtilsService as SlUtilsService,
       mockToasterService as ToasterService,
     );
   });

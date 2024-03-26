@@ -6,7 +6,7 @@ import { SharedModule } from '@sunbird/shared';
 import {
   SuiModalModule, SuiProgressModule, SuiAccordionModule,
   SuiTabsModule, SuiSelectModule, SuiDimmerModule, SuiCollapseModule, SuiDropdownModule
-} from 'ng2-semantic-ui-v9';
+} from '@project-sunbird/ng2-semantic-ui';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';

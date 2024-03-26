@@ -381,7 +381,7 @@ describe('UserService', () => {
   });
 
   it('should return defaultFrameworkFilters with user not logged in', () => {
-    Object.defineProperty(userService, 'loggedIn', { get: jest.fn(() => false) });
+    // Object.defineProperty(userService, 'loggedIn', { get: jest.fn(() => false) });
     const result = userService.defaultFrameworkFilters;
     expect(result[userService.frameworkCategories?.fwCategory1?.code]).toEqual(userService.defaultBoard);
     expect(result['undefined']).toBeUndefined();

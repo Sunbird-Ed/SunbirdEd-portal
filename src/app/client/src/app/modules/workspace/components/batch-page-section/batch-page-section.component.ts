@@ -8,7 +8,7 @@ import {
 } from '@sunbird/shared';
 import { WorkSpaceService, BatchService } from '../../services';
 import * as _ from 'lodash-es';
-import { SuiModalService } from 'ng2-semantic-ui-v9';
+import { SuiModalService } from '@project-sunbird/ng2-semantic-ui';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';

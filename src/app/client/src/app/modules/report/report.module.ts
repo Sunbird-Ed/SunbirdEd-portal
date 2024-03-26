@@ -1,8 +1,8 @@
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SuiModule, SuiModalModule } from 'ng2-semantic-ui-v9';
+import { SuiModule, SuiModalModule } from '@project-sunbird/ng2-semantic-ui';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
@@ -11,7 +11,7 @@ import { ReportRoutingModule } from './report-routing.module';
 import { SolutionListingComponent, EntityListComponent, ReportViewComponent, AllEvidenceComponent } from './components';
 import { DataTablesModule } from 'angular-datatables';
 import { DashletModule } from '@project-sunbird/sb-dashlet';
-import { SlReportsLibraryModule } from '@shikshalokam/sl-reports-library';
+// import { SlReportsLibraryModule } from '@shikshalokam/sl-reports-library';
 import { MatTabsModule } from '@angular/material/tabs';
 
 
@@ -35,10 +35,11 @@ import { MatTabsModule } from '@angular/material/tabs';
     ReportRoutingModule,
     DataTablesModule,
     DashletModule.forRoot(),
-    SlReportsLibraryModule,
+    // SlReportsLibraryModule,
     MatTabsModule
   ],
-  providers: []
+  providers: [],
+  schemas:[CUSTOM_ELEMENTS_SCHEMA]
 
 })
 export class ReportModule { }
