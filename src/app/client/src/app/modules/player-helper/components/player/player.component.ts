@@ -72,6 +72,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
  * Dom element reference of contentRatingModal
  */
   @ViewChild('modal') modal;
+  @ViewChild('videoPlayer') videoPlayer: ElementRef;
 
   @HostListener('window:popstate', ['$event'])
   onPopState(event) {
@@ -154,12 +155,39 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   /**
-   * loadPlayer method will be called
+   * Executes after the view and child views are initialized. 
+   * This method checks if the player configuration is available.
+   * If the player configuration is available, it loads the player using the 'loadPlayer()' method.
+   * Additionally, if the player type is 'video-player', it asynchronously configures the video player 
+   * by invoking the 'videoPlayerConfig()' method after a delay of 200 milliseconds.
+   * This delay ensures that any necessary setup operations are completed before configuring the video player.
    */
   ngAfterViewInit() {
     if (this.playerConfig) {
       this.loadPlayer();
+      setTimeout(() => {
+        if (this.playerType === "video-player") {
+          this.videoPlayerConfig();
+        }
+      }, 200);
     }
+  }
+  /**
+   * Constructs a video player configuration and initializes the video player element dynamically.
+   * This method creates a custom video player element, configures it with the provided player configuration,
+   * and appends it to the native element reference of the video player.
+   * Additionally, it adds event listeners for 'playerEvent' and 'telemetryEvent' to handle player events and telemetry events respectively.
+   */
+  videoPlayerConfig() {
+    const videoPlayerElement = document.createElement('sunbird-video-player');
+    videoPlayerElement.setAttribute('player-config', JSON.stringify(this.playerConfig));
+    this.videoPlayer.nativeElement.append(videoPlayerElement);
+    videoPlayerElement.addEventListener('playerEvent', (event) => {
+      this.eventHandler(event);
+    });
+    videoPlayerElement.addEventListener('telemetryEvent', (event) => {
+      this.generateContentReadEvent(event, true);
+    });
   }
 
   ngOnChanges(changes) {
