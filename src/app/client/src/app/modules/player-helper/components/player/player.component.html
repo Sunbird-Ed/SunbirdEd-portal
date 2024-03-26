@@ -14,14 +14,12 @@
     <iframe #contentIframe id="contentPlayer" title="Content Player" aria-label="Content Player" class="contentViewerIframeShadow" [ngClass]="{'player-fullscreen': isFullScreenView}" name="contentPlayer"></iframe>
 </div>
 <div *ngIf="!isMobileOrTab && showNewPlayer && !isContentDeleted" class="w-100 h-100">
-        <div class="contentViewerIframeShadow" [ngClass]="{'player-fullscreen content-full-video': isFullScreenView}">
+        <div class="contentViewerIframeShadow" [ngClass]="{'player-fullscreen content-full-video': isFullScreenView}">          
         <sunbird-pdf-player *ngIf="playerType === 'pdf-player'" [playerConfig]="playerConfig"
           (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)">
         </sunbird-pdf-player>
 
-        <sunbird-video-player *ngIf="playerType === 'video-player'" [playerConfig]="playerConfig"
-          (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)">
-        </sunbird-video-player>
+        <div #videoPlayer *ngIf="playerType === 'video-player'" class= "custom-video-player" ></div>
 
         <sunbird-epub-player *ngIf="playerType === 'epub-player'" [playerConfig]="playerConfig" [showFullScreen]="isFullScreenView"
         (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></sunbird-epub-player>
