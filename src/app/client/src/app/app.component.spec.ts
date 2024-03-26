@@ -211,9 +211,9 @@ describe('App Component', () => {
     });
 
     it('should show global consent popup for non custodian user', (done) => {
-      Object.defineProperty(mockUserService, 'userProfile', {
-        get: jest.fn(() => {rootOrgId: 'ROOT_ORG'})
-      });
+      // Object.defineProperty(mockUserService, 'userProfile', {
+      //   get: jest.fn(() => {rootOrgId: 'ROOT_ORG'})
+      // });
       Object.defineProperty(mockUserService, 'loggedIn', {
         get: jest.fn(() => true)
       });
