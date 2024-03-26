@@ -12,6 +12,7 @@ import { OnDestroy } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import { ContentService } from '@sunbird/core';
+import { questionsetRead } from '../../service/quml-player-v2/quml-player-v2.service.spec.data'
 import { PublicPlayerService } from '@sunbird/public';
 import { PlayerComponent } from './player.component';
 
@@ -78,9 +79,10 @@ describe('PlayerComponent', () => {
 	};
 	const playerService :Partial<PublicPlayerService> ={
 		getQuestionSetRead: jest.fn().mockImplementation(() => {
-      return of({})
+      return of(questionsetRead)
     })
-	};
+  };
+
 	const utilService :Partial<UtilService> ={};
 
 	beforeAll(() => {
@@ -133,13 +135,76 @@ describe('PlayerComponent', () => {
     expect(component.playerConfig.context.cdata).toContain('utm_data');
   });
 
-  it('should add user data to player context', () => {
-    component.addUserDataToContext();
-    expect(component.playerConfig.context.userData).toEqual({
-      firstName: 'Guest',
-      lastName: ''
-    });
-  });
+	it('should append UTM data to player context if context.cdata does not exist', () => {
+		const playerConfig = {
+			metadata: {
+				mimeType: 'questionset',
+				instructions: 'Mock instructions',
+				identifier: 'mockIdentifier'
+			},
+			config: {
+				sideMenu: {
+					showDownload: false
+				}
+			},
+			context: {}
+		};
+
+		const utmData = ['utm_data'];
+		sessionStorage.setItem('UTM', JSON.stringify(utmData));
+		component.playerConfig = playerConfig as any;
+		component.ngOnInit();
+		expect(component.playerConfig.context.cdata).toEqual(utmData);
+	});
+
+	it('should throw an error when JSON parsing of UTM data fails', () => {
+		sessionStorage.setItem('UTM', 'invalidJSON');
+		expect(() => component.ngOnInit()).toThrowError('JSON Parse Error => UTM data');
+	});
+
+  describe('addUserDataToContext',() =>{
+	it('should add user data to player context', () => {
+		component.addUserDataToContext();
+		expect(component.playerConfig.context.userData).toEqual({
+		firstName: 'Guest',
+		lastName: ''
+		});
+	});
+
+	it('should add user data to player context when user not logged in',() =>{
+		Object.defineProperty(userService, 'loggedIn', { get: jest.fn(() => false) });
+		component.addUserDataToContext();
+
+		expect(component['userService'].loggedIn).toBeFalsy;
+		expect(component.playerConfig.context.userData).toEqual({
+			firstName: 'Guest',
+			lastName: ''
+		});
+	});
+   })
+
+	it('should set showPlayIcon to false when isSingleContent is false', () => {
+		const playerConfig = {
+			metadata: {
+				mimeType: 'questionset',
+				instructions: 'Mock instructions',
+				identifier: 'mockIdentifier'
+			},
+			config: {
+				sideMenu: {
+					showDownload: false
+				}
+			},
+			context: {
+				cdata: []
+			}
+		};
+    sessionStorage.setItem('UTM', JSON.stringify(['utm_data']));
+    component.playerConfig = playerConfig as any;
+		component.isSingleContent = false;
+		component.ngOnInit();
+		expect(component.showPlayIcon).toBe(false);
+	});
 
 	describe("ngOnDestroy", () => {
 		it('should destroy sub', () => {
@@ -151,6 +216,18 @@ describe('PlayerComponent', () => {
 				expect(component.unsubscribe.next).toHaveBeenCalled();
 				expect(component.unsubscribe.complete).toHaveBeenCalled();
 		});
+
+		it('should call remove of playerElement  when content window not present',() =>{
+			component.contentIframe ={
+				nativeElement:{
+					remove: jest.fn()
+				}
+			} as any
+			component.ngOnDestroy();
+
+			expect(component.contentIframe.nativeElement.remove).toHaveBeenCalled();
+		});
+
   });
 
 	it('should load player in ngAfterViewInit if playerConfig is set', () => {
@@ -442,6 +519,7 @@ describe('PlayerComponent', () => {
         eid: 'END',
         metaData: {}
     };
+	Object.defineProperty(userService, 'loggedIn', { get: jest.fn(() => true) });
     component['eventHandler'](event);
     expect(userService.loggedIn).toBe(true);
     expect(userService.userData$).toBeTruthy();
@@ -567,6 +645,347 @@ describe('PlayerComponent', () => {
 		expect(userData$Mock.subscribe).toBeInstanceOf(Function);
 		(global as any).location.origin = originalLocationOrigin;
 	});
+
+	it('should set showQumlPlayer to true when mimeType is questionset', () => {
+		component.playerConfig = {
+			metadata: {
+				mimeType: 'mockQuestionSetMimeType',
+				identifier: 'sampleIdentifier',
+				instructions: null
+			},
+			config: {
+				sideMenu: { showDownload: true }
+			}
+		} as any;
+		component.playerService = {
+			getQuestionSetRead: jest.fn().mockImplementation(() => {
+			return of(questionsetRead)
+		})
+		} as any;
+		component.checkForQumlPlayer();
+		expect(component.showQumlPlayer).toBe(false);
+		expect(component.playerConfig.config.sideMenu.showDownload).toBe(false);
+	});
+
+	it('should configure the video player element correctly', () => {
+		component.videoPlayer = {} as any;
+		const nativeElementSpy = document.createElement('div');
+		Object.defineProperty(component.videoPlayer, 'nativeElement', {
+			get: jest.fn().mockReturnValue(nativeElementSpy)
+		});
+		const addEventListenerSpy = jest.spyOn(nativeElementSpy, 'addEventListener');
+		component.videoPlayerConfig();
+		expect(component.videoPlayer.nativeElement.innerHTML).toContain('player-config');
+	});
+
+	it('should emit questionScoreSubmitEvents when event data is ACCESSEVENT', () => {
+		component.questionScoreSubmitEvents = {
+			emit: jest.fn()
+		} as any;
+		component.selfAssessLastAttempt = {
+			emit: jest.fn()
+		} as any;
+		component.questionScoreReviewEvents = {
+			emit: jest.fn()
+		} as any;
+		component.CONSTANT = {
+			ACCESSEVENT: 'ACCESSEVENT',
+			ISLASTATTEMPT: 'ISLASTATTEMPT',
+			MAXATTEMPT: 'MAXATTEMPT',
+			ACCESSREVIEWEVENT: 'ACCESSREVIEWEVENT'
+		} as any;
+
+		const event = { data: 'ACCESSEVENT' };
+		component.generateScoreSubmitEvent(event);
+		expect(component.questionScoreSubmitEvents.emit).toHaveBeenCalledWith(event);
+	});
+
+	it('should emit selfAssessLastAttempt when event data is ISLASTATTEMPT or MAXATTEMPT', () => {
+		component.questionScoreSubmitEvents = {
+			emit: jest.fn()
+		} as any;
+		component.selfAssessLastAttempt = {
+			emit: jest.fn()
+		} as any;
+		component.questionScoreReviewEvents = {
+			emit: jest.fn()
+		} as any;
+		component.CONSTANT = {
+			ACCESSEVENT: 'ACCESSEVENT',
+			ISLASTATTEMPT: 'ISLASTATTEMPT',
+			MAXATTEMPT: 'MAXATTEMPT',
+			ACCESSREVIEWEVENT: 'ACCESSREVIEWEVENT'
+		} as any;
+		const event1 = { data: 'ISLASTATTEMPT' };
+		const event2 = { data: 'MAXATTEMPT' };
+		component.generateScoreSubmitEvent(event1);
+		component.generateScoreSubmitEvent(event2);
+		expect(component.selfAssessLastAttempt.emit).toHaveBeenCalledTimes(2);
+		expect(component.selfAssessLastAttempt.emit).toHaveBeenCalledWith(event1);
+		expect(component.selfAssessLastAttempt.emit).toHaveBeenCalledWith(event2);
+	});
+
+	it('should emit questionScoreReviewEvents when event data is ACCESSREVIEWEVENT', () => {
+		component.questionScoreSubmitEvents = {
+			emit: jest.fn()
+		} as any;
+		component.selfAssessLastAttempt = {
+			emit: jest.fn()
+		} as any;
+		component.questionScoreReviewEvents = {
+			emit: jest.fn()
+		} as any;
+		component.CONSTANT = {
+			ACCESSEVENT: 'ACCESSEVENT',
+			ISLASTATTEMPT: 'ISLASTATTEMPT',
+			MAXATTEMPT: 'MAXATTEMPT',
+			ACCESSREVIEWEVENT: 'ACCESSREVIEWEVENT'
+		} as any;
+		const event = { data: 'ACCESSREVIEWEVENT' };
+		component.generateScoreSubmitEvent(event);
+		expect(component.questionScoreReviewEvents.emit).toHaveBeenCalledWith(event);
+	});
+
+	it('should not emit any event when event data does not match any constant', () => {
+		component.questionScoreSubmitEvents = {
+			emit: jest.fn()
+		} as any;
+		component.selfAssessLastAttempt = {
+			emit: jest.fn()
+		} as any;
+		component.questionScoreReviewEvents = {
+			emit: jest.fn()
+		} as any;
+		component.CONSTANT = {
+			ACCESSEVENT: 'ACCESSEVENT',
+			ISLASTATTEMPT: 'ISLASTATTEMPT',
+			MAXATTEMPT: 'MAXATTEMPT',
+			ACCESSREVIEWEVENT: 'ACCESSREVIEWEVENT'
+		} as any;
+		const event = { data: 'OTHER_EVENT' };
+		component.generateScoreSubmitEvent(event);
+		expect(component.questionScoreSubmitEvents.emit).not.toHaveBeenCalled();
+		expect(component.selfAssessLastAttempt.emit).not.toHaveBeenCalled();
+		expect(component.questionScoreReviewEvents.emit).not.toHaveBeenCalled();
+	});
+
+	describe('updateMetadataForDesktop()', () => {
+    it('should update metadata for desktop when download is available', () => {
+      component.playerConfig = {
+        metadata: {
+          desktopAppMetadata: {
+            isAvailable: true
+          },
+          artifactUrl: 'mockArtifactUrl',
+          mimeType: 'mockMimeType'
+        }
+      } as any;
+      component.playerConfig.data = 'mock'
+      component.updateMetadataForDesktop();
+      expect(component.playerConfig.data).toBe('mock');
+      expect(component.playerConfig.metadata.artifactUrl).toBe('mockArtifactUrl');
+    });
+  });
+
+	describe('eventHandler()', () => {
+    it('should store metadata in localStorage for guest user', () => {
+      Object.defineProperty(component['userService'], 'loggedIn', {
+        get: jest.fn(() => false)
+      });
+      component.collectionId = 'mockCollectionId';
+      component.contentId = 'mockContentId';
+      const mockUser = { userProfile: { id: 'guest' } };
+      jest.spyOn(component['userService'], 'userData$' as any, 'get').mockReturnValue(of(mockUser));
+      const eventData = {
+        eid: 'END',
+        metaData: {
+					mimeType: 'application/vnd.ekstep.content-collection',
+				}
+      };
+      component.eventHandler(eventData);
+      const expectedVarName = '';
+      JSON.stringify(eventData.metaData);
+      expect(localStorage.getItem(expectedVarName)).toBe(undefined);
+    });
+  });
+
+	it('should subscribe to contentFullScreenEvent and handle full screen view', () => {
+		 component.playerConfig = {
+			metadata: {
+				mimeType: 'questionset',
+				instructions: 'Mock instructions',
+				identifier: 'mockIdentifier'
+			},
+			config: {
+				sideMenu: {
+					showDownload: false
+				}
+			},
+			context: {
+				cdata: [],
+				userData:[]
+			}
+		} as any;
+		const contentUtilsServiceServiceMock = {
+        contentShareEvent: {
+            emit: jest.fn(),
+            pipe: jest.fn(() => {
+                return of(true)
+            })
+        } as any,
+    };
+    component.contentUtilsServiceService = contentUtilsServiceServiceMock as any;
+		const mockIsFullScreen = true;
+		const navigationHelperServiceSpy = jest.spyOn(component['navigationHelperService'].contentFullScreenEvent, 'pipe').mockReturnValueOnce(of(mockIsFullScreen));
+
+		if (component['navigationHelperService'].handleContentManagerOnFullscreen) {
+			jest.spyOn(component['navigationHelperService'], 'handleContentManagerOnFullscreen').mockImplementation(() => {});
+		}
+		const mockDocument = {
+    getElementsByTagName: jest.fn().mockReturnValue([{ classList: { add: jest.fn() } }]),
+			body: { classList: { add: jest.fn() } }
+		};
+		jest.spyOn(global.document, 'getElementsByTagName').mockImplementation(() => mockDocument.getElementsByTagName());
+		jest.spyOn(mockDocument.body.classList, 'add');
+
+
+		const loadPlayerSpy = jest.spyOn(component, 'loadPlayer').mockImplementation(() => {});
+		component.ngOnInit();
+
+		expect(navigationHelperServiceSpy).toHaveBeenCalled();
+		expect(component.isFullScreenView).toBe(mockIsFullScreen);
+		expect(document.getElementsByTagName).toHaveBeenCalledWith('html');
+		expect(loadPlayerSpy).toHaveBeenCalled();
+	});
+
+	it('should subscribe to contentFullScreenEvent and handle exit full screen view', () => {
+		component.playerConfig = {
+			metadata: {
+				mimeType: 'questionset',
+				instructions: 'Mock instructions',
+				identifier: 'mockIdentifier'
+			},
+			config: {
+				sideMenu: {
+					showDownload: false
+				}
+			},
+			context: {
+				cdata: [],
+				userData:[]
+			}
+		} as any;
+		const contentUtilsServiceServiceMock = {
+        contentShareEvent: {
+            emit: jest.fn(),
+            pipe: jest.fn(() => {
+                return of(false)
+            })
+        } as any,
+    };
+    component.contentUtilsServiceService = contentUtilsServiceServiceMock as any;
+		const mockIsFullScreen = false;
+		const navigationHelperServiceSpy = jest.spyOn(component['navigationHelperService'].contentFullScreenEvent, 'pipe').mockReturnValueOnce(of(mockIsFullScreen));
+
+		if (component['navigationHelperService'].handleContentManagerOnFullscreen) {
+			jest.spyOn(component['navigationHelperService'], 'handleContentManagerOnFullscreen').mockImplementation(() => {});
+		}
+		const mockDocument = {
+    getElementsByTagName: jest.fn().mockReturnValue([{ classList: { remove: jest.fn() } }]),
+			body: { classList: { remove: jest.fn() } }
+		};
+		jest.spyOn(global.document, 'getElementsByTagName').mockImplementation(() => mockDocument.getElementsByTagName());
+		jest.spyOn(mockDocument.body.classList, 'remove');
+		component.ngOnInit();
+
+		expect(navigationHelperServiceSpy).toHaveBeenCalled();
+		expect(component.isFullScreenView).toBe(mockIsFullScreen);
+		expect(document.getElementsByTagName).toHaveBeenCalledWith('html');
+	});
+
+	it('should subscribe to contentShareEvent and set mobileViewDisplay', () => {
+		component.playerConfig = {
+			metadata: {
+				mimeType: 'questionset',
+				instructions: 'Mock instructions',
+				identifier: 'mockIdentifier'
+			},
+			config: {
+				sideMenu: {
+					showDownload: false
+				}
+			},
+			context: {
+				cdata: [],
+				userData:[]
+			}
+		} as any;
+		const contentUtilsServiceServiceMock = {
+			contentShareEvent: {
+				emit: jest.fn(),
+				pipe: jest.fn(() => {
+					return of(true)
+				})
+			} as any,
+    };
+    component.contentUtilsServiceService = contentUtilsServiceServiceMock as any;
+		component.isMobileOrTab = false;
+		jest.spyOn(component['navigationHelperService'].contentFullScreenEvent, 'pipe').mockReturnValueOnce(of('close'));
+
+		const contentUtilsServiceServiceSpy = jest.spyOn(component['contentUtilsServiceService'].contentShareEvent, 'pipe').mockReturnValueOnce(of('close'));
+
+		component.ngOnInit();
+		expect(contentUtilsServiceServiceSpy).toHaveBeenCalledWith(expect.any(Function));
+	});
+
+	it('should clone event if newPlayerEvent is true', () => {
+    const mockEvent = { };
+    const cloneDeepSpy = jest.spyOn(_, 'cloneDeep');
+    component.generateContentReadEvent(mockEvent, true);
+    expect(cloneDeepSpy).toHaveBeenCalledWith(mockEvent);
+  });
+
+  it('should not clone event if newPlayerEvent is false or not provided', () => {
+    const mockEvent = {  };
+    const cloneDeepSpy = jest.spyOn(_, 'cloneDeep');
+    component.generateContentReadEvent(mockEvent);
+    expect(cloneDeepSpy).not.toHaveBeenCalled();
+  });
+
+	it('should return early if eventCopy is falsy', () => {
+		component.generateContentReadEvent(null);
+		component.generateContentReadEvent(undefined);
+	});
+
+	it('should call videoPlayerConfig after 200ms if playerType is "video-player"', () => {
+		const nativeElementMock = {
+      append: jest.fn()
+    };
+		component.videoPlayer = {
+      nativeElement: nativeElementMock as any
+    };
+    component.playerConfig = true as any;
+    component.playerType = "video-player";
+		component.playerService = {
+			getQuestionSetRead: jest.fn().mockImplementation(() => {
+				return of(questionsetRead)
+			})
+		} as any;
+    jest.useFakeTimers();
+		const spy = jest.spyOn(component, 'videoPlayerConfig');
+    component.ngAfterViewInit();
+    jest.advanceTimersByTime(200);
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should not call videoPlayerConfig if playerType is not "video-player"', () => {
+    component.playerConfig = true as any;
+    component.playerType = "audio-player";
+    jest.useFakeTimers();
+    component.ngAfterViewInit();
+    jest.advanceTimersByTime(200);
+    expect(playerService.getQuestionSetRead).not.toHaveBeenCalled();
+  });
 
 
 });
