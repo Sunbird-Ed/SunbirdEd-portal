@@ -12,10 +12,10 @@
 //  you can delete this line and instead use:
 //    `@include mat.legacy-typography-hierarchy(mat.define-typography-config());`
 /* TODO(mdc-migration): Remove all-legacy-component-typographies once all legacy components are migrated*/
-@include mat.all-component-typographies();
-@include mat.all-component-typographies();
+// @include mat.all-component-typographies();
+// @include mat.all-component-typographies();
 /* TODO(mdc-migration): Remove legacy-core once all legacy components are migrated*/
-@include mat.core();
+// @include mat.core();
 @include mat.core();
 
 $custom-typography: mat.define-typography-config($font-family: "var(--font-stack-en) !important",
@@ -30,7 +30,7 @@ $custom-typography: mat.define-typography-config($font-family: "var(--font-stack
 html,
 body {
   height: 100%;
-  font-size: mat.font-size($custom-typography, body-1);
+  font-size: mat.font-size($custom-typography, body-2);
 }
 
 body {
