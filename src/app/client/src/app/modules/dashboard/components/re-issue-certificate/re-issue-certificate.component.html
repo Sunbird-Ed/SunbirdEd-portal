@@ -61,15 +61,15 @@
           <div class="re-issue-list-content__data">
             <div class="ui stackable grid mt-0" *ngFor="let batch of userData?.courses?.batches">
               <div class="two wide column">
-                <div class="re-issue-status" suiPopup popupHeader="{{batch?.name}}" *ngIf="batch?.name?.length >= 50">{{batch?.name}} </div>
+                <div class="re-issue-status" #tooltip="matTooltip" matTooltip="{{batch?.name}}" *ngIf="batch?.name?.length >= 50">{{batch?.name}} </div>
                 <div class="re-issue-status"  *ngIf="batch?.name?.length < 50">{{batch?.name}} </div>
               </div>
               <div class="two wide column">
-                <div class="re-issue-status" suiPopup popupHeader="{{userData?.userName}}" *ngIf="userData?.userName?.length >= 50">{{userData?.userName}}</div>
+                <div class="re-issue-status" #tooltip="matTooltip" matTooltip="{{userData?.userName}}" *ngIf="userData?.userName?.length >= 50">{{userData?.userName}}</div>
                 <div class="re-issue-status" *ngIf="userData?.userName?.length < 50">{{userData?.userName}}</div>
               </div>
               <div class="two wide column">
-                <div class="re-issue-status" suiPopup popupHeader="{{userData?.district}}" *ngIf="userData?.district?.length >= 48">{{userData?.district}}"></div>
+                <div class="re-issue-status" #tooltip="matTooltip" matTooltip="{{userData?.district}}" *ngIf="userData?.district?.length >= 48">{{userData?.district}}"></div>
                 <div class="re-issue-status" *ngIf="userData?.district?.length < 48">{{userData?.district}}</div>
               </div>
               <div class="two wide column text-center">
