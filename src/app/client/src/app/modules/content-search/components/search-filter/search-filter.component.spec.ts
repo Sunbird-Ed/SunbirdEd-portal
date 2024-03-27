@@ -31,6 +31,7 @@ describe('SearchFilterComponent', () => {
     };
 
     const mockChangeDetectionRef: Partial<ChangeDetectorRef> = {
+        detectChanges: jest.fn(),
     };
     const mockRouter: Partial<Router> = {
         events: of({ id: 1, url: 'sample-url' }) as any,
@@ -303,8 +304,106 @@ describe('SearchFilterComponent', () => {
 
     it('should call getFramework when no boardname is present', () => {
         let obj={}
-    //@ts-ignore
-     component.getFramework(obj);
-     expect(mockContentSearchService.fetchFilter).toHaveBeenCalled();
+        //@ts-ignore
+        component.getFramework(obj);
+        expect(mockContentSearchService.fetchFilter).toHaveBeenCalled();
     });
+
+    it('should fetch filters and emit filterChange event', () => {
+        const mockFilters = {  };
+        const mockAudienceTypeFilter = {  };
+        const queryParams = {
+            sampleBoard: ['board'],
+            sampleMedium: ['medium'],
+            gradeLevel: ['grade-1']
+        };
+        component['fetchAndFormatQueryParams'] = jest.fn(() => of(queryParams));
+        component['getFramework'] = jest.fn(() => of(mockFilters));
+        component['getAudienceTypeFormConfig'] = jest.fn(() => of(mockAudienceTypeFilter));
+        component['fetchFilters']().subscribe(() => {
+            expect(component.filterChange.emit).toHaveBeenCalledWith({
+                status: 'FETCHING'
+            });
+            expect(component['filters']).toEqual({ });
+        });
+        mockChangeDetectionRef.detectChanges();
+    });
+
+    it('should fetch selected filter options and perform necessary operations', () => {
+        const mockFilters = { };
+        jest.spyOn(component, 'fetchFilters' as any).mockReturnValue(of(mockFilters));
+        jest.spyOn(component, 'updateBoardList' as any).mockImplementation(() => {});
+        jest.spyOn(component, 'updateFiltersList' as any).mockImplementation(() => {});
+        jest.spyOn(component, 'emitFilterChangeEvent' as any).mockImplementation(() => {});
+        jest.spyOn(component, 'hardRefreshFilter' as any).mockImplementation(() => {});
+        component['fetchSelectedFilterOptions']().subscribe(() => {
+            expect(component['fetchFilters']).toHaveBeenCalled();
+            expect(component['filters']).toEqual({});
+            expect(component['updateBoardList']).toHaveBeenCalled();
+            expect(component['updateFiltersList' as any]).toHaveBeenCalledWith({ filters: {} });
+            expect(component['emitFilterChangeEvent']).toHaveBeenCalledWith(true);
+            expect(component['hardRefreshFilter' as any]).toHaveBeenCalled();
+        });
+    });
+
+    describe('popFilter', () => {
+        it('should remove the specified index from the selectedFilters', () => {
+            component.selectedFilters = { type1: [1, 2, 3] };
+            const type = 'type1';
+            const index = 2;
+            component['popFilter']({ type, index });
+            expect(component.selectedFilters[type]).toEqual([1, 3]);
+        });
+    });
+
+    describe('pushNewFilter', () => {
+        it('should add a new index to the selectedFilters', () => {
+            component.selectedFilters = {};
+            const type = 'type1';
+            const index = 1;
+            component['pushNewFilter']({ type, index });
+            expect(component.selectedFilters[type]).toEqual([1]);
+        });
+
+        it('should add updatedValues to the selectedFilters when index is null', () => {
+            component.selectedFilters = {};
+            const type = 'type2';
+            const updatedValues = [1, 2, 3];
+            component['pushNewFilter']({ type, updatedValues });
+            expect(component.selectedFilters[type]).toEqual(updatedValues);
+        });
+
+        it('should append index to existing selectedFilters[type] if index is not null', () => {
+            component.selectedFilters = { type1: [2, 3] };
+            const type = 'type1';
+            const index = 1;
+            component['pushNewFilter']({ type, index });
+            expect(component.selectedFilters[type]).toEqual([1, 2, 3]);
+        });
+    });
+
+    describe('getIndicesFromDefaultFilters', () => {
+        it('should return indices of default values for a given type', () => {
+            component.defaultFilters = { type1: [1, 2, 3] };
+            component.allValues = { type1: [1, 2, 3, 4, 5] };
+            const indices = component['getIndicesFromDefaultFilters']({ type: 'type1' });
+            expect(indices).toEqual([0, 1, 2]);
+        });
+
+        it('should return an empty array if default values are not found', () => {
+            component.defaultFilters = {};
+            component.allValues = { type2: [1, 2, 3, 4, 5] };
+            const indices = component['getIndicesFromDefaultFilters']({ type: 'type2' });
+            expect(indices).toEqual([]);
+        });
+
+        it('should return an empty array for certain types if no indices are found', () => {
+            component.defaultFilters = { type3: [1, 2, 3] };
+            component.allValues = { type3: [] };
+            const indices = component['getIndicesFromDefaultFilters']({ type: 'type3' });
+            expect(indices).toEqual([]);
+        });
+    });
+
+
 });
