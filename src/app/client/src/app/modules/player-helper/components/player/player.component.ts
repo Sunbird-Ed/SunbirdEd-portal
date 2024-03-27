@@ -73,7 +73,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
  */
   @ViewChild('modal') modal;
   @ViewChild('videoPlayer') videoPlayer: ElementRef;
-  @ViewChild('pdfPlayer') pdfPlayer: ElementRef
+  @ViewChild('pdfPlayer') pdfPlayer: ElementRef;
+  @ViewChild('epubPlayer') epubPlayer: ElementRef;
 
   @HostListener('window:popstate', ['$event'])
   onPopState(event) {
@@ -180,6 +181,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
    * Depending on the 'playerType' property:
    *   - If the player type is 'video-player', calls the 'videoPlayerConfig' method to configure the video player.
    *   - If the player type is 'pdf-player', calls the 'pdfPlayerConfig' method to configure the PDF player.
+   *   - If the player type is 'epub-player', calls the 'epubPlayerConfig' method to configure the EPub player.
    * 
    * This method ensures that the appropriate configuration is applied based on the type of player being used.
    */
@@ -190,6 +192,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         break;
       case "pdf-player":
         this.pdfPlayerConfig();
+        break;
+      case "epub-player":
+        this.epubPlayerConfig();
         break;
     }
   }
@@ -222,16 +227,30 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     const pdfPlayerElement = document.createElement('sunbird-pdf-player');
     pdfPlayerElement.setAttribute('player-config', JSON.stringify(this.playerConfig));
     pdfPlayerElement.addEventListener('playerEvent', (event) => {
-      console.log("On playerEvent", event);
       this.eventHandler(event);
     });
     pdfPlayerElement.addEventListener('telemetryEvent', (event) => {
-      console.log("On telemetryEvent", event);
       this.generateContentReadEvent(event, true)
     });
     this.pdfPlayer.nativeElement.append(pdfPlayerElement);
   }
-
+  /**
+   * Configures the EPUB player by creating a new HTML element for the Sunbird EPUB player,
+   * setting the player configuration, and attaching event listeners for player and telemetry events.
+   * This method is responsible for dynamically configuring the EPUB player component,
+   * allowing it to be embedded within the parent component's view and interact with player and telemetry events.
+   */
+  epubPlayerConfig() {
+    const epubElement = document.createElement('sunbird-epub-player');
+    epubElement.setAttribute('player-config', JSON.stringify(this.playerConfig));
+    epubElement.addEventListener('playerEvent', (event) => {
+      this.eventHandler(event);
+    });
+    epubElement.addEventListener('telemetryEvent', (event) => {
+      this.generateContentReadEvent(event, true)
+    });
+    this.epubPlayer.nativeElement.append(epubElement);
+  }
   ngOnChanges(changes) {
     this.contentRatingModal = false;
     this.showNewPlayer = false;

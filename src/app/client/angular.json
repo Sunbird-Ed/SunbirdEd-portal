@@ -63,6 +63,11 @@
                 "glob": "**/*",
                 "input": "node_modules/@project-sunbird/sunbird-questionset-editor/lib/assets",
                 "output": "/assets/"
+              },
+              {
+                "glob": "**/*.*",
+                "input": "./node_modules/@project-sunbird/sunbird-epub-player-web-component/assets",
+                "output": "/assets/"
               }
             ],
             "styles": [
@@ -82,7 +87,8 @@
               "node_modules/videojs-http-source-selector/dist/videojs-http-source-selector.css",
               "node_modules/@project-sunbird/sunbird-video-player-web-component/styles.css",
               "./node_modules/@project-sunbird/discussions-ui/assets/styles/global.scss",
-              "node_modules/@project-sunbird/sunbird-pdf-player-web-component/styles.css"
+              "node_modules/@project-sunbird/sunbird-pdf-player-web-component/styles.css",
+              "node_modules/@project-sunbird/sunbird-epub-player-web-component/styles.css"
 
             ],
             "stylePreprocessorOptions": {
@@ -92,7 +98,6 @@
               ]
             },
             "scripts": [
-              "node_modules/epubjs/dist/epub.js",
               "src/assets/libs/iziToast/iziToast.min.js",
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/@project-sunbird/telemetry-sdk/index.js",
@@ -109,7 +114,7 @@
               "node_modules/@project-sunbird/sunbird-video-player-web-component/sunbird-video-player.js",
               "node_modules/reflect-metadata/Reflect.js",
               "node_modules/@project-sunbird/sunbird-pdf-player-web-component/sunbird-pdf-player.js",
-
+              "node_modules/@project-sunbird/sunbird-epub-player-web-component/sunbird-epub-player.js",
               {
                 "inject": false,
                 "input": "src/assets/libs/semantic-ui/transition.min.js",

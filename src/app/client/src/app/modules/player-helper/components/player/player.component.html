@@ -15,11 +15,9 @@
 </div>
 <div *ngIf="!isMobileOrTab && showNewPlayer && !isContentDeleted" class="w-100 h-100">
         <div class="contentViewerIframeShadow" [ngClass]="{'player-fullscreen content-full-video': isFullScreenView}">          
-        <div #pdfPlayer *ngIf="playerType === 'pdf-player'" class= "custom-pdf-player" ></div>
-        <div #videoPlayer *ngIf="playerType === 'video-player'" class= "custom-video-player" ></div>
-        <sunbird-epub-player *ngIf="playerType === 'epub-player'" [playerConfig]="playerConfig" [showFullScreen]="isFullScreenView"
-        (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></sunbird-epub-player>
-
+        <div #pdfPlayer *ngIf="playerType === 'pdf-player'" class= "custom-web-player" ></div>
+        <div #videoPlayer *ngIf="playerType === 'video-player'" class= "custom-web-player" ></div>
+        <div #epubPlayer *ngIf="playerType === 'epub-player'"  class= "custom-web-player" [showFullScreen]="isFullScreenView" ></div>
         <quml-main-player *ngIf="playerType === 'quml-player' && showQumlPlayer" [playerConfig]="playerConfig" (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></quml-main-player>
       </div>
 </div>
@@ -40,12 +38,10 @@
 </div>
 
 <div id="playerFullscreen" *ngIf="!showPlayIcon" class="player-fullscreen" [ngStyle]="{'display': mobileViewDisplay}"> 
-  <div #pdfPlayer *ngIf="playerType === 'pdf-player'" class= "custom-pdf-player" ></div>
-  <div #videoPlayer *ngIf="playerType === 'video-player'" class= "custom-video-player" ></div>
-  <sunbird-epub-player *ngIf="playerType === 'epub-player'" [playerConfig]="playerConfig" [showFullScreen]="isFullScreenView"
-    (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></sunbird-epub-player>
-
-    <quml-main-player *ngIf="playerType === 'quml-player' && showQumlPlayer" [playerConfig]="playerConfig" (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></quml-main-player>
+  <div #pdfPlayer *ngIf="playerType === 'pdf-player'" class= "custom-web-player" ></div>
+  <div #videoPlayer *ngIf="playerType === 'video-player'" class= "custom-web-player" ></div>
+  <div #epubPlayer *ngIf="playerType === 'epub-player'"  class= "custom-web-player" [showFullScreen]="isFullScreenView" ></div>
+  <quml-main-player *ngIf="playerType === 'quml-player' && showQumlPlayer" [playerConfig]="playerConfig" (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></quml-main-player>
 </div>
 </div>
 
