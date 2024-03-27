@@ -3126,6 +3126,11 @@
     "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
     tslib "^2.0.0"
 
+"@project-sunbird/sunbird-pdf-player-web-component@1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-pdf-player-web-component/-/sunbird-pdf-player-web-component-1.4.0.tgz#0922e19835677680ab7e25857e7018538360d72a"
+  integrity sha512-L3Gv48dGT8NCNErpRYPMsGQx6tVa24+f7tHDIHeO5g2YErC9OsuDPOjbHQLJGns8jSOhSXoCllRf5oP42NnA0Q==
+
 "@project-sunbird/sunbird-player-sdk-v9@5.1.0":
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v9/-/sunbird-player-sdk-v9-5.1.0.tgz#77cd3b47a8f08fda111540b9f38448371be3bf5d"
@@ -3317,9 +3322,9 @@
   integrity sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==
 
 "@tsconfig/node10@^1.0.7":
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/@tsconfig/node10/-/node10-1.0.9.tgz#df4907fc07a886922637b15e02d4cebc4c0021b2"
-  integrity sha512-jNsYVVxU8v5g43Erja32laIDHXeoNvFEpX33OK4d6hljo3jDhCBDhx5dhCCTMWUojscpAagGiRkBKxpdl9fxqA==
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/@tsconfig/node10/-/node10-1.0.10.tgz#b7ebd3adfa7750628d100594f6726b054d2c33b2"
+  integrity sha512-PiaIWIoPvO6qm6t114ropMCagj6YAF24j9OkCA2mJDXFnlionEwhsBCJ8yek4aib575BI3OkART/90WsgHgLWw==
 
 "@tsconfig/node12@^1.0.7":
   version "1.0.11"
@@ -5099,9 +5104,9 @@ camelcase@^6.2.0:
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
 caniuse-lite@^1.0.30001426, caniuse-lite@^1.0.30001449, caniuse-lite@^1.0.30001587:
-  version "1.0.30001599"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001599.tgz#571cf4f3f1506df9bf41fcbb6d10d5d017817bce"
-  integrity sha512-LRAQHZ4yT1+f9LemSMeqdMpMxZcc4RMWdj4tiFe3G8tNkWK+E58g+/tzotb5cU6TbcVJLr4fySiAW7XmxQvZQA==
+  version "1.0.30001600"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001600.tgz#93a3ee17a35aa6a9f0c6ef1b2ab49507d1ab9079"
+  integrity sha512-+2S9/2JFhYmYaDpZvo0lKkfvuKIglrx68MwOBqMGHhQsNkLjB5xtc/TGoEPs+MxjSyN/72qer2g97nzR641mOQ==
 
 canonicalize@^1.0.1:
   version "1.0.8"
@@ -6390,9 +6395,9 @@ ee-first@1.1.1:
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
 
 electron-to-chromium@^1.4.284, electron-to-chromium@^1.4.668:
-  version "1.4.713"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.713.tgz#7cd8e4083c948f8d0cc686fcfdde97d97fd76556"
-  integrity sha512-vDarADhwntXiULEdmWd77g2dV6FrNGa8ecAC29MZ4TwPut2fvosD0/5sJd1qWNNe8HcJFAC+F5Lf9jW1NPtWmw==
+  version "1.4.717"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.717.tgz#99db370cae8cd090d5b01f8748e9ad369924d0f8"
+  integrity sha512-6Fmg8QkkumNOwuZ/5mIbMU9WI3H2fmn5ajcVya64I5Yr5CcNmO7vcLt0Y7c96DCiMO5/9G+4sI2r6eEvdg1F7A==
 
 element-closest@^2.0.2:
   version "2.0.2"
@@ -6896,9 +6901,9 @@ export-to-csv@0.2.1:
   integrity sha512-KTbrd3CAZ0cFceJEZr1e5uiMasabeCpXq1/5uvVxDl53o4jXJHnltasQoj2NkzrxD8hU9kdwjnMhoir/7nNx/A==
 
 express@^4.17.3:
-  version "4.19.1"
-  resolved "https://registry.yarnpkg.com/express/-/express-4.19.1.tgz#4700635795e911600a45596138cf5b0320e78256"
-  integrity sha512-K4w1/Bp7y8iSiVObmCrtq8Cs79XjJc/RU2YYkZQ7wpUu5ZyZ7MtPHkqoMz4pf+mgXfNvo2qft8D9OnrH2ABk9w==
+  version "4.19.2"
+  resolved "https://registry.yarnpkg.com/express/-/express-4.19.2.tgz#e25437827a3aa7f2a827bc8171bbbb664a356465"
+  integrity sha512-5T6nhjsT+EOMzuck8JjBHARTHfMht0POzlA60WV2pMD3gyXw2LZnZ+ueGdNxG+0calOJcWKbpFcuzLZ91YWq9Q==
   dependencies:
     accepts "~1.3.8"
     array-flatten "1.1.1"
@@ -11787,6 +11792,11 @@ rechoir@^0.6.2:
   dependencies:
     resolve "^1.1.6"
 
+reflect-metadata@0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.2.1.tgz#8d5513c0f5ef2b4b9c3865287f3c0940c1f67f74"
+  integrity sha512-i5lLI6iw9AU3Uu4szRNPPEkomnkjRTaVt9hy/bn5g/oSzekBSMeLZblcjP74AW0vBabqERLLIrz+gR8QYR54Tw==
+
 reflect-metadata@^0.1.13, reflect-metadata@^0.1.2:
   version "0.1.14"
   resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.14.tgz#24cf721fe60677146bb77eeb0e1f9dece3d65859"
@@ -13073,9 +13083,9 @@ tar-stream@^2.1.4:
     readable-stream "^3.1.1"
 
 tar@^6.1.11, tar@^6.1.2:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/tar/-/tar-6.2.0.tgz#b14ce49a79cb1cd23bc9b016302dea5474493f73"
-  integrity sha512-/Wo7DcT0u5HUV486xg675HtjNd3BXZ6xDbzsCUZPt5iw8bTQ63bP0Raut3mvro9u+CUyq7YQd8Cx55fsZXxqLQ==
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/tar/-/tar-6.2.1.tgz#717549c541bc3c2af15751bea94b1dd068d4b03a"
+  integrity sha512-DZ4yORTwrbTj/7MZYq2w+/ZFdI6OZ/f9SFHR+71gIVUZhOQPHzVCLpvRnPgyaMpfWxxk/4ONva3GQSyNIKRv6A==
   dependencies:
     chownr "^2.0.0"
     fs-minipass "^2.0.0"
