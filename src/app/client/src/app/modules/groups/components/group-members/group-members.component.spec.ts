@@ -7,6 +7,7 @@ import { _ } from 'lodash-es';
 import { fromEvent,of,Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GROUP_DETAILS,IGroupMember,IGroupMemberConfig,MY_GROUPS,IGroupCard } from '../../interfaces';
+import * as rxjs from 'rxjs';
 import { GroupsService } from '../../services';
 import { ADD_MEMBER } from '../../interfaces/telemetryConstants';
 import { GroupMembersComponent } from './group-members.component';
@@ -58,6 +59,32 @@ describe('GroupMembersComponent', () => {
 
     it('should create a instance of component', () => {
         expect(component).toBeTruthy();
+    });
+
+    describe('ngOnInit',() =>{
+        it('should handle click events to hide kebab menu', () => {
+            const fromEventMock = jest.fn().mockReturnValue({
+                pipe: jest.fn().mockReturnThis(),
+                subscribe: jest.fn()
+            });
+            jest.spyOn(rxjs, 'fromEvent').mockImplementation(fromEventMock);
+            const membersListMock = of([{ id: 'member1' }, { id: 'member2' }]);
+            mockGroupsService.membersList = membersListMock as any;
+            jest.spyOn(component, 'hideMemberMenu').mockImplementation();
+            const showMenuMock = of({ id: 'member1' });
+            mockGroupsService.showMenu = showMenuMock as any;
+
+            const updateEventMock = of({ success: true });
+            mockGroupsService.updateEvent = updateEventMock as any;
+            mockGroupsService.updateGroupStatus = jest.fn(() => of({status: GroupEntityStatus.ACTIVE})) as any;
+            component.ngOnInit();
+            const clickEvent = new MouseEvent('click');
+            const spyAddTelemetry = jest.spyOn(component, 'addTelemetry');
+            document.dispatchEvent(clickEvent);
+            expect(component.showKebabMenu).toBe(false);
+            expect(component.hideMemberMenu).toHaveBeenCalled();
+            jest.restoreAllMocks();
+        });
     });
 
     it('should search for members', () => {
@@ -221,12 +248,11 @@ describe('GroupMembersComponent', () => {
             expect(component.memberListToShow).toEqual([{ id: '1', isMenu: false }, { id: '2', isMenu: false }]);
         });
 
-    it('should initialize component properties properly', () => {
-        expect(component.showLoader).toBe(false);
-        expect(component.groupId).toBe('mock-id');
-        expect(component.showKebabMenu).toBe(false);
-    });
-
+        it('should initialize component properties properly', () => {
+            expect(component.showLoader).toBe(false);
+            expect(component.groupId).toBe('mock-id');
+            expect(component.showKebabMenu).toBe(false);
+        });
     });
 
 });

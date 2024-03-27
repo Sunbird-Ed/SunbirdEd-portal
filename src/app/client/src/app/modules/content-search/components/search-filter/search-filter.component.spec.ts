@@ -102,6 +102,17 @@ describe('SearchFilterComponent', () => {
         expect(res).toBeTruthy();
     });
 
+    describe('hardRefreshFilter', ()=> {
+        it('should call refresh true', () => {
+            //@ts-ignore
+            component.refresh = false;
+            jest.spyOn(component['cdr'], 'detectChanges')
+            component['hardRefreshFilter']();
+            expect(component['cdr'].detectChanges).toBeCalled();
+            expect(component.refresh).toBe(true)
+        });
+    });
+
     it('should call interactEdata', () => {
         component.selectedFilters = {
             board: ['sample-board'],
@@ -405,5 +416,31 @@ describe('SearchFilterComponent', () => {
         });
     });
 
+    describe('getAudienceTypeFormConfig', () => {
+        it('should handle error gracefully', (done) => {
+            const mockFormService = {
+                getFormConfig: jest.fn(() => throwError('Error')),
+            };
+            component['getAudienceTypeFormConfig']().subscribe((response) => {
+                expect(response).toEqual({});
+                done();
+            });
+        });
+    });
+
+    describe('getFacets', () => {
+        it('should update filters list and refresh filter', (done) => {
+            const mockFacets$ = of({ subjects: ['Math', 'Science'], grades: [1, 2, 3] });
+            const mockContentSearchService = {
+                getCategoriesMapping: { subjects: 'se_subjects', grades: 'se_gradeLevels' },
+            };
+            component.facets$ = mockFacets$ as any;
+            component['contentSearchService'] = mockContentSearchService as any;
+            component['getFacets']().subscribe(() => {
+                expect(component['filters']).toEqual({ subjects: ['Math', 'Science'], grades: [1, 2, 3] });
+                done();
+            });
+        });
+    });
 
 });
