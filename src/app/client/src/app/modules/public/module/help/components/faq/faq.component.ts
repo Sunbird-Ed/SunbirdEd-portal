@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, ViewChild, ViewChildren } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, ViewChildren,ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CacheService } from '../../../../../shared/services/cache-service/cache.service';
 import { UtilService, ResourceService, LayoutService, NavigationHelperService, ToasterService, ConfigService, ContentUtilsServiceService } from '@sunbird/shared';
@@ -39,6 +39,7 @@ export class FaqComponent implements OnInit {
   showOnlyFaqCategory = true;
   @ViewChild('sbFaqCategoryList') sbFaqCategoryList;
   @ViewChildren('videoPlayer') videoPlayer;
+  @ViewChild('videoWebPlayer') videoWebPlayer: ElementRef;
   showVideoModal = false;
   playerConfig: any;
   isDisabled = false;
@@ -105,6 +106,16 @@ export class FaqComponent implements OnInit {
       this.updateButtonVisibility();
     }
 
+  }
+  /**
+ * Creates and configures a video player element.
+ * This method is responsible for dynamically creating and configuring the video player component,
+ * allowing it to be embedded within the parent component's view.
+ */
+  videoPlayerConfig() {
+    const videoPlayerElement = document.createElement('sunbird-video-player');
+    videoPlayerElement.setAttribute('player-config', JSON.stringify(this.playerConfig));
+    this.videoWebPlayer.nativeElement.append(videoPlayerElement);
   }
 
   private getFaqJson() {
@@ -276,6 +287,7 @@ export class FaqComponent implements OnInit {
     this.showVideoModal = true;
 
     this.videoPlayer.changes.subscribe(() => {
+      this.videoPlayerConfig();
       if (_.get(document.getElementsByClassName('sb-player-side-menu-icon'), '0.style'))  {
         document.getElementsByClassName('sb-player-side-menu-icon')[0]['style'].display = 'none';
       }

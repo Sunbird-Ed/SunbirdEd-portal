@@ -1,13 +1,13 @@
-import { ConfigService,NavigationHelperService,UtilService } from '@sunbird/shared';
-import { Component,AfterViewInit,ViewChild,ElementRef,Input,Output,EventEmitter,OnChanges,HostListener,OnInit,ChangeDetectorRef } from '@angular/core';
+import { ConfigService, NavigationHelperService, UtilService } from '@sunbird/shared';
+import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges, HostListener, OnInit, ChangeDetectorRef } from '@angular/core';
 import { _ } from 'lodash-es';
 import { PlayerConfig } from '@sunbird/shared';
 import { Router } from '@angular/router';
-import { ToasterService,ResourceService,ContentUtilsServiceService } from '@sunbird/shared';
-import { Subject, of , BehaviorSubject} from 'rxjs';
+import { ToasterService, ResourceService, ContentUtilsServiceService } from '@sunbird/shared';
+import { Subject, of, BehaviorSubject } from 'rxjs';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { IInteractEventEdata } from '@sunbird/telemetry';
-import { UserService,FormService } from '../../../core/services';
+import { UserService, FormService } from '../../../core/services';
 import { OnDestroy } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
@@ -17,73 +17,75 @@ import { PublicPlayerService } from '@sunbird/public';
 import { PlayerComponent } from './player.component';
 
 describe('PlayerComponent', () => {
-  let component: PlayerComponent;
+	let component: PlayerComponent;
 
-  const configService :Partial<ConfigService> ={
+	const configService: Partial<ConfigService> = {
 		appConfig: {
 			PLAYER_CONFIG: {
-        cdnUrl: '',
+				cdnUrl: '',
 				MIME_TYPE: {
 					questionset: 'mockQuestionSetMimeType'
 				}
 			}
 		},
 		urlConFig: {
-        URLS: {
-          TELEMETRY: {
-            SYNC: 'mocked-telemetry-sync-url'
-          }
-        }
-      }
+			URLS: {
+				TELEMETRY: {
+					SYNC: 'mocked-telemetry-sync-url'
+				}
+			}
+		}
 	};
-	const router :Partial<Router> ={
-    navigate: jest.fn(),
+	const router: Partial<Router> = {
+		navigate: jest.fn(),
 	};
-	const toasterService :Partial<ToasterService> ={};
-	const resourceService :Partial<ResourceService> ={};
+	const toasterService: Partial<ToasterService> = {};
+	const resourceService: Partial<ResourceService> = {};
 	const navigationHelperService: Partial<NavigationHelperService> = {
 		contentFullScreenEvent: new EventEmitter<any>(),
-    emitFullScreenEvent: jest.fn(),
+		emitFullScreenEvent: jest.fn(),
 	};
-	const deviceDetectorService :Partial<DeviceDetectorService> ={
+	const deviceDetectorService: Partial<DeviceDetectorService> = {
 		isMobile: jest.fn().mockReturnValue(true),
-  	isTablet: jest.fn().mockReturnValue(false),
+		isTablet: jest.fn().mockReturnValue(false),
 	};
-	const userService :Partial<UserService> ={
+	const userService: Partial<UserService> = {
 		loggedIn: true,
-    slug: jest.fn().mockReturnValue('tn') as any,
-    userData$: of({userProfile: {
-      userId: 'sample-uid',
-      rootOrgId: 'sample-root-id',
-      rootOrg: {},
-      hashTagIds: ['id']
-    } as any}) as any,
-    setIsCustodianUser: jest.fn(),
-    setGuestUser: jest.fn(),
-    userid: 'sample-uid',
-    appId: 'sample-id',
-    getServerTimeDiff: '',
-  };
-	const formService :Partial<FormService> ={
+		slug: jest.fn().mockReturnValue('tn') as any,
+		userData$: of({
+			userProfile: {
+				userId: 'sample-uid',
+				rootOrgId: 'sample-root-id',
+				rootOrg: {},
+				hashTagIds: ['id']
+			} as any
+		}) as any,
+		setIsCustodianUser: jest.fn(),
+		setGuestUser: jest.fn(),
+		userid: 'sample-uid',
+		appId: 'sample-id',
+		getServerTimeDiff: '',
+	};
+	const formService: Partial<FormService> = {
 		getFormConfig: jest.fn(() => of({})),
 	};
-	const contentUtilsServiceService :Partial<ContentUtilsServiceService> ={
-    contentShareEvent: of('open') as any,
+	const contentUtilsServiceService: Partial<ContentUtilsServiceService> = {
+		contentShareEvent: of('open') as any,
 	};
-	const contentService :Partial<ContentService> ={
+	const contentService: Partial<ContentService> = {
 		post: jest.fn().mockImplementation(() => { }),
-    patch: jest.fn(),
+		patch: jest.fn(),
 	};
-	const cdr :Partial<ChangeDetectorRef> ={
+	const cdr: Partial<ChangeDetectorRef> = {
 		detectChanges: jest.fn(),
 	};
-	const playerService :Partial<PublicPlayerService> ={
+	const playerService: Partial<PublicPlayerService> = {
 		getQuestionSetRead: jest.fn().mockImplementation(() => {
-      return of(questionsetRead)
-    })
-  };
+			return of(questionsetRead)
+		})
+	};
 
-	const utilService :Partial<UtilService> ={};
+	const utilService: Partial<UtilService> = {};
 
 	beforeAll(() => {
 		component = new PlayerComponent(
@@ -104,16 +106,16 @@ describe('PlayerComponent', () => {
 	});
 
 	beforeEach(() => {
-			jest.clearAllMocks();
-			jest.resetAllMocks();
+		jest.clearAllMocks();
+		jest.resetAllMocks();
 	});
 
 	it('should create a instance of component', () => {
-			expect(component).toBeTruthy();
+		expect(component).toBeTruthy();
 	});
 
-  it('should append UTM data to player context', () => {
-    const playerConfig = {
+	it('should append UTM data to player context', () => {
+		const playerConfig = {
 			metadata: {
 				mimeType: 'questionset',
 				instructions: 'Mock instructions',
@@ -128,12 +130,12 @@ describe('PlayerComponent', () => {
 				cdata: []
 			}
 		};
-    sessionStorage.setItem('UTM', JSON.stringify(['utm_data']));
-    component.playerConfig = playerConfig as any;
+		sessionStorage.setItem('UTM', JSON.stringify(['utm_data']));
+		component.playerConfig = playerConfig as any;
 
-    component.ngOnInit();
-    expect(component.playerConfig.context.cdata).toContain('utm_data');
-  });
+		component.ngOnInit();
+		expect(component.playerConfig.context.cdata).toContain('utm_data');
+	});
 
 	it('should append UTM data to player context if context.cdata does not exist', () => {
 		const playerConfig = {
@@ -162,26 +164,26 @@ describe('PlayerComponent', () => {
 		expect(() => component.ngOnInit()).toThrowError('JSON Parse Error => UTM data');
 	});
 
-  describe('addUserDataToContext',() =>{
-	it('should add user data to player context', () => {
-		component.addUserDataToContext();
-		expect(component.playerConfig.context.userData).toEqual({
-		firstName: 'Guest',
-		lastName: ''
+	describe('addUserDataToContext', () => {
+		it('should add user data to player context', () => {
+			component.addUserDataToContext();
+			expect(component.playerConfig.context.userData).toEqual({
+				firstName: 'Guest',
+				lastName: ''
+			});
 		});
-	});
 
-	it('should add user data to player context when user not logged in',() =>{
-		Object.defineProperty(userService, 'loggedIn', { get: jest.fn(() => false) });
-		component.addUserDataToContext();
+		it('should add user data to player context when user not logged in', () => {
+			Object.defineProperty(userService, 'loggedIn', { get: jest.fn(() => false) });
+			component.addUserDataToContext();
 
-		expect(component['userService'].loggedIn).toBeFalsy;
-		expect(component.playerConfig.context.userData).toEqual({
-			firstName: 'Guest',
-			lastName: ''
+			expect(component['userService'].loggedIn).toBeFalsy;
+			expect(component.playerConfig.context.userData).toEqual({
+				firstName: 'Guest',
+				lastName: ''
+			});
 		});
-	});
-   })
+	})
 
 	it('should set showPlayIcon to false when isSingleContent is false', () => {
 		const playerConfig = {
@@ -199,8 +201,8 @@ describe('PlayerComponent', () => {
 				cdata: []
 			}
 		};
-    sessionStorage.setItem('UTM', JSON.stringify(['utm_data']));
-    component.playerConfig = playerConfig as any;
+		sessionStorage.setItem('UTM', JSON.stringify(['utm_data']));
+		component.playerConfig = playerConfig as any;
 		component.isSingleContent = false;
 		component.ngOnInit();
 		expect(component.showPlayIcon).toBe(false);
@@ -208,18 +210,18 @@ describe('PlayerComponent', () => {
 
 	describe("ngOnDestroy", () => {
 		it('should destroy sub', () => {
-				component.unsubscribe = {
-						next: jest.fn(),
-						complete: jest.fn()
-				} as any;
-				component.ngOnDestroy();
-				expect(component.unsubscribe.next).toHaveBeenCalled();
-				expect(component.unsubscribe.complete).toHaveBeenCalled();
+			component.unsubscribe = {
+				next: jest.fn(),
+				complete: jest.fn()
+			} as any;
+			component.ngOnDestroy();
+			expect(component.unsubscribe.next).toHaveBeenCalled();
+			expect(component.unsubscribe.complete).toHaveBeenCalled();
 		});
 
-		it('should call remove of playerElement  when content window not present',() =>{
-			component.contentIframe ={
-				nativeElement:{
+		it('should call remove of playerElement  when content window not present', () => {
+			component.contentIframe = {
+				nativeElement: {
 					remove: jest.fn()
 				}
 			} as any
@@ -228,22 +230,22 @@ describe('PlayerComponent', () => {
 			expect(component.contentIframe.nativeElement.remove).toHaveBeenCalled();
 		});
 
-  });
+	});
 
 	it('should load player in ngAfterViewInit if playerConfig is set', () => {
-    component.playerConfig = { } as any;
-    jest.spyOn(component.formService, 'getFormConfig').mockReturnValue(of({"response":true}));
-    const loadPlayerSpy = jest.spyOn(component, 'loadPlayer');
-    component.ngAfterViewInit();
-    expect(loadPlayerSpy).toHaveBeenCalled();
-  });
+		component.playerConfig = {} as any;
+		jest.spyOn(component.formService, 'getFormConfig').mockReturnValue(of({ "response": true }));
+		const loadPlayerSpy = jest.spyOn(component, 'loadPlayer');
+		component.ngAfterViewInit();
+		expect(loadPlayerSpy).toHaveBeenCalled();
+	});
 
 	it('should set contentRatingModal and showNewPlayer to false and call detectChanges in ngOnChanges', () => {
-    component.ngOnChanges({});
-    expect(component.contentRatingModal).toBe(false);
-    expect(component.showNewPlayer).toBe(false);
-    expect(component['cdr'].detectChanges).toHaveBeenCalled();
-  });
+		component.ngOnChanges({});
+		expect(component.contentRatingModal).toBe(false);
+		expect(component.showNewPlayer).toBe(false);
+		expect(component['cdr'].detectChanges).toHaveBeenCalled();
+	});
 
 	it('should not change showQumlPlayer when MIME type is not for Quml player', () => {
 		const playerConfig = {
@@ -300,35 +302,35 @@ describe('PlayerComponent', () => {
 	});
 
 	it('should close content full screen on pop state', () => {
-    const closeContentFullScreenSpy = jest.spyOn(component, 'closeContentFullScreen');
-    component.onPopState(null);
-    expect(closeContentFullScreenSpy).toHaveBeenCalled();
+		const closeContentFullScreenSpy = jest.spyOn(component, 'closeContentFullScreen');
+		component.onPopState(null);
+		expect(closeContentFullScreenSpy).toHaveBeenCalled();
 
-    closeContentFullScreenSpy.mockRestore();
-  });
+		closeContentFullScreenSpy.mockRestore();
+	});
 
 	it('should close fullscreen on orientation change when in portrait mode', () => {
-    const closeFullscreenSpy = jest.spyOn(component, 'closeFullscreen');
-    const portraitEvent = new Event('orientationchange');
-    Object.defineProperty(window, 'screen', {
-      value: { orientation: { type: 'portrait-primary' } },
-      writable: true
-    });
-    component.handleOrientationChange();
-    expect(closeFullscreenSpy).toHaveBeenCalled();
-    closeFullscreenSpy.mockRestore();
-  });
+		const closeFullscreenSpy = jest.spyOn(component, 'closeFullscreen');
+		const portraitEvent = new Event('orientationchange');
+		Object.defineProperty(window, 'screen', {
+			value: { orientation: { type: 'portrait-primary' } },
+			writable: true
+		});
+		component.handleOrientationChange();
+		expect(closeFullscreenSpy).toHaveBeenCalled();
+		closeFullscreenSpy.mockRestore();
+	});
 
-  it('should not close fullscreen on orientation change when not in portrait mode', () => {
-    const closeFullscreenSpy = jest.spyOn(component, 'closeFullscreen');
-    Object.defineProperty(window, 'screen', {
-      value: { orientation: { type: 'landscape-primary' } },
-      writable: true
-    });
-    component.handleOrientationChange();
-    expect(closeFullscreenSpy).not.toHaveBeenCalled();
-    closeFullscreenSpy.mockRestore();
-  });
+	it('should not close fullscreen on orientation change when not in portrait mode', () => {
+		const closeFullscreenSpy = jest.spyOn(component, 'closeFullscreen');
+		Object.defineProperty(window, 'screen', {
+			value: { orientation: { type: 'landscape-primary' } },
+			writable: true
+		});
+		component.handleOrientationChange();
+		expect(closeFullscreenSpy).not.toHaveBeenCalled();
+		closeFullscreenSpy.mockRestore();
+	});
 
 	it('should show the rating popup when the event indicates the end of content and progress is 100%', () => {
 		const event = {
@@ -368,36 +370,36 @@ describe('PlayerComponent', () => {
 		expect(loadPlayerSpy).toHaveBeenCalled();
 	});
 
-  it('should emit ratingPopupClose event when closeModal is called', () => {
+	it('should emit ratingPopupClose event when closeModal is called', () => {
 		const emitSpy = jest.spyOn(component.ratingPopupClose, 'emit');
-    jest.spyOn(document, 'querySelector').mockReturnValue(null);
+		jest.spyOn(document, 'querySelector').mockReturnValue(null);
 
-    const focusOnReplaySpy = jest.spyOn(component, 'focusOnReplay');
+		const focusOnReplaySpy = jest.spyOn(component, 'focusOnReplay');
 
-    component.closeModal();
+		component.closeModal();
 
-    expect(focusOnReplaySpy).toHaveBeenCalled();
-    expect(emitSpy).toHaveBeenCalledWith({});
-  });
+		expect(focusOnReplaySpy).toHaveBeenCalled();
+		expect(emitSpy).toHaveBeenCalledWith({});
+	});
 
-  it('should not focus on replay button when playerType is not quml-player', () => {
-    jest.spyOn(document, 'querySelector').mockReturnValue(null);
-    component.playerType = 'other-player';
-    const focusSpy = jest.spyOn(HTMLElement.prototype, 'focus');
+	it('should not focus on replay button when playerType is not quml-player', () => {
+		jest.spyOn(document, 'querySelector').mockReturnValue(null);
+		component.playerType = 'other-player';
+		const focusSpy = jest.spyOn(HTMLElement.prototype, 'focus');
 
-    component.focusOnReplay();
+		component.focusOnReplay();
 
-    expect(focusSpy).not.toHaveBeenCalled();
-  });
+		expect(focusSpy).not.toHaveBeenCalled();
+	});
 
-  it('should not focus on replay button when replay button does not exist', () => {
-    jest.spyOn(document, 'querySelector').mockReturnValue(null);
-    const focusSpy = jest.spyOn(HTMLElement.prototype, 'focus');
+	it('should not focus on replay button when replay button does not exist', () => {
+		jest.spyOn(document, 'querySelector').mockReturnValue(null);
+		const focusSpy = jest.spyOn(HTMLElement.prototype, 'focus');
 
-    component.focusOnReplay();
+		component.focusOnReplay();
 
-    expect(focusSpy).not.toHaveBeenCalled();
-  });
+		expect(focusSpy).not.toHaveBeenCalled();
+	});
 
 	it('should exit fullscreen mode and show rating modal if showRatingModalAfterClose is true', () => {
 		const exitFullscreenMock = jest.fn();
@@ -476,109 +478,109 @@ describe('PlayerComponent', () => {
 	});
 
 	it('should emit selfAssessLastAttempt event when event has isLastAttempt property set to true', () => {
-    const emitSpy = jest.spyOn(component.selfAssessLastAttempt, 'emit');
-    const event = {
-        edata: {
-            isLastAttempt: true
-        }
-    };
-    component.generatelimitedAttemptEvent(event);
-    expect(emitSpy).toHaveBeenCalledWith(event);
+		const emitSpy = jest.spyOn(component.selfAssessLastAttempt, 'emit');
+		const event = {
+			edata: {
+				isLastAttempt: true
+			}
+		};
+		component.generatelimitedAttemptEvent(event);
+		expect(emitSpy).toHaveBeenCalledWith(event);
 	});
 
 
 	it('should emit selfAssessLastAttempt event when event has maxLimitExceeded property set to true', () => {
-			const event = {
-					edata: {
-							maxLimitExceeded: true
-					}
-			};
-			component.generatelimitedAttemptEvent(event);
-			expect(component.selfAssessLastAttempt.emit).toHaveBeenCalledWith(event);
+		const event = {
+			edata: {
+				maxLimitExceeded: true
+			}
+		};
+		component.generatelimitedAttemptEvent(event);
+		expect(component.selfAssessLastAttempt.emit).toHaveBeenCalledWith(event);
 	});
 
 	it('should not emit selfAssessLastAttempt event when event does not have relevant properties', () => {
-			const event = {};
-			component.generatelimitedAttemptEvent(event);
-			expect(component.selfAssessLastAttempt.emit).not.toHaveBeenCalled();
+		const event = {};
+		component.generatelimitedAttemptEvent(event);
+		expect(component.selfAssessLastAttempt.emit).not.toHaveBeenCalled();
 	});
 
 
 	it('should handle event of type exdata', () => {
-    const generateLimitedAttemptEventSpy = jest.spyOn(component, 'generatelimitedAttemptEvent');
-    const event = {
-        eid: 'exdata',
-    };
-    component.eventHandler(event);
-    expect(generateLimitedAttemptEventSpy).toHaveBeenCalledWith(event);
-  });
+		const generateLimitedAttemptEventSpy = jest.spyOn(component, 'generatelimitedAttemptEvent');
+		const event = {
+			eid: 'exdata',
+		};
+		component.eventHandler(event);
+		expect(generateLimitedAttemptEventSpy).toHaveBeenCalledWith(event);
+	});
 
 	it('should handle event of type END', () => {
-    const setItemMock = jest.spyOn(localStorage, 'setItem');
-    const event = {
-        eid: 'END',
-        metaData: {}
-    };
-	Object.defineProperty(userService, 'loggedIn', { get: jest.fn(() => true) });
-    component['eventHandler'](event);
-    expect(userService.loggedIn).toBe(true);
-    expect(userService.userData$).toBeTruthy();
+		const setItemMock = jest.spyOn(localStorage, 'setItem');
+		const event = {
+			eid: 'END',
+			metaData: {}
+		};
+		Object.defineProperty(userService, 'loggedIn', { get: jest.fn(() => true) });
+		component['eventHandler'](event);
+		expect(userService.loggedIn).toBe(true);
+		expect(userService.userData$).toBeTruthy();
 	});
 
 	it('should handle event of type SHARE', () => {
-    const contentUtilsServiceServiceMock = {
-        contentShareEvent: {
-            emit: jest.fn()
-        }
-    };
-    component.contentUtilsServiceService = contentUtilsServiceServiceMock as any;
-    const event = {
-        edata: {
-            type: 'SHARE'
-        }
-    };
-    component.eventHandler(event);
-    expect(contentUtilsServiceServiceMock.contentShareEvent.emit).toHaveBeenCalledWith('open');
-    expect(component.mobileViewDisplay).toBe('none');
+		const contentUtilsServiceServiceMock = {
+			contentShareEvent: {
+				emit: jest.fn()
+			}
+		};
+		component.contentUtilsServiceService = contentUtilsServiceServiceMock as any;
+		const event = {
+			edata: {
+				type: 'SHARE'
+			}
+		};
+		component.eventHandler(event);
+		expect(contentUtilsServiceServiceMock.contentShareEvent.emit).toHaveBeenCalledWith('open');
+		expect(component.mobileViewDisplay).toBe('none');
 	});
 
 	it('should handle event of type PRINT', () => {
-    jest.spyOn(document, 'querySelector').mockReturnValue({
-        contentWindow: {
-            print: jest.fn()
-        }
-    } as any);
-    const event = {
-        edata: {
-            type: 'PRINT'
-        }
-    };
+		jest.spyOn(document, 'querySelector').mockReturnValue({
+			contentWindow: {
+				print: jest.fn()
+			}
+		} as any);
+		const event = {
+			edata: {
+				type: 'PRINT'
+			}
+		};
 
-    component.eventHandler(event);
-    expect(document.querySelector).toHaveBeenCalledWith('pdf-viewer iframe');
-    expect(component.mobileViewDisplay).toBe('none');
+		component.eventHandler(event);
+		expect(document.querySelector).toHaveBeenCalledWith('pdf-viewer iframe');
+		expect(component.mobileViewDisplay).toBe('none');
 	});
 
 	it('should handle generateContentReadEvent method correctly', () => {
-    const event = {
-        detail: {
-            telemetryData: {
-                eid: 'END',
-                object: { id: 'sample-content-id' }
-            }
-        }
-    };
+		const event = {
+			detail: {
+				telemetryData: {
+					eid: 'END',
+					object: { id: 'sample-content-id' }
+				}
+			}
+		};
 
-    const contentProgressEvents$Spy = { next: jest.fn() };
-    component.contentProgressEvents$ = contentProgressEvents$Spy as any;
+		const contentProgressEvents$Spy = { next: jest.fn() };
+		component.contentProgressEvents$ = contentProgressEvents$Spy as any;
 
-    jest.spyOn(component, 'showRatingPopup' as any).mockReturnValue('');
-    jest.spyOn(component.assessmentEvents, 'emit' as any).mockReturnValue('');
-    jest.spyOn(component.questionScoreSubmitEvents, 'emit' as any).mockReturnValue('');
+		jest.spyOn(component, 'showRatingPopup' as any).mockReturnValue('');
+		jest.spyOn(component.assessmentEvents, 'emit' as any).mockReturnValue('');
+		jest.spyOn(component.questionScoreSubmitEvents, 'emit' as any).mockReturnValue('');
 
-    component.playerConfig = { metadata: { identifier: 'sample-content-id', mimeType: 'sample-mime-type' } } as any;
+		component.playerConfig = { metadata: { identifier: 'sample-content-id', mimeType: 'sample-mime-type' } } as any;
 		component.configService = {
-				appConfig: {
+			appConfig: {
 				PLAYER_CONFIG: {
 					cdnUrl: '',
 					MIME_TYPE: {
@@ -587,36 +589,36 @@ describe('PlayerComponent', () => {
 				}
 			},
 		} as any;
-    component.generateContentReadEvent(event);
+		component.generateContentReadEvent(event);
 
-    expect(component.showRatingPopup).toHaveBeenCalledWith(event);
-    expect(contentProgressEvents$Spy.next).toHaveBeenCalledWith(event);
-    expect(component.assessmentEvents.emit).toHaveBeenCalledWith(event);
-  });
+		expect(component.showRatingPopup).toHaveBeenCalledWith(event);
+		expect(contentProgressEvents$Spy.next).toHaveBeenCalledWith(event);
+		expect(component.assessmentEvents.emit).toHaveBeenCalledWith(event);
+	});
 
 	it('should emit scene change event correctly', () => {
-			const contentIframeMock = { nativeElement: { contentWindow: { EkstepRendererAPI: { getCurrentStageId: jest.fn() } } } };
+		const contentIframeMock = { nativeElement: { contentWindow: { EkstepRendererAPI: { getCurrentStageId: jest.fn() } } } };
 
-			const eventData = { stageId: 'sample-stage-id' };
-			jest.useFakeTimers();
-			jest.spyOn(component.sceneChangeEvent, 'emit');
-			jest.spyOn(window, 'setTimeout');
+		const eventData = { stageId: 'sample-stage-id' };
+		jest.useFakeTimers();
+		jest.spyOn(component.sceneChangeEvent, 'emit');
+		jest.spyOn(window, 'setTimeout');
 
-			component.contentIframe = contentIframeMock as any;
-			component.emitSceneChangeEvent();
+		component.contentIframe = contentIframeMock as any;
+		component.emitSceneChangeEvent();
 
-			jest.advanceTimersByTime(100);
-			expect(window.setTimeout).toHaveBeenCalledWith(expect.any(Function), 0);
-			expect(component.sceneChangeEvent.emit).toHaveBeenCalled();
+		jest.advanceTimersByTime(100);
+		expect(window.setTimeout).toHaveBeenCalledWith(expect.any(Function), 0);
+		expect(component.sceneChangeEvent.emit).toHaveBeenCalled();
 	});
 
 	it('should load new player correctly', () => {
 		Object.defineProperty(userService, 'loggedIn', { get: jest.fn(() => true) });
 		const userData$Mock = new BehaviorSubject<any>({ userProfile: { id: 'user_id' } });
-    Object.defineProperty(userService, 'userData$', { get: jest.fn(() => userData$Mock.asObservable()) });
+		Object.defineProperty(userService, 'userData$', { get: jest.fn(() => userData$Mock.asObservable()) });
 		jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation(() => {
-      return '';
-    });
+			return '';
+		});
 
 		const originalLocationOrigin = location.origin;
 		delete (global as any).location;
@@ -659,12 +661,23 @@ describe('PlayerComponent', () => {
 		} as any;
 		component.playerService = {
 			getQuestionSetRead: jest.fn().mockImplementation(() => {
-			return of(questionsetRead)
-		})
+				return of(questionsetRead)
+			})
 		} as any;
 		component.checkForQumlPlayer();
 		expect(component.showQumlPlayer).toBe(false);
 		expect(component.playerConfig.config.sideMenu.showDownload).toBe(false);
+	});
+
+	it('should configure the pdf player element correctly', () => {
+		component.pdfPlayer = {} as any;
+		const nativeElementSpy = document.createElement('div');
+		Object.defineProperty(component.pdfPlayer, 'nativeElement', {
+			get: jest.fn().mockReturnValue(nativeElementSpy)
+		});
+		jest.spyOn(nativeElementSpy, 'addEventListener');
+		component.pdfPlayerConfig();
+		expect(component.pdfPlayer.nativeElement.innerHTML).toContain('player-config');
 	});
 
 	it('should configure the video player element correctly', () => {
@@ -673,9 +686,20 @@ describe('PlayerComponent', () => {
 		Object.defineProperty(component.videoPlayer, 'nativeElement', {
 			get: jest.fn().mockReturnValue(nativeElementSpy)
 		});
-		const addEventListenerSpy = jest.spyOn(nativeElementSpy, 'addEventListener');
+		jest.spyOn(nativeElementSpy, 'addEventListener');
 		component.videoPlayerConfig();
 		expect(component.videoPlayer.nativeElement.innerHTML).toContain('player-config');
+	});
+
+	it('should configure the epub player element correctly', () => {
+		component.epubPlayer = {} as any;
+		const nativeElementSpy = document.createElement('div');
+		Object.defineProperty(component.epubPlayer, 'nativeElement', {
+			get: jest.fn().mockReturnValue(nativeElementSpy)
+		});
+		jest.spyOn(nativeElementSpy, 'addEventListener');
+		component.epubPlayerConfig();
+		expect(component.epubPlayer.nativeElement.innerHTML).toContain('player-config');
 	});
 
 	it('should emit questionScoreSubmitEvents when event data is ACCESSEVENT', () => {
@@ -770,47 +794,47 @@ describe('PlayerComponent', () => {
 	});
 
 	describe('updateMetadataForDesktop()', () => {
-    it('should update metadata for desktop when download is available', () => {
-      component.playerConfig = {
-        metadata: {
-          desktopAppMetadata: {
-            isAvailable: true
-          },
-          artifactUrl: 'mockArtifactUrl',
-          mimeType: 'mockMimeType'
-        }
-      } as any;
-      component.playerConfig.data = 'mock'
-      component.updateMetadataForDesktop();
-      expect(component.playerConfig.data).toBe('mock');
-      expect(component.playerConfig.metadata.artifactUrl).toBe('mockArtifactUrl');
-    });
-  });
+		it('should update metadata for desktop when download is available', () => {
+			component.playerConfig = {
+				metadata: {
+					desktopAppMetadata: {
+						isAvailable: true
+					},
+					artifactUrl: 'mockArtifactUrl',
+					mimeType: 'mockMimeType'
+				}
+			} as any;
+			component.playerConfig.data = 'mock'
+			component.updateMetadataForDesktop();
+			expect(component.playerConfig.data).toBe('mock');
+			expect(component.playerConfig.metadata.artifactUrl).toBe('mockArtifactUrl');
+		});
+	});
 
 	describe('eventHandler()', () => {
-    it('should store metadata in localStorage for guest user', () => {
-      Object.defineProperty(component['userService'], 'loggedIn', {
-        get: jest.fn(() => false)
-      });
-      component.collectionId = 'mockCollectionId';
-      component.contentId = 'mockContentId';
-      const mockUser = { userProfile: { id: 'guest' } };
-      jest.spyOn(component['userService'], 'userData$' as any, 'get').mockReturnValue(of(mockUser));
-      const eventData = {
-        eid: 'END',
-        metaData: {
+		it('should store metadata in localStorage for guest user', () => {
+			Object.defineProperty(component['userService'], 'loggedIn', {
+				get: jest.fn(() => false)
+			});
+			component.collectionId = 'mockCollectionId';
+			component.contentId = 'mockContentId';
+			const mockUser = { userProfile: { id: 'guest' } };
+			jest.spyOn(component['userService'], 'userData$' as any, 'get').mockReturnValue(of(mockUser));
+			const eventData = {
+				eid: 'END',
+				metaData: {
 					mimeType: 'application/vnd.ekstep.content-collection',
 				}
-      };
-      component.eventHandler(eventData);
-      const expectedVarName = '';
-      JSON.stringify(eventData.metaData);
-      expect(localStorage.getItem(expectedVarName)).toBe(undefined);
-    });
-  });
+			};
+			component.eventHandler(eventData);
+			const expectedVarName = '';
+			JSON.stringify(eventData.metaData);
+			expect(localStorage.getItem(expectedVarName)).toBe(undefined);
+		});
+	});
 
 	it('should subscribe to contentFullScreenEvent and handle full screen view', () => {
-		 component.playerConfig = {
+		component.playerConfig = {
 			metadata: {
 				mimeType: 'questionset',
 				instructions: 'Mock instructions',
@@ -823,33 +847,33 @@ describe('PlayerComponent', () => {
 			},
 			context: {
 				cdata: [],
-				userData:[]
+				userData: []
 			}
 		} as any;
 		const contentUtilsServiceServiceMock = {
-        contentShareEvent: {
-            emit: jest.fn(),
-            pipe: jest.fn(() => {
-                return of(true)
-            })
-        } as any,
-    };
-    component.contentUtilsServiceService = contentUtilsServiceServiceMock as any;
+			contentShareEvent: {
+				emit: jest.fn(),
+				pipe: jest.fn(() => {
+					return of(true)
+				})
+			} as any,
+		};
+		component.contentUtilsServiceService = contentUtilsServiceServiceMock as any;
 		const mockIsFullScreen = true;
 		const navigationHelperServiceSpy = jest.spyOn(component['navigationHelperService'].contentFullScreenEvent, 'pipe').mockReturnValueOnce(of(mockIsFullScreen));
 
 		if (component['navigationHelperService'].handleContentManagerOnFullscreen) {
-			jest.spyOn(component['navigationHelperService'], 'handleContentManagerOnFullscreen').mockImplementation(() => {});
+			jest.spyOn(component['navigationHelperService'], 'handleContentManagerOnFullscreen').mockImplementation(() => { });
 		}
 		const mockDocument = {
-    getElementsByTagName: jest.fn().mockReturnValue([{ classList: { add: jest.fn() } }]),
+			getElementsByTagName: jest.fn().mockReturnValue([{ classList: { add: jest.fn() } }]),
 			body: { classList: { add: jest.fn() } }
 		};
 		jest.spyOn(global.document, 'getElementsByTagName').mockImplementation(() => mockDocument.getElementsByTagName());
 		jest.spyOn(mockDocument.body.classList, 'add');
 
 
-		const loadPlayerSpy = jest.spyOn(component, 'loadPlayer').mockImplementation(() => {});
+		const loadPlayerSpy = jest.spyOn(component, 'loadPlayer').mockImplementation(() => { });
 		component.ngOnInit();
 
 		expect(navigationHelperServiceSpy).toHaveBeenCalled();
@@ -872,26 +896,26 @@ describe('PlayerComponent', () => {
 			},
 			context: {
 				cdata: [],
-				userData:[]
+				userData: []
 			}
 		} as any;
 		const contentUtilsServiceServiceMock = {
-        contentShareEvent: {
-            emit: jest.fn(),
-            pipe: jest.fn(() => {
-                return of(false)
-            })
-        } as any,
-    };
-    component.contentUtilsServiceService = contentUtilsServiceServiceMock as any;
+			contentShareEvent: {
+				emit: jest.fn(),
+				pipe: jest.fn(() => {
+					return of(false)
+				})
+			} as any,
+		};
+		component.contentUtilsServiceService = contentUtilsServiceServiceMock as any;
 		const mockIsFullScreen = false;
 		const navigationHelperServiceSpy = jest.spyOn(component['navigationHelperService'].contentFullScreenEvent, 'pipe').mockReturnValueOnce(of(mockIsFullScreen));
 
 		if (component['navigationHelperService'].handleContentManagerOnFullscreen) {
-			jest.spyOn(component['navigationHelperService'], 'handleContentManagerOnFullscreen').mockImplementation(() => {});
+			jest.spyOn(component['navigationHelperService'], 'handleContentManagerOnFullscreen').mockImplementation(() => { });
 		}
 		const mockDocument = {
-    getElementsByTagName: jest.fn().mockReturnValue([{ classList: { remove: jest.fn() } }]),
+			getElementsByTagName: jest.fn().mockReturnValue([{ classList: { remove: jest.fn() } }]),
 			body: { classList: { remove: jest.fn() } }
 		};
 		jest.spyOn(global.document, 'getElementsByTagName').mockImplementation(() => mockDocument.getElementsByTagName());
@@ -917,7 +941,7 @@ describe('PlayerComponent', () => {
 			},
 			context: {
 				cdata: [],
-				userData:[]
+				userData: []
 			}
 		} as any;
 		const contentUtilsServiceServiceMock = {
@@ -927,8 +951,8 @@ describe('PlayerComponent', () => {
 					return of(true)
 				})
 			} as any,
-    };
-    component.contentUtilsServiceService = contentUtilsServiceServiceMock as any;
+		};
+		component.contentUtilsServiceService = contentUtilsServiceServiceMock as any;
 		component.isMobileOrTab = false;
 		jest.spyOn(component['navigationHelperService'].contentFullScreenEvent, 'pipe').mockReturnValueOnce(of('close'));
 
@@ -939,18 +963,18 @@ describe('PlayerComponent', () => {
 	});
 
 	it('should clone event if newPlayerEvent is true', () => {
-    const mockEvent = { };
-    const cloneDeepSpy = jest.spyOn(_, 'cloneDeep');
-    component.generateContentReadEvent(mockEvent, true);
-    expect(cloneDeepSpy).toHaveBeenCalledWith(mockEvent);
-  });
+		const mockEvent = {};
+		const cloneDeepSpy = jest.spyOn(_, 'cloneDeep');
+		component.generateContentReadEvent(mockEvent, true);
+		expect(cloneDeepSpy).toHaveBeenCalledWith(mockEvent);
+	});
 
-  it('should not clone event if newPlayerEvent is false or not provided', () => {
-    const mockEvent = {  };
-    const cloneDeepSpy = jest.spyOn(_, 'cloneDeep');
-    component.generateContentReadEvent(mockEvent);
-    expect(cloneDeepSpy).not.toHaveBeenCalled();
-  });
+	it('should not clone event if newPlayerEvent is false or not provided', () => {
+		const mockEvent = {};
+		const cloneDeepSpy = jest.spyOn(_, 'cloneDeep');
+		component.generateContentReadEvent(mockEvent);
+		expect(cloneDeepSpy).not.toHaveBeenCalled();
+	});
 
 	it('should return early if eventCopy is falsy', () => {
 		component.generateContentReadEvent(null);
@@ -959,33 +983,85 @@ describe('PlayerComponent', () => {
 
 	it('should call videoPlayerConfig after 200ms if playerType is "video-player"', () => {
 		const nativeElementMock = {
-      append: jest.fn()
-    };
+			append: jest.fn()
+		};
 		component.videoPlayer = {
-      nativeElement: nativeElementMock as any
-    };
-    component.playerConfig = true as any;
-    component.playerType = "video-player";
+			nativeElement: nativeElementMock as any
+		};
+		component.playerConfig = true as any;
+		component.playerType = "video-player";
 		component.playerService = {
 			getQuestionSetRead: jest.fn().mockImplementation(() => {
 				return of(questionsetRead)
 			})
 		} as any;
-    jest.useFakeTimers();
+		jest.useFakeTimers();
 		const spy = jest.spyOn(component, 'videoPlayerConfig');
-    component.ngAfterViewInit();
-    jest.advanceTimersByTime(200);
-    expect(spy).toHaveBeenCalled();
-  });
+		component.ngAfterViewInit();
+		jest.advanceTimersByTime(200);
+		expect(spy).toHaveBeenCalled();
+	});
 
-  it('should not call videoPlayerConfig if playerType is not "video-player"', () => {
-    component.playerConfig = true as any;
-    component.playerType = "audio-player";
-    jest.useFakeTimers();
-    component.ngAfterViewInit();
-    jest.advanceTimersByTime(200);
-    expect(playerService.getQuestionSetRead).not.toHaveBeenCalled();
-  });
+	it('should not call videoPlayerConfig if playerType is not "video-player"', () => {
+		component.playerConfig = true as any;
+		component.playerType = "audio-player";
+		jest.useFakeTimers();
+		component.ngAfterViewInit();
+		jest.advanceTimersByTime(200);
+		expect(playerService.getQuestionSetRead).not.toHaveBeenCalled();
+	});
 
+	it('should call pdfPlayerConfig after 200ms if playerType is "video-player"', () => {
+		const nativeElementMock = {
+			append: jest.fn()
+		};
+		component.pdfPlayer = {
+			nativeElement: nativeElementMock as any
+		};
+		component.playerConfig = true as any;
+		component.playerType = "pdf-player";
+		component.playerService = {
+			getQuestionSetRead: jest.fn().mockImplementation(() => {
+				return of(questionsetRead)
+			})
+		} as any;
+		jest.useFakeTimers();
+		const spy = jest.spyOn(component, 'pdfPlayerConfig');
+		component.ngAfterViewInit();
+		jest.advanceTimersByTime(200);
+		expect(spy).toHaveBeenCalled();
+	});
+	it('should call epubPlayerConfig after 200ms if playerType is "video-player"', () => {
+		const nativeElementMock = {
+			append: jest.fn()
+		};
+		component.epubPlayer = {
+			nativeElement: nativeElementMock as any
+		};
+		component.playerConfig = true as any;
+		component.playerType = "epub-player";
+		component.playerService = {
+			getQuestionSetRead: jest.fn().mockImplementation(() => {
+				return of(questionsetRead)
+			})
+		} as any;
+		jest.useFakeTimers();
+		const spy = jest.spyOn(component, 'epubPlayerConfig');
+		component.ngAfterViewInit();
+		jest.advanceTimersByTime(200);
+		expect(spy).toHaveBeenCalled();
+	});
+
+	it('should not call any player config method for unknown playerType', () => {
+		component.playerType = 'unknown-player';
+		const videoPlayerConfigSpy = jest.spyOn(component, 'videoPlayerConfig');
+		const pdfPlayerConfigSpy = jest.spyOn(component, 'pdfPlayerConfig');
+		const pdfEpubConfigSpy = jest.spyOn(component, 'epubPlayerConfig');
+		component.configurePlayer();
+		expect(videoPlayerConfigSpy).not.toHaveBeenCalled();
+		expect(pdfPlayerConfigSpy).not.toHaveBeenCalled();
+		expect(pdfEpubConfigSpy).not.toHaveBeenCalled();
+
+	});
 
 });

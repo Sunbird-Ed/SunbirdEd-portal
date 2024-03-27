@@ -73,6 +73,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
  */
   @ViewChild('modal') modal;
   @ViewChild('videoPlayer') videoPlayer: ElementRef;
+  @ViewChild('pdfPlayer') pdfPlayer: ElementRef;
+  @ViewChild('epubPlayer') epubPlayer: ElementRef;
 
   @HostListener('window:popstate', ['$event'])
   onPopState(event) {
@@ -155,41 +157,100 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   /**
-   * Executes after the view and child views are initialized. 
-   * This method checks if the player configuration is available.
-   * If the player configuration is available, it loads the player using the 'loadPlayer()' method.
-   * Additionally, if the player type is 'video-player', it asynchronously configures the video player 
-   * by invoking the 'videoPlayerConfig()' method after a delay of 200 milliseconds.
-   * This delay ensures that any necessary setup operations are completed before configuring the video player.
-   */
+ * Executes after the view and child views have been initialized. 
+ * Checks if player configuration is available, then loads the player and configures it after a short delay.
+ * 
+ * If player configuration is available:
+ *   1. Calls the 'loadPlayer' method to initialize the player.
+ *   2. Sets a timeout to configure the player after a delay of 200 milliseconds.
+ * 
+ * This delayed configuration is necessary to ensure that the player is fully loaded and ready to be configured.
+ */
   ngAfterViewInit() {
     if (this.playerConfig) {
       this.loadPlayer();
       setTimeout(() => {
-        if (this.playerType === "video-player") {
-          this.videoPlayerConfig();
-        }
+        this.configurePlayer();
       }, 200);
     }
   }
+
   /**
-   * Constructs a video player configuration and initializes the video player element dynamically.
-   * This method creates a custom video player element, configures it with the provided player configuration,
-   * and appends it to the native element reference of the video player.
-   * Additionally, it adds event listeners for 'playerEvent' and 'telemetryEvent' to handle player events and telemetry events respectively.
+   * Configures the player based on the specified player type.
+   * 
+   * Depending on the 'playerType' property:
+   *   - If the player type is 'video-player', calls the 'videoPlayerConfig' method to configure the video player.
+   *   - If the player type is 'pdf-player', calls the 'pdfPlayerConfig' method to configure the PDF player.
+   *   - If the player type is 'epub-player', calls the 'epubPlayerConfig' method to configure the EPub player.
+   * 
+   * This method ensures that the appropriate configuration is applied based on the type of player being used.
    */
+  configurePlayer() {
+    switch (this.playerType) {
+      case "video-player":
+        this.videoPlayerConfig();
+        break;
+      case "pdf-player":
+        this.pdfPlayerConfig();
+        break;
+      case "epub-player":
+        this.epubPlayerConfig();
+        break;
+    }
+  }
+
+  /**
+ * Constructs a video player configuration and initializes the video player element dynamically.
+ * This method creates a custom video player element, configures it with the provided player configuration,
+ * and appends it to the native element reference of the video player.
+ * Additionally, it adds event listeners for 'playerEvent' and 'telemetryEvent' to handle player events and telemetry events respectively.
+ */
   videoPlayerConfig() {
     const videoPlayerElement = document.createElement('sunbird-video-player');
     videoPlayerElement.setAttribute('player-config', JSON.stringify(this.playerConfig));
-    this.videoPlayer.nativeElement.append(videoPlayerElement);
     videoPlayerElement.addEventListener('playerEvent', (event) => {
       this.eventHandler(event);
     });
     videoPlayerElement.addEventListener('telemetryEvent', (event) => {
       this.generateContentReadEvent(event, true);
     });
+    this.videoPlayer.nativeElement.append(videoPlayerElement);
   }
 
+  /**
+ * Creates a PDF player element and attaches event listeners for player and telemetry events.
+ * The player configuration is set using the provided playerConfig property.
+ * When playerEvent is emitted, it triggers the eventHandler method.
+ * When telemetryEvent is emitted, it triggers the generateContentReadEvent method with the 'true' flag.
+ */
+  pdfPlayerConfig() {
+    const pdfPlayerElement = document.createElement('sunbird-pdf-player');
+    pdfPlayerElement.setAttribute('player-config', JSON.stringify(this.playerConfig));
+    pdfPlayerElement.addEventListener('playerEvent', (event) => {
+      this.eventHandler(event);
+    });
+    pdfPlayerElement.addEventListener('telemetryEvent', (event) => {
+      this.generateContentReadEvent(event, true)
+    });
+    this.pdfPlayer.nativeElement.append(pdfPlayerElement);
+  }
+  /**
+   * Configures the EPUB player by creating a new HTML element for the Sunbird EPUB player,
+   * setting the player configuration, and attaching event listeners for player and telemetry events.
+   * This method is responsible for dynamically configuring the EPUB player component,
+   * allowing it to be embedded within the parent component's view and interact with player and telemetry events.
+   */
+  epubPlayerConfig() {
+    const epubElement = document.createElement('sunbird-epub-player');
+    epubElement.setAttribute('player-config', JSON.stringify(this.playerConfig));
+    epubElement.addEventListener('playerEvent', (event) => {
+      this.eventHandler(event);
+    });
+    epubElement.addEventListener('telemetryEvent', (event) => {
+      this.generateContentReadEvent(event, true)
+    });
+    this.epubPlayer.nativeElement.append(epubElement);
+  }
   ngOnChanges(changes) {
     this.contentRatingModal = false;
     this.showNewPlayer = false;
