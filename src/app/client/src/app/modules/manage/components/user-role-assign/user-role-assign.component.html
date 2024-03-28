@@ -125,24 +125,28 @@
                 <label>{{resourceService.frmelmnts?.lbl?.role}}</label>
               </div>
               <div class="field">
-                <sui-multi-select [isSearchable]="false" class="selection" [(ngModel)]="role"
+                <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+                  <mat-select [isSearchable]="false" class="selection" [(ngModel)]="role"
                   (selectedOptionsChange)="enableButton()" formControlName="role" [options]="allRoles"
                   labelField="roleName" valueField="role" name="role"
-                  placeholder="{{resourceService?.frmelmnts?.btn?.selrole}}" #allroles>
-                  <sui-select-option *ngFor="let role of allroles.filteredOptions"
-                    [ngClass]="{disabled: userAssignedRole.includes(role.role)}" [value]="role"></sui-select-option>
-                </sui-multi-select>
+                  placeholder="{{resourceService?.frmelmnts?.btn?.selrole}}" #allroles multiple>
+                  <mat-option *ngFor="let role of allroles.filteredOptions"
+                    [ngClass]="{disabled: userAssignedRole.includes(role.role)}" [value]="role">{{role}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
               </div>
               <div class="field">
                 <label>{{resourceService.frmelmnts?.lbl?.orgname}}</label>
               </div>
               <div class="field">
-                <sui-multi-select [isSearchable]="false" class="selection" [(ngModel)]="orgName"
+                <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+                  <mat-select [isSearchable]="false" class="selection" [(ngModel)]="orgName"
                   (selectedOptionsChange)="enableButton()" formControlName="orgName" [options]="orgList"
                   labelField="orgName" valueField="orgId" name="orgName"
-                  placeholder="{{resourceService?.frmelmnts?.lbl?.dashboardselectorg}}" #allorgName>
-                  <sui-select-option *ngFor="let org of allorgName.filteredOptions" [value]="org"></sui-select-option>
-                </sui-multi-select>
+                  placeholder="{{resourceService?.frmelmnts?.lbl?.dashboardselectorg}}" #allorgName multiple>
+                  <mat-option *ngFor="let org of allorgName.filteredOptions" [value]="org">{{org}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
               </div>
             </form>
           </div>
