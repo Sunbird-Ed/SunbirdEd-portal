@@ -28,16 +28,18 @@
       </mat-select>
     </mat-form-field>
   </div>
-  <div *ngIf="field.inputType==='multiSelect'">
-    <mat-form-field>
-      <mat-label>{{field.label}} <span class="sb-color-red" *ngIf="(field.required == true)">*</span></mat-label>
-      <mat-select id={{field.code}} name={{field.code}} class="selection" [(ngModel)]="formInputData[field.code]" 
-      aria-label="name" valueField="name" [disabled]="!field.editable"
-      (ngModelChange)="updateForm({index:i, field:field, value:formInputData[field.code],formData:formInputData})"
-      [options]="categoryList[field.code]" multiple>
-        <mat-option *ngFor="let option of multiSelect.filteredOptions" [value]="option" attr.aria-label="{{option}}">{{option}}</mat-option>
-      </mat-select>
-    </mat-form-field>
+  <div *ngIf="field.inputType==='multiSelect'" class="sb-field-group" [ngClass]="{ 'disabled':!field.editable}">
+    <label>{{field.label}} <span class="sb-color-red" *ngIf="(field.required == true)">*</span></label>
+    <div class="sb-field">
+      <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+        <mat-select id={{field.code}} name={{field.code}} class="selection" [(ngModel)]="formInputData[field.code]" 
+        labelField="name" valueField="name"
+        (ngModelChange)="updateForm({index:i, field:field, value:formInputData[field.code],formData:formInputData})"
+        [options]="categoryList[field.code]" multiple>
+          <mat-option *ngFor="let option of multiSelect.filteredOptions" [value]="option">{{option}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
   </div>
   <div *ngIf="field.code==='year'">
     <mat-form-field appearance="fill" class="sb-mat__dropdown w-100">
