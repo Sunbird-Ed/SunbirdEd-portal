@@ -28,13 +28,17 @@ describe('FrameworkService', () => {
     }
   };
   const mockBrowserCacheTtlService: Partial<BrowserCacheTtlService> = {};
-  const mockUserService: Partial<UserService> = {};
+  const mockUserService: Partial<UserService> = {
+    hashTagId: 'testHashTagId',
+  };
   const mockToasterService: Partial<ToasterService> = {};
   const mockResourceService: Partial<ResourceService> = {};
   const mockLearnerService: Partial<LearnerService> = {
     get: jest.fn().mockImplementation(() => { })
   };
-  const mockFormService: Partial<FormService> = {};
+  const mockFormService: Partial<FormService> = {
+    getFormConfig: jest.fn().mockReturnValue(of({}))
+  };
   const mockPublicDataService: Partial<PublicDataService> = {
     get: jest.fn().mockImplementation(() => { })
   };
@@ -201,6 +205,7 @@ describe('FrameworkService', () => {
       expect(defaultLicense).toBe('ABCD');
     });
   });
+  
   describe('should call the framework initialize', () => {
     it('should call the initialize method', () => {
       const res = {
@@ -222,10 +227,35 @@ describe('FrameworkService', () => {
         expect(JSON.stringify(data)).toBe(JSON.stringify(res));
       });
     });
+
     it('should call the initialize method with _frameworkData having some framework', () => {
       frameworkService['_frameworkData'].framework = {test: '123'};
       frameworkService.initialize('framework', '1234567');
       expect(JSON.stringify(frameworkService['_frameworkData'])).toBe(JSON.stringify({NTP: 'ntp', framework: {test: '123'}}));
     });
   });
+
+  it('should get default course framework', () => {
+    const spyGetChannel = jest.spyOn(frameworkService, 'getChannel' as any).mockReturnValue(of({ result: { channel: { defaultCourseFramework: 'defaultFramework' } } }));
+    frameworkService.getDefaultCourseFramework().subscribe((frameworkName) => {
+      expect(frameworkName).toEqual('defaultFramework');
+      expect(spyGetChannel).toHaveBeenCalled();
+    });
+  });
+
+  it('should get sorted filters', () => {
+    const filters = [{ index: 2, name: 'Filter 2' }, { index: 1, name: 'Filter 1' }];
+    const sortedFilters = frameworkService.getSortedFilters(filters, 'gradeLevel');
+    expect(sortedFilters).toEqual([{ index: 1, name: 'Filter 1' }, { index: 2, name: 'Filter 2' }]);
+  });
+
+  it('should get segmentation commands', async () => {
+    const formRequest = { formType: 'config', contentType: 'segmentation_v2', formAction: 'get' };
+    const expectedResponse = {};
+    mockFormService.getFormConfig = jest.fn().mockReturnValue(of(expectedResponse));
+    const segmentationCommands = await frameworkService.getSegmentationCommands();
+    expect(segmentationCommands).toEqual(expectedResponse);
+    expect(mockFormService.getFormConfig).toHaveBeenCalledWith(formRequest);
+  });
+
 })

@@ -11,16 +11,18 @@ import { CslFrameworkService } from '../../../public/services/csl-framework/csl-
 import { DataDrivenFilterComponent } from './data-driven-filter.component';
 
 describe('DataDrivenFilterComponent', () => {
-    let component: DataDrivenFilterComponent;
+  let component: DataDrivenFilterComponent;
 
-    const mockConfigService :Partial<ConfigService> ={};
+  const mockConfigService :Partial<ConfigService> ={};
 	const mockResourceService :Partial<ResourceService> ={};
 	const mockRouter :Partial<Router> ={};
 	const mockActivatedRoute :Partial<ActivatedRoute> ={};
 	const mockCacheService :Partial<CacheService> ={
 		get: jest.fn(),
 	};
-	const mockCdr :Partial<ChangeDetectorRef> ={};
+	const mockCdr :Partial<ChangeDetectorRef> ={
+		detectChanges: jest.fn(),
+	};
 	const mockFrameworkService :Partial<FrameworkService> ={
 		initialize: jest.fn(),
 		frameworkData$: of({
@@ -34,7 +36,10 @@ describe('DataDrivenFilterComponent', () => {
 	const mockPermissionService :Partial<PermissionService> ={};
 	const mockUtilService :Partial<UtilService> ={};
 	const mockBrowserCacheTtlService :Partial<BrowserCacheTtlService> ={};
-	const mockOrgDetailsService :Partial<OrgDetailsService> ={};
+	const mockOrgDetailsService :Partial<OrgDetailsService> ={
+		searchOrg: jest.fn(),
+		setOrg: jest.fn(),
+	};
 	const mockLayoutService :Partial<LayoutService> ={};
 	const mockCslFrameworkService :Partial<CslFrameworkService> ={
 		getAllFwCatName: jest.fn(),
@@ -64,7 +69,7 @@ describe('DataDrivenFilterComponent', () => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
-            
+
     it('should create a instance of component', () => {
         expect(component).toBeTruthy();
     });
@@ -83,4 +88,56 @@ describe('DataDrivenFilterComponent', () => {
 		expect(component['setFilterInteractData']).toHaveBeenCalled();
 		expect(component.dataDrivenFilter.emit).toHaveBeenCalled();
 	})
+
+	it('should hard refresh filter', () => {
+    component.refresh = true;
+    component['hardRefreshFilter']();
+
+    expect(component.refresh).toBeTruthy();
+    expect(component['cdr'].detectChanges).toHaveBeenCalled();
+  });
+
+  it('should call org search and return data', () => {
+    jest.spyOn(mockOrgDetailsService, 'searchOrg' as any).mockReturnValue(of({ content: ['org1', 'org2'] }));
+
+    component.getOrgSearch().subscribe(data => {
+      expect(data).toEqual(['org1', 'org2']);
+    });
+  });
+
+  it('should unsubscribe from subscriptions on destroy', () => {
+    const mockResourceDataSubscription = {
+      unsubscribe: jest.fn(),
+    };
+    component.resourceDataSubscription = mockResourceDataSubscription as any;
+    component.unsubscribe = {
+        next: jest.fn(),
+        complete: jest.fn()
+      } as any;
+
+    component.ngOnDestroy();
+
+    expect(mockResourceDataSubscription.unsubscribe).toHaveBeenCalled();
+  });
+
+	it('should handle topic change and detect changes', () => {
+    component.formInputData = {};
+    const topicsSelected = [{ name: 'Topic1' }, { name: 'Topic2' }];
+    component.handleTopicChange(topicsSelected);
+
+    expect(component.formInputData['topic']).toEqual(['Topic1', 'Topic2']);
+    expect(component['cdr'].detectChanges).toHaveBeenCalled();
+  });
+
+  it('should update channel input label and call org details service', () => {
+    component.formFieldProperties = [{ code: 'channel', range: [{ identifier: 'id1' }, { identifier: 'id2' }] }];
+
+    const data = ['id1', 'id2'];
+    component['modelChange'](data);
+
+    expect(component.channelInputLabel).toEqual([{ identifier: 'id1' }, { identifier: 'id2' }]);
+    expect(mockOrgDetailsService.setOrg).toHaveBeenCalledWith([{ identifier: 'id1' }, { identifier: 'id2' }]);
+  });
+
+
 });

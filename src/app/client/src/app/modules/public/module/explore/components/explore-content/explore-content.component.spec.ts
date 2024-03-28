@@ -20,6 +20,8 @@ describe('ExploreContentComponent', () => {
 
   const mockSearchService: Partial<SearchService> = {
     getContentTypes: jest.fn(),
+    updateFacetsData: jest.fn(),
+    contentSearch: jest.fn(),
   };
   const mockRouter: Partial<Router> = {
     url: '/current/2',
@@ -27,6 +29,7 @@ describe('ExploreContentComponent', () => {
   };
   const mockActivatedRoute: Partial<ActivatedRoute> = {
     queryParams: of({}),
+    params: of({ pageNumber: 1 }),
     snapshot: {
         data: {
             telemetry: {
@@ -42,19 +45,38 @@ describe('ExploreContentComponent', () => {
   const mockPaginationService: Partial<PaginationService> = {
     getPager: jest.fn(),
   };
-  const mockResourceService: Partial<ResourceService> = {};
+  const mockResourceService: Partial<ResourceService> = {
+    languageSelected$: of({ value: 'en' }),
+      frmelmnts: {
+        lbl: {
+          noBookfoundTitle: 'No books found',
+          noBookfoundSubTitle: 'No books found subtitle',
+          noBookfoundButtonText: 'Explore more',
+          desktop: {
+            yourSearch: 'Your search "{key}" did not match any content.',
+            notMatchContent: 'Please try again with different keywords.'
+          }
+        }
+      }
+  };
   const mockToasterService: Partial<ToasterService> = {
     error: jest.fn
   };
   const mockConfigService: Partial<ConfigService> = {
     appConfig: {
+      ExplorePage:{
+        contentApiQueryParam: ''
+      },
       SEARCH: { PAGE_LIMIT: 10 },
       explore: {
        filterType: 'yourFilterType'
       }
     },
   };
-  const mockUtilService: Partial<UtilService> = {};
+  const mockUtilService: Partial<UtilService> = {
+    transposeTerms: jest.fn((term, key, value) => `${term} ${key} ${value}`),
+		addHoverData:jest.fn(),
+  };
   const mockOrgDetailsService: Partial<OrgDetailsService> = {
     getOrgDetails: jest.fn(() => of({ hashTagId: 'MockedHashTagId' })) as any,
   };
@@ -88,7 +110,11 @@ describe('ExploreContentComponent', () => {
   const mockTelemetryService: Partial<TelemetryService> = {
     interact: jest.fn(),
   };
-  const mockSchemaService: Partial<SchemaService> = {};
+  const mockSchemaService: Partial<SchemaService> = {
+    fetchSchemas: jest.fn().mockReturnValue(of({})),
+    getSchema: jest.fn(),
+    schemaValidator: jest.fn().mockReturnValue(of({})),
+  };
   const mockCslFrameworkService: Partial<CslFrameworkService> = {
         setDefaultFWforCsl: jest.fn(),
         getAllFwCatName: jest.fn(),
@@ -404,6 +430,55 @@ it('should navigate to the specified page', () => {
       expect(mockPublicPlayerService.updateDownloadStatus).toHaveBeenCalledWith(downloadListdata, content);
     });
     expect(mockPublicPlayerService.updateDownloadStatus).toHaveBeenCalledTimes(contentList.length);
+  });
+
+  it('should log inView events', () => {
+    component.telemetryImpression ={
+      edata: { visits: [], subtype: '' },
+    } as any
+    const event = {
+      inview: [
+        {
+          data: { identifier: 'content1', contentType: 'lesson' },
+          id: 'element1'
+        },
+        {
+          data: { identifier: 'content2', contentType: 'video' },
+          id: 'element2'
+        }
+      ]
+    };
+    component.inView(event);
+    expect(component.inViewLogs.length).toBe(2);
+    expect(component.inViewLogs).toContainEqual({ objid: 'content1', objtype: 'lesson', index: 'element1' });
+    expect(component.inViewLogs).toContainEqual({ objid: 'content2', objtype: 'video', index: 'element2' });
+    expect(component.telemetryImpression.edata.visits).toEqual(component.inViewLogs);
+    expect(component.telemetryImpression.edata.subtype).toBe('pageexit');
+  });
+
+  it('should set no result message without query params key', () => {
+    component.queryParams = {};
+    component['setNoResultMessage']();
+
+    expect(component.noResultMessage.title).toBe('No books found frmelmnts.lbl.noBookfoundTitle en');
+    expect(component.noResultMessage.subTitle).toBe('No books found subtitle frmelmnts.lbl.noBookfoundSubTitle en');
+    expect(component.noResultMessage.buttonText).toBe('Explore more frmelmnts.lbl.noBookfoundButtonText en');
+  });
+
+  it('should set no result message with query params key', () => {
+    component.queryParams = { key: 'search keyword' };
+    component['setNoResultMessage']();
+
+    expect(component.noResultMessage.title).toBe('Your search "search keyword" did not match any content. Please try again with different keywords.');
+    expect(component.noResultMessage.subTitle).toBe('No books found subtitle frmelmnts.lbl.noBookfoundSubTitle en');
+    expect(component.noResultMessage.buttonText).toBe('Explore more frmelmnts.lbl.noBookfoundButtonText en');
+  });
+
+  it('should not call addHoverData when isDesktopApp is false', () => {
+    component.isDesktopApp = false;
+    const spyOnLanguage = jest.spyOn(component, 'addHoverData').mockImplementation(() => {});
+    component['listenLanguageChange']();
+    expect(spyOnLanguage).not.toHaveBeenCalled();
   });
 
 });
