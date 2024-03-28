@@ -2345,10 +2345,10 @@
     "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
     tslib "^2.0.0"
 
-"@project-sunbird/sunbird-file-upload-library@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-file-upload-library/-/sunbird-file-upload-library-1.0.2.tgz#331465c478d4df45cdbaa813c597296609892517"
-  integrity sha512-oqbyAECe9ejyGac4vQK9lkkXNOdP3fnK+QXMeoZOZn5rAnStcWgAxyK+tdgoC8FDBFC5JOyWGjM9UfntUMsRaA==
+"@project-sunbird/sunbird-file-upload-library@1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-file-upload-library/-/sunbird-file-upload-library-1.0.4.tgz#28d682b3a16973fa413f85c65d348db5e6d4ff7a"
+  integrity sha512-IlM+31b/xHFl3d1SZnFSlyDWTTvlR3O4LLkoP8Nh5vC1xyf2wV81hYp/JpWNpeOeZ7cD/eTJje4LNUvKXVblgA==
   dependencies:
     axios "^1.4.0"
 
