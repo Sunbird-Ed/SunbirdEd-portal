@@ -68,9 +68,8 @@
                 (selectedSubmission)="!programJoined ? joinProgramPopUp = true :redirectToQuestions($event)" (onAction)="actionOnSubmission($event)">
               </submission>
               <!-- Observation Without Rubric -->
-              viod
-              <ng-template>
-                <div  class="pt-0 pb-8">
+              <ng-template #rubricCard>
+                <div content class="pt-0 pb-8">
                   <div *ngFor="let evidance of submission?.evidencesStatus"
                     class="evidences-list cc-player__content-header sb-g">
                     <div class="sb-g-col-xs-12 sb-g-col-sm-12 sb-g-col-md-8 sb-g-col-lg-9">
