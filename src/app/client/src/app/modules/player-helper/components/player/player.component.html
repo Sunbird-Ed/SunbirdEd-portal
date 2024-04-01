@@ -18,7 +18,7 @@
         <div #pdfPlayer *ngIf="playerType === 'pdf-player'" class= "custom-web-player" ></div>
         <div #videoPlayer *ngIf="playerType === 'video-player'" class= "custom-web-player" ></div>
         <div #epubPlayer *ngIf="playerType === 'epub-player'"  class= "custom-web-player" [showFullScreen]="isFullScreenView" ></div>
-        <quml-main-player *ngIf="playerType === 'quml-player' && showQumlPlayer" [playerConfig]="playerConfig" (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></quml-main-player>
+        <div #qumlPlayer *ngIf="playerType === 'quml-player'&& showQumlPlayer" class= "custom-web-player"></div>
       </div>
 </div>
 
@@ -41,7 +41,7 @@
   <div #pdfPlayer *ngIf="playerType === 'pdf-player'" class= "custom-web-player" ></div>
   <div #videoPlayer *ngIf="playerType === 'video-player'" class= "custom-web-player" ></div>
   <div #epubPlayer *ngIf="playerType === 'epub-player'"  class= "custom-web-player" [showFullScreen]="isFullScreenView" ></div>
-  <quml-main-player *ngIf="playerType === 'quml-player' && showQumlPlayer" [playerConfig]="playerConfig" (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></quml-main-player>
+  <div #qumlPlayer *ngIf="playerType === 'quml-player' && showQumlPlayer" class= "custom-web-player"></div>
 </div>
 </div>
 
