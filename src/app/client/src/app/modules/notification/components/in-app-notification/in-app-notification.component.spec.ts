@@ -14,13 +14,24 @@ import { InAppNotificationComponent } from './in-app-notification.component'
 describe('InAppNotificationComponent', () => {
   let component: InAppNotificationComponent;
   const mockNotificationServiceImpl: Partial<NotificationServiceImpl> = {
-    showNotificationModel$: jest.fn().mockReturnValue(of({ response: true }) as any) as any
+    notificationList$: of([
+        { status: UserFeedStatus.UNREAD },
+        { status: UserFeedStatus.READ },
+        { status: UserFeedStatus.UNREAD }
+      ]) as any,
+    showNotificationModel$: of(true) as any
   };
   const mockRouter: Partial<Router> = {
     events: of({ id: 1, url: 'sample-url' }) as any,
     navigate: jest.fn()
   };
-  const mockResourceService: Partial<ResourceService> = {};
+  const mockResourceService: Partial<ResourceService> = {
+    frmelmnts: {
+        lbl: {
+          newNotification: 'New Notification'
+        }
+      }
+  };
   const mockTelemetryService: Partial<TelemetryService> = {
     interact: jest.fn()
   };
@@ -28,7 +39,7 @@ describe('InAppNotificationComponent', () => {
     queryParams: of({})
   };
   const mockConnectionService: Partial<ConnectionService> = {
-    monitor: jest.fn()
+    monitor: jest.fn().mockReturnValue(of(true))
   };
   beforeAll(() => {
     component = new InAppNotificationComponent(
@@ -48,14 +59,17 @@ describe('InAppNotificationComponent', () => {
   it('should be create a instance of component', () => {
     expect(component).toBeTruthy();
   });
-  xit('should call ngOnInit', () => {
+
+  it('should call ngOnInit', () => {
     jest.spyOn(mockConnectionService, 'monitor').mockReturnValue(of(true))
     jest.spyOn(component, 'fetchNotificationList');
+    component.isConnected = true;
     component.ngOnInit();
     expect(mockConnectionService.monitor).toHaveBeenCalled();
-    expect(component.isConnected).toBeTruthy();
+    expect(component.isConnected).toBe(true);
     expect(component.fetchNotificationList).toHaveBeenCalled();
   });
+
   describe("ngOnDestroy", () => {
     it('should destroy sub', () => {
       component.unsubscribe$ = {
@@ -123,5 +137,14 @@ describe('InAppNotificationComponent', () => {
       component.toggleInAppNotifications();
     });
   });
+
+  it('should update component properties when notifications are fetched', () => {
+    component.showNotificationModel = false;
+    component.fetchNotificationList();
+    expect(component.showNotificationModel).toEqual(true);
+    expect(component.notificationCount).toEqual(2);
+    expect(component.inAppNotificationConfig.subTitle).toEqual('2 New Notification');
+  });
+
 });
 
