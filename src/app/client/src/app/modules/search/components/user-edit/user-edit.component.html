@@ -30,12 +30,14 @@
                 <label>{{resourceService.frmelmnts?.lbl?.role | translate}}</label>
               </div>
               <div class="field">
-                <sui-multi-select [isSearchable]="false" class="selection"
+                <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+                  <mat-select [isSearchable]="false" class="selection"
                   (selectedOptionsChange)="enableSubmitBtn = true;" formControlName="role" [options]="allRoles"
                   labelField="roleName" valueField="role" name="role"
-                  placeholder="{{resourceService?.frmelmnts?.btn?.selrole | translate}}" #allroles>
-                  <sui-select-option *ngFor="let role of allroles.filteredOptions" [value]="role"></sui-select-option>
-                </sui-multi-select>
+                  placeholder="{{resourceService?.frmelmnts?.btn?.selrole | translate}}" multiple #allroles>
+                    <mat-option *ngFor="let role of allroles.filteredOptions" [value]="role">{{role}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
               </div>
             </form>
           </div>
