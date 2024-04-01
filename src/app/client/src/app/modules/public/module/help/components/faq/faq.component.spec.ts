@@ -99,6 +99,9 @@ describe('FaqComponent', () => {
     });
 
     beforeEach(() => {
+		component.videoWebPlayer = {
+			nativeElement: document.createElement('div')
+		};
 		component.videoPlayer = {
 			changes: {
 			  subscribe: jest.fn()
