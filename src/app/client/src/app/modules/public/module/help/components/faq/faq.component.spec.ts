@@ -112,7 +112,16 @@ describe('FaqComponent', () => {
     it('should create a instance of component', () => {
         expect(component).toBeTruthy();
     });
+    
+	it('should create and append sunbird-video-player element to videoWebPlayer', () => {
+		component.playerConfig = { config: 'mock-player-config'};
+		component.videoPlayerConfig();
 
+		const videoPlayerElement = component.videoWebPlayer.nativeElement.querySelector('sunbird-video-player');
+		expect(videoPlayerElement).toBeTruthy();
+		expect(videoPlayerElement.getAttribute('player-config')).toEqual(JSON.stringify(component.playerConfig));
+	});
+	
 	describe('checkScreenView',() =>{
 		it('should set mobileview and showOnlyCategory when width is greater than 767',() =>{
            component.checkScreenView(800);
