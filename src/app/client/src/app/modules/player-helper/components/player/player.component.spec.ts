@@ -701,6 +701,16 @@ describe('PlayerComponent', () => {
 		component.epubPlayerConfig();
 		expect(component.epubPlayer.nativeElement.innerHTML).toContain('player-config');
 	});
+	it('should configure the quml player element correctly', () => {
+		component.qumlPlayer = {} as any;
+		const nativeElementSpy = document.createElement('div');
+		Object.defineProperty(component.qumlPlayer, 'nativeElement', {
+			get: jest.fn().mockReturnValue(nativeElementSpy)
+		});
+		jest.spyOn(nativeElementSpy, 'addEventListener');
+		component.qumlPlayerConfig();
+		expect(component.qumlPlayer.nativeElement.innerHTML).toContain('player-config');
+	});
 
 	it('should emit questionScoreSubmitEvents when event data is ACCESSEVENT', () => {
 		component.questionScoreSubmitEvents = {
@@ -1011,7 +1021,7 @@ describe('PlayerComponent', () => {
 		expect(playerService.getQuestionSetRead).not.toHaveBeenCalled();
 	});
 
-	it('should call pdfPlayerConfig after 200ms if playerType is "video-player"', () => {
+	it('should call pdfPlayerConfig after 200ms if playerType is "pdf-player"', () => {
 		const nativeElementMock = {
 			append: jest.fn()
 		};
@@ -1031,7 +1041,7 @@ describe('PlayerComponent', () => {
 		jest.advanceTimersByTime(200);
 		expect(spy).toHaveBeenCalled();
 	});
-	it('should call epubPlayerConfig after 200ms if playerType is "video-player"', () => {
+	it('should call epubPlayerConfig after 200ms if playerType is "epub-player"', () => {
 		const nativeElementMock = {
 			append: jest.fn()
 		};
@@ -1052,15 +1062,38 @@ describe('PlayerComponent', () => {
 		expect(spy).toHaveBeenCalled();
 	});
 
+	it('should call qumlPlayerConfig after 200ms if playerType is "quml-player"', () => {
+		const nativeElementMock = {
+			append: jest.fn()
+		};
+		component.qumlPlayer = {
+			nativeElement: nativeElementMock as any
+		};
+		component.playerConfig = true as any;
+		component.playerType = "quml-player";
+		component.playerService = {
+			getQuestionSetRead: jest.fn().mockImplementation(() => {
+				return of(questionsetRead)
+			})
+		} as any;
+		jest.useFakeTimers();
+		const spy = jest.spyOn(component, 'qumlPlayerConfig');
+		component.ngAfterViewInit();
+		jest.advanceTimersByTime(200);
+		expect(spy).toHaveBeenCalled();
+	});
 	it('should not call any player config method for unknown playerType', () => {
 		component.playerType = 'unknown-player';
 		const videoPlayerConfigSpy = jest.spyOn(component, 'videoPlayerConfig');
 		const pdfPlayerConfigSpy = jest.spyOn(component, 'pdfPlayerConfig');
 		const pdfEpubConfigSpy = jest.spyOn(component, 'epubPlayerConfig');
+		const qumlEpubConfigSpy = jest.spyOn(component, 'qumlPlayerConfig');
 		component.configurePlayer();
 		expect(videoPlayerConfigSpy).not.toHaveBeenCalled();
 		expect(pdfPlayerConfigSpy).not.toHaveBeenCalled();
 		expect(pdfEpubConfigSpy).not.toHaveBeenCalled();
+		expect(qumlEpubConfigSpy).not.toHaveBeenCalled();
+
 
 	});
 

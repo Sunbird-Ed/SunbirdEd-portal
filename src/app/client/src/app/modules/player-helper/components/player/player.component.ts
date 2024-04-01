@@ -75,6 +75,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   @ViewChild('videoPlayer') videoPlayer: ElementRef;
   @ViewChild('pdfPlayer') pdfPlayer: ElementRef;
   @ViewChild('epubPlayer') epubPlayer: ElementRef;
+  @ViewChild('qumlPlayer') qumlPlayer: ElementRef;
 
   @HostListener('window:popstate', ['$event'])
   onPopState(event) {
@@ -159,11 +160,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   /**
  * Executes after the view and child views have been initialized. 
  * Checks if player configuration is available, then loads the player and configures it after a short delay.
- * 
- * If player configuration is available:
- *   1. Calls the 'loadPlayer' method to initialize the player.
- *   2. Sets a timeout to configure the player after a delay of 200 milliseconds.
- * 
  * This delayed configuration is necessary to ensure that the player is fully loaded and ready to be configured.
  */
   ngAfterViewInit() {
@@ -182,6 +178,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
    *   - If the player type is 'video-player', calls the 'videoPlayerConfig' method to configure the video player.
    *   - If the player type is 'pdf-player', calls the 'pdfPlayerConfig' method to configure the PDF player.
    *   - If the player type is 'epub-player', calls the 'epubPlayerConfig' method to configure the EPub player.
+   *   - If the player type is 'quml-player', calls the 'epubPlayerConfig' method to configure the EPub player.
    * 
    * This method ensures that the appropriate configuration is applied based on the type of player being used.
    */
@@ -195,6 +192,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         break;
       case "epub-player":
         this.epubPlayerConfig();
+        break;
+      case "quml-player":
+        this.qumlPlayerConfig();
         break;
     }
   }
@@ -250,6 +250,24 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.generateContentReadEvent(event, true)
     });
     this.epubPlayer.nativeElement.append(epubElement);
+  }
+    /**
+   * Configures the Quml (Question Unit Markup Language) player by setting the question list URL,
+   * creating a new HTML element for the Sunbird Quml player, and attaching event listeners for player and telemetry events.
+   * This method is responsible for configuring the Quml player component dynamically,
+   * allowing it to be embedded within the parent component's view and interact with player and telemetry events.
+   */
+  qumlPlayerConfig() {
+    (window as any).questionListUrl = `/${_.get(this.configService, 'urlConFig.URLS.QUESTIONSET.LIST_API')}`;
+    const qumlElement = document.createElement('sunbird-quml-player');
+    qumlElement.setAttribute('player-config', JSON.stringify(this.playerConfig));
+    qumlElement.addEventListener('playerEvent', (event) => {
+      this.eventHandler(event);
+    });
+    qumlElement.addEventListener('telemetryEvent', (event) => {
+      this.generateContentReadEvent(event, true)
+    });
+    this.qumlPlayer.nativeElement.append(qumlElement);
   }
   ngOnChanges(changes) {
     this.contentRatingModal = false;
