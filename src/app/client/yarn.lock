@@ -3330,10 +3330,10 @@
     "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
     tslib "^2.2.0"
 
-"@project-sunbird/sunbird-quml-player-web-component@4.0.0-alpha.0":
-  version "4.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-web-component/-/sunbird-quml-player-web-component-4.0.0-alpha.0.tgz#fc0e25aede8bb329f9f64e40a3a1f3a47a5bee66"
-  integrity sha512-3Tg64zxlcD+c+s+mxL3vGB+7RgEakdIRN1mJBV4/ZaLek89vyFimGaAGwFTXPao1AgLni2qaL1Br1u7OsYqm6Q==
+"@project-sunbird/sunbird-quml-player-web-component@4.0.0-beta.0":
+  version "4.0.0-beta.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-web-component/-/sunbird-quml-player-web-component-4.0.0-beta.0.tgz#735f4966d4e76084c1878428a429c06c5edc2ec4"
+  integrity sha512-R2Zw3eaFsd+Ua0kp5bf32CcDzx6gwwEUibPtqygJBUvzOxl7OYSmFWACqHrT1zDdbafqGacGQ8In5inaJKqlbw==
 
 "@project-sunbird/sunbird-quml-player@7.0.3":
   version "7.0.3"
