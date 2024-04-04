@@ -98,6 +98,8 @@
               ]
             },
             "scripts": [
+              "node_modules/@project-sunbird/sunbird-quml-player-web-component/sunbird-quml-player.js",
+              "node_modules/epubjs/dist/epub.js",
               "src/assets/libs/iziToast/iziToast.min.js",
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/@project-sunbird/telemetry-sdk/index.js",
