@@ -98,6 +98,8 @@
               ]
             },
             "scripts": [
+              "node_modules/@project-sunbird/sunbird-quml-player-web-component/sunbird-quml-player.js",
+              "node_modules/epubjs/dist/epub.js",
               "src/assets/libs/iziToast/iziToast.min.js",
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/@project-sunbird/telemetry-sdk/index.js",
@@ -114,7 +116,6 @@
               "node_modules/@project-sunbird/sunbird-video-player-web-component/sunbird-video-player.js",
               "node_modules/@project-sunbird/sunbird-pdf-player-web-component/sunbird-pdf-player.js",
               "node_modules/@project-sunbird/sunbird-epub-player-web-component/sunbird-epub-player.js",
-              "node_modules/@project-sunbird/sunbird-quml-player-web-component/sunbird-quml-player.js",
               {
                 "inject": false,
                 "input": "src/assets/libs/semantic-ui/transition.min.js",
