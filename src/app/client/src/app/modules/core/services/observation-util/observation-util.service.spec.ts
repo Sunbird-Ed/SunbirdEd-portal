@@ -37,7 +37,7 @@ describe('ObservationUtilService', () => {
             mockModalService as SuiModalService,
             mockResourceService as ResourceService,
             mockRouter as Router,
-            // mockSlUtil as SlUtilsService,
+            mockSlUtil as SlUtilsService,
             mockFormService as FormService
         );
     });
@@ -61,10 +61,10 @@ describe('ObservationUtilService', () => {
             });
         });
 
-        xit('should return false if subtype is null', (done) => {
-            // mockUserService.userData$.subscribe((data) => {
-            //     data.userProfile['profileUserType']['subType'] = null;
-            // });
+        it('should return false if subtype is null', (done) => {
+            mockUserService.userData$.subscribe((data) => {
+                data.userProfile['profileUserType']['subType'] = null;
+            });
             observationUtilService.getProfileData().then((data) => {
                 setTimeout(() => {
                     expect(data).toBeFalsy();
@@ -74,9 +74,9 @@ describe('ObservationUtilService', () => {
         });
 
         it('should return true if profiletype is not administrator', (done) => {
-            // mockUserService.userData$.subscribe((data) => {
-            //     data.userProfile = null;
-            // });
+            mockUserService.userData$.subscribe((data) => {
+                data.userProfile = null;
+            });
             observationUtilService.getProfileData().then((data) => {
                 setTimeout(() => {
                     expect(data).toBeTruthy();

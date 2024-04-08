@@ -119,7 +119,7 @@ describe("QuestionnaireComponent", () => {
       mockObservationService as ObservationService,
       mockLocation as Location,
       mockObservationUtilService as ObservationUtilService,
-      // mockSlQuestionnaireService as SlQuestionnaireService,
+      mockSlQuestionnaireService as SlQuestionnaireService,
       mockQuestionnaireService as QuestionnaireService,
     )
   });
@@ -147,10 +147,10 @@ describe("QuestionnaireComponent", () => {
   });
 
   describe('fetch Questionnaire', () => {
-    xit('should fetch Questionnaire', () => {
+    it('should fetch Questionnaire', () => {
       jest.spyOn(questionnaireComponent, 'getQuestionnare');
       jest.spyOn(mockObservationService, 'post').mockReturnValue(of(Questionnaire) as any);
-      // questionnaireComponent.queryParams = of({ observationId: '0124963192947507200', timePeriod: '7d' }),
+      questionnaireComponent.queryParams = of({ observationId: '0124963192947507200', timePeriod: '7d' }),
         questionnaireComponent.getQuestionnare();
       expect(questionnaireComponent.getQuestionnare).toHaveBeenCalled();
       expect(mockObservationService.post).toHaveBeenCalled();
@@ -244,9 +244,9 @@ describe("QuestionnaireComponent", () => {
     });
   })
 
-  xdescribe('submit Evidence', () => {
+  describe('submit Evidence', () => {
     it('Should call submitEvidence for draft data', () => {
-      // questionnaireComponent.assessmentInfo = <any>Questionnaire.result;
+      questionnaireComponent.assessmentInfo = <any>Questionnaire.result;
       mockObservationUtilService.getAlertMetaData = jest.fn(() => Promise.resolve(AlertMetaData)) as any
       mockObservationService.post = jest.fn(() => of(AlertMetaData)) as any;
       questionnaireComponent.submitEvidence(Payload);
@@ -254,7 +254,7 @@ describe("QuestionnaireComponent", () => {
     });
 
     it('Should not call submitEvidence for draft data', () => {
-      // questionnaireComponent.assessmentInfo = <any>Questionnaire.result;
+      questionnaireComponent.assessmentInfo = <any>Questionnaire.result;
       mockObservationUtilService.getAlertMetaData = jest.fn(() => Promise.resolve(AlertMetaData)) as any
       mockObservationService.post = jest.fn(() => throwError({})) as any;
       questionnaireComponent.openAlert = jest.fn(() => Promise.resolve({ a: '' })) as any
@@ -263,7 +263,7 @@ describe("QuestionnaireComponent", () => {
     });
 
     it('Should call submitEvidence for non draft data', () => {
-      // questionnaireComponent.assessmentInfo = <any>Questionnaire.result;
+      questionnaireComponent.assessmentInfo = <any>Questionnaire.result;
       mockObservationUtilService.getAlertMetaData = jest.fn(() => Promise.resolve(AlertMetaData)) as any
       mockObservationService.post = jest.fn(() => of(AlertMetaData)) as any;
       questionnaireComponent.openAlert = jest.fn(() => Promise.resolve({})) as any
@@ -273,7 +273,7 @@ describe("QuestionnaireComponent", () => {
     });
 
     it('Should not call submitEvidence for non-draft data', () => {
-      // questionnaireComponent.assessmentInfo = <any>Questionnaire.result;
+      questionnaireComponent.assessmentInfo = <any>Questionnaire.result;
       mockObservationUtilService.getAlertMetaData = jest.fn(() => Promise.resolve(AlertMetaData)) as any
       mockObservationService.post = jest.fn(() => throwError({})) as any;
       questionnaireComponent.openAlert = jest.fn(() => Promise.resolve({})) as any
