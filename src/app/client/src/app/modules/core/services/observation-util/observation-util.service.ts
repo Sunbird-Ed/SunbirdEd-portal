@@ -6,8 +6,7 @@ import { IUserData, ConfigService, ResourceService, AlertModal } from '@sunbird/
 import { take } from 'rxjs/operators';
 import { SuiModalService } from '@project-sunbird/ng2-semantic-ui';
 import { Router } from '@angular/router';
-// import { SlUtilsService } from '@shikshalokam/sl-questionnaire'; //commented for ng2-semantic-ui-v9 removal
-
+import { SlUtilsService } from '@shikshalokam/sl-questionnaire'; 
 
 @Injectable({
   providedIn: 'root',
@@ -24,11 +23,11 @@ export class ObservationUtilService {
     public modalService: SuiModalService,
     public resourceService: ResourceService,
     public router: Router,
-    // public slUtil: SlUtilsService,
+    public slUtil: SlUtilsService,
     private formService: FormService
   ) {
     this.config = config;
-    // this.slUtil.openAlert = this.showPopupAlert;
+    this.slUtil.openAlert = this.showPopupAlert;
 
   }
 
