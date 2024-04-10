@@ -83,7 +83,7 @@
     "@project-sunbird/sunbird-resource-library": "8.0.0",
     "@project-sunbird/sunbird-video-player-v9": "5.5.1",
     "@project-sunbird/sunbird-video-player-web-component": "1.1.1",
-    "@project-sunbird/telemetry-sdk": "0.0.29",
+    "@project-sunbird/telemetry-sdk": "1.3.0",
     "@project-sunbird/web-extensions": "8.0.1",
     "@samagra-x/uci-console": "6.0.3",
     "@shikshalokam/sl-questionnaire": "7.0.0",
