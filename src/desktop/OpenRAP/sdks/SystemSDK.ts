@@ -152,29 +152,28 @@ export default class SystemSDK {
       deviceInfo.cores = cpu.cores;
       deviceInfo.cpuManufacturer = cpu.manufacturer;
       deviceInfo.cpuBrand = cpu.brand;
-      deviceInfo.cpuSpeed = cpu.speed;
+      deviceInfo.cpuSpeed = cpu.speed as any;
     }
 
     let currentLoad = await si
       .currentLoad()
       .catch(err => {
         this.standardLog.error({id: 'SYSTEM_SDK_CURRENT_LOAD_READ_FAILED', message: 'while reading current load', error: err})
-      });
+      }) as any;
     if (currentLoad) {
       deviceInfo.cpuLoad = currentLoad.currentload;
     }
-    deviceInfo.systemTime = si.time()
-      ? parseInt(si.time()["current"])
-      : Date.now();
+    let time = si.time() ? (si.time()["current"]) : Date.now();
+    deviceInfo.systemTime = (time) as any;
 
     let battery = await si
       .battery()
       .catch(err => {
         this.standardLog.error({ id: 'SYSTEM_SDK_BATTERY_READ_FAILED', message: 'while reading battery info', error: err })
-      });
+      }) as any;
 
     if (battery) {
-      deviceInfo.hasBattery = battery.hasbattery;
+      deviceInfo.hasBattery = battery.hasbattery as any;
     }
 
     let graphics = await si
@@ -198,6 +197,7 @@ export default class SystemSDK {
     const memoryInfo = await this.getMemoryInfo();
     deviceInfo.totalMemory = memoryInfo.totalMemory;
     deviceInfo.availableMemory = memoryInfo.availableMemory;
+    console.log('sonu======>', deviceInfo)
 
     return deviceInfo;
   }
