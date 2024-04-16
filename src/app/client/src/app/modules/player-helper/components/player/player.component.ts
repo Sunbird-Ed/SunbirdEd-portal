@@ -167,7 +167,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.loadPlayer();
       setTimeout(() => {
         this.configurePlayer();
-      }, 200);
+      }, 500);
     }
   }
 
@@ -258,9 +258,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
    * allowing it to be embedded within the parent component's view and interact with player and telemetry events.
    */
   qumlPlayerConfig() {
+    console.log('princecheckstart');
     (window as any).questionListUrl = `/${_.get(this.configService, 'urlConFig.URLS.QUESTIONSET.LIST_API')}`;
     const qumlElement = document.createElement('sunbird-quml-player');
     qumlElement.setAttribute('player-config', JSON.stringify(this.playerConfig));
+    console.log('princecheck', qumlElement)
     qumlElement.addEventListener('playerEvent', (event) => {
       this.eventHandler(event);
     });
@@ -268,6 +270,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.generateContentReadEvent(event, true)
     });
     this.qumlPlayer.nativeElement.append(qumlElement);
+    console.log('princecheck',  this.qumlPlayer)
+
   }
   ngOnChanges(changes) {
     this.contentRatingModal = false;
