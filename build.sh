@@ -4,7 +4,8 @@ export PYTHON=/usr/bin/python3.7
 NODE_VERSION=18.20.2
 echo "Starting portal build from build.sh"
 set -euo pipefail	
-export NVM_DIR="$HOME/.nvm"
+export NVM_DIR="$HOME.nvm"
+echo $NVM_DIR
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 build_tag=$1
@@ -22,7 +23,41 @@ then
 fi
 
 commit_hash=$(git rev-parse --short HEAD)
-nvm install $NODE_VERSION # same is used in client and server
+# nvm install $NODE_VERSION # same is used in client and server
+sudo -i
+
+# Start by installing Node 20:
+
+sudo apt-get install python3 g++ make python3-pip gcc bison
+
+curl -L https://raw.githubusercontent.com/tj/n/master/bin/n -o n
+bash n 18.20.2
+
+# Node 18.20.2 is now at /usr/local/bin/node, but glibc 2.28 is missing:
+# node: /lib/aarch64-linux-gnu/libc.so.6: version `GLIBC_2.28' not found (required by node)
+# /usr/local/bin/node: /lib/aarch64-linux-gnu/libc.so.6: version `GLIBC_2.28' not found (required by /usr/local/bin/node)
+
+# Build and install glibc 2.28:
+apt install -y gawk
+cd ~
+wget -c https://ftp.gnu.org/gnu/glibc/glibc-2.28.tar.gz
+tar -zxf glibc-2.28.tar.gz
+cd glibc-2.28
+pwd
+mkdir glibc-build
+cd glibc-build
+../configure --prefix=/opt/glibc-2.28
+make -j 4 # Use all 4 Jetson Nano cores for much faster building
+make install
+cd ..
+rm -fr glibc-2.28 glibc-2.28.tar.gz
+ 
+# Patch the installed Node 18.20.2 to work with /opt/glibc-2.28 instead: 
+apt install -y patchelf
+patchelf --set-interpreter /opt/glibc-2.28/lib/ld-linux-x86-64.so.2 --set-rpath /opt/glibc-2.28/lib/:/lib/x86_64-linux-gnu/:/usr/lib/x86_64-linux-gnu/ /usr/local/bin/node
+
+# Et voilà:
+node --version
 
 cd src/app
 mkdir -p app_dist/ # this folder should be created prior server and client build
