@@ -73,7 +73,7 @@
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/assets/quml-styles/quml-carousel.css",
-              "node_modules/datatables.net-dt/css/jquery.dataTables.min.css",
+              "node_modules/datatables.net-dt/css/dataTables.dataTables.min.css",
               "src/assets/styles/semantic/semantic.min.css",
               "node_modules/font-awesome/css/font-awesome.css",
               "./node_modules/@project-sunbird/sb-styles/assets/styles.scss",
@@ -103,7 +103,7 @@
               "src/assets/libs/iziToast/iziToast.min.js",
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/@project-sunbird/telemetry-sdk/index.js",
-              "node_modules/datatables.net/js/jquery.dataTables.js",
+              "node_modules/datatables.net/js/dataTables.js",
               "src/assets/libs/semantic-ui/sidebar.min.js",
               "node_modules/leaflet/dist/leaflet.js",
               "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js",
