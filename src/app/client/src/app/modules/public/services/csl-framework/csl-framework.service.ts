@@ -84,8 +84,9 @@ export class CslFrameworkService {
     userDefinedFwCategory.forEach(field => {
       if (userPreference.framework[field.code] && userPreference.framework[field.code][0]) {
         let data = {
-          labels: field.label,
-          values: userPreference.framework[field.code]
+          labels: field?.label,
+          values: userPreference.framework[field.code],
+          code: field?.code
         };
         transformedArray.push(data);
       }
@@ -112,7 +113,8 @@ export class CslFrameworkService {
         const keyValueObj = {
           labels: fwData?.label,
           value: contentData[fwCode],
-          index: fwData?.index
+          index: fwData?.index,
+          code: fwData?.code
         };
         result.push(keyValueObj);
       }
@@ -246,10 +248,8 @@ export class CslFrameworkService {
       formType: 'contentcategory',
       formAction: 'menubar',
       contentType: 'global',
-      framework: slectedFw
-      // component: 'portal'
     };
-    return this.formService.getFormConfig(formServiceInputParams, this.rootOrgId).pipe(
+    return this.formService.getFormConfig(formServiceInputParams).pipe(
       catchError(error => {
         console.error('Error fetching form config:', error);
         return of(this.defaultFwCategories); // Return default data in case of error

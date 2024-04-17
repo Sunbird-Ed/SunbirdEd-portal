@@ -98,6 +98,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     filterResponseData = {};
     refreshFilter: boolean = true;
     public categoryKeys;
+    frameworkCategoriesList;
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     }
@@ -219,6 +220,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.frameworkCategories = this.cslFrameworkService?.getFrameworkCategories();
         this.frameworkCategoriesObject = this.cslFrameworkService?.getFrameworkCategoriesObject();
         this.categoryKeys = this.cslFrameworkService?.transformDataForCC();
+        this.frameworkCategoriesList = this.cslFrameworkService?.getAllFwCatName();
         this.isDesktopApp = this.utilService.isDesktopApp;
         this.setUserPreferences();
         this.subscription$ = this.activatedRoute.queryParams.subscribe(queryParams => {
@@ -363,28 +365,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     public getFilters({ filters, status }) {
         if (!filters || status === 'FETCHING') { return; }
-        // If filter are available in cache; merge with incoming filters
-        /* istanbul ignore if */
-        // if (this.cacheService.exists('searchFilters')) {
-        //     const _searchFilters = this.cacheService.get('searchFilters');
-        //     const _cacheFilters = {
-        //         gradeLevel: [..._.intersection(filters['gradeLevel'], _searchFilters['gradeLevel']), ..._.difference(filters['gradeLevel'], _searchFilters['gradeLevel'])],
-        //         subject: [..._.intersection(filters['subject'], _searchFilters['subject']),
-        //             ..._.difference(filters['subject'], _searchFilters['subject'])],
-        //         medium: [..._.intersection(filters['medium'], _searchFilters['medium']), ..._.difference(filters['medium'], _searchFilters['medium'])],
-        //         publisher: [..._.intersection(filters['publisher'], _searchFilters['publisher']), ..._.difference(filters['publisher'], _searchFilters['publisher'])],
-        //         audience: [..._.intersection(filters['audience'], _searchFilters['audience']), ..._.difference(filters['audience'], _searchFilters['audience'])],
-        //         channel: [..._.intersection(filters['channel'], _searchFilters['channel']), ..._.difference(filters['channel'], _searchFilters['channel'])],
-        //         audienceSearchFilterValue: [..._.intersection(filters['audienceSearchFilterValue'], _searchFilters['audienceSearchFilterValue']),
-        //             ..._.difference(filters['audienceSearchFilterValue'], _searchFilters['audienceSearchFilterValue'])],
-        //         board: filters['board'],
-        //         selectedTab: this.getSelectedTab()
-        //     };
-        //     filters = _cacheFilters;
-        // }
         const currentPageData = this.getCurrentPageData();
-        // const _cacheTimeout = _.get(currentPageData, 'metaData.cacheTimeout') || 86400000;
-        //this.cacheService.set('searchFilters', filters, { expires: Date.now() + _cacheTimeout });
         this.showLoader = true;
         this.selectedFilters = pick(filters, _.get(currentPageData, 'metaData.filters'));
         if (has(filters, 'audience') || (localStorage.getItem('userType') && currentPageData.contentType !== 'all')) {
@@ -436,7 +417,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         this.contentSections = [];
                         return this.getExplorePageSections();
                     } else {
-                        const { search: { fields = [], filters = {}, facets = ['subject'] } = {}, metaData: { groupByKey = 'subject' } = {} } = currentPageData || {};
+                        const { search: { fields = [], filters = {}, facets = [this.frameworkCategoriesList[3]] } = {}, metaData: { groupByKey = this.frameworkCategoriesList[3] } = {} } = currentPageData || {};
                         let _reqFilters;
                         // If home or explore page; take filters from user preferences
                         if (_.get(currentPageData, 'contentType') === 'home') {
@@ -486,7 +467,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                         this.searchResponse = _.merge(this.searchResponse, _.get(response, 'result.QuestionSet'));
                                     }
                                     const filteredContents = omit(groupBy(this.searchResponse, content => {
-                                        return content[groupByKey] || content['subject'] || 'Others';
+                                        return content[groupByKey] || content[this.frameworkCategoriesList[3]] || 'Others';
                                     }), ['undefined']);
                                     for (const [key, value] of Object.entries(filteredContents)) {
                                         const isMultipleSubjects = key && key.split(',').length > 1;
@@ -574,8 +555,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                     });
                                 }), tap(data => {
                                     // this.userPreference = this.setUserPreferences();
-                                    this.showLoader = false;
-                                    const userProfileSubjects = _.get(this.userService, 'userProfile.framework.subject') || [];
+                                    this.showLoader = false;              
+                                    const userProfileSubjects = _.get(this.userService,  `userProfile.framework.${this.frameworkCategoriesList[3]}`) || [];
                                     const [userSubjects, notUserSubjects] = partition(sortBy(data, ['name']), value => {
                                         const { name = null } = value || {};
                                         if (!name) { return false; }
@@ -699,6 +680,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         setTimeout(() => {
             this.setTelemetryData();
         });
+        if (this.isUserLoggedIn() && !(this.cacheService.get('reloadOnFwChange'))) {
+            this.cacheService.set('reloadOnFwChange', true)
+            window.location.reload();
+        }
+
     }
 
     ngOnDestroy() {

@@ -12,7 +12,21 @@ import { colorSet, iconObj, collectionData } from './util.service.spec.data';
 describe('UtilService', () => {
   let utilService: UtilService;
 
-  const mockResourceService: Partial<ResourceService> = {};
+  const mockResourceService: Partial<ResourceService> = {
+    messages: {
+      stmsg: {
+        m0139: 'Downloaded',
+        m0140: 'Downloading',
+      },
+      frmelmnts: {
+        lbl: {
+          goToMyDownloads: 'Go to My Downloads',
+          saveToPenDrive: 'Save to Pen Drive',
+          open: 'Open'
+        }
+      }
+    }
+  };;
   const mockGenericResourceService: Partial<GenericResourceService> = {
     initialize: jest.fn()
   };
@@ -773,6 +787,81 @@ describe('UtilService', () => {
         size: ['small', 'medium'],
       });
     });
+  });
+
+  it('should process content data correctly', () => {
+    const fwCategoryObject = {
+      fwCategory1: { code: 'code1' },
+      fwCategory2: { code: 'code2' },
+      fwCategory3: { code: 'code3' },
+      fwCategory4: { code: 'code4' }
+    };
+    localStorage.setItem('fwCategoryObject', JSON.stringify(fwCategoryObject));
+    const data = {
+      name: 'Sample Name',
+      appIcon: 'sampleIcon.png',
+      description: 'Sample Description',
+      me_averageRating: '4',
+      code1: 'Category1 Value',
+      code2: 'Category2 Value',
+      code3: 'Category3 Value',
+      contentType: 'Sample Type',
+      topic: 'Sample Topic',
+      subTopic: 'Sample Subtopic',
+      completionPercentage: 50,
+      mimeTypesCount: 5,
+      identifier: 'sampleIdentifier',
+      mimeType: 'sampleMimeType',
+      primaryCategory: 'samplePrimaryCategory',
+      downloadUrl: 'sampleDownloadUrl'
+    };
+    const processedContent = utilService.processContent(data, {}, {}, {});
+    expect(processedContent.name).toBe('Sample Name');
+    expect(processedContent.image).toBe('sampleIcon.png');
+    expect(processedContent.downloadStatus).toBeUndefined();
+    expect(processedContent.description).toBe('Sample Description');
+    expect(processedContent.rating).toBe('4');
+    expect(processedContent.code1).toBe('Category1 Value');
+    expect(processedContent.code2).toBe('Category2 Value');
+    expect(processedContent.code3).toBe('Category3 Value');
+  });
+
+  it('should process content with additional logic', () => {
+    const data = {
+      name: 'Sample Content',
+      'code3': ['Value1', 'Value2'],
+      'staticField1': 'Static Value 1',
+      'metaField1': 'Meta Value 1',
+      'dynamicField1': 'Dynamic Value 1',
+    };
+    const staticData = { staticField1: 'Static Value 1', staticField2: 'Static Value 2' };
+    const metaData = { metaField1: 'metaField1' };
+    const dynamicFields = { dynamicField1: 'dynamicField1' };
+    const processedContent = utilService.processContent(data, staticData, dynamicFields, metaData);
+    expect(processedContent['code3']).toBe('Value1,Value2');
+    expect(processedContent['staticField1']).toBe('Static Value 1');
+    expect(processedContent['staticField2']).toBe('Static Value 2');
+    expect(processedContent['name']).toBe('Sample Content');
+  });
+
+   it('should add hover data for content list when isOnlineSearch is true', () => {
+    const contentList = [
+      { downloadStatus: 'DOWNLOADED', mimeType: 'application/pdf', desktopAppMetadata: { isAvailable: true } },
+      { downloadStatus: 'FAILED', mimeType: 'video/mp4', desktopAppMetadata: { isAvailable: false } },
+    ];
+    const isOnlineSearch = true;
+    const contentListWithHoverData = utilService.addHoverData(contentList, isOnlineSearch);
+    expect(contentListWithHoverData.length).toBe(contentList.length);
+  });
+
+  it('should add hover data for content list when isOnlineSearch is false', () => {
+    const contentList = [
+      { downloadStatus: 'COMPLETED', mimeType: 'application/pdf', desktopAppMetadata: { isAvailable: true } },
+      { downloadStatus: 'INPROGRESS', mimeType: 'video/mp4', desktopAppMetadata: { isAvailable: true } },
+    ];
+    const isOnlineSearch = false;
+    const contentListWithHoverData = utilService.addHoverData(contentList, isOnlineSearch);
+    expect(contentListWithHoverData.length).toBe(contentList.length);
   });
 
 });

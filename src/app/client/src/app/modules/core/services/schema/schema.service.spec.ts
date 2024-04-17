@@ -29,7 +29,7 @@ describe('SchemaService', () => {
       const config = { formType: 'schemas', formAction: 'get', contentType: 'search' };
       const hashTagId = '*';
       mockFormService.getFormConfig = jest.fn().mockReturnValue(of({response})) as any;
-      schemaService.fetchSchemas(config, hashTagId).subscribe((obj) => {
+      schemaService.fetchSchemas(config).subscribe((obj) => {
         expect(obj).toBe(of(response?.result?.form?.data?.fields[0]));
       });
     });

@@ -18,27 +18,20 @@
     "CourseSearchField": [
       "name",
       "appIcon",
-      "medium",
-      "subject",
       "resourceType",
       "contentType",
       "organisation",
       "topic",
       "mimeType",
-      "trackable",
-      "gradeLevel",
-      "se_boards",
-      "se_subjects",
-      "se_mediums",
-      "se_gradeLevels"
+      "trackable"
     ],
     "programSearch": {
       "fields": "rootOrgId,rootOrgName"
     },
-    "contentGet": "transcripts,ageGroup,appIcon,artifactUrl,attributions,attributions,audience,author,badgeAssertions,board,body,channel,code,concepts,contentCredits,contentType,contributors,copyright,copyrightYear,createdBy,createdOn,creator,creators,description,displayScore,domain,editorState,flagReasons,flaggedBy,flags,framework,gradeLevel,identifier,itemSetPreviewUrl,keywords,language,languageCode,lastUpdatedOn,license,mediaType,medium,mimeType,name,originData,osId,owner,pkgVersion,publisher,questions,resourceType,scoreDisplayConfig,status,streamingUrl,subject,template,templateId,totalQuestions,totalScore,versionKey,visibility,year,primaryCategory,additionalCategories,interceptionPoints,interceptionType",
+    "contentGet": "transcripts,ageGroup,appIcon,artifactUrl,attributions,attributions,audience,author,badgeAssertions,body,channel,code,concepts,contentCredits,contentType,contributors,copyright,copyrightYear,createdBy,createdOn,creator,creators,description,displayScore,domain,editorState,flagReasons,flaggedBy,flags,framework,identifier,itemSetPreviewUrl,keywords,language,languageCode,lastUpdatedOn,license,mediaType,mimeType,name,originData,osId,owner,pkgVersion,publisher,questions,resourceType,scoreDisplayConfig,status,streamingUrl,template,templateId,totalQuestions,totalScore,versionKey,visibility,year,primaryCategory,additionalCategories,interceptionPoints,interceptionType",
     "questionSetRead": "instructions,outcomeDeclaration",
     "enrolledCourses": {
-      "fields": "contentType,topic,name,channel,mimeType,appIcon,gradeLevel,resourceType,identifier,medium,pkgVersion,board,subject,trackable,primaryCategory,organisation",
+      "fields": "contentType,topic,name,channel,mimeType,appIcon,resourceType,identifier,pkgVersion,trackable,primaryCategory,organisation",
       "batchDetails": "name,endDate,startDate,status,enrollmentType,createdBy,certificates"
     },
     "objectCategory": {
@@ -271,7 +264,8 @@
       "GENERATE": "otp/v1/generate",
       "VERIFY": "otp/v1/verify",
       "ANONYMOUS": {
-        "GENERATE": "anonymous/otp/v1/generate"
+        "GENERATE": "anonymous/otp/v1/generate",
+        "GENERATE_USERDELETE":"anonymous/delete/otp/v1/generate"
       }
     },
     "OFFLINE": {

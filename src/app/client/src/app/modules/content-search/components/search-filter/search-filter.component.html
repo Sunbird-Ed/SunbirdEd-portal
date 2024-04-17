@@ -10,37 +10,37 @@
             </label>
           </div>
         </div>
-        <div *ngIf="fwCategory1?.length && allValues?.[this.frameworkCategories?.fwCategory2?.code]?.length" class="state-medium-container__separator">
+        <div *ngIf="fwCategory1?.length && allValues && allValues[frameworkCategories?.fwCategory2?.code]?.length" class="state-medium-container__separator">
         </div>
-        <div class="state-medium-container__medium" *ngIf="allValues?.[this.frameworkCategories?.fwCategory2?.code]?.length">
-          <sb-library-filters [list]="allValues[this.frameworkCategories?.fwCategory2?.code]" [layout]="filterLayout.SQUARE"
-            [selectedItems]="selectedFilters[this.frameworkCategories?.fwCategory2?.code]"
-            (selectedFilter)="filterChangeEvent.next({ event: $event, type: this.frameworkCategories?.fwCategory2?.code})">
+        <div class="state-medium-container__medium" *ngIf="allValues && allValues[frameworkCategories?.fwCategory2?.code]?.length">
+          <sb-library-filters [list]="allValues[frameworkCategories?.fwCategory2?.code]" [layout]="filterLayout.SQUARE"
+            [selectedItems]="selectedFilters[frameworkCategories?.fwCategory2?.code]"
+            (selectedFilter)="filterChangeEvent.next({ event: $event, type: frameworkCategories?.fwCategory2?.code})">
           </sb-library-filters>
         </div>
       </div>
     </div>
-    <div class="sb-class-bar sb-bg-color-gray-0" *ngIf="allValues?.[this.frameworkCategories?.fwCategory3?.code]?.length">
+    <div class="sb-class-bar sb-bg-color-gray-0" *ngIf="allValues && allValues[frameworkCategories?.fwCategory3?.code]?.length">
       <div class="ui container">
-        <sb-library-filters [list]="allValues[this.frameworkCategories?.fwCategory3?.code]" [layout]="filterLayout.ROUND"
-          [selectedItems]="selectedFilters[this.frameworkCategories?.fwCategory3?.code]"
-          (selectedFilter)="filterChangeEvent.next({ event: $event, type: this.frameworkCategories?.fwCategory3?.code})">
+        <sb-library-filters [list]="allValues[frameworkCategories?.fwCategory3?.code]" [layout]="filterLayout.ROUND"
+          [selectedItems]="selectedFilters[frameworkCategories?.fwCategory3?.code]"
+          (selectedFilter)="filterChangeEvent.next({ event: $event, type: frameworkCategories?.fwCategory3?.code})">
         </sb-library-filters>
       </div>
     </div>
     <div class="sb-bg-color-white sb-global-filter-section">
       <div class="ui container">
         <div class="d-flex flex-ai-center flex-w-wrap">
-          <div *ngIf="allValues?.[this.frameworkCategories?.fwCategory4?.code]?.length" class="state-medium-container__dropdown">
+          <div *ngIf="allValues && allValues[frameworkCategories?.fwCategory4?.code]?.length" class="state-medium-container__dropdown">
             <div class="sb-field mb-0"><label>
-                <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels[this.frameworkCategories?.fwCategory4?.code]"
-                  (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: this.frameworkCategories?.fwCategory4?.code})"
-                  defaultSelectionText={{resourceService?.frmelmnts?.lbl?.subject}}
+                <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels[frameworkCategories?.fwCategory4?.code]"
+                  (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: frameworkCategories?.fwCategory4?.code})"
+                  defaultSelectionText={{resourceService?.frmelmnts?.lbl[frameworkCategories?.fwCategory4?.code]}}
                   zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
                   class="selection sbt-dropdown-tick text-cencapitalize"
                   [ngClass]="!layoutConfiguration ? 'state-selection' : 'sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg'">
                   <div [ngClass]="!layoutConfiguration ? 'state-selection__section' : 'sbt-dropdown-section'">
-                    <sui-select-option *ngFor="let dropdownValue of allValues[this.frameworkCategories?.fwCategory4?.code]" [value]="dropdownValue">
+                    <sui-select-option *ngFor="let dropdownValue of allValues[frameworkCategories?.fwCategory4?.code]" [value]="dropdownValue">
                     </sui-select-option>
                   </div>
                 </sui-multi-select>

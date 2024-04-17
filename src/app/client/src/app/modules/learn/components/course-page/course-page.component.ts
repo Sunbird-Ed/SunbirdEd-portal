@@ -84,6 +84,8 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
   globalFilterCategoriesObject;
   public frameworkCategoriesList;
   public categoryKeys;
+  public globalFilterCategories;
+  public CourseSearchFieldCategory;
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -162,8 +164,8 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.globalFilterCategoriesObject = this.cslFrameworkService.getGlobalFilterCategoriesObject();
     this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
     this.categoryKeys = this.cslFrameworkService.transformDataForCC();
-    console.log('course-page-alt', this.frameworkCategoriesList)
-
+    this.globalFilterCategories = this.cslFrameworkService.getAlternativeCodeForFilter();
+    this.CourseSearchFieldCategory = [...this.globalFilterCategories, ...this.frameworkCategoriesList]
     this.initialize();
     this.subscription$ = this.mergeObservables();
     this.isDesktopApp = this.utilService.isDesktopApp;
@@ -233,7 +235,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       params: _.get(this.configService, 'appConfig.CoursePageSection.contentApiQueryParams'),
       ...(!this.isUserLoggedIn() && {
         params: _.get(this.configService, 'appConfig.ExplorePage.contentApiQueryParams'),
-        fields: _.get(currentPageData, 'search.fields') || _.get(this.configService, 'urlConFig.params.CourseSearchField'),
+        fields: _.get(currentPageData, 'search.fields') || [..._.get(this.configService, 'urlConFig.params.CourseSearchField'), ...this.CourseSearchFieldCategory],
       })
     };
 
@@ -333,7 +335,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       sort_by: { 'me_averageRating': 'desc', 'batches.startDate': 'desc' },
       organisationId: this.hashTagId || '*',
       facets: _.get(currentPageData, 'search.facets') || ['channel', this.frameworkCategoriesList[1],this.frameworkCategoriesList[2],this.frameworkCategoriesList[3]],
-      fields: this.configService.urlConFig.params.CourseSearchField
+      fields: [ ...this.configService.urlConFig.params.CourseSearchField, ...this.CourseSearchFieldCategory]
     };
     return this.searchService.contentSearch(option)
       .pipe(
@@ -341,9 +343,9 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
           this._courseSearchResponse = response;
           // For content(s) without subject name(s); map it to 'Others'
           _.forEach(_.get(response, 'result.content'), function (content) {
-            if (!_.get(content, 'subject') || !_.size(_.get(content, 'subject'))) { content['subject'] = ['Others']; }
+            if (!_.get(content, this.frameworkCategoriesList[3]) || !_.size(_.get(content, this.frameworkCategoriesList[3]))) { content[this.frameworkCategoriesList[3]] = ['Others']; }
           });
-          const filteredContents = _.omit(_.groupBy(_.get(response, 'result.content'), 'subject'), ['undefined']);
+          const filteredContents = _.omit(_.groupBy(_.get(response, 'result.content'), this.frameworkCategoriesList[3]), ['undefined']);
           for (const [key, value] of Object.entries(filteredContents)) {
             const isMultipleSubjects = key.split(',').length > 1;
             if (isMultipleSubjects) {
