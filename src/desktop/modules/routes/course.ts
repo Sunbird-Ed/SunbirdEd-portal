@@ -37,7 +37,7 @@ export default (app, proxyURL) => {
     });
 
     app.post([
-        "/learner/user/v1/search",
+        "/learner/user/v3/search",
         "/learner/course/v1/enrol",
         "/learner/course/v1/unenrol",
         "/discussion/forum/v2/read",
@@ -53,7 +53,7 @@ export default (app, proxyURL) => {
         }
     });
 
-    app.post("/learner/user/v2/search", customProxy(proxyURL, defaultProxyConfig), (req, res) => {
+    app.post("/learner/user/v3/search", customProxy(proxyURL, defaultProxyConfig), (req, res) => {
         res.status(res.statusCode).send(res.body);
     });
 
