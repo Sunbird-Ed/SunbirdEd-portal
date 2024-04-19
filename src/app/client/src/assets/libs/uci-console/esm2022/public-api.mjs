@@ -1,8 +1,0 @@
-/*
- * Public API Surface of discussion-ui
- */
-export * from './lib/uci-module';
-export * from './lib/uci-events.service';
-export * from './lib/models/uci-config.model';
-export * from './lib/components/lib-entry/lib-entry.component';
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHVibGljLWFwaS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3Byb2plY3RzL3VjaS1jb25zb2xlL3NyYy9wdWJsaWMtYXBpLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBOztHQUVHO0FBRUgsY0FBYyxrQkFBa0IsQ0FBQztBQUNqQyxjQUFjLDBCQUEwQixDQUFDO0FBQ3pDLGNBQWUsK0JBQStCLENBQUM7QUFDL0MsY0FBYyxnREFBZ0QsQ0FBQyIsInNvdXJjZXNDb250ZW50IjpbIi8qXG4gKiBQdWJsaWMgQVBJIFN1cmZhY2Ugb2YgZGlzY3Vzc2lvbi11aVxuICovXG5cbmV4cG9ydCAqIGZyb20gJy4vbGliL3VjaS1tb2R1bGUnO1xuZXhwb3J0ICogZnJvbSAnLi9saWIvdWNpLWV2ZW50cy5zZXJ2aWNlJztcbmV4cG9ydCAqICBmcm9tICcuL2xpYi9tb2RlbHMvdWNpLWNvbmZpZy5tb2RlbCc7XG5leHBvcnQgKiBmcm9tICcuL2xpYi9jb21wb25lbnRzL2xpYi1lbnRyeS9saWItZW50cnkuY29tcG9uZW50JztcbiJdfQ==
