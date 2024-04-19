@@ -3421,7 +3421,7 @@
   dependencies:
     tslib "^2.0.0"
 
-"@samagra-x/uci-console@file:../../../../uci-console/dist/uci-console":
+"@samagra-x/uci-console@file:src/assets/libs/uci-console":
   version "8.0.0"
   dependencies:
     tslib "^2.0.0"

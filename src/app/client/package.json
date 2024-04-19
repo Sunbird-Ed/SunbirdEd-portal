@@ -85,7 +85,7 @@
     "@project-sunbird/sunbird-video-player-web-component": "1.1.1",
     "@project-sunbird/telemetry-sdk": "1.3.0",
     "@project-sunbird/web-extensions": "8.0.1",
-    "@samagra-x/uci-console": "/Users/abhishek/projects/ekstep/uci-console/dist/uci-console",
+    "@samagra-x/uci-console": "file:src/assets/libs/uci-console",
     "@shikshalokam/sl-questionnaire": "7.0.0",
     "@shikshalokam/sl-reports-library": "3.0.1",
     "@swimlane/ngx-datatable": "20.1.0",
