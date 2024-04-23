@@ -100,7 +100,7 @@ docker build  --label commitHash=$(git rev-parse --short HEAD) -t ${org}/${name}
 echo "completed docker build"
 cd ../../..
 echo {\"image_name\" : \"${name}\", \"image_tag\" : \"${build_tag}\",\"commit_hash\" : \"${commit_hash}\", \"node_name\" : \"$node\"} > metadata.json
-fi
+# fi
 
 ENDTIME=$(date +%s)
 echo "build completed. Took $[$ENDTIME - $STARTTIME] seconds."
