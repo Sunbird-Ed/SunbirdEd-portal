@@ -430,7 +430,7 @@ const API_LIST = {
     },
 
     //User related APIs
-    '/learner/user/v1/create': {
+    '/learner/user/v1/sso/create': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
@@ -455,11 +455,11 @@ const API_LIST = {
         ]
       }
     },
-    '/learner/user/v1/get': {
+    '/learner/user/v2/get': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
-    '/learner/user/v1/exists': {
+    '/learner/user/v2/exists': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
@@ -494,7 +494,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
-    '/learner/user/v2/search': {
+    '/learner/user/v3/search': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
@@ -520,7 +520,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL]
     },
-    '/learner/user/v1/consent/read': {
+    '/learner/user/v2/consent/read': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC, ROLE.ADMIN]
     },
@@ -544,12 +544,12 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
-    '/learner/user/v1/managed/create': {
+    '/learner/user/v2/managed/create': {
       description: 'API is to create managed user',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
-    '/learner/portal/user/v2/update': {
+    '/learner/portal/user/v3/update': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ORG_ADMIN]
     },
@@ -582,7 +582,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ANONYMOUS]
     },
-    '/learner/otp/v1/verify': {
+    '/learner/otp/v2/verify': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
@@ -683,19 +683,19 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ANONYMOUS]
     },
-    '/learner/user/v1/exists/email/:emailId': {
+    '/learner/user/v2/exists/email/:emailId': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ANONYMOUS]
     },
-    '/learner/user/v1/exists/phone/:phoneNumber': {
+    '/learner/user/v2/exists/phone/:phoneNumber': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ANONYMOUS]
     },
-    '/learner/anonymous/otp/v1/generate': {
+    '/learner/anonymous/otp/v2/generate': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ANONYMOUS]
     },
-    '/learner/anonymous/delete/otp/v1/generate': {
+    '/learner/anonymous/delete/otp/v2/generate': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ANONYMOUS]
     },
@@ -1253,7 +1253,7 @@ const API_LIST = {
     },
 
     // User service
-    '/action/user/v1/search': {
+    '/action/user/v3/search': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_CREATOR,
@@ -1942,8 +1942,8 @@ const API_LIST = {
     '/learner/user/v1/feed/:userId',
     '/learner/course/v1/batch/read/:batchId',
     '/learner/dashboard/v2/progress/course/:batchId',
-    '/learner/user/v1/exists/email/:emailId',
-    '/learner/user/v1/exists/phone/:phoneNumber',
+    '/learner/user/v2/exists/email/:emailId',
+    '/learner/user/v2/exists/phone/:phoneNumber',
     '/learner/group/v1/read/:groupId',
     '/learner/user/v2/exists/:key/:value',
     '/learner/certreg/v2/certs/download/:id',
