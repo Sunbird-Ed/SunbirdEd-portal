@@ -1,8 +1,8 @@
 # Use a base image suitable for building the client and server (e.g., Node.js)
 FROM node:18.20.2 AS builder
 
-# Install nvm to manage Node.js versions
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+# # Install nvm to manage Node.js versions
+# RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 
 # Set the working directory for the client build
 WORKDIR /usr/src/app/client
@@ -20,11 +20,6 @@ RUN yarn install --no-progress --production=true \
     && npm run build
 
 
-# Set the working directory for server build
-WORKDIR /app/app_dist
-
-# Run the command to rename the file
-RUN mv dist/index.html dist/index.ejs
 
 # Set the working directory for server build
 WORKDIR /usr/src/app
@@ -46,20 +41,13 @@ COPY src/app/server.js ./app_dist/
 WORKDIR /usr/src/app/app_dist
 RUN yarn install --ignore-engines --no-progress --production=true
 
-# Use a new base image for the final stage
 FROM node:18.20.2
 
-# Set the working directory
 WORKDIR /usr/src/app
-
-# Copy the built app from the builder stage
-COPY --from=builder /usr/src/app ./
-
-# Run the build script to perform additional tasks (e.g., phraseAppPull)
+COPY  --from=builder /usr/src/app ./
+# Run the build script
+WORKDIR /usr/src/app/app_dist
+RUN mv dist/index.html dist/index.ejs
 RUN node helpers/resourceBundles/build.js -task="phraseAppPull"
-
-# Expose the port used by the server
 EXPOSE 3000
-
-# Start the server in the background
 CMD ["node", "server.js", "&"]
