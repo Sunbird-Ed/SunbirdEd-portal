@@ -22,7 +22,7 @@ echo "buildCdnAssests: " $buildCdnAssests
 #     echo "cdnUrl: " $cdnUrl
 # fi
 
-# commit_hash=$(git rev-parse --short HEAD)
+commit_hash=$(git rev-parse --short HEAD)
 # nvm install $NODE_VERSION # same is used in client and server
 
 # cd src/app
@@ -96,7 +96,7 @@ echo "buildCdnAssests: " $buildCdnAssests
 # sed -i "/version/a\  \"buildHash\": \"${commit_hash}\"," package.json
 ### docker test end
 echo "starting docker build"
-docker build --no-cache --label commitHash=$(git rev-parse --short HEAD) -t ${org}/${name}:${build_tag} .
+docker build  --label commitHash=$(git rev-parse --short HEAD) -t ${org}/${name}:${build_tag} .
 echo "completed docker build"
 cd ../../..
 echo {\"image_name\" : \"${name}\", \"image_tag\" : \"${build_tag}\",\"commit_hash\" : \"${commit_hash}\", \"node_name\" : \"$node\"} > metadata.json
