@@ -98,7 +98,7 @@ commit_hash=$(git rev-parse --short HEAD)
 echo "starting docker build"
 docker build  --label commitHash=$(git rev-parse --short HEAD) -t ${org}/${name}:${build_tag} .
 echo "completed docker build"
-cd ../../..
+# cd ../../..
 echo {\"image_name\" : \"${name}\", \"image_tag\" : \"${build_tag}\",\"commit_hash\" : \"${commit_hash}\", \"node_name\" : \"$node\"} > metadata.json
 # fi
 
