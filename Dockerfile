@@ -1,5 +1,7 @@
 # Use a base image suitable for building the client and server (e.g., Node.js)
 FROM node:18.20.2 AS builder
+ARG commit_hash="x.x.x"
+ENV commit_hash=${commit_hash}
 
 # # Install nvm to manage Node.js versions
 # RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
@@ -48,6 +50,7 @@ COPY  --from=builder /usr/src/app ./
 # Run the build script
 WORKDIR /usr/src/app/app_dist
 RUN mv dist/index.html dist/index.ejs
+RUN sed -i "/version/a\    \"buildHash\": \"${commit_hash}\"," package.json
 RUN node helpers/resourceBundles/build.js -task="phraseAppPull"
 EXPOSE 3000
 CMD ["node", "server.js", "&"]
