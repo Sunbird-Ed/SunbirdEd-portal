@@ -40,7 +40,7 @@ RUN yarn install --no-progress --frozen-lockfile --ignore-engines --production=t
 FROM node:18.20.2
 
 WORKDIR /usr/src/app
-COPY --from=builder /usr/src/app ./
+COPY --from=builder /usr/src/app/app_dist ./
 
 # Rename the index.html file to index.ejs
 WORKDIR /usr/src/app/app_dist
