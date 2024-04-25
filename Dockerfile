@@ -7,10 +7,10 @@ ENV NVM_DIR="/root/.nvm"
 
 # Install NVM and Node.js
 # RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash \
-    && . $NVM_DIR/nvm.sh \
-    && nvm install $NODE_VERSION \
-    && nvm alias default $NODE_VERSION \
-    && nvm use default
+    # && . $NVM_DIR/nvm.sh \
+    # && nvm install $NODE_VERSION \
+    # && nvm alias default $NODE_VERSION \
+    # && nvm use default
 
 # Set working directory for client
 WORKDIR /app/client
