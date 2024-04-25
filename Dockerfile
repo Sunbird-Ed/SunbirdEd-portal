@@ -85,6 +85,7 @@ COPY --from=server_builder /app/constants ./constants
 COPY --from=server_builder /app/controllers ./controllers
 COPY --from=server_builder /app/server.js ./server.js
 # COPY --from=server_builder /app/client/dist ./client/dist
+WORKDIR /usr/src/app/app_dist
 RUN mv dist/index.html dist/index.ejs
 # Update package.json with commit hash
 ARG commit_hash
