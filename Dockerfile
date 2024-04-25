@@ -73,19 +73,19 @@ FROM node:18.20.2 AS final_builder
 WORKDIR /app
 
 # Copy server files and built client files
-COPY --from=server_builder /app/libs ./libs
-COPY --from=server_builder /app/helpers ./helpers
-COPY --from=server_builder /app/proxy ./proxy
-COPY --from=server_builder /app/resourcebundles ./resourcebundles
-COPY --from=server_builder /app/package.json ./package.json
-COPY --from=server_builder /app/framework.config.js ./framework.config.js
-COPY --from=server_builder /app/sunbird-plugins ./sunbird-plugins
-COPY --from=server_builder /app/routes ./routes
-COPY --from=server_builder /app/constants ./constants
-COPY --from=server_builder /app/controllers ./controllers
-COPY --from=server_builder /app/server.js ./server.js
+COPY --from=server_builder /app/libs ./app_dist/libs
+COPY --from=server_builder /app/helpers ./app_dist/helpers
+COPY --from=server_builder /app/proxy ./app_dist/proxy
+COPY --from=server_builder /app/resourcebundles ./app_dist/resourcebundles
+COPY --from=server_builder /app/package.json ./app_dist/package.json
+COPY --from=server_builder /app/framework.config.js ./app_dist/framework.config.js
+COPY --from=server_builder /app/sunbird-plugins ./app_dist/sunbird-plugins
+COPY --from=server_builder /app/routes ./app_dist/routes
+COPY --from=server_builder /app/constants ./app_dist/constants
+COPY --from=server_builder /app/controllers ./app_dist/controllers
+COPY --from=server_builder /app/server.js ./app_dist/server.js
 # COPY --from=server_builder /app/client/dist ./client/dist
-WORKDIR /usr/src/app/app_dist
+WORKDIR /app/app_dist
 RUN mv dist/index.html dist/index.ejs
 # Update package.json with commit hash
 ARG commit_hash
