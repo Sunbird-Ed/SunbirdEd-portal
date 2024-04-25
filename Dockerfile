@@ -89,7 +89,6 @@ COPY --from=server_builder /app/server.js ./server.js
 # Update package.json with commit hash
 ARG commit_hash
 RUN sed -i "/version/a\  \"buildHash\": \"${commit_hash}\"," package.json
-echo commit_hash
 # Install production dependencies
 RUN npm install --frozen-lockfile --production=true
 
