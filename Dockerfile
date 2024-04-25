@@ -47,7 +47,7 @@ COPY src/app/controllers ./controllers
 COPY src/app/server.js ./server.js
 
 # Install dependencies for server
-RUN npm install --frozen-lockfile --production=true
+RUN yarn install --frozen-lockfile --production=true
 
 # Execute resource bundles build task
 RUN node helpers/resourceBundles/build.js -task="phraseAppPull"
@@ -90,7 +90,7 @@ RUN mv dist/index.html dist/index.ejs
 ARG commit_hash
 RUN sed -i "/version/a\  \"buildHash\": \"${commit_hash}\"," package.json
 # Install production dependencies
-RUN npm install --frozen-lockfile --production=true
+RUN yarn install --no-progress --frozen-lockfile --ignore-engines --production=true
 
 # Expose port if necessary
 
