@@ -25,7 +25,7 @@ RUN yarn install --frozen-lockfile --production=true
 COPY src/app/client ./
 
 # Build client
-RUN npm run build && mv dist/index.html dist/index.ejs
+RUN npm run build 
 
 # Stage 2: Build server
 FROM node:18.20.2 AS server_builder
@@ -85,7 +85,7 @@ COPY --from=server_builder /app/constants ./constants
 COPY --from=server_builder /app/controllers ./controllers
 COPY --from=server_builder /app/server.js ./server.js
 # COPY --from=server_builder /app/client/dist ./client/dist
-
+RUN mv dist/index.html dist/index.ejs
 # Update package.json with commit hash
 ARG commit_hash
 RUN sed -i "/version/a\  \"buildHash\": \"${commit_hash}\"," package.json
