@@ -15,12 +15,12 @@ buildDockerImage=$4
 buildCdnAssests=$5
 echo "buildDockerImage: " $buildDockerImage
 echo "buildCdnAssests: " $buildCdnAssests
-### docker test start
-# if [ $buildCdnAssests == true ]
-# then
-#     cdnUrl=$6
-#     echo "cdnUrl: " $cdnUrl
-# fi
+## docker test start
+if [ $buildCdnAssests == true ]
+then
+    cdnUrl=$6
+    echo "cdnUrl: " $cdnUrl
+fi
 
 commit_hash=$(git rev-parse --short HEAD)
 # nvm install $NODE_VERSION # same is used in client and server
@@ -97,7 +97,13 @@ commit_hash=$(git rev-parse --short HEAD)
 ### docker test end
 echo "starting docker build"
 # docker build  --label commitHash=$(git rev-parse --short HEAD) -t ${org}/${name}:${build_tag} .
-docker build --build-arg commit_hash="$commit_hash" --label commitHash=$(git rev-parse --short HEAD) -t ${org}/${name}:${build_tag} .
+# docker build --build-arg commit_hash="$commit_hash" --label commitHash=$(git rev-parse --short HEAD) -t ${org}/${name}:${build_tag} .
+docker build --build-arg commit_hash="$commit_hash" \
+             --build-arg buildCdnAssests="$buildCdnAssests" \
+             --build-arg cdnUrl="$cdnUrl" \
+             --label commitHash=$(git rev-parse --short HEAD) \
+             -t ${org}/${name}:${build_tag} .
+
 echo "completed docker build"
 # cd ../../..
 echo {\"image_name\" : \"${name}\", \"image_tag\" : \"${build_tag}\",\"commit_hash\" : \"${commit_hash}\", \"node_name\" : \"$node\"} > metadata.json
