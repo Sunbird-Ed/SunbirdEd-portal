@@ -98,10 +98,6 @@ commit_hash=$(git rev-parse --short HEAD)
 echo "starting docker build"
 # docker build  --label commitHash=$(git rev-parse --short HEAD) -t ${org}/${name}:${build_tag} .
 docker build --build-arg commit_hash="$commit_hash" --label commitHash=$(git rev-parse --short HEAD) -t ${org}/${name}:${build_tag} .
-# docker build --build-arg commit_hash="$commit_hash" \
-            
-             --label commitHash=$(git rev-parse --short HEAD) \
-             -t ${org}/${name}:${build_tag} .
 
 echo "completed docker build"
 # cd ../../..
