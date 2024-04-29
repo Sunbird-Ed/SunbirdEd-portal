@@ -51,7 +51,7 @@ ARG commit_hash="x.x.x"
 ENV commit_hash=${commit_hash}
 
 WORKDIR /usr/src/app
-COPY --from=client_builder /usr/src/app/client/dist ./client/dist
+# COPY --from=client_builder /usr/src/app/client/dist ./client/dist
 COPY --from=server_builder /usr/src/app/app_dist ./app_dist
 
 # Rename the index.html file to index.ejs
