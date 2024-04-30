@@ -126,7 +126,7 @@ module.exports = function (app) {
     userResDecorator: userResDecorator
   }))
 
-  app.post('/action/user/v1/search',
+  app.post('/action/user/v3/search',
     isAPIWhitelisted.isAllowed(),
     addCorsHeaders,
     proxyUtils.verifyToken(),
@@ -134,7 +134,7 @@ module.exports = function (app) {
       limit: reqDataLimitOfContentUpload,
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
       proxyReqPathResolver: function (req) {
-        let originalUrl = req.originalUrl.replace('/action/user/v1/search', 'user/v3/search')
+        let originalUrl = req.originalUrl.replace('/action/user/v3/search', 'user/v3/search')
         return require('url').parse(learnerURL + originalUrl).path
       },
       userResDecorator: userResDecorator

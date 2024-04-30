@@ -225,7 +225,7 @@ module.exports = {
   createUser: function (req, payload, callback) {
     var options = {
       method: 'POST',
-      url: learnerURL + 'user/v1/create',
+      url: learnerURL + 'user/v1/sso/create',
       headers: {
         ts: dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
         'x-msgid': uuidv1(),
@@ -253,7 +253,7 @@ module.exports = {
     const telemetryData = {
       reqObj: req,
       options: options,
-      uri: 'user/v1/create',
+      uri: 'user/v1/sso/create',
       type: 'user',
       id: options.headers['x-consumer-id'],
       userId: options.headers['x-consumer-id']

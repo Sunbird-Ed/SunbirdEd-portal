@@ -24,7 +24,7 @@ const _ = require('lodash');
 module.exports = function (app) {
   require('./accountRecoveryRoute.js')(app) // account recovery route
   // Helper route to enable enable admin to update user fields
-  app.patch('/learner/portal/user/v1/update',
+  app.patch('/learner/portal/user/v3/update',
     proxyUtils.verifyToken(),
     proxy(learner_Service_Local_BaseUrl, {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learner_Service_Local_BaseUrl),
@@ -32,14 +32,14 @@ module.exports = function (app) {
         return '/private/user/v3/update';
       },
       userResDecorator: (proxyRes, proxyResData, req, res) => {
-        logger.info({ msg: '/learner/portal/user/v1/update called upstream url /private/user/v3/update' });
+        logger.info({ msg: '/learner/portal/user/v3/update called upstream url /private/user/v3/update' });
         try {
           const data = JSON.parse(proxyResData.toString('utf8'));
           if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
           else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
         } catch (err) {
           logger.error({ msg: 'learner route : userResDecorator json parse error:', proxyResData });
-          logger.error({ msg: 'learner route : error for /learner/portal/user/v1/update upstram url is /private/user/v3/update ', err });
+          logger.error({ msg: 'learner route : error for /learner/portal/user/v3/update upstram url is /private/user/v3/update ', err });
           return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, null);
         }
       }
@@ -76,12 +76,12 @@ module.exports = function (app) {
   app.get('/learner/user/v1/managed/*', proxyManagedUserRequest());
 
   // Route to check user email id exists (or) already registered
-  app.get('/learner/user/v1/exists/email/:emailId', googleService.validateRecaptcha);
+  app.get('/learner/user/v2/exists/email/:emailId', googleService.validateRecaptcha);
 
   // Route to check user phone number exists (or) already registered
-  app.get('/learner/user/v1/exists/phone/:phoneNumber', googleService.validateRecaptcha);
+  app.get('/learner/user/v2/exists/phone/:phoneNumber', googleService.validateRecaptcha);
 
-  app.post('/learner/anonymous/otp/v1/generate', googleService.validateRecaptcha);
+  app.post('/learner/anonymous/otp/v2/generate', googleService.validateRecaptcha);
 
   // Route to check user email exists - SSO update contact workflow
   app.all('/learner/user/v1/get/email/*', googleService.validateRecaptcha, proxyObj());

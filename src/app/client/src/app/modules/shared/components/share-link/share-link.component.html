@@ -12,14 +12,14 @@
   <!--Content-->
 
   <mat-dialog-content>
-      <div class="d-flex">
-        <mat-form-field class="w-100 flex-basis-1" appearance="fill" color="accent" id="buttonPopUp" #tooltip="matTooltip"
+    <label class="font-weight-normal"> {{resourceService?.frmelmnts?.lbl?.sharelink}}</label>
+      <div class="d-flex flex-ai-center share-link-content">
+        <mat-form-field class="w-100 flex-basis-1 sb-mat__form-field" appearance="fill" color="accent" id="buttonPopUp" #tooltip="matTooltip"
           matTooltip="{{resourceService?.frmelmnts?.lbl?.linkCopied}}"
           matTooltipPosition="above">
-          <mat-label> {{resourceService?.frmelmnts?.lbl?.sharelink}}</mat-label>
           <input id="copyLinkData" matInput readonly [(ngModel)]="shareLink" aria-label="copy link data">
         </mat-form-field>
-        <button class="ui basic primary button" tabindex="0" (click)="copyLink(tooltip)" appTelemetryInteract
+        <button class="sb-btn sb-btn-normal sb-btn-outline-primary ml-8" tabindex="0" (click)="copyLink(tooltip)" appTelemetryInteract
           [telemetryInteractEdata]="telemetryInteractEdata" [telemetryInteractObject]="telemetryShareData[0]"
           #copyLinkButton>
           {{resourceService?.frmelmnts?.btn?.copyLink}}

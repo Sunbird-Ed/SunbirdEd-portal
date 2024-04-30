@@ -20,7 +20,7 @@ module.exports = (app) => {
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learner_Service_Local_BaseUrl),
     proxyReqPathResolver: (req) => {
       logger.info({ msg: `${req.url} called`});
-    return '/private/user/v1/search';
+    return '/private/user/v3/search';
     }
   }))
 
@@ -59,7 +59,7 @@ module.exports = (app) => {
       }
     }))
 
-  app.all('/learner/otp/v1/verify',
+  app.all('/learner/otp/v2/verify',
     bodyParser.urlencoded({ extended: false }), bodyParser.json({ limit: '10mb' }),
     proxy(LEARNER_URL, {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(LEARNER_URL),
