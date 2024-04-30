@@ -48,6 +48,8 @@ build_client_cdn(){
 build_client(){
     echo "Building client in background"
     nvm use $NODE_VERSION
+    npm rebuild canvas
+    npm update canvas
     cd client
     echo "starting client yarn install"
     yarn install --no-progress --production=true
