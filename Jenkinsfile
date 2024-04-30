@@ -1,4 +1,4 @@
-node('build-slave') {
+node('angular') {
     try {
         String ANSI_GREEN = "\u001B[32m"
         String ANSI_NORMAL = "\u001B[0m"
