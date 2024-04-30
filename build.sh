@@ -27,8 +27,7 @@ nvm install $NODE_VERSION # same is used in client and server
 cd src/app
 mkdir -p app_dist/ # this folder should be created prior server and client build
 rm -rf dist-cdn # remove cdn dist folder
-npm rebuild canvas
-npm update canvas
+
 # function to run client build for docker image
 build_client_docker(){
     echo "starting client local prod build"
