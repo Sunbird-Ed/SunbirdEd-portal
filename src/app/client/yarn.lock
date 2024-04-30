@@ -3314,10 +3314,10 @@
   dependencies:
     "@project-sunbird/sb-styles" "0.0.14"
 
-"@project-sunbird/sunbird-collection-editor@5.4.10":
-  version "5.4.10"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-5.4.10.tgz#2722576c6f81de8cffd2964a800d7256e2f9ec3b"
-  integrity sha512-uwBfO5zx7QLJgYTPIzLmOp6ReieZwT9f7zrUqXn0QZGD+yp6/WEV64neFKqrD7u09C8GCr1v2UiEnfANsP/qjQ==
+"@project-sunbird/sunbird-collection-editor@6.1.0":
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-6.1.0.tgz#5887912c77f78acc91ad877c993a99409f8964fa"
+  integrity sha512-IYrvZZNab8YTZnRCfx1d+KAfXRBrJE8NljTH2ntDk4/+8CSJ0PVWd4IduaJ9dHFUbXHb+JTq6gMeMuN1IyNpEA==
   dependencies:
     tslib "^2.0.0"
 
