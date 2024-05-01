@@ -85,7 +85,7 @@
     "connect-redis": "4.0.4",
     "cookie-parser": "1.4.4",
     "dateformat": "2.0.0",
-    "ejs": "2.5.6",
+    "ejs": "3.1.10",
     "express": "4.15.3",
     "express-cassandra": "2.1.0",
     "express-http-proxy": "1.0.6",
