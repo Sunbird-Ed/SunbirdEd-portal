@@ -167,7 +167,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.loadPlayer();
       setTimeout(() => {
         this.configurePlayer();
-      }, 200);
+      }, 500);
     }
   }
 
@@ -268,6 +268,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.generateContentReadEvent(event, true)
     });
     this.qumlPlayer.nativeElement.append(qumlElement);
+
   }
   ngOnChanges(changes) {
     this.contentRatingModal = false;
