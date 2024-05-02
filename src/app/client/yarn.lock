@@ -3445,16 +3445,16 @@
     "@angular-slider/ngx-slider" "^16.0.1"
     tslib "^2.0.0"
 
-"@shikshalokam/sl-reports-library@3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-reports-library/-/sl-reports-library-3.0.1.tgz#d135128acb8d6b0e141a38a734f8243b57789bbc"
-  integrity sha512-cNmIw82Y1f47b1zwxlZlxzttCfCAt1JyLT0+VJTOjUnLHSedvl6ebjasY65ooBiA3SEIwrtWoHZMVW8uqBeJdQ==
+"@shikshalokam/sl-reports-library@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-reports-library/-/sl-reports-library-6.0.0.tgz#21133ec8f60ff7d30fa83bd97bbc9a3b3296ac68"
+  integrity sha512-jWfY3U90wmypd3Lk0N6BEdF3jdrQv7yDobKymGmtzFXnBNQV5MNotuAN5ZMnkdgNnGKf+0VM5ey68IQMgVfvOg==
   dependencies:
-    chart.js "^2.9.4"
-    chartjs-plugin-datalabels "^0.7.0"
-    chartjs-plugin-stacked100 "^0.7.1"
-    ng2-charts "^2.4.2"
-    tslib "^2.0.0"
+    chart.js "^4.4.0"
+    chartjs-plugin-datalabels "^2.2.0"
+    chartjs-plugin-stacked100 "^1.5.3"
+    ng2-charts "^5.0.4"
+    tslib "^2.3.0"
 
 "@sideway/address@^4.1.0":
   version "4.1.5"
@@ -3618,13 +3618,6 @@
   integrity sha512-z9fJ5Im06zvUL548KvYNecEVlA7cVDkGUi6kZusb04mpyEFKCIZJvloCcmpmLaIahDpOQGHaHmG6imtPMmPXGQ==
   dependencies:
     "@types/node" "*"
-
-"@types/chart.js@^2.9.24":
-  version "2.9.41"
-  resolved "https://registry.yarnpkg.com/@types/chart.js/-/chart.js-2.9.41.tgz#4148cdc87d4f98fad44b2883271cd0fa57f05e0d"
-  integrity sha512-3dvkDvueckY83UyUXtJMalYoH6faOLkWQoaTlJgB4Djde3oORmNP0Jw85HtzTuXyliUHcdp704s0mZFQKio/KQ==
-  dependencies:
-    moment "^2.10.2"
 
 "@types/connect-history-api-fallback@^1.3.5":
   version "1.5.4"
@@ -5204,13 +5197,20 @@ chart.js@4.1.1:
   dependencies:
     "@kurkle/color" "^0.3.0"
 
-chart.js@^2.4.0, chart.js@^2.9.4:
+chart.js@^2.4.0:
   version "2.9.4"
   resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-2.9.4.tgz#0827f9563faffb2dc5c06562f8eb10337d5b9684"
   integrity sha512-B07aAzxcrikjAPyV+01j7BmOpxtQETxTSlQ26BEYJ+3iUkbNKaOJ/nDbT6JjyqYxseM0ON12COHYdU2cTIjC7A==
   dependencies:
     chartjs-color "^2.1.0"
     moment "^2.10.2"
+
+chart.js@^4.4.0:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-4.4.2.tgz#95962fa6430828ed325a480cc2d5f2b4e385ac31"
+  integrity sha512-6GD7iKwFpP5kbSD4MeRRRlTnQvxfQREy36uEtm1hzHzcOqwWx0YEHuspuoNlslu+nciLIB7fjjsHkUv/FzFcOg==
+  dependencies:
+    "@kurkle/color" "^0.3.0"
 
 chartjs-color-string@^0.6.0:
   version "0.6.0"
@@ -5234,17 +5234,15 @@ chartjs-plugin-annotation@^0.5.7:
   dependencies:
     chart.js "^2.4.0"
 
-chartjs-plugin-datalabels@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/chartjs-plugin-datalabels/-/chartjs-plugin-datalabels-0.7.0.tgz#f72e44edb2db45ef68913e9320bcc50398a205e6"
-  integrity sha512-PKVUX14nYhH0wcdCpgOoC39Gbzvn6cZ7O9n+bwc02yKD9FTnJ7/TSrBcfebmolFZp1Rcicr9xbT0a5HUbigS7g==
+chartjs-plugin-datalabels@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/chartjs-plugin-datalabels/-/chartjs-plugin-datalabels-2.2.0.tgz#369578e131d743c2e34b5fbe2d3f9335f6639b8f"
+  integrity sha512-14ZU30lH7n89oq+A4bWaJPnAG8a7ZTk7dKf48YAzMvJjQtjrgg5Dpk9f+LbjCF6bpx3RAGTeL13IXpKQYyRvlw==
 
-chartjs-plugin-stacked100@^0.7.1:
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/chartjs-plugin-stacked100/-/chartjs-plugin-stacked100-0.7.1.tgz#f89579fc15045f4203e4a16a1cac196d874817fc"
-  integrity sha512-3EoEXzKxJcRDrKe1dBYcPMbHpCppBgAsYApyEGiIXHaQS/SZRY+VEQsnyPTnIbewA792g19hTlkhpRLS1PVGzQ==
-  dependencies:
-    chart.js "^2.4.0"
+chartjs-plugin-stacked100@^1.5.3:
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/chartjs-plugin-stacked100/-/chartjs-plugin-stacked100-1.5.3.tgz#fc7f9748b01a1046d94413975c9685f6be23aff2"
+  integrity sha512-BvMRKLmhj4I3xtU1AATHmel/1i8r7LTvYJRH2t43nl2aq9AyC3CSWQYSCt0NZJT5LraoBJsBtrIvNImhnqpW6g==
 
 chokidar@3.5.3:
   version "3.5.3"
@@ -9804,22 +9802,13 @@ ng2-charts@3.0.8:
     lodash-es "^4.17.15"
     tslib "^2.3.0"
 
-ng2-charts@5.0.4:
+ng2-charts@5.0.4, ng2-charts@^5.0.4:
   version "5.0.4"
   resolved "https://registry.yarnpkg.com/ng2-charts/-/ng2-charts-5.0.4.tgz#306431e8b28532e22bcd877622b990c306516508"
   integrity sha512-AnOZ2KSRw7QjiMMNtXz9tdnO+XrIKP/2MX1TfqEEo2fwFU5c8LFJIYqmkMPkIzAEm/U9y/1psA5TDNmxxjEdgA==
   dependencies:
     lodash-es "^4.17.15"
     tslib "^2.3.0"
-
-ng2-charts@^2.4.2:
-  version "2.4.3"
-  resolved "https://registry.yarnpkg.com/ng2-charts/-/ng2-charts-2.4.3.tgz#e1de6cb55fe04248a5f92d342cf6423507fa532d"
-  integrity sha512-tPrhHSS2DfVyipXQ0gykOPc8zFNnj2b7sAebUVty392vHnEGYCwsP6YbFfpr1iXu4yBSRm4Gt5lffR5w0uyYSw==
-  dependencies:
-    "@types/chart.js" "^2.9.24"
-    lodash-es "^4.17.15"
-    tslib "^2.0.0"
 
 ng2-material-dropdown@>=0.11.0:
   version "1.0.0"
