@@ -11,7 +11,7 @@ import { ReportRoutingModule } from './report-routing.module';
 import { SolutionListingComponent, EntityListComponent, ReportViewComponent, AllEvidenceComponent } from './components';
 import { DataTablesModule } from 'angular-datatables';
 import { DashletModule } from '@project-sunbird/sb-dashlet';
-// import { SlReportsLibraryModule } from '@shikshalokam/sl-reports-library';
+import { SlReportsLibraryModule } from '@shikshalokam/sl-reports-library';
 import { MatTabsModule } from '@angular/material/tabs';
 
 
@@ -35,7 +35,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     ReportRoutingModule,
     DataTablesModule,
     DashletModule.forRoot(),
-    // SlReportsLibraryModule,
+    SlReportsLibraryModule,
     MatTabsModule
   ],
   providers: [],
