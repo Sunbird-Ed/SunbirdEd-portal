@@ -57,6 +57,39 @@ export const MockResponseData = {
       'id': 'api.content.download.list',
       'ver': '1.0',
       'ts': '2020-01-09T09:36:46.405Z',
+      'createdBy':'sample-uid',
+      'params': {
+        'resmsgid': '3580f558-7f76-4fc2-8b8a-4c568f321e27',
+        'msgid': '7669e658-9248-459c-be11-c9f83efc9e1a',
+        'status': 'successful',
+        'err': null,
+        'errmsg': null
+      },
+      'responseCode': 'OK',
+      'result': {
+        'response': {
+          'contents': [
+            {
+              'id': '264c47da-2436-4652-9214-b89ad11778f0',
+              'contentId': 'do_31276385539644620815652',
+              'identifier': 'do_31276385539644620815652',
+              'resourceId': 'do_31275241153060864018150',
+              'mimeType': 'application/vnd.ekstep.content-collection',
+              'name': '10 ವಿಜ್ಞಾನ ಭಾಗ 2',
+              'status': 'completed',
+              'createdOn': 1578562459472,
+              'pkgVersion': 3,
+              'contentType': 'TextBook',
+              'addedUsing': 'download'
+            }
+          ]
+        }
+      }
+    },
+    contentList:{
+      'id': 'api.content.download.list',
+      'ver': '1.0',
+      'ts': '2020-01-09T09:36:46.405Z',
       'params': {
         'resmsgid': '3580f558-7f76-4fc2-8b8a-4c568f321e27',
         'msgid': '7669e658-9248-459c-be11-c9f83efc9e1a',
@@ -633,5 +666,234 @@ export const MockResponseData = {
       }
 
     },
+  },
+  batchList: {
+    "result": {
+      "response": {
+        "count": 1,
+        "content": [
+          {
+
+            "endDate": null,
+            "description": "",
+            "oldCreatedDate": null,
+            "updatedDate": null,
+            "batchId": "0138805854730977280",
+            "cert_templates": {
+              "do_213878753577951232165": {
+                "identifier": "do_213878753577951232165",
+                "previewUrl": "https://obj.stage.sunbirded.org/sunbird-content-staging/content/do_213878753577951232165/artifact/do_213878753577951232165_1694183793991_certificate_2023-09-08_20_06.svg",
+                "criteria": {
+                  "assessment": {
+                    "score": {
+                      ">=": 20
+                    }
+                  },
+                  "enrollment": {
+                    "status": 2
+                  }
+                },
+                "name": "New Training certificate",
+                "issuer": {
+                  "name": "Gujarat Council of Educational Research and Training",
+                  "url": "https://gcert.gujarat.gov.in/gcert/"
+                },
+                "url": "https://obj.stage.sunbirded.org/sunbird-content-staging/content/do_213878753577951232165/artifact/do_213878753577951232165_1694183793991_certificate_2023-09-08_20_06.svg",
+
+              }
+            },
+            "oldEndDate": null,
+            "oldEnrollmentEndDate": null,
+            "id": "0138805854730977280",
+            "courseId": "do_21387643435365171217",
+            "collectionId": "do_21387643435365171217",
+            "identifier": "0138805854730977280",
+            "createdFor": [
+              "01269878797503692810"
+            ],
+            "oldUpdatedDate": null,
+            "tandc": null,
+            "createdDate": "2023-09-11T04:27:28.749Z",
+            "createdBy": "4cd4c690-eab6-4938-855a-447c7b1b8ea9",
+            "mentors": [],
+            "name": "Title Content",
+            "oldStartDate": null,
+            "enrollmentType": "open",
+            "enrollmentEndDate": null,
+            "startDate": "2023-09-11T00:00:00.000Z",
+            "status": 1
+          }
+        ]
+      }
+    }
+  },
+  menubar:{
+    "data": {
+      "action": "list",
+      "fields": [
+          {
+              "index": 6,
+              "search": {
+                  "fields": [
+                      "name",
+                      "appIcon",
+                      "mimeType",
+                      "cropcategory",
+                      
+                  ],
+                  "facets": [
+                      "croptype",
+                      "creator",
+                      "organisation"
+                  ],
+                  "filters": {
+                      "status": [
+                          "Live"
+                      ],
+                      "contentType": [
+                          "Course"
+                      ],
+                      "primaryCategory": [
+                          "Course",
+                          "Course Assessment"
+                      ]
+                  }
+              },
+              "contentType": "course",
+              "title": "frmelmnts.tab.courses",
+              "isLoginMandatory": false,
+              "isEnabled": true,
+              "anonumousUserRoute": {
+                  "route": "/explore",
+                  "queryParam": "course"
+              },
+              "loggedInUserRoute": {
+                  "route": "/resources",
+                  "queryParam": "course"
+              },
+              "theme": {
+                  "className": "courses",
+                  "baseColor": "",
+                  "textColor": "",
+                  "supportingColor": "",
+                  "imageName": "courses-banner-img.svg"
+              },
+              "batchEndCounter": 4,
+              "desc": "frmelmnts.tab.courses",
+              "isOnlineOnly": true,
+              "menuType": "Content",
+              "metaData": {
+                  "defaultFilters": {
+                      "farmingtype": [],
+                      "board": [
+                          "agriculture_framework_20"
+                      ],
+                      "cropcategory": [
+                          "Class 10"
+                      ]
+                  },
+                  "cacheTimeout": 86400000,
+                  "groupByKey": "croptype",
+                  "filters": [
+                      "board",
+                      "cropcategory",
+                      "croptype",
+                      "farmingtype",
+                      "publisher",
+                      "audience",
+                      "channel",
+                      "creator",
+                      "organisation"
+                  ],
+                 
+              }
+          },
+      ],
+      "templateName": "menuConfig"
+  }
+  },
+  menubarNew:{
+    "data": {
+      "action": "list",
+      "fields": [
+          {
+              "index": 6,
+              "search": {
+                  "fields": [
+                      "name",
+                      "appIcon",
+                      "mimeType",
+                      "cropcategory",
+                      
+                  ],
+                  "facets": [
+                      "croptype",
+                      "creator",
+                      "organisation"
+                  ],
+                  "filters": {
+                      "status": [
+                          "Live"
+                      ],
+                      "contentType": [
+                          "Course"
+                      ],
+                      "primaryCategory": [
+                          "Course",
+                          "Course Assessment"
+                      ]
+                  }
+              },
+              "contentType": "course",
+              "title": "frmelmnts.tab.courses",
+              "isLoginMandatory": false,
+              "isEnabled": true,
+              "anonumousUserRoute": {
+                  "route": "/explore",
+                  "queryParam": "course"
+              },
+              "loggedInUserRoute": {
+                  "route": "/resources",
+                  "queryParam": "course"
+              },
+              "theme": {
+                  "className": "courses",
+                  "baseColor": "",
+                  "textColor": "",
+                  "supportingColor": "",
+                  "imageName": "courses-banner-img.svg"
+              },
+              "desc": "frmelmnts.tab.courses",
+              "isOnlineOnly": true,
+              "menuType": "Content",
+              "metaData": {
+                  "defaultFilters": {
+                      "farmingtype": [],
+                      "board": [
+                          "agriculture_framework_20"
+                      ],
+                      "cropcategory": [
+                          "Class 10"
+                      ]
+                  },
+                  "cacheTimeout": 86400000,
+                  "groupByKey": "croptype",
+                  "filters": [
+                      "board",
+                      "cropcategory",
+                      "croptype",
+                      "farmingtype",
+                      "publisher",
+                      "audience",
+                      "channel",
+                      "creator",
+                      "organisation"
+                  ],
+                 
+              }
+          },
+      ],
+      "templateName": "menuConfig"
+  }
   }
 };
