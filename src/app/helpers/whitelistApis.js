@@ -1664,6 +1664,18 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+    '/action/questionset/v2/comment/read/:do_id': {
+      description: 'Question comment read',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/action/questionset/v2/comment/update/:do_id': {
+      description: 'QuestionSet comment update',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_REVIEWER
+      ]
+    },
     '/action/questionset/v2/hierarchy/:do_id': {
       description: 'QuestionSet hierarchy read',
       checksNeeded: ['ROLE_CHECK'],
@@ -2030,6 +2042,8 @@ const API_LIST = {
     '/action/questionset/v2/publish/:do_id',
     '/action/questionset/v2/reject/:do_id',
     '/action/questionset/v2/read/:do_id',
+    '/action/questionset/v2/comment/read/:do_id',
+    '/action/questionset/v2/comment/update/:do_id',
     '/action/questionset/v2/hierarchy/:do_id',
     '/content/questionset/v2/copy/:do_id',
     '/action/question/v2/read/:do_id',
