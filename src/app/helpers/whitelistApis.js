@@ -1673,7 +1673,7 @@ const API_LIST = {
       description: 'QuestionSet comment update',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
-        ROLE.CONTENT_CREATOR
+        ROLE.CONTENT_REVIEWER
       ]
     },
     '/action/questionset/v2/hierarchy/:do_id': {
