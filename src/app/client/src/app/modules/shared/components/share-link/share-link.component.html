@@ -10,23 +10,22 @@
   <!--/Header-->
 
   <!--Content-->
+
   <mat-dialog-content>
-    <div class="sb-mat__modal__content">
-      <p class="mb-8" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.arialabelShare}}">
-        {{resourceService?.frmelmnts?.lbl?.sharelink}}
-      </p>
-      <div class="ui action input fluid" id="buttonPopUp" suiPopup [popupPlacement]="position" popupTrigger="manual"
-        popupText="{{resourceService?.frmelmnts?.lbl?.linkCopied}}" #popup="suiPopup">
-        <input type="text" id="copyLinkData" name="title" readonly [(ngModel)]="shareLink" aria-label="copy link data"
-          class="sb-form-control" />
-        <button class="ui basic primary button" tabindex="0" (click)="copyLink(popup)" appTelemetryInteract
+    <label class="font-weight-normal"> {{resourceService?.frmelmnts?.lbl?.sharelink}}</label>
+      <div class="d-flex flex-ai-center share-link-content">
+        <mat-form-field class="w-100 flex-basis-1 sb-mat__form-field" appearance="fill" color="accent" id="buttonPopUp" #tooltip="matTooltip"
+          matTooltip="{{resourceService?.frmelmnts?.lbl?.linkCopied}}"
+          matTooltipPosition="above">
+          <input id="copyLinkData" matInput readonly [(ngModel)]="shareLink" aria-label="copy link data">
+        </mat-form-field>
+        <button class="sb-btn sb-btn-normal sb-btn-outline-primary ml-8" tabindex="0" (click)="copyLink(tooltip)" appTelemetryInteract
           [telemetryInteractEdata]="telemetryInteractEdata" [telemetryInteractObject]="telemetryShareData[0]"
           #copyLinkButton>
           {{resourceService?.frmelmnts?.btn?.copyLink}}
         </button>
-      </div>
-    </div>
-  </mat-dialog-content>
+  </div>
+</mat-dialog-content>
 
   <div class="sb-mat__modal__actions"></div>
 

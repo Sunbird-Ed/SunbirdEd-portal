@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import { UciComponent } from './components/uci/uci.component';
 import { UciAdminRoutingModule } from './uci-admin-routing.module';
-import {UciModule} from '@samagra-x/uci-console';
+import {UciModule} from 'uci-console-v16';
 
 
 @NgModule({

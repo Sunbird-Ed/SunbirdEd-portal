@@ -14,13 +14,16 @@
         </span>
       </div>
       <div class="four wide column float-ContentLeft course-dropdown" *ngIf="myCoursesList && myCoursesList.length > 1">
-        <sui-select class="selection" [(ngModel)]="selectedCourse" (ngModelChange)="onAfterCourseChange($event)" [options]="myCoursesList"
-          labelField="name" [placeholder]="'Select Course '" [isSearchable]="true" #select>
-          <sui-select-option [ngClass]="{'active': course.identifier === identifier }" *ngFor="let course of select.filteredOptions"
-            [value]="course" appTelemetryInteract [telemetryInteractObject]="{ id: course.identifier, type: 'Course', ver: '1.0' }"
-            [telemetryInteractEdata]="{id:'courseDropdown',type:'click',pageid:'course-creator-dashboard'}">
-          </sui-select-option>
-        </sui-select>
+        <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+          <mat-label>Select Course</mat-label>
+          <mat-select [(ngModel)]="selectedCourse" (ngModelChange)="onAfterCourseChange($event)" [options]="myCoursesList" class="selection"
+          labelField="name" [isSearchable]="true" #select>
+            <mat-option class="mat-dropdown__options" role="option" [ngClass]="{'active': course.identifier === identifier }"
+            *ngFor="let course of select.filteredOptions" [value]="course" appTelemetryInteract [telemetryInteractObject]="{ id: course.identifier, type: 'Course', ver: '1.0' }"
+            [telemetryInteractEdata]="{id:'courseDropdown',type:'click',pageid:'course-creator-dashboard'}"
+            attr.aria-label="{{course}}">{{course}}</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
     </div>
     <!-- Filters -->

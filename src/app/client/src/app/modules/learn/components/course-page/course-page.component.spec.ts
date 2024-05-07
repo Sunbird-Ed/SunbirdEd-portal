@@ -546,4 +546,31 @@ describe('CoursePageComponent', () => {
       expect(component.initFilters).toBe(true);
     });
   });
+
+  it('should fetch page data when isPageAssemble is true', () => {
+    const option = {};
+    const pageData = {};
+    component.isPageAssemble = true;
+    component.queryParams = { sort_by: 'someSortField', sortType: 'asc' };
+    component.enrolledSection = { contents: [{}, {}, {}] }
+
+    const mockPageApiService = {
+      getPageData: jest.fn().mockReturnValue(of(pageData))
+    };
+    component['pageApiService'] = mockPageApiService as any;
+    component['fetchPageData'](option).subscribe(() => {
+      expect(mockPageApiService.getPageData).toHaveBeenCalledWith(option);
+    });
+  });
+
+  it('should fetch courses when isPageAssemble is false', () => {
+    const option = {};
+    const currentPageData = {};
+    component.isPageAssemble = false;
+    const mockFetchCourses = jest.spyOn(component, 'fetchCourses' as any).mockReturnValue(of(currentPageData));
+    component['fetchPageData'](option).subscribe(() => {
+      expect(mockFetchCourses).toHaveBeenCalledWith(currentPageData);
+    });
+  });
+
 });

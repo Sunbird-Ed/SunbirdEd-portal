@@ -88,7 +88,7 @@
       "CREATE": "review/comment/v1/create/comment"
     },
     "USER": {
-      "SIGNUP": "user/v1/create",
+      "SIGNUP": "user/v1/sso/create",
       "TNC_ACCEPT": "user/v1/tnc/accept",
       "UPDATE_USER_PROFILE": "user/v3/update",
       "GET_PROFILE": "user/v5/read/",
@@ -99,8 +99,8 @@
       "UPDATE_SKILLS": "user/v1/skill/update",
       "USER_SKILLS": "user/v1/skill/read",
       "UPDATE_PROF_VIS_FIELDS": "user/v1/profile/visibility",
-      "GET_USER_BY_KEY": "user/v1/get",
-      "CHECK_USER_EXISTS": "user/v1/exists",
+      "GET_USER_BY_KEY": "user/v2/get",
+      "CHECK_USER_EXISTS": "user/v2/exists",
       "CREATE_V2": "user/v2/create",
       "SIGN_UP_V1": "user/v2/signup",
       "LOCATION_SEARCH": "data/v1/location/search",
@@ -111,7 +111,7 @@
       "USER_MIGRATE": "user/v1/migrate",
       "TNC_ACCEPT_LOGIN": "user/v2/accept/tnc",
       "SIGN_UP_V4": "user/v4/create",
-      "SIGN_UP_MANAGED_USER": "user/v1/managed/create",
+      "SIGN_UP_MANAGED_USER": "user/v2/managed/create",
       "SWITCH_USER": "user/v1/switch",
       "END_SESSION": "endSession",
       "GET_MANAGED_USER": "user/v1/managed",
@@ -261,11 +261,11 @@
       "SYNC": "data/v1/telemetry"
     },
     "OTP": {
-      "GENERATE": "otp/v1/generate",
-      "VERIFY": "otp/v1/verify",
+      "GENERATE": "otp/v2/generate",
+      "VERIFY": "otp/v2/verify",
       "ANONYMOUS": {
-        "GENERATE": "anonymous/otp/v1/generate",
-        "GENERATE_USERDELETE":"anonymous/delete/otp/v1/generate"
+        "GENERATE": "anonymous/otp/v2/generate",
+        "GENERATE_USERDELETE":"anonymous/delete/otp/v2/generate"
       }
     },
     "OFFLINE": {
@@ -280,9 +280,9 @@
       "RETRY_IMPORT": "content/v1/import/retry",
       "REPORT_OTHER_ISSUE": "help/v1/report/issue",
       "READ_FAQ": "faqs/v1/read",
-      "CREATE_USER": "desktop/user/v1/create",
+      "CREATE_USER": "desktop/user/v1/sso/create",
       "UPDATE_USER": "desktop/user/v1/update",
-      "READ_USER": "desktop/user/v1/read",
+      "READ_USER": "desktop/user/v5/read",
       "LOCATION_SAVE": "data/v1/location/save",
       "LOCATION_READ": "data/v1/location/read",
       "APP_INFO": "app/v1/info",

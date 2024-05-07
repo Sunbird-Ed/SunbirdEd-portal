@@ -86,7 +86,7 @@ export class QuestionnaireComponent
         this.evidence = data.result.assessment.evidences[0];
         this.evidence.startTime = Date.now();
         this.sections = this.evidence.sections;
-      },
+     },
       (error) => {}
     );
   }

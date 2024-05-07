@@ -72,6 +72,10 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
  * Dom element reference of contentRatingModal
  */
   @ViewChild('modal') modal;
+  @ViewChild('videoPlayer') videoPlayer: ElementRef;
+  @ViewChild('pdfPlayer') pdfPlayer: ElementRef;
+  @ViewChild('epubPlayer') epubPlayer: ElementRef;
+  @ViewChild('qumlPlayer') qumlPlayer: ElementRef;
 
   @HostListener('window:popstate', ['$event'])
   onPopState(event) {
@@ -154,14 +158,118 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   /**
-   * loadPlayer method will be called
-   */
+ * Executes after the view and child views have been initialized. 
+ * Checks if player configuration is available, then loads the player and configures it after a short delay.
+ * This delayed configuration is necessary to ensure that the player is fully loaded and ready to be configured.
+ */
   ngAfterViewInit() {
     if (this.playerConfig) {
       this.loadPlayer();
+      setTimeout(() => {
+        this.configurePlayer();
+      }, 500);
     }
   }
 
+  /**
+   * Configures the player based on the specified player type.
+   * 
+   * Depending on the 'playerType' property:
+   *   - If the player type is 'video-player', calls the 'videoPlayerConfig' method to configure the video player.
+   *   - If the player type is 'pdf-player', calls the 'pdfPlayerConfig' method to configure the PDF player.
+   *   - If the player type is 'epub-player', calls the 'epubPlayerConfig' method to configure the EPub player.
+   *   - If the player type is 'quml-player', calls the 'epubPlayerConfig' method to configure the EPub player.
+   * 
+   * This method ensures that the appropriate configuration is applied based on the type of player being used.
+   */
+  configurePlayer() {
+    switch (this.playerType) {
+      case "video-player":
+        this.videoPlayerConfig();
+        break;
+      case "pdf-player":
+        this.pdfPlayerConfig();
+        break;
+      case "epub-player":
+        this.epubPlayerConfig();
+        break;
+      case "quml-player":
+        this.qumlPlayerConfig();
+        break;
+    }
+  }
+
+  /**
+ * Constructs a video player configuration and initializes the video player element dynamically.
+ * This method creates a custom video player element, configures it with the provided player configuration,
+ * and appends it to the native element reference of the video player.
+ * Additionally, it adds event listeners for 'playerEvent' and 'telemetryEvent' to handle player events and telemetry events respectively.
+ */
+  videoPlayerConfig() {
+    const videoPlayerElement = document.createElement('sunbird-video-player');
+    videoPlayerElement.setAttribute('player-config', JSON.stringify(this.playerConfig));
+    videoPlayerElement.addEventListener('playerEvent', (event) => {
+      this.eventHandler(event);
+    });
+    videoPlayerElement.addEventListener('telemetryEvent', (event) => {
+      this.generateContentReadEvent(event, true);
+    });
+    this.videoPlayer.nativeElement.append(videoPlayerElement);
+  }
+
+  /**
+ * Creates a PDF player element and attaches event listeners for player and telemetry events.
+ * The player configuration is set using the provided playerConfig property.
+ * When playerEvent is emitted, it triggers the eventHandler method.
+ * When telemetryEvent is emitted, it triggers the generateContentReadEvent method with the 'true' flag.
+ */
+  pdfPlayerConfig() {
+    const pdfPlayerElement = document.createElement('sunbird-pdf-player');
+    pdfPlayerElement.setAttribute('player-config', JSON.stringify(this.playerConfig));
+    pdfPlayerElement.addEventListener('playerEvent', (event) => {
+      this.eventHandler(event);
+    });
+    pdfPlayerElement.addEventListener('telemetryEvent', (event) => {
+      this.generateContentReadEvent(event, true)
+    });
+    this.pdfPlayer.nativeElement.append(pdfPlayerElement);
+  }
+  /**
+   * Configures the EPUB player by creating a new HTML element for the Sunbird EPUB player,
+   * setting the player configuration, and attaching event listeners for player and telemetry events.
+   * This method is responsible for dynamically configuring the EPUB player component,
+   * allowing it to be embedded within the parent component's view and interact with player and telemetry events.
+   */
+  epubPlayerConfig() {
+    const epubElement = document.createElement('sunbird-epub-player');
+    epubElement.setAttribute('player-config', JSON.stringify(this.playerConfig));
+    epubElement.addEventListener('playerEvent', (event) => {
+      this.eventHandler(event);
+    });
+    epubElement.addEventListener('telemetryEvent', (event) => {
+      this.generateContentReadEvent(event, true)
+    });
+    this.epubPlayer.nativeElement.append(epubElement);
+  }
+    /**
+   * Configures the Quml (Question Unit Markup Language) player by setting the question list URL,
+   * creating a new HTML element for the Sunbird Quml player, and attaching event listeners for player and telemetry events.
+   * This method is responsible for configuring the Quml player component dynamically,
+   * allowing it to be embedded within the parent component's view and interact with player and telemetry events.
+   */
+  qumlPlayerConfig() {
+    (window as any).questionListUrl = `/${_.get(this.configService, 'urlConFig.URLS.QUESTIONSET.LIST_API')}`;
+    const qumlElement = document.createElement('sunbird-quml-player');
+    qumlElement.setAttribute('player-config', JSON.stringify(this.playerConfig));
+    qumlElement.addEventListener('playerEvent', (event) => {
+      this.eventHandler(event);
+    });
+    qumlElement.addEventListener('telemetryEvent', (event) => {
+      this.generateContentReadEvent(event, true)
+    });
+    this.qumlPlayer.nativeElement.append(qumlElement);
+
+  }
   ngOnChanges(changes) {
     this.contentRatingModal = false;
     this.showNewPlayer = false;

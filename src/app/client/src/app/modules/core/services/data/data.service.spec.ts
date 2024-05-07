@@ -86,7 +86,7 @@ describe('DataService', () => {
 
     it('should return observableThrowError for failed POST request', (done) => {
       const mockErrorResponse = { responseCode: 'ERROR', data: 'Error data' };
-      jest.spyOn(mockHttpClient, 'post').mockReturnValue(throwError(mockErrorResponse));
+      jest.spyOn(mockHttpClient, 'post').mockReturnValue(of(mockErrorResponse));
       (dayjs as any).mockReturnValue({ format: jest.fn(() => 'formatDate') });
       dataService.post({
         url: '/mock-url',
@@ -114,7 +114,7 @@ describe('DataService', () => {
 
     it('should handle error for failed PATCH request', (done) => {
       const mockErrorResponse = { responseCode: 'ERROR', data: 'Error data' };
-      jest.spyOn(mockHttpClient, 'patch').mockReturnValue(throwError(mockErrorResponse));
+      jest.spyOn(mockHttpClient, 'patch').mockReturnValue(of(mockErrorResponse));
       (dayjs as any).mockReturnValue({ format: jest.fn(() => 'formatDate') });
       dataService.patch({
         url: '/mock-url',
@@ -142,7 +142,7 @@ describe('DataService', () => {
 
     it('should handle error for failed DELETE request', (done) => {
       const mockErrorResponse = { responseCode: 'ERROR', data: 'Error data' };
-      jest.spyOn(mockHttpClient, 'delete').mockReturnValue(throwError(mockErrorResponse));
+      jest.spyOn(mockHttpClient, 'delete').mockReturnValue(of(mockErrorResponse));
       (dayjs as any).mockReturnValue({ format: jest.fn(() => 'formatDate') });
       dataService.delete({
         url: '/mock-url',
@@ -170,7 +170,7 @@ describe('DataService', () => {
 
     it('should handle error for failed PUT request', (done) => {
       const mockErrorResponse = { responseCode: 'ERROR', data: 'Error data' };
-      jest.spyOn(mockHttpClient, 'put').mockReturnValue(throwError(mockErrorResponse));
+      jest.spyOn(mockHttpClient, 'put').mockReturnValue(of(mockErrorResponse));
       (dayjs as any).mockReturnValue({ format: jest.fn(() => 'formatDate') });
       dataService.put({
         url: '/mock-url',
@@ -284,6 +284,26 @@ describe('DataService', () => {
           done();
         },
       });
+    });
+  });
+  it('should handle successful POST request with headers', async () => {
+    jest.spyOn(document, 'getElementById').mockImplementation((data) => {
+          return { value: '32cef05697d1ab3a8049c0e8981bcc79' } as any;
+    });
+    dataService.rootOrgId = '1234567890';
+    dataService.channelId = '1234567890';
+    DataService.userId = 'user_123';
+    const mockResponse = { responseCode: 'OK', data: 'Mock data' };
+    const mockHeaders = { get: jest.fn(() => '2023-01-01T12:00:00Z') };
+
+    jest.spyOn(mockHttpClient, 'post').mockReturnValue(of({ body: mockResponse, headers: mockHeaders }));
+    (dayjs as any).mockReturnValue({ format: jest.fn(() => 'formatDate') });
+    jest.spyOn(dataService, 'getDateDiff' as any).mockReturnValue(0);
+
+    await dataService.postWithHeaders({ url: '/mock-url', data: { key: 'value' }, header: { 'Custom-Header': 'custom-value' } }).subscribe((response) => {
+      expect(response).toEqual(mockResponse);
+      expect(mockHttpClient.post).toHaveBeenCalledWith(expect.stringContaining('/mock-url'), { key: 'value' }, expect.any(Object));
+      expect(dataService['getDateDiff']).toHaveBeenCalledWith('2023-01-01T12:00:00Z');
     });
   });
 

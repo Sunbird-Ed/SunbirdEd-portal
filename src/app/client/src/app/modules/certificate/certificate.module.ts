@@ -2,7 +2,7 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CertificateRoutingModule } from './certificate-routing.module';
-import { SuiModalModule, SuiSelectModule, SuiDropdownModule, SuiPopupModule } from 'ng2-semantic-ui-v9';
+import { SuiModalModule, SuiSelectModule, SuiDropdownModule, SuiPopupModule } from '@project-sunbird/ng2-semantic-ui';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';

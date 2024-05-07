@@ -47,7 +47,7 @@
             <div *ngIf="getSelectedTab() === 'home'" (click)="showEdit = !showEdit" class="sb-section-preference"
               tabindex="0">
               <div class="preference">
-                <p class="header font-weight-bold mb-8">{{resourceService?.frmelmnts?.lbl?.hi}} {{userProfile?.firstName
+                <p class="header mb-8">{{resourceService?.frmelmnts?.lbl?.hi}} {{userProfile?.firstName
                   | titlecase}} {{userProfile?.lastName |
                   titlecase}}</p>
                 <p>{{resourceService?.frmelmnts?.lbl?.yourPreferences}}
@@ -57,8 +57,8 @@
                   <span *ngFor="let category of transformUserPreference" class="mr-24">
                   <span>{{ (resourceService?.frmelmnts?.lbl[category?.code] | transposeTerms: resourceService?.frmelmnts?.lbl[category?.code] : resourceService?.selectedLang) || category?.labels }}:
                   </span>
-                  <span class="font-weight-bold mb-8" *ngIf="category?.values?.length > 1">{{category?.values[0]}} ...+ {{category?.values?.length-1}}</span>
-                    <span class="font-weight-bold mb-8" *ngIf="category?.values?.length === 1">{{category?.values[0]}}</span>
+                  <span class="value mb-8" *ngIf="category?.values?.length > 1">{{category?.values[0]}} ...+ {{category?.values?.length-1}}</span>
+                    <span class="value mb-8" *ngIf="category?.values?.length === 1">{{category?.values[0]}}</span>
                   </span>
                 </p>
               </div>
@@ -81,7 +81,7 @@
 
             <div
               *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0">
-              <div class="mt-16 font-weight-bold flarge pl-16 text-left">{{getBannerTitle(section?.section?.title)}}
+              <div class="featured-text mt-16 flarge pl-16 text-left">{{getBannerTitle(section?.section?.title)}}
               </div>
 
 
@@ -127,7 +127,7 @@
               [pillsMultiRow]="'auto_responsive'" [pillTextElipsis]="'two_line'"
               (select)="handleTargetedpillSelected($event)">
               <sb-pill-item *ngFor="let pillData of targetedCategory" [name]="(pillData?.icon?.web ? pillData?.name : '') | titlecase"
-              [icon]="pillData?.icon?.web" [value]="(pillData?.icon?.web ? pillData : '')" [theme]="(pillData?.icon?.web ? (targetedCategorytheme | async) : Categorytheme)"></sb-pill-item>
+              [icon]="pillData?.icon?.web" [value]="(pillData?.icon?.web ? pillData : '')" [theme]="(pillData?.icon?.web ? (targetedCategorytheme) : Categorytheme)"></sb-pill-item>
             </sb-pills-grid>
             <hr class="section-hr my-32" />
           </div>

@@ -124,5 +124,11 @@
   &__text{
       max-width: calculateRem(300px);   
   }
-}
 
+}
+.custom-web-player {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}

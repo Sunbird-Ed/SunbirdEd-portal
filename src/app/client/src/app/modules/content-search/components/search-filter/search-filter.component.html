@@ -33,51 +33,48 @@
         <div class="d-flex flex-ai-center flex-w-wrap">
           <div *ngIf="allValues && allValues[frameworkCategories?.fwCategory4?.code]?.length" class="state-medium-container__dropdown">
             <div class="sb-field mb-0"><label>
-                <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels[frameworkCategories?.fwCategory4?.code]"
+                <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+                  <mat-select [hasLabels]="false" [(ngModel)]="selectedNgModels[frameworkCategories?.fwCategory4?.code]"
                   (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: frameworkCategories?.fwCategory4?.code})"
                   defaultSelectionText={{resourceService?.frmelmnts?.lbl[frameworkCategories?.fwCategory4?.code]}}
                   zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
                   class="selection sbt-dropdown-tick text-cencapitalize"
-                  [ngClass]="!layoutConfiguration ? 'state-selection' : 'sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg'">
-                  <div [ngClass]="!layoutConfiguration ? 'state-selection__section' : 'sbt-dropdown-section'">
-                    <sui-select-option *ngFor="let dropdownValue of allValues[frameworkCategories?.fwCategory4?.code]" [value]="dropdownValue">
-                    </sui-select-option>
-                  </div>
-                </sui-multi-select>
+                  [ngClass]="!layoutConfiguration ? 'state-selection' : 'sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg'" multiple>
+                    <mat-option *ngFor="let dropdownValue of allValues[frameworkCategories?.fwCategory4?.code]" [value]="dropdownValue">{{dropdownValue}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
               </label>
             </div>
           </div>
           <div *ngIf="allValues?.publisher?.length" class="state-medium-container__separator"> </div>
           <div *ngIf="allValues?.publisher?.length" class="state-medium-container__dropdown">
             <div class="sb-field mb-0"><label>
-                <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['publisher']"
+                <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+                  <mat-select [hasLabels]="false" [(ngModel)]="selectedNgModels['publisher']"
                   (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'publisher'})"
                   defaultSelectionText={{resourceService?.frmelmnts?.lbl?.publishedBy}}
                   zeroSelectionText={{resourceService?.frmelmnts?.lbl?.Select}}
                   class="selection sbt-dropdown-tick text-cencapitalize"
-                  [ngClass]="!layoutConfiguration ? 'state-selection' : 'sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg'">
-                  <div [ngClass]="!layoutConfiguration ? 'state-selection__section' : 'sbt-dropdown-section'">
-                    <sui-select-option *ngFor="let dropdownValue of allValues['publisher']" [value]="dropdownValue">
-                    </sui-select-option>
-                  </div>
-                </sui-multi-select>
+                  [ngClass]="!layoutConfiguration ? 'state-selection' : 'sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg'" multiple>
+                    <mat-option *ngFor="let dropdownValue of allValues['publisher']" [value]="dropdownValue">{{dropdownValue}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
               </label>
             </div>
           </div>
           <div *ngIf="allValues?.audience?.length" class="state-medium-container__separator"> </div>
           <div *ngIf="allValues?.audience?.length" class="state-medium-container__dropdown">
             <div class="sb-field mb-0"><label>
-                <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['audience']"
+                <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+                  <mat-select [hasLabels]="false" [(ngModel)]="selectedNgModels['audience']"
                   (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'audience'})"
                   defaultSelectionText={{resourceService?.frmelmnts?.lbl?.userType}}
                   zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} tabindex="0"
                   class="selection sbt-dropdown-tick text-cencapitalize"
-                  [ngClass]="!layoutConfiguration ? 'state-selection' : 'sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg'">
-                  <div [ngClass]="!layoutConfiguration ? 'state-selection__section' : 'sbt-dropdown-section'">
-                    <sui-select-option *ngFor="let dropdownValue of allValues['audience']" [value]="dropdownValue">
-                    </sui-select-option>
-                  </div>
-                </sui-multi-select>
+                  [ngClass]="!layoutConfiguration ? 'state-selection' : 'sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg'" multiple>
+                    <mat-option *ngFor="let dropdownValue of allValues['audience']" [value]="dropdownValue">{{dropdownValue}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
               </label>
             </div>
           </div>

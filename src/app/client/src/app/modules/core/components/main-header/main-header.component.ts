@@ -25,7 +25,6 @@ import { environment } from '@sunbird/environment';
 import { Subject, zip, forkJoin } from 'rxjs';
 import { EXPLORE_GROUPS, MY_GROUPS } from '../../../public/module/group/components/routerLinks';
 
-
 type reportsListVersionType = 'v1' | 'v2';
 
 @Component({
@@ -159,6 +158,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   isCustodianUser: boolean;
   isConnected = false;
   isDesktopApp = false;
+  isUciEnabled;
   showLoadContentModal = false;
   guestUser;
   subscription: any;
@@ -185,6 +185,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       this.exploreButtonVisibility = 'false';
       this.reportsListVersion = 'v1';
     }
+    this.isUciEnabled=   document.getElementById('isUciConfigured')?(<HTMLInputElement>document.getElementById('isUciConfigured')).value:'false';
     this.adminDashboard = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
     this.myActivityRole = this.config.rolesConfig.headerDropdownRoles.myActivityRole;
     this.orgSetupRole = this.config.rolesConfig.headerDropdownRoles.orgSetupRole;

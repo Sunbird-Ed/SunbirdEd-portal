@@ -266,143 +266,124 @@
     </ng-container>
   </ng-template>
   </ng-template>
-<app-modal-wrapper [config]="{disableClose: false, size: 'small'}" (dismiss)="closeModal()" #modal *ngIf="popup">
+<app-modal-wrapper [config]="{disableClose: false, size: 'small', panelClass: ['material-modal', 'material-modal--small']}" (dismiss)="closeModal()" #modal *ngIf="popup">
   <ng-template sbModalContent>
-    <div class="sb-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible small">
-          <div class="sb-modal-header">
+    <div class="sb-mat__modal">
 
-            {{resourceService?.frmelmnts?.lbl?.confirmReportRequest}}
-          </div>
-          <div class="sb-modal-content o-x-hide" [formGroup]="passwordForm">
-            <div class="sb-field-group">
-              <div class="sb-field relative">
-                <div class="sb-field filterTable mx-16 mb-0">
-                  <input class="sb-form-control" formControlName="password" type="text"
-                    placeholder="Enter a password to request Report" aria-label="enter password">
-                </div>
-              </div>
-              <p class="fsmall note-text my-8 administrator-text">
-                {{resourceService?.frmelmnts?.lbl?.pswdRule}}
-              </p>
+      <div class="sb-mat__modal__header">
+        {{resourceService?.frmelmnts?.lbl?.confirmReportRequest}}
+      </div>
+      <div class="sb-mat__modal__content o-x-hide" [formGroup]="passwordForm" mat-dialog-content>
+        <div class="sb-field-group">
+          <div class="sb-field relative">
+            <div class="sb-field filterTable mx-16 mb-0">
+              <input class="sb-form-control" formControlName="password" type="text"
+                placeholder="Enter a password to request Report" aria-label="enter password">
             </div>
           </div>
-          <div class="sb-modal-actions">
-            <button class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="(!reportForm.valid || !passwordForm.valid)"
-              [ngClass]="{'sb-btn-disabled': (!reportForm.valid || !passwordForm.valid)}" (click)="csvRequest()">
-              {{resourceService?.frmelmnts?.btn?.yes}}
-            </button>
-            <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="closeModal()">
-              {{resourceService?.frmelmnts?.btn?.no}}
-            </button>
-          </div>
+          <p class="fsmall note-text my-8 administrator-text">
+            {{resourceService?.frmelmnts?.lbl?.pswdRule}}
+          </p>
         </div>
       </div>
+      <div class="sb-mat__modal__actions">
+        <button class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="(!reportForm.valid || !passwordForm.valid)"
+          [ngClass]="{'sb-btn-disabled': (!reportForm.valid || !passwordForm.valid)}" (click)="csvRequest()">
+          {{resourceService?.frmelmnts?.btn?.yes}}
+        </button>
+        <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="closeModal()">
+          {{resourceService?.frmelmnts?.btn?.no}}
+        </button>
+      </div>
+
     </div>
   </ng-template>
 </app-modal-wrapper>
 
-<app-modal-wrapper [config]="{disableClose: false, size: 'small'}" (dismiss)="closeConfirmModal()" #modal
+<app-modal-wrapper [config]="{disableClose: false, size: 'small', panelClass: ['material-modal', 'material-modal--small']}" (dismiss)="closeConfirmModal()" #modal
   *ngIf="awaitPopUp">
   <ng-template sbModalContent>
-    <div class="sb-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible small">
-          <div class="sb-modal-content mt-16">
+    <div class="sb-mat__modal">
 
-            {{resourceService?.frmelmnts?.lbl?.datasetRequestSuccess}}
-          </div>
-          <div class="sb-modal-actions">
-            <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="closeConfirmModal()">
-              {{resourceService?.frmelmnts?.btn?.ok}}
-            </button>
-          </div>
-        </div>
+      <div class="sb-mat__modal__content mt-16" mat-dialog-content>
+
+        {{resourceService?.frmelmnts?.lbl?.datasetRequestSuccess}}
       </div>
+      <div class="sb-mat__modal__actions">
+        <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="closeConfirmModal()">
+          {{resourceService?.frmelmnts?.btn?.ok}}
+        </button>
+      </div>
+
     </div>
   </ng-template>
 </app-modal-wrapper>
 
-<app-modal-wrapper [config]="{disableClose: false, size: 'small'}" (dismiss)="closeConfirmationModal()" #modal
+<app-modal-wrapper [config]="{disableClose: false, size: 'small', panelClass: ['material-modal', 'material-modal--small']}" (dismiss)="closeConfirmationModal()" #modal
   *ngIf="showConfirmationModal">
   <ng-template sbModalContent>
-    <div class="sb-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible small">
-          <div class="sb-modal-content o-x-hide">
-            <div class="my-8">
-              {{ resourceService?.frmelmnts?.lbl?.confirmReportRequest }}
-            </div>
-          </div>
-          <div class="sb-modal-actions">
-            <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="handleConfirmationEvent(true)">
-              {{resourceService?.frmelmnts?.btn?.yes}}
-            </button>
-            <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="handleConfirmationEvent(false)">
-              {{resourceService?.frmelmnts?.btn?.no}}
-            </button>
-          </div>
+    <div class="sb-mat__modal">
+      <div class="sb-mat__modal__content o-x-hide" mat-dialog-content>
+        <div class="my-8">
+          {{ resourceService?.frmelmnts?.lbl?.confirmReportRequest }}
         </div>
+      </div>
+      <div class="sb-mat__modal__actions">
+        <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="handleConfirmationEvent(true)">
+          {{resourceService?.frmelmnts?.btn?.yes}}
+        </button>
+        <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="handleConfirmationEvent(false)">
+          {{resourceService?.frmelmnts?.btn?.no}}
+        </button>
       </div>
     </div>
   </ng-template>
 </app-modal-wrapper>
 
-<app-modal-wrapper *ngIf="showPopUpModal" [config]="{disableClose: false, size: 'small'}" (dismiss)="closePopupModal()" #modal>
+<app-modal-wrapper *ngIf="showPopUpModal" [config]="{disableClose: false, size: 'small', panelClass: ['material-modal', 'material-modal--small']}" (dismiss)="closePopupModal()" #modal>
   <ng-template sbModalContent>
-    <div class="sb-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible small">
-          <div class="sb-modal-content o-x-hide">
-            <div class="d-flex flex-dir-row my-8">
-             <div>
-              <mat-icon class="info">info</mat-icon> 
-             </div>
-             <div class="font-weight-bold sb-color-primary modalNote"> {{resourceService?.frmelmnts?.lbl?.modalNote}}</div>
-             <div class="ml-auto">
-              <mat-icon class="goback" (click)="goBack()">highlight_off</mat-icon>
-             </div>
-            </div>
-            
-            
-            <div class="mt-48 flex-dc" [formGroup]="reportForm">
-              <label  class="d-flex flex-jc-center sb-color-primary">{{resourceService?.frmelmnts?.lbl?.programLbl }}</label>
-               <div class="d-flex flex-jc-center mt-24">
-                <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd w-80">
-                  <mat-select role="radio" class="selection" valueField="_id" formControlName="programName"
-                  [(ngModel)]="programSelected"
-                  [placeholder]="resourceService?.frmelmnts?.lbl?.program"  (selectionChange)="programSelection($event)">
-                    <mat-option *ngFor="let program of programs" class="mat-dropdown__options" role="option" [value]="program._id">
-                      {{program.name}}
-                    </mat-option>
-                  </mat-select>
-                  </mat-form-field>
-               </div>
-              
-            </div>
-            <div class="mt-32 sb-modal-actions">
-              <button [disabled]="!reportForm.controls.programName.value" [ngClass]="{'sb-btn-disabled': (!reportForm.controls.programName.value)}" type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary" (click)="confirm()">{{resourceService?.frmelmnts?.btn?.confirmBtn}}</button>
-            </div>
+    <div class="sb-mat__modal">
+
+      <div class="sb-modal-content o-x-hide" mat-dialog-content>
+        <div class="d-flex flex-dir-row my-8">
+          <div>
+          <mat-icon class="info">info</mat-icon> 
+          </div>
+          <div class="font-weight-bold sb-color-primary modalNote"> {{resourceService?.frmelmnts?.lbl?.modalNote}}</div>
+          <div class="ml-auto">
+          <mat-icon class="goback" (click)="goBack()">highlight_off</mat-icon>
           </div>
         </div>
+        
+        <div class="mt-48 flex-dc" [formGroup]="reportForm">
+          <label  class="d-flex flex-jc-center sb-color-primary">{{resourceService?.frmelmnts?.lbl?.programLbl }}</label>
+            <div class="d-flex flex-jc-center mt-24">
+            <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd w-80">
+              <mat-select role="radio" class="selection" valueField="_id" formControlName="programName"
+              [(ngModel)]="programSelected"
+              [placeholder]="resourceService?.frmelmnts?.lbl?.program"  (selectionChange)="programSelection($event)">
+                <mat-option *ngFor="let program of programs" class="mat-dropdown__options" role="option" [value]="program._id">
+                  {{program.name}}
+                </mat-option>
+              </mat-select>
+              </mat-form-field>
+            </div>
+        </div>
+      </div>
+
+      <div class="mt-32 sb-mat__modal__actions flex-jc-center">
+        <button [disabled]="!reportForm.controls.programName.value" [ngClass]="{'sb-btn-disabled': (!reportForm.controls.programName.value)}" type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary" (click)="confirm()">{{resourceService?.frmelmnts?.btn?.confirmBtn}}</button>
       </div>
     </div>
   </ng-template>
 </app-modal-wrapper>
 
-<app-modal-wrapper *ngIf="reportExportInProgress" [config]="{disableClose: true}" (dismiss)="close.emit()">
+<app-modal-wrapper *ngIf="reportExportInProgress" [config]="{disableClose: true, panelClass: 'material-modal'}" (dismiss)="close.emit()">
   <ng-template sbModalContent>
     <div class="sb-modal sb-hawkeye-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible normal">
-          <div class="sb-modal-content o-y-visible">
-            <div class="ui">
-              <div class="twelve wide column px-0 mb-30">
-                <app-loader [data]="{loaderMessage: 'Report generation is in Progress. Please wait...'}"></app-loader>
-              </div>
-            </div>
-          </div>
+      <div class="sb-modal-content o-y-visible">
+        <div class="p-16">
+          <app-loader [data]="{loaderMessage: 'Report generation is in Progress. Please wait...'}"></app-loader>
         </div>
       </div>
     </div>

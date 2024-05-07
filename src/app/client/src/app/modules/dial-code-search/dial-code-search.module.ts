@@ -6,7 +6,7 @@ import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
-  SuiRatingModule, SuiCollapseModule, SuiDimmerModule } from 'ng2-semantic-ui-v9';
+  SuiRatingModule, SuiCollapseModule, SuiDimmerModule } from '@project-sunbird/ng2-semantic-ui';
 import { GetComponent, DialCodeComponent, DialCodeCardComponent } from './components';
 import { FormsModule } from '@angular/forms';
 import { PlayerHelperModule } from '@sunbird/player-helper';

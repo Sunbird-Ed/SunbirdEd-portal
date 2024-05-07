@@ -19,8 +19,8 @@ describe('UserService', () => {
       },
       URLS: {
         OTP: {
-          GENERATE: 'otp/v1/generate',
-          VERIFY: 'otp/v1/verify',
+          GENERATE: 'otp/v2/generate',
+          VERIFY: 'otp/v2/verify',
         },
         USER: {
           GET_PROFILE: 'user/v5/read/',
@@ -31,11 +31,11 @@ describe('UserService', () => {
           TNC_ACCEPT: 'user/v1/tnc/accept'
         },
         OFFLINE: {
-          READ_USER: 'desktop/user/v1/read',
-          CREATE_USER: 'desktop/user/v1/create',
-          UPDATE_USER: 'desktop/user/v1/update',
+          READ_USER: 'desktop/user/v5/read',
+          CREATE_USER: 'desktop/user/v1/sso/create',
+          UPDATE_USER: 'desktop/user/v3/update',
           GET_USER_BY_KEY: 'desktop/user/v1/read/by/key',
-          USER_EXISTS_GET_USER_BY_KEY: 'desktop/user/v1/exists/by/key'
+          USER_EXISTS_GET_USER_BY_KEY: 'desktop/user/v2/exists/by/key'
         }
       }
     }
@@ -381,7 +381,7 @@ describe('UserService', () => {
   });
 
   it('should return defaultFrameworkFilters with user not logged in', () => {
-    Object.defineProperty(userService, 'loggedIn', { get: jest.fn(() => false) });
+    // Object.defineProperty(userService, 'loggedIn', { get: jest.fn(() => false) });
     const result = userService.defaultFrameworkFilters;
     expect(result[userService.frameworkCategories?.fwCategory1?.code]).toEqual(userService.defaultBoard);
     expect(result['undefined']).toBeUndefined();

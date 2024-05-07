@@ -1,7 +1,7 @@
 #!/bin/bash
 STARTTIME=$(date +%s)
 export PYTHON=/usr/bin/python3.7
-NODE_VERSION=16.19.0
+NODE_VERSION=18.20.2
 echo "Starting portal build from build.sh"
 set -euo pipefail	
 export NVM_DIR="$HOME/.nvm"
@@ -48,6 +48,7 @@ build_client_cdn(){
 build_client(){
     echo "Building client in background"
     nvm use $NODE_VERSION
+    npm rebuild canvas
     cd client
     echo "starting client yarn install"
     yarn install --no-progress --production=true

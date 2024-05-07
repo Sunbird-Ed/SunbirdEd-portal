@@ -4,8 +4,8 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // Modules
-import { ChartsModule } from 'ng2-charts';
-import { SuiModule } from 'ng2-semantic-ui-v9';
+import { NgChartsModule } from 'ng2-charts';
+import { SuiModule } from '@project-sunbird/ng2-semantic-ui';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { TelemetryModule } from '@sunbird/telemetry';
 // Custome component(s) and services
@@ -35,7 +35,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MAT_DIALOG_DATA} from '@angular/material/dialog';
-
+import {MatMenuModule} from '@angular/material/menu';
 
 
 @NgModule({
@@ -44,7 +44,7 @@ import { MAT_DIALOG_DATA} from '@angular/material/dialog';
     DashboardRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    ChartsModule,
+    NgChartsModule,
     SuiModule,
     SharedModule,
     CommonConsumptionModule,
@@ -58,7 +58,8 @@ import { MAT_DIALOG_DATA} from '@angular/material/dialog';
     MatSlideToggleModule,
     MatExpansionModule,
     SharedFeatureModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatMenuModule
   ],
   declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent,
     DataTableComponent, DataChartComponent, ListAllReportsComponent, ReportSummaryComponent, ReportComponent, AddSummaryModalComponent,

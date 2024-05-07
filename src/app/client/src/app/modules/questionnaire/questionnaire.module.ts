@@ -6,7 +6,7 @@ import { SharedModule, ResourceService } from '@sunbird/shared';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CanDeactivateGuard } from './guard/can-deactivate.guard';
 import {
-  SlQuestionnaireModule,
+  SlQuestionnaireModule, 
   SlTranslateService,
 } from '@shikshalokam/sl-questionnaire';
 

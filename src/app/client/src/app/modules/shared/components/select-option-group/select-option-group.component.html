@@ -1,13 +1,17 @@
 <ng-container *ngIf="!layoutConfiguration">
   <!-- DUE TO OLD THEME; WE ARE NOT MIGRATING SUI-SELECT -->
-  <sui-select class="selection state-selection sbt-dropdown-tick" [(ngModel)]="preSelectedValue">
-    <div class="state-selection__section" *ngFor="let group of optionData">
-      <div class="header">{{group.label | translate}}</div>
-      <sui-select-option class="active" *ngFor="let option of group.option"
-                         [value]="option.name"
-        tabindex="0" (click)="onChange({label: group.label, value: group.value, selectedOption: option.value })"></sui-select-option>
-    </div>
-  </sui-select>
+  <mat-form-field  appearance="fill" class="sb-mat__dropdown w-100">
+    <mat-select [(ngModel)]="preSelectedValue" class="selection state-selection sbt-dropdown-tick">
+      <div class="state-selection__section" *ngFor="let group of optionData">
+        <div class="header">{{group.label | translate}}</div>
+        <div *ngFor="let group of optionData">
+          <mat-option  class="active" *ngFor="let option of group.option" [value]="option.name" tabindex="0" (click)="onChange({label: group.label, value: group.value, selectedOption: option.value })">
+            {{option.name}}
+          </mat-option>
+        </div>
+      </div>
+    </mat-select>
+  </mat-form-field>
 </ng-container>
 
 <ng-container *ngIf="layoutConfiguration">
@@ -15,22 +19,24 @@
     <label class="fnormal font-weight-bold d-flex">{{title}}</label>
   <label class="w-100">
     <!-- DUE TO OLD THEME; WE ARE NOT MIGRATING SUI-SELECT -->
-    <sui-select class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg " [(ngModel)]="preSelectedValue">
-      <div class="sbt-dropdown-section" *ngIf="showHeader">
-        <div *ngFor="let group of optionData">
-          <!-- <div class="header">{{group.label}}</div> -->
-          <sui-select-option class="active" *ngFor="let option of group.option"
-                             [value]="option.name"
-            tabindex="0" (click)="onChange({label: group.label, value: group.value, selectedOption: option.value })"></sui-select-option>
+    <mat-form-field  appearance="fill" class="sb-mat__dropdown w-100">
+      <mat-select [(ngModel)]="preSelectedValue" class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg">
+        <div class="sbt-dropdown-section" *ngIf="showHeader">
+          <div *ngFor="let group of optionData">
+            <mat-option  class="active" *ngFor="let option of group.option" [value]="option.name" tabindex="0" (click)="onChange({label: group.label, value: group.value, selectedOption: option.value })">
+              {{option.name}}
+            </mat-option>
+          </div>
         </div>
-      </div>
-      <div class="sbt-dropdown-section"  *ngIf="!showHeader">
-        <div *ngFor="let option of optionData; let i=index">
-          <sui-select-option class="active" [value]="option"
-            tabindex="0" (click)="onChange({label: i, value: option , selectedOption: option })"></sui-select-option>
+        <div class="sbt-dropdown-section"  *ngIf="!showHeader">
+          <div *ngFor="let option of optionData; let i=index">
+            <mat-option class="active" [value]="option" tabindex="0" (click)="onChange({label: i, value: option , selectedOption: option })">
+              {{option}}
+            </mat-option>
+          </div>
         </div>
-      </div>
-    </sui-select>
+      </mat-select>
+    </mat-form-field>
   </label>
   </div>
 </ng-container>
