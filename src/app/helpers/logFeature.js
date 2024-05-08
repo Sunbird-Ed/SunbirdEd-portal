@@ -7,8 +7,6 @@
 
 const _ = require('lodash');
 const { pathToRegexp } = require("path-to-regexp");
-
-
 const { FEATURE_LIST, getMappingValue } = require('./featureList');
 
 /**
