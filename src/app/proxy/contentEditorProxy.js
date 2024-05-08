@@ -11,6 +11,7 @@ const reqDataLimitOfContentUpload = '30mb'
 const telemetryHelper = require('../helpers/telemetryHelper')
 const learnerURL  = utils?.defaultHost(utils?.envVariables?.LEARNER_URL);
 const isAPIWhitelisted = require('../helpers/apiWhiteList');
+const logFeature = require('../helpers/logFeature.js');
 
 module.exports = function (app) {
 
@@ -54,6 +55,7 @@ module.exports = function (app) {
   app.all('/action/content/v3/unlisted/publish/:contentId',
     bodyParser.json(),
     isAPIWhitelisted.isAllowed(),
+    logFeature.isLogFeature(),
     proxy(contentProxyUrl, {
       preserveHostHdr: true,
       limit: reqDataLimitOfContentUpload,
@@ -174,6 +176,7 @@ module.exports = function (app) {
     '/action/question/v2/list'
     ],
     isAPIWhitelisted.isAllowed(),
+    logFeature.isLogFeature(),
     addCorsHeaders,
     proxyUtils.verifyToken(),
     proxy(learnerURL, {

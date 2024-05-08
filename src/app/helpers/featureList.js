@@ -8,10 +8,15 @@
 
 const FEATURE_LIST = {
   URL: {
-    '/learner/course/v1/user/enrollment/list/:userId': 'enroll'
+    '/action/content/v3/unlisted/publish/:contentId':'publish',
+    '/action/questionset/v2/publish/:do_id':'QuestionsetPublish',
+    '/action/question/v2/publish/:do_id':'QuestionPublish'
+
   },
   URL_PATTERN: [
-    '/learner/course/v1/user/enrollment/list/:userId',
+    '/action/content/v3/unlisted/publish/:contentId',
+    '/action/questionset/v2/publish/:do_id',
+    '/action/question/v2/publish/:do_id'
   ],
 };
 

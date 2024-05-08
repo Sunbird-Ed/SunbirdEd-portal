@@ -20,7 +20,6 @@ const { logger } = require('@project-sunbird/logger');
 const { parseJson, isDateExpired, decodeNChkTime } = require('../helpers/utilityService');
 const learner_Service_Local_BaseUrl = utils?.defaultHost(utils?.envVariables?.learner_Service_Local_BaseUrl);
 const _ = require('lodash');
-const logFeature = require('../helpers/logFeature.js');
 
 module.exports = function (app) {
   require('./accountRecoveryRoute.js')(app) // account recovery route
@@ -106,7 +105,6 @@ module.exports = function (app) {
     isAPIWhitelisted.isAllowed(),
     healthService.checkDependantServiceHealth(['LEARNER', 'CASSANDRA']),
     telemetryHelper.generateTelemetryForLearnerService,
-    logFeature.isLogFeature(),
     telemetryHelper.generateTelemetryForProxy,
     proxy(learnerURL, {
       limit: reqDataLimitOfContentUpload,
