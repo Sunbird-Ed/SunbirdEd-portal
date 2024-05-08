@@ -158,7 +158,7 @@ module.exports = {
    */
   logAPICallEvent: function (req) { // function call is commented in all files    
     const apiConfig = telemtryEventConfig.URL[req.uri] || {}
-    
+
     let object = {}
     const params = this.getParamsData(req.options, req.statusCode, req.resp, req.uri)
     const edata = telemetry.logEventData('api_call', 'INFO', apiConfig.message, params)
@@ -228,7 +228,7 @@ module.exports = {
       params = this.getParamsData(req.reqObj, req.statusCode, req.resp, uri)
     }
 
-    const edata = telemetry.logEventData('api_access', 'INFO', apiConfig.message,JSON.stringify(params))
+    const edata = telemetry.logEventData('api_access', 'INFO', apiConfig.message, JSON.stringify(params))
 
     if (req.id && req.type) {
       object = telemetry.getObjectData({ id: req.id, type: req.type, ver: req.version, rollup: req.rollup })
@@ -310,7 +310,7 @@ module.exports = {
     }
 
     const actor = this.getTelemetryActorData(req);
-  
+
     /* istanbul ignore if  */
     if (!channel) {
       console.log('logApiErrorEventV2 failed due to no channel')
@@ -530,5 +530,43 @@ module.exports = {
       type: 'UserSession'
     });
     return cdata;
-  }
+  },
+
+/**
+   * This function helps to generate feature telemetry for api's
+   */
+  generateFeatureTelemetry: function (req, res, next) {
+    let params = [
+      { 'url': req.originalUrl },
+      { 'protocol': 'https' },
+      { 'method': req.method },
+      {
+        'cdata': {
+          "type": "Feature",
+          "id": req.feature
+        }
+      }
+    ]
+    const edata = telemetry.logEventData('api_access', 'INFO', '', params)
+    var channel = (req.session && req.session.rootOrghashTagId) || req.get('x-channel-id')
+    if (channel) {
+      var dims = req.session['rootOrgId'] || []
+      dims = req.session.orgs ? _.concat(dims, req.session.orgs) : dims
+      dims = _.concat(dims, channel)
+      const context = telemetry.getContextData({ channel: channel, env: req.telemetryEnv })
+      if (req.sessionID) {
+        context.sid = req.sessionID
+      }
+      if (req.get('x-device-id')) {
+        context.did = req.get('x-device-id')
+      }
+      telemetry.log({
+        edata: edata,
+        context: context,
+        actor: module.exports.getTelemetryActorData(req),
+        tags: _.concat([], channel)
+      })
+    }
+    next()
+  },
 }
