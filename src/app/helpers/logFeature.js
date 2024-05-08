@@ -6,13 +6,10 @@
  */
 
 const _ = require('lodash');
-const { logger } = require('@project-sunbird/logger');
-const telemetryHelper = require('./telemetryHelper.js')
 const { pathToRegexp } = require("path-to-regexp");
 
 
 const { FEATURE_LIST, getMappingValue } = require('./featureList');
-const API_LIST = require('./whitelistApis.js');
 
 /**
  * @description - Function to check whether
@@ -27,7 +24,7 @@ const isLogFeature = () => {
     let REQ_URL = req.path;
     req.originalUrl = REQ_URL
 
-    _.forEach(API_LIST.URL_PATTERN, (url) => {
+    _.forEach(FEATURE_LIST.URL_PATTERN, (url) => {
       let regExp = pathToRegexp(url);
       if (regExp.test(REQ_URL)) {
         REQ_URL = url;
