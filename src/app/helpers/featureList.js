@@ -10,13 +10,13 @@ const FEATURE_LIST = {
   URL: {
     '/action/content/v3/unlisted/publish/:contentId':'publish',
     '/action/questionset/v2/publish/:do_id':'QuestionsetPublish',
-    '/action/question/v2/publish/:do_id':'QuestionPublish'
+    '/action/question/v2/publish/:do_id':'QuestionPublish',
 
   },
   URL_PATTERN: [
     '/action/content/v3/unlisted/publish/:contentId',
     '/action/questionset/v2/publish/:do_id',
-    '/action/question/v2/publish/:do_id'
+    '/action/question/v2/publish/:do_id',
   ],
 };
 

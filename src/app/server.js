@@ -62,6 +62,7 @@ const { loadTokenPublicKeys } = require('sb_api_interceptor');
 const { getGeneralisedResourcesBundles } = require('./helpers/resourceBundleHelper.js')
 const { apiWhiteListLogger, isAllowed } = require('./helpers/apiWhiteList');
 const { registerDeviceWithKong } = require('./helpers/kongTokenHelper');
+const logFeature = require('./helpers/logFeature.js');
 
 let keycloak = getKeyCloakClient({
   'realm': envHelper.PORTAL_REALM,
@@ -93,7 +94,7 @@ const app = express()
 app.use(cookieParser())
 app.use(helmet())
 app.use(addLogContext)
-
+app.use(logFeature.isLogFeature())
 if(envHelper.KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN === 'true') {
   app.use(session({
     secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
@@ -141,6 +142,14 @@ const morganConfig = (tokens, req, res) => {
       "params": req.body ? JSON.stringify(req.body) : "empty"
     }
   }
+
+  if (req.feature) {
+    req.context = req.context || {}; // Initialize req.context if it doesn't exist
+    req.context.cdata = req.context.cdata || {}; // Initialize req.context.cdata if it doesn't exist
+    req.context.cdata['type'] = 'Feature';
+    req.context.cdata['id'] = req.feature;
+  } 
+
   const tokensList = [
     tokens.url(req, res),
     tokens.method(req, res),

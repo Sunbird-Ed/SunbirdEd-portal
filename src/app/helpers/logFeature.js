@@ -26,7 +26,7 @@ const isLogFeature = () => {
   return function (req, res, next) {
     let REQ_URL = req.path;
     req.originalUrl = REQ_URL
-    
+
     _.forEach(API_LIST.URL_PATTERN, (url) => {
       let regExp = pathToRegexp(url);
       if (regExp.test(REQ_URL)) {
@@ -37,9 +37,7 @@ const isLogFeature = () => {
     if (_.get(FEATURE_LIST.URL, REQ_URL)) {
       let mappingValue = getMappingValue(REQ_URL);
       req.feature = mappingValue
-
-      if (mappingValue)
-        telemetryHelper.generateFeatureTelemetry(req, res, next)
+      next();
     }
     else next();
   }
