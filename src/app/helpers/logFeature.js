@@ -12,7 +12,7 @@ const { API_LIST, getMappingValue } = require('./whitelistApis.js');
  * @description - Function to check whether
  * 1. Incoming API is having feature id (or) not
  * 2. If API does not exists then normal flow is contiued
- * 3. If incoming API is present in API_LIST ; then check URL pattern matching and add telemetry log for the feature
+ * 3. If incoming API is present in API_LIST ; then check URL pattern matching and add feature id to req for corresponding API
  * 4. Refer `API_LIST` 
  * @since release-8.0.0
  */
