@@ -62,6 +62,7 @@ const { loadTokenPublicKeys } = require('sb_api_interceptor');
 const { getGeneralisedResourcesBundles } = require('./helpers/resourceBundleHelper.js')
 const { apiWhiteListLogger, isAllowed } = require('./helpers/apiWhiteList');
 const { registerDeviceWithKong } = require('./helpers/kongTokenHelper');
+const logFeature = require('./helpers/logFeature.js');
 
 let keycloak = getKeyCloakClient({
   'realm': envHelper.PORTAL_REALM,
@@ -93,7 +94,7 @@ const app = express()
 app.use(cookieParser())
 app.use(helmet())
 app.use(addLogContext)
-
+app.use(logFeature.mapFeature())
 if(envHelper.KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN === 'true') {
   app.use(session({
     secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
@@ -106,30 +107,6 @@ if(envHelper.KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN === 'true') {
   }), registerDeviceWithKong());
 }
 
-app.all([
-  '/learner/*', '/content/*', '/user/*', '/merge/*', '/action/*', '/courseReports/*', '/course-reports/*', '/admin-reports/*',
-  '/certreg/*', '/device/*', '/google/*', '/report/*', '/reports/*', '/v2/user/*', '/v1/sso/*', '/migrate/*', '/plugins/*', '/content-plugins/*',
-  '/content-editor/telemetry','/discussion/*', '/collection-editor/telemetry', '/v1/user/*', '/sessionExpired', '/logoff', '/logout', '/assets/public/*', '/endSession',
-  '/sso/sign-in/*','/v1/desktop/handleGauth', '/v1/desktop/google/auth/success', '/clearSession','/kendra/*','/dhiti/*', '/assessment/*','/cloudUpload/*', '/apple/auth/*',
-  '/uci/*'
-],
-  session({
-    secret: envHelper?.PORTAL_SESSION_SECRET_KEY,
-    resave: false,
-    cookie: {
-      maxAge: envHelper.sunbird_session_ttl
-    },
-    saveUninitialized: false,
-    store: memoryStore
-  }), keycloak.middleware({ admin: '/callback', logout: '/logout' }));
-
-app.all('/logoff', endSession, (req, res) => {
-  // Clear cookie for client (browser)
-  res.status(200).clearCookie('connect.sid', { path: '/' });
-  // Clear session pertaining to User
-  req.session.destroy(function (err) { res.redirect('/logout') });
-})
-
 const morganConfig = (tokens, req, res) => {
   let edata = {
     "eid": "LOG",
@@ -141,6 +118,12 @@ const morganConfig = (tokens, req, res) => {
       "params": req.body ? JSON.stringify(req.body) : "empty"
     }
   }
+  if (req.featureName) {
+    req.context = req.context || {}; // Initialize req.context if it doesn't exist
+    req.context.cdata = req.context.cdata || []; // Initialize req.context.cdata if it doesn't exist
+    req.context.cdata.push({'type': 'Feature', 'id':req.featureName});
+  } 
+
   const tokensList = [
     tokens.url(req, res),
     tokens.method(req, res),
@@ -161,6 +144,33 @@ const morganConfig = (tokens, req, res) => {
   }
   return tokensList.join(' ');
 }
+
+app.all([
+  '/learner/*', '/content/*', '/user/*', '/merge/*', '/action/*', '/courseReports/*', '/course-reports/*', '/admin-reports/*',
+  '/certreg/*', '/device/*', '/google/*', '/report/*', '/reports/*', '/v2/user/*', '/v1/sso/*', '/migrate/*', '/plugins/*', '/content-plugins/*',
+  '/content-editor/telemetry', '/discussion/*', '/collection-editor/telemetry', '/v1/user/*', '/sessionExpired', '/logoff', '/logout', '/assets/public/*', '/endSession',
+  '/sso/sign-in/*', '/v1/desktop/handleGauth', '/v1/desktop/google/auth/success', '/clearSession', '/kendra/*', '/dhiti/*', '/assessment/*', '/cloudUpload/*', '/apple/auth/*',
+  '/uci/*'
+],
+  morgan(morganConfig),
+  session({
+    secret: envHelper?.PORTAL_SESSION_SECRET_KEY,
+    resave: false,
+    cookie: {
+      maxAge: envHelper.sunbird_session_ttl
+    },
+    saveUninitialized: false,
+    store: memoryStore
+  }), keycloak.middleware({ admin: '/callback', logout: '/logout' }));
+
+app.all('/logoff', endSession, (req, res) => {
+  // Clear cookie for client (browser)
+  res.status(200).clearCookie('connect.sid', { path: '/' });
+  // Clear session pertaining to User
+  req.session.destroy(function (err) { res.redirect('/logout') });
+})
+
+
 
 const captureResBodyForLogging = (req, res, next) => {
   if(req.context.isDebugEnabled){ // store body only in debug mode
