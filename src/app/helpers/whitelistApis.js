@@ -435,6 +435,7 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/user/v1/delete': {
+      name:'/learner/user/v1/delete',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
