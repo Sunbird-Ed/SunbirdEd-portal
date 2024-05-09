@@ -118,10 +118,10 @@ const morganConfig = (tokens, req, res) => {
       "params": req.body ? JSON.stringify(req.body) : "empty"
     }
   }
-  if (req.feature) {
+  if (req.featureName) {
     req.context = req.context || {}; // Initialize req.context if it doesn't exist
     req.context.cdata = req.context.cdata || []; // Initialize req.context.cdata if it doesn't exist
-    req.context.cdata.push({'type': 'Feature', 'id':req.feature});
+    req.context.cdata.push({'type': 'Feature', 'id':req.featureName});
   } 
 
   const tokensList = [

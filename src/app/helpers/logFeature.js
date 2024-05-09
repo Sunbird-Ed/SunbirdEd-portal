@@ -7,7 +7,7 @@
 
 const _ = require('lodash');
 const { pathToRegexp } = require("path-to-regexp");
-const { API_LIST, getMappingValue } = require('./whitelistApis.js');
+const API_LIST = require('./whitelistApis.js');
 /**
  * @description - Function to check whether
  * 1. Incoming API is having feature id (or) not
@@ -29,8 +29,7 @@ const mapFeature = () => {
       }
     });
     if (_.get(API_LIST.URL, REQ_URL)) {
-      let mappingValue = getMappingValue(REQ_URL);
-      req.feature = mappingValue
+      req.featureName = API_LIST.URL[REQ_URL]['featureName'] || null; // Return the mapping value or null if not found
       next();
     }
     else next();

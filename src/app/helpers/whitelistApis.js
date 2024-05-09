@@ -435,7 +435,7 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/user/v1/delete': {
-      name:'DeleteUser',
+      featureName:'DeleteUser',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
@@ -947,7 +947,7 @@ const API_LIST = {
       ]
     },
     '/action/content/v3/unlisted/publish/:contentId': {
-      name: 'ContentPublish',
+      featureName: 'ContentPublish',
       description: 'API is used to share content for Limited Sharing feature',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
@@ -1311,7 +1311,7 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/content/data/v1/telemetry': {
-      checksNeeded: ['ROLE_CHECK'],
+            checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR, ROLE.CONTENT_CREATOR, ROLE.BOOK_REVIEWER, ROLE.CONTENT_REVIEWER, ROLE.FLAG_REVIEWER]
     },
     '/getGeneralisedResourcesBundles/:lang/:fileName': {
@@ -1648,7 +1648,7 @@ const API_LIST = {
       ]
     },
     '/action/questionset/v2/publish/:do_id': {
-      name: 'QuestionsetPublish',
+      featureName: 'QuestionsetPublish',
       description: 'QuestionSet publish',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
@@ -1711,7 +1711,7 @@ const API_LIST = {
       ]
     },
     '/action/question/v2/publish/:do_id': {
-      name: 'QuestionPublish',
+      featureName: 'QuestionPublish',
       description: 'Question publish',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
@@ -2094,9 +2094,4 @@ const API_LIST = {
   ]
 };
 
-// Function to get the mapping value from API_LIST based on a given URL
-function getMappingValue(url) {
-  return API_LIST.URL[url]['name'] || null; // Return the mapping value or null if not found
-}
-
-module.exports = { API_LIST, getMappingValue };
+module.exports = API_LIST;
