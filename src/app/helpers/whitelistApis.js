@@ -65,6 +65,7 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.CONTENT_REVIEWER, ROLE.BOOK_REVIEWER, ROLE.FLAG_REVIEWER]
     },
     '/content/content/v1/publish': {
+      featureName: 'ContentPublish',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.CONTENT_REVIEWER, ROLE.BOOK_REVIEWER, ROLE.FLAG_REVIEWER]
     },
@@ -164,6 +165,7 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.COURSE_CREATOR, ROLE.BOOK_CREATOR]
     },
     '/content/content/v1/publish/:do_id': {
+      featureName: 'ContentPublish',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.CONTENT_REVIEWER, ROLE.BOOK_REVIEWER]
     },
@@ -894,6 +896,7 @@ const API_LIST = {
       ]
     },
     '/action/content/v3/publish/:do_id': {
+      featureName: 'ContentPublish',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_REVIEWER,
@@ -947,7 +950,6 @@ const API_LIST = {
       ]
     },
     '/action/content/v3/unlisted/publish/:contentId': {
-      featureName: 'ContentPublish',
       description: 'API is used to share content for Limited Sharing feature',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
