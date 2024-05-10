@@ -113,8 +113,7 @@ const morganConfig = (tokens, req, res) => {
       "level": "TRACE",
       "requestid": req.get('x-request-id'),
       "message": "ENTRY LOG: " + req.get('x-msgid'),
-      "params": req.body ? req.body : "empty"
-  }
+      "params": req.body ? JSON.stringify(req.body) : "empty"  }
 
   if (req.featureName) {
     req.context = req.context || {}; // Initialize req.context if it doesn't exist
