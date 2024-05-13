@@ -12,7 +12,8 @@ WORKDIR /usr/src/app/client
 # Copy the client code into the Docker container
 COPY src/app/client ./
 
-
+RUN rm -rf node_modules yarn.lock
+RUN yarn cache clean
 # Install client dependencies and build
 RUN yarn install --no-progress --frozen-lockfile --production=true \
     && npm run build
