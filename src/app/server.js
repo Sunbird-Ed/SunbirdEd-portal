@@ -109,15 +109,12 @@ if(envHelper.KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN === 'true') {
 
 const morganConfig = (tokens, req, res) => {
   let edata = {
-    "eid": "LOG",
-    "edata": {
       "type": "system",
       "level": "TRACE",
       "requestid": req.get('x-request-id'),
       "message": "ENTRY LOG: " + req.get('x-msgid'),
-      "params": req.body ? JSON.stringify(req.body) : "empty"
-    }
-  }
+      "params": req.body ? JSON.stringify(req.body) : "empty"  }
+
   if (req.featureName) {
     req.context = req.context || {}; // Initialize req.context if it doesn't exist
     req.context.cdata = req.context.cdata || []; // Initialize req.context.cdata if it doesn't exist
@@ -125,13 +122,10 @@ const morganConfig = (tokens, req, res) => {
   } 
 
   const tokensList = [
-    tokens.url(req, res),
     tokens.method(req, res),
-    "context: " + JSON.stringify(req.context),
+    tokens.url(req, res),
     tokens.status(req, res),
-    "eid: LOG",
-    "edata: " + JSON.stringify(edata)
-
+    '{"telemetry":{"eid":"LOG","context":' + JSON.stringify(req.context) + ', "edata":' + JSON.stringify(edata) + "}}",
   ];
   if(req.context.isDebugEnabled){ // add more info when log level is debug
     tokensList.push(
