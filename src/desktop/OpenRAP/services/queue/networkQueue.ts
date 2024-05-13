@@ -4,7 +4,7 @@ import { Inject, Singleton } from "typescript-ioc";
 import { HTTPService } from "./../httpService";
 import { TelemetryInstance } from './../telemetry/telemetryInstance';
 import * as _ from "lodash";
-import uuid = require("uuid");
+import { v4 as uuid } from 'uuid';
 import NetworkSDK from "./../../sdks/NetworkSDK";
 import { EventManager } from "./../../managers/EventManager";
 import { retry, mergeMap, catchError } from 'rxjs/operators';
@@ -50,7 +50,7 @@ export class NetworkQueue extends Queue {
         let date = Date.now();
         let data = {
             ...doc,
-            _id: docId || uuid.v4(),
+            _id: docId || uuid(),
             createdOn: date,
             updatedOn: date,
             type: QUEUE_TYPE.Network,
