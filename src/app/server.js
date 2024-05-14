@@ -109,16 +109,19 @@ if(envHelper.KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN === 'true') {
 
 const morganConfig = (tokens, req, res) => {
   let edata = {
-      "type": "system",
-      "level": "TRACE",
-      "requestid": req.get('x-request-id'),
-      "message": "ENTRY LOG: " + req.get('x-msgid'),
-      "params": req.body ? JSON.stringify(req.body) : "empty"  }
+    "type": "system",
+    "level": "TRACE",
+    "requestid": req.get('x-request-id'),
+    "message": "ENTRY LOG: " + req.get('x-msgid'),
+    "params": req.body ? JSON.stringify(req.body) : "empty"
+  }
 
-  if (req.featureName) {
+  const featureName = req.headers['X-Feature-Name'];
+
+  if (featureName) {
     req.context = req.context || {}; // Initialize req.context if it doesn't exist
     req.context.cdata = req.context.cdata || []; // Initialize req.context.cdata if it doesn't exist
-    req.context.cdata.push({'type': 'Feature', 'id':req.featureName});
+    req.context.cdata.push({ 'type': 'Feature', 'id': featureName });
   } 
 
   const tokensList = [
