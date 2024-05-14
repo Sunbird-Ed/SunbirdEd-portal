@@ -4,7 +4,10 @@ FROM node:18.20.2 AS builder
 
 # Set the commit hash as a build argument and environment variable
 ARG commit_hash="x.x.x"
-ENV commit_hash=${commit_hash}
+ENV commit_hash= ${commit_hash}
+
+# Print the commit hash
+RUN echo "Commit Hash: ${commit_hash}"
 
 # Set the working directory for the client build
 WORKDIR /usr/src/app/client
@@ -47,7 +50,8 @@ COPY --from=builder /usr/src/app ./
 # Rename the index.html file to index.ejs
 WORKDIR /usr/src/app/app_dist
 RUN mv dist/index.html dist/index.ejs
-
+# Print the commit hash
+RUN echo "Commit Hash: ${commit_hash}"
 # Add the build hash to package.json
 RUN sed -i "/version/a\    \"buildHash\": \"${commit_hash}\"," package.json
 
