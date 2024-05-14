@@ -94,7 +94,7 @@ const app = express()
 app.use(cookieParser())
 app.use(helmet())
 app.use(addLogContext)
-// app.use(logFeature.mapFeature())
+app.use(logFeature.mapFeature())
 if(envHelper.KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN === 'true') {
   app.use(session({
     secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
@@ -145,7 +145,7 @@ app.all([
   '/content-editor/telemetry', '/discussion/*', '/collection-editor/telemetry', '/v1/user/*', '/sessionExpired', '/logoff', '/logout', '/assets/public/*', '/endSession',
   '/sso/sign-in/*', '/v1/desktop/handleGauth', '/v1/desktop/google/auth/success', '/clearSession', '/kendra/*', '/dhiti/*', '/assessment/*', '/cloudUpload/*', '/apple/auth/*',
   '/uci/*'
-],session({
+],morgan(morganConfig),session({
     secret: envHelper?.PORTAL_SESSION_SECRET_KEY,
     resave: false,
     cookie: {

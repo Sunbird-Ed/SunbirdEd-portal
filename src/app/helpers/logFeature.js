@@ -19,7 +19,6 @@ const API_LIST = require('./whitelistApis.js');
 const mapFeature = () => {
   return function (req, res, next) {
     let REQ_URL = req.path;
-    req.originalUrl = REQ_URL
 
     _.forEach(API_LIST.URL_PATTERN, (url) => {
       let regExp = pathToRegexp(url);
