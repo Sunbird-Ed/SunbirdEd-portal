@@ -1313,7 +1313,7 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/content/data/v1/telemetry': {
-            checksNeeded: ['ROLE_CHECK'],
+      checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR, ROLE.CONTENT_CREATOR, ROLE.BOOK_REVIEWER, ROLE.CONTENT_REVIEWER, ROLE.FLAG_REVIEWER]
     },
     '/getGeneralisedResourcesBundles/:lang/:fileName': {
