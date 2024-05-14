@@ -109,9 +109,9 @@ if(envHelper.KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN === 'true') {
 
 const morganConfig = (tokens, req, res) => {
   let edata = {
-      "type": "system",
-      "level": "TRACE",
-      "requestid": req.get('x-request-id'),
+    "type": "system",
+    "level": "TRACE",
+    "requestid": req.get('x-request-id'),
     "message": "ENTRY LOG: " + req.get('x-msgid'),
     "params": req.body ? JSON.stringify(req.body) : "empty"
   }
