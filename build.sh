@@ -96,6 +96,7 @@ commit_hash=$(git rev-parse --short HEAD)
 # sed -i "/version/a\  \"buildHash\": \"${commit_hash}\"," package.json
 ### docker test end
 echo "starting docker build"
+echo commit_hash $commit_hash
 # docker build  --label commitHash=$(git rev-parse --short HEAD) -t ${org}/${name}:${build_tag} .
 docker build --build-arg commit_hash="$commit_hash" --label commitHash=$(git rev-parse --short HEAD) -t ${org}/${name}:${build_tag} .
 
