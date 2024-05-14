@@ -27,8 +27,10 @@ const mapFeature = () => {
         return false;
       }
     });
-    if (_.get(API_LIST.URL, REQ_URL)) {
-      req.featureName = API_LIST.URL[REQ_URL]['featureName'] || null; // Return the mapping value or null if not found
+
+    const urlMap = API_LIST.URL[REQ_URL];
+    if (urlMap) {
+      req.headers['X-Feature-Name'] = urlMap.featureName || null;
       next();
     }
     else next();
