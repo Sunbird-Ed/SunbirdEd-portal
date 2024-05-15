@@ -2,7 +2,7 @@ import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import * as _ from "lodash";
 import { Inject } from "typescript-ioc";
 import * as url from "url";
-import * as uuid from "uuid";
+import {v4 as uuid } from "uuid";
 import { ContentDownloadManager } from "./manager/contentDownloadManager";
 import contentRoutes from './routes/content';
 import dataRoutes from './routes/data';
@@ -121,7 +121,7 @@ export class Router {
     };
     app.use(logTelemetryEvent);
     const addRequestId = (req, res, next) => {
-      req.headers["X-msgid"] = req.get("X-msgid") || uuid.v4();
+      req.headers["X-msgid"] = req.get("X-msgid") || uuid();
       next();
     };
     app.use(addRequestId);
