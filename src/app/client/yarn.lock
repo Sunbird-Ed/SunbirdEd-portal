@@ -3368,10 +3368,10 @@
   dependencies:
     ally.js "1.4.1"
 
-"@project-sunbird/sunbird-questionset-editor@8.0.2":
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-questionset-editor/-/sunbird-questionset-editor-8.0.2.tgz#5d09b5e26aabcaef88360db44df666e40253ea6a"
-  integrity sha512-ItA5z0fZl560lYANQg/xHxB4F5+pkf41sVefSu0jPPzN70Qb+dLfAXtZLGMefM+cQtXTGgEPbjO7KpVUe6UGRw==
+"@project-sunbird/sunbird-questionset-editor@8.0.3":
+  version "8.0.3"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-questionset-editor/-/sunbird-questionset-editor-8.0.3.tgz#84f1ed7bf9f4540bf72134b3ad838c2b6c630f55"
+  integrity sha512-hszL8sbBBRPvlKbwKVMP74YYmWNbWXZXKVSwW1/U1zwqt5TEerncBYJfRBURhu85Mk2S1YjlU1a7faYttXFMmg==
   dependencies:
     tslib "^2.0.0"
 
@@ -3383,10 +3383,10 @@
     "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
     tslib "^2.2.0"
 
-"@project-sunbird/sunbird-quml-player-web-component@4.0.1":
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-web-component/-/sunbird-quml-player-web-component-4.0.1.tgz#f83bda06ab60ed9c3b04a145c36f5185e748a90c"
-  integrity sha512-o++aJh7h+v+qGPSDCr2MyzNSDTtZwll433av+HBhAWN6dUlSKX/gMYOFDNVSbNmUClYrtz36OhN+DlCz0fB8fA==
+"@project-sunbird/sunbird-quml-player-web-component@4.0.2":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-web-component/-/sunbird-quml-player-web-component-4.0.2.tgz#32a1a3bde379a7d1c545d83e14cf161c231449d1"
+  integrity sha512-qTutKgBYmcvAnwA5QX8cZ8mFVamzvi9Jafl2WMc6ci8G4/cQRFkdrsz3vmQ4BWC2LErOWL+8q59BaL9+XA0naQ==
 
 "@project-sunbird/sunbird-quml-player@7.0.3":
   version "7.0.3"
@@ -3396,10 +3396,10 @@
     "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
     tslib "^2.3.0"
 
-"@project-sunbird/sunbird-resource-library@8.0.1":
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-resource-library/-/sunbird-resource-library-8.0.1.tgz#c5846b4d34ba927a56f799fe022162c22f90a8b3"
-  integrity sha512-KB2iNMXDuQ8d8FzsCvBTiY0f81dWtx7aJa2zF3up3j8MohEQKL13yIvdCFdQppXnWEM4do4wiof7wXLswOchbw==
+"@project-sunbird/sunbird-resource-library@8.0.2":
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-resource-library/-/sunbird-resource-library-8.0.2.tgz#8fa66b98bcd467141c5f0e88b723d46a77a6905a"
+  integrity sha512-lX8sNCOrkmlIw5pO+TEQvwlD/p+Z0ae179ObLV+86GfinvVfOMF+9moOzA8T/CE0rTd3WCR4j9M/JwltSpOkBw==
   dependencies:
     tslib "^2.0.0"
 
@@ -11831,16 +11831,7 @@ string-length@^4.0.1:
     char-regex "^1.0.2"
     strip-ansi "^6.0.0"
 
-"string-width-cjs@npm:string-width@^4.2.0":
-  version "4.2.3"
-  resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
-  integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
-  dependencies:
-    emoji-regex "^8.0.0"
-    is-fullwidth-code-point "^3.0.0"
-    strip-ansi "^6.0.1"
-
-"string-width@^1.0.2 || 2 || 3 || 4", string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
+"string-width-cjs@npm:string-width@^4.2.0", "string-width@^1.0.2 || 2 || 3 || 4", string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
@@ -11900,7 +11891,7 @@ string_decoder@~1.1.1:
   dependencies:
     safe-buffer "~5.1.0"
 
-"strip-ansi-cjs@npm:strip-ansi@^6.0.1":
+"strip-ansi-cjs@npm:strip-ansi@^6.0.1", strip-ansi@^6.0.0, strip-ansi@^6.0.1:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
   integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
@@ -11913,13 +11904,6 @@ strip-ansi@^3.0.0:
   integrity sha512-VhumSSbBqDTP8p2ZLKj40UjBCV4+v8bUSEpUb4KjRgWk9pbqGF4REFj6KEagidb2f/M6AzC0EmFyDNGaw9OCzg==
   dependencies:
     ansi-regex "^2.0.0"
-
-strip-ansi@^6.0.0, strip-ansi@^6.0.1:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
-  integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
-  dependencies:
-    ansi-regex "^5.0.1"
 
 strip-ansi@^7.0.1:
   version "7.1.0"
@@ -13191,7 +13175,7 @@ wildcard@^2.0.0:
   resolved "https://registry.yarnpkg.com/wildcard/-/wildcard-2.0.1.tgz#5ab10d02487198954836b6349f74fff961e10f67"
   integrity sha512-CC1bOL87PIWSBhDcTrdeLo6eGT7mCFtrg0uIJtqJUFyK+eJnzl8A1niH56uu7KMa5XFrtiV+AQuHO3n7DsHnLQ==
 
-"wrap-ansi-cjs@npm:wrap-ansi@^7.0.0":
+"wrap-ansi-cjs@npm:wrap-ansi@^7.0.0", wrap-ansi@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
   integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==
@@ -13204,15 +13188,6 @@ wrap-ansi@^6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-6.2.0.tgz#e9393ba07102e6c91a3b221478f0257cd2856e53"
   integrity sha512-r6lPcBGxZXlIcymEu7InxDMhdW0KDxpLgoFLcguasxCaJ/SOIZwINatK9KY/tf+ZrlywOKU0UDj3ATXUBfxJXA==
-  dependencies:
-    ansi-styles "^4.0.0"
-    string-width "^4.1.0"
-    strip-ansi "^6.0.0"
-
-wrap-ansi@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
-  integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==
   dependencies:
     ansi-styles "^4.0.0"
     string-width "^4.1.0"
