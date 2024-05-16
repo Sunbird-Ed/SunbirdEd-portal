@@ -123,29 +123,33 @@ describe('CourseBatchService', () => {
     it('should create a instance of component and call the getParticipantList method', () => {
         jest.spyOn(component.learnerService, 'post').mockReturnValue(of(mockData.batchData));
         const data = {participentList:'get'}
-        component.getParticipantList(data);
+        component.getParticipantList(data).subscribe(obj=>{});
         expect(component.learnerService.post).toBeCalled();
     });
     it('should create a instance of component and call the getUpdateBatchDetails method', () => {
         component['_updateBatchDetails'] = mockData.batchDataNew.result.response
-        const value = component.getUpdateBatchDetails(mockData.batchDataNew.result.response.batchId);
-        expect(JSON.stringify(value)).toEqual(JSON.stringify(of(mockData.batchDataNew.result.response)));
+        const value = component.getUpdateBatchDetails(mockData.batchDataNew.result.response.batchId).subscribe(obj=>{
+            expect(JSON.stringify(obj)).toEqual(JSON.stringify(of(mockData.batchDataNew.result.response)));
+        });
+        
     });
     it('should create a instance of component and call the getUpdateBatchDetails method without _updateBatchDetails', () => {
         component['_updateBatchDetails'] = null;
         jest.spyOn(component,'getBatchDetails').mockReturnValue(of(mockData.batchData));
-        const value = component.getUpdateBatchDetails(mockData.batchDataNew.result.response.batchId);
+        const value = component.getUpdateBatchDetails(mockData.batchDataNew.result.response.batchId).subscribe(obj=>{});
         expect(component.getBatchDetails).toBeCalledWith(mockData.batchDataNew.result.response.batchId);
     });
     it('should create a instance of component and call the getEnrollToBatchDetails method', () => {
         component['_enrollToBatchDetails'] = mockData.batchDataNew.result.response
-        const value = component.getEnrollToBatchDetails(mockData.batchDataNew.result.response.batchId);
-        expect(JSON.stringify(value)).toEqual(JSON.stringify(of(mockData.batchDataNew.result.response)));
+        const value = component.getEnrollToBatchDetails(mockData.batchDataNew.result.response.batchId).subscribe(obj=>{
+            expect(JSON.stringify(obj)).toEqual(JSON.stringify(of(mockData.batchDataNew.result.response)));
+        });
+        
     });
     it('should create a instance of component and call the getEnrollToBatchDetails method without _updateBatchDetails', () => {
         component['_enrollToBatchDetails'] = null;
         jest.spyOn(component,'getBatchDetails').mockReturnValue(of(mockData.batchData));
-        const value = component.getEnrollToBatchDetails(mockData.batchDataNew.result.response.batchId);
+        const value = component.getEnrollToBatchDetails(mockData.batchDataNew.result.response.batchId).subscribe(obj=>{});
         expect(component.getBatchDetails).toBeCalledWith(mockData.batchDataNew.result.response.batchId);
     });
     it('should create a instance of component and call the setUpdateBatchDetails method', () => {
@@ -163,14 +167,32 @@ describe('CourseBatchService', () => {
         const value = component.getUserList({});
         expect(JSON.stringify(value)).toEqual(JSON.stringify(of([{user1:'abcd'},{user2:'mnop'}])));
     });
-    xit('should create a instance of component and call the getUserList method', () => {
+    it('should create a instance of component and call the getUserList method with requestBody having value', () => {
         component['defaultUserList'] = null;
+        jest.spyOn(component.learnerService,'post').mockReturnValue(of(mockData.userProfile as any)as any) as any;
+        component.userService = {
+            userProfile: mockData.userProfile as any
+        } as any;
         const requestBody = {
             filters: { 'status': '1' },
             query:'newUser',
             limit:100
           };
-        const value = component.getUserList(requestBody);
+        const value = component.getUserList(requestBody).subscribe(data=>{
+            expect(data).toEqual(mockData.userProfile);
+        });
+        
+    });
+    it('should create a instance of component and call the getUserList method with requestBody having no value', () => {
+        component['defaultUserList'] = null;
+        jest.spyOn(component.learnerService,'post').mockReturnValue(of(mockData.userProfileNew as any)as any) as any;
+        component.userService = {
+            rootOrgId:'01285019302823526477',
+            userProfile: mockData.userProfileNew as any
+        } as any;
+        const value = component.getUserList().subscribe(data=>{
+            expect(data).toEqual(mockData.userProfileNew);
+        });
         
     });
     
@@ -205,13 +227,16 @@ describe('CourseBatchService', () => {
         it('should create a instance and call the getEnrolledBatchDetails method', () => {
             jest.spyOn(learnerService,'get').mockReturnValue(of(mockData.batchData));
             jest.spyOn(component,'getBatchDetails').mockReturnValue(of(mockData.batchData));
-            const value = component.getEnrolledBatchDetails(mockData.batchData.result.response.batchId);
+            const value = component.getEnrolledBatchDetails(mockData.batchData.result.response.batchId).subscribe(data =>{
+            });
             expect(component.getBatchDetails).toBeCalled();
         });
         it('should create a instance and call the getEnrolledBatchDetails method with _enrolledBatchDetails', () => {
             component['_enrolledBatchDetails'] = mockData.batchDataNew.result.response
-            const value = component.getEnrolledBatchDetails(mockData.batchDataNew.result.response.batchId);
-            expect(JSON.stringify(value)).toEqual(JSON.stringify(of(mockData.batchDataNew.result.response)))
+            const value = component.getEnrolledBatchDetails(mockData.batchDataNew.result.response.batchId).subscribe(data =>{
+                expect(JSON.stringify(data)).toEqual(JSON.stringify(of(mockData.batchDataNew.result.response)))
+            });
+            
         });
     });
 });

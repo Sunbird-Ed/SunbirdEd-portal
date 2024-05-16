@@ -62,6 +62,7 @@ const { loadTokenPublicKeys } = require('sb_api_interceptor');
 const { getGeneralisedResourcesBundles } = require('./helpers/resourceBundleHelper.js')
 const { apiWhiteListLogger, isAllowed } = require('./helpers/apiWhiteList');
 const { registerDeviceWithKong } = require('./helpers/kongTokenHelper');
+const logFeature = require('./helpers/logFeature.js');
 
 let keycloak = getKeyCloakClient({
   'realm': envHelper.PORTAL_REALM,
@@ -93,7 +94,7 @@ const app = express()
 app.use(cookieParser())
 app.use(helmet())
 app.use(addLogContext)
-
+app.use(logFeature.mapFeature())
 if(envHelper.KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN === 'true') {
   app.use(session({
     secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
@@ -106,14 +107,48 @@ if(envHelper.KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN === 'true') {
   }), registerDeviceWithKong());
 }
 
+const morganConfig = (tokens, req, res) => {
+  let edata = {
+    "type": "system",
+    "level": "TRACE",
+    "requestid": req.get('x-request-id'),
+    "message": "ENTRY LOG: " + req.get('x-msgid'),
+    "params": req.body ? JSON.stringify(req.body) : "empty"
+  }
+
+  const featureName = req.headers['X-Feature-Name'];
+
+  if (featureName) {
+    req.context = req.context || {}; // Initialize req.context if it doesn't exist
+    req.context.cdata = req.context.cdata || []; // Initialize req.context.cdata if it doesn't exist
+    req.context.cdata.push({ 'type': 'Feature', 'id': featureName });
+  } 
+
+  const tokensList = [
+    tokens.method(req, res),
+    tokens.url(req, res),
+    tokens.status(req, res),
+    '{"telemetry":{"eid":"LOG","context":' + JSON.stringify(req.context) + ', "edata":' + JSON.stringify(edata) + "}}",
+  ];
+  if(req.context.isDebugEnabled){ // add more info when log level is debug
+    tokensList.push(
+      tokens.res(req, res, 'content-length'), '-',
+      tokens['response-time'](req, res), 'ms',
+      "requestHeader:", JSON.stringify(req.headers),
+      "requestBody:", req.body ? JSON.stringify(req.body) : "empty",
+      "responseBody:", res.body
+    )
+  }
+  return tokensList.join(' ');
+}
+
 app.all([
   '/learner/*', '/content/*', '/user/*', '/merge/*', '/action/*', '/courseReports/*', '/course-reports/*', '/admin-reports/*',
   '/certreg/*', '/device/*', '/google/*', '/report/*', '/reports/*', '/v2/user/*', '/v1/sso/*', '/migrate/*', '/plugins/*', '/content-plugins/*',
-  '/content-editor/telemetry','/discussion/*', '/collection-editor/telemetry', '/v1/user/*', '/sessionExpired', '/logoff', '/logout', '/assets/public/*', '/endSession',
-  '/sso/sign-in/*','/v1/desktop/handleGauth', '/v1/desktop/google/auth/success', '/clearSession','/kendra/*','/dhiti/*', '/assessment/*','/cloudUpload/*', '/apple/auth/*',
+  '/content-editor/telemetry', '/discussion/*', '/collection-editor/telemetry', '/v1/user/*', '/sessionExpired', '/logoff', '/logout', '/assets/public/*', '/endSession',
+  '/sso/sign-in/*', '/v1/desktop/handleGauth', '/v1/desktop/google/auth/success', '/clearSession', '/kendra/*', '/dhiti/*', '/assessment/*', '/cloudUpload/*', '/apple/auth/*',
   '/uci/*'
-],
-  session({
+],morgan(morganConfig),session({
     secret: envHelper?.PORTAL_SESSION_SECRET_KEY,
     resave: false,
     cookie: {
@@ -130,37 +165,7 @@ app.all('/logoff', endSession, (req, res) => {
   req.session.destroy(function (err) { res.redirect('/logout') });
 })
 
-const morganConfig = (tokens, req, res) => {
-  let edata = {
-    "eid": "LOG",
-    "edata": {
-      "type": "system",
-      "level": "TRACE",
-      "requestid": req.get('x-request-id'),
-      "message": "ENTRY LOG: " + req.get('x-msgid'),
-      "params": req.body ? JSON.stringify(req.body) : "empty"
-    }
-  }
-  const tokensList = [
-    tokens.url(req, res),
-    tokens.method(req, res),
-    "context: " + JSON.stringify(req.context),
-    tokens.status(req, res),
-    "eid: LOG",
-    "edata: " + JSON.stringify(edata)
 
-  ];
-  if(req.context.isDebugEnabled){ // add more info when log level is debug
-    tokensList.push(
-      tokens.res(req, res, 'content-length'), '-',
-      tokens['response-time'](req, res), 'ms',
-      "requestHeader:", JSON.stringify(req.headers),
-      "requestBody:", req.body ? JSON.stringify(req.body) : "empty",
-      "responseBody:", res.body
-    )
-  }
-  return tokensList.join(' ');
-}
 
 const captureResBodyForLogging = (req, res, next) => {
   if(req.context.isDebugEnabled){ // store body only in debug mode

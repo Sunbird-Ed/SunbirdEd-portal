@@ -24,7 +24,7 @@ const ROLE = {
   TEMP_ROLE: 'TEMP_ROLE', // Use only for deprecated APIs
   ALL: 'ALL',  // Use when user does not have PUBLIC role (Case: User bulk upload),
   ANONYMOUS: 'ANONYMOUS',
-  PROGRAM_MANAGER:"PROGRAM_MANAGER",
+  PROGRAM_MANAGER: "PROGRAM_MANAGER",
   PROGRAM_DESIGNER: "PROGRAM_DESIGNER"
 };
 
@@ -65,6 +65,7 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.CONTENT_REVIEWER, ROLE.BOOK_REVIEWER, ROLE.FLAG_REVIEWER]
     },
     '/content/content/v1/publish': {
+      featureName: 'ContentPublish',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.CONTENT_REVIEWER, ROLE.BOOK_REVIEWER, ROLE.FLAG_REVIEWER]
     },
@@ -164,6 +165,7 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.COURSE_CREATOR, ROLE.BOOK_CREATOR]
     },
     '/content/content/v1/publish/:do_id': {
+      featureName: 'ContentPublish',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.CONTENT_REVIEWER, ROLE.BOOK_REVIEWER]
     },
@@ -435,6 +437,7 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/user/v1/delete': {
+      featureName:'DeleteUser',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
@@ -893,6 +896,7 @@ const API_LIST = {
       ]
     },
     '/action/content/v3/publish/:do_id': {
+      featureName: 'ContentPublish',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_REVIEWER,
@@ -1362,7 +1366,7 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/apple/auth': {
-        checksNeeded: []
+      checksNeeded: []
     },
     // discussion forum apis
     '/discussion/user/v1/create': {
@@ -1646,6 +1650,7 @@ const API_LIST = {
       ]
     },
     '/action/questionset/v2/publish/:do_id': {
+      featureName: 'QuestionsetPublish',
       description: 'QuestionSet publish',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
@@ -1708,6 +1713,7 @@ const API_LIST = {
       ]
     },
     '/action/question/v2/publish/:do_id': {
+      featureName: 'QuestionPublish',
       description: 'Question publish',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
@@ -1739,11 +1745,11 @@ const API_LIST = {
     },
     '/report/request/list/:tag': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR,ROLE.PROGRAM_DESIGNER,ROLE.PROGRAM_MANAGER]
+      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR, ROLE.PROGRAM_DESIGNER, ROLE.PROGRAM_MANAGER]
     },
     '/dataset/v1/request/list/:tag': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR,ROLE.PROGRAM_DESIGNER,ROLE.PROGRAM_MANAGER]
+      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR, ROLE.PROGRAM_DESIGNER, ROLE.PROGRAM_MANAGER]
     },
     '/report/request/read/:tag': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1755,11 +1761,11 @@ const API_LIST = {
     },
     '/report/request/submit': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR,ROLE.PROGRAM_DESIGNER,ROLE.PROGRAM_MANAGER]
+      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR, ROLE.PROGRAM_DESIGNER, ROLE.PROGRAM_MANAGER]
     },
     '/dataset/v1/request/submit': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR,ROLE.PROGRAM_DESIGNER,ROLE.PROGRAM_MANAGER]
+      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR, ROLE.PROGRAM_DESIGNER, ROLE.PROGRAM_MANAGER]
     },
     '/kendra/entities/mlcore/v1/entityTypesByLocationAndRole/:stateId': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1769,7 +1775,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/kendra/resource/mlreports/v1/filtervalues':{
+    '/kendra/resource/mlreports/v1/filtervalues': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
@@ -1837,11 +1843,11 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    "/assessment/programs/mlcore/v1/join/:id":{
+    "/assessment/programs/mlcore/v1/join/:id": {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    "/assessment/users/mlcore/v1/solutions/:id":{
+    "/assessment/users/mlcore/v1/solutions/:id": {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
@@ -2089,4 +2095,5 @@ const API_LIST = {
     '/learner/user/v1/delete',
   ]
 };
+
 module.exports = API_LIST;

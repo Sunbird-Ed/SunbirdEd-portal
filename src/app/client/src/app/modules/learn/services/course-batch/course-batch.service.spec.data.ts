@@ -141,6 +141,39 @@ export const mockData = {
             'status': 1
           }
         }
-      }
+      },
+      userProfile: {
+        'maskedPhone': '******2507',
+        'rootOrgName': 'CustROOTOrg10',
+        'roleOrgMap':{
+          'CONTENT_CREATOR':'CustROOTOrg10'
+        },
+        'identifier': 'd8bfe598-21c8-4c9c-b335-a3f75a97a988',
+        'thumbnail': null,
+        'profileVisibility': {},
+        'rootOrgId': '01285019302823526477',
+        'prevUsedEmail': '',
+        'firstName': 'dev-user13',
+        'userName': 'devuser13',
+        'userId': 'd8bfe598-21c8-4c9c-b335-a3f75a97a988',
+        'promptTnC': false,
+        'emailVerified': true
+      },
+      userProfileNew: {
+        'maskedPhone': '******2507',
+        'id': 'd8bfe598-21c8-4c9c-b335-a3f75a97a988',
+        'recoveryEmail': '',
+        'roleOrgMap':{
+          'CONTENT_CREATOR':['01285019302823526477']
+        },
+        'identifier': 'd8bfe598-21c8-4c9c-b335-a3f75a97a988',
+        'thumbnail': null,
+        'profileVisibility': {},
+        'rootOrgId': '01285019302823526477',
+        'userName': 'devuser13',
+        'userId': 'd8bfe598-21c8-4c9c-b335-a3f75a97a988',
+        'promptTnC': false,
+        'emailVerified': true
+      },
 
 };
