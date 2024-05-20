@@ -310,6 +310,32 @@ module.exports = function (app) {
     userResDecorator: userResDecorator
   })
 )
+app.post('/action/dialcode/v3/reserve/:do_id',
+    isAPIWhitelisted.isAllowed(),
+    proxy(contentServiceBaseUrl, {
+      preserveHostHdr: true,
+      limit: reqDataLimitOfContentUpload,
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentServiceBaseUrl),
+      proxyReqPathResolver: function (req) {
+        let originalUrl = req.originalUrl.replace('/action/', '')
+        return require('url').parse(contentServiceBaseUrl + originalUrl).path
+      },
+      userResDecorator: userResDecorator
+    })
+  )
+  app.get('/action/dialcode/v3/process/status/*',
+  isAPIWhitelisted.isAllowed(),
+  proxy(contentServiceBaseUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentServiceBaseUrl),
+    proxyReqPathResolver: function (req) {
+      let originalUrl = req.originalUrl.replace('/action/', '')
+      return require('url').parse(contentServiceBaseUrl + originalUrl).path
+    },
+    userResDecorator: userResDecorator
+  })
+)
   // asset api's  ends
 
   app.all('/action/*',
