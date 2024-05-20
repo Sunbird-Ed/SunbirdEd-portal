@@ -310,7 +310,7 @@ module.exports = function (app) {
     userResDecorator: userResDecorator
   })
 )
-app.post('/action/dialcode/v3/reserve/:do_id',
+app.post('/action/dialcode/v1/reserve/:do_id',
     isAPIWhitelisted.isAllowed(),
     proxy(contentServiceBaseUrl, {
       preserveHostHdr: true,
@@ -323,7 +323,7 @@ app.post('/action/dialcode/v3/reserve/:do_id',
       userResDecorator: userResDecorator
     })
   )
-  app.get('/action/dialcode/v3/process/status/*',
+  app.get('/action/dialcode/v1/process/status/*',
   isAPIWhitelisted.isAllowed(),
   proxy(contentServiceBaseUrl, {
     preserveHostHdr: true,

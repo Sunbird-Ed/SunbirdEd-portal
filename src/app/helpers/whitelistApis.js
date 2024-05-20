@@ -996,7 +996,7 @@ const API_LIST = {
         ROLE.BOOK_CREATOR
       ]
     },
-    '/action/dialcode/v3/reserve/:do_id': {
+    '/action/dialcode/v1/reserve/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_CREATOR,
@@ -1004,7 +1004,7 @@ const API_LIST = {
         ROLE.BOOK_CREATOR
       ]
     },
-    '/action/dialcode/v3/process/status/:processId': {
+    '/action/dialcode/v1/process/status/:processId': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_CREATOR,
@@ -1987,8 +1987,8 @@ const API_LIST = {
     '/action/content/v3/upload/:do_id',
     '/action/content/v3/unlisted/publish/:contentId',
     '/action/dialcode/v3/read/:dialId',
-    '/action/dialcode/v3/reserve/:do_id',
-    '/action/dialcode/v3/process/status/:processId',
+    '/action/dialcode/v1/reserve/:do_id',
+    '/action/dialcode/v1/process/status/:processId',
     '/action/collection/v3/dialcode/link/:do_id',
     '/action/learning/taxonomy/domain/definition/:objType',
     '/action/meta/v3/resourcebundles/read/:lineCode',
