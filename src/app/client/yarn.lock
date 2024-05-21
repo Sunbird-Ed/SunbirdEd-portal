@@ -3314,7 +3314,7 @@
   dependencies:
     tslib "^2.0.0"
 
-"@project-sunbird/sb-themes@^8.0.7":
+"@project-sunbird/sb-themes@8.0.7":
   version "8.0.7"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-8.0.7.tgz#30e5c621e7b0fcfe120006287d8a3b563bd2a7b7"
   integrity sha512-hcZv8zL++HA+FuiihXVy5pLROObnEV4O3wt1VemXuIjhf6TQcy0aPE2gLYuMz53pigVtWjjOkaY5huMDkd3RnA==
