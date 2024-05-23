@@ -45,13 +45,14 @@ jobs:
       - name: Cache node modules
         uses: actions/cache@v2
         with:
-          path: ./node_modules
-          key: dependency-cache-portal-${{ hashFiles('package.json') }}
+          path: portal/src/app/client/node_modules
+          key: dependency-cache-portal-${{ hashFiles('portal/src/app/client/package.json') }}
           restore-keys: |
             dependency-cache-portal-
 
       - name: Execute test cases using JEST
         run: npm run test:ci
+        working-directory: portal/src/app/client
 
       - name: Install Sonar Scanner
         run: |
