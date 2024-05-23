@@ -1,0 +1,66 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: cimg/node:18.16.0
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run build script
+        run: /bin/bash -x build.sh ${{ github.sha }} test
+
+  test_cases:
+    runs-on: ubuntu-latest
+    container:
+      image: cimg/node:18.16.0
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          path: ~/portal
+
+      - name: Set working directory
+        run: cd ~/portal/src/app/client
+
+      - name: Check Node.js version
+        run: node --version
+
+      - name: Ignore engines
+        run: yarn config set ignore-engines true
+
+      - name: Install npm dependencies
+        run: yarn install
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: ./node_modules
+          key: dependency-cache-portal-${{ hashFiles('package.json') }}
+          restore-keys: |
+            dependency-cache-portal-
+
+      - name: Execute test cases using JEST
+        run: npm run test:ci
+
+      - name: Install Sonar Scanner
+        run: |
+          cd /tmp
+          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+          sudo apt-get install unzip -y
+          unzip sonar-scanner-cli-5.0.1.3006-linux.zip
+          cd -
+
+      - name: Run Sonar Scanner
+        run: cd ~/portal && /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner
+
