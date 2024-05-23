@@ -9,59 +9,88 @@ on:
       - release-8.0.0
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
-    container:
-      image: cimg/node:20.9.0
+
+    services:
+      docker:
+        image: docker:19.03.12
+        options: --privileged
+        ports:
+          - 3000:3000
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.20.2
 
-      # - name: Run build script
-        # run: /bin/bash -x build.sh ${{ github.sha }} test test test test test
+    - name: Build client
+      working-directory: src/app/client
+      run: |
+        rm -rf node_modules yarn.lock
+        yarn cache clean
+        yarn install --no-progress --production=true
+        npm run build
 
-  test_cases:
-    runs-on: ubuntu-latest
-    container:
-      image: cimg/node:20.9.0
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          path: portal
+    - name: Prepare server files
+      run: |
+        mkdir -p /usr/src/app/app_dist
+        cp -r src/app/libs src/app/helpers src/app/proxy src/app/resourcebundles src/app/package.json src/app/framework.config.js src/app/sunbird-plugins src/app/routes src/app/constants src/app/controllers src/app/server.js /usr/src/app/app_dist/
 
-      - name: Set working directory
-        run: cd ./portal/src/app/client
+    - name: Install server dependencies
+      working-directory: /usr/src/app/app_dist
+      run: yarn install --ignore-engines --no-progress --production=true
 
-      - name: Check Node.js version
-        run: node --version
+    - name: Build Docker image
+      run: docker build -t myapp:latest .
 
-      - name: Ignore engines
-        run: yarn config set ignore-engines true
+    - name: Run Docker container
+      run: docker run -d -p 3000:3000 myapp:latest
 
-      - name: Install npm dependencies
-        run: yarn install
+    - name: Check application status
+      run: |
+        sleep 10
+        curl --retry 10 --retry-delay 5 -v http://localhost:3000
 
-      - name: Cache node modules
-        uses: actions/cache@v2
-        with:
-          path: portal/src/app/client/node_modules
-          key: dependency-cache-portal-${{ hashFiles('portal/src/app/client/package.json') }}
-          restore-keys: |
-            dependency-cache-portal-
+    - name: Set up Node.js for tests
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.20.2
 
-      - name: Execute test cases using JEST
-        run: npm run test-coverage
-        working-directory: portal/src/app/client
+    - name: Install prerequisites
+      working-directory: src/app/client
+      run: node --version
 
-      - name: Install Sonar Scanner
-        run: |
-          cd /tmp
-          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
-          sudo apt-get install unzip -y
-          unzip sonar-scanner-cli-5.0.1.3006-linux.zip
-          cd -
+    - name: Ignore engines
+      working-directory: src/app/client
+      run: yarn config set ignore-engines true
 
-      - name: Run Sonar Scanner
-        run: cd portal && /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner
+    - name: Install npm dependencies
+      working-directory: src/app/client
+      run: yarn install
 
+    - name: Save cache
+      uses: actions/cache@v3
+      with:
+        path: src/app/client/node_modules
+        key: dependency-cache-portal-${{ hashFiles('src/app/client/package.json') }}
+
+    - name: Run tests using JEST
+      working-directory: src/app/client
+      run: npm run test:ci
+
+    - name: Install Sonar Scanner
+      run: |
+        cd /tmp
+        wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+        sudo apt-get install -y unzip
+        unzip sonar-scanner-cli-5.0.1.3006-linux.zip
+
+    - name: Run Sonar Scanner
+      run: |
+        cd src/app/client
+        /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner
