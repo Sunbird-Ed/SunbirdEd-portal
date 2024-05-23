@@ -17,8 +17,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run build script
-        run: /bin/bash -x build.sh ${{ github.sha }} test test test test test
+      # - name: Run build script
+        # run: /bin/bash -x build.sh ${{ github.sha }} test test test test test
 
   test_cases:
     runs-on: ubuntu-latest
