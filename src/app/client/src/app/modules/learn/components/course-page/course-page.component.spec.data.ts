@@ -1062,6 +1062,28 @@ export const Response = {
       ]
     }
   ],
+  courseData:{
+        'name': 'Swetha-physics(nested course test)-20-jul-2020',
+        'gradeLevel': '',
+        'contentType': 'Course',
+        'topic': '',
+        'subTopic': '',
+        'metaData': {
+          'batchId': '01306892379524300849',
+          'courseId': 'do_213068136968904704184',
+          'mimeType': 'application/vnd.ekstep.content-collection',
+          'contentType': 'Course'
+        },
+        'completionPercentage': 0,
+        'mimeTypesCount': 0,
+        'board': '',
+        'content':{
+          'trackable':{
+            'autoBatch': 'No',
+            'enabled': 'Yes'
+          }
+        }
+  },
   viewAllEventData: {
     'name': 'My courses',
     'length': 0,
@@ -1607,5 +1629,7 @@ export const Response = {
       'userId': 'user_id'
     }],
     length: 1
-  }]
+  }],
+  searchQuery: '{"request":{"facets":["language","grade","domain","contentType","subject","medium"],"filters":{"contentType":["TextBook","TextBookUnit"],"objectType":["Content"],"status":["Live"],"compatibilityLevel":{"max":4,"min":1}},"mode":"collection"},"limit":10,"sort_by":{"lastUpdatedOn":"desc"}}',
+                
 };

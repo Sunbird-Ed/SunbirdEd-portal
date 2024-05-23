@@ -5,16 +5,16 @@
 *
 */
 
-import { combineLatest,Subject,of,merge,throwError,forkJoin } from 'rxjs';
-import { PageApiService,OrgDetailsService,FormService,UserService,CoursesService,FrameworkService,PlayerService,SearchService } from '@sunbird/core';
-import { Component,OnInit,OnDestroy,EventEmitter,HostListener,AfterViewInit } from '@angular/core';
-import { ResourceService,ToasterService,INoResultMessage,ConfigService,UtilService,ICaraouselData,BrowserCacheTtlService,ServerResponse,NavigationHelperService,LayoutService,COLUMN_TYPE } from '@sunbird/shared';
-import { Router,ActivatedRoute } from '@angular/router';
+import { combineLatest, Subject, of, merge, throwError, forkJoin } from 'rxjs';
+import { PageApiService, OrgDetailsService, FormService, UserService, CoursesService, FrameworkService, PlayerService, SearchService } from '@sunbird/core';
+import { Component, OnInit, OnDestroy, EventEmitter, HostListener, AfterViewInit } from '@angular/core';
+import { ResourceService, ToasterService, INoResultMessage, ConfigService, UtilService, ICaraouselData, BrowserCacheTtlService, ServerResponse, NavigationHelperService, LayoutService, COLUMN_TYPE } from '@sunbird/shared';
+import { Router, ActivatedRoute } from '@angular/router';
 import { _ } from 'lodash-es';
-import { IImpressionEventInput,TelemetryService } from '@sunbird/telemetry';
+import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { PublicPlayerService } from '@sunbird/public';
-import { takeUntil,map,mergeMap,filter,catchError,tap,pluck,switchMap,delay } from 'rxjs/operators';
+import { takeUntil, map, mergeMap, filter, catchError, tap, pluck, switchMap, delay, combineAll } from 'rxjs/operators';
 import { OfflineCardService } from '@sunbird/shared';
 import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
 import { CoursePageComponent } from './course-page.component';
@@ -24,185 +24,194 @@ import { CslFrameworkService } from '../../../public/services/csl-framework/csl-
 describe('CoursePageComponent', () => {
   let component: CoursePageComponent;
 
-  const pageApiService :Partial<PageApiService> ={};
-	const toasterService :Partial<ToasterService> ={
+  const pageApiService: Partial<PageApiService> = {};
+  const toasterService: Partial<ToasterService> = {
     error: jest.fn(),
-	};
-	const resourceService :Partial<ResourceService> ={
+  };
+  const resourceService: Partial<ResourceService> = {
     getLanguageChange: jest.fn(),
     languageSelected$: of({ language: 'en' }) as any,
-		frmelmnts: {
-			lbl: {
-				mytrainings: 'My Trainings',
-			},
-		},
-	};
-		const configService :Partial<ConfigService> ={
-			appConfig: {
-			CoursePageSection: {
-				enrolledCourses: {
-					constantData: {},
-					metaData: {},
-					dynamicFields: {},
-					slickSize: 5,
-				},
-			},
-		},
-	};
+    frmelmnts: {
+      lbl: {
+        mytrainings: 'My Trainings',
+      },
+    },
+  };
+  const configService: Partial<ConfigService> = {
+    appConfig: {
+      CoursePageSection: {
+        enrolledCourses: {
+          constantData: {},
+          metaData: {},
+          dynamicFields: {},
+          slickSize: 5,
+        },
+      },
+    },
+  };
 
-	const activatedRoute :Partial<ActivatedRoute> ={
-		snapshot: {
-			data: {
-			  telemetry: {
-				env: 'explore', pageid: 'download-offline-app', type: 'view', uuid: '9545879'
-			  }
-			},
-			queryParams: {
-			  client_id: 'portal', redirectUri: '/learn',
-			  state: 'state-id', response_type: 'code', version: '3'
-			}
-		  } as any,
-	};
-	const router :Partial<Router> ={
-		onSameUrlNavigation: 'reload',
-		url: '/mocked-url',
-	};
-	const utilService :Partial<UtilService> ={
-		addHoverData:jest.fn(),
-		processContent: jest.fn((content, constantData, dynamicFields, metaData) => ({
-    })),
-	};
-	const orgDetailsService :Partial<OrgDetailsService> ={
-		getOrgDetails: jest.fn().mockReturnValue(of({ hashTagId: 'mockedHashTagId' })),
-		searchOrgDetails: jest.fn()
-	};
-	const publicPlayerService :Partial<PublicPlayerService> ={
-		playContent: jest.fn(),
-	};
-	const cacheService :Partial<CacheService> ={};
-	const browserCacheTtlService :Partial<BrowserCacheTtlService> ={};
-	const userService: Partial<UserService> = {
+  const activatedRoute: Partial<ActivatedRoute> = {
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'explore', pageid: 'download-offline-app', type: 'view', uuid: '9545879'
+        }
+      },
+      queryParams: {
+        client_id: 'portal', redirectUri: '/learn',
+        state: 'state-id', response_type: 'code', version: '3'
+      }
+    } as any,
+  };
+  const router: Partial<Router> = {
+    onSameUrlNavigation: 'reload',
+    url: '/mocked-url',
+    navigate: jest.fn()
+  };
+  const utilService: Partial<UtilService> = {
+    addHoverData: jest.fn(),
+    processContent: jest.fn((content, constantData, dynamicFields, metaData) => (Response.processedData)),
+  };
+  const orgDetailsService: Partial<OrgDetailsService> = {
+    getOrgDetails: jest.fn().mockReturnValue(of({ hashTagId: 'mockedHashTagId' })),
+    searchOrgDetails: jest.fn()
+  };
+  const publicPlayerService: Partial<PublicPlayerService> = {
+    playContent: jest.fn(),
+  };
+  const cacheService: Partial<CacheService> = {
+    set:jest.fn()
+  };
+  const browserCacheTtlService: Partial<BrowserCacheTtlService> = {};
+  const userService: Partial<UserService> = {
+    loggedIn: true,
     slug: jest.fn().mockReturnValue('tn') as any,
-	}
-	const formService :Partial<FormService> ={
-		 getFormConfig: jest.fn().mockReturnValue(of({
-			formServiceInputParams: {
-				contentType: 'admin_framework',
-				formAction: 'create',
-				formType: 'user',
-			},
-			hashTagId: 'mockedHashTagId',
-  })),
-	};
-	const navigationhelperService :Partial<NavigationHelperService> ={
-		getPageLoadTime:jest.fn().mockReturnValue(10)
-	};
-	const layoutService :Partial<LayoutService> ={
-		initlayoutConfig: jest.fn(),
-		redoLayoutCSS: jest.fn(),
+    userData$: of({userProfile: {
+      userId: 'sample-uid',
+      rootOrgId: 'sample-root-id',
+      rootOrg: {},
+      hashTagIds: ['id']
+    } as any}) as any,
+    setIsCustodianUser: jest.fn(),
+    setGuestUser: jest.fn(),
+    userid: 'sample-uid',
+    appId: 'sample-id',
+    getServerTimeDiff: '',
+  }
+  const formService: Partial<FormService> = {
+    getFormConfig: jest.fn().mockReturnValue(of({
+      formServiceInputParams: {
+        contentType: 'admin_framework',
+        formAction: 'create',
+        formType: 'user',
+      },
+      hashTagId: 'mockedHashTagId',
+    })),
+  };
+  const navigationhelperService: Partial<NavigationHelperService> = {
+    getPageLoadTime: jest.fn().mockReturnValue(10)
+  };
+  const layoutService: Partial<LayoutService> = {
+    initlayoutConfig: jest.fn(),
+    redoLayoutCSS: jest.fn(),
     switchableLayout: jest.fn(() => of([{ layout: 'demo' }]))
-	};
-	const coursesService :Partial<CoursesService> ={
-		enrolledCourseData$: of({
-        enrolledCourses: [
-					{
-						courseName: 'Copy of Book testing 1 - 0708',
-						courseId: 'do_2130595997829611521527',
-					} as any
-				],
-        err: null,
-      }),
-	};
-	const frameworkService :Partial<FrameworkService> ={
+  };
+  const coursesService: Partial<CoursesService> = {
+    enrolledCourseData$: of({
+      enrolledCourses: [
+        {
+          courseName: 'Copy of Book testing 1 - 0708',
+          courseId: 'do_2130595997829611521527',
+          content: {
+            trackable: {
+              autoBatch: 'No',
+              enabled: 'Yes'
+            }
+          }
+        } as any
+      ],
+      err: null,
+    }),
+  };
+  const frameworkService: Partial<FrameworkService> = {
     getDefaultCourseFramework: jest.fn()
   };
-	const playerService :Partial<PlayerService> ={
-		playContent: jest.fn(),
-	};
-	const searchService :Partial<SearchService> ={};
-	const offlineCardService :Partial<OfflineCardService> ={
-		isYoutubeContent: jest.fn(),
-	};
-	const contentManagerService :Partial<ContentManagerService> ={
-		contentDownloadStatus$: of({ enrolledCourses: [{ identifier: 'COMPLETED' }] }),
-		startDownload: jest.fn(() => of({})),
+  const playerService: Partial<PlayerService> = {
+    playContent: jest.fn(),
+  };
+  const searchService: Partial<SearchService> = {};
+  const offlineCardService: Partial<OfflineCardService> = {
+    isYoutubeContent: jest.fn(),
+  };
+  const contentManagerService: Partial<ContentManagerService> = {
+    contentDownloadStatus$: of({ enrolledCourses: [{ identifier: 'COMPLETED' }] }),
+    startDownload: jest.fn(() => of({})),
     updateContent: jest.fn(),
-		exportContent: jest.fn(),
-		deleteContent: jest.fn(),
+    exportContent: jest.fn(),
+    deleteContent: jest.fn(),
   } as any;
-	const telemetryService :Partial<TelemetryService> ={
-		interact: jest.fn(),
-	};
+  const telemetryService: Partial<TelemetryService> = {
+    interact: jest.fn(),
+  };
   const mockCslFrameworkService: Partial<CslFrameworkService> = {
     getFrameworkCategories: jest.fn(),
     setDefaultFWforCsl: jest.fn(),
-		getGlobalFilterCategoriesObject: jest.fn(),
-		getAllFwCatName: jest.fn(),
-		transformDataForCC: jest.fn(),
+    getGlobalFilterCategoriesObject: jest.fn(),
+    getAllFwCatName: jest.fn(),
+    transformDataForCC: jest.fn(),
     getAlternativeCodeForFilter: jest.fn(),
   };
 
-	beforeAll(() => {
-			component = new CoursePageComponent(
-					pageApiService as PageApiService,
-					toasterService as ToasterService,
-					resourceService as ResourceService,
-					configService as ConfigService,
-					activatedRoute as ActivatedRoute,
-					router as Router,
-					utilService as UtilService,
-					orgDetailsService as OrgDetailsService,
-					publicPlayerService as PublicPlayerService,
-					cacheService as CacheService,
-					browserCacheTtlService as BrowserCacheTtlService,
-					userService as UserService,
-					formService as FormService,
-					navigationhelperService as NavigationHelperService,
-					layoutService as LayoutService,
-					coursesService as CoursesService,
-					frameworkService as FrameworkService,
-					playerService as PlayerService,
-					searchService as SearchService,
-					offlineCardService as OfflineCardService,
-					contentManagerService as ContentManagerService,
-					telemetryService as TelemetryService,
-					mockCslFrameworkService as CslFrameworkService
-			)
-	});
+  beforeAll(() => {
+    component = new CoursePageComponent(
+      pageApiService as PageApiService,
+      toasterService as ToasterService,
+      resourceService as ResourceService,
+      configService as ConfigService,
+      activatedRoute as ActivatedRoute,
+      router as Router,
+      utilService as UtilService,
+      orgDetailsService as OrgDetailsService,
+      publicPlayerService as PublicPlayerService,
+      cacheService as CacheService,
+      browserCacheTtlService as BrowserCacheTtlService,
+      userService as UserService,
+      formService as FormService,
+      navigationhelperService as NavigationHelperService,
+      layoutService as LayoutService,
+      coursesService as CoursesService,
+      frameworkService as FrameworkService,
+      playerService as PlayerService,
+      searchService as SearchService,
+      offlineCardService as OfflineCardService,
+      contentManagerService as ContentManagerService,
+      telemetryService as TelemetryService,
+      mockCslFrameworkService as CslFrameworkService
+    )
+  });
 
-	beforeEach(() => {
-	    window.scroll = jest.fn() as any;
-			jest.clearAllMocks();
-			jest.resetAllMocks();
-	});
+  beforeEach(() => {
+    window.scroll = jest.fn() as any;
+    jest.clearAllMocks();
+    jest.resetAllMocks();
+  });
 
-	it('should create a instance of component', () => {
-			expect(component).toBeTruthy();
-	});
+  it('should create a instance of component', () => {
+    expect(component).toBeTruthy();
+  });
 
-	it('should call the method onScroll to be called', () => {
-		jest.spyOn(component,'addHoverData');
-		component.pageSections = Response.pageSections as any
-		component.carouselMasterData = Response.pageSectionsNew as any
-		component.onScroll();
-				expect(component.addHoverData).toBeCalled();
-		});
+  it('should call the method onScroll to be called', () => {
+    jest.spyOn(component, 'addHoverData');
+    component.pageSections = Response.pageSections as any
+    component.carouselMasterData = Response.pageSectionsNew as any
+    component.onScroll();
+    expect(component.addHoverData).toBeCalled();
+  });
 
-	describe("ngOnDestroy", () => {
-		it('should destroy sub', () => {
-				component.unsubscribe$ = {
-						next: jest.fn(),
-						complete: jest.fn()
-				} as any;
-				component.ngOnDestroy();
-				expect(component.unsubscribe$.next).toHaveBeenCalled();
-				expect(component.unsubscribe$.complete).toHaveBeenCalled();
-		});
-	});
 
-	it('should initialize the component', () => {
-		const isUserLoggedInSpy = jest.spyOn(component, 'isUserLoggedIn');
-		isUserLoggedInSpy.mockReturnValue(true);
+  it('should initialize the component', () => {
+    const isUserLoggedInSpy = jest.spyOn(component, 'isUserLoggedIn');
+    isUserLoggedInSpy.mockReturnValue(true);
     component['initialize']();
     expect(layoutService.initlayoutConfig).toHaveBeenCalled();
     expect(layoutService.redoLayoutCSS).toHaveBeenCalled();
@@ -215,30 +224,30 @@ describe('CoursePageComponent', () => {
     expect(router.onSameUrlNavigation).toBe('reload');
   });
 
-	it('should call getOrgDetails and set hashTagId', async () => {
-		const mockOrgDetails = { hashTagId: 'mockedHashTagId' };
-		jest.spyOn(orgDetailsService, 'getOrgDetails' as any).mockReturnValue(of(mockOrgDetails));
+  it('should call getOrgDetails and set hashTagId', async () => {
+    const mockOrgDetails = { hashTagId: 'mockedHashTagId' };
+    jest.spyOn(orgDetailsService, 'getOrgDetails' as any).mockReturnValue(of(mockOrgDetails));
 
-		await component['getOrgDetails']().toPromise();
-		expect(orgDetailsService.getOrgDetails).toHaveBeenCalled();
-		expect(component.hashTagId).toEqual('mockedHashTagId');
-	});
+    await component['getOrgDetails']().toPromise();
+    expect(orgDetailsService.getOrgDetails).toHaveBeenCalled();
+    expect(component.hashTagId).toEqual('mockedHashTagId');
+  });
 
-	it('should call searchOrgDetails and return content', async () => {
+  it('should call searchOrgDetails and return content', async () => {
     const filters = { orgType: 'exampleOrgType', location: 'exampleLocation' };
     const fields = ['name', 'description'];
-		const mockorgDetails = {
-			count: 1,
-			content: {
-					identifier: 'string',
-					orgName: 'string',
-					slug: 'string',
-					name: 'string',
-			}
-		}
-		orgDetailsService.searchOrgDetails = jest.fn().mockReturnValue(of(mockorgDetails)) as any;
+    const mockorgDetails = {
+      count: 1,
+      content: {
+        identifier: 'string',
+        orgName: 'string',
+        slug: 'string',
+        name: 'string',
+      }
+    }
+    orgDetailsService.searchOrgDetails = jest.fn().mockReturnValue(of(mockorgDetails)) as any;
     const result = await component['searchOrgDetails']({ filters, fields }).toPromise();
-    expect(result).toEqual( {"identifier": "string", "name": "string", "orgName": "string", "slug": "string"});
+    expect(result).toEqual({ "identifier": "string", "name": "string", "orgName": "string", "slug": "string" });
     expect(orgDetailsService.searchOrgDetails).toHaveBeenCalledWith({ filters, fields });
   });
 
@@ -247,7 +256,7 @@ describe('CoursePageComponent', () => {
       { contentType: 'course', title: 'CourseTitle', theme: { imageName: 'course.svg' } },
     ];
 
-		formService.getFormConfig  = jest.fn().mockReturnValue(of(mockFormData)) as any;
+    formService.getFormConfig = jest.fn().mockReturnValue(of(mockFormData)) as any;
     activatedRoute.snapshot.queryParams = {};
 
     await component.getFormData().toPromise();
@@ -255,39 +264,60 @@ describe('CoursePageComponent', () => {
     expect(component.formData).toEqual(mockFormData);
     expect(component.svgToDisplay).toEqual('course.svg');
   });
-
+  describe('ngOnInit', () => {
+    it('should initialize framework categories and keys on ngOnInit', () => {
+      const mockFrameworkCategoriesList = ['framework1', 'framework2'];
+      jest.spyOn(mockCslFrameworkService, 'getAllFwCatName').mockReturnValue(mockFrameworkCategoriesList);
+      component.frameworkCategoriesList = mockFrameworkCategoriesList;
+      const mockGlobalFilterCategories = ['category1', 'category2', 'category3', 'category4'];
+      jest.spyOn(mockCslFrameworkService, 'getAlternativeCodeForFilter').mockReturnValue(mockGlobalFilterCategories);
+      jest.spyOn(orgDetailsService, 'getOrgDetails' as any).mockReturnValue(of({ hashTagId: 'mockedHashTagId' }));
+      jest.spyOn(formService, 'getFormConfig').mockReturnValue(of({}));
+      jest.spyOn(layoutService, 'switchableLayout').mockReturnValue(of({ layout: {} }));
+      jest.spyOn(mockCslFrameworkService, 'getGlobalFilterCategoriesObject').mockReturnValue(['filter1', 'filter2']);
+      jest.spyOn(mockCslFrameworkService, 'transformDataForCC').mockReturnValue(['key1', 'key2']);
+      jest.spyOn(resourceService, 'getLanguageChange').mockImplementation(() => of(['English', 'Hindi']));
+      component.ngOnInit();
+      expect(jest.spyOn(component.cslFrameworkService, 'getGlobalFilterCategoriesObject')).toHaveBeenCalled();
+      expect(jest.spyOn(component.cslFrameworkService, 'getAllFwCatName')).toHaveBeenCalled();
+      expect(jest.spyOn(component.cslFrameworkService, 'transformDataForCC')).toHaveBeenCalled();
+      expect(component.globalFilterCategoriesObject).toEqual(['filter1', 'filter2']);
+      expect(component.frameworkCategoriesList).toEqual(['framework1', 'framework2']);
+      expect(component.categoryKeys).toEqual(['key1', 'key2']);
+    });
+  });
   it('should redo layout with configuration if layoutConfiguration is not null', () => {
-      const mockLayoutConfiguration = {};
-      component.layoutConfiguration = mockLayoutConfiguration;
-      component['redoLayout']();
-      expect(layoutService.redoLayoutCSS).toHaveBeenCalledWith(0, mockLayoutConfiguration, COLUMN_TYPE.threeToNine, true);
-      expect(layoutService.redoLayoutCSS).toHaveBeenCalledWith(1, mockLayoutConfiguration, COLUMN_TYPE.threeToNine, true);
+    const mockLayoutConfiguration = {};
+    component.layoutConfiguration = mockLayoutConfiguration;
+    component['redoLayout']();
+    expect(layoutService.redoLayoutCSS).toHaveBeenCalledWith(0, mockLayoutConfiguration, COLUMN_TYPE.threeToNine, true);
+    expect(layoutService.redoLayoutCSS).toHaveBeenCalledWith(1, mockLayoutConfiguration, COLUMN_TYPE.threeToNine, true);
   });
 
-	it('should redo layout without configuration if layoutConfiguration is null', () => {
-		component.layoutConfiguration = null;
-		component['redoLayout']();
-		expect(layoutService.redoLayoutCSS).toHaveBeenCalledWith(0, null, COLUMN_TYPE.fullLayout);
-		expect(layoutService.redoLayoutCSS).toHaveBeenCalledWith(1, null, COLUMN_TYPE.fullLayout);
-	});
-
-	it('should not set layoutConfiguration if layoutConfig is null', () => {
-		layoutService.switchableLayout = jest.fn(() => of(null))
-
-		component['initLayout']().subscribe(() => {
-			expect(component.layoutConfiguration).toBeUndefined();
-		});
-	});
-
-	it('should set layoutConfiguration if layoutConfig is not null', () => {
-		layoutService.switchableLayout = jest.fn(() => of([{ layoutConfig:{layout: 'demo' }}]))
-
-		component['initLayout']().subscribe(() => {
-			expect(component.layoutConfiguration).toEqual({layout: 'demo' });
-		});
+  it('should redo layout without configuration if layoutConfiguration is null', () => {
+    component.layoutConfiguration = null;
+    component['redoLayout']();
+    expect(layoutService.redoLayoutCSS).toHaveBeenCalledWith(0, null, COLUMN_TYPE.fullLayout);
+    expect(layoutService.redoLayoutCSS).toHaveBeenCalledWith(1, null, COLUMN_TYPE.fullLayout);
   });
 
-	it('should return the correct page data based on contentType', () => {
+  it('should not set layoutConfiguration if layoutConfig is null', () => {
+    layoutService.switchableLayout = jest.fn(() => of(null))
+
+    component['initLayout']().subscribe(() => {
+      expect(component.layoutConfiguration).toBeUndefined();
+    });
+  });
+
+  it('should set layoutConfiguration if layoutConfig is not null', () => {
+    layoutService.switchableLayout = jest.fn(() => of([{ layoutConfig: { layout: 'demo' } }]))
+
+    component['initLayout']().subscribe(() => {
+      expect(component.layoutConfiguration).toEqual({ layout: 'demo' });
+    });
+  });
+
+  it('should return the correct page data based on contentType', () => {
     const mockFormData = [
       { contentType: 'type1', data: 'data1' },
       { contentType: 'type2', data: 'data2' },
@@ -302,7 +332,7 @@ describe('CoursePageComponent', () => {
     expect(result3).toBeUndefined();
   });
 
-	it('should filter out selectedTab and merge with default filters', () => {
+  it('should filter out selectedTab and merge with default filters', () => {
     const mockFilters = {
       selectedTab: 'someValue',
       someOtherFilter: 'someValue',
@@ -316,7 +346,7 @@ describe('CoursePageComponent', () => {
     expect(result['batches.status']).toBe(1);
   });
 
-	it('should update the name property if orgName is present', () => {
+  it('should update the name property if orgName is present', () => {
     const facet = [
       { orgName: 'Organization A', otherProperty: 'value1' },
       { orgName: 'Organization B', otherProperty: 'value2' },
@@ -338,7 +368,7 @@ describe('CoursePageComponent', () => {
     });
   });
 
-   it('should return an array of rootOrgIds from channels with names', () => {
+  it('should return an array of rootOrgIds from channels with names', () => {
     const channels = [
       { name: 'Org1' },
       { name: 'Org2' },
@@ -376,7 +406,7 @@ describe('CoursePageComponent', () => {
     expect(result).toEqual([]);
   });
 
-	it('should update facets data based on global filter categories', () => {
+  it('should update facets data based on global filter categories', () => {
     const facets = {
       channel: [
         { orgName: 'Org1' },
@@ -403,32 +433,9 @@ describe('CoursePageComponent', () => {
     ]);
   });
 
-	describe('ngOnInit', () => {
-		xit('should initialize framework categories and keys on ngOnInit', () => {
-      const mockFrameworkCategoriesList = ['framework1','framework2'];
-      jest.spyOn(mockCslFrameworkService,'getAllFwCatName').mockReturnValue(mockFrameworkCategoriesList);
-      component.frameworkCategoriesList = mockFrameworkCategoriesList;
-      const mockGlobalFilterCategories = ['category1','category2','category3','category4'];
-      jest.spyOn(mockCslFrameworkService,'getAlternativeCodeForFilter').mockReturnValue(mockGlobalFilterCategories);
-			jest.spyOn(orgDetailsService, 'getOrgDetails' as any).mockReturnValue(of({ hashTagId: 'mockedHashTagId' }));
-			jest.spyOn(formService, 'getFormConfig').mockReturnValue(of({}));
-			jest.spyOn(layoutService, 'switchableLayout').mockReturnValue(of({ layout: {} }));
-			jest.spyOn(mockCslFrameworkService, 'getGlobalFilterCategoriesObject').mockReturnValue(['filter1', 'filter2']);
-			jest.spyOn(mockCslFrameworkService, 'transformDataForCC').mockReturnValue(['key1', 'key2']);
-      jest.spyOn(resourceService, 'getLanguageChange').mockImplementation(() => of(['English', 'Hindi']));
-			component.ngOnInit();
-			expect(jest.spyOn(component.cslFrameworkService, 'getGlobalFilterCategoriesObject')).toHaveBeenCalled();
-			expect(jest.spyOn(component.cslFrameworkService, 'getAllFwCatName')).toHaveBeenCalled();
-			expect(jest.spyOn(component.cslFrameworkService, 'transformDataForCC')).toHaveBeenCalled();
-			expect(component.globalFilterCategoriesObject).toEqual(['filter1', 'filter2']);
-			expect(component.frameworkCategoriesList).toEqual(['category1', 'category2']);
-			expect(component.categoryKeys).toEqual(['key1', 'key2']);
-		});
-	});
-
-	it('should transform filters with channel data correctly', () => {
-    const mockFrameworkCategoriesList = ['framework1','framework2'];
-    jest.spyOn(mockCslFrameworkService,'getAllFwCatName').mockReturnValue(mockFrameworkCategoriesList);
+  it('should transform filters with channel data correctly', () => {
+    const mockFrameworkCategoriesList = ['framework1', 'framework2'];
+    jest.spyOn(mockCslFrameworkService, 'getAllFwCatName').mockReturnValue(mockFrameworkCategoriesList);
     component.frameworkCategoriesList = mockFrameworkCategoriesList;
     const filters = {
       filters: {
@@ -448,7 +455,7 @@ describe('CoursePageComponent', () => {
     expect(component.selectedFilters.channel).toEqual(['Channel 1', 'Channel 2']);
   });
 
-	it('should prepare visits and update telemetryImpression', () => {
+  it('should prepare visits and update telemetryImpression', () => {
     const sampleEvent = [
       { metaData: { identifier: 'id1', contentType: 'type1' }, section: 'section1' },
       { metaData: { identifier: 'id2', contentType: 'type2' }, section: 'section2' },
@@ -462,17 +469,17 @@ describe('CoursePageComponent', () => {
     expect(component.telemetryImpression.edata.subtype).toEqual('pageexit');
   });
 
-	it('should set showDownloadLoader to true and call downloadContent', () => {
+  it('should set showDownloadLoader to true and call downloadContent', () => {
     component.showDownloadLoader = false;
     const downloadIdentifier = 'DownloadIdentifier';
-    const downloadContentSpy = jest.spyOn(component, 'downloadContent').mockImplementation(() => {});
+    const downloadContentSpy = jest.spyOn(component, 'downloadContent').mockImplementation(() => { });
     component.downloadIdentifier = downloadIdentifier;
     component.callDownload();
     expect(component.showDownloadLoader).toBe(true);
     expect(downloadContentSpy).toHaveBeenCalledWith(downloadIdentifier);
   });
 
-	it('should handle successful download', () => {
+  it('should handle successful download', () => {
     const contentId = 'yourContentId';
     component.showDownloadLoader = true;
     jest.spyOn(component['contentManagerService'], 'startDownload' as any).mockImplementation();
@@ -481,7 +488,7 @@ describe('CoursePageComponent', () => {
     expect(component.downloadIdentifier).toBe('DownloadIdentifier');
   });
 
-	it('should handle hover action click for play content', () => {
+  it('should handle hover action click for play content', () => {
     const event = {
       hover: { type: 'OPEN' },
       content: { name: 'ContentName' },
@@ -570,6 +577,75 @@ describe('CoursePageComponent', () => {
     const mockFetchCourses = jest.spyOn(component, 'fetchCourses' as any).mockReturnValue(of(currentPageData));
     component['fetchPageData'](option).subscribe(() => {
       expect(mockFetchCourses).toHaveBeenCalledWith(currentPageData);
+    });
+  });
+
+  it('should call the method getLanguageChange', () => {
+    component.enrolledSection = {
+      name: 'course'
+    };
+    component.pageSections = Response.pageSections;
+    component['getLanguageChange']().subscribe(data => {
+      expect(data).toEqual({ language: 'en' })
+    });
+  });
+
+  it('should call the method getLanguageChange with the desktop as true', () => {
+    jest.spyOn(component, 'addHoverData')
+    component.enrolledSection = {
+      name: 'course'
+    };
+    component.pageSections = Response.pageSections;
+    component.isDesktopApp = true;
+    component['getLanguageChange']().subscribe(data => {
+      expect(component.addHoverData).toBeCalled()
+    });
+  });
+
+  it('should call the method fetchEnrolledCoursesSection without error', () => {
+    utilService.processContent = jest.fn().mockReturnValue(Response.courseData);
+    component['fetchEnrolledCoursesSection']().subscribe(data => {
+      expect(data).toEqual(Response.courseData);
+    })
+  });
+
+  it('should call the method fetchEnrolledCoursesSection with error', () => {
+    coursesService._enrolledCourseData$ = jest.fn(() => of({ err: Response.error, enrolledCourses: null })) as any;
+    utilService.processContent = jest.fn().mockReturnValue(Response.courseData);
+    component['fetchEnrolledCoursesSection']().subscribe(data => {
+      console.log(data);
+      expect(data).toEqual(Response.courseData);
+    })
+  });
+  it('should call the method viewAall', () => {
+    const event={
+      searchQuery: Response.searchQuery,
+      name: 'Linked Content',
+    };
+    component.viewAll(event);
+    expect(component.router.navigate).toBeCalledWith(["/mocked-url/view-all/Linked-Content", 1],{"queryParams": {"contentType": ["TextBook", "TextBookUnit"], "defaultSortBy": undefined, "dynamic": "{\"compatibilityLevel\":{\"max\":4,\"min\":1}}", "exists": undefined, "objectType": ["Content"], "sortType": "asc", "sort_by": "someSortField", "status": ["Live"]}})
+  });
+  
+ 
+
+  describe("ngOnDestroy", () => {
+    it('should set ngOnDestroy', () => {
+      component.unsubscribe$ = {
+        next: jest.fn(),
+        complete: jest.fn()
+      } as any;
+      component.ngOnDestroy();
+      expect(component.unsubscribe$.next).toHaveBeenCalled();
+      expect(component.unsubscribe$.complete).toHaveBeenCalled();
+    });
+  });
+
+  describe("ngAfterViewInit", () => {
+    it('should set ngAfterViewInit', () => {
+      component.ngAfterViewInit();
+      setTimeout(() => {
+        expect(component['setTelemetryData']).toBeCalled();
+      },300)
     });
   });
 
