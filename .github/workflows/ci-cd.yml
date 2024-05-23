@@ -28,10 +28,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          path: ~/portal
+          path: portal
 
       - name: Set working directory
-        run: cd ~/portal/src/app/client
+        run: cd ./portal/src/app/client
 
       - name: Check Node.js version
         run: node --version
@@ -62,5 +62,5 @@ jobs:
           cd -
 
       - name: Run Sonar Scanner
-        run: cd ~/portal && /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner
+        run: cd portal && /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner
 
