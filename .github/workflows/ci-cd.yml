@@ -12,10 +12,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: cimg/node:18.16.0
+      image: cimg/node:20.9.0
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Run build script
         run: /bin/bash -x build.sh ${{ github.sha }} test
@@ -23,10 +23,10 @@ jobs:
   test_cases:
     runs-on: ubuntu-latest
     container:
-      image: cimg/node:18.16.0
+      image: cimg/node:20.9.0
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           path: ~/portal
 
