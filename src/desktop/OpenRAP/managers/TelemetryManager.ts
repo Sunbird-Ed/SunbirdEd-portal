@@ -11,7 +11,7 @@ import * as zlib from "zlib";
 import * as path from "path";
 import * as fs from "fs";
 import FileSDK from "../sdks/FileSDK";
-import uuid = require("uuid");
+const { v4: uuid } = require('uuid');
 import { TelemetryInstance } from "../services/telemetry/telemetryInstance";
 import SettingSDK from "../sdks/SettingSDK";
 import { NetworkQueue, NETWORK_SUBTYPE } from '../services/queue/networkQueue';
@@ -112,7 +112,7 @@ export class TelemetryManager {
         return omittedDoc;
       });
 
-      let id = uuid.v4();
+      let id = uuid();
 
       let headers = {
         "Content-Type": "application/json",

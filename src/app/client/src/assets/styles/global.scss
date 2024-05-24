@@ -18,7 +18,8 @@
 // @include mat.core();
 @include mat.core();
 
-$custom-typography: mat.define-typography-config($font-family: "var(--font-stack-en) !important",
+$custom-typography: mat.define-typography-config(
+  $font-family: "var(--font-stack-en) !important",
 );
 
 @include mat.all-component-typographies($custom-typography);
@@ -124,6 +125,13 @@ body {
 
   .sb-label-12size {
     font-size: calculateRem(11px);
+  }
+}
+
+.sbt-dropdown-profile-area {
+  .sb-avatar__img {
+    font-weight: 600 !important;
+    padding-top: 0 !important;
   }
 }
 

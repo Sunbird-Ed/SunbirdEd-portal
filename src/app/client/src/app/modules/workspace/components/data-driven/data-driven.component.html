@@ -3,6 +3,7 @@
   </div>
 
   <app-modal-wrapper *ngIf="!showFrameworkSelection" [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [config]="{disableClose: true, size: 'small', panelClass: 'material-modal'}" #modal>
+    <ng-template sbModalContent>
     <div mat-dialog-title class="flex-jc-center">
       <div class="title" tabindex="0"> {{resourceService?.frmelmnts?.lbl[creationFormLable]}}</div>
         <button aria-label="close dialog" mat-dialog-close class="close-btn" (click)="modal.deny('denied')"></button>
@@ -12,11 +13,12 @@
         [categoryMasterList]="categoryMasterList">
       </app-content-creation-default-template>
     </mat-dialog-content>
-    <mat-dialog-actions class="sb-mat__modal__actions">
+    <mat-dialog-actions class="sb-mat__modal__actions mt-16">
       <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" (click)="createContent(modal)">
         {{resourceService?.frmelmnts?.btn?.startcreating}}
       </button>
     </mat-dialog-actions>
+    </ng-template>
   </app-modal-wrapper>
 
 

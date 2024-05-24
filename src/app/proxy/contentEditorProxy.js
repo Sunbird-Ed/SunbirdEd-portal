@@ -126,7 +126,7 @@ module.exports = function (app) {
     userResDecorator: userResDecorator
   }))
 
-  app.post('/action/user/v1/search',
+  app.post('/action/user/v3/search',
     isAPIWhitelisted.isAllowed(),
     addCorsHeaders,
     proxyUtils.verifyToken(),
@@ -134,7 +134,7 @@ module.exports = function (app) {
       limit: reqDataLimitOfContentUpload,
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
       proxyReqPathResolver: function (req) {
-        let originalUrl = req.originalUrl.replace('/action/user/v1/search', 'user/v3/search')
+        let originalUrl = req.originalUrl.replace('/action/user/v3/search', 'user/v3/search')
         return require('url').parse(learnerURL + originalUrl).path
       },
       userResDecorator: userResDecorator
@@ -145,6 +145,7 @@ module.exports = function (app) {
 
   app.get([
     '/action/questionset/v2/read/:do_id',
+    '/action/questionset/v2/comment/read/:do_id',
     '/action/question/v2/read/:do_id',
     '/action/questionset/v2/hierarchy/:do_id'
     ],
@@ -189,6 +190,7 @@ module.exports = function (app) {
   app.patch([
     '/action/questionset/v2/hierarchy/update',
     '/action/questionset/v2/update/:do_id',
+    '/action/questionset/v2/comment/update/:do_id',
     '/action/questionset/v2/add',
     '/action/question/v2/update/:do_id'
     ],

@@ -416,7 +416,7 @@ describe("Test Telemetry", () => {
 describe("User API", () => {
     it("#User create success", (done) => {
         supertest(app)
-            .post("/api/desktop/user/v1/create")
+            .post("/api/desktop/user/v1/sso/create")
             .send({ request: { framework: { board: "english", medium: ["english"], gradeLevel: ["class 5"] } } })
             .expect(200)
             .end((err, res) => {
@@ -431,7 +431,7 @@ describe("User API", () => {
 
     it("#User create 409 conflict", (done) => {
         supertest(app)
-            .post("/api/desktop/user/v1/create")
+            .post("/api/desktop/user/v1/sso/create")
             .send({ request: { framework: { board: "english", medium: ["english"], gradeLevel: ["class 5"] } } })
             .expect(409)
             .end((err, res) => {
@@ -446,7 +446,7 @@ describe("User API", () => {
 
     it("#User create 500 internal server error", (done) => {
         supertest(app)
-            .post("/api/desktop/user/v1/create")
+            .post("/api/desktop/user/v1/sso/create")
             .send()
             .expect(500)
             .end((err, res) => {
@@ -460,7 +460,7 @@ describe("User API", () => {
 
     it("#User read success", (done) => {
         supertest(app)
-            .get("/api/desktop/user/v1/read")
+            .get("/api/desktop/user/v5/read")
             .expect(200)
             .end((err, res) => {
                 if (res.statusCode >= 500) { logger.error(err); return done(); }
@@ -474,7 +474,7 @@ describe("User API", () => {
     });
     it("#User update success", (done) => {
         supertest(app)
-            .post("/api/desktop/user/v1/update")
+            .post("/api/desktop/user/v3/update")
             .send({ request: {
             _id: "9783dc11-206c-4a3e-917a-cf4853ce23a2",
             framework: { board: "english", medium: ["english"], gradeLevel: ["class 5"] } } })
@@ -490,7 +490,7 @@ describe("User API", () => {
     });
     it("#User update 500 internal server error", (done) => {
         supertest(app)
-            .post("/api/desktop/user/v1/update")
+            .post("/api/desktop/user/v3/update")
             .send()
             .expect(500)
             .end((err, res) => {
@@ -504,7 +504,7 @@ describe("User API", () => {
 
     it("#User update bad request", (done) => {
         supertest(app)
-            .post("/api/desktop/user/v1/update")
+            .post("/api/desktop/user/v3/update")
             .send({ request: {
             framework: { board: "english", medium: ["english"], gradeLevel: ["class 5"] } } })
             .expect(400)
@@ -519,7 +519,7 @@ describe("User API", () => {
 
     it("#User update  404 (ERROR)", (done) => {
         supertest(app)
-           .post("/api/desktop/user/v1/update")
+           .post("/api/desktop/user/v3/update")
            .expect(404)
            .end((err, res) => {
                expect(res.body.params.status).to.equal("failed");

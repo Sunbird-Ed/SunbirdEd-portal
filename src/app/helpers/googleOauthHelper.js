@@ -223,7 +223,7 @@ const createSession = async (emailId, reqQuery, req, res) => {
 const fetchUserByEmailId = async (emailId, req) => {
   const options = {
     method: 'GET',
-    url: envHelper.LEARNER_URL + 'user/v1/exists/email/'+ emailId,
+    url: envHelper.LEARNER_URL + 'user/v2/exists/email/'+ emailId,
     headers: getHeaders(req),
     json: true
   }

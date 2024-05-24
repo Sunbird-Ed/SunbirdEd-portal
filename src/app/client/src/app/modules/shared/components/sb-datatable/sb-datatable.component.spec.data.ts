@@ -118,7 +118,7 @@ export const TableData = {
       { name: 'District', isSortable: true,  prop: 'district' },
       { name: 'No. of Enrollment', isSortable: true,  prop: 'noofEnrollments'},
       { name: 'No. of Completions', isSortable: true,  prop: 'noofCompletions' }],
-    searchFields : ['state', 'district'],
+    searchFields : ['0','1','state', 'district'],
     telemetryDataForDownload: {
       context: {
         env: 'reports',
