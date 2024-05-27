@@ -1,4 +1,4 @@
-<app-modal-wrapper [config]="{disableClose: false,size: 'normal',panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="closeModal()" #modal>
+<app-modal-wrapper [config]="{disableClose: false,size: 'normal',panelClass: ['material-modal', 'material-modal--small']}" (dismiss)="closeModal()" #modal>
   <ng-template sbModalContent>
     <div class="sb-mat__modal sb-onboard">
       <div mat-dialog-title class="flex-jc-center">
@@ -13,11 +13,11 @@
             <div class="content search-results">
             <div *ngIf="solution.entities?.length">
               <div *ngFor="let entity of solution.entities; let i = index">
-                <div class="sb-radio-btn-checkbox sb-radio-btn-primary checked-box">
-                  <input value="{{ entity._id }}" id="{{ entity._id }}" type="radio" [checked]="entity.selected"
-                    (change)="onEntityChange(entity)" />
-                  <label for="{{ entity._id }}"> {{ entity.name }}</label>
-                </div>
+                <mat-radio-group>
+                  <mat-radio-button class="sb-radio-btn-primary" value="{{ entity._id }}" id="{{ entity._id }}" type="radio" [checked]="entity.selected" (change)="onEntityChange(entity)">
+                    {{ entity.name }}
+                  </mat-radio-button>
+                </mat-radio-group>
               </div>
             </div>
             <div class="twelve wide column" *ngIf="!solution.entities?.length">
