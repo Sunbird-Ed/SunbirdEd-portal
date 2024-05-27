@@ -3,8 +3,8 @@
 FROM node:18.20.2 AS builder
 
 # Set the commit hash as a build argument and environment variable
-ARG commit_hash
-# ENV commit_hash=${commit_hash}
+ARG commit_hash = "61753f1233"
+ENV commit_hash=${commit_hash}
 
 # Print the commit hash
 RUN echo "Commit Hash: ${commit_hash}"
