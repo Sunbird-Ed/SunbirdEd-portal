@@ -2,21 +2,28 @@
 FROM node:18.20.2 AS builder
 
 # Set the working directory for the client build
-WORKDIR /usr/src/app
-
-# Copy the client and server code into the Docker container
-COPY src/app ./
-
-# Copy package.json and yarn.lock for client and server
-COPY src/app/client/package.json src/app/client/yarn.lock ./client/
-COPY src/app/package.json src/app/yarn.lock ./
-
-# Install client dependencies and build the client
 WORKDIR /usr/src/app/client
-RUN yarn install --no-progress --frozen-lockfile --production=true && yarn build
 
-# Switch back to the root directory and copy server-related files
+# Copy package.json and yarn.lock for client
+# COPY src/app/client/package.json src/app/client/yarn.lock ./
+COPY src/app/client ./
+
+# Install client dependencies
+RUN yarn install --no-progress --frozen-lockfile --production=true
+
+# Copy the client code into the Docker container
+# COPY src/app/client ./
+
+# Build the client
+RUN npm run build
+
+# Set the working directory for server build
 WORKDIR /usr/src/app
+
+# Copy package.json and yarn.lock for server
+COPY src/app/package.json src/app/yarn.lock ./app_dist/
+
+# Copy server-related files into the app_dist directory before installing dependencies
 COPY src/app/libs ./app_dist/libs
 COPY src/app/helpers ./app_dist/helpers
 COPY src/app/proxy ./app_dist/proxy
@@ -45,7 +52,7 @@ RUN groupadd -g 1001 sunbird && \
 
 # Set the working directory and copy the built files
 WORKDIR /home/sunbird
-COPY --chown=sunbird:sunbird --from=builder /usr/src/app/app_dist /home/sunbird/app_dist
+COPY --chown=sunbird:sunbird --from=builder /usr/src/app /home/sunbird
 
 # Switch to the non-root user
 USER sunbird
@@ -61,7 +68,6 @@ RUN echo "Commit Hash: ${commit_hash}"
 RUN sed -i "/version/a\    \"buildHash\": \"${commit_hash}\"," package.json
 
 # Run the build script to perform additional tasks (e.g., phraseAppPull)
-# Adjust the path based on your directory structure
 RUN node helpers/resourceBundles/build.js -task="phraseAppPull"
 
 # Expose the port used by the server
