@@ -1,25 +1,28 @@
 # Use a base image suitable for building the client and server (e.g., Node.js)
 FROM node:18.20.2 AS builder
 
-
-# Print the commit hash
-RUN echo "Commit Hash: ${commit_hash}"
-
 # Set the working directory for the client build
 WORKDIR /usr/src/app/client
 
 # Copy package.json and yarn.lock for client
-# COPY src/app/client/package.json src/app/client/yarn.lock ./
-COPY src/app/client ./
+COPY src/app/client/package.json src/app/client/yarn.lock ./
 
 # Install client dependencies
 RUN yarn install --no-progress --frozen-lockfile --production=true
 
-# Copy the client code into the Docker container
-# COPY src/app/client ./
+# Copy the rest of the client code into the Docker container
+COPY src/app/client ./
 
-# Build the client
-RUN npm run build
+# # Environment variable for CDN URL
+# ARG cdnUrl
+# ENV cdnUrl=${cdnUrl}
+
+# # Build the client for CDN and inject CDN fallback
+# RUN echo "starting client cdn prod build" \
+#     && npm run build-cdn -- --deployUrl $cdnUrl \
+#     && export sunbird_portal_cdn_url=$cdnUrl \
+#     && npm run inject-cdn-fallback \
+#     && echo "completed client cdn prod build"
 
 # Set the working directory for server build
 WORKDIR /usr/src/app
@@ -65,7 +68,7 @@ USER sunbird
 WORKDIR /home/sunbird/app_dist
 RUN mv dist/index.html dist/index.ejs
 
-# Print the commit hash
+# Print the commit hash to verify it is set correctly
 RUN echo "Commit Hash: ${commit_hash}"
 
 # Add the build hash to package.json
