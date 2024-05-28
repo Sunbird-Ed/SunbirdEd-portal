@@ -9,7 +9,8 @@ RUN echo "Commit Hash: ${commit_hash}"
 WORKDIR /usr/src/app/client
 
 # Copy package.json and yarn.lock for client
-COPY src/app/client/package.json src/app/client/yarn.lock ./
+# COPY src/app/client/package.json src/app/client/yarn.lock ./
+COPY src/app/client ./
 
 # Install client dependencies
 RUN yarn install --no-progress --frozen-lockfile --production=true
