@@ -47,6 +47,8 @@ RUN yarn install --no-progress --frozen-lockfile --ignore-engines --production=t
 
 # Start a new stage for the final image
 FROM node:18.20.2
+ARG commit_hash="61753f1233"
+ENV commit_hash=${commit_hash}
 
 # Create a non-root user and group with specific UID and GID
 RUN groupadd -g 1001 sunbird && \
