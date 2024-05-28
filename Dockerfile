@@ -20,6 +20,10 @@ RUN yarn install --no-progress --frozen-lockfile --production=true
 # Copy the client code into the Docker container
 COPY src/app/client ./
 
+RUN rm -rf node_modules 
+RUN rm -rf yarn.lock
+RUN yarn cache clean
+
 # Build the client
 RUN npm run build
 
