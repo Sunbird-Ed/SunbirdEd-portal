@@ -1,12 +1,6 @@
 
 # Use a base image suitable for building the client and server (e.g., Node.js)
 FROM node:18.20.2 AS builder
-
-
-
-# Print the commit hash
-RUN echo "Commit Hash: ${commit_hash}"
-
 # Set the working directory for the client build
 WORKDIR /usr/src/app/client
 
@@ -42,6 +36,7 @@ RUN yarn install --no-progress --frozen-lockfile --ignore-engines --production=t
 # Start a new stage for the final image
 FROM node:18.20.2
 
+
 # Set the commit hash as a build argument and environment variable
 ARG commit_hash="x.x.x"
 ENV commit_hash=${commit_hash}
@@ -49,11 +44,13 @@ ENV commit_hash=${commit_hash}
 RUN useradd -u 1001 -md /home/sunbird sunbird
 
 
-WORKDIR /usr/src/app
-COPY --from=builder /usr/src/app ./
+WORKDIR  /home/sunbird
+
+COPY --chown=sunbird  --from=builder /usr/src/app /home/sunbird
+USER sunbird
 
 # Rename the index.html file to index.ejs
-WORKDIR /usr/src/app/app_dist
+WORKDIR /home/sunbird/app_dist
 RUN mv dist/index.html dist/index.ejs
 # Print the commit hash
 RUN echo "Commit Hash: ${commit_hash}"
