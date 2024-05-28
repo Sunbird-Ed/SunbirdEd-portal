@@ -2,35 +2,21 @@
 FROM node:18.20.2 AS builder
 
 # Set the working directory for the client build
-WORKDIR /usr/src/app/client
-
-# Copy package.json and yarn.lock for client
-COPY src/app/client/package.json src/app/client/yarn.lock ./
-
-# Install client dependencies
-RUN yarn install --no-progress --frozen-lockfile --production=true
-
-# Copy the rest of the client code into the Docker container
-COPY src/app/client ./
-
-# # Environment variable for CDN URL
-# ARG cdnUrl
-# ENV cdnUrl=${cdnUrl}
-
-# # Build the client for CDN and inject CDN fallback
-# RUN echo "starting client cdn prod build" \
-#     && npm run build-cdn -- --deployUrl $cdnUrl \
-#     && export sunbird_portal_cdn_url=$cdnUrl \
-#     && npm run inject-cdn-fallback \
-#     && echo "completed client cdn prod build"
-
-# Set the working directory for server build
 WORKDIR /usr/src/app
 
-# Copy package.json and yarn.lock for server
-COPY src/app/package.json src/app/yarn.lock ./app_dist/
+# Copy the client and server code into the Docker container
+COPY src/app ./
 
-# Copy server-related files into the app_dist directory before installing dependencies
+# Copy package.json and yarn.lock for client and server
+COPY src/app/client/package.json src/app/client/yarn.lock ./client/
+COPY src/app/package.json src/app/yarn.lock ./
+
+# Install client dependencies and build the client
+WORKDIR /usr/src/app/client
+RUN yarn install --no-progress --frozen-lockfile --production=true && yarn build
+
+# Switch back to the root directory and copy server-related files
+WORKDIR /usr/src/app
 COPY src/app/libs ./app_dist/libs
 COPY src/app/helpers ./app_dist/helpers
 COPY src/app/proxy ./app_dist/proxy
@@ -50,7 +36,7 @@ RUN yarn install --no-progress --frozen-lockfile --ignore-engines --production=t
 FROM node:18.20.2
 
 # Set the commit hash as a build argument and environment variable
-ARG commit_hash="61753f1233"
+ARG commit_hash=""
 ENV commit_hash=${commit_hash}
 
 # Create a non-root user and group with specific UID and GID
@@ -59,7 +45,7 @@ RUN groupadd -g 1001 sunbird && \
 
 # Set the working directory and copy the built files
 WORKDIR /home/sunbird
-COPY --chown=sunbird:sunbird --from=builder /usr/src/app /home/sunbird
+COPY --chown=sunbird:sunbird --from=builder /usr/src/app/app_dist /home/sunbird/app_dist
 
 # Switch to the non-root user
 USER sunbird
@@ -68,13 +54,14 @@ USER sunbird
 WORKDIR /home/sunbird/app_dist
 RUN mv dist/index.html dist/index.ejs
 
-# Print the commit hash to verify it is set correctly
+# Print the commit hash
 RUN echo "Commit Hash: ${commit_hash}"
 
 # Add the build hash to package.json
 RUN sed -i "/version/a\    \"buildHash\": \"${commit_hash}\"," package.json
 
 # Run the build script to perform additional tasks (e.g., phraseAppPull)
+# Adjust the path based on your directory structure
 RUN node helpers/resourceBundles/build.js -task="phraseAppPull"
 
 # Expose the port used by the server
