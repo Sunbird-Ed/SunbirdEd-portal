@@ -13,6 +13,7 @@ node=$2
 org=$3
 buildDockerImage=$4
 buildCdnAssests=$5
+cdnUrl=""
 echo "buildDockerImage: " $buildDockerImage
 echo "buildCdnAssests: " $buildCdnAssests
 ## docker test start
