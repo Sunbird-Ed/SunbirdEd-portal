@@ -1,7 +1,7 @@
-# Use a base image suitable for building the client and server (e.g., Node.js)
+# Use a base image suitable for building the client and server
 FROM node:18.20.2 AS builder
 
-# Arguments for CDN URL and build condition
+# Arguments for CDN URL and buildCdnAssets
 ARG cdnUrl=""
 ENV cdnUrl=${cdnUrl}
 ARG buildCdnAssets=""
@@ -13,6 +13,7 @@ WORKDIR /usr/src/app/client
 # Copy the client code into the Docker container
 COPY src/app/client ./
 RUN yarn cache clean
+
 # Install client dependencies
 RUN yarn install --no-progress --frozen-lockfile --production=true
 
