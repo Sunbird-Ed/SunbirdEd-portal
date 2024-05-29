@@ -12,7 +12,7 @@ WORKDIR /usr/src/app/client
 
 # Copy the client code into the Docker container
 COPY src/app/client ./
-
+RUN yarn cache clean
 # Install client dependencies
 RUN yarn install --no-progress --frozen-lockfile --production=true
 
