@@ -1,28 +1,24 @@
-<app-modal-wrapper [config]="{disableClose: false,size: 'normal',panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="closeModal()" #modal>
+<app-modal-wrapper [config]="{disableClose: false,size: 'normal',panelClass: ['material-modal', 'material-modal--small']}" (dismiss)="closeModal()" #modal>
   <ng-template sbModalContent>
-    <div class="sb-mat__modal sb-onboard">
+    <div class="sb-mat__modal">
       <div mat-dialog-title class="flex-jc-center">
-        <div class="sb-onboard__header">
-          <h4>{{ resourceService.frmelmnts?.lbl?.selectEntity }}</h4>
-        </div>
+        <h4>{{ resourceService.frmelmnts?.lbl?.selectEntity }}</h4>
         <button aria-label="close dialog" mat-dialog-close class="close-btn" (click)="closeModal()">
         </button>
       </div>
       <mat-dialog-content>
         <div class="sb-mat__modal__content">
-            <div class="content search-results">
-            <div *ngIf="solution.entities?.length">
-              <div *ngFor="let entity of solution.entities; let i = index">
-                <div class="sb-radio-btn-checkbox sb-radio-btn-primary checked-box">
-                  <input value="{{ entity._id }}" id="{{ entity._id }}" type="radio" [checked]="entity.selected"
-                    (change)="onEntityChange(entity)" />
-                  <label for="{{ entity._id }}"> {{ entity.name }}</label>
-                </div>
-              </div>
+          <div *ngIf="solution.entities?.length">
+            <div *ngFor="let entity of solution.entities; let i = index">
+              <mat-radio-group>
+                <mat-radio-button color="primary" value="{{ entity._id }}" id="{{ entity._id }}" type="radio" [checked]="entity.selected" (change)="onEntityChange(entity)">
+                  {{ entity.name }}
+                </mat-radio-button>
+              </mat-radio-group>
             </div>
-            <div class="twelve wide column" *ngIf="!solution.entities?.length">
-              <app-no-result [data]="noResultMessage"></app-no-result>
-            </div>
+          </div>
+          <div class="twelve wide column" *ngIf="!solution.entities?.length">
+            <app-no-result [data]="noResultMessage"></app-no-result>
           </div>
         </div>
       </mat-dialog-content>
