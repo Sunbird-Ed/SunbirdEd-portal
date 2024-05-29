@@ -24,7 +24,7 @@ RUN npm run build
 # Conditional build logic for CDN assets
 RUN if [ "$buildCdnAssets" = "true" ]; then \
     echo "Building client CDN assets..."; \
-    npm run build-cdn --deploy-url $cdnUrl && \
+    npm run build-cdn $cdnUrl && \
     export sunbird_portal_cdn_url=$cdnUrl && \
     npm run inject-cdn-fallback && \
     echo "Completed client CDN prod build."; \
