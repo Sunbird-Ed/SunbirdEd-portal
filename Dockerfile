@@ -33,15 +33,18 @@ RUN if [ "$buildCdnAssets" = "true" ]; then \
     fi
 
 # Validate and copy CDN assets if they exist
-RUN /bin/bash -c 'if [ -d "src/app/dist-cdn" ] && [ "$(ls -A src/app/dist-cdn)" ]; then \
-    echo "Copying CDN assets..."; \
+RUN if [ "$buildCdnAssets" = "true" ]; then \
+    echo "Validating and copying CDN assets..."; \
+    if [ -d "src/app/dist-cdn" ] && [ "$(ls -A src/app/dist-cdn)" ]; then \
     mkdir -p /usr/src/app/cdn_assets && \
     cp -r src/app/dist-cdn/* /usr/src/app/cdn_assets/ && \
     echo "CDN assets copied successfully."; \
     else \
     echo "Directory src/app/dist-cdn does not exist or is empty. Skipping copy."; \
-    fi'
-      
+    fi; \
+    else \
+    echo "Skipping validation and copying of CDN assets."; \
+    fi
 # Set the working directory for server build
 WORKDIR /usr/src/app
 
