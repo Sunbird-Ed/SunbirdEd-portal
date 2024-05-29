@@ -1,21 +1,36 @@
 # Use a base image suitable for building the client and server (e.g., Node.js)
 FROM node:18.20.2 AS builder
 
+# Arguments for CDN URL and build condition
+ARG cdnUrl=""
+ENV cdnUrl=${cdnUrl}
+ARG buildCdnAssets=""
+ENV buildCdnAssets=${buildCdnAssets}
+
 # Set the working directory for the client build
 WORKDIR /usr/src/app/client
 
-# Copy package.json and yarn.lock for client
-# COPY src/app/client/package.json src/app/client/yarn.lock ./
+# Copy the client code into the Docker container
 COPY src/app/client ./
 
 # Install client dependencies
 RUN yarn install --no-progress --frozen-lockfile --production=true
 
-# Copy the client code into the Docker container
-# COPY src/app/client ./
 
 # Build the client
 RUN npm run build
+
+# Build the client for CDN and inject CDN fallback
+# Conditional build logic for CDN assets
+RUN if [ "$buildCdnAssets" = "true" ]; then \
+    echo "Building client CDN assets..."; \
+    npm run build-cdn -- --deployUrl $cdnUrl && \
+    export sunbird_portal_cdn_url=$cdnUrl && \
+    npm run inject-cdn-fallback && \
+    echo "Completed client CDN prod build."; \
+    else \
+    echo "Skipping client CDN assets build."; \
+    fi
 
 # Set the working directory for server build
 WORKDIR /usr/src/app
