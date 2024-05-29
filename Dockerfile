@@ -10,6 +10,16 @@ ENV buildCdnAssets=${buildCdnAssets}
 # Set the working directory for the client build
 WORKDIR /usr/src/app/client
 
+# Copy the client code into the Docker container
+COPY src/app/client ./
+
+# Install client dependencies
+RUN yarn install --no-progress --frozen-lockfile --production=true
+
+
+# Build the client
+RUN npm run build
+
 # Build the client for CDN and inject CDN fallback
 # Conditional build logic for CDN assets
 RUN if [ "$buildCdnAssets" = "true" ]; then \
@@ -21,18 +31,6 @@ RUN if [ "$buildCdnAssets" = "true" ]; then \
     else \
     echo "Skipping client CDN assets build."; \
     fi
-
-# Copy the client code into the Docker container
-COPY src/app/client ./
-
-# Install client dependencies
-RUN yarn install --no-progress --frozen-lockfile --production=true
-
-
-# Build the client
-RUN npm run build
-
-#cdn
 
 # Set the working directory for server build
 WORKDIR /usr/src/app
