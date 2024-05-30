@@ -52,18 +52,20 @@ jobs:
             echo "File dist/index.html does not exist"
           fi
 
-      - name: Set up dependencies for server
+      - name: Set up server directories
+        run: mkdir -p $GITHUB_WORKSPACE/app_dist
+
+      - name: Copy server files
         run: |
-          mkdir -p $GITHUB_WORKSPACE/app_dist
           cp -r src/app/libs src/app/helpers src/app/proxy src/app/resourcebundles src/app/package.json src/app/framework.config.js src/app/sunbird-plugins src/app/routes src/app/constants src/app/controllers src/app/server.js $GITHUB_WORKSPACE/app_dist/
         shell: /usr/bin/bash -e {0}
 
       - name: Install server dependencies
-        working-directory: $GITHUB_WORKSPACE/app_dist
+        working-directory: ${{ github.workspace }}/app_dist
         run: yarn install --ignore-engines --no-progress --production=true
 
       - name: Run server build script
-        working-directory: $GITHUB_WORKSPACE/app_dist
+        working-directory: ${{ github.workspace }}/app_dist
         run: node helpers/resourceBundles/build.js -task="phraseAppPull"
       
       - name: Test cases
