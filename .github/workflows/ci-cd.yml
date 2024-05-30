@@ -41,13 +41,13 @@ jobs:
 
       - name: Install server dependencies
         run: yarn install --ignore-engines --no-progress --production=true
-        working-directory: $GITHUB_WORKSPACE/app_dist
+        working-directory: ${{ github.workspace }}/app_dist
 
       - name: Build and run server scripts
         run: |
           mv dist/index.html dist/index.ejs
           node helpers/resourceBundles/build.js -task="phraseAppPull"
-        working-directory: $GITHUB_WORKSPACE/app_dist
+        working-directory: ${{ github.workspace }}/app_dist
 
       - name: Run tests
         run: npm run test:ci
@@ -62,4 +62,4 @@ jobs:
 
       - name: Run Sonar Scanner
         run: /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner
-        working-directory: $GITHUB_WORKSPACE
+        working-directory: ${{ github.workspace }}
