@@ -54,16 +54,16 @@ jobs:
 
       - name: Set up dependencies for server
         run: |
-          mkdir -p /usr/src/app/app_dist
-          cp -r src/app/libs src/app/helpers src/app/proxy src/app/resourcebundles src/app/package.json src/app/framework.config.js src/app/sunbird-plugins src/app/routes src/app/constants src/app/controllers src/app/server.js /usr/src/app/app_dist/
+          mkdir -p $GITHUB_WORKSPACE/app_dist
+          cp -r src/app/libs src/app/helpers src/app/proxy src/app/resourcebundles src/app/package.json src/app/framework.config.js src/app/sunbird-plugins src/app/routes src/app/constants src/app/controllers src/app/server.js $GITHUB_WORKSPACE/app_dist/
         shell: /usr/bin/bash -e {0}
 
       - name: Install server dependencies
-        working-directory: /usr/src/app/app_dist
+        working-directory: $GITHUB_WORKSPACE/app_dist
         run: yarn install --ignore-engines --no-progress --production=true
 
       - name: Run server build script
-        working-directory: /usr/src/app/app_dist
+        working-directory: $GITHUB_WORKSPACE/app_dist
         run: node helpers/resourceBundles/build.js -task="phraseAppPull"
       
       - name: Test cases
