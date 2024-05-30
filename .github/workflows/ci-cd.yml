@@ -21,15 +21,27 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install client dependencies and build
+      - name: Install client dependencies
+        working-directory: src/app/client
+        run: yarn install --no-progress --production=true
+
+      - name: Build client
+        working-directory: src/app/client
+        run: npm run build
+
+      - name: List all files after build
+        working-directory: src/app/client
+        run: find . -type f
+
+      - name: Check if dist directory exists and list contents
         working-directory: src/app/client
         run: |
-          yarn install --no-progress --production=true
-          npm run build
-
-      - name: List dist directory contents
-        working-directory: src/app/client
-        run: ls -l dist
+          if [ -d dist ]; then
+            echo "dist directory exists. Listing contents:"
+            ls -l dist
+          else
+            echo "dist directory does not exist"
+          fi
 
       - name: Move index.html to index.ejs if it exists
         working-directory: src/app/client
