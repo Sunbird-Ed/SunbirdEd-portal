@@ -13,53 +13,54 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
-
+      
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18.20.2'
+          node-version: 18
 
-      - name: Install yarn
-        run: npm install -g yarn
-
-      - name: Clean and install client dependencies
-        run: |
-          cd src/app/client
-          yarn cache clean
-          yarn install --no-progress --production=true
-
-      - name: Build client
-        run: npm run build
+      - name: Install client dependencies and build
         working-directory: src/app/client
-
-      - name: Prepare server directory
         run: |
-          mkdir -p $GITHUB_WORKSPACE/app_dist
-          cp -r src/app/libs src/app/helpers src/app/proxy src/app/resourcebundles src/app/package.json src/app/framework.config.js src/app/sunbird-plugins src/app/routes src/app/constants src/app/controllers src/app/server.js $GITHUB_WORKSPACE/app_dist/
+          yarn install --no-progress --production=true
+          npm run build
+
+      - name: List dist directory contents
+        run: ls -l src/app/client/dist
+
+      - name: Move index.html to index.ejs
+        run: mv src/app/client/dist/index.html src/app/client/dist/index.ejs
+
+      - name: Set up dependencies for server
+        run: |
+          mkdir -p /usr/src/app/app_dist
+          cp -r src/app/libs src/app/helpers src/app/proxy src/app/resourcebundles src/app/package.json src/app/framework.config.js src/app/sunbird-plugins src/app/routes src/app/constants src/app/controllers src/app/server.js /usr/src/app/app_dist/
+        shell: /usr/bin/bash -e {0}
 
       - name: Install server dependencies
+        working-directory: /usr/src/app/app_dist
         run: yarn install --ignore-engines --no-progress --production=true
-        working-directory: ${{ github.workspace }}/app_dist
 
-      - name: Build and run server scripts
-        run: |
-          mv dist/index.html dist/index.ejs
-          node helpers/resourceBundles/build.js -task="phraseAppPull"
-        working-directory: ${{ github.workspace }}/app_dist
-
-      - name: Run tests
-        run: npm run test:ci
+      - name: Run server build script
+        working-directory: /usr/src/app/app_dist
+        run: node helpers/resourceBundles/build.js -task="phraseAppPull"
+      
+      - name: Test cases
         working-directory: src/app/client
+        run: |
+          yarn config set ignore-engines true
+          yarn install
+          npm run test:ci
 
       - name: Install Sonar Scanner
         run: |
           cd /tmp
           wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+          sudo apt-get install -y unzip
           unzip sonar-scanner-cli-5.0.1.3006-linux.zip
           cd -
-
+      
       - name: Run Sonar Scanner
         run: /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner
-        working-directory: ${{ github.workspace }}
