@@ -1,96 +1,62 @@
-name: CI/CD Pipeline
+name: CI/CD
 
 on:
   push:
     branches:
-      - release-8.0.0
-  pull_request:
-    branches:
-      - release-8.0.0
+      - main
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
-    services:
-      docker:
-        image: docker:19.03.12
-        options: --privileged
-        ports:
-          - 3000:3000
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18.20.2
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Build client
-      working-directory: src/app/client
-      run: |
-        rm -rf node_modules yarn.lock
-        yarn cache clean
-        yarn install --no-progress --production=true
-        npm run build
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.20.2'
 
-    - name: Prepare server files
-      run: |
-        mkdir -p /usr/src/app/app_dist
-        cp -r src/app/libs src/app/helpers src/app/proxy src/app/resourcebundles src/app/package.json src/app/framework.config.js src/app/sunbird-plugins src/app/routes src/app/constants src/app/controllers src/app/server.js /usr/src/app/app_dist/
+      - name: Install yarn
+        run: npm install -g yarn
 
-    - name: Install server dependencies
-      working-directory: /usr/src/app/app_dist
-      run: yarn install --ignore-engines --no-progress --production=true
+      - name: Clean and install client dependencies
+        run: |
+          cd src/app/client
+          yarn cache clean
+          yarn install --no-progress --production=true
 
-    - name: Build Docker image
-      run: docker build -t myapp:latest .
+      - name: Build client
+        run: npm run build
+        working-directory: src/app/client
 
-    - name: Run Docker container
-      run: docker run -d -p 3000:3000 myapp:latest
+      - name: Prepare server directory
+        run: |
+          mkdir -p $GITHUB_WORKSPACE/app_dist
+          cp -r src/app/libs src/app/helpers src/app/proxy src/app/resourcebundles src/app/package.json src/app/framework.config.js src/app/sunbird-plugins src/app/routes src/app/constants src/app/controllers src/app/server.js $GITHUB_WORKSPACE/app_dist/
 
-    - name: Check application status
-      run: |
-        sleep 10
-        curl --retry 10 --retry-delay 5 -v http://localhost:3000
+      - name: Install server dependencies
+        run: yarn install --ignore-engines --no-progress --production=true
+        working-directory: $GITHUB_WORKSPACE/app_dist
 
-    - name: Set up Node.js for tests
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18.20.2
+      - name: Build and run server scripts
+        run: |
+          mv dist/index.html dist/index.ejs
+          node helpers/resourceBundles/build.js -task="phraseAppPull"
+        working-directory: $GITHUB_WORKSPACE/app_dist
 
-    - name: Install prerequisites
-      working-directory: src/app/client
-      run: node --version
+      - name: Run tests
+        run: npm run test:ci
+        working-directory: src/app/client
 
-    - name: Ignore engines
-      working-directory: src/app/client
-      run: yarn config set ignore-engines true
+      - name: Install Sonar Scanner
+        run: |
+          cd /tmp
+          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+          unzip sonar-scanner-cli-5.0.1.3006-linux.zip
+          cd -
 
-    - name: Install npm dependencies
-      working-directory: src/app/client
-      run: yarn install
-
-    - name: Save cache
-      uses: actions/cache@v3
-      with:
-        path: src/app/client/node_modules
-        key: dependency-cache-portal-${{ hashFiles('src/app/client/package.json') }}
-
-    - name: Run tests using JEST
-      working-directory: src/app/client
-      run: npm run test:ci
-
-    - name: Install Sonar Scanner
-      run: |
-        cd /tmp
-        wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
-        sudo apt-get install -y unzip
-        unzip sonar-scanner-cli-5.0.1.3006-linux.zip
-
-    - name: Run Sonar Scanner
-      run: |
-        cd src/app/client
-        /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner
+      - name: Run Sonar Scanner
+        run: /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner
+        working-directory: $GITHUB_WORKSPACE
