@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - release-8.0.0
+  pull_request:
+    branches:
+      - release-8.0.0
 
 jobs:
   build-and-test:
