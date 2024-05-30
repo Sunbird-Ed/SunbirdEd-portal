@@ -3,7 +3,7 @@ name: CI/CD
 on:
   push:
     branches:
-      - main
+      - release-8.0.0
 
 jobs:
   build-and-test:
