@@ -28,10 +28,17 @@ jobs:
           npm run build
 
       - name: List dist directory contents
-        run: ls -l src/app/client/dist
+        working-directory: src/app/client
+        run: ls -l dist
 
-      - name: Move index.html to index.ejs
-        run: mv src/app/client/dist/index.html src/app/client/dist/index.ejs
+      - name: Move index.html to index.ejs if it exists
+        working-directory: src/app/client
+        run: |
+          if [ -f dist/index.html ]; then
+            mv dist/index.html dist/index.ejs
+          else
+            echo "File dist/index.html does not exist"
+          fi
 
       - name: Set up dependencies for server
         run: |
