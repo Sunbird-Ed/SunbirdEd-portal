@@ -89,7 +89,7 @@ export class GlobalConsentPiiComponent implements OnInit {
 
   getUserInformation() {
     this.userInformation['name'] = this.usersProfile.lastName ?
-     `${this.usersProfile.firstName} ${this.usersProfile.lastName}` : this.usersProfile.firstName;
+      `${this.usersProfile.firstName} ${this.usersProfile.lastName}` : this.usersProfile.firstName;
     this.userInformation['userid'] = this.usersProfile.userId;
     this.userInformation['emailId'] = this.usersProfile.email;
     this.userInformation['phone'] = this.usersProfile.phone;
@@ -193,7 +193,7 @@ export class GlobalConsentPiiComponent implements OnInit {
     if (this.type === 'course-consent') {
       request.consumerId = this.collection ? this.collection.channel : '';
       request.objectId = this.collection ? this.collection.identifier : '';
-    } else if ( this.type === 'global-consent') {
+    } else if (this.type === 'global-consent') {
       request.consumerId = this.userService.channel;
       request.objectId = this.userService.channel;
       const declReq = [];
@@ -201,11 +201,11 @@ export class GlobalConsentPiiComponent implements OnInit {
         declReq.push(this.getDeclarationReqObject(this.usersProfile));
         this.updateUserDeclaration(declReq);
       }
-    } else if(this.type === 'program-consent'){
+    } else if (this.type === 'program-consent') {
       request.consumerId = this.collection.rootOrganisations;
       request.objectId = this.collection.programId
     }
-    this.csUserService.getConsent(request, { apiPath: '/learner/user/v1' })
+    this.csUserService.getConsent(request, { apiPath: '/learner/user/v2' })
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(res => {
         if (this.type === 'global-consent') {
@@ -239,11 +239,11 @@ export class GlobalConsentPiiComponent implements OnInit {
       request.consumerId = this.collection ? this.collection.channel : '';
       request.objectId = this.collection ? this.collection.identifier : '';
       request.objectType = 'Collection';
-    } else if ( this.type === 'global-consent') {
+    } else if (this.type === 'global-consent') {
       request.consumerId = this.userService.channel;
       request.objectId = this.userService.channel;
       request.objectType = 'Organisation';
-    } else if(this.type === 'program-consent'){
+    } else if (this.type === 'program-consent') {
       request.consumerId = this.collection.rootOrganisations;
       request.objectId = this.collection.programId;
       request.objectType = 'Program'
@@ -251,8 +251,8 @@ export class GlobalConsentPiiComponent implements OnInit {
     this.csUserService.updateConsent(request, { apiPath: '/learner/user/v1' })
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(() => {
-        if(this.type === 'program-consent'){
-          this.consentShare.emit({consent:true})
+        if (this.type === 'program-consent') {
+          this.consentShare.emit({ consent: true })
         }
         this.type !== 'program-consent' && this.toasterService.success(_.get(this.resourceService, 'messages.smsg.dataSettingSubmitted'));
         this.getUserConsent();
@@ -262,8 +262,8 @@ export class GlobalConsentPiiComponent implements OnInit {
         this.isTncAgreed = false;
         this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
         console.error('Error while updating user consent', error);
-        if(this.type === 'program-consent'){
-          this.consentShare.emit({consent:false})
+        if (this.type === 'program-consent') {
+          this.consentShare.emit({ consent: false })
         }
       });
   }
@@ -281,9 +281,9 @@ export class GlobalConsentPiiComponent implements OnInit {
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(() => {
         this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0037'));
-    }, err => {
-      this.toasterService.error(this.resourceService.messages.emsg.m0052);
-    });
+      }, err => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0052);
+      });
   }
   getDeclarationReqObject(usersProfile) {
     let userExternalId = null;
@@ -301,7 +301,7 @@ export class GlobalConsentPiiComponent implements OnInit {
     };
     const declarationObj = {
       operation: 'add',
-      userId : usersProfile.userId,
+      userId: usersProfile.userId,
       orgId: usersProfile.rootOrgId,
       info: info
     };

@@ -58,8 +58,8 @@
     "GET_GENERALISED_RESOURCE": "getGeneralisedResourcesBundles",
     "OBSERVATION_PREFIX": "/assessment/",
     "KENDRA_PREFIX": "/kendra/",
-    "DHITI_PREFIX":"/dhiti/",
-    "CLOUD_PREFIX":"/cloudUpload/",
+    "DHITI_PREFIX": "/dhiti/",
+    "CLOUD_PREFIX": "/cloudUpload/",
     "CUSTOM_RESOURCE_BUNDLE": "/api/data/v1/form/read",
     "REPORT": {
       "READ": "/get",
@@ -118,7 +118,7 @@
       "USER_EXISTS_GET_USER_BY_KEY": "isUserExists/user/v1/get",
       "USER_DECLARATION": "user/v1/declarations",
       "GET_SESSION": "get/user/sessionId",
-      "DELETE":"user/v1/delete"
+      "DELETE": "user/v1/delete"
     },
     "CERTIFICATE": {
       "FETCH_CERTIFICATES": "v1/certs/search",
@@ -208,7 +208,7 @@
     "ADMIN": {
       "USER_SEARCH": "user/v3/search",
       "ORG_SEARCH": "org/v2/search",
-      "ORG_EXT_SEARCH": "org/v1/ext/search",
+      "ORG_EXT_SEARCH": "org/v2/search",
       "BULK": {
         "USERS_UPLOAD": "user/v2/upload",
         "ORGANIZATIONS_UPLOAD": "org/v1/upload",
@@ -265,7 +265,7 @@
       "VERIFY": "otp/v2/verify",
       "ANONYMOUS": {
         "GENERATE": "anonymous/otp/v2/generate",
-        "GENERATE_USERDELETE":"anonymous/delete/otp/v2/generate"
+        "GENERATE_USERDELETE": "anonymous/delete/otp/v2/generate"
       }
     },
     "OFFLINE": {
@@ -357,26 +357,25 @@
       "SEARCH_ENTITY": "observations/mlsurvey/v1/searchEntities",
       "OBSERVATION_UPDATE_ENTITES": "observations/mlsurvey/v1/updateEntities/",
       "OBSERVATION_SUBMISSION_CREATE": "observationSubmissions/mlsurvey/v1/create/",
-      "OBSERVATION_LISTING":"solutions/mlcore/v1/targetedSolutions?type=observation",
-      "MANDATORY_ENTITY_TYPES_FOR_ROLES":"entities/mlcore/v1/entityTypesByLocationAndRole/",
-      "OBSERVATION_SUBMISSION_UPDATE":"observationSubmissions/mlsurvey/v1/update/",
+      "OBSERVATION_LISTING": "solutions/mlcore/v1/targetedSolutions?type=observation",
+      "MANDATORY_ENTITY_TYPES_FOR_ROLES": "entities/mlcore/v1/entityTypesByLocationAndRole/",
+      "OBSERVATION_SUBMISSION_UPDATE": "observationSubmissions/mlsurvey/v1/update/",
       "GET_ASSESSMENT": "observations/mlsurvey/v1/assessment/",
       "OBSERVATION_REPORT_SOLUTION_LIST": "observationSubmissions/mlsurvey/v1/solutionList?",
-      "JOIN_PROGRAM":"programs/mlcore/v1/join",
-      "READ_PROGRAM":"users/mlcore/v1/solutions"
+      "JOIN_PROGRAM": "programs/mlcore/v1/join",
+      "READ_PROGRAM": "users/mlcore/v1/solutions"
     },
     "KENDRA": {
       "TARGETTED_ENTITY_TYPES": "users/mlcore/v1/targetedEntity/",
       "PRESIGNED_URLS": "cloud-services/mlcore/v1/files/preSignedUrls",
       "PROGRAMS_BY_PLATFORM_ROLES": "user-extension/mlcore/v1/programsByPlatformRoles",
       "SOLUTIONS_BY_PROGRAMID": "user-extension/mlcore/v1/solutions",
-      "DISTRICTS_AND_ORGANISATIONS":"resource/mlreports/v1/filtervalues"
+      "DISTRICTS_AND_ORGANISATIONS": "resource/mlreports/v1/filtervalues"
     },
-    "DHITI":{
+    "DHITI": {
       "GENERIC_REPORTS": "reports/mlreports/v1/fetch",
-      "ALL_EVIDENCE":"observations/mlreports/v1/listAllEvidences"
+      "ALL_EVIDENCE": "observations/mlreports/v1/listAllEvidences"
     },
     "UCI": "/uci"
-
   }
 }
