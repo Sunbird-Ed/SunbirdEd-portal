@@ -150,6 +150,7 @@ describe('ObservationListingComponent', () => {
     });
 
     it('should call playcontent component', () => {
+        component.categoryKeys = [{code:'solution'}, {code:'solution_type'}, {code:'program'}, {code:'entityType'},{code:'programName'}]
         const mockEvent = {
             data: {
                 programId: 'mock-program-id',
@@ -167,7 +168,7 @@ describe('ObservationListingComponent', () => {
             solutionId: data.solutionId,
             observationId: data._id,
             solutionName: data.name,
-            programName: data.subject[0],
+            programName: data[component.categoryKeys[4].code],
             entityType: data.entityType
         })
         expect(component.router.navigate).toHaveBeenCalledWith(['observation/details'], {
