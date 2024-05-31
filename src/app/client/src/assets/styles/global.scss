@@ -1568,3 +1568,29 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
   font-weight: normal;
   padding: calculateRem(10px) 0;
 }
+//don't remove... these are overwritten styles for reports dropdown fields
+::ng-deep {
+  .reports-form-fields .sb-prominent-filter-field{
+    app-material-auto-complete{
+      .mat-mdc-form-field.mat-mdc-form-field-type-mat-input .mat-mdc-text-field-wrapper {
+        border-radius: 0;
+        border: none;
+        padding: 0;
+      }
+      mat-mdc-form-field.mat-mdc-form-field-type-mat-input .mat-mdc-text-field-wrapper {
+        padding: 0;
+        margin: 0;
+      }
+      .cdk-text-field-autofill-monitored:not(:-webkit-autofill){
+        border-radius: 1.5rem;
+        border: .0625rem solid var(--gray-100);
+        width: 100%;
+        padding: 0.5rem 1.5rem;
+        margin-top: 0.5rem;
+      }
+      .sb-autocomp-dropdown .mat-mdc-form-field {
+        height: 3rem !important;
+      }
+    }
+  }
+}
