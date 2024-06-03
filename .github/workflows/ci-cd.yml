@@ -82,13 +82,3 @@ jobs:
           sudo apt-get install -y unzip
           unzip sonar-scanner-cli-5.0.1.3006-linux.zip
           cd -
-
- 
-      - name: Run Sonar Scanner
-        run: |
-          cd ${{ github.workspace }}/portal
-          /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner \
-            -Dsonar.projectKey=Sunbird-Ed_SunbirdEd-portal \
-            -Dsonar.organization=sunbird-ed \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
