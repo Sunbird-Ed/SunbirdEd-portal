@@ -83,7 +83,7 @@ jobs:
           unzip sonar-scanner-cli-5.0.1.3006-linux.zip
           cd -
       - name: Run Sonar Scanner
-        working-directory: portal
+        working-directory: src/app
         run: |
           /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner \
             -Dsonar.projectKey=Sunbird-Ed_SunbirdEd-portal \
