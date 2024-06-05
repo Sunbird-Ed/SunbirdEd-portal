@@ -87,3 +87,8 @@ input[type=checkbox][disabled] {
   border: var(--gray-100);
 }
 .search-results{ height : 100%; overflow-y: scroll; }
+
+.addEntityTemplate{
+  background-color: var(--mat-accordion-expansion-panel-bg); 
+  width: 50rem;
+}
