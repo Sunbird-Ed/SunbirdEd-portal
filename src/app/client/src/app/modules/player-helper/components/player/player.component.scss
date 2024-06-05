@@ -132,3 +132,6 @@
   overflow: hidden;
   position: relative;
 }
+.contentViewerIframeShadow.player-fullscreen .custom-web-player{
+  height: calc(100vh - 4rem);
+}
