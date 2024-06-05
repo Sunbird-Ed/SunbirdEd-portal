@@ -3,10 +3,10 @@ name: CI/CD
 on:
   push:
     branches:
-      - '*'  # Trigger on push to any branch
+      - "*" # Trigger on push to any branch
   pull_request:
     branches:
-      - '*'  # Trigger on pull request to any branch
+      - "*" # Trigger on pull request to any branch
 
 jobs:
   build-and-test:
@@ -16,7 +16,7 @@ jobs:
       # Checkout the repository to the runner
       - name: Checkout repository
         uses: actions/checkout@v3
-      
+
       # Set up Node.js environment
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -78,7 +78,6 @@ jobs:
       - name: Run server build script
         working-directory: ${{ github.workspace }}/app_dist
         run: node helpers/resourceBundles/build.js -task="phraseAppPull"
-      
       # Execute test cases using JEST
       - name: Execute test cases using JEST
         working-directory: src/app/client
@@ -97,11 +96,11 @@ jobs:
           cd -
 
       # Run Sonar Scanner for code analysis
-      # - name: Run Sonar Scanner
-      #   working-directory: src/app
-      #   run: |
-      #     /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner \
-      #       -Dsonar.projectKey=Sunbird-Ed_SunbirdEd-portal \
-      #       -Dsonar.organization=sunbird-ed \
-      #       -Dsonar.host.url=https://sonarcloud.io \
-      #       -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+      - name: Run Sonar Scanner
+        working-directory: src/app
+        run: |
+          /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner \
+            -Dsonar.projectKey=Sunbird-Ed_SunbirdEd-portal \
+            -Dsonar.organization=sunbird-ed \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=ad78f59b516bcae629d069b7c2d266fcf6690a30
