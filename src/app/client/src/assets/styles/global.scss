@@ -1568,3 +1568,9 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
   font-weight: normal;
   padding: calculateRem(10px) 0;
 }
+.mat-mdc-tab-body.mat-mdc-tab-body-active{
+  margin-top: 1rem;
+}
+.mat-mdc-tab .mdc-tab__text-label {
+  font-weight: bold;
+}
