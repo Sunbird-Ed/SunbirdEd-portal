@@ -96,10 +96,10 @@ jobs:
           cd -
 
       - name: Run Sonar Scanner
+        working-directory: src/app
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          cd ${{ github.workspace }}/portal
           /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner \
             -Dsonar.projectKey=Sunbird-Ed_SunbirdEd-portal \
             -Dsonar.organization=sunbird-ed \
