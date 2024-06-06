@@ -2,14 +2,14 @@ const utils = require('../helpers/utils.js');
 const proxyUtils = require('./proxyUtils.js')
 const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')
-const contentProxyUrl  = utils?.defaultHost(utils?.envVariables?.CONTENT_PROXY_URL);
-const learnerServiceBaseUrl  = utils?.defaultHost(utils?.envVariables?.LEARNER_URL);
+const contentProxyUrl = utils?.defaultHost(utils?.envVariables?.CONTENT_PROXY_URL);
+const learnerServiceBaseUrl = utils?.defaultHost(utils?.envVariables?.LEARNER_URL);
 const learner_Service_Local_BaseUrl = utils?.defaultHost(utils?.envVariables?.learner_Service_Local_BaseUrl);
 const PORTAL_EXT_PLUGIN_URL = utils?.defaultHost(utils?.envVariables?.PORTAL_EXT_PLUGIN_URL);
 const contentServiceBaseUrl = utils?.defaultHost(utils?.envVariables?.CONTENT_URL);
 const reqDataLimitOfContentUpload = '30mb'
 const telemetryHelper = require('../helpers/telemetryHelper')
-const learnerURL  = utils?.defaultHost(utils?.envVariables?.LEARNER_URL);
+const learnerURL = utils?.defaultHost(utils?.envVariables?.LEARNER_URL);
 const isAPIWhitelisted = require('../helpers/apiWhiteList');
 
 module.exports = function (app) {
@@ -68,27 +68,27 @@ module.exports = function (app) {
     }))
 
   app.all('/action/data/v1/page/assemble',
-  isAPIWhitelisted.isAllowed(),
-  proxy(learnerServiceBaseUrl, {
-    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerServiceBaseUrl),
-    proxyReqPathResolver: function (req) {
-      var originalUrl = req.originalUrl
-      originalUrl = originalUrl.replace('/action/', '')
-      return require('url').parse(learnerServiceBaseUrl + originalUrl).path
-    }
-  }))
+    isAPIWhitelisted.isAllowed(),
+    proxy(learnerServiceBaseUrl, {
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerServiceBaseUrl),
+      proxyReqPathResolver: function (req) {
+        var originalUrl = req.originalUrl
+        originalUrl = originalUrl.replace('/action/', '')
+        return require('url').parse(learnerServiceBaseUrl + originalUrl).path
+      }
+    }))
 
 
   app.all('/action/data/v1/form/read',
-  isAPIWhitelisted.isAllowed(),
-  proxy(contentServiceBaseUrl, {
-    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentServiceBaseUrl),
-    proxyReqPathResolver: function (req) {
-      var originalUrl = req.originalUrl
-      originalUrl = originalUrl.replace('/action/', '')
-      return require('url').parse(contentServiceBaseUrl + originalUrl).path
-    }
-  }))
+    isAPIWhitelisted.isAllowed(),
+    proxy(contentServiceBaseUrl, {
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentServiceBaseUrl),
+      proxyReqPathResolver: function (req) {
+        var originalUrl = req.originalUrl
+        originalUrl = originalUrl.replace('/action/', '')
+        return require('url').parse(contentServiceBaseUrl + originalUrl).path
+      }
+    }))
 
   const addCorsHeaders = (req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*')
@@ -104,27 +104,27 @@ module.exports = function (app) {
   }
 
   app.all('/action/review/comment/*',
-  isAPIWhitelisted.isAllowed(),
-  addCorsHeaders,
-  proxy(PORTAL_EXT_PLUGIN_URL, {
-    proxyReqPathResolver: req => {
-      return req.originalUrl.replace('/action', '/plugin')
-    },
-    userResDecorator: userResDecorator
-  }))
+    isAPIWhitelisted.isAllowed(),
+    addCorsHeaders,
+    proxy(PORTAL_EXT_PLUGIN_URL, {
+      proxyReqPathResolver: req => {
+        return req.originalUrl.replace('/action', '/plugin')
+      },
+      userResDecorator: userResDecorator
+    }))
 
   app.all('/action/textbook/v1/toc/*',
-  isAPIWhitelisted.isAllowed(),
-  addCorsHeaders,
-  proxy(learnerURL, {
-    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
-    proxyReqPathResolver: (req) => {
-      var originalUrl = req.originalUrl
-      originalUrl = originalUrl.replace('/action/textbook/v1/', 'textbook/v1/')
-      return require('url').parse(learnerURL + originalUrl).path
-    },
-    userResDecorator: userResDecorator
-  }))
+    isAPIWhitelisted.isAllowed(),
+    addCorsHeaders,
+    proxy(learnerURL, {
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
+      proxyReqPathResolver: (req) => {
+        var originalUrl = req.originalUrl
+        originalUrl = originalUrl.replace('/action/textbook/v1/', 'textbook/v1/')
+        return require('url').parse(learnerURL + originalUrl).path
+      },
+      userResDecorator: userResDecorator
+    }))
 
   app.post('/action/user/v3/search',
     isAPIWhitelisted.isAllowed(),
@@ -148,7 +148,7 @@ module.exports = function (app) {
     '/action/questionset/v2/comment/read/:do_id',
     '/action/question/v2/read/:do_id',
     '/action/questionset/v2/hierarchy/:do_id'
-    ],
+  ],
     isAPIWhitelisted.isAllowed(),
     addCorsHeaders,
     proxyUtils.verifyToken(),
@@ -172,7 +172,7 @@ module.exports = function (app) {
     '/action/question/v2/review/:do_id',
     '/action/question/v2/publish/:do_id',
     '/action/question/v2/list'
-    ],
+  ],
     isAPIWhitelisted.isAllowed(),
     addCorsHeaders,
     proxyUtils.verifyToken(),
@@ -193,7 +193,7 @@ module.exports = function (app) {
     '/action/questionset/v2/comment/update/:do_id',
     '/action/questionset/v2/add',
     '/action/question/v2/update/:do_id'
-    ],
+  ],
     isAPIWhitelisted.isAllowed(),
     addCorsHeaders,
     proxyUtils.verifyToken(),
@@ -228,7 +228,7 @@ module.exports = function (app) {
   // Collection import & export API's start
   app.post([
     '/action/collection/v1/import/:do_id'
-    ],
+  ],
     isAPIWhitelisted.isAllowed(),
     addCorsHeaders,
     proxyUtils.verifyToken(),
@@ -244,7 +244,7 @@ module.exports = function (app) {
   )
   app.get([
     '/action/collection/v1/export/:do_id'
-    ],
+  ],
     isAPIWhitelisted.isAllowed(),
     addCorsHeaders,
     proxyUtils.verifyToken(),
@@ -298,31 +298,58 @@ module.exports = function (app) {
     })
   )
   app.get('/action/asset/v1/read/:do_id',
-  isAPIWhitelisted.isAllowed(),
-  proxy(contentServiceBaseUrl, {
-    preserveHostHdr: true,
-    limit: reqDataLimitOfContentUpload,
-    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentServiceBaseUrl),
-    proxyReqPathResolver: function (req) {
-      let originalUrl = req.originalUrl.replace('/action/', '')
-      return require('url').parse(contentServiceBaseUrl + originalUrl).path
-    },
-    userResDecorator: userResDecorator
-  })
-)
+    isAPIWhitelisted.isAllowed(),
+    proxy(contentServiceBaseUrl, {
+      preserveHostHdr: true,
+      limit: reqDataLimitOfContentUpload,
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentServiceBaseUrl),
+      proxyReqPathResolver: function (req) {
+        let originalUrl = req.originalUrl.replace('/action/', '')
+        return require('url').parse(contentServiceBaseUrl + originalUrl).path
+      },
+      userResDecorator: userResDecorator
+    })
+  )
+
+  app.post('/action/dialcode/v1/reserve/:do_id',
+    isAPIWhitelisted.isAllowed(),
+    proxy(contentServiceBaseUrl, {
+      preserveHostHdr: true,
+      limit: reqDataLimitOfContentUpload,
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentServiceBaseUrl),
+      proxyReqPathResolver: function (req) {
+        let originalUrl = req.originalUrl.replace('/action/', '')
+        return require('url').parse(contentServiceBaseUrl + originalUrl).path
+      },
+      userResDecorator: userResDecorator
+    })
+  )
+  app.get('/action/dialcode/v1/process/status/*',
+    isAPIWhitelisted.isAllowed(),
+    proxy(contentServiceBaseUrl, {
+      preserveHostHdr: true,
+      limit: reqDataLimitOfContentUpload,
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentServiceBaseUrl),
+      proxyReqPathResolver: function (req) {
+        let originalUrl = req.originalUrl.replace('/action/', '')
+        return require('url').parse(contentServiceBaseUrl + originalUrl).path
+      },
+      userResDecorator: userResDecorator
+    })
+  )
   // asset api's  ends
 
   app.all('/action/*',
-  bodyParser.json({ limit: '50mb' }),
-  isAPIWhitelisted.isAllowed(),
-  telemetryHelper.generateTelemetryForProxy,
-  proxy(contentProxyUrl, {
-    preserveHostHdr: true,
-    limit: reqDataLimitOfContentUpload,
-    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
-    proxyReqPathResolver: proxyReqPathResolverMethod,
-    userResDecorator: userResDecorator
-  }))
+    bodyParser.json({ limit: '50mb' }),
+    isAPIWhitelisted.isAllowed(),
+    telemetryHelper.generateTelemetryForProxy,
+    proxy(contentProxyUrl, {
+      preserveHostHdr: true,
+      limit: reqDataLimitOfContentUpload,
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+      proxyReqPathResolver: proxyReqPathResolverMethod,
+      userResDecorator: userResDecorator
+    }))
 
   app.all('/v1/url/fetchmeta', proxy(contentProxyUrl, {
     proxyReqPathResolver: proxyReqPathResolverMethod
@@ -330,11 +357,11 @@ module.exports = function (app) {
 }
 const userResDecorator = (proxyRes, proxyResData, req, res) => {
   try {
-      const data = JSON.parse(proxyResData.toString('utf8'));
-      if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
-      else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
-  } catch(err) {
-      console.log('content api user res decorator json parse error', proxyResData);
-      return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
+    const data = JSON.parse(proxyResData.toString('utf8'));
+    if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+    else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
+  } catch (err) {
+    console.log('content api user res decorator json parse error', proxyResData);
+    return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
   }
 }
