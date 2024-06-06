@@ -1,5 +1,5 @@
 #Dockerfile for the player setup
-FROM node:18.20.2
+FROM node:20.13.1-bookworm-slim
 MAINTAINER "Rajesh Rajendran <rajesh.r@optit.co>"
 RUN sed -i '/jessie-updates/d' /etc/apt/sources.list
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils \
