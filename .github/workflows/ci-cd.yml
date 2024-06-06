@@ -95,12 +95,13 @@ jobs:
           unzip sonar-scanner-cli-5.0.1.3006-linux.zip
           cd -
 
-      # Run Sonar Scanner for code analysis
       - name: Run Sonar Scanner
-        working-directory: src/app
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
+          cd ${{ github.workspace }}/portal
           /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner \
             -Dsonar.projectKey=Sunbird-Ed_SunbirdEd-portal \
             -Dsonar.organization=sunbird-ed \
             -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=ad78f59b516bcae629d069b7c2d266fcf6690a30
+            -Dsonar.login=$SONAR_TOKEN
