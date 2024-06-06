@@ -1,5 +1,5 @@
 # Use a base image suitable for building the client and server
-FROM node:18.20.2 AS builder
+FROM node:20.13.1-bookworm-slim AS builder
 
 # Arguments for CDN URL and buildCdnAssets
 ARG cdnUrl=""
@@ -69,7 +69,7 @@ WORKDIR /usr/src/app/app_dist
 RUN yarn install --no-progress --frozen-lockfile --ignore-engines --production=true
 
 # Start a new stage for the final image
-FROM node:18.20.2
+FROM node:20.13.1-bookworm-slim
 
 # Set the commit hash as a build argument and environment variable
 ARG commit_hash=""
