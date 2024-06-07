@@ -96,7 +96,6 @@ jobs:
           cd -
 
       - name: Run Sonar Scanner
-        working-directory: ${{ github.workspace }}/app_dist
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
