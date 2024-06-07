@@ -56,26 +56,25 @@
 
 <ng-template #globalFilters>
   <ng-container *ngIf="!hideElements">
-    <form class="sb-form" autocomplete="off" [formGroup]="reportForm">
-      <div class="d-flex">
-        <div class="d-flex flex-w-wrap flex-ai-center ml-32 col-gap">
+    <form class="sb-form mt-32" autocomplete="off" [formGroup]="reportForm">
+      <div class="d-flex flex-jc-space-between">
+        <div class="d-flex flex-w-wrap flex-ai-center col-gap">
           <div class="d-flex flex-dc">
-            <label>{{resourceService?.frmelmnts?.lbl?.programLbl }}</label>
-              <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd">
-              <mat-select role="radio" class="selection" valueField="_id" formControlName="programName"
+            <mat-label>{{resourceService?.frmelmnts?.lbl?.programLbl}}</mat-label>
+            <mat-form-field appearance="fill" class="sb-mat__dropdown w-100">
+              <mat-select role="radio" valueField="_id" class="selection" formControlName="programName"
               [(ngModel)]="programSelected"
-              [placeholder]="resourceService?.frmelmnts?.lbl?.program"  (selectionChange)="programSelection($event)">
-                <mat-option *ngFor="let program of programs" class="mat-dropdown__options" role="option" [value]="program._id">
-                  {{program.name}}
-                </mat-option>
+              [placeholder]="resourceService?.frmelmnts?.lbl?.program" (selectionChange)="programSelection($event)">
+                <mat-option class="mat-dropdown__options" role="option" *ngFor="let program of programs" [value]="program._id"
+                attr.aria-label="{{program.name}}">{{program.name}}</mat-option>
               </mat-select>
-              </mat-form-field>
+            </mat-form-field>
           </div>
           <div class="d-flex flex-dc">
-            <label>{{ resourceService?.frmelmnts?.lbl?.solutionLbl }}</label>
-              <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd">
+            <mat-label>{{resourceService?.frmelmnts?.lbl?.solutionLbl}}</mat-label>
+              <mat-form-field appearance="fill" class="sb-mat__dropdown w-100">
               <mat-select role="radio" class="selection" [(ngModel)]="solutionSelected" valueField="_id" formControlName="solution"
-              [placeholder]="resourceService?.frmelmnts?.lbl?.solution"  (selectionChange)="selectSolution($event)">
+              [placeholder]="resourceService?.frmelmnts?.lbl?.solution" (selectionChange)="selectSolution($event)">
                 <mat-option *ngFor="let solution of solutions" class="mat-dropdown__options" role="option" [value]="solution._id">
                   {{solution.name}} 
                 </mat-option>
@@ -83,8 +82,8 @@
               </mat-form-field>
           </div>
           <div class="d-flex flex-dc">
-            <label>{{ resourceService?.frmelmnts?.lbl?.dashboarddistrictLbl }}</label>
-              <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd">
+            <mat-label>{{ resourceService?.frmelmnts?.lbl?.dashboarddistrictLbl }}</mat-label>
+              <mat-form-field appearance="fill" class="sb-mat__dropdown w-100">
               <mat-select role="radio" class="selection"  valueField="locationId" formControlName="districtName"
               [placeholder]="resourceService?.frmelmnts?.lbl?.dashboarddistrict"  (selectionChange)="districtSelection($event)">
                 <mat-option *ngFor="let district of districts" class="mat-dropdown__options" role="option" [value]="district.id">
@@ -94,8 +93,8 @@
               </mat-form-field>
           </div>
           <div *ngIf="tabIndex !== 2" class="d-flex flex-dc">
-            <label>{{ resourceService?.frmelmnts?.lbl?.block }}</label>
-              <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd" >
+            <mat-label>{{ resourceService?.frmelmnts?.lbl?.block }}</mat-label>
+              <mat-form-field appearance="fill" class="sb-mat__dropdown w-100">
               <mat-select role="radio" class="selection"  valueField="locationId" multiple formControlName="blockName"
               [placeholder]="resourceService?.frmelmnts?.lbl?.blockLabel"  (selectionChange)="blockChanged($event)" (click)="dependentFilterMsg()" [disabled]="!reportForm.controls.districtName.value">
                 <mat-option *ngFor="let block of blocks" class="mat-dropdown__options custom_mat_multi" role="option" [value]="block.id">
@@ -105,8 +104,8 @@
               </mat-form-field>
           </div>
           <div class="d-flex flex-dc">
-            <label>{{ resourceService?.frmelmnts?.lbl?.dashboardOrgLbl }}</label>      
-              <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd">
+            <mat-label>{{ resourceService?.frmelmnts?.lbl?.dashboardOrgLbl }}</mat-label>      
+              <mat-form-field appearance="fill" class="sb-mat__dropdown w-100">
               <mat-select role="radio" class="selection" valueField="organisationId" formControlName="organisationName"
               [placeholder]="resourceService?.frmelmnts?.lbl?.dashboardOrg"  (selectionChange)="organisationSelection($event)">
                 <mat-option *ngFor="let organisation of organisations" class="mat-dropdown__options" role="option" [value]="organisation.id">
@@ -116,22 +115,22 @@
               </mat-form-field>
           </div>
 
-          <div *ngIf="tabIndex !== 1 && tabIndex !== 2  && tabIndex !== 3" class="d-flex flex-dc customDate">
-            <label>{{resourceService?.frmelmnts?.lbl?.startdate | titlecase }}</label>
-            <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd sb-color-primary">
+          <div *ngIf="tabIndex !== 1 && tabIndex !== 2  && tabIndex !== 3" class="d-flex flex-dc">
+            <mat-label>{{resourceService?.frmelmnts?.lbl?.startdate | titlecase }}</mat-label>
+            <mat-form-field appearance="fill" class="sb-mat__datepicker sb-mat__datepicker--nolabel">
               <input appDateValidator [disabled]="!reportForm.controls.programName.value" matInput placeholder="dd/mm/yyyy" [min]="minStartDate" [max]="maxStartDate" (dateChange)="dateChanged($event,'startDate')" formControlName="startDate" [matDatepicker]="picker">
-              <mat-datepicker-toggle matSuffix [for]="picker" class="sb-color-primary"></mat-datepicker-toggle>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
             <mat-error *ngIf="reportForm.get('startDate').hasError('matDatepickerMax') || reportForm.get('startDate').hasError('matDatepickerMin')">
               *{{this.resourceService?.frmelmnts?.msg?.invalidDateMsg | interpolate:'{type}': (resourceService?.frmelmnts?.lbl?.startdate | lowercase)}}
             </mat-error>            
           </div>
-          <div *ngIf="tabIndex !== 1 && tabIndex !== 2  && tabIndex !== 3" class="d-flex flex-dc customDate">
-            <label>{{resourceService?.frmelmnts?.lbl?.enddate | titlecase }}</label>
-            <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd sb-color-primary">
+          <div *ngIf="tabIndex !== 1 && tabIndex !== 2  && tabIndex !== 3" class="d-flex flex-dc">
+            <mat-label>{{resourceService?.frmelmnts?.lbl?.enddate | titlecase }}</mat-label>
+            <mat-form-field appearance="fill" class="sb-mat__datepicker sb-mat__datepicker--nolabel">
               <input appDateValidator [disabled]="!reportForm.controls.programName.value"  matInput placeholder="dd/mm/yyyy" [min]="minEndDate" [max]="maxEndDate"  (dateChange)="dateChanged($event,'endDate')" formControlName="endDate" [matDatepicker]="picker">
-              <mat-datepicker-toggle matSuffix [for]="picker" class="sb-color-primary"></mat-datepicker-toggle>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>            
             <mat-error *ngIf="reportForm.get('endDate').hasError('matDatepickerMax') || reportForm.get('endDate').hasError('matDatepickerMin')">
@@ -143,12 +142,10 @@
               <app-pd-filters [pdFilter]="filter" (filterChanged)="pdFilterChanged($event)"></app-pd-filters>
             </ng-container>
           </ng-container>
-
-          
         </div>
-        <div class="d-flex flex-dc ml-auto btn-col">
-          <button type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary reset-filter flex-as-flex-end" (click)="resetFilter()">{{resourceService?.frmelmnts?.btn?.resetFilters}}</button>
-          <mat-form-field *ngIf="!noResult && (tabIndex == 1)" appearance="fill" class="sb-mat__dropdown custom_mat_dd exportBtn">
+        <div class="ml-32">
+          <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary flex-as-flex-end mb-16" (click)="resetFilter()">{{resourceService?.frmelmnts?.btn?.resetFilters}}</button>
+          <mat-form-field *ngIf="!noResult && (tabIndex == 1)" appearance="fill" class="sb-mat__dropdown w-100">
             <mat-select role="radio" class="selection" placeholder="Export as" (selectionChange)="downloadReport($event)" >
             <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of exportOptions" [value]="option"
             attr.aria-label="{{option}}">{{option}}</mat-option>
@@ -169,7 +166,7 @@
 <ng-template #programDataset>
   <ng-container *ngTemplateOutlet="globalFilters"></ng-container>
   <div *ngIf="programSelected && (!userAccess|| (oldProgram && !reportForm.controls.solution.value) || newData)"class="newData">*{{errorMessage}}</div>
-  <div class="sbt-inside-page-container relative position mt-32">
+  <div class="mt-32">
     <div>
       <div>
         <label>{{resourceService?.frmelmnts?.lbl?.detailsReports}}</label>
@@ -178,10 +175,10 @@
       <div [formGroup]="reportForm" class="mt-32">
         <label>{{ resourceService?.frmelmnts?.lbl?.reportType }}</label>
         <div class="d-flex flex-w-wrap flex-dr">
-          <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd d-flex flex-ai-center w-auto" >
+          <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 d-flex flex-ai-center w-auto" >
           <mat-select role="listbox" formControlName="reportType" class="selection"
           [placeholder]="resourceService?.frmelmnts?.lbl?.selectReport" [disabled]="!userAccess">
-            <mat-option role="option" *ngFor="let report of reportTypes" class="custom_mat_dd mat-dropdown__options" [value]="report?.name" (click)="reportChanged(report)">
+            <mat-option role="option" *ngFor="let report of reportTypes" class="mat-dropdown__options" [value]="report?.name" (click)="reportChanged(report)">
               {{report?.name}}
             </mat-option>
           </mat-select>
@@ -215,7 +212,7 @@
   <ng-container *ngTemplateOutlet="globalFilters" ></ng-container>
   <div *ngIf="programSelected && ((oldProgram && newData) || (!oldProgram && showErrorForGraphs))" class="newData">*{{errorMessage}}</div>
   <ng-container *ngIf="(oldProgram && reportForm.controls.solution.value && currentReport.charts.length) || (!oldProgram && currentReport.charts.length)">
-    <div class="sb-graph-section p-24 my-24"
+    <div class="sb-graph-section p-24 my-48"
         *ngFor="let chart of currentReport.charts;">
         <ng-container *ngIf="chart?.chartConfig?.id == 'Big_Number'">
           <app-sb-bignumber [chart]="chart" [hideElements]="hideElements" [appliedFilters]="appliedFilters"></app-sb-bignumber>
@@ -268,26 +265,25 @@
   </ng-template>
 <app-modal-wrapper [config]="{disableClose: false, size: 'small', panelClass: ['material-modal', 'material-modal--small']}" (dismiss)="closeModal()" #modal *ngIf="popup">
   <ng-template sbModalContent>
-    <div class="sb-mat__modal">
-
-      <div class="sb-mat__modal__header">
+     <!--Header-->
+     <div mat-dialog-title class="mb-0">
+      <div class="title">
         {{resourceService?.frmelmnts?.lbl?.confirmReportRequest}}
       </div>
+      <button aria-label="close dialog" mat-dialog-close class="close-btn"></button>
+    </div>
+    <!--/Header-->
+    <div class="sb-mat__modal">
       <div class="sb-mat__modal__content o-x-hide" [formGroup]="passwordForm" mat-dialog-content>
-        <div class="sb-field-group">
-          <div class="sb-field relative">
-            <div class="sb-field filterTable mx-16 mb-0">
-              <input class="sb-form-control" formControlName="password" type="text"
-                placeholder="Enter a password to request Report" aria-label="enter password">
-            </div>
-          </div>
-          <p class="fsmall note-text my-8 administrator-text">
-            {{resourceService?.frmelmnts?.lbl?.pswdRule}}
-          </p>
-        </div>
+        <mat-form-field class="w-100">
+          <input matInput formControlName="password" type="text" placeholder="Enter a password to request Report" aria-label="enter password">
+        </mat-form-field>
+        <p class="fsmall note-text my-8 administrator-text">
+          {{resourceService?.frmelmnts?.lbl?.pswdRule}}
+        </p>
       </div>
       <div class="sb-mat__modal__actions">
-        <button class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="(!reportForm.valid || !passwordForm.valid)"
+        <button class="sb-btn sb-btn-normal sb-btn-primary mr-8" [disabled]="(!reportForm.valid || !passwordForm.valid)"
           [ngClass]="{'sb-btn-disabled': (!reportForm.valid || !passwordForm.valid)}" (click)="csvRequest()">
           {{resourceService?.frmelmnts?.btn?.yes}}
         </button>
@@ -295,7 +291,6 @@
           {{resourceService?.frmelmnts?.btn?.no}}
         </button>
       </div>
-
     </div>
   </ng-template>
 </app-modal-wrapper>
@@ -343,9 +338,8 @@
 <app-modal-wrapper *ngIf="showPopUpModal" [config]="{disableClose: false, size: 'small', panelClass: ['material-modal', 'material-modal--small']}" (dismiss)="closePopupModal()" #modal>
   <ng-template sbModalContent>
     <div class="sb-mat__modal">
-
-      <div class="sb-modal-content o-x-hide" mat-dialog-content>
-        <div class="d-flex flex-dir-row my-8">
+      <div mat-dialog-content>
+        <div class="d-flex flex-dir-row">
           <div>
           <mat-icon class="info">info</mat-icon> 
           </div>
@@ -354,11 +348,10 @@
           <mat-icon class="goback" (click)="goBack()">highlight_off</mat-icon>
           </div>
         </div>
-        
-        <div class="mt-48 flex-dc" [formGroup]="reportForm">
-          <label  class="d-flex flex-jc-center sb-color-primary">{{resourceService?.frmelmnts?.lbl?.programLbl }}</label>
-            <div class="d-flex flex-jc-center mt-24">
-            <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd w-80">
+        <div class="mt-32">
+          <div class="d-flex flex-dc w-80 m-auto" [formGroup]="reportForm">
+            <mat-label class="sb-color-primary">{{resourceService?.frmelmnts?.lbl?.programLbl }}</mat-label>
+            <mat-form-field appearance="fill" class="sb-mat__dropdown w-100">
               <mat-select role="radio" class="selection" valueField="_id" formControlName="programName"
               [(ngModel)]="programSelected"
               [placeholder]="resourceService?.frmelmnts?.lbl?.program"  (selectionChange)="programSelection($event)">
@@ -366,12 +359,11 @@
                   {{program.name}}
                 </mat-option>
               </mat-select>
-              </mat-form-field>
-            </div>
+            </mat-form-field>
+          </div>
         </div>
       </div>
-
-      <div class="mt-32 sb-mat__modal__actions flex-jc-center">
+      <div class="mt-8 sb-mat__modal__actions flex-jc-center">
         <button [disabled]="!reportForm.controls.programName.value" [ngClass]="{'sb-btn-disabled': (!reportForm.controls.programName.value)}" type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary" (click)="confirm()">{{resourceService?.frmelmnts?.btn?.confirmBtn}}</button>
       </div>
     </div>
