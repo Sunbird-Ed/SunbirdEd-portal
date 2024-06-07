@@ -78,13 +78,13 @@ jobs:
       - name: Run server build script
         working-directory: ${{ github.workspace }}/app_dist
         run: node helpers/resourceBundles/build.js -task="phraseAppPull"
-      # # Execute test cases using JEST
-      # - name: Execute test cases using JEST
-      #   working-directory: src/app/client
-      #   run: |
-      #     yarn config set ignore-engines true
-      #     yarn install
-      #     npm run test:ci
+      # Execute test cases using JEST
+      - name: Execute test cases using JEST
+        working-directory: src/app/client
+        run: |
+          yarn config set ignore-engines true
+          yarn install
+          npm run test:ci
 
       # Install Sonar Scanner
       - name: Install Sonar Scanner
@@ -99,7 +99,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -X \
+          /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner \
             -Dsonar.projectKey=Sunbird-Ed_SunbirdEd-portal \
             -Dsonar.organization=sunbird-ed \
             -Dsonar.host.url=https://sonarcloud.io \
