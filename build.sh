@@ -1,7 +1,7 @@
 #!/bin/bash
 STARTTIME=$(date +%s)
 export PYTHON=/usr/bin/python3.7
-NODE_VERSION=20.9.0
+NODE_VERSION=18.20.2
 echo "Starting portal build from build.sh"
 set -euo pipefail	
 export NVM_DIR="$HOME/.nvm"
