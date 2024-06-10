@@ -96,11 +96,5 @@ jobs:
           cd -
 
       - name: Run Sonar Scanner
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner \
-            -Dsonar.projectKey=Sunbird-Ed_SunbirdEd-portal \
-            -Dsonar.organization=sunbird-ed \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=$SONAR_TOKEN
+          cd ~ && /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner'
