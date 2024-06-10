@@ -23,10 +23,10 @@ jobs:
         with:
           node-version: 18
 
-      # Install client dependencies
-      - name: Install client dependencies
-        working-directory: src/app/client
-        run: yarn install --no-progress --production=true
+      # # Install client dependencies
+      # - name: Install client dependencies
+      #   working-directory: src/app/client
+      #   run: yarn install --no-progress --production=true
 
       # # Build the client
       # - name: Build client
@@ -86,22 +86,16 @@ jobs:
       #     yarn install
       #     npm run test:ci
 
-      # Install Sonar Scanner..
+      # Install Sonar Scanner
       - name: Install Sonar Scanner
         run: |
           cd /tmp
           wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
-          sudo apt-get install -y unzip
+          unzip sonar-scanner-cli-5.0.1.3006-linux.zip || sudo apt install unzip -y
           unzip sonar-scanner-cli-5.0.1.3006-linux.zip
           cd -
 
+      # Run Sonar Scanner
       - name: Run Sonar Scanner
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          cd ~ && /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner \
-             -Dsonar.projectKey=Sunbird-Ed_SunbirdEd-portal \
-             -Dsonar.organization=sunbird-ed \
-             -Dsonar.host.url=https://sonarcloud.io \
-             -Dsonar.login=$SONAR_TOKEN \
-             -Dsonar.exclusions=**/node_modules/**,**/environments/**,**/assets/**
+          cd ~ && /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner
