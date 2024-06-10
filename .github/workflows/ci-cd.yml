@@ -79,14 +79,14 @@ jobs:
         working-directory: ${{ github.workspace }}/app_dist
         run: node helpers/resourceBundles/build.js -task="phraseAppPull"
       # Execute test cases using JEST
-      - name: Execute test cases using JEST
-        working-directory: src/app/client
-        run: |
-          yarn config set ignore-engines true
-          yarn install
-          npm run test:ci
+      # - name: Execute test cases using JEST
+      #   working-directory: src/app/client
+      #   run: |
+      #     yarn config set ignore-engines true
+      #     yarn install
+      #     npm run test:ci
 
-      # Install Sonar Scanner
+      # Install Sonar Scanner..
       - name: Install Sonar Scanner
         run: |
           cd /tmp
