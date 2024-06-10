@@ -124,6 +124,7 @@
   </ng-template>
   <app-modal-wrapper *ngIf="collectionListModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
   [config]="{disableClose: true, size: 'large', panelClass: 'material-modal custom-lg-modal', transitionDuration: 0}" (dismissed)="this.collectionListModal = false" #modal>
+  <ng-template sbModalContent>
   <div mat-dialog-title class="mb-0">
     <button aria-label="close dialog" mat-dialog-close class="close-btn"></button>
   </div>
@@ -159,5 +160,6 @@
 			{{resourceService?.frmelmnts?.btn?.close}}
 		</button>
   </mat-dialog-actions>
+  </ng-template>
   </app-modal-wrapper>
 <app-contentlock-info-popup [content]="lockPopupData" (closeEvent)="onCloseLockInfoPopup($event)" *ngIf="showLockedContentModal"></app-contentlock-info-popup>

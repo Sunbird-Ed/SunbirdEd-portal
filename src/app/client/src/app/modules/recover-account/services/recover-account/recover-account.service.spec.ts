@@ -21,10 +21,10 @@ describe('RecoverAccountService', () => {
           RESET_PASSWORD: "user/v1/password/reset"
         },
         OTP: {
-          GENERATE: "otp/v1/generate",
-          VERIFY: "otp/v1/verify",
+          GENERATE: "otp/v2/generate",
+          VERIFY: "otp/v2/verify",
           ANONYMOUS: {
-            GENERATE: "anonymous/otp/v1/generate",
+            GENERATE: "anonymous/otp/v2/generate",
           },
         },
       }
@@ -61,7 +61,7 @@ describe('RecoverAccountService', () => {
     const params = { 'request': { 'type': 'user', 'key': 'testKey', 'userId': 'testUserId' } };
     jest.spyOn(mockLearnerService, 'post');
     component.generateOTP(params);
-    const options = { url: 'anonymous/otp/v1/generate?captchaResponse=undefined', data: params };
+    const options = { url: 'anonymous/otp/v2/generate?captchaResponse=undefined', data: params };
     expect(mockLearnerService.post).toHaveBeenCalledWith(options);
   });
 
@@ -69,7 +69,7 @@ describe('RecoverAccountService', () => {
     const params = { 'request': { 'type': 'user', 'key': 'testKey', 'userId': 'testUserId' } };
     jest.spyOn(mockLearnerService, 'post');
     component.verifyOTP(params);
-    const options = { url: 'otp/v1/verify', data: params };
+    const options = { url: 'otp/v2/verify', data: params };
     expect(mockLearnerService.post).toHaveBeenCalledWith(options);
   });
 

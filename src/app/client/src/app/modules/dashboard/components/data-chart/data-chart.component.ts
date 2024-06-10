@@ -490,6 +490,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
     if (this.filterPopUpMat) {
       this.dialogRef = this.dialog.open(this.filterPopUpMat, {
         data: this.chartData['selectedFilters'],
+        panelClass: 'material-modal'
       });
     }
   }

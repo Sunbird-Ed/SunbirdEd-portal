@@ -1,15 +1,15 @@
 
 <div *ngFor="let field of formFieldProperties;let i = index" class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column py-4">
   <div *ngIf="field.inputType==='text' || field.inputType==='number'" [ngClass]="{ 'disabled':!field.editable}">
+    <mat-label>{{field.label}} <span class="sb-color-red" *ngIf="(field.required == true)">*</span></mat-label>
     <mat-form-field class="w-100">
-      <mat-label>{{field.label}} <span class="sb-color-red" *ngIf="(field.required == true)">*</span></mat-label>
-      <input matInput  name={{field.code}} type={{field.inputType}} [(ngModel)]="formInputData[field.code]" autofocus>
+      <input matInput placeholder="{{field.label}}" name={{field.code}} type={{field.inputType}} [(ngModel)]="formInputData[field.code]" autofocus>
     </mat-form-field>
   </div>
 
   <div *ngIf="field.inputType==='select' && field.code!='year' && field.code!='contentType'">
+    <mat-label>{{field.label}} <span class="sb-color-red" *ngIf="(field.required == true)">*</span></mat-label>
     <mat-form-field appearance="fill" class="sb-mat__dropdown w-100">
-      <mat-label>{{field.label}} <span class="sb-color-red" *ngIf="(field.required == true)">*</span></mat-label>
       <mat-select id={{field.code}} [disabled]="!field.editable" name={{field.code}} class="selection" [(ngModel)]="formInputData[field.code]" (ngModelChange)="updateForm({index:i, field:field, value:formInputData[field.code],formData:formInputData})"
       aria-label="{{field.label}}">
         <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of categoryList[field.code]" [value]="option.name"
@@ -19,8 +19,8 @@
   </div>
 
   <div *ngIf="field.inputType==='select' && field.code==='contentType'">
+    <mat-label>{{field.label}} <span class="sb-color-red" *ngIf="(field.required == true)">*</span></mat-label>
     <mat-form-field appearance="fill" class="sb-mat__dropdown w-100">
-      <mat-label>{{field.label}} <span class="sb-color-red" *ngIf="(field.required == true)">*</span></mat-label>
       <mat-select id={{field.code}} [options]="categoryList[field.code]" [disabled]="!field.editable" name={{field.code}} class="selection" [(ngModel)]="formInputData[field.code]" (ngModelChange)="updateForm({index:i, field:field, value:formInputData[field.code],formData:formInputData})"
       aria-label="{{field.label}}">
         <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of categoryList[field.code]" [value]="option"
@@ -42,8 +42,8 @@
     </div>
   </div>
   <div *ngIf="field.code==='year'">
+    <mat-label>{{field.label}} <span class="sb-color-red" *ngIf="(field.required == true)">*</span></mat-label>
     <mat-form-field appearance="fill" class="sb-mat__dropdown w-100">
-      <mat-label>{{field.label}} <span class="sb-color-red" *ngIf="(field.required == true)">*</span></mat-label>
       <mat-select id={{field.code}} [disabled]="!field.editable" name={{field.code}} class="selection" [(ngModel)]="formInputData[field.code]"
       aria-label="{{field.label}}">
         <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of years" [value]="option"

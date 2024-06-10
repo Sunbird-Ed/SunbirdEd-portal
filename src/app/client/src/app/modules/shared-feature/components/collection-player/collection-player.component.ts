@@ -220,7 +220,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     this.playerConfig = this.getPlayerConfig(id).pipe(map((content:any) => {
 
       if(this.activeContent.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
-        const contentDetails = {contentId: id, contentData: content.questionset };
+        const contentDetails = { contentId: id, contentData: content.questionset || content.questionSet };
         content = this.playerServiceReference.getConfig(contentDetails);
         this.publicPlayerService.getQuestionSetRead(id).subscribe((data: any) => {
           _.merge(content.metadata, this.publicPlayerService.getProperties(data.questionset, this.configService.editorConfig.QUESTIONSET_EDITOR.additionalProperties))

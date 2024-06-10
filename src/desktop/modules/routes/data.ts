@@ -120,7 +120,7 @@ export default (app, proxyURL) => {
     });
 
     const user = new User(manifest);
-    app.get("/api/desktop/user/v1/read",
+    app.get("/api/desktop/user/v5/read",
       user.read.bind(user),
     );
 }

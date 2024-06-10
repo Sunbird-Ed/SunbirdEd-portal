@@ -35,6 +35,9 @@ describe('AddActivityContentTypesComponent', () => {
                 }
             }
         } as any,
+        queryParams: of({groupName:'test',
+        createdBy:'test'}),
+
     };
 	const mockRouter :Partial<Router> ={
         url: '/mock-url',
@@ -73,6 +76,13 @@ describe('AddActivityContentTypesComponent', () => {
             
     it('should create a instance of component', () => {
         expect(component).toBeTruthy();
+    });
+
+    it('should call ngOnInit', () => {
+        mockLayoutService.switchableLayout = jest.fn(() => of([{ data: '' }]));
+        mockGroupService.getSupportedActivityList = jest.fn(() => of([{ data: '' }]));
+        component.ngOnInit()
+        expect(mockLayoutService.switchableLayout).toHaveBeenCalled();
     });
 
     it('should destroy activity-content', () => {

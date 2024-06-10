@@ -1008,7 +1008,7 @@ describe('PlayerComponent', () => {
 		jest.useFakeTimers();
 		const spy = jest.spyOn(component, 'videoPlayerConfig');
 		component.ngAfterViewInit();
-		jest.advanceTimersByTime(200);
+		jest.advanceTimersByTime(500);
 		expect(spy).toHaveBeenCalled();
 	});
 
@@ -1017,7 +1017,7 @@ describe('PlayerComponent', () => {
 		component.playerType = "audio-player";
 		jest.useFakeTimers();
 		component.ngAfterViewInit();
-		jest.advanceTimersByTime(200);
+		jest.advanceTimersByTime(500);
 		expect(playerService.getQuestionSetRead).not.toHaveBeenCalled();
 	});
 
@@ -1038,7 +1038,7 @@ describe('PlayerComponent', () => {
 		jest.useFakeTimers();
 		const spy = jest.spyOn(component, 'pdfPlayerConfig');
 		component.ngAfterViewInit();
-		jest.advanceTimersByTime(200);
+		jest.advanceTimersByTime(500);
 		expect(spy).toHaveBeenCalled();
 	});
 	it('should call epubPlayerConfig after 200ms if playerType is "epub-player"', () => {
@@ -1058,7 +1058,7 @@ describe('PlayerComponent', () => {
 		jest.useFakeTimers();
 		const spy = jest.spyOn(component, 'epubPlayerConfig');
 		component.ngAfterViewInit();
-		jest.advanceTimersByTime(200);
+		jest.advanceTimersByTime(500);
 		expect(spy).toHaveBeenCalled();
 	});
 
@@ -1079,7 +1079,7 @@ describe('PlayerComponent', () => {
 		jest.useFakeTimers();
 		const spy = jest.spyOn(component, 'qumlPlayerConfig');
 		component.ngAfterViewInit();
-		jest.advanceTimersByTime(200);
+		jest.advanceTimersByTime(500);
 		expect(spy).toHaveBeenCalled();
 	});
 	it('should not call any player config method for unknown playerType', () => {

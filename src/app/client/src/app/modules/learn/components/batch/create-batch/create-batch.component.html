@@ -95,7 +95,6 @@
               <label class="required">{{resourceService?.frmelmnts?.lbl?.startdate}}</label>
               <div class="ui read-only calendar rangestartAdd" id="rangestartAdd">
                 <mat-form-field appearance="fill" class="sb-mat__datepicker">
-                  <mat-label>{{resourceService?.frmelmnts?.lbl?.startdate}}</mat-label>
                   <input matInput [matDatepicker]="startPicker" formControlName="startDate" [min]="pickerMinDate">
                   <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
                   <mat-datepicker #startPicker></mat-datepicker>
@@ -110,7 +109,6 @@
               <label>{{resourceService?.frmelmnts?.lbl?.enddate}}</label>
               <div apply-script class="ui calendar rangeendAdd" id="rangeendAdd">
                 <mat-form-field appearance="fill" class="sb-mat__datepicker">
-                  <mat-label>{{resourceService?.frmelmnts?.lbl?.enddate}}</mat-label>
                   <input matInput [matDatepicker]="endDatePicker" formControlName="endDate"
                     [min]="getPickerMinDateForEndDate()">
                   <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
@@ -124,7 +122,6 @@
               <div class="ui read-only calendar rangeenrollMentEnd" id="rangeenrollMentEnd">
                 <mat-form-field appearance="fill" class="sb-mat__datepicker" [ngClass]="{'disabled': !createBatchForm.value.startDate}"
                   (click)="setTelemetryCData([{id:'course:enrollment:endDate',type:'Feature'},{id:'SB-13073',type:'Task'}])">
-                  <mat-label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</mat-label>
                   <input matInput [matDatepicker]="enrollmentEndDatePicker" formControlName="enrollmentEndDate"
                     [min]="createBatchForm.value.startDate" [max]="createBatchForm.value.endDate">
                   <mat-datepicker-toggle matSuffix [for]="enrollmentEndDatePicker"></mat-datepicker-toggle>

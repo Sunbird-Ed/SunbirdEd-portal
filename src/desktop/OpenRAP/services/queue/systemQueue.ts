@@ -4,7 +4,7 @@ import { Inject } from "typescript-ioc";
 import { DataBaseSDK } from "../../sdks/DataBaseSDK";
 import { ISystemQueue, SystemQueueStatus } from './IQueue';
 import { logger } from "@project-sunbird/logger";
-import uuid from "uuid/v4";
+import { v4 as uuid } from 'uuid';
 import { Subject, Observer, asyncScheduler, Observable } from "rxjs";
 import { throttleTime, mergeMap } from "rxjs/operators";
 import { TelemetryInstance } from './../telemetry/telemetryInstance';

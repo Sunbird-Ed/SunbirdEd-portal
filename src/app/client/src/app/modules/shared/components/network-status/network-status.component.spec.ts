@@ -29,6 +29,12 @@ describe('NetworkStatusComponent', () => {
         expect(component).toBeTruthy();
     });
 
+    it('should create a instance of component and call the ngOnInit', () => {
+        connectionService.monitor = jest.fn(() => of(true))
+        component.ngOnInit();
+        console.log(component.isConnected);
+        expect(component.isConnected).toBeTruthy();
+    });
     it('should unsubscribe from observables on ngOnDestroy', () => {
         const unsubscribeSpy = jest.spyOn(component.unsubscribe$, 'next');
         const unsubscribeCompleteSpy = jest.spyOn(component.unsubscribe$, 'complete');

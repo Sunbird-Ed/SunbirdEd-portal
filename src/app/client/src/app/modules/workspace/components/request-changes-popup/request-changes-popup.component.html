@@ -7,6 +7,7 @@
     #modal 
     *ngIf="showModal"
     >
+    <ng-template sbModalContent>
     <div mat-dialog-title class="flex-jc-center">
         <div class="title" tabindex="0"> {{resourceService.frmelmnts.btn.checkListRequestChanges}}</div>
           <button aria-label="close dialog" mat-dialog-close class="close-btn" (click)="modal.deny('denied')"></button>
@@ -67,5 +68,5 @@
         </button>
     </mat-dialog-actions>
     <!--/Actions-->
-
+</ng-template>
 </app-modal-wrapper>

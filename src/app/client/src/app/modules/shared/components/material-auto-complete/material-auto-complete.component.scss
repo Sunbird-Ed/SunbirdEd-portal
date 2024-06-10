@@ -7,7 +7,7 @@
 
   &__list {
     position: absolute;
-    top: 100%;
+    top: 0;
     background: var(--sb-dropdown-menu-bg);
     border-radius: calculateRem(4px);
     z-index: 1;
@@ -40,11 +40,13 @@
   ::ng-deep {
     .mat-mdc-form-field {
       width: 100%;
-      height: calculateRem(32px);
-      padding: 0 calculateRem(20px);
-      border: calculateRem(1px) solid var(--gray-100);
-      background: var(--sb-dropdown-menu-bg);
-      border-radius: calculateRem(4px);
+      height: 3rem;
+      padding: 0 1.25rem;
+      border-radius: .25rem;
+      border-radius: 0;
+      border: none;
+      padding: 0;
+      margin: 0;
 
       &.mat-form-field-appearance-legacy {
         /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
@@ -92,21 +94,24 @@
 }
 
 ::ng-deep {
-  html[layout="joy"] .sb-autocomp-dropdown .mat-mdc-form-field, .sb-autocomp-dropdown__list {
-    border-radius: calculateRem(24px);
-  }
-  /* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
   html[data-mode="darkmode"] .sb-mat__checkbox.sb-mat__checkbox--primary .mat-checkbox-frame {
     border-color: var(--gray-100);
   }
   .sb-autocomp-dropdown__list {
-    top: 0px !important;
+    .cdk-text-field-autofill-monitored:not(:-webkit-autofill){
+      border-radius: 1.5rem;
+      border: .0625rem solid var(--gray-100);
+      width: 100%;
+      padding: 0.5rem 1.5rem;
+      margin-top: 0.5rem;
+    }
+  }
+  .mdc-text-field--no-label:not(.mdc-text-field--textarea) .mat-mdc-form-field-input-control.mdc-text-field__input, .mat-mdc-text-field-wrapper .mat-mdc-form-field-input-control{
+    padding: 0;
+    margin: 0;
   }
   .sb-autocomp-dropdown__list ul {
     list-style: none !important
-  }
-  .sb-autocomp-dropdown .mat-mdc-form-field {
-    height: 2.5rem !important;
   }
 }
 

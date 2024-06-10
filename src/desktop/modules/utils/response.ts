@@ -1,4 +1,4 @@
-import * as uuid from "uuid";
+import{ v4 as uuid} from "uuid";
 
 export default class Response {
   public static success(id, result, req) {
@@ -9,8 +9,8 @@ export default class Response {
       ver: "1.0",
       ts: new Date().toISOString(),
       params: {
-        resmsgid: uuid.v4(),
-        msgid: uuid.v4(),
+        resmsgid: uuid(),
+        msgid: uuid(),
         status: "successful",
         err: null,
         errmsg: null,
@@ -30,8 +30,8 @@ export default class Response {
         ver: "1.0",
         ts: new Date().toISOString(),
         params: {
-          resmsgid: uuid.v4(),
-          msgid: uuid.v4(),
+          resmsgid: uuid(),
+          msgid: uuid(),
           status: "failed",
           err: errCode || "ERR_DATA_NOT_FOUND",
           errmsg: errmsg || "Data not found",
@@ -45,8 +45,8 @@ export default class Response {
         ver: "1.0",
         ts: new Date().toISOString(),
         params: {
-          resmsgid: uuid.v4(),
-          msgid: uuid.v4(),
+          resmsgid: uuid(),
+          msgid: uuid(),
           status: "failed",
           err: errCode || "ERR_BAD_REQUEST",
           errmsg: errmsg || "Error while processing the request ",
@@ -60,8 +60,8 @@ export default class Response {
         ver: "1.0",
         ts: new Date().toISOString(),
         params: {
-          resmsgid: uuid.v4(),
-          msgid: uuid.v4(),
+          resmsgid: uuid(),
+          msgid: uuid(),
           status: "failed",
           err: errCode || "LOW_DISK_SPACE",
           errmsg: errmsg || "Low Disk space",
@@ -75,8 +75,8 @@ export default class Response {
         ver: "1.0",
         ts: new Date().toISOString(),
         params: {
-          resmsgid: uuid.v4(),
-          msgid: uuid.v4(),
+          resmsgid: uuid(),
+          msgid: uuid(),
           status: "failed",
           err: errCode || "UNAUTHORIZED",
           errmsg: errmsg || "You don't have permission to access this resource",
@@ -90,8 +90,8 @@ export default class Response {
         ver: "1.0",
         ts: new Date().toISOString(),
         params: {
-          resmsgid: uuid.v4(),
-          msgid: uuid.v4(),
+          resmsgid: uuid(),
+          msgid: uuid(),
           status: "failed",
           err: errCode || "ERR_INTERNAL_SERVER_ERROR",
           errmsg: errmsg || "Error while processing the request",

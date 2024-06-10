@@ -86,6 +86,7 @@
 <!-- publish warning modal -->
 
 <app-modal-wrapper *ngIf="showPublishWarningModal" [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [config]="{disableClose: true, size: 'small', panelClass: 'material-modal'}" #publishWarningModal>
+  <ng-template sbModalContent>
   <div mat-dialog-title class="flex-jc-center">
       <button aria-label="close dialog" mat-dialog-close class="close-btn" (click)="showPublishWarningModal = false"></button>
   </div>
@@ -116,6 +117,7 @@
       {{resourceService?.frmelmnts?.btn?.no}}
     </button>
   </mat-dialog-actions>
+</ng-template>
 </app-modal-wrapper>
 
 <router-outlet></router-outlet>

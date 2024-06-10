@@ -3,7 +3,7 @@ import { TelemetryService } from "./telemetryService";
 import { TelemetryConfig } from "./../../interfaces/telemetryConfig";
 import { DataBaseSDK } from "./../../sdks/DataBaseSDK";
 import * as _ from "lodash";
-import uuid = require("uuid");
+import { v4 as uuid } from 'uuid';
 import { logger } from "@project-sunbird/logger";
 import { ClassLogger } from '@project-sunbird/logger/decorator';
 
@@ -20,7 +20,7 @@ export class TelemetryInstance extends TelemetryService {
   sessionId: string;
   constructor() {
     super();
-    this.sessionId = uuid.v4();
+    this.sessionId = uuid();
     this.telemetryEvents = [];
     let telemetryValidation =
       _.toLower(process.env.TELEMETRY_VALIDATION) === "true" ? true : false;

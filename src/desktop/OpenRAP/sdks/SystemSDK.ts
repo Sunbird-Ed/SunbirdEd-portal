@@ -1,7 +1,7 @@
 import { Singleton, Inject } from "typescript-ioc";
 const GetMac = require("getmac");
 const crypto = require("crypto");
-const uuid = require("uuid");
+const { v4: uuid } = require('uuid');
 import { logger } from "@project-sunbird/logger";
 import * as os from "os";
 import * as si from "systeminformation";
@@ -41,7 +41,7 @@ export default class SystemSDK {
     return new Promise((resolve) => {
       GetMac.getMac((err, macAddress) => { 
         if(err) {
-          resolve(uuid.v4());
+          resolve(uuid());
         } else {
           resolve(macAddress);
         }

@@ -245,7 +245,7 @@ const updateRoles = (req, userId, jwtPayload) => { // will be called from player
   }
   const options = {
     method: 'POST',
-    url: envHelper?.learner_Service_Local_BaseUrl + privateBaseUrl +'v1/assign/role',
+    url: envHelper?.learner_Service_Local_BaseUrl + privateBaseUrl +'v2/assign/role',
     headers: getHeaders(req),
     body: {
       request: requestBody
