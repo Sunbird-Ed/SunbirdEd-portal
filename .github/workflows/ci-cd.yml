@@ -103,4 +103,7 @@ jobs:
              -Dsonar.projectKey=Sunbird-Ed_SunbirdEd-portal \
              -Dsonar.organization=sunbird-ed \
              -Dsonar.host.url=https://sonarcloud.io \
-             -Dsonar.login=$SONAR_TOKEN
+             -Dsonar.login=$SONAR_TOKEN \
+              -Dsonar.c.file.suffixes=- \
+             -Dsonar.cpp.file.suffixes=- \
+             -Dsonar.objc.file.suffixes=-
