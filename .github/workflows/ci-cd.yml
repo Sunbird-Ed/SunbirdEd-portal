@@ -95,7 +95,24 @@ jobs:
           unzip sonar-scanner-cli-5.0.1.3006-linux.zip
           cd -
 
-      # Run Sonar Scanner
+      #  # Run SonarScanner for frontend (Angular)
+      # - name: Run SonarScanner for frontend
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #   run: |
+      #     /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner \
+      #       -Dsonar.projectKey=your_frontend_project_key \
+      #       -Dsonar.sources=src \
+      #       -Dsonar.host.url=https://sonarcloud.io \
+      #       -Dsonar.organization=your_organization \
+      #       -Dsonar.login=$SONAR_TO
       - name: Run Sonar Scanner
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          cd ~ && /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner
+          /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner \
+            -Dsonar.projectKey=Sunbird-Ed_SunbirdEd-portal \
+            -Dsonar.sources=src/app/client/src \
+            -Dsonar.organization=sunbird-ed \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=$SONAR_TOKEN
