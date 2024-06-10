@@ -97,4 +97,4 @@ jobs:
 
       - name: Run Sonar Scanner
         run: |
-          cd ~ && /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner'
+          cd ~ && /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner
