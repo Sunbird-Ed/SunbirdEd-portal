@@ -121,6 +121,17 @@ jobs:
       - name: Install SonarScanner
         run:
           npm install -g sonarqube-scanner
+
+          # Check if SONAR_TOKEN is set
+      - name: Check SONAR_TOKEN
+        run: |
+          if [ -z "${{ secrets.SONAR_TOKEN }}" ]; then
+            echo "Error: SONAR_TOKEN is not set."
+            exit 1
+          else
+            echo "SONAR_TOKEN is set."
+          fi
+
           # Debug: Print the masked SONAR_TOKEN
       - name: Print SONAR_TOKEN
         run: echo "SONAR_TOKEN=${{ secrets.SONAR_TOKEN }}PWR****123"
