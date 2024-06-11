@@ -124,7 +124,15 @@ jobs:
           # Debug: Print the masked SONAR_TOKEN
       - name: Print SONAR_TOKEN
         run: echo "SONAR_TOKEN=${{ secrets.SONAR_TOKEN }}PWR****123"
-
+      # Ensure sonar-project.properties exists and print its content for debugging
+      - name: Check sonar-project.properties
+        run: |
+          if [ -f sonar-project.properties ]; then
+            echo "Found sonar-project.properties"
+            cat sonar-project.properties
+          else
+            echo "sonar-project.properties not found"
+          fi
       # Run SonarScanner in the specified directory
       - name: Run SonarScanner
         env:
