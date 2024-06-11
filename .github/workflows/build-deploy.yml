@@ -28,20 +28,28 @@ jobs:
           cp -r sunbirded-portal/images/ src/app/client/src/assets
           cp -r sunbirded-portal/resourceBundles/data/ src/app/resourcebundles/
 
-      - name: Build and Archive Artifacts
+      - name: Build
         run: |
           commit_hash=$(git rev-parse --short HEAD)
           build_tag=$(echo "${{ github.ref }}" | rev | cut -d/ -f1 | rev)_${commit_hash}_${GITHUB_RUN_NUMBER}
           echo "build_tag: $build_tag"
-          bash ./build.sh $build_tag test1 test2 test3 test4 test5
-          cp metadata.json $GITHUB_WORKSPACE/metadata.json
-          if [[ "${{ github.event.inputs.buildCdnAssests }}" == 'true' ]]; then
-            mkdir -p cdn_assets
-            cp -r src/app/dist-cdn/* cdn_assets/
-            zip -Jr cdn_assets.zip cdn_assets
-            cp cdn_assets.zip $GITHUB_WORKSPACE/cdn_assets.zip
-          fi
+          bash ./build.sh "${build_tag}" "${{ env.NODE_NAME }}" "test" true false ""
+        env:
+          NODE_NAME: "18.20.2"
+
+      - name: Archive Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: metadata
+          path: metadata.json
+
+      - name: Archive CDN assets if required
+        if: ${{ github.event.inputs.buildCdnAssests == 'true' }}
+        run: |
+          rm -rf cdn_assets
+          mkdir cdn_assets
+          cp -r src/app/dist-cdn/* cdn_assets/
+          zip -Jr cdn_assets.zip cdn_assets
+          echo "##vso[task.uploadfile]cdn_assets.zip"
         env:
           WL_Customization: ${{ github.event.inputs.WL_Customization }}
-          NODE_NAME: ${{ env.NODE_NAME }}
-          HUB_ORG: ${{ env.HUB_ORG }}
