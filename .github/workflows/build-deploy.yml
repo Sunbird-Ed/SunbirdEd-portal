@@ -1,0 +1,44 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - "*"
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "18"
+
+      - name: Customize dependencies
+        if: ${{ env.WL_Customization != null }}
+        run: |
+          git clone --recurse-submodules ${WL_Customization} sunbirded-portal
+          cp -r sunbirded-portal/images/ src/app/client/src/assets
+          cp -r sunbirded-portal/resourceBundles/data/ src/app/resourcebundles/
+
+      - name: Build and Archive Artifacts
+        run: |
+          commit_hash=$(git rev-parse --short HEAD)
+          build_tag=$(echo "${{ github.ref }}" | rev | cut -d/ -f1 | rev)_${commit_hash}_${GITHUB_RUN_NUMBER}
+          echo "build_tag: $build_tag"
+          bash ./build.sh $build_tag ${{ env.NODE_NAME }} ${{ env.HUB_ORG }} ${{ github.event.inputs.buildDockerImage }} ${{ github.event.inputs.buildCdnAssests }} ${{ github.event.inputs.cdnUrl }}
+          cp metadata.json $GITHUB_WORKSPACE/metadata.json
+          if [[ "${{ github.event.inputs.buildCdnAssests }}" == 'true' ]]; then
+            mkdir -p cdn_assets
+            cp -r src/app/dist-cdn/* cdn_assets/
+            zip -Jr cdn_assets.zip cdn_assets
+            cp cdn_assets.zip $GITHUB_WORKSPACE/cdn_assets.zip
+          fi
+        env:
+          WL_Customization: ${{ github.event.inputs.WL_Customization }}
+          NODE_NAME: ${{ env.NODE_NAME }}
+          HUB_ORG: ${{ env.HUB_ORG }}
