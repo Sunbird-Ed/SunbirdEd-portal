@@ -9,14 +9,18 @@ ENV buildCdnAssets=${buildCdnAssets}
 
 # Set the working directory for the client build
 WORKDIR /usr/src/app/client
+# Install npm
+RUN apt-get update && apt-get install -y npm
+
+# Install Yarn
+RUN npm install -g yarn
 
 # Copy the client code into the Docker container
 COPY src/app/client ./
 RUN rm -rf node_modules yarn.lock
 RUN yarn cache clean
 
-# Install Yarn
-RUN npm install -g yarn
+
 # Install client dependencies
 RUN yarn install --no-progress --frozen-lockfile --production=true
 
