@@ -126,7 +126,6 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          cd ~/src
           sonar-scanner \
             -Dsonar.projectKey=Sunbird-Ed_SunbirdEd-portal \
             -Dsonar.organization=your_organization \
