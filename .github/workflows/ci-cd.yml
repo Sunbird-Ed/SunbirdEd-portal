@@ -128,7 +128,8 @@ jobs:
         run: |
           cd ~/src
           sonar-scanner \
-            -Dsonar.projectKey=your_project_key \
+            -Dsonar.projectKey=Sunbird-Ed_SunbirdEd-portal \
             -Dsonar.organization=your_organization \
+            -Dsonar.sources=src/app/client/src \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=$SONAR_TOKEN
