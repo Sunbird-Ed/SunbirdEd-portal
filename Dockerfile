@@ -13,7 +13,7 @@ WORKDIR /usr/src/app/client
 RUN apt-get update && apt-get install -y npm
 
 # Install Yarn
-RUN npm install -g yarn
+RUN npm install -g yarn --force
 
 # Copy the client code into the Docker container
 COPY src/app/client ./
