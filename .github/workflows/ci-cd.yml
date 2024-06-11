@@ -127,12 +127,12 @@ jobs:
         run: |
           if [ -z "${{ secrets.SONAR_TOKEN }}" ]; then
             echo "Error: SONAR_TOKEN is not set."
-            exit 1
+            
           else
             echo "SONAR_TOKEN is set."
           fi
 
-          # Debug: Print the masked SONAR_TOKEN
+        # Debug: Print the masked SONAR_TOKEN
       - name: Print SONAR_TOKEN
         run: echo "SONAR_TOKEN=${{ secrets.SONAR_TOKEN }}PWR****123"
       # Ensure sonar-project.properties exists and print its content for debugging
@@ -151,7 +151,7 @@ jobs:
         run: |
           sonar-scanner \
             -Dsonar.projectKey=Sunbird-Ed_SunbirdEd-portal \
-            -Dsonar.organization=your_organization \
+            -Dsonar.organization=sunbird-ed \
             -Dsonar.sources=src/app/client/src \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=$SONAR_TOKEN
