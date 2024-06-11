@@ -1,0 +1,57 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: cimg/node:18.16.0
+    steps:
+      - checkout
+      - run:
+          name: run build file
+          command: /bin/bash -x build.sh ${CIRCLE_SHA1} test
+  test-cases:
+    working_directory: ~/portal/src/app/client
+    docker:
+      # Ref: https://circleci.com/docs/2.0/configuration-reference/#available-machine-images
+      - image: cimg/node:18.16.0
+    resource_class: large
+    steps:
+      - checkout:
+          path: ~/portal
+      - run:
+          # Using NodeJS version 16
+          name: Installing prerequisites
+          command: |-
+            node --version
+      - run:
+          name: ignore-engines
+          command: 'yarn config set ignore-engines true'
+      - run:
+          name: Installing npm deps
+          command: 'yarn install'
+      - save_cache: # special step to save the dependency cache
+          key: dependency-cache-portal-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      # - run:
+      #     name: ng lint and building
+      #     command: 'mkdir -p /tmp/logs && node --max_old_space_size=6000 ./node_modules/@angular/cli/bin/ng build --prod --optimization=false --buildOptimizer=false | tee /tmp/logs/build.log'
+      - run:
+          name: Executing test cases using JEST
+          command: 'npm run test:ci'
+      - run:
+          name: Install Sonar Scanner
+          command: |
+            cd /tmp
+            wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+            unzip || sudo apt install unzip -y
+            unzip sonar-scanner-cli-5.0.1.3006-linux.zip
+            cd -
+      - run:
+         name: run sonar scanner
+         command: 'cd ~/portal && /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner'
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - test-cases
+      
