@@ -87,13 +87,13 @@ jobs:
       #     npm run test:ci
 
       # Install Sonar Scanner
-      - name: Install Sonar Scanner
-        run: |
-          cd /tmp
-          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
-          sudo apt-get install -y unzip
-          unzip sonar-scanner-cli-5.0.1.3006-linux.zip
-          cd -
+      # - name: Install Sonar Scanner
+      #   run: |
+      #     cd /tmp
+      #     wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+      #     sudo apt-get install -y unzip
+      #     unzip sonar-scanner-cli-5.0.1.3006-linux.zip
+      #     cd -
 
       #  # Run SonarScanner for frontend (Angular)
       # - name: Run SonarScanner for frontend
@@ -106,13 +106,29 @@ jobs:
       #       -Dsonar.host.url=https://sonarcloud.io \
       #       -Dsonar.organization=your_organization \
       #       -Dsonar.login=$SONAR_TO
-      - name: Run Sonar Scanner
+      # - name: Run Sonar Scanner
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #   run: |
+      #     /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner \
+      #       -Dsonar.projectKey=Sunbird-Ed_SunbirdEd-portal \
+      #       -Dsonar.sources=src/app/client/src \
+      #       -Dsonar.organization=sunbird-ed \
+      #       -Dsonar.host.url=https://sonarcloud.io \
+      #       -Dsonar.login=$SONAR_TOKEN
+
+      # Install SonarScanner globally using npm
+      - name: Install SonarScanner
+        run: npm install -g sonarqube-scanner
+
+      # Run SonarScanner in the specified directory
+      - name: Run SonarScanner
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner \
-            -Dsonar.projectKey=Sunbird-Ed_SunbirdEd-portal \
-            -Dsonar.sources=src/app/client/src \
-            -Dsonar.organization=sunbird-ed \
+          cd ~/src
+          sonar-scanner \
+            -Dsonar.projectKey=your_project_key \
+            -Dsonar.organization=your_organization \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=$SONAR_TOKEN
