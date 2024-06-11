@@ -14,6 +14,8 @@ WORKDIR /usr/src/app/client
 COPY src/app/client ./
 RUN yarn cache clean
 
+# Install Yarn
+RUN npm install -g yarn
 # Install client dependencies
 RUN yarn install --no-progress --frozen-lockfile --production=true
 
