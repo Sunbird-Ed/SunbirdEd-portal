@@ -119,7 +119,11 @@ jobs:
 
       # Install SonarScanner globally using npm
       - name: Install SonarScanner
-        run: npm install -g sonarqube-scanner
+        run:
+          npm install -g sonarqube-scanner
+          # Debug: Print the masked SONAR_TOKEN
+      - name: Print SONAR_TOKEN
+        run: echo "SONAR_TOKEN=${{ secrets.SONAR_TOKEN }}PWR****123"
 
       # Run SonarScanner in the specified directory
       - name: Run SonarScanner
