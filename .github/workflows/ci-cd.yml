@@ -3,10 +3,10 @@ name: CI/CD
 on:
   push:
     branches:
-      - "*" # Trigger on push to any branch
+      - "test" # Trigger on push to any branch
   pull_request:
     branches:
-      - "*" # Trigger on pull request to any branch
+      - "trst" # Trigger on pull request to any branch
 
 jobs:
   build-and-test:
