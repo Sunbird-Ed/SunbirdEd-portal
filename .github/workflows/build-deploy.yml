@@ -33,7 +33,7 @@ jobs:
           commit_hash=$(git rev-parse --short HEAD)
           build_tag=$(echo "${{ github.ref }}" | rev | cut -d/ -f1 | rev)_${commit_hash}_${GITHUB_RUN_NUMBER}
           echo "build_tag: $build_tag"
-          bash ./build.sh $build_tag ${{ env.NODE_NAME }} ${{ env.HUB_ORG }} ${{ github.event.inputs.buildDockerImage }} ${{ github.event.inputs.buildCdnAssests }} ${{ github.event.inputs.cdnUrl }}
+          bash ./build.sh $build_tag test1 test2 test3 test4 test5
           cp metadata.json $GITHUB_WORKSPACE/metadata.json
           if [[ "${{ github.event.inputs.buildCdnAssests }}" == 'true' ]]; then
             mkdir -p cdn_assets
