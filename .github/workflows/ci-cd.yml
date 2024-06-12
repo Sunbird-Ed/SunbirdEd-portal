@@ -96,8 +96,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner \
-            -Dsonar.sources=src/app/client/src \
-            -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=$SONAR_TOKEN
 
       # - name: Run Sonar Scanner
