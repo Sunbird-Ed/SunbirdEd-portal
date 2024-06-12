@@ -2,7 +2,7 @@ name: Use the data
 
 on:
   workflow_run:
-    workflows: [Upload data]
+    workflows: [CI/CD]
     types:
       - completed
 
