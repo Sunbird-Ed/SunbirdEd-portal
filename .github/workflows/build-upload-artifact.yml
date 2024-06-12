@@ -1,0 +1,56 @@
+name: Build and Upload Artifact
+
+on:
+  push:
+    branches:
+      - "deploy" # Trigger on push to any branch
+  pull_request:
+    branches:
+      - "deploy" # Trigger on pull request to any branch
+
+jobs:
+  build_and_deploy:
+    name: Build and Upload Artifact Job # Define the name of the job
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2 # Checkout the repository code
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "18.20.2" # Set up Node.js version 18
+
+      - name: Customize dependencies
+        if: ${{ env.WL_Customization != null }} # Conditional step execution
+        run: |
+          git clone --recurse-submodules ${WL_Customization} sunbirded-portal # Clone repository with submodules
+          cp -r sunbirded-portal/images/ src/app/client/src/assets # Copy images to client assets
+          cp -r sunbirded-portal/resourceBundles/data/ src/app/resourcebundles/ # Copy resource bundle data
+        env:
+          WL_Customization: ${{ github.event.inputs.WL_Customization }} # Set environment variable WL_Customization
+
+      - name: Build and Create Docker Image
+        run: |
+          commit_hash=$(git rev-parse --short HEAD) # Get commit hash
+          build_tag=$(echo "${{ github.ref }}" | rev | cut -d/ -f1 | rev)_${commit_hash}_${GITHUB_RUN_NUMBER} # Generate build tag
+          echo "build_tag: $build_tag" # Print build tag
+          bash ./build.sh "${build_tag}" "${{ env.NODE_NAME }}" "test" true false "" # Run build script with parameters
+        env:
+          NODE_NAME: "18.20.2" # Set environment variable NODE_NAME
+
+      - name: Archive Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: metadata
+          path: metadata.json
+
+      - name: Archive CDN assets if required
+        if: ${{ github.event.inputs.buildCdnAssests == 'true' }} # Conditional step execution
+        run: |
+          rm -rf cdn_assets # Remove existing CDN assets directory
+          mkdir cdn_assets # Create CDN assets directory
+          cp -r src/app/dist-cdn/* cdn_assets/ # Copy CDN assets
+          zip -Jr cdn_assets.zip cdn_assets # Create zip file of CDN assets
+          echo "##vso[task.uploadfile]cdn_assets.zip" # Upload CDN assets zip file
