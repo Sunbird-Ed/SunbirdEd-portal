@@ -2,7 +2,7 @@ name: Use the data
 
 on:
   workflow_run:
-    workflows: ["Build"]
+    workflows: ["build-and-test"]
     types:
       - completed
 
