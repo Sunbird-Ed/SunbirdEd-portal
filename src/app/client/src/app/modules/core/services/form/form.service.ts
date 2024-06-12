@@ -10,6 +10,7 @@ import { PublicDataService } from './../public-data/public-data.service';
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import * as _ from 'lodash-es';
 import { OrgDetailsService } from '../org-details/org-details.service';
+import {mockData, mockResult} from './form.service.data'
 @Injectable({
   providedIn: 'root'
 })
@@ -68,7 +69,7 @@ export class FormService {
          const key = btoa(formKey);
         if (this.cacheService.get(key)) {
           const data = this.cacheService.get(key);
-          return of(data);
+          return of(mockData);
         } else {
           if (formInputParams.framework) {
             channelOptions.data.request.framework = formInputParams.framework;
@@ -77,6 +78,9 @@ export class FormService {
             (formConfig: ServerResponse) => {
               const result = _.get(formConfig.result.form, responseKey)
               this.setForm(formKey, result);
+            if(formInputParams.formType === "profileConfig_v2"){
+              return mockResult;
+            }
               return result;
             }));
         }
