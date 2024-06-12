@@ -2,7 +2,7 @@ name: Use the data
 
 on:
   workflow_run:
-    workflows: [build-and-test]
+    workflows: [Build]
     types:
       - completed
 
@@ -17,6 +17,7 @@ jobs:
       - name: Print SONAR_TOKEN
         run: echo "SONAR_TOKEN=${{ secrets.SONAR_TOKEN }}PWR****123"
 
+      # Install Sonar Scanner
       - name: Install Sonar Scanner
         run: |
           cd /tmp
@@ -25,6 +26,7 @@ jobs:
           unzip sonar-scanner-cli-5.0.1.3006-linux.zip
           cd -
 
+      # Run SonarScanner for frontend (Angular)
       - name: Run SonarScanner for frontend
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
