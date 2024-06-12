@@ -2,7 +2,7 @@ name: Use the data
 
 on:
   workflow_run:
-    workflows: [CI/CD]
+    workflows: ["CI/CD"]
     types:
       - completed
 
