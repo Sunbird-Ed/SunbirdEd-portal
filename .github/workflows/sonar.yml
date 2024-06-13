@@ -1,4 +1,4 @@
-name: Use data
+name: Sonar
 
 on:
   workflow_run:

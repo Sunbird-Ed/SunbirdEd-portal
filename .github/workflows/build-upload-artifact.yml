@@ -3,10 +3,10 @@ name: Build and Upload Artifact
 on:
   push:
     branches:
-      - "deploy" # Trigger on push to any branch
+      - "*" # Trigger on push to the "deploy" branch
   pull_request:
     branches:
-      - "deploy" # Trigger on pull request to any branch
+      - "*" # Trigger on pull request to the "deploy" branch
 
 jobs:
   build_and_deploy:
@@ -32,13 +32,28 @@ jobs:
           WL_Customization: ${{ github.event.inputs.WL_Customization }} # Set environment variable WL_Customization
 
       - name: Build and Create Docker Image
+        id: build_docker_image
         run: |
           commit_hash=$(git rev-parse --short HEAD) # Get commit hash
           build_tag=$(echo "${{ github.ref }}" | rev | cut -d/ -f1 | rev)_${commit_hash}_${GITHUB_RUN_NUMBER} # Generate build tag
-          echo "build_tag: $build_tag" # Print build tag
+          echo "build_tag=$build_tag" >> $GITHUB_ENV # Save build tag to environment variable
           bash ./build.sh "${build_tag}" "${{ env.NODE_NAME }}" "test" true false "" # Run build script with parameters
         env:
           NODE_NAME: "18.20.2" # Set environment variable NODE_NAME
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push Docker Image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile # Path to your Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/my-app:${{ env.build_tag }}
 
       - name: Archive Artifacts
         uses: actions/upload-artifact@v2
