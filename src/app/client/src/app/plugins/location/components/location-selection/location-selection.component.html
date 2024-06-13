@@ -37,7 +37,7 @@
         <div class="sb-onboard__footer mt-0">
           <ng-content select="[slot=popup-footer]"></ng-content>
         </div>
-        <div class="sb-onboard__footer d-flex flex-ai-center flex-jc-center w-80 m-auto">
+        <div class="sb-onboard__footer d-flex flex-ai-center flex-jc-center w-80 m-auto pt-24">
           <button type="button" class="sb-btn sb-btn-sm sb-btn-white text-uppercase flex-basis-1" type="submit"
             [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading"
             [disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading" (click)="clearUserLocationSelections()"
