@@ -11,7 +11,8 @@ on:
   pull_request_target: # This is to access secrets from forked PRs
 
 jobs:
-  build-and-test:
+  build:
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
