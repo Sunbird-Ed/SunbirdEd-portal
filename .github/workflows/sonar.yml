@@ -1,4 +1,4 @@
-name: Use the data
+name: Use data
 
 on:
   workflow_run:
