@@ -1,6 +1,8 @@
 import { ConfigService, NavigationHelperService, UtilService } from '@sunbird/shared';
-import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter,
-OnChanges, HostListener, OnInit, ChangeDetectorRef } from '@angular/core';
+import {
+  Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter,
+  OnChanges, HostListener, OnInit, ChangeDetectorRef
+} from '@angular/core';
 import * as _ from 'lodash-es';
 import { PlayerConfig } from '@sunbird/shared';
 import { Router } from '@angular/router';
@@ -66,7 +68,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   isDesktopApp = false;
   showQumlPlayer = false;
   contentId: string;
-  collectionId:string;
+  collectionId: string;
 
   /**
  * Dom element reference of contentRatingModal
@@ -98,9 +100,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   @HostListener('window:orientationchange', ['$event'])
   public handleOrientationChange() {
     const screenType = _.get(screen, 'orientation.type');
-      if ( screenType === 'portrait-primary' || screenType === 'portrait-secondary' ) {
-        this.closeFullscreen();
-      }
+    if (screenType === 'portrait-primary' || screenType === 'portrait-secondary') {
+      this.closeFullscreen();
+    }
   }
 
   ngOnInit() {
@@ -125,7 +127,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     // Check for loggedIn user; and append user data to context object
     // User data (`firstName` and `lastName`) is used to show at the end of quiz
     if (this.playerConfig) {
-        this.addUserDataToContext();
+      this.addUserDataToContext();
     }
     this.isMobileOrTab = this.deviceDetectorService.isMobile() || this.deviceDetectorService.isTablet();
     if (this.isSingleContent === false) {
@@ -133,22 +135,22 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
     this.setTelemetryData();
     this.navigationHelperService.contentFullScreenEvent.
-    pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
-      this.isFullScreenView = isFullScreen;
-      const root: HTMLElement = document.getElementsByTagName( 'html' )[0];
-      if (isFullScreen) {
-        root.classList.add('PlayerMediaQueryClass');
-        document.body.classList.add('o-y-hidden');
-      } else {
-        root.classList.remove('PlayerMediaQueryClass');
-        document.body.classList.remove('o-y-hidden');
-      }
-      if (this.isDesktopApp) {
-        const hideCM = isFullScreen ? true : false;
-        this.navigationHelperService.handleContentManagerOnFullscreen(hideCM);
-      }
-      this.loadPlayer();
-    });
+      pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
+        this.isFullScreenView = isFullScreen;
+        const root: HTMLElement = document.getElementsByTagName('html')[0];
+        if (isFullScreen) {
+          root.classList.add('PlayerMediaQueryClass');
+          document.body.classList.add('o-y-hidden');
+        } else {
+          root.classList.remove('PlayerMediaQueryClass');
+          document.body.classList.remove('o-y-hidden');
+        }
+        if (this.isDesktopApp) {
+          const hideCM = isFullScreen ? true : false;
+          this.navigationHelperService.handleContentManagerOnFullscreen(hideCM);
+        }
+        this.loadPlayer();
+      });
 
     this.contentUtilsServiceService.contentShareEvent.pipe(takeUntil(this.unsubscribe)).subscribe(data => {
       if (this.isMobileOrTab && data === 'close') {
@@ -251,12 +253,12 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     });
     this.epubPlayer.nativeElement.append(epubElement);
   }
-    /**
-   * Configures the Quml (Question Unit Markup Language) player by setting the question list URL,
-   * creating a new HTML element for the Sunbird Quml player, and attaching event listeners for player and telemetry events.
-   * This method is responsible for configuring the Quml player component dynamically,
-   * allowing it to be embedded within the parent component's view and interact with player and telemetry events.
-   */
+  /**
+ * Configures the Quml (Question Unit Markup Language) player by setting the question list URL,
+ * creating a new HTML element for the Sunbird Quml player, and attaching event listeners for player and telemetry events.
+ * This method is responsible for configuring the Quml player component dynamically,
+ * allowing it to be embedded within the parent component's view and interact with player and telemetry events.
+ */
   qumlPlayerConfig() {
     (window as any).questionListUrl = `/${_.get(this.configService, 'urlConFig.URLS.QUESTIONSET.LIST_API')}`;
     const qumlElement = document.createElement('sunbird-quml-player');
@@ -516,12 +518,15 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   generateContentReadEvent(event: any, newPlayerEvent?) {
+    if (event?.detail) {
+      event = event?.detail;
+    }
     let eventCopy = newPlayerEvent ? _.cloneDeep(event) : event;
     if (!eventCopy) {
       return;
     }
     if (newPlayerEvent) {
-      eventCopy = { detail: {telemetryData: eventCopy}};
+      eventCopy = { detail: { telemetryData: eventCopy } };
     }
     const eid = _.get(eventCopy, 'detail.telemetryData.eid');
     const contentId = _.get(eventCopy, 'detail.telemetryData.object.id');
@@ -594,7 +599,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
           playVideo.msRequestFullscreen();
         }
         screen.orientation.lock('landscape');
-      } catch (error) {}
+      } catch (error) { }
     });
   }
 
@@ -621,7 +626,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         this.modal.showContentRatingModal = true;
       }
     }
-     /** to change the view of the content-details page */
+    /** to change the view of the content-details page */
     this.showPlayIcon = true;
     this.closePlayerEvent.emit();
   }
@@ -649,7 +654,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.focusOnReplay();
     this.ratingPopupClose.emit({});
   }
-  
+
   focusOnReplay() {
     if (this.playerType === 'quml-player') {
       const replayButton: HTMLElement = document.querySelector('.replay-section');
@@ -658,7 +663,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       }
     }
   }
-  
+
   public addUserDataToContext() {
     if (this.userService.loggedIn) {
       this.userService.userData$.subscribe((user: any) => {
