@@ -48,12 +48,17 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Push Docker Image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: ./Dockerfile # Path to your Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/my-app:${{ env.build_tag }}
+        run: |
+          docker tag my-app:${{ env.build_tag }} ${{ secrets.DOCKER_USERNAME }}/my-app:${{ env.build_tag }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/my-app:${{ env.build_tag }}
+
+      # - name: Push Docker Image
+      #   uses: docker/build-push-action@v4
+      #   with:
+      #     context: .
+      #     file: ./Dockerfile # Path to your Dockerfile
+      #     push: true
+      #     tags: ${{ secrets.DOCKER_USERNAME }}/my-app:${{ env.build_tag }}
 
       - name: Archive Artifacts
         uses: actions/upload-artifact@v2
