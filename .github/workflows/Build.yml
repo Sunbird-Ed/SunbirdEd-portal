@@ -3,10 +3,10 @@ name: Build
 on:
   push:
     branches:
-      - "deploy" # Trigger on push to any branch
+      - "*" # Trigger on push to any branch
   pull_request:
     branches:
-      - "deploy" # Trigger on pull request to any branch
+      - "*" # Trigger on pull request to any branch
   workflow_dispatch: # Manual trigger
   pull_request_target: # This is to access secrets from forked PRs
 

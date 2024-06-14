@@ -3,10 +3,10 @@ name: Build and Upload Artifact
 on:
   push:
     branches:
-      - "*" # Trigger on push to the "deploy" branch
+      - "deploy" # Trigger on push to the "deploy" branch
   pull_request:
     branches:
-      - "*" # Trigger on pull request to the "deploy" branch
+      - "deploy" # Trigger on pull request to the "deploy" branch
 
 jobs:
   build_and_deploy:
