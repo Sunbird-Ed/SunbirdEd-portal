@@ -24,8 +24,18 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version:
+            18
 
+            # Save branch name for use in the next workflow
+      - name: Save branch name
+        run: echo "${GITHUB_REF#refs/heads/}" > branch.txt
+
+      - name: Upload branch name
+        uses: actions/upload-artifact@v3
+        with:
+          name: branch-name
+          path: branch.txt
       # # Install client dependencies
       # - name: Install client dependencies
       #   working-directory: src/app/client
