@@ -10,21 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.workflow_run.conclusion == 'success'
     steps:
-      - name: Download branch name
-        uses: actions/download-artifact@v3
-        with:
-          name: branch-name
-
-      - name: Read branch name
-        id: read_branch_name
-        run: |
-          branch_name=$(cat branch.txt)
-          echo "branch_name=$branch_name" >> $GITHUB_ENV
-
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          ref: ${{ env.branch_name }}
+          ref: 8.0.0_github_action # Checkout the branch where the original workflow was triggered
 
       - name: Print SONAR_TOKEN
         run: echo "SONAR_TOKEN=${{ secrets.SONAR_TOKEN }}PWR****123"
