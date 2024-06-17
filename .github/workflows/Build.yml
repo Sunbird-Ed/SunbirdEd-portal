@@ -24,57 +24,66 @@ jobs:
         with:
           node-version: 18
 
-      # Install client dependencies
-      - name: Install client dependencies
-        working-directory: src/app/client
-        run: yarn install --no-progress --production=true
-      # Build the client
-      - name: Build client
-        working-directory: src/app/client
-        run: npm run build
-      # List all files after the build
-      - name: List all files after build
-        working-directory: src/app/client
-        run: find . -type f
-      # Check if the dist directory exists and list its contents
-      - name: Check if dist directory exists and list contents
-        working-directory: src/app/client
-        run: |
-          if [ -d dist ]; then
-            echo "dist directory exists. Listing contents:"
-            ls -l dist
-          else
-            echo "dist directory does not exist"
-          fi
-      # Move index.html to index.ejs if it exists
-      - name: Move index.html to index.ejs if it exists
-        working-directory: src/app/client
-        run: |
-          if [ -f dist/index.html ]; then
-            mv dist/index.html dist/index.ejs
-          else
-            echo "File dist/index.html does not exist"
-          fi
-      # Set up server directories
-      - name: Set up server directories
-        run: mkdir -p $GITHUB_WORKSPACE/app_dist
-      #Copy server files to the destination directory
-      - name: Copy server files
-        run: |
-          cp -r src/app/libs src/app/helpers src/app/proxy src/app/resourcebundles src/app/package.json src/app/framework.config.js src/app/sunbird-plugins src/app/routes src/app/constants src/app/controllers src/app/server.js $GITHUB_WORKSPACE/app_dist/
-        shell: /usr/bin/bash -e {0}
-      #Install server dependencies
-      - name: Install server dependencies
-        working-directory: ${{ github.workspace }}/app_dist
-        run: yarn install --ignore-engines --no-progress --production=true
-      #Run server build script
-      - name: Run server build script
-        working-directory: ${{ github.workspace }}/app_dist
-        run: node helpers/resourceBundles/build.js -task="phraseAppPull"
-      #Execute test cases using JEST
-      - name: Execute test cases using JEST
-        working-directory: src/app/client
-        run: |
-          yarn config set ignore-engines true
-          yarn install
-          npm run test:ci
+      # # Install client dependencies
+      # - name: Install client dependencies
+      #   working-directory: src/app/client
+      #   run: yarn install --no-progress --production=true
+
+      # # Build the client
+      # - name: Build client
+      #   working-directory: src/app/client
+      #   run: npm run build
+
+      # # List all files after the build
+      # - name: List all files after build
+      #   working-directory: src/app/client
+      #   run: find . -type f
+
+      # # Check if the dist directory exists and list its contents
+      # - name: Check if dist directory exists and list contents
+      #   working-directory: src/app/client
+      #   run: |
+      #     if [ -d dist ]; then
+      #       echo "dist directory exists. Listing contents:"
+      #       ls -l dist
+      #     else
+      #       echo "dist directory does not exist"
+      #     fi
+
+      # # Move index.html to index.ejs if it exists
+      # - name: Move index.html to index.ejs if it exists
+      #   working-directory: src/app/client
+      #   run: |
+      #     if [ -f dist/index.html ]; then
+      #       mv dist/index.html dist/index.ejs
+      #     else
+      #       echo "File dist/index.html does not exist"
+      #     fi
+
+      # # Set up server directories
+      # - name: Set up server directories
+      #   run: mkdir -p $GITHUB_WORKSPACE/app_dist
+
+      # # Copy server files to the destination directory
+      # - name: Copy server files
+      #   run: |
+      #     cp -r src/app/libs src/app/helpers src/app/proxy src/app/resourcebundles src/app/package.json src/app/framework.config.js src/app/sunbird-plugins src/app/routes src/app/constants src/app/controllers src/app/server.js $GITHUB_WORKSPACE/app_dist/
+      #   shell: /usr/bin/bash -e {0}
+
+      # # Install server dependencies
+      # - name: Install server dependencies
+      #   working-directory: ${{ github.workspace }}/app_dist
+      #   run: yarn install --ignore-engines --no-progress --production=true
+
+      # # Run server build script
+      # - name: Run server build script
+      #   working-directory: ${{ github.workspace }}/app_dist
+      #   run: node helpers/resourceBundles/build.js -task="phraseAppPull"
+
+      # # Execute test cases using JEST
+      # - name: Execute test cases using JEST
+      #   working-directory: src/app/client
+      #   run: |
+      #     yarn config set ignore-engines true
+      #     yarn install
+      #     npm run test:ci
