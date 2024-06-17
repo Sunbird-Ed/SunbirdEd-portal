@@ -29,4 +29,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # Inject the SonarQube token securely
         run: |
           /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner \
-            -Dsonar.login=$SONAR_TOKEN  # Pass the SonarQube token for authentication
+            -Dsonar.login=$SONAR_TOKEN
