@@ -159,5 +159,4 @@ jobs:
       #       -Dsonar.projectKey=Sunbird-Ed_SunbirdEd-portal \
       #       -Dsonar.organization=sunbird-ed \
       #       -Dsonar.sources=src/app/client/src \
-      #       -Dsonar.host.url=https://sonarcloud.io \
       #       -Dsonar.login=$SONAR_TOKEN
