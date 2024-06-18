@@ -153,7 +153,7 @@ export class ObservationUtilService {
           resolve(null);
         }
       }, error => {
-        reject(error);
+        reject(new Error (`${error}`));
       });
     });
   }
