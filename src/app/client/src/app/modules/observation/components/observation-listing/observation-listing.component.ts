@@ -135,7 +135,7 @@ export class ObservationListingComponent
           className: 'popup-btn'
         }
         );
-      const returnData = await this.observationUtil.showPopupAlert(metaData);
+      const returnData = await this.observationUtil.showPopupAlert(metaData,'250px');
       if (returnData) {
         const queryParam = {
           showEditUserDetailsPopup: true
