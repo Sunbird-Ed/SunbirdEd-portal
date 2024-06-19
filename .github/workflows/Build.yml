@@ -24,10 +24,10 @@ jobs:
         with:
           node-version: 18
 
-      # # Install client dependencies
-      # - name: Install client dependencies
-      #   working-directory: src/app/client
-      #   run: yarn install --no-progress --production=true
+      # Install client dependencies
+      - name: Install client dependencies
+        working-directory: src/app/client
+        run: yarn install --no-progress --production=true
 
       # # Build the client
       # - name: Build client
