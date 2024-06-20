@@ -11,8 +11,7 @@ import { CsCertificateService } from '@project-sunbird/client-services/services/
 
 @Component({
   selector: 'app-certificate-details',
-  templateUrl: './certificate-details.component.html',
-  styleUrls: ['./certificate-details.component.scss']
+  templateUrl: './certificate-details.component.html'
 })
 export class CertificateDetailsComponent implements OnInit , OnDestroy {
   loader: boolean;
