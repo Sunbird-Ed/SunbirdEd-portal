@@ -3,7 +3,8 @@ name: Sonar
 on:
   workflow_run:
     workflows: [Build-Test] # Trigger when the Build-Test workflow completes
-    branches: "*"
+    branches:
+      - "release-**"
     types:
       - completed # Trigger on completion of the Build-Test workflow
 
