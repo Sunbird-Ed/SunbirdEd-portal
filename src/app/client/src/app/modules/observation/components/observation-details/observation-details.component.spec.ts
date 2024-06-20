@@ -281,7 +281,7 @@ describe("Observation Details", () => {
         "title": "mock-ready-applicable-title"}, "footer": {"buttons": 
         [{"buttonText": "Go back", "returnValue": false, "type": "cancel"}], 
         "className": "double-btn"}, "size": "small"
-      }
+      }, '350px'
     );
     expect(component.openEditModal.show).toBeTruthy;
     expect(component.openEditModal.data).toBeNull;
@@ -484,7 +484,7 @@ describe("Observation Details", () => {
     await component.observeAgainConfirm();
 
     expect(component.observationUtilService.getAlertMetaData).toHaveBeenCalled();
-    expect(component.observationUtilService.showPopupAlert).toHaveBeenCalledWith(metadata);
+    expect(component.observationUtilService.showPopupAlert).toHaveBeenCalledWith(metadata,'250px');
   });
 
   it('should call methods and set values on deleteSubmission',async() =>{

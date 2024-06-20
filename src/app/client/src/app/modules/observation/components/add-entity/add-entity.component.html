@@ -1,15 +1,11 @@
-<app-modal-wrapper [config]="{disableClose: true,size: 'normal',panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="showDownloadSuccessModal = false" #modal>
+<app-modal-wrapper #modal>
     <ng-template sbModalContent>
-        <div class="sb-mat__modal sb-onboard">
+        <div class="add-entity-template">
             <div mat-dialog-title class="flex-jc-center">
-                <div class="sb-onboard__header">
                     <h4> {{resourceService.frmelmnts?.btn?.addEntity}} </h4>
-                </div>
-                <button aria-label="close dialog" mat-dialog-close class="close-btn" (click)="closeModal()">
-                </button>
             </div>
             <mat-dialog-content>
-                <div class="sb-mat__modal__content">
+                <div>
                     <div class="sbt-search-box search-box">
                         <div class="input-div relative" id="search-input-container">
                             <img src="assets/images/search-icon.svg" class="search icon" alt="Search Icon">
@@ -20,8 +16,7 @@
                 </div>
             </mat-dialog-content>
             <mat-dialog-content>
-                <div class="sb-mat__modal__content">
-                        <div class="sb-modal-content content search-results">
+                <div>
                         <div *ngIf="entities?.length">
                             <div *ngFor="let entity of entities">
                                 <div class="sb-checkbox sb-checkbox-secondary pt-24 ui checkbox">
@@ -39,10 +34,9 @@
                         <div class="twelve wide column" *ngIf="!showLoaderBox && entities?.length === 0">
                             <app-no-result [data]="noResultMessage"></app-no-result>
                         </div>
-                    </div>
                 </div>
             </mat-dialog-content>
-            <mat-dialog-actions class="mb-0 sb-mat__modal__actions flex-jc-center">
+            <mat-dialog-actions class="mb-12 flex-jc-center">
                 <div class="sb-onboard__footer d-flex">
                     <button type="button" class="sb-btn sb-btn-sm sb-btn-white text-uppercase flex-basis-1"
                         type="submit" tabindex="0" (click)="closeModal()">

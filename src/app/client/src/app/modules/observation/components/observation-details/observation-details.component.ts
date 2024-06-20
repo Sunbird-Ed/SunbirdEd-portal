@@ -257,7 +257,7 @@ export class ObservationDetailsComponent implements OnInit {
       buttonText: this.resourceService.frmelmnts.btn.yes
     });
     metaData.footer.className = 'double-btn';
-    const returnData = await this.observationUtilService.showPopupAlert(metaData);
+    const returnData = await this.observationUtilService.showPopupAlert(metaData,'250px');
     returnData ? this.observeAgain() : '';
 }
   observeAgain() {
@@ -312,7 +312,7 @@ export class ObservationDetailsComponent implements OnInit {
       buttonText: this.resourceService.frmelmnts.btn.yes
     });
     metaData.footer.className = 'double-btn';
-    const returnData = await this.observationUtilService.showPopupAlert(metaData);
+    const returnData = await this.observationUtilService.showPopupAlert(metaData,'250px');
     if (returnData) {
       this.showLoader = true;
       this.payload.data = [
@@ -365,7 +365,7 @@ export class ObservationDetailsComponent implements OnInit {
       buttonText: this.resourceService.frmelmnts.btn.yes
     });
     metaData.footer.className = 'double-btn';
-    const returnData = await this.observationUtilService.showPopupAlert(metaData);
+    const returnData = await this.observationUtilService.showPopupAlert(metaData,'250px');
     if (returnData) {
       const config = {
         url: this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_SUBMISSION_UPDATE + `${event._id}`,
@@ -431,7 +431,8 @@ export class ObservationDetailsComponent implements OnInit {
       });
       metaData.footer.className = 'double-btn';
       this.observationUtilService.showPopupAlert(
-        metaData
+        metaData,
+        '350px'
       );
       return;
     }
