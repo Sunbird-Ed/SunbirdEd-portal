@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { UserService} from '../user/user.service';
 import { FormService } from '../form/form.service';
 import { KendraService } from '../kendra/kendra.service';
-import { IUserData, ConfigService, ResourceService, AlertModal } from '@sunbird/shared';
+import { IUserData, ConfigService, ResourceService,AlertModalComponent } from '@sunbird/shared';
 import { take } from 'rxjs/operators';
 import { SuiModalService } from '@project-sunbird/ng2-semantic-ui';
 import { Router } from '@angular/router';
 import { SlUtilsService } from '@shikshalokam/sl-questionnaire'; 
+import { MatDialog } from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root',
@@ -20,14 +21,14 @@ export class ObservationUtilService {
     public userService: UserService,
     config: ConfigService,
     private kendraService: KendraService,
-    public modalService: SuiModalService,
     public resourceService: ResourceService,
     public router: Router,
     public slUtil: SlUtilsService,
-    private formService: FormService
+    private formService: FormService,
+    private dialog: MatDialog
   ) {
     this.config = config;
-    this.slUtil.openAlert = this.showPopupAlert;
+    this.slUtil.openAlert = this.showPopupAlert.bind(this);
 
   }
 
@@ -137,17 +138,23 @@ export class ObservationUtilService {
     });
   }
 
-   showPopupAlert(alertData) {
+
+  showPopupAlert(alertData: any,width:string): Promise<any> {
     return new Promise((resolve, reject) => {
-      let modal:any = this.modalService
-      .open(new AlertModal(alertData));
-      
-      modal.onApprove((val: any) => {
-          resolve(val);
-        })
-        .onDeny((val?: any) => {
-          resolve(val);
-        });
+      const dialogRef = this.dialog.open(AlertModalComponent, {
+        width: width,
+        data: alertData
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result?.action === 'approve' || result?.action === 'deny') {
+          resolve(result.returnValue);
+        } else {
+          resolve(null);
+        }
+      }, error => {
+        reject(new Error (`${error}`));
+      });
     });
   }
 
