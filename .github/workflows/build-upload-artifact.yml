@@ -3,10 +3,10 @@ name: Build and Upload Artifact
 on:
   push:
     branches:
-      - "deploy" # Trigger on push to the "deploy" branch
+      - "*" # Trigger on push to the "deploy" branch
   pull_request:
     branches:
-      - "deploy" # Trigger on pull request to the "deploy" branch
+      - "*" # Trigger on pull request to the "deploy" branch
 
 jobs:
   build_and_deploy:
@@ -37,40 +37,38 @@ jobs:
           commit_hash=$(git rev-parse --short HEAD) # Get commit hash
           build_tag=$(echo "${{ github.ref }}" | rev | cut -d/ -f1 | rev)_${commit_hash}_${GITHUB_RUN_NUMBER} # Generate build tag
           echo "build_tag=$build_tag" >> $GITHUB_ENV # Save build tag to environment variable
-          bash ./build.sh "${build_tag}" "${{ env.NODE_NAME }}" "test" true false "" # Run build script with parameters
+          docker build -t myapp:${build_tag} . # Build Docker image
         env:
           NODE_NAME: "18.20.2" # Set environment variable NODE_NAME
 
-      # - name: Log in to Docker Hub
-      #   uses: docker/login-action@v2
-      #   with:
-      #     username: ${{ secrets.DOCKER_USERNAME }}
-      #     password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Save Docker image as a file
+        run: |
+          docker save myapp:${{ env.build_tag }} -o myapp_${{ env.build_tag }}.tar # Save Docker image to a file
 
-      # - name: Push Docker Image
-      #   run: |
-      #     docker tag my-app:${{ env.build_tag }} ${{ secrets.DOCKER_USERNAME }}/my-app:${{ env.build_tag }}
-      #     docker push ${{ secrets.DOCKER_USERNAME }}/my-app:${{ env.build_tag }}
-
-      # - name: Push Docker Image
-      #   uses: docker/build-push-action@v4
-      #   with:
-      #     context: .
-      #     # file: ./Dockerfile # Path to your Dockerfile
-      #     push: true
-      #     tags: ${{ secrets.DOCKER_USERNAME }}/my-app:${{ env.build_tag }}
+      - name: Upload to Azure Blob Storage
+        if: env.AZURE_STORAGE_ACCOUNT
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az storage blob upload \
+              --account-name $AZURE_STORAGE_ACCOUNT \
+              --container-name my-container \
+              --file myapp_${{ env.build_tag }}.tar \
+              --name myapp_${{ env.build_tag }}.tar > upload_result.txt
+            upload_status=$?
+            if [ $upload_status -ne 0 ]; then
+              echo "Azure Blob Storage upload failed."
+              cat upload_result.txt
+              exit 1
+            else
+              echo "Azure Blob Storage upload succeeded."
+            fi
+        env:
+          AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
+          AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
 
       - name: Archive Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: metadata
-          path: metadata.json
-
-      - name: Archive CDN assets if required
-        if: ${{ github.event.inputs.buildCdnAssests == 'true' }} # Conditional step execution
-        run: |
-          rm -rf cdn_assets # Remove existing CDN assets directory
-          mkdir cdn_assets # Create CDN assets directory
-          cp -r src/app/dist-cdn/* cdn_assets/ # Copy CDN assets
-          zip -Jr cdn_assets.zip cdn_assets # Create zip file of CDN assets
-          echo "##vso[task.uploadfile]cdn_assets.zip" # Upload CDN assets zip file
+          path: myapp_${{ env.build_tag }}.tar
