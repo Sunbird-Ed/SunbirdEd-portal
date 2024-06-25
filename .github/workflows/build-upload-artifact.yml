@@ -23,7 +23,7 @@ jobs:
           node-version: "18.20.2" # Set up Node.js version 18
 
       - name: Customize dependencies
-        if: ${{ github.event.inputs.WL_Customization != '' }} # Conditional step execution
+        if: ${{ env.WL_Customization != null }} # Conditional step execution
         run: |
           git clone --recurse-submodules ${WL_Customization} sunbirded-portal # Clone repository with submodules
           cp -r sunbirded-portal/images/ src/app/client/src/assets # Copy images to client assets
@@ -37,46 +37,24 @@ jobs:
           commit_hash=$(git rev-parse --short HEAD) # Get commit hash
           build_tag=$(echo "${{ github.ref }}" | rev | cut -d/ -f1 | rev)_${commit_hash}_${GITHUB_RUN_NUMBER} # Generate build tag
           echo "build_tag=$build_tag" >> $GITHUB_ENV # Save build tag to environment variable
-          docker build -t myapp:$build_tag . # Build Docker image
+          docker build -t myapp:${build_tag} . # Build Docker image
         env:
           NODE_NAME: "18.20.2" # Set environment variable NODE_NAME
 
-      - name: Save Docker image as a file
-        run: |
-          docker save myapp:${{ env.build_tag }} -o myapp_${{ env.build_tag }}.tar # Save Docker image to a file
+      - name: Docker Login
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.AZURE_URL }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
 
-      - name: Install Azure CLI
-        run: |
-          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-
-      - name: Create Azure Blob Storage Container
-        run: |
-          az storage container create \
-            --name my-container \
-            --account-name $AZURE_STORAGE_ACCOUNT \
-            --account-key $AZURE_STORAGE_KEY
-        env:
-          AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
-          AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
-
-      - name: Upload to Azure Blob Storage
-        run: |
-          az storage blob upload \
-            --account-name $AZURE_STORAGE_ACCOUNT \
-            --container-name my-container \
-            --file myapp_${{ env.build_tag }}.tar \
-            --name myapp_${{ env.build_tag }}.tar > upload_result.txt
-          upload_status=$?
-          if [ $upload_status -ne 0 ]; then
-            echo "Azure Blob Storage upload failed."
-            cat upload_result.txt
-            exit 1
-          else
-            echo "Azure Blob Storage upload succeeded."
-          fi
-        env:
-          AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
-          AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
+      - name: Build and Push to ACR
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.AZURE_URL }}/myapp:${{ env.build_tag }}
+          file: Dockerfile
 
       - name: Archive Artifacts
         uses: actions/upload-artifact@v2
