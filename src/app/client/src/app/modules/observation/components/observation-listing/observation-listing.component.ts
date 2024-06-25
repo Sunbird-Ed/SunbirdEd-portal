@@ -135,7 +135,7 @@ export class ObservationListingComponent
           className: 'popup-btn'
         }
         );
-      const returnData = await this.observationUtil.showPopupAlert(metaData);
+      const returnData = await this.observationUtil.showPopupAlert(metaData,'250px');
       if (returnData) {
         const queryParam = {
           showEditUserDetailsPopup: true
@@ -338,7 +338,7 @@ export class ObservationListingComponent
       solutionId: data.solutionId,
       observationId: data._id,
       solutionName: data.name,
-      programName: data.subject[0],
+      programName: data[this.categoryKeys[4].code],
       entityType:data.entityType
     };
     this.router.navigate(['observation/details'], {

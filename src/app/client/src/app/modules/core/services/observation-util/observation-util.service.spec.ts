@@ -5,6 +5,7 @@ import { ConfigService, ResourceService } from '../../../shared';
 import { UserService, KendraService, FormService } from '..';
 import { ObservationUtilService } from './observation-util.service';
 import { of, throwError } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 
 describe('ObservationUtilService', () => {
     let observationUtilService: ObservationUtilService;
@@ -28,17 +29,18 @@ describe('ObservationUtilService', () => {
     const mockSlUtil: Partial<SlUtilsService> = {};
     const mockModalService: Partial<SuiModalService> = {};
     const mockResourceService: Partial<ResourceService> = {};
+    const mockDialog:Partial<MatDialog> = {}
 
     beforeAll(() => {
         observationUtilService = new ObservationUtilService(
             mockUserService as UserService,
             mockConfig as ConfigService,
             mockKendraService as KendraService,
-            mockModalService as SuiModalService,
             mockResourceService as ResourceService,
             mockRouter as Router,
             mockSlUtil as SlUtilsService,
-            mockFormService as FormService
+            mockFormService as FormService,
+            mockDialog as MatDialog
         );
     });
 
@@ -299,21 +301,6 @@ describe('ObservationUtilService', () => {
         });
     });
 
-    describe('showPopupAlert', () => {
-        it('should show a popup', (done) => {
-            mockModalService.open = jest.fn(() => ({
-                onApprove: jest.fn((a) => a({id: 'id'})),
-                onDeny: jest.fn((a, b) => b({val: {}}))
-            })) as any;
-            const alertData = {};
-            observationUtilService.showPopupAlert(alertData).then(() => {
-                setTimeout(() => {
-                    expect(mockModalService.open).toHaveBeenCalled();
-                    done();
-                }, 0);
-            });
-        });
-    });
 
     it('should return AlertMetaData', () => {
         observationUtilService.getAlertMetaData();

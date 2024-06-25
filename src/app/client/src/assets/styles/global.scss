@@ -1098,7 +1098,7 @@ a.ui.labels .label:hover {
 
 // Buttons
 .sb-btn-outline-primary {
-  html[data-mode="darkmode"] & {
+  html[data-mode="darkmode"] {
 
     &:hover,
     &:active,
@@ -1567,4 +1567,19 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
   font-size: 1rem;
   font-weight: normal;
   padding: calculateRem(10px) 0;
+}
+.mat-mdc-tab-body.mat-mdc-tab-body-active{
+  margin-top: 1rem;
+}
+.mat-mdc-tab .mdc-tab__text-label {
+  font-weight: bold;
+}
+
+html[data-mode="darkmode"] {
+  .sections-score-card .sections-score-count-info{
+    background: transparent !important;
+  }
+  .lanscape-mode-right ul .showFeedBack-progressBar.info-page{
+    color: var(--black) !important;
+  }
 }
