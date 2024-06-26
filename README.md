@@ -23,6 +23,46 @@ The Sunbird portal is the browser-based interface for the Sunbird application st
 ## Getting started
 To get started with the Sunbird portal, please try out our cloud-based demo site at: https://staging.open-sunbird.org/
 
+### Local Installation
+You can also install the Sunbird portal locally on your laptop, please follow the instructions below:
+Have node version 10 and follow the next steps
+
+## Pre Installation Steps
+
+Prerequisities
+
+	1. Node > 14x
+	2. Angular 10x
+	3. Yarn
+
+Sunbird dev has 2 parts 
+
+		1. Angular client
+		2. Node server
+    
+   ```Go to src/app/helpers/ replace environmentVariablesHelper.js```
+    
+### Installing and running Angular client
+
+## Step 1: Go to src/app/client folder
+
+    yarn install
+    npm run start
+    # For Developer's local setup Run below command
+    ./local_setup.sh
+    ng build --watch=true
+    
+### Installing and running Node server
+
+## Step 2: Go to src/app folder
+  
+    yarn install
+    npm run server
+    
+
+## Reporting Issues
+We have an open and active [issue tracker](https://github.com/project-sunbird/sunbird-commons/issues). Please report any issues.
+
 ---
 
 ## Installing Sunbird Portal

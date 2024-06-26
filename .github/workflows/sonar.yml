@@ -1,0 +1,32 @@
+name: Sonar
+
+on:
+  workflow_run:
+    workflows: [Build-Test] # Trigger when the Build-Test workflow completes
+    types:
+      - completed # Trigger on completion of the Build-Test workflow
+
+jobs:
+  SonarScanner:
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success' # Run job only if Build-Test workflow succeeded
+
+    steps:
+      # Checkout repository to ensure we have the latest code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Install Sonar Scanner
+      - name: Install Sonar Scanner
+        run: |
+          sudo apt-get update && sudo apt-get install -y unzip
+          wget -O /tmp/sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+          unzip /tmp/sonar-scanner-cli.zip -d /tmp
+
+      # Run SonarScanner for SunbirdEd-Portal
+      - name: Run SonarScanner for SunbirdEd-Portal
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # Inject the SonarQube token securely
+        run: |
+          /tmp/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner \
+            -Dsonar.login=$SONAR_TOKEN
