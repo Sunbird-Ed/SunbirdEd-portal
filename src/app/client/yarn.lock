@@ -3314,10 +3314,10 @@
   dependencies:
     tslib "^2.0.0"
 
-"@project-sunbird/sb-themes@8.0.9":
-  version "8.0.9"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-8.0.9.tgz#b31feffe142fde14f642a87ed0d8233ce3c9841c"
-  integrity sha512-3NvM4qICcDmgdETJ+SO97suntuVgRks+7O+Glwv5A+Uatf5kabetxO70ZhW0zFeu3oMtUJlbnQe9/49+tCGBZg==
+"@project-sunbird/sb-themes@8.0.10":
+  version "8.0.10"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-8.0.10.tgz#2f8a8d717888729b99eb2f0799afe1ddfac38674"
+  integrity sha512-vtNGpi9vd5xoLOIaUvf6ffON4MgNC4TmtsF5A6pi4MgkJTnGfbId9mLIclLMFXRfDjQJY8VxPZeUNLcxCD6oOw==
   dependencies:
     "@project-sunbird/sb-styles" "0.0.14"
 
