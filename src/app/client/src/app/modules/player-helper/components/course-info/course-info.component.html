@@ -45,9 +45,9 @@
       </div>
 
       <div class="pb-24" *ngIf="showCredits">
-        <div class="content-metadeta__text fnormal sb-color-primary">
+        <div class="content-metadeta__text fnormal">
           <a (click)="showContentCreditsModal = true" title="{{resourceService?.frmelmnts?.lbl?.courseCredits}}"
-            class="cursor-pointer">
+            class="cursor-pointer sb-color-primary">
             {{resourceService?.frmelmnts?.lbl?.courseCredits}}
           </a>
         </div>
