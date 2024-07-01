@@ -3,7 +3,7 @@ import { ConfigService } from '../../../shared/services/config/config.service';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from './user.service';
 import { ContentService, DataService, LearnerService, PublicDataService } from '../../../core';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { Inject } from '@angular/core';
 import { mockUserData } from './user.mock.spec.data';
 

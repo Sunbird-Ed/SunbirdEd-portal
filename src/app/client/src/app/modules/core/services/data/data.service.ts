@@ -4,7 +4,7 @@ import { mergeMap } from 'rxjs/operators';
 import { ServerResponse, RequestParam, HttpOptions } from '@sunbird/shared';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UUID } from 'angular2-uuid';
+import { v4 as UUID } from 'uuid';
 import dayjs from 'dayjs';
 
 /**
@@ -194,7 +194,7 @@ export class DataService {
    * for preparing headers
    */
   private getHeader(headers?: HttpOptions['headers']): HttpOptions['headers'] {
-    const _uuid = UUID.UUID();
+    const _uuid = UUID();
     const default_headers = {
       'Accept': 'application/json',
       // 'X-Consumer-ID': 'X-Consumer-ID',

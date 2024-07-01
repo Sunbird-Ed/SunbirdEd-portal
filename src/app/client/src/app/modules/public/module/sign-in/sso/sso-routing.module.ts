@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {AuthFailedComponent, SelectOrgComponent, UpdateContactComponent} from './components';
-import { UUID } from 'angular2-uuid';
-const uuid = UUID.UUID();
+import { v4 as UUID } from 'uuid';
+const uuid = UUID();
 const telemetryEnv = 'sso-sign-in';
 const routes: Routes = [
   {

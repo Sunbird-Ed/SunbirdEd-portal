@@ -285,7 +285,7 @@ const setAvailablePort = async () => {
 };
 // start the express app to load in the main window
 const startApp = async () => {
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     new Server(expressApp)
     expressApp.listen(process.env.APPLICATION_PORT, () => {
         standardLog.info({ id: 'MAIN_APP_START_SUCCESS', message: `App is started on port ${process.env.APPLICATION_PORT}` });

@@ -47,13 +47,14 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
   groupId: string;
   isQuestionSet = false;
   isDesktopApp = false;
+  isTypeCopyQuestionset:boolean = false;
 
   @HostListener('window:beforeunload')
     canDeactivate() {
       // returning true will navigate without confirmation
       // returning false will show a confirm dialog before navigating away
       const deviceType = this.telemetryService.getDeviceType();
-      return deviceType === 'Desktop' && this.isQuestionSet ? false : true;
+      return deviceType === 'Desktop' && this.isQuestionSet && !this.isTypeCopyQuestionset ? false : true;
     }
 
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
@@ -70,6 +71,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
   }
 
   ngOnInit() {
+    console.log('content');
     this.isQuestionSet = _.includes(this.router.url, 'questionset');
     this.isDesktopApp = this.userService.isDesktopApp;
     this.initLayout();
@@ -231,12 +233,16 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
   }
 
   copyContent(contentData: ContentData) {
+    let successMsg = '';
+    let errorMsg = '';
+    this.isTypeCopyQuestionset = _.get(contentData, 'mimeType') === 'application/vnd.sunbird.questionset';
+    this.isTypeCopyQuestionset ? (successMsg = this.resourceService.messages.smsg.m0067, errorMsg = this.resourceService.messages.emsg.m0067) : (successMsg = this.resourceService.messages.smsg.m0042, errorMsg = this.resourceService.messages.emsg.m0008);
     this.copyContentService.copyContent(contentData).subscribe(
       (response) => {
-        this.toasterService.success(this.resourceService.messages.smsg.m0042);
+        this.toasterService.success(successMsg);
       },
       (err) => {
-        this.toasterService.error(this.resourceService.messages.emsg.m0008);
+        this.toasterService.error(errorMsg);
       });
   }
 

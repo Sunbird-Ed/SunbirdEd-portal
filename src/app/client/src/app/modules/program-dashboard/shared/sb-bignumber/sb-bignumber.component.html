@@ -1,5 +1,5 @@
 <div
-  *ngIf="lastUpdatedOn !== 'Invalid date'"
+  *ngIf="showLastUpdatedOn && lastUpdatedOn"
   class="sb-last-update-status mb-8"
 >
   <span>{{ resourceService?.frmelmnts?.lbl?.lastUpdatedOn }}&nbsp;: </span>

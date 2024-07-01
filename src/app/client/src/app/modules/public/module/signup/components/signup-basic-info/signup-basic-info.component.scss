@@ -1,4 +1,4 @@
-@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .sb-mat__dropdown.sb-mat__dropdown--autocmp {
   border: calculateRem(1px) solid var(--gray-200);

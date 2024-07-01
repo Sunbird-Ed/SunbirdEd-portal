@@ -11,11 +11,10 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
-import { SlickModule } from 'ngx-slick';
 import { RouterModule } from '@angular/router';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { TranslateModule } from '@ngx-translate/core';
-import { SbSearchFilterModule } from '@project-sunbird/common-form-elements';
+import { SbSearchFilterModule } from '@project-sunbird/common-form-elements-full';
 
 @NgModule({
   declarations: [NoResultComponent, SearchFilterComponent, PageSectionComponent,
@@ -27,7 +26,6 @@ import { SbSearchFilterModule } from '@project-sunbird/common-form-elements';
         FormsModule,
         TelemetryModule,
         CommonModule,
-        SlickModule,
         CommonConsumptionModule,
         SharedModule,
         TranslateModule,

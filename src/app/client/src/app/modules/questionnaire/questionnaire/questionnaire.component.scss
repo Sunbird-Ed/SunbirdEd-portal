@@ -33,6 +33,11 @@
 }
 
 ::ng-deep {
+  .evidence-completed {
+    sl-attachment .remove-image{
+      display: none !important;
+    }
+  }
   .double-btn{
     justify-content: flex-start !important;
     flex-direction: row-reverse;

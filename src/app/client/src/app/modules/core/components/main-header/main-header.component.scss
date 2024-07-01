@@ -1,4 +1,4 @@
-@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @use "layout/header" as *;
 
 .sb-header-bg{
@@ -351,3 +351,4 @@ __textbooks {
 .explore-title {
   font-weight: bold;
 }
+

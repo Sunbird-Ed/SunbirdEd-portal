@@ -115,7 +115,7 @@
       <div class="twelve wide column ">
         <div class="ui grid">
           <div class="three wide column" *ngIf='permissionService.permissionAvailable && enableQuestionSetCreation === true' appPermission
-            [permission]='textBookRole'>
+            [permission]='collectionRole'>
             <div class="ui link card" routerLink="questionset">
               <div class="content" appTelemetryInteract
                 [telemetryInteractEdata]="{id:'QuestionSet',type:'click',pageid:'create-questionset'}">

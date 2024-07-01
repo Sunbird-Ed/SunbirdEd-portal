@@ -7,8 +7,8 @@ import { Subject, merge, of, zip, BehaviorSubject, defer } from 'rxjs';
 import { debounceTime, map, tap, switchMap, takeUntil, retry, catchError } from 'rxjs/operators';
 import { ContentSearchService } from '../../services';
 import { FormService } from '@sunbird/core';
-import { IFrameworkCategoryFilterFieldTemplateConfig } from '@project-sunbird/common-form-elements';
-import { CacheService } from 'ng2-cache-service';
+import { IFrameworkCategoryFilterFieldTemplateConfig } from '@project-sunbird/common-form-elements-full';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 
 @Component({
   selector: 'app-search-filter',
@@ -107,7 +107,6 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
         switchMap(queryParams => {
           this.filterChange.emit({ status: 'FETCHING' });
           let boardName = _.get(queryParams, 'board[0]') || _.get(this.boards, '[0]');
-          boardName = boardName === 'CBSE/NCERT' ? 'CBSE' : boardName;
           return zip(this.getFramework({ boardName }), this.getAudienceTypeFormConfig())
             .pipe(map(([filters, audienceTypeFilter]: [object, object]) => ({ ...filters, audience: audienceTypeFilter })));
         })
@@ -123,10 +122,11 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
         console.error('Error while fetching filters', error);
       });
 
-    if (!_.get(this.activatedRoute, 'snapshot.queryParams["board"]')) {
-      const queryParams = { ...this.defaultFilters, selectedTab: _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook' };
-      this.router.navigate([], { queryParams, relativeTo: this.activatedRoute });
-    }
+    // Checking the fix for #ED-2455
+    // if (!_.get(this.activatedRoute, 'snapshot.queryParams["board"]')) {
+    //   const queryParams = { ...this.defaultFilters, selectedTab: _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook' };
+    //   this.router.navigate([], { queryParams, relativeTo: this.activatedRoute });
+    // }
   }
 
   /**
@@ -207,7 +207,6 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       const selectedOption = _.find(this.boards, { name: _.get(this.queryFilters, 'board[0]') }) ||
         _.find(this.boards, { name: _.get(this.defaultFilters, 'board[0]') }) || this.boards[0];
       this.selectedBoard = { label: this.optionLabel.Board, value: 'board', selectedOption: _.get(selectedOption, 'name') };
-      this.selectedBoard.selectedOption = this.selectedBoard.selectedOption === 'CBSE' ? 'CBSE/NCERT' : this.selectedBoard.selectedOption;
       this.selectedOption = this.selectedBoard;
     }
   }
@@ -248,11 +247,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     this.selectedNgModels = {};
     this.allValues = {};
     _.forEach(filters, (filterValues: { name: any }[], filterKey: string) => {
-      if (filterKey === 'board') {
-        const boardName = filterValues.find((board) => board.name === 'CBSE');
-        boardName && (boardName.name = 'CBSE/NCERT');
-      }
-      const values = this.allValues[filterKey] = _.map(filterValues, 'name');
+     const values = this.allValues[filterKey] = _.map(filterValues, 'name');
       if (_.get(values, 'length')) {
         let selectedIndices;
         const filterValuesFromQueryParams = this.queryFilters[filterKey] || [];

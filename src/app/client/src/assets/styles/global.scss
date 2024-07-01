@@ -1,14 +1,14 @@
-@use "~@project-sunbird/sb-styles/assets/varIndex"as *;
-@use "~@project-sunbird/sb-styles/assets/mixins/mixins"as *;
+@use '@angular/material' as mat;
+@use "@project-sunbird/sb-styles/assets/varIndex"as *;
+@use "@project-sunbird/sb-styles/assets/mixins/mixins"as *;
 
-@import "~@angular/material/theming";
 
-@include mat-core();
+@include mat.core();
 
-$custom-typography: mat-typography-config($font-family: "var(--font-stack-en) !important",
+$custom-typography: mat.define-typography-config($font-family: "var(--font-stack-en) !important",
 );
 
-@include angular-material-typography($custom-typography);
+@include mat.all-component-typographies($custom-typography);
 
 :root {
   font-size: 16px;
@@ -17,7 +17,7 @@ $custom-typography: mat-typography-config($font-family: "var(--font-stack-en) !i
 html,
 body {
   height: 100%;
-  font-size: mat-font-size($custom-typography, body-1);
+  font-size: mat.font-size($custom-typography, body-1);
 }
 
 body {
@@ -1384,13 +1384,17 @@ sb-pills-grid {
 
 //epup player splash
 sunbird-epub-player .sunbird-epub-container {
-  div:first-child {
-    height: inherit;
+  height: 100% !important;
 
-    sb-player-start-page {
-      .sb-player-splash-container {
-        height: 100% !important;
-      }
+  &>div:first-child {
+    height: 100% !important;
+  }
+
+  sb-player-start-page {
+    height: 100% !important;
+
+    .sb-player-splash-container {
+      height: 100% !important;
     }
   }
 

@@ -12,7 +12,8 @@
   },
   "SIZE": {
     "MEDIUM": "medium",
-    "SMALL": "small"
+    "SMALL": "small",
+    "LARGE": "large"
   },
   "VIEW": {
     "HORIZONTAL": "horizontal",

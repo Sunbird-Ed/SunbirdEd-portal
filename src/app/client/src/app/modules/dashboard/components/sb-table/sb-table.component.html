@@ -8,6 +8,10 @@
 </div>
 
 <div class="ml-20 mb-20" *ngIf="config.filters && config.filters.length >0"> <label class="filter-label">{{resourceService?.frmelmnts?.lbl?.chooseFilter}} </label> </div>
-  <sb-dashlet  [type]="'table'" [data]="data" [config]="config" #lib>
+  <sb-dashlet class="dashlet-table" [type]="'table'" [data]="data" [config]="config" #lib>
+    <ng-template *ngIf="config.hasDependencyFilters" sbTemplateRef="filter">
+      <app-filter [filterType] ="chart-filter" [filters]="config.filters" [resetFilters]="resetFilters" [selectedFilter]="{}" (filterChanged)="filterChanged($event)" [chartData]="getTableData()">
+      </app-filter>
+    </ng-template>
   </sb-dashlet>
 </div>

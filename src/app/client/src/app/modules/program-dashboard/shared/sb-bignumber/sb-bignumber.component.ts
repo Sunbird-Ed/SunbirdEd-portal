@@ -2,6 +2,8 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges, TemplateRef, ViewCh
 import { MatDialog } from '@angular/material/dialog';
 import { ResourceService } from '@sunbird/shared';
 import * as _ from "lodash-es";
+import { PdServiceService } from '../services/pd-service/pd-service.service';
+import dayjs from 'dayjs';
 @Component({
   selector: 'app-sb-bignumber',
   templateUrl: './sb-bignumber.component.html',
@@ -9,10 +11,9 @@ import * as _ from "lodash-es";
 })
 export class SbBignumberComponent implements OnInit, OnChanges {
   @Input() chart;
-  @Input() lastUpdatedOn;
+  lastUpdatedOn;
   @Input() hideElements = false;
-  @Input() globalDistrict;
-  @Input() globalOrg;  
+  @Input() appliedFilters;
   chartData;
   chartConfig;
   updatedData;
@@ -20,14 +21,22 @@ export class SbBignumberComponent implements OnInit, OnChanges {
   globalData;
   @ViewChild('outlet', { read: ViewContainerRef }) outletRef: ViewContainerRef;
   @ViewChild('content', { read: TemplateRef }) contentRef: TemplateRef<any>;
+  showLastUpdatedOn: boolean = false;
   constructor(
     public resourceService: ResourceService,
     public dialog: MatDialog,
+    public filterService:PdServiceService
   ) { }
 
   ngOnInit(){
     this.updatedData = this.chartData = _.compact(this.chart.chartData);
     this.chartConfig = this.chart.chartConfig;
+    if(_.get(this.chart,'lastUpdatedOn')){
+      this.lastUpdatedOn = dayjs(this.chart.lastUpdatedOn).format('DD-MMMM-YYYY');
+      if (_.get(this.chartConfig, 'options.showLastUpdatedOn') || this.lastUpdatedOn) {
+        this.showLastUpdatedOn = true;
+      }
+    }
   }
 
   ngOnChanges(_changes: SimpleChanges): void {
@@ -35,24 +44,12 @@ export class SbBignumberComponent implements OnInit, OnChanges {
   }
 
   checkForChanges(){
-    if(this.globalDistrict !== undefined || this.globalOrg !== undefined){
-      this.globalData = _.filter(this.chartData, (data) => {
-        if(this.globalDistrict && this.globalOrg){
-          return data?.district_externalId == this.globalDistrict && data?.organisation_id == this.globalOrg;
-        }
-        if(this.globalDistrict){
-          return  data?.district_externalId == this.globalDistrict;
-         } 
-         if(this.globalOrg){
-          return data?.organisation_id == this.globalOrg
-         }
-
-        return data;
-      });
-    this.globalChange = true;
-    this.updatedData = this.globalData;
-    this.outletRef.clear();
-    this.outletRef.createEmbeddedView(this.contentRef);
+    if(Object.keys(this.appliedFilters).length){
+      this.globalData = this.filterService.getFilteredData(this.chartData,this.appliedFilters)
+      this.globalChange = true;
+      this.updatedData = this.globalData;
+      this.outletRef.clear();
+      this.outletRef.createEmbeddedView(this.contentRef);
     }else{
       this.globalData = this.chartData;
       this.globalChange = false;

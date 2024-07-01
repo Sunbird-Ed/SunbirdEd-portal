@@ -11,7 +11,7 @@ import {
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { PublicPlayerService } from '@sunbird/public';
 import { takeUntil, map, mergeMap, filter, catchError, tap, pluck, switchMap, delay } from 'rxjs/operators';
 import { OfflineCardService } from '@sunbird/shared';

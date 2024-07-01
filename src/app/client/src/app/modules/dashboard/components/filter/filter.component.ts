@@ -1,14 +1,14 @@
-import { Component, OnInit, EventEmitter, Input, Output, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef, Inject} from '@angular/core';
 import { IInteractEventObject } from '@sunbird/telemetry';
-import { ResourceService } from '@sunbird/shared';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { ResourceService} from '@sunbird/shared';
+import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import * as _ from 'lodash-es';
-import * as moment from 'moment';
+import dayjs from 'dayjs';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, Subject } from 'rxjs';
 import { distinctUntilChanged, map, debounceTime, takeUntil } from 'rxjs/operators';
 import { MatAutocomplete } from '@angular/material/autocomplete';
-
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
@@ -22,7 +22,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   @Input() telemetryInteractObject: IInteractEventObject;
   @Output() filterChanged: EventEmitter<any> = new EventEmitter<any>();
   @Input() filterType: string;
-  filtersFormGroup: FormGroup;
+  filtersFormGroup: UntypedFormGroup;
   chartLabels: any = [];
   chartConfig: any;
   pickerMinDate: any; // min date that can be selected in the datepicker
@@ -42,6 +42,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   formChartData: any = [];
   currentReference: any;
   firstFilter: any;
+  errorMessage: any;
 
   @Input()
   set selectedFilter(val: any) {
@@ -53,7 +54,7 @@ export class FilterComponent implements OnInit, OnDestroy {
       this.formGeneration(val.data);
       if (val.selectedFilters) {
         this.selectedFilters = val.selectedFilters;
-        this.filtersFormGroup.patchValue(val.selectedFilters);
+        this.filtersFormGroup.setValue(val.selectedFilters);
       }
     }
   }
@@ -69,22 +70,22 @@ export class FilterComponent implements OnInit, OnDestroy {
         if (val.reset && val.reset == true) {
           this.selectedFilters = {};
         } else if (val.filters) {
-          this.filtersFormGroup.patchValue(val.filters);
+          this.filtersFormGroup.setValue(val.filters);
           this.selectedFilters = val.filters;
         } else if (currentFilterValue) {
-          this.filtersFormGroup.patchValue(currentFilterValue);
+          this.filtersFormGroup.setValue(currentFilterValue);
           this.selectedFilters = currentFilterValue;
         }
     }
   }
 
   ranges: any = {
-    'Today': [moment(), moment()],
-    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-    'This Month': [moment().startOf('month'), moment().endOf('month')],
-    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    'Today': [dayjs(), dayjs()],
+    'Yesterday': [dayjs().subtract(1, 'days'), dayjs().subtract(1, 'days')],
+    'Last 7 Days': [dayjs().subtract(6, 'days'), dayjs()],
+    'Last 30 Days': [dayjs().subtract(29, 'days'), dayjs()],
+    'This Month': [dayjs().startOf('month'), dayjs().endOf('month')],
+    'Last Month': [dayjs().subtract(1, 'month').startOf('month'), dayjs().subtract(1, 'month').endOf('month')]
   };
   @ViewChild('datePickerForFilters') datepicker: ElementRef;
   @ViewChild('matAutocomplete') matAutocomplete: MatAutocomplete;
@@ -92,9 +93,10 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   constructor(
     public resourceService: ResourceService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     public activatedRoute: ActivatedRoute,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    @Inject(MAT_DIALOG_DATA) public selectedDialogData: any
   ) {
 
   }
@@ -117,7 +119,6 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
-
   formUpdate(chartData) {
     const filterKeys = Object.keys(this.selectedFilters);
     let previousKeys = [];
@@ -154,8 +155,8 @@ export class FilterComponent implements OnInit, OnDestroy {
 
         if (filter.controlType === 'date' || /date/i.test(_.get(filter, 'reference'))) {
           const dateRange = _.uniq(_.map(chartData, _.get(filter, 'reference')));
-          this.pickerMinDate = moment(dateRange[0], 'DD-MM-YYYY');
-          this.pickerMaxDate = moment(dateRange[dateRange.length - 1], 'DD-MM-YYYY');
+          this.pickerMinDate = dayjs(dateRange[0], 'DD-MM-YYYY');
+          this.pickerMaxDate = dayjs(dateRange[dateRange.length - 1], 'DD-MM-YYYY');
           this.dateFilterReferenceName = filter.reference;
         }
         this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
@@ -182,10 +183,14 @@ export class FilterComponent implements OnInit, OnDestroy {
         this.selectedFilters = filters;
         this.filterData();
       }, (err) => {
-        console.log(err);
       });
       if (this.chartData.selectedFilters) {
-          this.filtersFormGroup.patchValue(this.chartData.selectedFilters);
+        const tempSelectedFilters = {...this.chartData.selectedFilters}
+        setTimeout(() => {
+          for(let [key,value] of Object.entries(tempSelectedFilters)){
+            this.filtersFormGroup.controls[key].setValue(value)
+          }
+        },50)
       }
 
   }
@@ -201,6 +206,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   resetFilter() {
     if (this.filtersFormGroup) {
       this.filtersFormGroup.reset();
+      this.selectedDialogData = {};
     }
     if (this.datepicker) {
       this.datepicker.nativeElement.value = '';
@@ -214,15 +220,24 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   getDateRange({ startDate, endDate }, columnRef) {
-    this.selectedStartDate = moment(startDate).subtract(1, 'day');
-    this.selectedEndDate = moment(endDate).add(1, 'day');
+    this.selectedStartDate = dayjs(startDate).subtract(1, 'day');
+    this.selectedEndDate = dayjs(endDate);
     const dateRange = [];
-    const currDate = moment(this.selectedStartDate).startOf('day');
-    const lastDate = moment(this.selectedEndDate).startOf('day');
-    while (currDate.add(1, 'days').diff(lastDate) < 0) {
-      dateRange.push(currDate.clone().format('DD-MM-YYYY'));
+    const dateDiff = this.selectedEndDate.diff(this.selectedStartDate, 'd');
+    for (let i = 0; i < dateDiff; i++) {
+      dateRange.push(dayjs(startDate).add(i, 'days').format('DD-MM-YYYY'))
     }
     this.filtersFormGroup.get(columnRef).setValue(dateRange);
+  }
+
+  checkDependencyFilters(){
+    _.map(this.filters, filter => {
+      const {reference,dependency} = filter;
+      if(dependency &&  !_.has(this.selectedFilters, `${dependency.reference}`) && _.has(this.selectedFilters, `${reference}`)){
+        this.filtersFormGroup.controls[reference].setValue('')
+        delete this.selectedFilters[reference]
+      }
+    })
   }
 
   filterData() {
@@ -232,6 +247,8 @@ export class FilterComponent implements OnInit, OnDestroy {
         this.firstFilter = Object.keys(this.selectedFilters);
       }
 
+    this.checkDependencyFilters();
+     
     if(this.firstFilter && this.firstFilter.length && !filterKeys.includes(this.firstFilter[0])){
       this.chartData['selectedFilters'] = {};
       this.filterChanged.emit({
@@ -309,11 +326,19 @@ export class FilterComponent implements OnInit, OnDestroy {
       object[reference] = data;
       this.currentReference = reference;
     }
+    if (this.selectedDialogData) {
+      for (const key in this.selectedDialogData) {
+        if (key != reference) {
+          this.filtersFormGroup.controls[key].setValue(this.selectedDialogData[key]);
+        }
+      }
+    }
     this.filtersFormGroup.controls[reference].setValue(data);
   }
   getSelectedData(reference) {
-
-    if (this.selectedFilters && this.selectedFilters[reference]) {
+    if (Object.keys(this.selectedDialogData).length && this.selectedDialogData[reference]) {
+      return this.selectedDialogData[reference];
+    } else if (this.selectedFilters && this.selectedFilters[reference]) {
       return this.selectedFilters[reference];
     } else {
       return [];
@@ -336,6 +361,11 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   getFiltersValues(filter) {
    return Array.isArray(filter) ? filter : [filter];
+  }
+
+  showErrorMessage(event){
+    const regex = /{displayName}/g
+    this.errorMessage = event?.displayName ? this.resourceService?.frmelmnts?.lbl?.selectDependentFilter.replace(regex, event.displayName): undefined;
   }
 
 }

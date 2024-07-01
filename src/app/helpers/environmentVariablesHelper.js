@@ -10,6 +10,7 @@ let envVariables = {
   APPID: process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.portal',
   sunbird_instance_name: env.sunbird_instance || 'Sunbird',
   DEFAULT_CHANNEL: env.sunbird_default_channel,
+  DEFAULT_BOARD: env.sunbird_default_board || 'CBSE', 
   PORTAL_API_WHITELIST_CHECK: env.sunbird_enable_api_whitelist || 'true',
   PORTAL_SESSION_SECRET_KEY: (env.sunbird_portal_session_secret && env.sunbird_portal_session_secret !== '')
   ? env.sunbird_portal_session_secret.split(',') : 'sunbird,ed48b0ce-5a92-11ed-9b6a-0242ac120002'.split(','),
@@ -136,39 +137,22 @@ let envVariables = {
   sunbird_cloud_storage_provider: env.sunbird_cloud_storage_provider || 'azure',
   PORTAL_SESSION_STORE_TYPE: env.sunbird_session_store_type || 'in-memory',
   CLOUD_STORAGE_URLS: env.sunbird_cloud_storage_urls,
-  SUNBIRD_PUBLIC_STORAGE_ACCOUNT_NAME: env.sunbird_azure_storage_account_name,
+  SUNBIRD_PUBLIC_STORAGE_ACCOUNT_NAME: env.sunbird_public_storage_account_name,
   PORTAL_CASSANDRA_CONSISTENCY_LEVEL: env.sunbird_cassandra_consistency_level || 'one',
   PORTAL_CASSANDRA_REPLICATION_STRATEGY: env.sunbird_cassandra_replication_strategy || '{"class":"SimpleStrategy","replication_factor":1}',
   
   // ############# CSP Configuration #############
   // Common key for Uploading Desktop Crash logs
-  desktop_azure_crash_container_name: env.cloud_storage_desktopCrash_bucketname || 'desktopappcrashlogs',
+  cloud_storage_desktopCrash_bucketname: env.cloud_storage_desktopCrash_bucketname || 'desktopappcrashlogs',
 
-  // Azure
-  sunbird_azure_account_name: env.cloud_private_storage_accountname,
-  sunbird_azure_account_key: env.cloud_private_storage_secret,
-  sunbird_azure_report_container_name: env.cloud_storage_privatereports_bucketname || 'reports',
-  sunbird_azure_resourceBundle_container_name: env.cloud_storage_resourceBundle_bucketname || 'label',
-
-  // AWS
-  sunbird_aws_access_key: env.cloud_private_storage_accountname || '',
-  sunbird_aws_secret_key: env.cloud_private_storage_secret || '',
-  sunbird_aws_region: env.cloud_private_storage_region || '',
-  sunbird_aws_reports: env.cloud_storage_privatereports_bucketname || 'reports',
-  sunbird_aws_labels: env.cloud_storage_resourceBundle_bucketname || 'label',
-
-  // deprecated - Folder structure changed
-  // sunbird_aws_bucket_name: env.sunbird_aws_bucket_name || 'sunbirded',
-
-  // GCP - gcloud
-  sunbird_gcloud_client_email: env.cloud_private_storage_accountname || '',
-  sunbird_gcloud_private_key: env.cloud_private_storage_secret || '',
-  sunbird_gcloud_projectId: env.cloud_private_storage_project || '',
-  sunbird_gcloud_reports: env.cloud_storage_privatereports_bucketname || 'reports',
-  sunbird_gcloud_labels: env.cloud_storage_resourceBundle_bucketname || 'label',
-
-  // deprecated - Folder structure changed
-  // sunbird_gcloud_bucket_name: env.sunbird_gcloud_bucket_name || 'sunbirded',
+  //Generalised cloud configuration
+  cloud_private_storage_accountname: env.cloud_private_storage_accountname || '',
+  cloud_private_storage_secret: env.cloud_private_storage_secret || '',
+  cloud_storage_privatereports_bucketname: env.cloud_storage_privatereports_bucketname || 'reports',
+  cloud_storage_resourceBundle_bucketname: env.cloud_storage_resourceBundle_bucketname || 'label',
+  cloud_private_storage_region: env.cloud_private_storage_region || '',
+  cloud_private_storage_project: env.cloud_private_storage_project || '',
+  cloud_private_storage_endpoint:env.cloud_private_storage_endpoint||'',
 
   // ############# End of CSP Configuration #############
 

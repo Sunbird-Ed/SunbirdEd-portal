@@ -1,45 +1,45 @@
 const express = require('express'),
-fs = require('fs'),
-request = require('request'),
-compression = require('compression'),
-MobileDetect = require('mobile-detect'),
-_ = require('lodash'),
-path = require('path'),
-envHelper = require('../helpers/environmentVariablesHelper.js'),
-tenantHelper = require('../helpers/tenantHelper.js'),
+  fs = require('fs'),
+  request = require('request'),
+  compression = require('compression'),
+  MobileDetect = require('mobile-detect'),
+  _ = require('lodash'),
+  path = require('path'),
+  envHelper = require('../helpers/environmentVariablesHelper.js'),
+  tenantHelper = require('../helpers/tenantHelper.js')
 defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState(),
-oneDayMS = 86400000,
-pathMap = {},
-cdnIndexFileExist = fs.existsSync(path.join(__dirname, '../dist', 'index_cdn.ejs')),
-proxyUtils = require('../proxy/proxyUtils.js')
+  oneDayMS = 86400000,
+  pathMap = {},
+  cdnIndexFileExist = fs.existsSync(path.join(__dirname, '../dist', 'index_cdn.ejs')),
+  proxyUtils = require('../proxy/proxyUtils.js')
 const CONSTANTS = require('../helpers/constants');
 const { memoryStore } = require('../helpers/keyCloakHelper')
 const session = require('express-session');
 const { logger } = require('@project-sunbird/logger');
 const VDNURL = envHelper.vdnURL || 'https://dockstaging.sunbirded.org';
 
-logger.info({msg:`CDN index file exist: ${cdnIndexFileExist}`});
+logger.info({ msg: `CDN index file exist: ${cdnIndexFileExist}` });
 
 const setZipConfig = (req, res, type, encoding, dist = '../') => {
-    if (pathMap[req.path + type] && pathMap[req.path + type] === 'notExist') {
-      return false;
+  if (pathMap[req.path + type] && pathMap[req.path + type] === 'notExist') {
+    return false;
+  }
+  if (pathMap[req.path + '.' + type] === 'exist' ||
+    fs.existsSync(path.join(__dirname, dist) + req.path + '.' + type)) {
+    if (req.path.endsWith('.css')) {
+      res.set('Content-Type', 'text/css');
+    } else if (req.path.endsWith('.js')) {
+      res.set('Content-Type', 'text/javascript');
     }
-    if(pathMap[req.path + '.'+ type] === 'exist' ||
-      fs.existsSync(path.join(__dirname, dist) + req.path + '.' + type)){
-        if (req.path.endsWith('.css')) {
-          res.set('Content-Type', 'text/css');
-        } else if (req.path.endsWith('.js')) {
-          res.set('Content-Type', 'text/javascript');
-        }
-        req.url = req.url + '.' + type;
-        res.set('Content-Encoding', encoding);
-        pathMap[req.path + type] = 'exist';
-        return true
-    } else {
-      pathMap[req.path + type] = 'notExist';
-      // logger.info({ msg: 'zip file not exist', additionalInfo: { url: req.url, type: type } });
-      return false;
-    }
+    req.url = req.url + '.' + type;
+    res.set('Content-Encoding', encoding);
+    pathMap[req.path + type] = 'exist';
+    return true
+  } else {
+    pathMap[req.path + type] = 'notExist';
+    // logger.info({ msg: 'zip file not exist', additionalInfo: { url: req.url, type: type } });
+    return false;
+  }
 }
 module.exports = (app, keycloak) => {
 
@@ -48,11 +48,11 @@ module.exports = (app, keycloak) => {
   app.get(['*.js', '*.css'], (req, res, next) => {
     res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS * 30)
     res.setHeader('Expires', new Date(Date.now() + oneDayMS * 30).toUTCString())
-    if(req.get('Accept-Encoding') && req.get('Accept-Encoding').includes('br')){ // send br files
-      if(!setZipConfig(req, res, 'br', 'br') && req.get('Accept-Encoding').includes('gzip')){
+    if (req.get('Accept-Encoding') && req.get('Accept-Encoding').includes('br')) { // send br files
+      if (!setZipConfig(req, res, 'br', 'br') && req.get('Accept-Encoding').includes('gzip')) {
         setZipConfig(req, res, 'gz', 'gzip') // send gzip if br file not found
       }
-    } else if(req.get('Accept-Encoding') && req.get('Accept-Encoding').includes('gzip')){
+    } else if (req.get('Accept-Encoding') && req.get('Accept-Encoding').includes('gzip')) {
       setZipConfig(req, res, 'gz', 'gzip')
     }
     next();
@@ -60,12 +60,12 @@ module.exports = (app, keycloak) => {
 
   if (process.env.sunbird_environment !== 'local') {
     app.get(['/dist/*.ttf', '/dist/*.woff2', '/dist/*.woff', '/dist/*.eot', '/dist/*.svg',
-    '/*.ttf', '/*.woff2', '/*.woff', '/*.eot', '/*.svg', '/*.html'], compression(),
-    (req, res, next) => {
-      res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS * 30)
-      res.setHeader('Expires', new Date(Date.now() + oneDayMS * 30).toUTCString())
-      next()
-    })
+      '/*.ttf', '/*.woff2', '/*.woff', '/*.eot', '/*.svg', '/*.html'], compression(),
+      (req, res, next) => {
+        res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS * 30)
+        res.setHeader('Expires', new Date(Date.now() + oneDayMS * 30).toUTCString())
+        next()
+      })
   }
 
   app.use(express.static(path.join(__dirname, '../dist'), { extensions: ['ejs'], index: false }))
@@ -93,34 +93,34 @@ module.exports = (app, keycloak) => {
   app.all('/play/quiz/*', playContent);
   app.all('/manage-learn/*', MLContent);
 
-  app.all('/get/dial/:dialCode',(req,res,next) => {
-      if (_.get(req, 'query.channel')) {
-          getdial(req,res);
-      } else {
-        next();
-      }
+  app.all('/get/dial/:dialCode', (req, res, next) => {
+    if (_.get(req, 'query.channel')) {
+      getdial(req, res);
+    } else {
+      next();
+    }
   });
 
   app.all(['/announcement', '/announcement/*', '/search', '/search/*',
-  '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*',
-  '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources', '/discussion-forum/*',
-  '/resources/*', '/myActivity', '/myActivity/*', '/org/*', '/manage/*', '/contribute','/contribute/*','/groups','/groups/*', '/my-groups','/my-groups/*','/certs/configure/*',
-   '/observation', '/observation/*','/solution','/solution/*','/questionnaire','/questionnaire/*', '/uci-admin', '/uci-admin/*','/program'],
-  session({
-    secret: envHelper.PORTAL_SESSION_SECRET_KEY,
-    resave: false,
-    cookie: {
-      maxAge: envHelper.sunbird_session_ttl
-    },
-    saveUninitialized: false,
-    store: memoryStore
-  }), keycloak.middleware({ admin: '/callback', logout: '/logout' }), keycloak.protect(), indexPage(true));
+    '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*',
+    '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources', '/discussion-forum/*',
+    '/resources/*', '/myActivity', '/myActivity/*', '/org/*', '/manage/*', '/contribute', '/contribute/*', '/groups', '/groups/*', '/my-groups', '/my-groups/*', '/certs/configure/*',
+    '/observation', '/observation/*', '/solution', '/solution/*', '/questionnaire', '/questionnaire/*', '/uci-admin', '/uci-admin/*', '/program'],
+    session({
+      secret: envHelper.PORTAL_SESSION_SECRET_KEY,
+      resave: false,
+      cookie: {
+        maxAge: envHelper.sunbird_session_ttl
+      },
+      saveUninitialized: false,
+      store: memoryStore
+    }), keycloak.middleware({ admin: '/callback', logout: '/logout' }), keycloak.protect(), indexPage(true));
 
   // all public route should also have same route prefixed with slug
-  app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode',  '/get/dial/:dialCode', '/explore',
-    '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/:slug/play/*',  '/explore-course', '/explore-course/*',
+  app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode', '/get/dial/:dialCode', '/explore',
+    '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/:slug/play/*', '/explore-course', '/explore-course/*',
     '/:slug/explore-course', '/:slug/explore-course/*', '/:slug/signup', '/signup', '/:slug/sign-in/*',
-    '/sign-in/*', '/download/*', '/accountMerge/*','/:slug/accountMerge/*', '/:slug/download/*', '/certs/*', '/:slug/certs/*', '/recover/*', '/:slug/recover/*', '/explore-groups',
+    '/sign-in/*', '/download/*', '/accountMerge/*', '/:slug/accountMerge/*', '/:slug/download/*', '/certs/*', '/:slug/certs/*', '/recover/*', '/:slug/recover/*', '/explore-groups',
     '/guest-profile'],
     session({
       secret: envHelper.PORTAL_SESSION_SECRET_KEY,
@@ -152,7 +152,7 @@ module.exports = (app, keycloak) => {
 function getLocals(req) {
   const slug = req.params.slug;
   var locals = {}
-  if(req.includeUserDetail){
+  if (req.includeUserDetail) {
     locals.userId = _.get(req, 'session.userId') ? req.session.userId : null
     locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'session.userId') ? req.sessionID : null
     locals.userSid = _.get(req, 'session.userSid') || locals.sessionId || null;
@@ -181,7 +181,7 @@ function getLocals(req) {
   locals.deviceApi = envHelper.sunbird_device_api
   locals.googleCaptchaSiteKey = envHelper.sunbird_google_captcha_site_key
   locals.videoMaxSize = envHelper.sunbird_portal_video_max_size
-  locals.reportsLocation = envHelper.sunbird_azure_report_container_name
+  locals.reportsLocation = envHelper.cloud_storage_privatereports_bucketname
   locals.previewCdnUrl = envHelper.sunbird_portal_preview_cdn_url
   locals.offlineDesktopAppTenant = envHelper.sunbird_portal_offline_tenant
   locals.offlineDesktopAppVersion = envHelper.sunbird_portal_offline_app_version
@@ -203,12 +203,14 @@ function getLocals(req) {
   locals.p2reCaptchaEnabled = envHelper.sunbird_p2_reCaptcha_enabled;
   locals.p3reCaptchaEnabled = envHelper.sunbird_p3_reCaptcha_enabled;
   locals.sunbirdQuestionSetChildrenLimit = envHelper.sunbird_questionset_children_limit,
-  locals.sunbirdCollectionChildrenLimit =  envHelper.sunbird_collection_children_limit,
+  locals.sunbirdCollectionChildrenLimit = envHelper.sunbird_collection_children_limit,
   locals.sunbirdNavAccessibility = envHelper.sunbird_portal_nav_accessibility,
   locals.enableSSO = envHelper.sunbird_enable_sso;
   locals.reportsListVersion = envHelper.reportsListVersion;
   locals.sunbirdDefaultFileSize = envHelper.SUNBIRD_DEFAULT_FILE_SIZE;
   locals.baseUrl = null;
+  locals.defaultBoard = envHelper.DEFAULT_BOARD;
+  locals.cloudProvider = envHelper.sunbird_cloud_storage_provider;
   locals.blobUrl = envHelper.sunbird_portal_cdn_blob_url;
   locals.uciBotPhoneNumber = envHelper.sunbird_portal_uci_bot_phone_number;
   return locals
@@ -220,7 +222,7 @@ const indexPage = (loggedInRoute) => {
       renderTenantPage(req, res)
     } else {
       req.includeUserDetail = true
-      if(!loggedInRoute) { // for public route, if user token is valid then send user details
+      if (!loggedInRoute) { // for public route, if user token is valid then send user details
         await proxyUtils.validateUserToken(req, res).catch(err => req.includeUserDetail = false)
       }
       renderDefaultIndexPage(req, res)
@@ -236,23 +238,25 @@ const renderDefaultIndexPage = (req, res) => {
     res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
     res.locals = getLocals(req);
     logger.info({
-      msg:'cdn parameters:',
+      msg: 'cdn parameters:',
       additionalInfo: {
         PORTAL_CDN_URL: envHelper.PORTAL_CDN_URL,
         cdnIndexFileExist: cdnIndexFileExist,
         cdnFailedCookies: req.cookies.cdnFailed
       }
     })
-    if(envHelper.PORTAL_CDN_URL && cdnIndexFileExist && req.cookies.cdnFailed !== 'yes'){ // assume cdn works and send cdn ejs file
+    if (envHelper.PORTAL_CDN_URL && cdnIndexFileExist && req.cookies.cdnFailed !== 'yes') { // assume cdn works and send cdn ejs file
       res.locals.cdnWorking = 'yes';
       res.render(path.join(__dirname, '../dist', 'index_cdn.ejs'))
     } else { // load local file if cdn fails or cdn is not enabled
-      if(req.cookies.cdnFailed === 'yes'){
-        logger.info({msg:'CDN Failed - loading local files',
-      additionalInfo: {
-        cdnIndexFileExist: cdnIndexFileExist,
-        PORTAL_CDN_URL: envHelper.PORTAL_CDN_URL
-      }})
+      if (req.cookies.cdnFailed === 'yes') {
+        logger.info({
+          msg: 'CDN Failed - loading local files',
+          additionalInfo: {
+            cdnIndexFileExist: cdnIndexFileExist,
+            PORTAL_CDN_URL: envHelper.PORTAL_CDN_URL
+          }
+        })
       }
       res.locals.cdnWorking = 'no';
       res.render(path.join(__dirname, '../dist', 'index.ejs'))
@@ -262,7 +266,7 @@ const renderDefaultIndexPage = (req, res) => {
 // renders tenant page from cdn or from local files based on tenantCdnUrl exists
 const renderTenantPage = (req, res) => {
   const tenantName = _.lowerCase(req.params.tenantName) || envHelper.DEFAULT_CHANNEL
-  if(req.query.cdnFailed === 'true') {
+  if (req.query.cdnFailed === 'true') {
     loadTenantFromLocal(req, res)
     return;
   }
@@ -288,25 +292,25 @@ const loadTenantFromLocal = (req, res) => {
   }
 }
 const redirectTologgedInPage = (req, res) => {
-	let redirectRoutes = { '/explore': '/resources', '/explore/1': '/search/Library/1', '/explore-course': '/learn', '/explore-course/1': '/search/Courses/1', '/guest-profile': '/profile', '/explore-groups': '/my-groups' };
-	if (req.params.slug) {
-		redirectRoutes = {
-			[`/${req.params.slug}/explore`]: '/resources',
-			[`/${req.params.slug}/explore-course`]: '/learn'
-		}
-	}
-  if ((_.get(req, 'query.redirect_uri')) && (_.get(req, 'query.redirect_uri')).includes(VDNURL)){
-    res.cookie ('redirectPath', VDNURL);
-    res.cookie ('redirectTo', (_.get(req, 'query.redirect_uri')));
+  let redirectRoutes = { '/explore': '/resources', '/explore/1': '/search/Library/1', '/explore-course': '/learn', '/explore-course/1': '/search/Courses/1', '/guest-profile': '/profile', '/explore-groups': '/my-groups' };
+  if (req.params.slug) {
+    redirectRoutes = {
+      [`/${req.params.slug}/explore`]: '/resources',
+      [`/${req.params.slug}/explore-course`]: '/learn'
+    }
   }
-	if (_.get(req, 'sessionID') && _.get(req, 'session.userId')) {
-		if (_.get(redirectRoutes, req.originalUrl)) {
-			const routes = _.get(redirectRoutes, req.originalUrl);
-			res.redirect(routes)
-		} else if (_.get(redirectRoutes, ((req.originalUrl).substring(0,(req.originalUrl).indexOf('?'))))) {
-      let routes = _.get(redirectRoutes, ((req.originalUrl).substring(0,(req.originalUrl).indexOf('?'))));
+  if ((_.get(req, 'query.redirect_uri')) && (_.get(req, 'query.redirect_uri')).includes(VDNURL)) {
+    res.cookie('redirectPath', VDNURL);
+    res.cookie('redirectTo', (_.get(req, 'query.redirect_uri')));
+  }
+  if (_.get(req, 'sessionID') && _.get(req, 'session.userId')) {
+    if (_.get(redirectRoutes, req.originalUrl)) {
+      const routes = _.get(redirectRoutes, req.originalUrl);
+      res.redirect(routes)
+    } else if (_.get(redirectRoutes, ((req.originalUrl).substring(0, (req.originalUrl).indexOf('?'))))) {
+      let routes = _.get(redirectRoutes, ((req.originalUrl).substring(0, (req.originalUrl).indexOf('?'))));
       routes = routes + ((req.originalUrl).substring((req.originalUrl).indexOf('?')));
-			res.redirect(routes)
+      res.redirect(routes)
     } else {
       const urlWithOutSlug = req.params.slug ? req.originalUrl.replace('/' + req.params.slug, '') : req.originalUrl;
       const courseUrl = urlWithOutSlug.includes('/explore-course/course/');
@@ -316,31 +320,31 @@ const redirectTologgedInPage = (req, res) => {
       if (urlWithOutSlug.startsWith('/play/collection')) {
         return res.redirect(`/resources${urlWithOutSlug}`);
       }
-			if (_.get(redirectRoutes, `/${req.originalUrl.split('/')[1]}`)) {
-				const routes = _.get(redirectRoutes, `/${req.originalUrl.split('/')[1]}`);
-				res.redirect(routes)
-      } else if(_.includes(_.get(req, 'originalUrl'), 'get') || _.includes(_.get(req, 'originalUrl'), 'dial')){
+      if (_.get(redirectRoutes, `/${req.originalUrl.split('/')[1]}`)) {
+        const routes = _.get(redirectRoutes, `/${req.originalUrl.split('/')[1]}`);
+        res.redirect(routes)
+      } else if (_.includes(_.get(req, 'originalUrl'), 'get') || _.includes(_.get(req, 'originalUrl'), 'dial')) {
         req.includeUserDetail = true;
         renderDefaultIndexPage(req, res);
       }
       else {
-				renderDefaultIndexPage(req, res)
-			}
-		}
-	} else {
-		renderDefaultIndexPage(req, res)
-	}
+        renderDefaultIndexPage(req, res)
+      }
+    }
+  } else {
+    renderDefaultIndexPage(req, res)
+  }
 }
 
 const playContent = (req, res) => {
-  if (req.path.includes('/play/quiz') && fs.existsSync(path.join(__dirname, '../tenant/quiz/', 'index.html'))){
+  if (req.path.includes('/play/quiz') && fs.existsSync(path.join(__dirname, '../tenant/quiz/', 'index.html'))) {
     res.sendFile(path.join(__dirname, '../tenant/quiz/', 'index.html'));
   } else {
     renderDefaultIndexPage(req, res);
   }
 }
 const MLContent = (req, res) => {
-  if (req.path.includes('/manage-learn/') && fs.existsSync(path.join(__dirname, '../tenant/manage-learn/', 'index.html'))){
+  if (req.path.includes('/manage-learn/') && fs.existsSync(path.join(__dirname, '../tenant/manage-learn/', 'index.html'))) {
     res.sendFile(path.join(__dirname, '../tenant/manage-learn/', 'index.html'));
   } else {
     renderDefaultIndexPage(req, res);
@@ -355,7 +359,7 @@ const redirectToLogin = (req, res) => {
 };
 
 
-const getdial = (req,res) => {
+const getdial = (req, res) => {
   if (fs.existsSync(path.join(__dirname, '../tenant/course/', 'index.html'))) {
     res.sendFile(path.join(__dirname, '../tenant/course/', 'index.html'));
   } else {

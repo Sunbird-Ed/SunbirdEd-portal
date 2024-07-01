@@ -20,12 +20,12 @@
                 <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" type="button"  [routerLink]="['/explore-course']">{{resourceService?.frmelmnts?.btn?.close}} <i class="close icon"></i></button>
             </div>
         </div>
-        <div class="twelve wide column" [appTelemetryImpression]="telemetryImpression" in-view-container
-          (inview)="inView($event)" *ngIf="!showLoader && contentList.length">
+        <div class="twelve wide column" [appTelemetryImpression]="telemetryImpression"
+           *ngIf="!showLoader && contentList.length">
           <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"
               *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="getFilters($event)"></app-global-search-selected-filter>
           <div class="sb-grid dynamic-section-card ">
-            <div in-view-item [id]="i" [data]="content" class=""
+            <div [id]="i" [data]="content" class=""
               *ngFor="let content of contentList;let i = index;">
               <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" appTelemetryInteract
                 [telemetryInteractEdata]="cardIntractEdata"

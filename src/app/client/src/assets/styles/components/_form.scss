@@ -1,5 +1,5 @@
-@use "~@project-sunbird/sb-styles/assets/varSass" as *;
-@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "@project-sunbird/sb-styles/assets/varSass" as *;
+@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 /* sb-field */
 $sb-field-margin-bottom: calculateRem(8px);
 $sb-field-disabled-background: var(--gray-100);

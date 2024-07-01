@@ -94,7 +94,7 @@ Installing Sunbird requires two primary software components:
   </tr>
   <tr>
     <td><b>RAM</b></td>
-    <td>> >= 8 Gb</td>
+    <td>> 16 Gb (Minimum 8Gb)</td>
   </tr>
   <tr>
     <td><b>CPU</b></td>
@@ -105,8 +105,8 @@ Installing Sunbird requires two primary software components:
 
 | Software dependencies |  |
 | :--- | ------- |
-| **[Node](https://nodejs.org/en/download/)** | > 14.x.x (Install the latest release of LTS version) |
-| **[Angular CLI](https://angular.io/cli#installing-angular-cli)** | > 11.x.x (Install the latest Angular CLI version) |
+| **[Node](https://nodejs.org/en/download/)** | > 16.19.x (Install the latest release of LTS version) |
+| **[Angular CLI](https://angular.io/cli#installing-angular-cli)** | > 14.x.x (Install the latest Angular CLI version) |
 | **[yarn](https://classic.yarnpkg.com/en/)** | Latest version of yarn: `npm install --global yarn` |
 | **[nodemon](https://www.npmjs.com/package/nodemon)** | Latest version  of nodemon: `npm install -g nodemon` |
 
@@ -153,9 +153,9 @@ Installing Sunbird requires two primary software components:
 
         |           Environment Variable        |  Data Type |             Description                |
         | :-------------------------------------| ---------- | -------------------------------------  |
-        |        sunbird_azure_account_name     |   string   |          Azure account Name            |
-        |        sunbird_azure_account_key      |   string   |          Azure Account Key             |
-        |          sunbird_aws_region           |   string   |        Region for AWS account          |
+        |     sunbird_cloud_storage_provider    |   string   |        Cloud Service Provider          |
+        |   cloud_private_storage_accountname   |   string   |          Cloud Account Name            |
+        |      cloud_private_storage_secret     |   string   |          Cloud Account Key             |
         |  KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN |   boolean  |   Flag value to allow anonymous user   |
         |  sunbird_anonymous_device_register_api|   string   |The API for registering anonymous device|
         |  sunbird_anonymous_register_token     |   string   |    Token to register anonymous device  |
@@ -212,7 +212,6 @@ Installing Sunbird requires two primary software components:
     ├── Sunbirded-portal                                            
     |   ├── /.circleci                           # 
     │   |   └── config.yml                       # Circleci Configuration file
-    |   ├── /experiments                         # -|-
     |   ├── /src/app                             # Sunbird portal or web application
     │   |   ├── /client                          # -|-
     │   |   |    └── src                         # -|-
@@ -253,10 +252,10 @@ Installing Sunbird requires two primary software components:
 
 | Plugin Name                                                                                                  	| Plugin Repository                                                	| npm version 	| NG Version 	|
 |--------------------------------------------------------------------------------------------------------------	|------------------------------------------------------------------	|-------------	|------------	|
-| [@project-sunbird/chatbot-client](https://www.npmjs.com/package/@project-sunbird/chatbot-client)             	| https://github.com/project-sunbird/sunbird-bot-client            	| 3.0.3       	| NG 11      	|
-| [@project-sunbird/common-consumption](https://www.npmjs.com/package/@project-sunbird/common-consumption)     	| https://github.com/Sunbird-Ed/SunbirdEd-consumption-ngcomponents 	| 4.12.0      	| NG 11      	|
-| [@project-sunbird/common-form-elements](https://www.npmjs.com/package/@project-sunbird/common-form-elements) 	| https://github.com/Sunbird-Ed/SunbirdEd-forms                    	| 5.1.1       	| NG 11      	|
-| [@project-sunbird/sb-content-section](https://www.npmjs.com/package/@project-sunbird/sb-content-section)     	| https://github.com/Sunbird-Ed/sb-content-module                  	| 5.1.0       	| NG 11      	|
-| [@project-sunbird/sb-notification](https://www.npmjs.com/package/@project-sunbird/sb-notification)           	| https://github.com/Sunbird-Ed/sb-notification                    	| 5.0.7       	| NG 11      	|
-| [@shikshalokam/sl-questionnaire](https://www.npmjs.com/package/@shikshalokam/sl-questionnaire)           	    | https://github.com/shikshalokam/sl-questionnaire-components       | 2.1.0       	| NG 11      	|
-| [@shikshalokam/sl-reports-library](https://www.npmjs.com/package/@shikshalokam/sl-reports-library)           	| https://github.com/shikshalokam/sl-reports-library                | 2.0.0       	| NG 11      	|
+| [@project-sunbird/chatbot-client](https://www.npmjs.com/package/@project-sunbird/chatbot-client)             	| https://github.com/project-sunbird/sunbird-bot-client            	| 4.0.0       	| NG 13      	|
+| [@project-sunbird/common-consumption](https://www.npmjs.com/package/@project-sunbird/common-consumption)     	| https://github.com/Sunbird-Ed/SunbirdEd-consumption-ngcomponents 	| 6.0.0      	| NG 13      	|
+| [@project-sunbird/common-form-elements-full](https://www.npmjs.com/package/@project-sunbird/common-form-elements-full) 	| https://github.com/Sunbird-Ed/SunbirdEd-forms                    	| 6.0.0       	| NG 14      	|
+| [@project-sunbird/sb-content-section](https://www.npmjs.com/package/@project-sunbird/sb-content-section)     	| https://github.com/Sunbird-Ed/sb-content-module                  	| 6.0.0       	| NG 13      	|
+| [@project-sunbird/sb-notification](https://www.npmjs.com/package/@project-sunbird/sb-notification)           	| https://github.com/Sunbird-Ed/sb-notification                    	| 6.0.0       	| NG 14      	|
+| [@shikshalokam/sl-questionnaire](https://www.npmjs.com/package/@shikshalokam/sl-questionnaire)           	    | https://github.com/shikshalokam/sl-questionnaire-components       | 2.3.0       	| NG 12      	|
+| [@shikshalokam/sl-reports-library](https://www.npmjs.com/package/@shikshalokam/sl-reports-library)           	| https://github.com/shikshalokam/sl-reports-library                | 3.0.1       	| NG 14      	|

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { SignupService } from './../../services';
 import { ResourceService, ServerResponse, UtilService, ConfigService, ToasterService } from '@sunbird/shared';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -19,7 +19,7 @@ export class OtpComponent implements OnInit {
   @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
   @Input() signUpdata: any;
   @Output() redirectToParent = new EventEmitter();
-  otpForm: FormGroup;
+  otpForm: UntypedFormGroup;
   disableSubmitBtn = true;
   mode: string;
   errorMessage: string;
@@ -66,9 +66,9 @@ export class OtpComponent implements OnInit {
     this.emailAddress = _.get(this.startingForm, 'emailPassInfo.type') === 'email' ? _.get(this.startingForm, 'emailPassInfo.key') : '';
     this.phoneNumber = _.get(this.startingForm, 'emailPassInfo.type') === 'phone' ? _.get(this.startingForm, 'emailPassInfo.key') : '';
     this.mode = _.get(this.startingForm, 'emailPassInfo.type');
-    this.otpForm = new FormGroup({
-      otp: new FormControl('', [Validators.required]),
-      tncAccepted: new FormControl(false, [Validators.requiredTrue])
+    this.otpForm = new UntypedFormGroup({
+      otp: new UntypedFormControl('', [Validators.required]),
+      tncAccepted: new UntypedFormControl(false, [Validators.requiredTrue])
     });
     this.tncService.getTncConfig().subscribe((data: ServerResponse) => {
       this.telemetryLogEvents('fetch-terms-condition', true);

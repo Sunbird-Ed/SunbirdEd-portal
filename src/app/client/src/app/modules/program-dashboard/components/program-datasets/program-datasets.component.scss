@@ -1,4 +1,4 @@
-@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .sb-modal-actions {
   display: flex;
@@ -47,7 +47,6 @@
 }
 .goback{
   justify-self: flex-end;
-  margin-left: 0.625rem;
   cursor: pointer;
   color: var(--ck-color-button-cancel);
 }
@@ -57,7 +56,12 @@
 }
 
 .col-gap{
-  gap:1.875rem;
+  gap:2rem;
+}
+
+.btn-col{
+  flex-grow: 1;
+  margin-left: 5rem !important;
 }
 
 .modalNote{
@@ -98,7 +102,10 @@
 }
 
 ::ng-deep {
-  
+  .exportBtn .mat-form-field-wrapper {
+      float: right;
+  }
+
   .cdk-overlay-container{
     z-index: 9 !important;
   }
@@ -175,10 +182,12 @@
 
   .mat-dropdown__options span {
     position: unset !important;
-}
+  }
   .mat-dropdown__options span:before {
     display: flex !important;
     align-self: flex-end !important;
   }
-
+  .custom_mat_multi.mat-option{
+    display: flex !important;
+  }
 }

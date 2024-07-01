@@ -3,6 +3,7 @@ import { Component, OnInit, EventEmitter, Output, Input, OnDestroy, ViewChild, A
 import * as ClassicEditor from '@project-sunbird/ckeditor-build-classic';
 import { ISummaryObject } from '../../interfaces';
 import { AddSummaryModalComponent } from './add-summary-modal.component'
+type ClassicEditor = typeof ClassicEditor
 
 describe("AddSummaryModalComponent", () => {
   let component: AddSummaryModalComponent;

@@ -1,5 +1,5 @@
 import { Directive, OnInit, ElementRef, Renderer2, OnDestroy } from '@angular/core';
-import { TelemetryService } from '@sunbird/telemetry';
+import { TelemetryService } from '../../../telemetry/services/telemetry/telemetry.service';
 import { UtilService } from '../../services/util/util.service';
 /**
  * Reference links:

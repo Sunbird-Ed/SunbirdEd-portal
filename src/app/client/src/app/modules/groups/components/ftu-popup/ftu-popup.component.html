@@ -28,28 +28,27 @@
         }}</h4>
       <p class="mb-16">{{ resourceService?.frmelmnts?.lbl?.MembersInstanceId | interpolate:'{instance}': instance }}
       </p>
-      <ngx-slick class="carousel modal-custom-carousel" [config]="slideConfig1">
-        <div ngxSlickItem class="item-help">
-          <div class="sb-g">
-            <div class="sb-g-col-xs-12 sb-g-col-md-6 sb-g-col-lg-6">
-              <h6>{{ resourceService?.frmelmnts?.lbl?.step1 }}</h6>
-              <p class="fnormal mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.clickOnProfileIcon }}</p>
-              <img src="./assets/images/step_1.png" alt="{{ resourceService?.frmelmnts?.lbl?.clickOnProfileIcon }}">
-            </div>
-            <div class="sb-g-col-xs-12 sb-g-col-md-6 sb-g-col-lg-6 column-2">
-              <h6>{{ resourceService?.frmelmnts?.lbl?.step2 }}</h6>
-              <p class="fnormal mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.SelectProfileMenu }}</p>
-              <img src="./assets/images/step_2.png" alt="{{ resourceService?.frmelmnts?.lbl?.SelectProfileMenu }}">
-            </div>
-          </div>
-        </div>
-        <div ngxSlickItem class="item-help">
-          <h6>{{ resourceService?.frmelmnts?.lbl?.step3 }}</h6>
-          <p class="fnormal mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.SeetheInstanceIDhere |
-            interpolate:'{instance}': instance }}</p>
-          <img src="./assets/images/step_3.png" alt="">
-        </div>
-      </ngx-slick>
+
+<app-slick [loadStatus]="'done'">
+  <ng-container>
+    <div class="item-help">
+      <h6 class="mat-body-1 mb-0">{{ resourceService?.frmelmnts?.lbl?.step1 }}</h6>
+      <p class="mat-body-1 mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.clickOnProfileIcon }}</p>
+      <img src="./assets/images/step_1.png" alt="{{ resourceService?.frmelmnts?.lbl?.clickOnProfileIcon }}">
+    </div>
+    <div class="item-help">
+      <h6 class="mat-body-1 mb-0">{{ resourceService?.frmelmnts?.lbl?.step2 }}</h6>
+      <p class="mat-body-1 mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.SelectProfileMenu }}</p>
+      <img src="./assets/images/step_2.png" alt="{{ resourceService?.frmelmnts?.lbl?.SelectProfileMenu }}">
+    </div>
+    <div class="item-help">
+      <h6 class="mat-body-1 mb-0">{{ resourceService?.frmelmnts?.lbl?.step3 }}</h6>
+      <p class="mat-body-1 mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.SeetheInstanceIDhere |
+        interpolate:'{instance}': instance }}</p>
+      <img src="./assets/images/step_3.png" alt="">
+    </div>
+  </ng-container>
+</app-slick>
     </div>
   </div>
 </div>

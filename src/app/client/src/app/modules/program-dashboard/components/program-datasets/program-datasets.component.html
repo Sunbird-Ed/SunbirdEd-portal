@@ -37,24 +37,26 @@
          </ng-template>
         <ng-container *ngTemplateOutlet="programDataset"></ng-container>
       </mat-tab>
-      <mat-tab appTelemetryInteract>
-        <ng-template mat-tab-label>
-           <span class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.graphs}}</span>
-        </ng-template>
-       <ng-container *ngTemplateOutlet="graphs"></ng-container>
-     </mat-tab>
-      <mat-tab appTelemetryInteract> 
-      <ng-template mat-tab-label>
-         <span class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.table}}</span>
-      </ng-template>
-     <ng-container *ngTemplateOutlet="table"></ng-container>
-   </mat-tab> 
+      <ng-container *ngIf="!noResult && (dashboardReport$ | async) as currentReport">
+        <mat-tab appTelemetryInteract>
+          <ng-template mat-tab-label>
+             <span class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.graphs}}</span>
+          </ng-template>
+         <ng-container *ngTemplateOutlet="graphs;context:{$implicit:currentReport}"></ng-container>
+       </mat-tab>
+        <mat-tab *ngFor="let table of currentReport?.tables;"> 
+          <ng-template mat-tab-label>
+             <span class="font-weight-bold">{{table.name}}</span>
+          </ng-template>
+         <ng-container *ngTemplateOutlet="tables;context:{$implicit:table}"></ng-container>
+       </mat-tab> 
+       </ng-container>
     </mat-tab-group>
 </div>
 
 <ng-template #globalFilters>
   <ng-container *ngIf="!hideElements">
-    <form class="sb-form" [formGroup]="reportForm">
+    <form class="sb-form" autocomplete="off" [formGroup]="reportForm">
       <div class="d-flex">
         <div class="d-flex flex-w-wrap flex-ai-center ml-32 col-gap">
           <div class="d-flex flex-dc">
@@ -85,8 +87,19 @@
               <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd">
               <mat-select role="radio" class="selection"  valueField="locationId" formControlName="districtName"
               [placeholder]="resourceService?.frmelmnts?.lbl?.dashboarddistrict"  (selectionChange)="districtSelection($event)">
-                <mat-option *ngFor="let district of districts" class="mat-dropdown__options" role="option" [value]="district.locationId">
+                <mat-option *ngFor="let district of districts" class="mat-dropdown__options" role="option" [value]="district.id">
                   {{district.name | titlecase }}
+                </mat-option>
+              </mat-select>
+              </mat-form-field>
+          </div>
+          <div *ngIf="tabIndex !== 2" class="d-flex flex-dc">
+            <label>{{ resourceService?.frmelmnts?.lbl?.block }}</label>
+              <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd" >
+              <mat-select role="radio" class="selection"  valueField="locationId" multiple formControlName="blockName"
+              [placeholder]="resourceService?.frmelmnts?.lbl?.blockLabel"  (selectionChange)="blockChanged($event)" (click)="dependentFilterMsg()" [disabled]="!reportForm.controls.districtName.value">
+                <mat-option *ngFor="let block of blocks" class="mat-dropdown__options custom_mat_multi" role="option" [value]="block.id">
+                  {{block.name | titlecase}}
                 </mat-option>
               </mat-select>
               </mat-form-field>
@@ -96,30 +109,36 @@
               <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd">
               <mat-select role="radio" class="selection" valueField="organisationId" formControlName="organisationName"
               [placeholder]="resourceService?.frmelmnts?.lbl?.dashboardOrg"  (selectionChange)="organisationSelection($event)">
-                <mat-option *ngFor="let organisation of organisations" class="mat-dropdown__options" role="option" [value]="organisation.organisationId">
-                  {{organisation.orgName}}
+                <mat-option *ngFor="let organisation of organisations" class="mat-dropdown__options" role="option" [value]="organisation.id">
+                  {{organisation.name | titlecase}}
                 </mat-option>
               </mat-select>
               </mat-form-field>
           </div>
 
-          <div *ngIf="tabIndex !== 1 && tabIndex !== 2" class="d-flex flex-dc customDate">
+          <div *ngIf="tabIndex !== 1 && tabIndex !== 2  && tabIndex !== 3" class="d-flex flex-dc customDate">
             <label>{{resourceService?.frmelmnts?.lbl?.startdate | titlecase }}</label>
             <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd sb-color-primary">
-              <input matInput [readonly]="!reportForm.controls.solution.value" placeholder="dd/mm/yyyy" [max]="maxStartDate" (dateInput)="dateChanged($event,'startDate')" (dateChange)="dateChanged($event,'startDate')" formControlName="startDate" [matDatepicker]="picker">
+              <input appDateValidator [disabled]="!reportForm.controls.programName.value" matInput placeholder="dd/mm/yyyy" [min]="minStartDate" [max]="maxStartDate" (dateChange)="dateChanged($event,'startDate')" formControlName="startDate" [matDatepicker]="picker">
               <mat-datepicker-toggle matSuffix [for]="picker" class="sb-color-primary"></mat-datepicker-toggle>
-              <mat-datepicker [disabled]="!reportForm.controls.solution.value" #picker></mat-datepicker>
-            </mat-form-field>            
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <mat-error *ngIf="reportForm.get('startDate').hasError('matDatepickerMax') || reportForm.get('startDate').hasError('matDatepickerMin')">
+              *{{this.resourceService?.frmelmnts?.msg?.invalidDateMsg | interpolate:'{type}': (resourceService?.frmelmnts?.lbl?.startdate | lowercase)}}
+            </mat-error>            
           </div>
-          <div *ngIf="tabIndex !== 1 && tabIndex !== 2" class="d-flex flex-dc customDate">
+          <div *ngIf="tabIndex !== 1 && tabIndex !== 2  && tabIndex !== 3" class="d-flex flex-dc customDate">
             <label>{{resourceService?.frmelmnts?.lbl?.enddate | titlecase }}</label>
             <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd sb-color-primary">
-              <input matInput [readonly]="!reportForm.controls.solution.value" placeholder="dd/mm/yyyy" [min]="minEndDate" [max]="maxEndDate"  (dateInput)="dateChanged($event,'endDate')" (dateChange)="dateChanged($event,'endDate')" formControlName="endDate" [matDatepicker]="picker">
+              <input appDateValidator [disabled]="!reportForm.controls.programName.value"  matInput placeholder="dd/mm/yyyy" [min]="minEndDate" [max]="maxEndDate"  (dateChange)="dateChanged($event,'endDate')" formControlName="endDate" [matDatepicker]="picker">
               <mat-datepicker-toggle matSuffix [for]="picker" class="sb-color-primary"></mat-datepicker-toggle>
-              <mat-datepicker [disabled]="!reportForm.controls.solution.value" #picker></mat-datepicker>
+              <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>            
+            <mat-error *ngIf="reportForm.get('endDate').hasError('matDatepickerMax') || reportForm.get('endDate').hasError('matDatepickerMin')">
+              *{{this.resourceService?.frmelmnts?.msg?.invalidDateMsg | interpolate:'{type}': (resourceService?.frmelmnts?.lbl?.enddate | lowercase)}}
+            </mat-error> 
           </div>
-          <ng-container *ngIf="pdFilters.length && tabIndex !== 1 && tabIndex !== 2">
+          <ng-container *ngIf="pdFilters.length && tabIndex !== 1 && tabIndex !== 2 && tabIndex !== 3">
             <ng-container *ngFor="let filter of pdFilters">
               <app-pd-filters [pdFilter]="filter" (filterChanged)="pdFilterChanged($event)"></app-pd-filters>
             </ng-container>
@@ -127,20 +146,17 @@
 
           
         </div>
-        <div class="d-flex flex-dc ml-auto">
+        <div class="d-flex flex-dc ml-auto btn-col">
           <button type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary reset-filter flex-as-flex-end" (click)="resetFilter()">{{resourceService?.frmelmnts?.btn?.resetFilters}}</button>
-          <mat-form-field *ngIf="!noResult && (tabIndex == 1)" appearance="fill" class="sb-mat__dropdown custom_mat_dd">
+          <mat-form-field *ngIf="!noResult && (tabIndex == 1)" appearance="fill" class="sb-mat__dropdown custom_mat_dd exportBtn">
             <mat-select role="radio" class="selection" placeholder="Export as" (selectionChange)="downloadReport($event)" >
             <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of exportOptions" [value]="option"
             attr.aria-label="{{option}}">{{option}}</mat-option>
             </mat-select>
-            </mat-form-field>
-            <button  *ngIf="!noResult && hideTableToCsv && (tabIndex == 2)" type="button" class="sb-btn sb-btn-normal sb-btn-primary export-btn flex-as-flex-end"
-            (click)="tableToCsv = !tableToCsv"><i class="download icon"></i>{{resourceService?.frmelmnts?.lbl?.exportCsv}}</button>    
+            </mat-form-field>    
         </div>
       </div>
     </form>
-    <div *ngIf="newData" class="newData">*{{resourceService?.frmelmnts?.lbl?.resourceSelect}}</div>
   </ng-container>
   <div class="sb-filter-label pt-16 pb-8" *ngIf="hideElements">
     <div *ngFor="let key of loadash.keys(displayFilters)" class="d-inline-flex flex-w-wrap pr-10">
@@ -152,6 +168,7 @@
 </ng-template>
 <ng-template #programDataset>
   <ng-container *ngTemplateOutlet="globalFilters"></ng-container>
+  <div *ngIf="programSelected && (!userAccess|| (oldProgram && !reportForm.controls.solution.value) || newData)"class="newData">*{{errorMessage}}</div>
   <div class="sbt-inside-page-container relative position mt-32">
     <div>
       <div>
@@ -163,23 +180,23 @@
         <div class="d-flex flex-w-wrap flex-dr">
           <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd d-flex flex-ai-center w-auto" >
           <mat-select role="listbox" formControlName="reportType" class="selection"
-          [placeholder]="resourceService?.frmelmnts?.lbl?.selectReport">
+          [placeholder]="resourceService?.frmelmnts?.lbl?.selectReport" [disabled]="!userAccess">
             <mat-option role="option" *ngFor="let report of reportTypes" class="custom_mat_dd mat-dropdown__options" [value]="report?.name" (click)="reportChanged(report)">
               {{report?.name}}
             </mat-option>
           </mat-select>
           </mat-form-field>
           <button [disabled]="(!reportForm.valid)" 
-                  [ngClass]="{'sb-btn-disabled': (!reportForm.valid )}"
+                  [ngClass]="{'sb-btn-disabled': (!reportForm.valid)}"
                   type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary ml-12" (click)="requestDataset()">
                     {{resourceService?.frmelmnts?.btn?.requestReport}}
                   </button>
         </div>
       </div>
-      <div *ngIf="isProcessed" class="d-flex">
+      <div *ngIf="isProcessed" class="d-flex flex-ai-baseline mt-12">
         <div class="information-icon">
           <img src="assets/images/error-icon.svg" class="infoIcon"></div>
-        <p class="fsmall note-text my-8 administrator-text">{{resourceService.frmelmnts?.lbl?.reportStatus}}</p>
+        <p class="fsmall note-text my-8 administrator-text ml-12 sb-color-error">{{resourceService.frmelmnts?.lbl?.reportStatus}}</p>
       </div>
      
 
@@ -194,22 +211,23 @@
   
  
 </ng-template>
-<ng-template #graphs>
+<ng-template #graphs let-currentReport>
   <ng-container *ngTemplateOutlet="globalFilters" ></ng-container>
-  <div *ngIf="!noResult && (dashboardReport$ | async) as currentReport else loading">
+  <div *ngIf="programSelected && ((oldProgram && newData) || (!oldProgram && showErrorForGraphs))" class="newData">*{{errorMessage}}</div>
+  <ng-container *ngIf="(oldProgram && reportForm.controls.solution.value && currentReport.charts.length) || (!oldProgram && currentReport.charts.length)">
     <div class="sb-graph-section p-24 my-24"
-        *ngFor="let chart of currentReport.charts; let i = index; let l = last;">
+        *ngFor="let chart of currentReport.charts;">
         <ng-container *ngIf="chart?.chartConfig?.id == 'Big_Number'">
-          <app-sb-bignumber [chart]="chart" [lastUpdatedOn]="lastUpdatedOn" [hideElements]="hideElements" [globalDistrict]="globalDistrict" [globalOrg]="globalOrg"></app-sb-bignumber>
+          <app-sb-bignumber [chart]="chart" [hideElements]="hideElements" [appliedFilters]="appliedFilters"></app-sb-bignumber>
         </ng-container>
         <ng-container *ngIf="chart?.chartConfig?.id !== 'Big_Number' && chart?.chartData && chart?.chartConfig">
-      <app-sb-chart [chart]="chart" [lastUpdatedOn]="lastUpdatedOn" [hideElements]="hideElements" [globalDistrict]="globalDistrict" [globalOrg]="globalOrg"></app-sb-chart>
-    </ng-container>
+      <app-sb-chart [chart]="chart" [hideElements]="hideElements" [appliedFilters]="appliedFilters"></app-sb-chart>
+      </ng-container>
       </div>
-      <div class="ui warning message mt-16" *ngIf="!currentReport.charts.length">
+    </ng-container>
+      <div class="ui warning message mt-16" *ngIf="(!reportForm.controls.solution.value && oldProgram) || !currentReport.charts.length">
         {{resourceService?.frmelmnts?.lbl?.graphNotAvailable}}
       </div>
-  </div>
   <div *ngIf="noResult">
     <app-no-result [data]="noResultMessage"></app-no-result>
   </div>
@@ -223,23 +241,18 @@
     </ng-container>
   </ng-template>
 </ng-template>
-<ng-template #table>
-  <ng-container *ngTemplateOutlet="globalFilters"></ng-container>
-  <div *ngIf="!noResult && (dashboardReport$ | async) as currentTable else loading">
-    <ng-container *ngIf="currentTable?.tables[0]?.data">
-    <div class="sb-graph-section p-24 my-24"
-        *ngFor="let table of currentTable?.tables; let i = index; let l = last;">
-        <ng-container *ngIf="table?.data">
-          <div class="customTable">
-            <app-sb-table [tableToCsv]="tableToCsv" [table]="table" [hideElements]="hideElements" [globalDistrict]="globalDistrict" [globalOrg]="globalOrg"></app-sb-table>
-          </div>
-        </ng-container>
+
+  <ng-template #tables let-table>
+    <ng-container *ngTemplateOutlet="globalFilters"></ng-container>
+    <div *ngIf="programSelected && ((oldProgram && newData) || (!oldProgram && !reportForm.controls.solution.value) || newData)"class="newData">*{{errorMessage}}</div>
+      <div *ngIf="table?.data" class="sb-graph-section p-24 my-24">
+            <div class="customTable">
+              <app-sb-table [tableToCsv]="tableToCsv" [table]="table" [hideElements]="hideElements" [appliedFilters]="appliedFilters"></app-sb-table>
+            </div>
       </div>
-    </ng-container>
-      <div class="ui warning message mt-16" *ngIf="currentTable?.tables.length === 0 || !currentTable?.tables || !currentTable?.tables[0]?.data">
+      <div class="ui warning message mt-16" *ngIf="!table?.data">
         {{resourceService?.frmelmnts?.lbl?.tableNotAvailable}}
       </div>
-  </div>
   <div *ngIf="noResult">
     <app-no-result [data]="noResultMessage"></app-no-result>
   </div>
@@ -252,7 +265,7 @@
       </div>
     </ng-container>
   </ng-template>
-</ng-template>
+  </ng-template>
 <app-modal-wrapper [config]="{disableClose: false, size: 'small'}" (dismiss)="closeModal()" #modal *ngIf="popup">
   <ng-template sbModalContent>
     <div class="sb-modal">
@@ -347,7 +360,7 @@
               <mat-icon class="info">info</mat-icon> 
              </div>
              <div class="font-weight-bold sb-color-primary modalNote"> {{resourceService?.frmelmnts?.lbl?.modalNote}}</div>
-             <div>
+             <div class="ml-auto">
               <mat-icon class="goback" (click)="goBack()">highlight_off</mat-icon>
              </div>
             </div>
@@ -368,22 +381,8 @@
                </div>
               
             </div>
-            <div class="mt-48 flex-dc" [formGroup]="reportForm">
-              <label  class="d-flex flex-jc-center sb-color-primary">{{ resourceService?.frmelmnts?.lbl?.solutionLbl }}</label>
-              <div class="d-flex flex-jc-center mt-24">
-                <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd w-80">
-                  <mat-select role="radio" class="selection" [(ngModel)]="solutionSelected" valueField="_id" formControlName="solution"
-                  [placeholder]="resourceService?.frmelmnts?.lbl?.solution"  (selectionChange)="selectSolution($event)">
-                    <mat-option *ngFor="let solution of solutions" class="mat-dropdown__options" role="option" [value]="solution._id">
-                      {{solution.name}} 
-                    </mat-option>
-                  </mat-select>
-                  </mat-form-field>
-              </div>  
-              
-            </div>
             <div class="mt-32 sb-modal-actions">
-              <button [disabled]="reportForm.controls.solution.value == undefined" [ngClass]="{'sb-btn-disabled': (reportForm.controls.solution.value == undefined)}" type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary" (click)="confirm()">{{resourceService?.frmelmnts?.btn?.confirmBtn}}</button>
+              <button [disabled]="!reportForm.controls.programName.value" [ngClass]="{'sb-btn-disabled': (!reportForm.controls.programName.value)}" type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary" (click)="confirm()">{{resourceService?.frmelmnts?.btn?.confirmBtn}}</button>
             </div>
           </div>
         </div>
@@ -409,5 +408,4 @@
     </div>
   </ng-template>
 </app-modal-wrapper>
-
 

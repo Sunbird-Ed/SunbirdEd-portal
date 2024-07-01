@@ -403,6 +403,7 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy, 
   ngAfterViewInit () {
     setTimeout(() => {
       this.setTelemetryImpressionData();
+      this.inview({ inview: [] });
     });
   }
 

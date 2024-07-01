@@ -184,3 +184,44 @@ export const ProfileData = {
     responseCode: 'OK',
   };
 
+  export const readSolutionResult = {
+    id: "api.user.consent.read",
+    ver: "v1",
+    ts: "2023-05-08 06:30:12:754+0000",
+    params: {
+      resmsgid: "f3f649209de66dc33e8e0dc22b1c759e",
+      msgid: "f3f649209de66dc33e8e0dc22b1c759e",
+      err: null,
+      status: "SUCCESS",
+      errmsg: null,
+    },
+    responseCode: "OK",
+    result: {
+      programName: "CriteriaLevelProgram",
+      programId: "6423da0d19d3920009daf229",
+      programEndDate: "2024-03-29T06:26:21.034Z",
+      description:
+        "View and participate in educational programs active in your location and designed for your role.",
+      rootOrganisations: "01235953109336064029450",
+      requestForPIIConsent: true,
+      data: [
+        {
+          _id: "6423da6c1556590008415cf4",
+          language: ["English"],
+          externalId:
+            "d4a311e6-cdfa-11ed-a8fc-954f25d04792-OBSERVATION-TEMPLATE_CHILD",
+          name: "Observation with rubric--Isrubricdriven-True-Criterialevelreport-False-Multiplesubmission-True",
+          description:
+            "Observation with rubric--Isrubricdriven-True-Criterialevelreport-False-Multiplesubmission-True",
+          entityType: "school",
+          type: "observation",
+          creator: "Support",
+          endDate: "2023-09-29T23:59:59.000Z",
+          link: "5af1fd509121b532b7922975dcbe51c4",
+        },
+      ],
+      count: 4,
+      programJoined: true,
+    },
+  };
+

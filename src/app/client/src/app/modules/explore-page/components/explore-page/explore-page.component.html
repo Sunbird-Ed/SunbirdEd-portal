@@ -30,17 +30,6 @@
     <div [ngClass]="SECOND_PANEL_LAYOUT" *ngIf="subscription$ | async">
       <div [appTelemetryImpression]="telemetryImpression"
         [ngClass]="[layoutConfiguration ? 'sbt-page-content-area relative9' : 'ui container mt-24', (getSelectedTab() === 'home' || getSelectedTab() === 'explore') ? 'home-container': '']">
-        <div *ngIf="false" [ngClass]="{'relative9': isUserLoggedIn()}">
-          <div class="sb-bg-color-white py-16 mb-24">
-            <h4 class="sb-categories-title text-left">{{resourceService?.frmelmnts?.lbl?.courses}}</h4>
-            <ngx-slick class="carousel" #slickModal="slick-modal" [config]="slideConfig">
-              <div ngxSlickItem *ngFor="let content of cardData;let index=index" class="mr-16 course-card-width">
-                <sb-course-curiculum-card ngClass="{'sb--card--seperator': !isUserLoggedIn()}" [index]="index"
-                  [cardData]="content" (cardClick)="navigateToCourses($event)"></sb-course-curiculum-card>
-              </div>
-            </ngx-slick>
-          </div>
-        </div>
         <div class="sb-library-cards relative9">
           <div *ngIf="!layoutConfiguration && (getSelectedTab() !== 'home' && getSelectedTab() !== 'explore')">
             <h4 class="sb-categories-title text-left mt-16" *ngIf="apiContentList.length">
@@ -69,7 +58,7 @@
                     <span *ngIf="userPreference?.framework?.board?.length">{{resourceService?.frmelmnts?.lbl?.boards | transposeTerms: 'frmelmnts.lbl.boards': resourceService?.selectedLang}}:
                     </span>
                     <span *ngIf="userPreference?.framework?.board?.length"
-                      class="font-weight-bold">{{convertToString(userPreference?.framework?.board) | interpolate: 'CBSE': 'CBSE/NCERT'}}</span>
+                      class="font-weight-bold">{{convertToString(userPreference?.framework?.board)}}</span>
                   </span>
 
                   <span class="mr-24">
@@ -113,29 +102,29 @@
               *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0">
               <div class="mt-16 font-weight-bold flarge pl-16 text-left">{{getBannerTitle(section?.section?.title)}}
               </div>
-              <ngx-slick *ngIf="displayBanner " class="carousel banner-carousel relative9 mt-24"
-                #slickModal="slick-modal" [config]="bannerSlideConfig">
-                <div ngxSlickItem *ngFor="let banner of primaryBanner;" class="mr-16">
-                  <!-- <div class="sb--card sb--card--theme2 banner-image" role="link" tabindex="0" [ngStyle]="{'background-image': 'url(' + banner?.ui?.background+ ')'}" (click)="navigateToSpecificLocation(banner); handleBannerClick(banner)">
-                                    <div class="banner-overlay"></div>
-                                    <div *ngIf="banner?.ui?.text !== ''" class="explore-text">{{banner?.ui?.text}}</div>
-                                  </div> -->
-                  <img [src]="banner?.ui?.background" class="w-100 banner-image" alt="{{banner?.ui?.text}}"
-                    title="{{banner?.ui?.text}}" role="link" tabindex="0"
-                    (click)="navigateToSpecificLocation(banner); handleBannerClick(banner)">
 
-                </div>
-              </ngx-slick>
-              <ngx-slick class="carousel banner-carousel relative9 mt-24"
-                *ngIf="displayBanner && secondaryBanner.length>0" #slickModal="slick-modal"
-                [config]="secondaryBannerSlideConfig">
-                <div ngxSlickItem *ngFor="let banner of secondaryBanner" class="banner-image">
-                  <sb-banner-card-hlist [bannerList]="banner" [secondaryBanner]="true" [platform]="'portal'"
-                    (cardClick)="navigateToSpecificLocation(banner); handleBannerClick(banner)"></sb-banner-card-hlist>
-                </div>
-              </ngx-slick>
-              <hr
-                *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0"
+
+              <app-slick [viewType]="'dots'" [loadStatus]="'done'" class="mb-32 d-block">
+                <ng-container *ngIf="displayBanner">
+                  <div *ngFor="let banner of primaryBanner;" class="mr-16">
+                    <img [src]="banner?.ui?.background" class="w-100 banner-image" alt="{{banner?.ui?.text}}"
+                      title="{{banner?.ui?.text}}" role="link" tabindex="0"
+                      (click)="navigateToSpecificLocation(banner); handleBannerClick(banner)">
+                  </div>
+                </ng-container>
+              </app-slick>
+
+
+              <app-slick [viewType]="'dots'" [loadStatus]="'done'">
+                <ng-container *ngIf="displayBanner && secondaryBanner.length>0">
+                  <div *ngFor="let banner of secondaryBanner" class="banner-image mr-16">
+                    <sb-banner-card-hlist [bannerList]="banner" [secondaryBanner]="true" [platform]="'portal'"
+                      (cardClick)="navigateToSpecificLocation(banner); handleBannerClick(banner)"></sb-banner-card-hlist>
+                  </div>
+                </ng-container>
+              </app-slick>
+
+              <hr *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0"
                 class="section-hr my-32" />
               </div>
               <sb-pills-grid *ngIf="section?.section?.isEnabled" [title]="getSectionTitle(section?.section?.title)"
@@ -164,7 +153,7 @@
           <div *ngIf="getSelectedTab() === 'home'">
             <div *ngFor="let section of contentSections" class="pl-16">
               <sb-content-section *ngIf="section?.isEnabled" (cardClick)="playContent($event, section?.title)"
-                [sortBy]="section?.apiConfig?.sortBy" [searchRequest]="section?.searchRequest" [title]="section?.title"
+                [sortBy]="section?.apiConfig?.sortBy" [searchRequest]="section?.searchRequest" [title]="getContentSectionTitle(section?.title)"
                 [layoutConfig]="layoutConfiguration" (viewMoreClick)="viewAll($event, section)"
                 [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall">
               </sb-content-section>
@@ -255,7 +244,7 @@
 <app-modal-wrapper *ngIf="showEdit" [config]="{disableClose: false, panelClass: ['overflow-visible', 'material-modal']}">
   <ng-template sbModalContent let-data>
     <app-popup [dialogProps]="data" [formInput]="userPreference?.framework" [showCloseIcon]="true"
-      [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" [isPreference]="true" [isGuestUser]="true"
+      [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" [isPreference]="true" [isGuestUser]="true" [hashId]="channelId"
       (submit)="updateProfile($event)" (close)="showEdit = !showEdit">
     </app-popup>
   </ng-template>

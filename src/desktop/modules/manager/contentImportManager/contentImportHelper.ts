@@ -82,7 +82,7 @@ const parseEcar = async () => {
     if (!manifestEntry) {
       throw getErrorObj({ message: "manifest.json is missing in ecar" }, "MANIFEST_MISSING");
     }
-    await new Promise((res, rej) =>
+    await new Promise<void>((res, rej) =>
       zipHandler.extract(manifestEntry.name, contentBasePath, (err) => err ? rej(err) : res()));
     manifestJson = await fileSDK.readJSON(path.join(contentBasePath, "manifest.json"));
     const parent = _.get(manifestJson, "archive.items[0]");
@@ -125,7 +125,7 @@ const extractZipEntry = async (identifier: string, contentBasePath: string[], en
     return false;
   }
   if (!contentImportData.metaData.extractedEcarEntries[entryObj.name]) {
-    await new Promise(async (resolve, reject) => zipHandler.extract(entryObj.name,
+    await new Promise<void>(async (resolve, reject) => zipHandler.extract(entryObj.name,
       path.join(contentFolder, ...contentBasePath), (err) => err ? reject(err) : resolve()));
     contentImportData.metaData.extractedEcarEntries[entryObj.name] = true;
   }

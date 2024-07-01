@@ -1,6 +1,7 @@
 #!/bin/bash
 STARTTIME=$(date +%s)
-NODE_VERSION=14.19.0
+export PYTHON=/usr/bin/python3.7
+NODE_VERSION=16.19.0
 echo "Starting portal build from build.sh"
 set -euo pipefail	
 export NVM_DIR="$HOME/.nvm"
@@ -71,7 +72,7 @@ build_server(){
     cd app_dist
     nvm use $NODE_VERSION
     echo "starting server yarn install"
-    yarn install --no-progress --production=true
+    yarn install --ignore-engines --no-progress --production=true
     echo "completed server yarn install"
     node helpers/resourceBundles/build.js -task="phraseAppPull"
 }

@@ -320,6 +320,7 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit, After
           duration: this.navigationhelperService.getPageLoadTime()
         }
       };
+      this.inview({ inview: [] });
     });
   }
   /**

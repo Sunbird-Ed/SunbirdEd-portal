@@ -16,6 +16,7 @@ export let mockData = {
         name: "TN-Program",
         description: "TN01-Mantra4Change-APSWREIS School Leader Feedback",
         role: ["PM"],
+        requestForPIIConsent:true
       },
       {
         _id: "5f34ec17585244939f89f90c",
@@ -23,6 +24,7 @@ export let mockData = {
         name: "MH-Program",
         description: "MH01-Mantra4Change-APSWREIS School Leader Feedback",
         role: ["PM"],
+        requestForPIIConsent:false
       },
       {
         _id: "5f75b90454670074deacf087",
@@ -184,6 +186,59 @@ export let mockData = {
         datasetId: "ml-assessment-status-report",
         roles: ["PM"],
       },
+    ],
+    user_detail_report:[
+      {
+        "name": "User Detail Report",
+        "encrypt": true,
+        "datasetId": "ml-program-user-exhaust",
+        "roles": [
+            "PROGRAM_MANAGER"
+        ],
+        "queryType":"cassandra",
+        "filters": [
+          {
+            "table_name": "program_enrollment",
+            "table_filters": [
+              {
+                "name": "program_id",
+                "operator": "==",
+                "value": "602512d8e6aefa27d9629bc3"
+              },
+              {
+                "name": "district_id",
+                "operator": "==",
+                "value": "ed9e0963-0707-443a-99c4-5994fcac7a5f"
+              },
+              {
+                "name": "organisation_id",
+                "operator": "==",
+                "value": "0126796199493140480"
+              },
+              {
+                "name": "updated_at",
+                "operator": ">=",
+                "value": "startDate"
+              },
+              {
+                "name": "updated_at",
+                "operator": "<=",
+                "value": "endDate"
+              }
+            ]
+          },
+          {
+            "table_name": "user_consent",
+            "table_filters": [
+              {
+                "name": "object_id",
+                "operator": "==",
+                "value": "602512d8e6aefa27d9629bc3"
+              }
+            ]
+          }
+        ]
+    }
     ],
   },
   userProfile: {
@@ -414,21 +469,21 @@ export let mockData = {
       districts: [
         {
           name: "ANANTAPUR",
-          locationId: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
+          id: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
         },
         {
           name: "EAST GODAVARI",
-          locationId: "aecac7ab-15e4-45c9-ac7b-d716444cd652",
+          id: "aecac7ab-15e4-45c9-ac7b-d716444cd652",
         },
       ],
       organisations: [
         {
-          orgName: "TAMILNADU",
-          organisationId: "01269878797503692810",
+          name: "TAMILNADU",
+          id: "01269878797503692810",
         },
         {
-          orgName: "JHS NARHARPUR",
-          organisationId: "0869878797503692810",
+          name: "JHS NARHARPUR",
+          id: "0869878797503692810",
         },
       ],
     },
@@ -3075,6 +3130,405 @@ export let mockData = {
       ]
   }
   ],
+  onDemandReportForSolutionTest:[
+    {
+        "requestId": "43AAC9A63194A5385555053E08CD9E87",
+        "tag": "607d3410e9cce45e22ce90c1_4c4e7a7a-d44e-45cc-9319-d22d84f749bd:01269934121990553633",
+        "dataset": "druid-dataset",
+        "requestedBy": "4c4e7a7a-d44e-45cc-9319-d22d84f749bd",
+        "requestedChannel": "01269934121990553633",
+        "status": "SUBMITTED",
+        "lastUpdated": 1674618446125,
+        "datasetConfig": {
+            "type": "ml-project-status-exhaust",
+            "params": {
+                "end_date": "2023-01-19",
+                "filters": [
+                    {
+                        "type": "in",
+                        "dimension": "status_of_project",
+                        "values": [
+                            "started",
+                            "submitted",
+                            "inProgress"
+                        ]
+                    },
+                    {
+                        "type": "equals",
+                        "dimension": "private_program",
+                        "value": "false"
+                    },
+                    {
+                        "type": "equals",
+                        "dimension": "sub_task_deleted_flag",
+                        "value": "false"
+                    },
+                    {
+                        "type": "equals",
+                        "dimension": "task_deleted_flag",
+                        "value": "false"
+                    },
+                    {
+                        "type": "equals",
+                        "dimension": "project_deleted_flag",
+                        "value": "false"
+                    },
+                    {
+                        "type": "equals",
+                        "dimension": "program_id",
+                        "value": "607d320de9cce45e22ce90c0"
+                    },
+                    {
+                        "type": "equals",
+                        "dimension": "solution_id",
+                        "value": "607d3410e9cce45e22ce90c1"
+                    }
+                ]
+            },
+            "title": "Status Report"
+        },
+        "attempts": 0,
+        "jobStats": {
+            "dtJobSubmitted": 1674618446125,
+            "dtJobCompleted": null,
+            "executionTime": null
+        },
+        "downloadUrls": [],
+        "expiresAt": 1675405928901,
+        "statusMessage": null,
+        "title": "Status Report"
+    },
+    {
+        "requestId": "8AC5135EF3353DCAD380C3603F5783A9",
+        "tag": "607d3410e9cce45e22ce90c1_4c4e7a7a-d44e-45cc-9319-d22d84f749bd:01269934121990553633",
+        "dataset": "druid-dataset",
+        "requestedBy": "4c4e7a7a-d44e-45cc-9319-d22d84f749bd",
+        "requestedChannel": "01269934121990553633",
+        "status": "FAILED",
+        "lastUpdated": 1673245705646,
+        "datasetConfig": {
+            "type": "ml-filtered-task-detail-exhaust",
+            "params": {
+                "filters": [
+                    {
+                        "type": "equals",
+                        "dimension": "status_of_project",
+                        "value": "submitted"
+                    },
+                    {
+                        "type": "equals",
+                        "dimension": "private_program",
+                        "value": "false"
+                    },
+                    {
+                        "type": "equals",
+                        "dimension": "sub_task_deleted_flag",
+                        "value": "false"
+                    },
+                    {
+                        "type": "equals",
+                        "dimension": "task_deleted_flag",
+                        "value": "false"
+                    },
+                    {
+                        "type": "equals",
+                        "dimension": "project_deleted_flag",
+                        "value": "false"
+                    },
+                    {
+                        "type": "equals",
+                        "dimension": "program_id",
+                        "value": "607d320de9cce45e22ce90c0"
+                    },
+                    {
+                        "type": "equals",
+                        "dimension": "solution_id",
+                        "value": "607d3410e9cce45e22ce90c1"
+                    }
+                ]
+            },
+            "title": "Filtered task detail report"
+        },
+        "attempts": 3,
+        "jobStats": {
+            "dtJobSubmitted": 1672895781054,
+            "dtJobCompleted": 1673245705646,
+            "executionTime": 0
+        },
+        "downloadUrls": [],
+        "expiresAt": 1675405928901,
+        "statusMessage": "No data present",
+        "title": "Filtered task detail report"
+    }
+  ],
+  onDemandReportForProgramTest:[{
+    "requestId": "D6A2781F934CBC9FFC84B7B5145BDB92",
+    "tag": "607d320de9cce45e22ce90c0_4c4e7a7a-d44e-45cc-9319-d22d84f749bd:01269934121990553633",
+    "dataset": "druid-dataset",
+    "requestedBy": "4c4e7a7a-d44e-45cc-9319-d22d84f749bd",
+    "requestedChannel": "01269934121990553633",
+    "status": "SUBMITTED",
+    "lastUpdated": 1675336792963,
+    "datasetConfig": {
+        "type": "ml-program-user-exhaust",
+        "params": {
+            "filters": [
+                {
+                    "table_name": "program_enrollment",
+                    "table_filters": [
+                        {
+                            "name": "program_id",
+                            "operator": "==",
+                            "value": "607d320de9cce45e22ce90c0"
+                        },
+                        {
+                            "name": "state_id",
+                            "operator": "==",
+                            "value": "6d884bb0-307f-4f83-abfe-fc21bbd36abb"
+                        }
+                    ]
+                },
+                {
+                    "table_name": "user_consent",
+                    "table_filters": [
+                        {
+                            "name": "object_id",
+                            "operator": "==",
+                            "value": "607d320de9cce45e22ce90c0"
+                        }
+                    ]
+                }
+            ]
+        },
+        "title": "User Detail Report"
+    },
+    "attempts": 0,
+    "jobStats": {
+        "dtJobSubmitted": 1675336792963,
+        "dtJobCompleted": null,
+        "executionTime": null
+    },
+    "downloadUrls": [],
+    "expiresAt": 1675664901267,
+    "statusMessage": null,
+    "title": "User Detail Report"
+  }],
+  selectedReportForProgramTest:{
+    "name": "User Detail Report",
+    "encrypt": true,
+    "datasetId": "ml-program-user-exhaust",
+    "roles": [
+        "PROGRAM_MANAGER"
+    ],
+    "queryType": "cassandra",
+    "filters": [
+        {
+            "table_name": "program_enrollment",
+            "table_filters": [
+                {
+                    "name": "program_id",
+                    "operator": "=",
+                    "value": "602512d8e6aefa27d9629bc3"
+                },
+                {
+                    "name": "state_id",
+                    "operator": "=",
+                    "value": "6d884bb0-307f-4f83-abfe-fc21bbd36abb"
+                },
+                {
+                    "name": "district_id",
+                    "operator": "=",
+                    "value": "ed9e0963-0707-443a-99c4-5994fcac7a5f"
+                },
+                {
+                    "name": "organisation_id",
+                    "operator": "=",
+                    "value": "0126796199493140480"
+                },
+                {
+                    "name": "updated_at",
+                    "operator": ">=",
+                    "value": "startDate"
+                },
+                {
+                    "name": "updated_at",
+                    "operator": "<=",
+                    "value": "endDate"
+                }
+            ]
+        },
+        {
+            "table_name": "user_consent",
+            "table_filters": [
+                {
+                    "name": "object_id",
+                    "operator": "=",
+                    "value": "602512d8e6aefa27d9629bc3"
+                }
+            ]
+        }
+    ]
+  },
+  filterForUserDeatilReport:[
+    {
+      "table_name": "program_enrollment",
+      "table_filters": [
+        {
+          "name": "program_id",
+          "operator": "==",
+          "value": "5f34ec17585244939f89f90c"
+        },
+        {
+          "name": "district_id",
+          "operator": "==",
+          "value": "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03"
+        },
+        {
+          "name": "organisation_id",
+          "operator": "==",
+          "value": "01269878797503692810"
+        },
+        {
+          "name": "updated_at",
+          "operator": ">=",
+          "value": "10/10/2022"
+        }
+      ]
+    },
+    {
+      "table_name": "user_consent",
+      "table_filters": [
+        {
+          "name": "object_id",
+          "operator": "==",
+          "value": "5f34ec17585244939f89f90c"
+        }
+      ]
+    }
+  ],
+  selectedReportForSolutionTest:{
+    "name": "Status Report",
+    "encrypt": false,
+    "datasetId": "ml-project-status-exhaust",
+    "roles": [
+        "PROGRAM_MANAGER",
+        "PROGRAM_DESIGNER"
+    ],
+    "configurableFilters": true,
+    "filters": [
+        {
+            "type": "in",
+            "dimension": "status_of_project",
+            "values": [
+                "started",
+                "submitted",
+                "inProgress"
+            ]
+        },
+        {
+            "type": "equals",
+            "dimension": "private_program",
+            "value": "false"
+        },
+        {
+            "type": "equals",
+            "dimension": "sub_task_deleted_flag",
+            "value": "false"
+        },
+        {
+            "type": "equals",
+            "dimension": "task_deleted_flag",
+            "value": "false"
+        },
+        {
+            "type": "equals",
+            "dimension": "project_deleted_flag",
+            "value": "false"
+        },
+        {
+            "type": "equals",
+            "dimension": "program_id",
+            "value": "607d320de9cce45e22ce90c0"
+        },
+        {
+            "type": "equals",
+            "dimension": "solutionId",
+            "value": "607d3410e9cce45e22ce90c1"
+        },
+        {
+            "type": "equals",
+            "dimension": "district_externalId"
+        },
+        {
+            "type": "equals",
+            "dimension": "organisation_id"
+        }
+    ],
+    "uiFilters": [
+        {
+            "label": "Status",
+            "controlType": "multi-select",
+            "reference": "status_of_project",
+            "placeholder": "Select status",
+            "options": [
+                "started",
+                "submitted",
+                "inProgress"
+            ]
+        }
+    ]
+},
+  selectedReportUserDetailReport: {
+    "name": "User Detail Report",
+    "encrypt": true,
+    "datasetId": "ml-program-user-exhaust",
+    "roles": [
+        "PROGRAM_MANAGER"
+    ],
+    "queryType":"cassandra",
+    "filters": [
+      {
+        "table_name": "program_enrollment",
+        "table_filters": [
+          {
+            "name": "program_id",
+            "operator": "==",
+            "value": "602512d8e6aefa27d9629bc3"
+          },
+          {
+            "name": "district_id",
+            "operator": "==",
+            "value": "ed9e0963-0707-443a-99c4-5994fcac7a5f"
+          },
+          {
+            "name": "organisation_id",
+            "operator": "==",
+            "value": "0126796199493140480"
+          },
+          {
+            "name": "updated_at",
+            "operator": ">=",
+            "value": "startDate"
+          },
+          {
+            "name": "updated_at",
+            "operator": "<=",
+            "value": "endDate"
+          }
+        ]
+      },
+      {
+        "table_name": "user_consent",
+        "table_filters": [
+          {
+            "name": "object_id",
+            "operator": "==",
+            "value": "602512d8e6aefa27d9629bc3"
+          }
+        ]
+      }
+    ]
+},
   multipleDataDownloaded: [
     {
       loaded: true,
@@ -4364,7 +4818,7 @@ export let mockData = {
       lastUpdatedOn: 1658121421000,
     },
   ],
-  reportListResult1:{
+   reportListResult1:{
     "id": "ekstep.analytics.dataset.request.list",
     "ver": "1.0",
     "ts": "2023-04-13T07:05:03.365+00:00",

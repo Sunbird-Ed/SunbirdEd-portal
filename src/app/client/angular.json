@@ -11,7 +11,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "aot": true,
             "outputPath": "../dist",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -31,18 +30,13 @@
                 "output": "./assets/common-consumption"
               },
               {
-                "glob": "**/*.*",
-                "input": "./node_modules/@project-sunbird/discussions-ui-v8/assets",
-                "output": "./assets/discussion-ui"
-              },
-              {
                 "glob": "**/*",
                 "input": "./node_modules/@project-sunbird/sunbird-pdf-player-v9/lib/assets/",
                 "output": "/assets/"
               },
               {
                 "glob": "**/*",
-                "input": "node_modules/@project-sunbird/sunbird-video-player-v9/lib/assets/",
+                "input": "./node_modules/@project-sunbird/sunbird-quml-player-v9/lib/assets/",
                 "output": "/assets/"
               },
               {
@@ -52,8 +46,13 @@
               },
               {
                 "glob": "**/*",
-                "input": "./node_modules/@project-sunbird/sunbird-quml-player/lib/assets/",
+                "input": "node_modules/@project-sunbird/sunbird-video-player-v9/lib/assets/",
                 "output": "/assets/"
+              },
+              {
+                "glob": "**/*.*",
+                "input": "./node_modules/@project-sunbird/discussions-ui/assets",
+                "output": "./assets/discussion-ui"
               },
               {
                 "glob": "**/*.*",
@@ -75,20 +74,20 @@
               "./node_modules/@project-sunbird/sb-themes/themes/themes-material_UI.scss",
               "./node_modules/@project-sunbird/sb-themes/themes/themes-df.scss",
               "./node_modules/@project-sunbird/sb-themes/themes/themes-portal.scss",
-              "./node_modules/@project-sunbird/discussions-ui-v8/assets/styles/global.scss",
+              "node_modules/videojs-http-source-selector/dist/videojs-http-source-selector.css",
               "node_modules/@project-sunbird/sunbird-video-player-v9/lib/assets/videojs.markers.min.css",
-              "node_modules/videojs-http-source-selector/dist/videojs-http-source-selector.css"
+              "./node_modules/@project-sunbird/discussions-ui/assets/styles/global.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                "src/assets/styles/"
+                "src/assets/styles/",
+                "./node_modules"
               ]
             },
             "scripts": [
               "node_modules/epubjs/dist/epub.js",
               "src/assets/libs/iziToast/iziToast.min.js",
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/slick-carousel/slick/slick.min.js",
               "node_modules/@project-sunbird/telemetry-sdk/index.js",
               "node_modules/datatables.net/js/jquery.dataTables.js",
               "src/assets/libs/semantic-ui/sidebar.min.js",
@@ -97,9 +96,10 @@
               "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js",
               "src/assets/libs/semantic-ui/modal.min.js",
               "node_modules/video.js/dist/video.js",
-              "node_modules/@project-sunbird/sunbird-video-player-v9/lib/assets/videojs-markers.js",
               "node_modules/videojs-contrib-quality-levels/dist/videojs-contrib-quality-levels.min.js",
               "node_modules/videojs-http-source-selector/dist/videojs-http-source-selector.min.js",
+              "node_modules/@project-sunbird/sunbird-file-upload-library/sunbird-file-upload-library.js",
+              "node_modules/@project-sunbird/sunbird-video-player-v9/lib/assets/videojs-markers.js",
               {
                 "inject": false,
                 "input": "src/assets/libs/semantic-ui/transition.min.js",
@@ -145,7 +145,13 @@
                 "input": "src/assets/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.js",
                 "bundleName": "semanticTreePicker"
               }
-            ]
+            ],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -159,8 +165,6 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "aot": true,
-              "extractLicenses": false,
               "vendorChunk": false,
               "buildOptimizer": true,
               "fileReplacements": [
@@ -181,8 +185,6 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "aot": true,
-              "extractLicenses": false,
               "vendorChunk": false,
               "buildOptimizer": true,
               "fileReplacements": [
@@ -203,8 +205,6 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "aot": true,
-              "extractLicenses": false,
               "vendorChunk": false,
               "buildOptimizer": true,
               "fileReplacements": [
@@ -221,14 +221,9 @@
                   "maximumWarning": "6kb"
                 }
               ],
-              "optimization": false,
               "outputHashing": "all",
-              "sourceMap": true,
-              "namedChunks": true,
               "aot": false,
-              "extractLicenses": false,
               "vendorChunk": false,
-              "buildOptimizer": false,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -236,7 +231,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -257,23 +253,10 @@
           "options": {
             "browserTarget": "src:build"
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
         }
       }
     }
   },
-  "defaultProject": "src",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",

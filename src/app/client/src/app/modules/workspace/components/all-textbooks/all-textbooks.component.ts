@@ -464,6 +464,7 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
           duration: this.navigationhelperService.getPageLoadTime()
         }
       };
+      this.inview({ inview: [] });
     });
   }
 

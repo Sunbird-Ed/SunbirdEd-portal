@@ -1,6 +1,6 @@
 import { takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
@@ -18,7 +18,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class CreateEditGroupComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('createGroupModal') createGroupModal;
-  groupForm: FormGroup;
+  groupForm: UntypedFormGroup;
   groupDetails: {};
   groupId: string;
   url = document.location.origin;
@@ -33,7 +33,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy, AfterViewIni
 
   constructor(public resourceService: ResourceService,
     private toasterService: ToasterService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     public groupService: GroupsService,
     private activatedRoute: ActivatedRoute,
     private telemetryService: TelemetryService,

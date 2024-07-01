@@ -7,7 +7,7 @@ import { TenantService, UserService } from '@sunbird/core';
 import { catchError, map, takeUntil, tap } from 'rxjs/operators';
 import { IDeviceProfile } from '../../interfaces';
 import { ITenantData } from './../../../core/services/tenant/interfaces/tenant';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 
 export enum Stage {
   USER_SELECTION = 'user',

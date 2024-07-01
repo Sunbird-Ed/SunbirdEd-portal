@@ -134,31 +134,31 @@ module.exports = function (app) {
     app.get('/courseReports/:slug/:filename',
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['CONTENT_CREATOR']),
-        StorageService.CLOUD_CLIENT.fileReadStream(envHelper.sunbird_aws_reports));
+        StorageService.CLOUD_CLIENT.fileReadStream(envHelper.cloud_storage_privatereports_bucketname));
 
     app.get('/course-reports/metadata',
         proxyUtils.verifyToken(),
-        reportHelper.validateRoles(['CONTENT_CREATOR', 'REPORT_VIEWER', 'REPORT_ADMIN', 'ORG_ADMIN']),
-        StorageService.CLOUD_CLIENT.getFileProperties(envHelper.sunbird_aws_reports)
+        reportHelper.validateRoles(['CONTENT_CREATOR', 'REPORT_VIEWER', 'REPORT_ADMIN', 'ORG_ADMIN','PROGRAM_DESIGNER','PROGRAM_MANAGER']),
+        StorageService.CLOUD_CLIENT.getFileProperties(envHelper.cloud_storage_privatereports_bucketname)
         );
 
     app.get(`/reports/fetch/:slug/:filename`,
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN','PROGRAM_DESIGNER','PROGRAM_MANAGER']),
-        StorageService.CLOUD_CLIENT.fileReadStream(envHelper.sunbird_aws_reports));
+        StorageService.CLOUD_CLIENT.fileReadStream(envHelper.cloud_storage_privatereports_bucketname));
 
     app.get('/reports/:slug/:filename',
         proxyUtils.verifyToken(),
         reportHelper.validateSlug(['public']),
         reportHelper.validateRoles(['ORG_ADMIN', 'REPORT_VIEWER', 'REPORT_ADMIN','PROGRAM_DESIGNER','PROGRAM_MANAGER']),
-        StorageService.CLOUD_CLIENT.fileReadStream(envHelper.sunbird_aws_reports));
+        StorageService.CLOUD_CLIENT.fileReadStream(envHelper.cloud_storage_privatereports_bucketname));
 
     app.get('/admin-reports/:slug/:filename',
         proxyUtils.verifyToken(),
         reportHelper.validateSlug(['geo-summary', 'geo-detail', 'geo-summary-district', 'user-summary', 'user-detail',
             'validated-user-summary', 'validated-user-summary-district', 'validated-user-detail', 'declared_user_detail']),
         reportHelper.validateRoles(['ORG_ADMIN']),
-        StorageService.CLOUD_CLIENT.fileReadStream(envHelper.sunbird_aws_reports));
+        StorageService.CLOUD_CLIENT.fileReadStream(envHelper.cloud_storage_privatereports_bucketname));
 
     app.get(`${BASE_REPORT_URL}/dataset/get/:datasetId`,
         proxyUtils.verifyToken(),

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges, OnDestroy, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { ResourceService, ToasterService, ContentData, ServerResponse } from '@sunbird/shared';
 import { UserService } from '@sunbird/core';
 import { ReviewCommentsService } from '../../services';
@@ -25,7 +25,7 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
 
   public telemetryInteractObject: IInteractEventObject;
 
-  comments = new FormControl();
+  comments = new UntypedFormControl();
 
   sortedComments: any = {};
 
@@ -69,7 +69,7 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       this.disableTextArea = false;
     }
-    this.comments = new FormControl();
+    this.comments = new UntypedFormControl();
   }
   focusOnInput() {
     this.commentInput.nativeElement.focus();
@@ -147,7 +147,7 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
             this.sortedComments[this.stageId].push(newComment);
           }
           this.reviewCommentEvent.emit(this.sortedComments); // emit data to parent
-          this.comments = new FormControl();
+          this.comments = new UntypedFormControl();
         },
         err => {
           this.disableTextArea = false;

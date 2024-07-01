@@ -6,9 +6,9 @@ import { HttpOptions, RequestParam, ServerResponse } from '../../interfaces';
 import { ConfigService } from '../config/config.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { UUID } from 'angular2-uuid';
+import { v4 as UUID } from 'uuid';
 import dayjs from 'dayjs';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import * as _ from 'lodash-es';
 import { TranslateService } from '@ngx-translate/core';
 import { FormService } from '../../../core/services/form/form.service';
@@ -129,7 +129,7 @@ export class GenericResourceService {
    * @returns HttpOptions
    */
   private getHeader(): HttpOptions['headers'] {
-    const _uuid = UUID.UUID();
+    const _uuid = UUID();
     return {
       'Content-Type': 'application/json',
       'Accept': 'application/json',

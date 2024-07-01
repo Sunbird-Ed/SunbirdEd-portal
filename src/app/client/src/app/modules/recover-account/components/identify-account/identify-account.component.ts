@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {RecaptchaService, ResourceService, ToasterService} from '@sunbird/shared';
 import {TelemetryService} from '@sunbird/telemetry';
-import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
+import { UntypedFormBuilder, Validators, UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { RecaptchaComponent } from 'ng-recaptcha';
@@ -19,7 +19,7 @@ export class IdentifyAccountComponent implements OnInit {
   googleCaptchaSiteKey: string;
   nameNotExist = false;
   identiferStatus = '';
-  form: FormGroup;
+  form: UntypedFormGroup;
   errorCount = 0;
   telemetryImpression: IImpressionEventInput;
   telemetryCdata = [{
@@ -31,7 +31,7 @@ export class IdentifyAccountComponent implements OnInit {
   }];
   isP1CaptchaEnabled: any;
 
-  constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService, public formBuilder: FormBuilder,
+  constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService, public formBuilder: UntypedFormBuilder,
     public toasterService: ToasterService, public router: Router, public recoverAccountService: RecoverAccountService,
     public recaptchaService: RecaptchaService, public telemetryService: TelemetryService) {
     try {
@@ -49,9 +49,9 @@ export class IdentifyAccountComponent implements OnInit {
   }
   initializeForm() {
     this.form = this.formBuilder.group({
-      identifier: new FormControl(null, [Validators.required,
+      identifier: new UntypedFormControl(null, [Validators.required,
         Validators.pattern(/^([6-9]\d{9}|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,4})$/)]),
-        name: new FormControl(null, [Validators.required])
+        name: new UntypedFormControl(null, [Validators.required])
     });
     this.form.valueChanges.subscribe(val => {
       this.nameNotExist = false;

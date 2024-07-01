@@ -1,4 +1,6 @@
-@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "sass:list";
+@use "sass:math";
 // no IE support!
 $grid_gutter: 16px;
 $screen_viewport_xs: 0;
@@ -70,7 +72,7 @@ $columns: 16;
   }
 
   .dsb-g-col-offset-#{$i} {
-    margin-left: (100% / $columns) * $i;
+    margin-left: math.div(100% , $columns) * $i;
   }
 }
 
@@ -79,11 +81,11 @@ $columns: 12;
 
 @for $i from 1 through $columns {
   .dsb-fx-col-#{$i} {
-    flex: 0 0 100% / $columns * $i;
+    flex: list.slash(0 0 100%,$columns * $i); // 0 0 100% / $columns * $i
   }
 
   .dsb-fx-col-offset-#{$i} {
-    margin-left: 100% / $columns * $i;
+    margin-left: math.div(100%,$columns * $i);
   }
 }
 

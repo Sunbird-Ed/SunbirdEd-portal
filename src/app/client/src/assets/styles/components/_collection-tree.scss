@@ -1,6 +1,6 @@
 
-@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
-@use "~@project-sunbird/sb-styles/assets/varSass" as *;
+@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "@project-sunbird/sb-styles/assets/varSass" as *;
 // TOC or Collection Tree
 $sb-collectionTree-border-radius: 0.25rem;
 $sb-collectionTree-border: calculateRem(1px) solid var(--primary-200);

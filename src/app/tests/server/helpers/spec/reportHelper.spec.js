@@ -26,20 +26,6 @@ testData.signedUrl += mockEnv.sunbird_azure_report_container_name + '/' + testDa
 
 mock('../../../../helpers/environmentVariablesHelper', mockEnv);
 
-const mockAzure = {
-  BlobUtilities: {
-    SharedAccessPermissions: {
-      READ: 'r'
-    }
-  },
-  createBlobService: (account_name, account_key) => {
-    return {
-      createReadStream,
-      generateSharedAccessSignature,
-      getUrl
-    }
-  }
-};
 const createReadStream = () => {
   return readStream
 }
@@ -62,7 +48,6 @@ const getUrl = () => {
   return testData.signedUrl
 };
 
-mock('azure-storage', mockAzure);
 
 const reportHelper = require('../../../../helpers/reportHelper');
 
@@ -129,39 +114,6 @@ describe('Report Helper Test Cases', () => {
     expect(res._getData()).to.have.nested.property('params.errmsg');
     expect(res._getData()['params']['errmsg']).to.eql('FORBIDDEN');
     expect(res.statusCode).to.eql(403);
-    done();
-  });
-
-  it('should return file read stream response', (done) => {
-    const req = generic.constructReqBody({
-      params: {
-        slug: testData.stateSlug,
-        filename: testData.blobFilename + testData.blobExtension
-      }
-    });
-    const res = generic.getResponseObject();
-    reportHelper.azureBlobStream()(req, res, () => { });
-    expect(res.statusCode).to.eql(200);
-    done();
-  });
-
-  it('should return file read stream response', (done) => {
-    const req = generic.constructReqBody({
-      params: {
-        slug: testData.stateSlug,
-        filename: testData.blobFilename
-      }
-    });
-    const res = generic.getResponseObject();
-    reportHelper.azureBlobStream()(req, res, () => { });
-    expect(res._getData()).to.be.an('object');
-    expect(res._getData()).to.haveOwnProperty('responseCode');
-    expect(res._getData()['responseCode']).to.eql('OK');
-    expect(res._getData()).to.have.nested.property('params.status');
-    expect(res._getData()['params']['status']).to.eql('success');
-    expect(res._getData()).to.haveOwnProperty('result');
-    expect(res._getData()['result']['signedUrl']).to.eql(testData.signedUrl);
-    expect(res.statusCode).to.eql(200);
     done();
   });
 

@@ -7,173 +7,176 @@
   <base href="/<%=slug%>">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon">
-
 </head>
-
 <body>
-  <% if (userId) { %>
-  <input type="hidden" id="userId" value="<%=userId%>" />
-  <% } %>
-  <% if (userSid) { %>
-  <input type="hidden" id="userSid" value="<%=userSid%>" />
-  <% } %>
-  <% if (sessionId) { %>
-  <input type="hidden" id="sessionId" value="<%=sessionId%>" />
-  <% } %>
-  <% if (appId) { %>
-  <input type="hidden" id="appId" value="<%=appId%>" />
-  <% } %>
-  <% if (cloudStorageUrls) { %>
-  <input type="hidden" id="cloudStorageUrls" value="<%=cloudStorageUrls%>" />
-  <% } %>
-  <% if (publicStorageAccount) { %>
-  <input type="hidden" id="publicStorageAccount" value="<%=publicStorageAccount%>" />
-  <% } %>
-  <% if (defaultTenant) { %>
-  <input type="hidden" id="defaultTenant" value="<%=defaultTenant%>" />
-  <% } %>
-  <% if (exploreButtonVisibility) { %>
-  <input type="hidden" id="exploreButtonVisibility" value="<%=exploreButtonVisibility%>" />
-  <% } %>
-  <% if (helpLinkVisibility) { %>
-  <input type="hidden" id="helpLinkVisibility" value="<%=helpLinkVisibility%>" />
-  <% } %>
-  <% if (apiCacheTtl) { %>
-  <input type="hidden" id="apiCacheTtl" value="<%=apiCacheTtl%>" />
-  <% } %>
-  <% if (userUploadRefLink) { %>
-  <input type="hidden" id="userUploadRefLink" value="<%=userUploadRefLink%>" />
-  <% } %>
-  <% if (defaultTenantIndexStatus) { %>
-  <input type="hidden" id="defaultTenantIndexStatus" value="<%=defaultTenantIndexStatus%>" />
-  <% } %>
-  <% if (buildNumber) { %>
-  <input type="hidden" id="buildNumber" value="<%=buildNumber%>" />
-  <% } %>
-  <% if (extContWhitelistedDomains) { %>
-  <input type="hidden" id="extContWhitelistedDomains" value="<%=extContWhitelistedDomains%>" />
-  <% } %>
-  <% if (deviceRegisterApi) { %>
-  <input type="hidden" id="deviceRegisterApi" value="<%=deviceRegisterApi%>" />
-  <% } %>
-  <% if (deviceProfileApi) { %>
-  <input type="hidden" id="deviceProfileApi" value="<%=deviceProfileApi%>" />
-  <% } %>
-  <% if (cdnUrl) { %>
-  <input type="hidden" id="cdnUrl" value="<%=cdnUrl%>" />
-  <% } %>
-  <% if (theme) { %>
-  <input type="hidden" id="theme" value="<%=theme%>" />
-  <% } %>
-  <% if (defaultPortalLanguage) { %>
-  <input type="hidden" id="defaultPortalLanguage" value="<%=defaultPortalLanguage%>" />
-  <% } %>
-  <% if (instance) { %>
-  <input type="hidden" id="instance" value="<%=instance%>" />
-  <% } %>
-  <% if (deviceId) { %>
-  <input type="hidden" id="deviceId" value="<%=deviceId%>" />
-  <%} else { %>
-  <input type="hidden" id="deviceId" />
-  <% } %>
-  <% if (googleCaptchaSiteKey) { %>
-  <input type="hidden" id="googleCaptchaSiteKey" value="<%=googleCaptchaSiteKey%>" />
-  <% } %>
-  <% if (videoMaxSize) { %>
-  <input type="hidden" id="videoMaxSize" value="<%=videoMaxSize%>" />
-  <% } %>
-  <% if (sunbirdDefaultFileSize) { %>
-  <input type="hidden" id="sunbirdDefaultFileSize" value="<%=sunbirdDefaultFileSize%>" />
-  <% } %>
-  <% if (reportsLocation) { %>
-  <input type="hidden" id="reportsLocation" value="<%=reportsLocation%>" />
-  <% } %>
-  <% if (previewCdnUrl) { %>
-  <input type="hidden" id="previewCdnUrl" value="<%=previewCdnUrl%>" />
-  <% } %>
-  <% if (cdnWorking) { %>
-  <input type="hidden" id="cdnWorking" value="<%=cdnWorking%>" />
-  <% } %>
-  <% if (offlineDesktopAppTenant) { %>
-  <input type="hidden" id="offlineDesktopAppTenant" value="<%=offlineDesktopAppTenant%>" />
-  <% } %>
-  <% if (offlineDesktopAppVersion) { %>
-  <input type="hidden" id="offlineDesktopAppVersion" value="<%=offlineDesktopAppVersion%>" />
-  <% } %>
-  <% if (offlineDesktopAppReleaseDate) { %>
-  <input type="hidden" id="offlineDesktopAppReleaseDate" value="<%=offlineDesktopAppReleaseDate%>" />
-  <% } %>
-  <% if (offlineDesktopAppSupportedLanguage) { %>
-  <input type="hidden" id="offlineDesktopAppSupportedLanguage" value="<%=offlineDesktopAppSupportedLanguage%>" />
-  <% } %>
-  <% if (offlineDesktopAppDownloadUrl) { %>
-  <input type="hidden" id="offlineDesktopAppDownloadUrl" value="<%=offlineDesktopAppDownloadUrl%>" />
-  <% } %>
-  <% if (logFingerprintDetails) { %>
-  <input type="hidden" id="logFingerprintDetails" value="<%=logFingerprintDetails%>" />
-  <% } %>
-  <% if (deviceApi) { %>
-  <input type="hidden" id="deviceApi" value="<%=deviceApi%>" />
-  <% } %>
-  <% if (slugForProminentFilter) { %>
-  <input type="hidden" id="slugForProminentFilter" value="<%=slugForProminentFilter%>" />
-  <% } %>
-  <% if (collectionEditorURL) { %>
-  <input type="hidden" id="collectionEditorURL" value="<%=collectionEditorURL%>" />
-  <% } %>
-  <% if (contentEditorURL) { %>
-  <input type="hidden" id="contentEditorURL" value="<%=contentEditorURL%>" />
-  <% } %>
-  <% if (genericEditorURL) { %>
-  <input type="hidden" id="genericEditorURL" value="<%=genericEditorURL%>" />
-  <% } %>
-  <% if (botConfigured) { %>
-  <input type="hidden" id="isBotConfigured" value="<%=botConfigured%>" />
-  <% } %>
-  <% if (botServiceURL) { %>
-  <input type="hidden" id="botServiceURL" value="<%=botServiceURL%>" />
-  <% } %>
-  <% if (superAdminSlug) { %>
-  <input type="hidden" id="superAdminSlug" value="<%=superAdminSlug%>" />
-  <% } %>
-  <% if (p1reCaptchaEnabled == "true" || p1reCaptchaEnabled == true) { %>
-  <input type="hidden" id="p1reCaptchaEnabled" value="true" />
-  <% } else { %>
-  <input type="hidden" id="p1reCaptchaEnabled" value="false" />
-  <% } %>
-  <% if (p2reCaptchaEnabled == "true" || p2reCaptchaEnabled == true) { %>
-  <input type="hidden" id="p2reCaptchaEnabled" value="true" />
-  <% } else { %>
-  <input type="hidden" id="p2reCaptchaEnabled" value="false" />
-  <% } %>
-  <% if (p3reCaptchaEnabled == "true" || p3reCaptchaEnabled == true) { %>
-  <input type="hidden" id="p3reCaptchaEnabled" value="true>" />
-  <% } else { %>
-  <input type="hidden" id="p3reCaptchaEnabled" value="false" />
-  <% } %>
-  <input type="hidden" id="enableSSO" value="<%=enableSSO%>" />
-  <% if (reportsListVersion) { %>
-  <input type="hidden" id="reportsListVersion" value="<%=reportsListVersion%>" />
-  <% } %>
-  <% if (baseUrl) { %>
-  <input type="hidden" id="baseUrl" value="<%=baseUrl%>" />
-  <% } %>
-  <% if (blobUrl) { %>
-  <input type="hidden" id="blobUrl" value="<%=blobUrl%>" />
-  <% } %>
-  <% if (sunbirdQuestionSetChildrenLimit) { %>
-  <input type="hidden" id="sunbirdQuestionSetChildrenLimit" value="<%=sunbirdQuestionSetChildrenLimit%>" />
-  <% } %>
-  <% if (sunbirdNavAccessibility) { %>
+    <!-- <% if (userId) { %> -->
+    <input type="hidden" id="userId" value="<%=userId%>" />
+    <!-- <% } %> -->
+    <!-- <% if (userSid) { %> -->
+    <input type="hidden" id="userSid" value="<%=userSid%>" />
+    <!-- <% } %> -->
+    <!-- <% if (sessionId) { %> -->
+    <input type="hidden" id="sessionId" value="<%=sessionId%>" />
+    <!-- <% } %> -->
+    <!-- <% if (appId) { %> -->
+    <input type="hidden" id="appId" value="<%=appId%>" />
+    <!-- <% } %> -->
+   <!-- <% if (defaultBoard) { %> -->
+    <input type="hidden" id="defaultBoard" value="<%=defaultBoard%>" />
+    <!-- <% } %> -->
+    <!-- <% if (cloudStorageUrls) { %> -->
+    <input type="hidden" id="cloudStorageUrls" value="<%=cloudStorageUrls%>" />
+    <!-- <% } %> -->
+    <!-- <% if (cloudProvider) { %> -->
+    <input type="hidden" id="cloudProvider" value="<%=cloudProvider%>" />
+    <!-- <% } %> -->
+    <!-- <% if (publicStorageAccount) { %> -->
+    <input type="hidden" id="publicStorageAccount" value="<%=publicStorageAccount%>" />
+    <!-- <% } %> -->
+    <!-- <% if (defaultTenant) { %> -->
+    <input type="hidden" id="defaultTenant" value="<%=defaultTenant%>" />
+    <!-- <% } %> -->
+    <!-- <% if (exploreButtonVisibility) { %> -->
+    <input type="hidden" id="exploreButtonVisibility" value="<%=exploreButtonVisibility%>" />
+    <!-- <% } %> -->
+    <!-- <% if (helpLinkVisibility) { %> -->
+    <input type="hidden" id="helpLinkVisibility" value="<%=helpLinkVisibility%>" />
+    <!-- <% } %> -->
+    <!-- <% if (apiCacheTtl) { %> -->
+    <input type="hidden" id="apiCacheTtl" value="<%=apiCacheTtl%>" />
+    <!-- <% } %> -->
+    <!-- <% if (userUploadRefLink) { %> -->
+    <input type="hidden" id="userUploadRefLink" value="<%=userUploadRefLink%>" />
+    <!-- <% } %> -->
+    <!-- <% if (defaultTenantIndexStatus) { %> -->
+    <input type="hidden" id="defaultTenantIndexStatus" value="<%=defaultTenantIndexStatus%>" />
+    <!-- <% } %> -->
+    <!-- <% if (buildNumber) { %> -->
+    <input type="hidden" id="buildNumber" value="<%=buildNumber%>" />
+    <!-- <% } %> -->
+    <!-- <% if (extContWhitelistedDomains) { %> -->
+    <input type="hidden" id="extContWhitelistedDomains" value="<%=extContWhitelistedDomains%>" />
+    <!-- <% } %> -->
+    <!-- <% if (deviceRegisterApi) { %> -->
+    <input type="hidden" id="deviceRegisterApi" value="<%=deviceRegisterApi%>" />
+    <!-- <% } %> -->
+    <!-- <% if (deviceProfileApi) { %> -->
+    <input type="hidden" id="deviceProfileApi" value="<%=deviceProfileApi%>" />
+    <!-- <% } %> -->
+    <!-- <% if (cdnUrl) { %> -->
+    <input type="hidden" id="cdnUrl" value="<%=cdnUrl%>" />
+    <!-- <% } %> -->
+    <!-- <% if (theme) { %> -->
+    <input type="hidden" id="theme" value="<%=theme%>" />
+    <!-- <% } %> -->
+    <!-- <% if (defaultPortalLanguage) { %> -->
+    <input type="hidden" id="defaultPortalLanguage" value="<%=defaultPortalLanguage%>" />
+    <!-- <% } %> -->
+    <!-- <% if (instance) { %> -->
+    <input type="hidden" id="instance" value="<%=instance%>" />
+    <!-- <% } %> -->
+    <!-- <% if (deviceId) { %> -->
+    <input type="hidden" id="deviceId" value="<%=deviceId%>" />
+    <!-- <%} else { %> -->
+    <input type="hidden" id="deviceId" />
+    <!-- <% } %> -->
+    <!-- <% if (googleCaptchaSiteKey) { %> -->
+    <input type="hidden" id="googleCaptchaSiteKey" value="<%=googleCaptchaSiteKey%>" />
+    <!-- <% } %> -->
+    <!-- <% if (videoMaxSize) { %> -->
+    <input type="hidden" id="videoMaxSize" value="<%=videoMaxSize%>" />
+    <!-- <% } %> -->
+    <!-- <% if (sunbirdDefaultFileSize) { %> -->
+    <input type="hidden" id="sunbirdDefaultFileSize" value="<%=sunbirdDefaultFileSize%>" />
+    <!-- <% } %> -->
+    <!-- <% if (reportsLocation) { %> -->
+    <input type="hidden" id="reportsLocation" value="<%=reportsLocation%>" />
+    <!-- <% } %> -->
+    <!-- <% if (previewCdnUrl) { %> -->
+    <input type="hidden" id="previewCdnUrl" value="<%=previewCdnUrl%>" />
+    <!-- <% } %> -->
+    <!-- <% if (cdnWorking) { %> -->
+    <input type="hidden" id="cdnWorking" value="<%=cdnWorking%>" />
+    <!-- <% } %> -->
+    <!-- <% if (offlineDesktopAppTenant) { %> -->
+    <input type="hidden" id="offlineDesktopAppTenant" value="<%=offlineDesktopAppTenant%>" />
+    <!-- <% } %> -->
+    <!-- <% if (offlineDesktopAppVersion) { %> -->
+    <input type="hidden" id="offlineDesktopAppVersion" value="<%=offlineDesktopAppVersion%>" />
+    <!-- <% } %> -->
+    <!-- <% if (offlineDesktopAppReleaseDate) { %> -->
+    <input type="hidden" id="offlineDesktopAppReleaseDate" value="<%=offlineDesktopAppReleaseDate%>" />
+    <!-- <% } %> -->
+    <!-- <% if (offlineDesktopAppSupportedLanguage) { %> -->
+    <input type="hidden" id="offlineDesktopAppSupportedLanguage" value="<%=offlineDesktopAppSupportedLanguage%>" />
+    <!-- <% } %> -->
+    <!-- <% if (offlineDesktopAppDownloadUrl) { %> -->
+    <input type="hidden" id="offlineDesktopAppDownloadUrl" value="<%=offlineDesktopAppDownloadUrl%>" />
+    <!-- <% } %> -->
+    <!-- <% if (logFingerprintDetails) { %> -->
+    <input type="hidden" id="logFingerprintDetails" value="<%=logFingerprintDetails%>" />
+    <!-- <% } %> -->
+    <!-- <% if (deviceApi) { %> -->
+    <input type="hidden" id="deviceApi" value="<%=deviceApi%>" />
+    <!-- <% } %> -->
+    <!-- <% if (slugForProminentFilter) { %> -->
+    <input type="hidden" id="slugForProminentFilter" value="<%=slugForProminentFilter%>" />
+    <!-- <% } %> -->
+    <!-- <% if (collectionEditorURL) { %> -->
+    <input type="hidden" id="collectionEditorURL" value="<%=collectionEditorURL%>" />
+    <!-- <% } %> -->
+    <!-- <% if (contentEditorURL) { %> -->
+    <input type="hidden" id="contentEditorURL" value="<%=contentEditorURL%>" />
+    <!-- <% } %> -->
+    <!-- <% if (genericEditorURL) { %> -->
+    <input type="hidden" id="genericEditorURL" value="<%=genericEditorURL%>" />
+    <!-- <% } %> -->
+    <!-- <% if (botConfigured) { %> -->
+    <input type="hidden" id="isBotConfigured" value="<%=botConfigured%>" />
+    <!-- <% } %> -->
+    <!-- <% if (botServiceURL) { %> -->
+    <input type="hidden" id="botServiceURL" value="<%=botServiceURL%>" />
+    <!-- <% } %> -->
+    <!-- <% if (superAdminSlug) { %> -->
+    <input type="hidden" id="superAdminSlug" value="<%=superAdminSlug%>" />
+    <!-- <% } %> -->
+    <!-- <% if (p1reCaptchaEnabled == "true" || p1reCaptchaEnabled == true) { %> -->
+    <input type="hidden" id="p1reCaptchaEnabled" value="true" />
+    <!-- <% } else { %> -->
+    <input type="hidden" id="p1reCaptchaEnabled" value="false" />
+    <!-- <% } %> -->
+    <!-- <% if (p2reCaptchaEnabled == "true" || p2reCaptchaEnabled == true) { %> -->
+    <input type="hidden" id="p2reCaptchaEnabled" value="true" />
+    <!-- <% } else { %> -->
+    <input type="hidden" id="p2reCaptchaEnabled" value="false" />
+    <!-- <% } %> -->
+    <!-- <% if (p3reCaptchaEnabled == "true" || p3reCaptchaEnabled == true) { %> -->
+    <input type="hidden" id="p3reCaptchaEnabled" value="true>" />
+    <!-- <% } else { %> -->
+    <input type="hidden" id="p3reCaptchaEnabled" value="false" />
+    <!-- <% } %> -->
+    <input type="hidden" id="enableSSO" value="<%=enableSSO%>" />
+    <!-- <% if (reportsListVersion) { %> -->
+    <input type="hidden" id="reportsListVersion" value="<%=reportsListVersion%>" />
+    <!-- <% } %> -->
+    <!-- <% if (baseUrl) { %> -->
+    <input type="hidden" id="baseUrl" value="<%=baseUrl%>" />
+    <!-- <% } %> -->
+    <!-- <% if (blobUrl) { %> -->
+    <input type="hidden" id="blobUrl" value="<%=blobUrl%>" />
+    <!-- <% } %> -->
+    <!-- <% if (sunbirdQuestionSetChildrenLimit) { %> -->
+    <input type="hidden" id="sunbirdQuestionSetChildrenLimit" value="<%=sunbirdQuestionSetChildrenLimit%>" />
+    <!-- <% } %> -->
+    <!-- <% if (sunbirdNavAccessibility) { %> -->
     <input type="hidden" id="sunbirdNavAccessibility" value="<%=sunbirdNavAccessibility%>" />
-    <% } %>
-  <% if (sunbirdCollectionChildrenLimit) { %>
-  <input type="hidden" id="sunbirdCollectionChildrenLimit" value="<%=sunbirdCollectionChildrenLimit%>" />
-  <% } %>
-  <% if (uciBotPhoneNumber) { %>
-  <input type="hidden" id="uciBotPhoneNumber" value="<%=uciBotPhoneNumber%>" />
-  <% } %>
+    <!-- <% } %> -->
+    <!-- <% if (sunbirdCollectionChildrenLimit) { %> -->
+    <input type="hidden" id="sunbirdCollectionChildrenLimit" value="<%=sunbirdCollectionChildrenLimit%>" />
+    <!-- <% } %> -->
+    <!-- <% if (uciBotPhoneNumber) { %> -->
+    <input type="hidden" id="uciBotPhoneNumber" value="<%=uciBotPhoneNumber%>" />
+    <!-- <% } %> -->
   <app-root></app-root>
 </body>
-
 </html>

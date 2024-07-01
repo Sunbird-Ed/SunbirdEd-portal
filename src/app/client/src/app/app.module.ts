@@ -10,10 +10,8 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { BootstrapFramework, WebExtensionModule } from '@project-sunbird/web-extensions';
 import { WebExtensionsConfig } from './framework.config';
-import { CacheService } from 'ng2-cache-service';
-import { CacheStorageAbstract } from 'ng2-cache-service/dist/src/services/storage/cache-storage-abstract.service';
-import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage/session-storage/cache-session-storage.service';
-import { DeviceDetectorModule } from 'ngx-device-detector';
+import { CacheService } from '../app/modules/shared/services/cache-service/cache.service';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { PluginModules } from './framework.config';
 import {ChatLibModule, ChatLibService} from '@project-sunbird/chatbot-client';
 import { RouteReuseStrategy } from '@angular/router';
@@ -22,53 +20,51 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateStore } from '@ngx-translate/core';
-import { SbSearchFilterModule } from '@project-sunbird/common-form-elements';
+import { SbSearchFilterModule } from '@project-sunbird/common-form-elements-full';
 import { UserOnboardingModule} from '../app/modules/user-onboarding';
 import { MatStepperModule} from '@angular/material/stepper';
 import { CdkStepperModule} from '@angular/cdk/stepper';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserAnimationsModule, // used this instaed of browser module since it includes in it.
-    CoreModule,
-    CommonModule,
-    HttpClientModule,
-    SuiModalModule,
-    SharedModule.forRoot(),
-    WebExtensionModule.forRoot(),
-    TelemetryModule.forRoot(),
-    TranslateModule.forRoot({
-      loader: {
-          provide: TranslateLoader,
-          useFactory: HttpLoaderFactory,
-          deps: [HttpClient]
-      }
-    }),
-    DeviceDetectorModule.forRoot(),
-    SbSearchFilterModule.forRoot('web'),
-    ChatLibModule,
-    SharedFeatureModule,
-    UserOnboardingModule,
-    MatStepperModule,
-    CdkStepperModule,
-    ...PluginModules,
-     // ngx-translate and the loader module
-     HttpClientModule,
-    AppRoutingModule // don't add any module below this because it contains wildcard route
-  ],
-  entryComponents: [AppComponent],
-  bootstrap: [AppComponent],
-  providers: [
-    CacheService,
-    ChatLibService,
-    TranslateStore,
-    { provide: CacheStorageAbstract, useClass: CacheSessionStorage },
-    { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true },
-    { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy }
-  ]
+    declarations: [
+        AppComponent
+    ],
+    imports: [
+        BrowserAnimationsModule,
+        CoreModule,
+        CommonModule,
+        HttpClientModule,
+        SuiModalModule,
+        SharedModule.forRoot(),
+        WebExtensionModule.forRoot(),
+        TelemetryModule.forRoot(),
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient]
+            }
+        }),
+        SbSearchFilterModule.forRoot('web'),
+        ChatLibModule,
+        SharedFeatureModule,
+        UserOnboardingModule,
+        MatStepperModule,
+        CdkStepperModule,
+        ...PluginModules,
+        // ngx-translate and the loader module
+        HttpClientModule,
+        AppRoutingModule // don't add any module below this because it contains wildcard route
+    ],
+    bootstrap: [AppComponent],
+    providers: [
+        CacheService,
+        ChatLibService,
+        TranslateStore,
+        DeviceDetectorService,
+        { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true },
+        { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy }
+    ],
 })
 export class AppModule {
   constructor(bootstrapFramework: BootstrapFramework) {

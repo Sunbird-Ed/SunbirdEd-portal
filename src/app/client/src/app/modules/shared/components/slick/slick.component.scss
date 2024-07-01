@@ -1,0 +1,101 @@
+@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+
+/* Dots Styles */
+.horizontal-scroll-container {
+	position: relative;
+	min-height: 7rem;
+}
+.mat-slick-button {
+	background-color: var(--white);
+	color: var(--black);position: absolute;
+	top: 50%;transform: translateY(-50%);z-index: 999;
+	border-radius:50%;    display: flex;
+    align-items: center;
+    justify-content: center;color: var(--tertiary-color);
+	box-shadow: var(--sbt-box-shadow-6px);
+	border: 0.0625rem solid var(--sbt-body-bg);
+	&:hover {
+		box-shadow: none;
+	}
+}
+.prevBtn {
+	left: -1rem;
+}
+.nextBtn {
+	right:-1rem;
+}
+.nextLoading {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 999;
+	padding: 0;
+	right: -1rem;
+}
+.horizontal-scroll-content {
+	overflow-y: auto;
+	white-space: nowrap;
+	-webkit-overflow-scrolling: touch;
+	height: 100%;
+	flex-wrap: nowrap;
+	display: flex;
+	align-items: stretch;    padding-bottom: 1rem;
+	-ms-overflow-style: none;
+	&::-webkit-scrollbar {
+		width: 0px;
+		height: 0px;
+	}
+}
+.pagination {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 0.5rem;
+	.slickDots {
+		display: inline-block;
+		position: relative;
+		cursor: pointer;
+		&:before {
+			content: '';
+			position: absolute;
+			border-radius: 50%;
+			background-color:var(--gray-800);
+		}
+	}
+	.slickDots.active {
+		&:before {
+			content: '';
+			position: absolute;
+			border-radius: 50%;
+			width: 0.75rem;
+			height: 0.75rem;
+			background-color:var(--gray-300);
+		}
+	}
+}
+
+
+
+::ng-deep {
+	app-slick  {
+		.sb--card {
+		  width: 20rem !important;
+		}
+	  }
+
+	  .mat-mini-fab .mat-button-wrapper {
+		width: 2.5rem;
+		height: 2.5rem;
+		display: flex !important;
+		line-height: inherit !important;    align-items: center;
+		justify-content: center;
+		.mat-icon {
+			font-size: 2rem;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-weight: bold;
+		}
+	}
+
+}

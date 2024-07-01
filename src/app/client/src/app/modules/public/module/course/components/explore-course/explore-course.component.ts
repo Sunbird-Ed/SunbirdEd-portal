@@ -11,7 +11,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, debounceTime, catchError, tap, delay } from 'rxjs/operators';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../../../shared/services/cache-service/cache.service';
 
 @Component({
     templateUrl: './explore-course.component.html'
@@ -94,7 +94,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
                 this.router.navigate(['']);
             }
         );
-        this.searchAll = this.resourceService.frmelmnts.lbl.allContent;
+        this.searchAll = this.resourceService?.frmelmnts?.lbl?.allContent;
     }
     initLayout() {
         this.redoLayout();
@@ -181,12 +181,6 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
         }
         filters.primaryCategory = filters.primaryCategory || _.get(this.allTabData, 'search.filters.primaryCategory');
         filters.mimeType = _.get(mimeType, 'values');
-
-        // Replacing cbse/ncert value with cbse
-        if (_.toLower(_.get(filters, 'board[0]')) === 'cbse/ncert' || _.toLower(_.get(filters, 'board')) === 'cbse/ncert') {
-            filters.board = ['cbse'];
-        }
-
         const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
         if (this.queryParams.key) {
             delete softConstraints['board'];
