@@ -1,6 +1,7 @@
 const proxyUtils = require('../proxy/proxyUtils.js')
 const envHelper = require('../helpers/environmentVariablesHelper.js')
-const certRegURL = envHelper.LEARNER_URL
+const utils = require('../helpers/utils.js');
+const certRegURL  = utils?.defaultHost(utils?.envVariables?.LEARNER_URL);
 const contentProxy = envHelper.CONTENT_PROXY_URL;
 const reqDataLimitOfContentUpload = '50mb'
 const proxy = require('express-http-proxy')
@@ -120,7 +121,7 @@ module.exports = function (app) {
     })
   );
 
-  // To ReIssue certificate 
+  // To ReIssue certificate
   app.post(`/+${certRegServiceApi.reIssueCertificate}`,
     bodyParser.json({ limit: '10mb' }),
     isAPIWhitelisted.isAllowed(),

@@ -3,6 +3,7 @@ import { ResourceService } from '@sunbird/shared';
 import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { ContentData } from '@sunbird/shared';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 @Component({
   selector: 'app-collection-player-metadata',
@@ -17,10 +18,12 @@ export class CollectionPlayerMetadataComponent implements OnInit {
   contributions: string;
   contributionsLength: number;
   showContentCreditsModal: boolean;
+  frameworkCategoriesList;
 
-  constructor(public resourceService: ResourceService, private activatedRoute: ActivatedRoute) { }
+  constructor(public resourceService: ResourceService, private activatedRoute: ActivatedRoute, public cslFrameworkService: CslFrameworkService) { }
 
   ngOnInit() {
+    this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
     this.instance = _.upperCase(this.resourceService.instance);
     this.activatedRoute.params.subscribe((params) => {
       this.collectionId = params.collectionId;

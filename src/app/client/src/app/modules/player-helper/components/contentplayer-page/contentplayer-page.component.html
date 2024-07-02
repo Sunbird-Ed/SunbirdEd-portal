@@ -16,28 +16,18 @@
                         {{resourceService?.frmelmnts?.lbl?.collectionRelevantFor}}
                     </mat-panel-title>
                 </mat-expansion-panel-header>
-                <div class="sb-mat-accordion__content">
-                    <div class="training-relevant__class mb-4 sb-color-gray-400 fnormal"
-                        *ngIf="collectionData?.se_boards">
-                        <span>{{resourceService?.frmelmnts?.lbl?.board | transposeTerms: 'frmelmnts.lbl.board' : resourceService?.selectedLang}}:&nbsp;</span><span>{{
-                            collectionData.se_boards}}</span>
+                <div class="sb-mat-accordion__content" *ngFor="let transformCollection of transformCollectionData">
+                    <div class="training-relevant__class mb-4 sb-color-gray-400 fnormal">
+                        <span>{{ (resourceService?.frmelmnts?.lbl[transformCollection?.code] | transposeTerms: resourceService?.frmelmnts?.lbl[transformCollection?.code] : resourceService?.selectedLang) || transformCollection?.labels }}
+                            :&nbsp;</span><span>{{
+                            transformCollection?.value}}</span>
                     </div>
-                    <div class="training-relevant__medium mb-4 sb-color-gray-400 fnormal"
-                        *ngIf="collectionData?.se_mediums">
-                        <span>{{resourceService?.frmelmnts?.lbl?.medium  | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}}:&nbsp;</span><span>{{
-                            collectionData?.se_mediums?.join(', ')}}</span>
-                    </div>
-                    <div class="training-relevant__subject mb-4 sb-color-gray-400 fnormal"
-                        *ngIf="collectionData?.se_gradeLevels">
-                        <span>{{resourceService?.frmelmnts?.lbl?.class | transposeTerms: 'frmelmnts.lbl.class' : resourceService?.selectedLang}}:&nbsp;</span><span>{{
-                            collectionData.se_gradeLevels}}</span>
-                    </div>
+                </div>
                     <div class="training-relevant__medium mb-4 sb-color-gray-400 fnormal"
                         *ngIf="collectionData?.audience">
                         <span>{{resourceService?.frmelmnts?.lbl?.userType}}:&nbsp;</span><span>{{
                             collectionData?.audience?.join(', ')}}</span>
                     </div>
-                </div>
             </mat-expansion-panel>
         </mat-accordion>
     </div>

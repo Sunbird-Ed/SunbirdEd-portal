@@ -9,8 +9,9 @@
         </h4>
         <!--/Section Title-->
         <!--View all button-->
-        <button class="sb-btn sb-btn-xs sb-btn-secondary ml-auto" type="button" *ngIf="section?.contents?.length >= 10"
-            (click)="navigateToViewAll(section)" tabindex="0" appTelemetryInteract
+        <button class="sb-btn sb-btn-normal sb-btn-outline-secondary sb-btn-white ml-auto" type="button"
+            *ngIf="section?.contents?.length >= 10" (click)="navigateToViewAll(section)" tabindex="0"
+            appTelemetryInteract
             [telemetryInteractEdata]="{id:'viewall-button' , type:'click' ,pageid:pageid , extra : {section: section.name}}">
             {{ resourceService?.frmelmnts?.lnk?.viewall}}
         </button>
@@ -33,7 +34,8 @@
                     <!--Course & Resourse Card-->
                     <ng-template #contentcard>
                         <ng-container *ngIf="!layoutConfiguration">
-                            <app-card appContentDirection appTelemetryInteract [telemetryInteractEdata]="cardInteractEdata"
+                            <app-card appContentDirection appTelemetryInteract
+                                [telemetryInteractEdata]="cardInteractEdata"
                                 [telemetryInteractCdata]="telemetryInteractCdata"
                                 [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0', rollup: getObjectRollup(content)}"
                                 (clickEvent)="playContent($event)" [hideProgress]="hideProgress" [data]="content"
@@ -41,12 +43,13 @@
                             </app-card>
                         </ng-container>
                         <ng-container *ngIf="layoutConfiguration">
-                            <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" appTelemetryInteract
-                                [telemetryInteractEdata]="cardInteractEdata"
+                            <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration"
+                                appTelemetryInteract [telemetryInteractEdata]="cardInteractEdata"
                                 [telemetryInteractCdata]="telemetryInteractCdata"
                                 [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
                                 (cardClick)="playContent($event)" (enterKey)="playContent($event)" [content]="content"
-                                [cardImg]="content?.image || 'assets/images/book.png'"></sb-library-card>
+                                [cardImg]="content?.image || 'assets/images/book.png'"
+                                [categoryKeys]="categoryKeys"></sb-library-card>
                         </ng-container>
                     </ng-template>
                     <!--/Course & Resourse Card-->

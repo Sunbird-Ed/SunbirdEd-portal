@@ -57,8 +57,9 @@ export class FormService {
               subType: this.configService.appConfig.formApiTypes[formInputParams.contentType]
               ? this.configService.appConfig.formApiTypes[formInputParams.contentType]
               : formInputParams.contentType,
-              rootOrgId: hashTagId ? hashTagId : rootOrgId,
-              component: _.get(formInputParams, 'component')
+              rootOrgId: hashTagId || rootOrgId || '*',
+              component: _.get(formInputParams, 'component'),
+              framework: formInputParams.framework || localStorage.getItem('selectedFramework') || '*'
             }
           }
         };
@@ -84,7 +85,7 @@ export class FormService {
   }
   getHashTagID() {
     if (this.userService.loggedIn) {
-      return of(this.userService.hashTagId);
+      return of(this.userService.hashTagId || this.cacheService.get('channelId'));
     } else {
       if (this.userService.slug) {
         return this.orgDetailsService.getOrgDetails(this.userService.slug).pipe(
@@ -95,7 +96,7 @@ export class FormService {
         return this.orgDetailsService.getCustodianOrgDetails().pipe(
           map((orgDetails: any) => {
             return _.get(orgDetails, 'result.response.value') || '*'
-          }))     
+          }))
       }
     }
   }

@@ -1561,5 +1561,51 @@ export const Response = {
       'userId': 'user_id'
     }],
     length: 1
+  }],
+  pageSectionsNew: [{
+    name: 'Accountancy And Auditing',
+    contents: [{
+      'identifier': 'do_213199093633138688144',
+      'courseName': '80cer',
+      'description': '',
+      'leafNodesCount': 2,
+      'courseId': 'course_Id',
+      'userId': 'user_id'
+    }],
+    length: 1
+  },
+  {
+    name: 'Accountancy And Auditing',
+    contents: [{
+      'identifier': 'do_213199093633138688144',
+      'courseName': '80cer',
+      'description': '',
+      'leafNodesCount': 2,
+      'courseId': 'course_Id',
+      'userId': 'user_id'
+    }],
+    length: 1
+  },{
+    name: 'Accountancy And Auditing',
+    contents: [{
+      'identifier': 'do_213199093633138688144',
+      'courseName': '80cer',
+      'description': '',
+      'leafNodesCount': 2,
+      'courseId': 'course_Id',
+      'userId': 'user_id'
+    }],
+    length: 1
+  },{
+    name: 'Accountancy And Auditing',
+    contents: [{
+      'identifier': 'do_213199093633138688144',
+      'courseName': '80cer',
+      'description': '',
+      'leafNodesCount': 2,
+      'courseId': 'course_Id',
+      'userId': 'user_id'
+    }],
+    length: 1
   }]
 };

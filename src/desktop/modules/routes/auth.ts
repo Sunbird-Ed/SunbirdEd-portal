@@ -122,7 +122,8 @@ export default (app, proxyURL) => {
         "/learner/otp/v1/verify", 
         "/learner/user/v1/consent/read",
         "/learner/user/v1/consent/update",
-        "/learner/user/v1/tnc/accept"
+        "/learner/user/v1/tnc/accept",
+        "/learner/user/v1/delete"
     ], customProxy(proxyURL, defaultProxyConfig), (req, res) => {
         res.status(res.statusCode).send(res.body);
     });
@@ -169,7 +170,7 @@ export default (app, proxyURL) => {
     }
   });
 
-    app.post(["/learner/anonymous/otp/v1/generate"], (req, res, next) => {
+    app.post(["/learner/anonymous/otp/v1/generate","/learner/anonymous/delete/otp/v1/generate"], (req, res, next) => {
         if (req.url.indexOf('anonymous') > -1) {
             req.originalUrl = req.originalUrl.replace('anonymous/', '');
         }

@@ -8,6 +8,7 @@ import { map, catchError } from 'rxjs/operators';
 import { of, combineLatest } from 'rxjs';
 import { UserSearchService } from './../../services';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 @Component({
   selector: 'app-user-filter',
@@ -39,17 +40,19 @@ export class UserFilterComponent implements OnInit {
   districtIds: any;
   blockIds: any;
   userTypeList: any;
+  frameworkCategoriesList;
   constructor(private cdr: ChangeDetectorRef, public resourceService: ResourceService,
     private router: Router, private activatedRoute: ActivatedRoute,
     public userService: UserService, public toasterService: ToasterService,
     public profileService: ProfileService, public orgDetailsService: OrgDetailsService,
     public permissionService: PermissionService, public frameworkService: FrameworkService,
     public userSearchService: UserSearchService,
-    private formService: FormService) {
+    private formService: FormService, public cslFrameworkService: CslFrameworkService) {
     this.router.onSameUrlNavigation = 'reload';
   }
 
   ngOnInit() {
+    this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
     this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
@@ -114,17 +117,17 @@ export class UserFilterComponent implements OnInit {
     return this.frameworkService.frameworkData$.pipe(map((res) => {
       const categoryMasterList = _.cloneDeep(res.frameworkdata['defaultFramework'].categories);
       // Preparing data for multi-select filter
-      const medium: any = _.find(categoryMasterList, { code: 'medium' });
+      const medium: any = _.find(categoryMasterList, { code: this.frameworkCategoriesList[1] });
       medium['label'] = medium.name;
       medium['range'] = this.sortFilters(medium.terms);
       this.medium = medium;
 
-      const gradeLevel: any = _.find(categoryMasterList, { code: 'gradeLevel' });
+      const gradeLevel: any = _.find(categoryMasterList, { code: this.frameworkCategoriesList[2] });
       gradeLevel['label'] = gradeLevel.name;
       gradeLevel['range'] = this.sortFilters(gradeLevel.terms);
       this.class = gradeLevel;
 
-      const subject: any = _.find(categoryMasterList, { code: 'subject' });
+      const subject: any = _.find(categoryMasterList, { code: this.frameworkCategoriesList[3] });
       subject['label'] = subject.name;
       subject['range'] = this.sortFilters(subject.terms);
       this.subject = subject;

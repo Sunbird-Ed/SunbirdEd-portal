@@ -22,6 +22,7 @@ import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 import { VIEW_ACTIVITY, CATEGORY_SEARCH } from '../../../interfaces/telemetryConstants';
 import { ActivityDashboardService } from '@sunbird/shared';
 import { sessionKeys } from '../../../interfaces/group';
+import { CslFrameworkService } from '../../../../public/services/csl-framework/csl-framework.service';
 
 
 @Component({
@@ -58,6 +59,8 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   public selectedFilters;
   public ADD_ACTIVITY_TO_GROUP = ADD_ACTIVITY_TO_GROUP;
   private csGroupAddableBloc: CsGroupAddableBloc;
+  public frameworkCategories;
+  public categoryKeys;
 
 
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
@@ -84,11 +87,14 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     public orgDetailsService: OrgDetailsService,
     public groupService: GroupsService,
     public activityDashboardService: ActivityDashboardService,
+    public cslFrameworkService: CslFrameworkService
   ) {
     this.csGroupAddableBloc = CsGroupAddableBloc.instance;
   }
 
   ngOnInit() {
+    this.frameworkCategories = this.cslFrameworkService.getFrameworkCategories();
+    this.categoryKeys = this.cslFrameworkService.transformDataForCC();
     CsGroupAddableBloc.instance.state$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       if(data){
         sessionStorage.setItem(sessionKeys.GROUPADDABLEBLOCDATA, JSON.stringify((data)))
@@ -119,6 +125,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
       this.dataDrivenFilters = {};
       this.fetchContentOnParamChange();
       this.setNoResultMessage();
+      this.listenLanguageChange();
       // tslint:disable-next-line:max-line-length
       this.telemetryImpression = this.groupsService.getImpressionObject(this.activatedRoute.snapshot, this.router.url, {type: CATEGORY_SEARCH});
     }, error => {
@@ -188,8 +195,8 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
 
       /* istanbul ignore else */
-      if (element.code === 'board') {
-        collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
+      if (element.code === this.frameworkCategories?.fwCategory1?.code) {
+        collector[this.frameworkCategories?.fwCategory1?.code] = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
       }
       return collector;
     }, {});
@@ -360,6 +367,17 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
       'message': 'messages.stmsg.m0007',
       'messageText': 'messages.stmsg.m0006'
     };
+  }
+
+  /**
+   * @description - On language change dropdown this method will update the label and placeholder of the search filter
+   */
+  private listenLanguageChange() {
+    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe((languageData) => {
+      if (_.get(this.contentList, 'length') ) {
+        this.facets = this.searchService.updateFacetsData(this.facets);
+      }
+    });
   }
 
   ngOnDestroy() {

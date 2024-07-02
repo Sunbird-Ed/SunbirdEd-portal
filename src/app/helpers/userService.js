@@ -3,12 +3,12 @@ const {getCurrentUserRoles} = require('./permissionsHelper');
 const telemetryHelper = require('./telemetryHelper.js');
 const envHelper = require('./environmentVariablesHelper.js');
 const keyCloakClient = getKeyCloakClient({
-  resource: envHelper.KEYCLOAK_GOOGLE_CLIENT.clientId,
+  resource: envHelper?.KEYCLOAK_GOOGLE_CLIENT?.clientId,
   bearerOnly: true,
-  serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
-  realm: envHelper.PORTAL_REALM,
+  serverUrl: envHelper?.PORTAL_AUTH_SERVER_URL,
+  realm: envHelper?.PORTAL_REALM,
   credentials: {
-    secret: envHelper.KEYCLOAK_GOOGLE_CLIENT.secret
+    secret: envHelper?.KEYCLOAK_GOOGLE_CLIENT?.secret
   }
 });
 const CONSTANTS = require('./constants');

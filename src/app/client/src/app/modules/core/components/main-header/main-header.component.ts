@@ -125,9 +125,9 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   avatarConfig = {
     size: this.config.constants.SIZE.MEDIUM,
     view: this.config.constants.VIEW.HORIZONTAL,
-    isTitle:false
+    isTitle: false
   };
-  isLanguageDropdown:boolean = true
+  isLanguageDropdown: boolean = true
   totalUsersCount: number;
   libraryMenuIntractEdata: IInteractEventEdata;
   learnMenuIntractEdata: IInteractEventEdata;
@@ -139,7 +139,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   routerLinks = { explore: `/${EXPLORE_GROUPS}`, groups: `/${MY_GROUPS}` };
   public unsubscribe = new Subject<void>();
   selected = [];
-  userTypes = [{ id: 1, type: 'Teacher' }, { id: 2, type: 'Student' }];
   groupsMenuIntractEdata: IInteractEventEdata;
   workspaceMenuIntractEdata: IInteractEventEdata;
   helpMenuIntractEdata: IInteractEventEdata;
@@ -180,8 +179,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     public navigationHelperService: NavigationHelperService, private deviceRegisterService: DeviceRegisterService,
     private connectionService: ConnectionService, public electronService: ElectronService, private observationUtilService: ObservationUtilService) {
     try {
-      this.exploreButtonVisibility = document.getElementById('exploreButtonVisibility')?(<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value:'true';
-      this.reportsListVersion = document.getElementById('reportsListVersion')?(<HTMLInputElement>document.getElementById('reportsListVersion')).value as reportsListVersionType:'v1';
+      this.exploreButtonVisibility = document.getElementById('exploreButtonVisibility') ? (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value : 'true';
+      this.reportsListVersion = document.getElementById('reportsListVersion') ? (<HTMLInputElement>document.getElementById('reportsListVersion')).value as reportsListVersionType : 'v1';
     } catch (error) {
       this.exploreButtonVisibility = 'false';
       this.reportsListVersion = 'v1';
@@ -205,7 +204,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
         this.userType = result;
         if (this.userType != 'adminstrator') {
           this.setUserPreferences();
-          }
+        }
       } else {
         if (this.userService.loggedIn) {
           this.userService.userData$.subscribe((profileData: IUserData) => {
@@ -213,7 +212,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
               this.userType = profileData.userProfile['profileUserType']['type'];
               if (this.userType != 'adminstrator') {
                 this.setUserPreferences();
-                }
+              }
             }
           });
         }
@@ -226,12 +225,12 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       .then((data: any) => {
         let currentBoard;
         if (this.userPreference && this.userPreference['framework'] && this.userPreference['framework']['id']) {
-            currentBoard = Array.isArray(this.userPreference?.framework?.id) ? (this.userPreference?.framework?.id[0]) : (this.userPreference?.framework?.id);
+          currentBoard = Array.isArray(this.userPreference?.framework?.id) ? (this.userPreference?.framework?.id[0]) : (this.userPreference?.framework?.id);
         }
         const currentUserType = this.userType.toLowerCase();
         if (data && data[currentBoard] &&
           data[currentBoard][currentUserType]) {
-            this.showReportMenu = true;
+          this.showReportMenu = true;
         } else {
           this.showReportMenu = false;
         }
@@ -240,19 +239,19 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
 
   setUserPreferences() {
     try {
-        if (this.userService.loggedIn) {
-            this.userPreference = { framework: this.userService.defaultFrameworkFilters };
-            this.getFormConfigs();
-        } else {
-            this.userService.getGuestUser().subscribe((response) => {
-                this.userPreference = response;
-                this.getFormConfigs();
-            });
-        }
+      if (this.userService.loggedIn) {
+        this.userPreference = { framework: this.userService.defaultFrameworkFilters };
+        this.getFormConfigs();
+      } else {
+        this.userService.getGuestUser().subscribe((response) => {
+          this.userPreference = response;
+          this.getFormConfigs();
+        });
+      }
     } catch (error) {
-        return null;
+      return null;
     }
-}
+  }
 
   updateHrefPath(url) {
     if (url.indexOf('explore-course') >= 0) {
@@ -331,7 +330,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   navigateByUrl(url: string) {
     window.location.href = url;
   }
-  switchToNewTheme(){
+  switchToNewTheme() {
     const formServiceInputParams = {
       formType: this.baseCategoryForm.formType,
       formAction: this.baseCategoryForm.formAction,
@@ -345,7 +344,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       if (!isOldThemeDisabled) {
         this.showSwitchTheme = true;
       }
-      if(isOldThemeDisabled && layoutType !== 'joy') {
+      if (isOldThemeDisabled && layoutType !== 'joy') {
         this.layoutService.initiateSwitchLayout();
       }
     })
@@ -372,7 +371,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     }, (err: any) => {
 
     });
-    }
+  }
   onEnter(key) {
     this.queryParam = {};
     if (key && key.length) {
@@ -544,6 +543,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
 
   logout() {
     window.location.replace('/logoff');
+    this.cacheService.remove('reloadOnFwChange')
     this.cacheService.remove('orgHashTagId');
     this.cacheService.remove('userProfile');
   }
@@ -629,7 +629,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.getGuestUser();
     this.checkFullScreenView();
     try {
-      this.helpLinkVisibility = document.getElementById('helpLinkVisibility')?(<HTMLInputElement>document.getElementById('helpLinkVisibility')).value:'false';
+      this.helpLinkVisibility = document.getElementById('helpLinkVisibility') ? (<HTMLInputElement>document.getElementById('helpLinkVisibility')).value : 'false';
     } catch (error) {
       this.helpLinkVisibility = 'false';
     }
@@ -813,9 +813,12 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     };
   }
 
-  clearFiltersCache () {
+  clearFiltersCache() {
     if (this.cacheService.exists('searchFilters')) {
       this.cacheService.remove('searchFilters');
+    }
+    if (localStorage.getItem('selectedFramework')) {
+      localStorage.removeItem('selectedFramework');
     }
   }
 }

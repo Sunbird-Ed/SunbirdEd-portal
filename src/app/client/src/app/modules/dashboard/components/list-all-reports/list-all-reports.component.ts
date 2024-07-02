@@ -8,10 +8,10 @@ import { ReportService } from '../../services';
 import { of, Observable, throwError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import dayjs from 'dayjs';
-import  $ from 'jquery';
+import $ from 'jquery';
 import 'datatables.net';
 import { Location } from '@angular/common';
-const reportsToExclude : string[] = ['program_dashboard'];
+const reportsToExclude: string[] = ['program_dashboard'];
 @Component({
   selector: 'app-list-all-reports',
   templateUrl: './list-all-reports.component.html',
@@ -26,7 +26,7 @@ export class ListAllReportsComponent implements OnInit {
 
   constructor(public resourceService: ResourceService, public reportService: ReportService, private activatedRoute: ActivatedRoute,
     private router: Router, private userService: UserService, private navigationhelperService: NavigationHelperService,
-    private telemetryService: TelemetryService, private layoutService: LayoutService, public tncService: TncService, public location:Location) { }
+    private telemetryService: TelemetryService, private layoutService: LayoutService, public tncService: TncService, public location: Location) { }
 
   public reportsList$: Observable<any>;
   public noResultFoundError: string;
@@ -36,7 +36,7 @@ export class ListAllReportsComponent implements OnInit {
 
   @ViewChild('allReports') set inputTag(element: ElementRef | null) {
     if (!element) { return; }
-    const [reports, ] = this.reports;
+    const [reports,] = this.reports;
     this.prepareTable(element.nativeElement, reports);
   }
 
@@ -252,10 +252,10 @@ export class ListAllReportsComponent implements OnInit {
 
     $(el).on('click', 'tbody tr td:not(.details-control)', (event) => {
       const rowData = masterTable && masterTable.row(event?.currentTarget).data();
-      if (_.get(rowData, 'reportid') && _.get(rowData, 'hashed_val') && rowData.hasOwnProperty('materialize')) {
-        const reportid = _.get(rowData,'reportid');
-        const hashed_val = _.get(rowData,'hashed_val');
-        const materialize = _.get(rowData,'materialize');
+      if (_.get(rowData, 'reportid') && _.get(rowData, 'hashed_val') || (this.reportService.isUserSuperAdmin() && rowData?.hasOwnProperty('materialize'))) {
+        const reportid = _.get(rowData, 'reportid');
+        const hashed_val = _.get(rowData, 'hashed_val');
+        const materialize = _.get(rowData, 'materialize');
         this.logTelemetry({ type: 'select-report', id: `${reportid}` });
         this.rowClickEventHandler(reportid, hashed_val, materialize || false);
       }
@@ -388,13 +388,13 @@ export class ListAllReportsComponent implements OnInit {
         this.reportViewerTncUrl = _.get(_.get(reportViewerTncData, _.get(reportViewerTncData, 'latestVersion')), 'url');
         this.showReportViewerTncForFirstUser();
       }
-  });
+    });
   }
 
   public showReportViewerTncForFirstUser() {
     const reportViewerTncObj = _.get(this.userProfile, 'allTncAccepted.reportViewerTnc');
     if (!reportViewerTncObj) {
-     this.showTncPopup = true;
+      this.showTncPopup = true;
     }
   }
 

@@ -1,5 +1,5 @@
 <!-- New Pop up -->
-<app-modal-wrapper *ngIf="showModal && !isStepper" [config]="{disableClose: true, id: locationSelectionModalId, panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="closeModal()">
+<app-modal-wrapper *ngIf="showModal && !isStepper && (isLocationEnabled || showEditLocationDetailsPopup)" [config]="{disableClose: true, id: locationSelectionModalId, panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="closeModal()">
   <ng-template sbModalContent let-data>
 
     <div class="sb-mat__modal sb-onboard">

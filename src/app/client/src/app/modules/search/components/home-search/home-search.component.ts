@@ -12,7 +12,7 @@ import { takeUntil, map, delay, debounceTime, tap, mergeMap } from 'rxjs/operato
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
 import {omit, groupBy, get, uniqBy, toLower, find, map as _map, forEach, each} from 'lodash-es';
-
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 @Component({
   templateUrl: './home-search.component.html'
@@ -59,6 +59,10 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   contentName: string;
   showModal = false;
   showBackButton = false;
+  frameworkCategories;
+  globalFilterCategories;
+  frameworkCategoriesList;
+  categoryKeys: any[];
 
   constructor(public searchService: SearchService, public router: Router,
     public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
@@ -68,7 +72,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     public browserCacheTtlService: BrowserCacheTtlService, public orgDetailsService: OrgDetailsService,
     public navigationhelperService: NavigationHelperService, public layoutService: LayoutService, private schemaService: SchemaService,
     public contentManagerService: ContentManagerService, public telemetryService: TelemetryService,
-    private offlineCardService: OfflineCardService) {
+    private offlineCardService: OfflineCardService, public cslFrameworkService: CslFrameworkService) {
     this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
     this.filterType = this.configService.appConfig.home.filterType;
     // this.redirectUrl = this.configService.appConfig.courses.searchPageredirectUrl;
@@ -76,6 +80,9 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.setTelemetryData();
   }
   ngOnInit() {
+    this.categoryKeys = this.cslFrameworkService.transformDataForCC();
+    this.globalFilterCategories = this.cslFrameworkService.getAlternativeCodeForFilter();
+    this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
     this.isDesktopApp = this.utilService.isDesktopApp;
     this.listenLanguageChange();
     this.contentManagerService.contentDownloadStatus$
@@ -162,10 +169,11 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       return o.name === (selectedMediaType || 'all');
     });
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
+    const omitKeys = ['key', 'sort_by', 'sortType', 'appliedFilters', 'selectedTab', 'mediaType', 'contentType', 'description'];
     filters = this.schemaService.schemaValidator({
       inputObj: filters || {},
       properties: _.get(this.schemaService.getSchema('content'), 'properties') || {},
-      omitKeys: ['key', 'sort_by', 'sortType', 'appliedFilters', 'selectedTab', 'mediaType', 'contentType', 'board', 'medium', 'gradeLevel', 'subject', 'description']
+      omitKeys: omitKeys
     });
     filters.primaryCategory = filters.primaryCategory || _.get(this.allTabData, 'search.filters.primaryCategory');
     filters.mimeType = filters.mimeType || _.get(mimeType, 'values');
@@ -527,15 +535,16 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     const _cacheTimeout = _.get(this.allTabData, 'metaData.cacheTimeout') || 3600000;
     /* istanbul ignore next */
     if (this.cacheService.exists('searchFiltersAll') && Object.keys(filterData).length > 0 && !_.get(filterData, 'key') 
+    
     && _.get(this.activatedRoute, 'snapshot.queryParams.ignoreSavedFilter') !== 'true' ) {
-      const _searchFilters = this.cacheService.get('searchFiltersAll');
+        const _searchFilters = this.cacheService.get('searchFiltersAll');
       let _cacheFilters = {
         primaryCategory: [..._.intersection(filterData['primaryCategory'], _searchFilters['primaryCategory']), ..._.difference(filterData['primaryCategory'], _searchFilters['primaryCategory'])],
-        se_boards: (_.get(filterData, 'se_boards') && filterData['se_boards'].length > 0) ? [_.union(_searchFilters['se_boards'], filterData['se_boards'])[0]] : [],
-        se_mediums: [..._.intersection(filterData['se_mediums'], _searchFilters['se_mediums']), ..._.difference(filterData['se_mediums'], _searchFilters['se_mediums'])],
-        se_gradeLevels: [..._.intersection(filterData['se_gradeLevels'], _searchFilters['se_gradeLevels']), ..._.difference(filterData['se_gradeLevels'], _searchFilters['se_gradeLevels'])],
-        se_subjects: [..._.intersection(filterData['se_subjects'], _searchFilters['se_subjects']),
-        ..._.difference(filterData['se_subjects'], _searchFilters['se_subjects'])].map((e) => { return _.startCase(e) }),
+        [this.globalFilterCategories[0]]  : (_.get(filterData, this.globalFilterCategories[0]) && filterData[this.globalFilterCategories[0]].length > 0) ? [_.union(_searchFilters[this.globalFilterCategories[0]], filterData[this.globalFilterCategories[0]])[0]] : [],
+        [this.globalFilterCategories[1]]: [..._.intersection(filterData[this.globalFilterCategories[1]], _searchFilters[this.globalFilterCategories[1]]), ..._.difference(filterData[this.globalFilterCategories[1]], _searchFilters[this.globalFilterCategories[1]])],
+        [this.globalFilterCategories[2]]: [..._.intersection(filterData[this.globalFilterCategories[2]], _searchFilters[this.globalFilterCategories[2]]), ..._.difference(filterData[this.globalFilterCategories[2]], _searchFilters[this.globalFilterCategories[2]])],
+        [this.globalFilterCategories[3]]: [..._.intersection(filterData[this.globalFilterCategories[3]], _searchFilters[this.globalFilterCategories[3]]),
+        ..._.difference(filterData[this.globalFilterCategories[3]], _searchFilters[this.globalFilterCategories[3]])].map((e) => { return _.startCase(e) }),
         selectedTab: _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'all'
       };
       for (const key in _cacheFilters) {
@@ -552,8 +561,8 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
-      if (element.code === 'board') {
-        collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
+      if (element.code === this.frameworkCategoriesList[0]) {
+        collector[this.frameworkCategoriesList[0]] = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
       }
       return collector;
     }, {});
@@ -568,8 +577,8 @@ public viewAll(event) {
     searchQueryParams['exists'] = undefined;
     searchQueryParams['primaryCategory'] = (this.queryParams.primaryCategory && this.queryParams.primaryCategory.length)
      ? this.queryParams.primaryCategory : [event.name];
-     (this.queryParams.primaryCategory && this.queryParams.primaryCategory.length) ? (searchQueryParams['subject'] = [event.name]) :
-    (searchQueryParams['se_subjects'] = this.queryParams.se_subjects);
+     (this.queryParams.primaryCategory && this.queryParams.primaryCategory.length) ? (searchQueryParams[this.frameworkCategoriesList[3]] = [event.name]) :
+    (searchQueryParams[this.globalFilterCategories[3]] = this.queryParams[this.globalFilterCategories[3]]);
     searchQueryParams['selectedTab'] = 'all';
   if (this.queryParams.channel) {
     searchQueryParams['channel'] = this.queryParams.channel;

@@ -9,30 +9,33 @@ import { UsageService } from '../usage/usage.service';
 import { map, catchError, pluck, mergeMap, shareReplay } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { Observable, of, forkJoin } from 'rxjs';
-import  dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { v4 as UUID } from 'uuid';
+import { CslFrameworkService } from '../../../../../app/modules/public/services/csl-framework/csl-framework.service';
 
 const PRE_DEFINED_PARAMETERS = ['$slug', '$board', '$state', '$channel'];
 
 
 @Injectable({
-  providedIn:'root'
+  providedIn: 'root'
 })
-export class ReportService  {
+export class ReportService {
 
   private _superAdminSlug: string;
 
   private cachedMapping = {};
+  private frameworkCategories;
 
   constructor(private sanitizer: DomSanitizer, private usageService: UsageService, private userService: UserService,
     private configService: ConfigService, private baseReportService: BaseReportService, private permissionService: PermissionService,
     private courseProgressService: CourseProgressService, private searchService: SearchService,
-    private frameworkService: FrameworkService, private profileService: ProfileService ) {
+    private frameworkService: FrameworkService, private profileService: ProfileService, private cslFrameworkService: CslFrameworkService) {
     try {
       this._superAdminSlug = (<HTMLInputElement>document.getElementById('superAdminSlug')).value;
     } catch (error) {
       this._superAdminSlug = 'sunbird';
     }
+    this.frameworkCategories = this.cslFrameworkService.getFrameworkCategories();
   }
 
   public fetchDataSource(filePath: string, id?: string | number): Observable<any> {
@@ -60,7 +63,7 @@ export class ReportService  {
     return forkJoin(...apiCalls).pipe(
       mergeMap(response => {
 
-        response = response.filter(function(item) { if (item ) { return item.loaded = true; } });
+        response = response.filter(function (item) { if (item) { return item.loaded = true; } });
         return this.getFileMetaData(dataSources).pipe(
           map(metadata => {
             return _.map(response, res => {
@@ -179,14 +182,14 @@ export class ReportService  {
       const chartObj: any = {};
       chartObj.chartConfig = chart;
       if (!chartObj.chartConfig['id']) {
-        chartObj.chartConfig['id']  = UUID();
+        chartObj.chartConfig['id'] = UUID();
       }
       chartObj.downloadUrl = downloadUrl;
       chartObj.chartData = dataSource ? this.getChartData(data, chart) :
         _.get(this.getDataSourceById(data, reportLevelDataSourceId || 'default'), 'data');
-        if(chartObj.chartConfig.id === 'Big_Number' && chartObj.chartData  === undefined){
-          chartObj.chartData = [0];
-        }
+      if (chartObj.chartConfig.id === 'Big_Number' && chartObj.chartData === undefined) {
+        chartObj.chartData = [0];
+      }
       chartObj.lastUpdatedOn = _.get(data, 'metadata.lastUpdatedOn') ||
         this.getLatestLastModifiedOnDate(data, dataSource || { ids: [reportLevelDataSourceId || 'default'] });
       if (chartType && _.toLower(chartType) === 'map') {
@@ -198,11 +201,11 @@ export class ReportService  {
       if (chartObj && chartObj.chartData && chartObj.chartData.length > 0) {
         return chartObj;
       }
-    }).filter(function(chartData) {
-       if (chartData ) {
-          return (chartData['chartData'] != null || chartData['chartData'] != undefined);
-        }
-      });
+    }).filter(function (chartData) {
+      if (chartData) {
+        return (chartData['chartData'] != null || chartData['chartData'] != undefined);
+      }
+    });
   }
 
   public prepareTableData(tablesArray: any, data: any, downloadUrl: string, hash?: string): Array<{}> {
@@ -213,7 +216,7 @@ export class ReportService  {
       const tableData: any = {};
       tableData.id = tableId;
       tableData.name = _.get(table, 'name') || 'Table';
-      tableData.config = _.get(table, 'config') ||  false;
+      tableData.config = _.get(table, 'config') || false;
       if (!tableData.config) {
         tableData.data = _.get(table, 'values') || _.get(dataset, _.get(table, 'valuesExpr'));
       } else {
@@ -423,7 +426,7 @@ export class ReportService  {
         }
       },
       $board: {
-        value: _.get(this.userService, 'userProfile.framework.board[0]'),
+        value: _.get(this.userService, 'userProfile.framework.[this.frameworkCategories.fwCategory1.code][0]'),
         masterData: () => {
           if (!this.cachedMapping.hasOwnProperty('$board')) {
             this.cachedMapping['$board'] = this.frameworkService.getChannel(_.get(this.userService, 'hashTagId'))
@@ -432,7 +435,7 @@ export class ReportService  {
                   .pipe(
                     map(framework => {
                       const frameworkData = _.get(framework, 'result.framework');
-                      const boardCategory = _.find(frameworkData.categories, ['code', 'board']);
+                      const boardCategory = _.find(frameworkData.categories, ['code', this.frameworkCategories?.fwCategory1?.code]);
                       if (!boardCategory) { return of([]); }
                       return _.map(boardCategory.terms, 'name');
                     }),

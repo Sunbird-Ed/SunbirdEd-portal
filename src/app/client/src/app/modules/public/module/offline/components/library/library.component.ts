@@ -11,6 +11,7 @@ import { SearchService, UserService, OrgDetailsService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { ContentManagerService, SystemInfoService } from '../../services';
+import { CslFrameworkService } from '../../../../services/csl-framework/csl-framework.service';
 @Component({
     selector: 'app-library',
     templateUrl: './library.component.html',
@@ -75,6 +76,9 @@ export class LibraryComponent implements OnInit, OnDestroy {
     public defaultFilters;
     public formData;
     public globalSearchFacets: Array<string>;
+    public globalFilterCategories;
+    public categoryKeys;
+    frameworkCategoriesList: any[];
 
     @HostListener('window:scroll', []) onScroll(): void {
         if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -100,7 +104,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
         private systemInfoService: SystemInfoService,
         public layoutService: LayoutService,
         public userService: UserService,
-        private orgDetailsService: OrgDetailsService
+        private orgDetailsService: OrgDetailsService,
+        public cslFrameworkService: CslFrameworkService
     ) {
      }
 
@@ -136,13 +141,10 @@ export class LibraryComponent implements OnInit, OnDestroy {
             this.svgToDisplay = imageName;
             this.globalSearchFacets = _.get(this.currentPageData, 'search.facets');
             this.globalSearchFacets = [
-                'se_boards',
-                'se_gradeLevels',
-                'se_subjects',
-                'se_mediums',
+                ...this.globalFilterCategories,
                 'primaryCategory',
                 'mimeType'
-              ];
+            ];
             this.getOrgDetails();
         }, error => {
             this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
@@ -172,6 +174,10 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe$)).subscribe(queryParams => {
             this.queryParams = { ...queryParams };
         });
+        this.globalFilterCategories = this.cslFrameworkService.getAlternativeCodeForFilter();
+        this.categoryKeys = this.cslFrameworkService.transformDataForCC();
+        this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
+        console.log('library-compo', this.globalFilterCategories)    
         this.fetchCurrentPageData();
         this.initLayout();
         this.setTelemetryData();
@@ -253,8 +259,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
         this.selectedFilters = filterData;
         const defaultFilters = _.reduce(filters, (collector: any, element) => {
-            if (element.code === 'board') {
-                collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
+            if (element.code === this.frameworkCategoriesList[0]) {
+                collector[this.frameworkCategoriesList[0]] = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
             }
             return collector;
         }, {});
@@ -270,7 +276,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
         return o.name === (selectedMediaType || 'all');
         });
         const pageType = _.get(this.queryParams, 'pageTitle');
-        const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType', 'contentType', 'board', 'medium', 'gradeLevel', 'subject']);
+        const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType', 'contentType', ...this.frameworkCategoriesList]);
         if (!filters.channel) {
             filters.channel = this.hashTagId;
         }
@@ -284,7 +290,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
         });
         const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
         if (this.queryParams.key) {
-        delete softConstraints['board'];
+        delete softConstraints[this.frameworkCategoriesList[0]];
         }
         const option: any = {
             filters: _.omitBy(filters || {}, value => _.isArray(value) ? (!_.get(value, 'length') ? true : false) : false),
@@ -311,7 +317,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
             if (searchRes) {
                 const facets = this.searchService.updateFacetsData(_.get(searchRes, 'result.facets'));
                 this.facets = facets.filter(facet => facet.values.length > 0);
-                const filteredContents = _.omit(_.groupBy(searchRes['result'].content, 'subject'), ['undefined']);
+                const filteredContents = _.omit(_.groupBy(searchRes['result'].content, this.frameworkCategoriesList[3]), ['undefined']);
                 const otherContents = _.filter(searchRes['result'].content, (content) => !content.subject );
                 // Check for multiple subjects
                 for (const [key, value] of Object.entries(filteredContents)) {

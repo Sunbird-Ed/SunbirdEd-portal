@@ -22,7 +22,7 @@
           </sb-course-card>
 
           <sb-library-card *ngIf="!isCourse(activity?.type) && viewSelectedTypeContents(list?.title, activityList[list?.title], i)"(cardClick)="openActivity($event, list?.title)" [content]="activity" [section]="null" [isMenu]="groupData?.isAdmin" [cardImg]="activity?.appIcon
-          || config?.assetsPath?.book" (menuClick)="getMenuData($event, activity)">
+          || config?.assetsPath?.book" (menuClick)="getMenuData($event, activity)" [categoryKeys]="categoryKeys">
           </sb-library-card>
           <div class="kabab-menu-dropdown-content" *ngIf="showMenu &&
       selectedActivity?.identifier === activity?.identifier">

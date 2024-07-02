@@ -59,7 +59,7 @@
           </sb-course-card> -->
           <sb-library-card [content]="content" [layoutConfig]="layoutConfiguration"
             [cardImg]="content?.image || 'assets/images/add-icon.svg'" [hover-template]="hoverTemplate"
-            [type]="'recently_viewed'">
+            [type]="'recently_viewed'" [categoryKeys]="categoryKeys">
             <ng-template #hoverTemplate let-hoverData="hoverData" let-content="content">
               <sb-card-hover class="card-hover activity-card-hover" [hoverData]="hoverData" 
                 [content]="content"

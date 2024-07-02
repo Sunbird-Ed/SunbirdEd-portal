@@ -36,7 +36,19 @@ describe("Onboarding Component", () => {
   it('should be create a instance of onboardingPopupComponent', () => {
     expect(onboardingPopupComponent).toBeTruthy();
   });
-
+  describe('getLocation', () => {
+    it('should return the location data', () => {
+      // arrange
+      const result = { ipLocation: { state: "Karnataka", district: "Bangalore" } };
+      onboardingPopupComponent.deviceProfile = result;
+      mockDeviceRegisterService.fetchDeviceProfile = jest.fn().mockReturnValue(of({ result: result })) as any;
+      //act
+      onboardingPopupComponent.getLocation();
+      //assert
+      expect(onboardingPopupComponent.deviceProfile).toBeDefined();
+      expect(mockDeviceRegisterService.fetchDeviceProfile).toHaveBeenCalled();
+    });
+  });
   describe('ngOnDestroy', () => {
     it('should destroy subscription', () => {
       //arrange
@@ -318,20 +330,6 @@ describe("Onboarding Component", () => {
       expect(onboardingPopupComponent.isSkipped).toBeFalsy();
       expect(onboardingPopupComponent.isStepperCompleted.emit).toBeCalledWith(true);
       expect(onboardingPopupComponent.onboardingFilterData).toHaveLength(1);
-    });
-  });
-
-  describe('getLocation', () => {
-    it('should return the location data', () => {
-      // arrange
-      const result = { ipLocation: { state: "Karnataka", district: "Bangalore" } };
-      onboardingPopupComponent.deviceProfile = result;
-      mockDeviceRegisterService.fetchDeviceProfile = jest.fn().mockReturnValue(of({ result: result })) as any;
-      //act
-      onboardingPopupComponent.getLocation();
-      //assert
-      expect(onboardingPopupComponent.deviceProfile).toBeDefined();
-      expect(mockDeviceRegisterService.fetchDeviceProfile).toHaveBeenCalled();
     });
   });
 

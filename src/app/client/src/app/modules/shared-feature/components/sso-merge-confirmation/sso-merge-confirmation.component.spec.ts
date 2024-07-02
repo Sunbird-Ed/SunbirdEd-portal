@@ -53,7 +53,7 @@ xdescribe('SsoMergeConfirmation component', ()=> {
     expect(ssoMergeConfirmationComponent.tenantName).toEqual('title');
   });
 
-  it('should create new user', ()=> {
+  xit('should create new user', ()=> {
     global.window = Object.create(window);
     Object.defineProperty(window, 'location', {
       value: {
@@ -70,7 +70,8 @@ xdescribe('SsoMergeConfirmation component', ()=> {
     expect(window.location.href).toEqual(assignedData);
   });
 
-  it('should migrate user', ()=> {
+  xit('should migrate user', ()=> {
+    ssoMergeConfirmationComponent.userDetails={id:'1234'} as any;
     const assignedData = '/v1/sso/migrate/account/initiate?userId=1&identifier=type1&identifierValue=1&freeUser=true&tncAccepted=true&tncVersion=true';
     ssoMergeConfirmationComponent.migrateUser();
     expect(window.location.href).toEqual(assignedData);

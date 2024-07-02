@@ -1,4 +1,50 @@
 export const response = {
+    mockPageSections :[{
+		name: 'Accountancy And Auditing',
+		contents: [{
+		  'identifier': 'content1',
+		  'courseName': '80cer',
+		  'description': '',
+		  'leafNodesCount': 2,
+		  'courseId': 'course_Id',
+		  'userId': 'user_id'
+		}],
+		length: 1
+	  }],
+	mockContentDownloadStatus : {
+		content1: 'newStatus1',
+		content2: 'newStatus2',
+	},
+	mockSections : [{
+		  name: 'Section1',
+		  contents: [
+			{
+			  metaData: {
+				identifier: 'content1',
+				contentType: 'type1',
+			  },
+			},
+			{
+			  metaData: {
+				identifier: 'content2',
+				contentType: 'type2',
+			  },
+			},
+		   ],
+	}],
+	mockTelemetryImpression : {
+		context: {
+			env: 'mock-env'
+		},
+		edata: {
+			type: 'mock-Type',
+			pageid: 'mock-page-id',
+			uri: '/library/mock',
+			subtype: 'mock-sub-type',
+			duration: 1,
+			visits: []
+		}
+	},
     hoverActionsData: {
         'event': {
             'isTrusted': true

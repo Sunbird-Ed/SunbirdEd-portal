@@ -1,34 +1,18 @@
-import {ProfileService} from '../../services';
+import { ProfileService } from '../../services';
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild, Inject } from '@angular/core';
-import {
-  CertRegService,
-  CoursesService,
-  OrgDetailsService,
-  PlayerService,
-  SearchService,
-  UserService,
-  FormService
-} from '@sunbird/core';
-import {
-  ConfigService,
-  IUserData, LayoutService,
-  NavigationHelperService,
-  ResourceService,
-  ServerResponse,
-  ToasterService,
-  UtilService,
-  ConnectionService
-} from '@sunbird/shared';
+import { CertRegService, CoursesService, OrgDetailsService, PlayerService, SearchService, UserService, FormService } from '@sunbird/core';
+import { ConfigService, IUserData, LayoutService, NavigationHelperService, ResourceService, ServerResponse, ToasterService, UtilService, ConnectionService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
-import {Subject, Subscription} from 'rxjs';
-import {IImpressionEventInput, IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Subject, Subscription } from 'rxjs';
+import { IImpressionEventInput, IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CacheService } from '../../../../modules/shared/services/cache-service/cache.service';
-import {takeUntil} from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { CertificateDownloadAsPdfService } from 'sb-svg2pdf-v13';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 import { FieldConfig, FieldConfigOption } from '@project-sunbird/common-form-elements-full';
 import { CsCertificateService } from '@project-sunbird/client-services/services/certificate/interface';
+import { CslFrameworkService } from '../../../../modules/public/services/csl-framework/csl-framework.service';
 
 @Component({
   templateUrl: './profile-page.component.html',
@@ -37,9 +21,9 @@ import { CsCertificateService } from '@project-sunbird/client-services/services/
 })
 export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   private static readonly SUPPORTED_PERSONA_LIST_FORM_REQUEST =
-  { formType: 'config', formAction: 'get', contentType: 'userType', component: 'portal' };
+    { formType: 'config', formAction: 'get', contentType: 'userType', component: 'portal' };
   private static readonly DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST =
-  { formType: 'profileConfig_v2', contentType: 'default', formAction: 'get' };
+    { formType: 'profileConfig_v2', contentType: 'default', formAction: 'get' };
   @ViewChild('profileModal') profileModal;
   @ViewChild('slickModal') slickModal;
   userProfile: any;
@@ -47,6 +31,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   totalContributions: Number;
   attendedTraining: Array<object>;
   roles: Array<string>;
+  userRoles;
   showMoreRoles = true;
   showMoreTrainings = true;
   showMoreCertificates = true;
@@ -59,9 +44,11 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   orgDetails: any = [];
   showContactPopup = false;
   showEditUserDetailsPopup = false;
+  disableDelete = true
   userFrameWork: any;
   telemetryImpression: IImpressionEventInput;
   myFrameworkEditEdata: IInteractEventEdata;
+  deleteAccountEdata: IInteractEventEdata;
   editProfileInteractEdata: IInteractEventEdata;
   editMobileInteractEdata: IInteractEventEdata;
   editEmailInteractEdata: IInteractEventEdata;
@@ -97,20 +84,23 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   subPersona: string[];
   isConnected = true;
   showFullScreenLoader = false;
+  transormUserProfile;
+  frameworkCategoriesObject;
+  frameworkCategoriesList;
   avatarConfig = {
     size: this.configService.constants.SIZE.LARGE,
     view: this.configService.constants.VIEW.VERTICAL,
-    isTitle:false
+    isTitle: false
   };
 
   constructor(@Inject('CS_COURSE_SERVICE') private courseCService: CsCourseService, private cacheService: CacheService,
-  public resourceService: ResourceService, public coursesService: CoursesService,
+    public resourceService: ResourceService, public coursesService: CoursesService,
     public toasterService: ToasterService, public profileService: ProfileService, public userService: UserService,
     public configService: ConfigService, public router: Router, public utilService: UtilService, public searchService: SearchService,
     private playerService: PlayerService, private activatedRoute: ActivatedRoute, public orgDetailsService: OrgDetailsService,
     public navigationhelperService: NavigationHelperService, public certRegService: CertRegService,
     private telemetryService: TelemetryService, public layoutService: LayoutService, private formService: FormService,
-    private certDownloadAsPdf: CertificateDownloadAsPdfService, private connectionService: ConnectionService,
+    private certDownloadAsPdf: CertificateDownloadAsPdfService, private connectionService: ConnectionService, private cslFrameworkService: CslFrameworkService,
     @Inject('CS_CERTIFICATE_SERVICE') private CsCertificateService: CsCertificateService) {
     this.getNavParams();
   }
@@ -121,18 +111,19 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.isDesktopApp = this.utilService.isDesktopApp;
-
+    this.frameworkCategoriesObject = this.cslFrameworkService.getFrameworkCategoriesObject();
+    this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
     this.activatedRoute.queryParams.subscribe((params) => {
       if (params['showEditUserDetailsPopup']) {
         this.showEditUserDetailsPopup = true;
       }
-      });
+    });
 
     if (this.isDesktopApp) {
       this.connectionService.monitor()
-      .pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
-        this.isConnected = isConnected;
-      });
+        .pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
+          this.isConnected = isConnected;
+        });
     }
     this.initLayout();
     this.instance = _.upperFirst(_.toLower(this.resourceService.instance || 'SUNBIRD'));
@@ -142,6 +133,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.showFullScreenLoader = false;
       if (user.userProfile) {
         this.userProfile = user.userProfile;
+        this.transormUserProfile = this.cslFrameworkService.frameworkLabelTransform(this.frameworkCategoriesObject, this.userProfile);
         const role: string = (!this.userProfile.profileUserType.type ||
           (this.userProfile.profileUserType.type && this.userProfile.profileUserType.type === 'OTHER')) ? '' : this.userProfile.profileUserType.type;
         this.userLocation = this.getUserLocation(this.userProfile);
@@ -223,11 +215,15 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     });
-    let userRoles;
     if (_.get(this.userProfile, 'roles') && !_.isEmpty(this.userProfile.roles)) {
-      userRoles = _.map(this.userProfile.roles, 'role');
+      this.userRoles = _.map(this.userProfile.roles, 'role');
     }
-    _.forEach(userRoles, (value, key) => {
+    if (_.includes(this.userRoles, 'ORG_ADMIN')) {
+      this.disableDelete = true
+    } else {
+      this.disableDelete = false
+    }
+    _.forEach(this.userRoles, (value, key) => {
       if (value !== 'PUBLIC') {
         const roleName = _.find(this.userProfile.roleList, { id: value });
         if (roleName) {
@@ -251,16 +247,16 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getContribution(): void {
     const { constantData, metaData, dynamicFields } = this.configService.appConfig.Course.otherCourse;
-      const searchParams = {
-        status: ['Live'],
-        contentType: this.configService.appConfig.WORKSPACE.contentType,
-        params: { lastUpdatedOn: 'desc' }
-      };
-      const inputParams = { params: this.configService.appConfig.PROFILE.contentApiQueryParams };
-      this.searchService.searchContentByUserId(searchParams, inputParams).subscribe((data: ServerResponse) => {
-        this.contributions = this.utilService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
-        this.totalContributions = _.get(data, 'result.count') || 0;
-      });
+    const searchParams = {
+      status: ['Live'],
+      contentType: this.configService.appConfig.WORKSPACE.contentType,
+      params: { lastUpdatedOn: 'desc' }
+    };
+    const inputParams = { params: this.configService.appConfig.PROFILE.contentApiQueryParams };
+    this.searchService.searchContentByUserId(searchParams, inputParams).subscribe((data: ServerResponse) => {
+      this.contributions = this.utilService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
+      this.totalContributions = _.get(data, 'result.count') || 0;
+    });
   }
 
   getTrainingAttended() {
@@ -271,10 +267,10 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-/**
- * @param userId
- *It will fetch certificates of user, other than courses
- */
+  /**
+   * @param userId
+   *It will fetch certificates of user, other than courses
+   */
   getOtherCertificates(userId, certType) {
     this.otherCertificates = [];
     let requestBody = { userId: userId, schemaName: 'certificate' };
@@ -500,10 +496,24 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       type: 'click',
       pageid: 'profile-read'
     };
+    this.deleteAccountEdata = {
+      id: 'delete-user-account',
+      type: 'click',
+      pageid: 'profile-read'
+    };
   }
 
   navigate(url, formAction) {
-    this.router.navigate([url], {queryParams: {formaction: formAction}});
+    this.router.navigate([url], { queryParams: { formaction: formAction } });
+  }
+
+  navigatetoRoute(url) {
+    if (_.includes(this.userProfile.userRoles, 'PUBLIC') && this.userProfile.userRoles.length === 1) {
+      this.router.navigate([url]);
+    } else {
+      const msg = 'Your role doesnot allow you to delete your account. Please contact support!'
+      this.toasterService.warning(msg);
+    }
   }
 
   ngAfterViewInit() {
@@ -621,81 +631,81 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       const offsetPosition = elementPosition - 144;
 
       window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
+        top: offsetPosition,
+        behavior: 'smooth'
       });
     });
   }
 
   private getUserLocation(profile: any) {
-   const userLocation = {};
+    const userLocation = {};
     if (profile && profile.userLocations && profile.userLocations.length) {
-        profile.userLocations.forEach((d) => {
-            userLocation[d.type] = d;
-        });
+      profile.userLocations.forEach((d) => {
+        userLocation[d.type] = d;
+      });
     }
     return userLocation;
-}
-
-private async getPersonaConfig(persona: string) {
-  const formFields = await this.formService.getFormConfig(ProfilePageComponent.SUPPORTED_PERSONA_LIST_FORM_REQUEST).toPromise();
-  return formFields.find(config => config.code === persona);
-}
-
-private async getSubPersonaConfig(persona: string, userLocation: any): Promise<string[]> {
-  if ((!this.userProfile.profileUserTypes || !this.userProfile.profileUserTypes.length) &&
-  (!this.userProfile.profileUserType || !this.userProfile.profileUserType.subType)) {
-      return undefined;
   }
-  let formFields;
-  try {
+
+  private async getPersonaConfig(persona: string) {
+    const formFields = await this.formService.getFormConfig(ProfilePageComponent.SUPPORTED_PERSONA_LIST_FORM_REQUEST).toPromise();
+    return formFields.find(config => config.code === persona);
+  }
+
+  private async getSubPersonaConfig(persona: string, userLocation: any): Promise<string[]> {
+    if ((!this.userProfile.profileUserTypes || !this.userProfile.profileUserTypes.length) &&
+      (!this.userProfile.profileUserType || !this.userProfile.profileUserType.subType)) {
+      return undefined;
+    }
+    let formFields;
+    try {
       const state = userLocation.state;
       formFields = await this.formService.getFormConfig({
         ...ProfilePageComponent.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST,
-        ...(state ? {contentType: state.code} : {})
+        ...(state ? { contentType: state.code } : {})
       }).toPromise();
-  } catch (e) {
+    } catch (e) {
       formFields = await this.formService.getFormConfig(ProfilePageComponent.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST).toPromise();
-  }
+    }
 
-  const personaConfig = formFields.find(formField => formField.code === 'persona');
-  const personaChildrenConfig: FieldConfig<any>[] = personaConfig['children'][persona];
-  const subPersonaConfig = personaChildrenConfig.find(formField => formField.code === 'subPersona');
-  if (!subPersonaConfig) {
+    const personaConfig = formFields.find(formField => formField.code === 'persona');
+    const personaChildrenConfig: FieldConfig<any>[] = personaConfig['children'][persona];
+    const subPersonaConfig = personaChildrenConfig.find(formField => formField.code === 'subPersona');
+    if (!subPersonaConfig) {
       return undefined;
-   }
-  const subPersonaList = [];
-  if (_.get(subPersonaConfig, 'templateOptions.multiple')) {
-    if (this.userProfile.profileUserTypes && this.userProfile.profileUserTypes.length) {
-      this.userProfile.profileUserTypes.forEach(ele => {
-        if (_.get(ele, 'subType')) {
-          subPersonaList.push(ele.subType);
-        }
-      });
+    }
+    const subPersonaList = [];
+    if (_.get(subPersonaConfig, 'templateOptions.multiple')) {
+      if (this.userProfile.profileUserTypes && this.userProfile.profileUserTypes.length) {
+        this.userProfile.profileUserTypes.forEach(ele => {
+          if (_.get(ele, 'subType')) {
+            subPersonaList.push(ele.subType);
+          }
+        });
+      } else {
+        subPersonaList.push(this.userProfile.profileUserType.subType);
+      }
     } else {
       subPersonaList.push(this.userProfile.profileUserType.subType);
     }
-  } else {
-    subPersonaList.push(this.userProfile.profileUserType.subType);
+
+    const subPersonaFieldConfigOption = [];
+    subPersonaList.forEach((ele) => {
+      subPersonaFieldConfigOption.push((subPersonaConfig.templateOptions.options as FieldConfigOption<any>[]).
+        find(option => option.value === ele).label);
+    });
+
+    return subPersonaFieldConfigOption;
   }
 
-   const subPersonaFieldConfigOption = [];
-   subPersonaList.forEach((ele) => {
-    subPersonaFieldConfigOption.push((subPersonaConfig.templateOptions.options as FieldConfigOption<any>[]).
-    find(option => option.value === ele).label);
-   });
-
-  return subPersonaFieldConfigOption;
-}
-
-public onLocationModalClose(event) {
-  this.showEditUserDetailsPopup = !this.showEditUserDetailsPopup;
-  this.showFullScreenLoader = !event?.isSubmitted ? false : true;
-  setTimeout(() => {
-    if (this.showFullScreenLoader) {
-      this.showFullScreenLoader = false;
-      this.toasterService.error(this.resourceService.messages.emsg.m0005);
-    }
-  }, 5000);
-}
+  public onLocationModalClose(event) {
+    this.showEditUserDetailsPopup = !this.showEditUserDetailsPopup;
+    this.showFullScreenLoader = !event?.isSubmitted ? false : true;
+    setTimeout(() => {
+      if (this.showFullScreenLoader) {
+        this.showFullScreenLoader = false;
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      }
+    }, 5000);
+  }
 }

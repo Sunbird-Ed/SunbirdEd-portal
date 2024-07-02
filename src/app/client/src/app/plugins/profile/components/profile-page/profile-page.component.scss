@@ -1,5 +1,6 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @use 'pages/content-header' as *;
+
 /* fonts */
 .font-w-bold {
   font-weight: bold !important;
@@ -17,7 +18,7 @@
 
 .profile-bg-c-4 {
   background: var(--sb-profile-bg-c-4) !important;
-  color:var(--black);
+  color: var(--black);
 }
 
 .profile-bg-c-4 {
@@ -177,7 +178,7 @@
   text-transform: unset;
 }
 
-.self-declared-title{
+.self-declared-title {
   font-size: calculateRem(12px);
   font-weight: bold;
 }
@@ -201,15 +202,17 @@
     }
   }
 }
-.sb-course-progress-status-label{
+
+.sb-course-progress-status-label {
   width: 100%;
-  border-radius:calculateRem(8px) calculateRem(8px) 0 0;
+  border-radius: calculateRem(8px) calculateRem(8px) 0 0;
   justify-content: space-between;
   display: flex;
   padding: calculateRem(8px) calculateRem(16px);
 }
-.sb-profile-page-container{
-  .ui.segment{
+
+.sb-profile-page-container {
+  .ui.segment {
     background: var(--sb-profile-page-container);
   }
 }
@@ -217,6 +220,7 @@
 .content-preference {
   @include respond-below(md) {
     padding: 0 2%;
+
     &__info {
       background: var(--sb-profile-bg-c-4);
       padding: calculateRem(16px) 0;
@@ -229,20 +233,18 @@
 
 ::ng-deep {
   .avatar-container {
-     .my-avatar.verified .sb-avatar-list-item .sb-avatar__img {
-      border: 1px solid  !important;
+    .my-avatar.verified .sb-avatar-list-item .sb-avatar__img {
+      border: 1px solid !important;
       border-color: var(--secondary-color) !important;
     }
-     .avatar-tickmark {
+
+    .avatar-tickmark {
       width: 2rem;
       height: 2rem;
       position: absolute;
       right: 0%;
       z-index: 9;
-      top: 0.2rem; 
-
+      top: 0.2rem;
     }
-
   }
-
 }

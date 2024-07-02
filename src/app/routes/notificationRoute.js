@@ -1,6 +1,7 @@
 const proxyUtils = require('../proxy/proxyUtils.js')
 const envHelper = require('../helpers/environmentVariablesHelper.js')
-const learnerURL = envHelper.LEARNER_URL
+const utils = require('../helpers/utils.js');
+const learnerURL  = utils?.defaultHost(utils?.envVariables?.LEARNER_URL);
 const proxy = require('express-http-proxy')
 const reqDataLimitOfContentUpload = '50mb'
 const isAPIWhitelisted = require('../helpers/apiWhiteList');
@@ -36,10 +37,10 @@ function proxyObject() {
             }
         }
     });
-} 
+}
 /**
  * Notification service needs header content-type as 'text/plain' as 'application/json' not supported
- * @returns 
+ * @returns
  */
  function addHeaders() {
     return function(proxyReqOpts, srcReq) {
