@@ -18,27 +18,20 @@
     "CourseSearchField": [
       "name",
       "appIcon",
-      "medium",
-      "subject",
       "resourceType",
       "contentType",
       "organisation",
       "topic",
       "mimeType",
-      "trackable",
-      "gradeLevel",
-      "se_boards",
-      "se_subjects",
-      "se_mediums",
-      "se_gradeLevels"
+      "trackable"
     ],
     "programSearch": {
       "fields": "rootOrgId,rootOrgName"
     },
-    "contentGet": "transcripts,ageGroup,appIcon,artifactUrl,attributions,attributions,audience,author,badgeAssertions,board,body,channel,code,concepts,contentCredits,contentType,contributors,copyright,copyrightYear,createdBy,createdOn,creator,creators,description,displayScore,domain,editorState,flagReasons,flaggedBy,flags,framework,gradeLevel,identifier,itemSetPreviewUrl,keywords,language,languageCode,lastUpdatedOn,license,mediaType,medium,mimeType,name,originData,osId,owner,pkgVersion,publisher,questions,resourceType,scoreDisplayConfig,status,streamingUrl,subject,template,templateId,totalQuestions,totalScore,versionKey,visibility,year,primaryCategory,additionalCategories,interceptionPoints,interceptionType",
-    "questionSetRead": "instructions",
+    "contentGet": "transcripts,ageGroup,appIcon,artifactUrl,attributions,attributions,audience,author,badgeAssertions,body,channel,code,concepts,contentCredits,contentType,contributors,copyright,copyrightYear,createdBy,createdOn,creator,creators,description,displayScore,domain,editorState,flagReasons,flaggedBy,flags,framework,identifier,itemSetPreviewUrl,keywords,language,languageCode,lastUpdatedOn,license,mediaType,mimeType,name,originData,osId,owner,pkgVersion,publisher,questions,resourceType,scoreDisplayConfig,status,streamingUrl,template,templateId,totalQuestions,totalScore,versionKey,visibility,year,primaryCategory,additionalCategories,interceptionPoints,interceptionType",
+    "questionSetRead": "instructions,outcomeDeclaration",
     "enrolledCourses": {
-      "fields": "contentType,topic,name,channel,mimeType,appIcon,gradeLevel,resourceType,identifier,medium,pkgVersion,board,subject,trackable,primaryCategory,organisation",
+      "fields": "contentType,topic,name,channel,mimeType,appIcon,resourceType,identifier,pkgVersion,trackable,primaryCategory,organisation",
       "batchDetails": "name,endDate,startDate,status,enrollmentType,createdBy,certificates"
     },
     "objectCategory": {
@@ -65,8 +58,8 @@
     "GET_GENERALISED_RESOURCE": "getGeneralisedResourcesBundles",
     "OBSERVATION_PREFIX": "/assessment/",
     "KENDRA_PREFIX": "/kendra/",
-    "DHITI_PREFIX":"/dhiti/",
-    "CLOUD_PREFIX":"/cloudUpload/",
+    "DHITI_PREFIX": "/dhiti/",
+    "CLOUD_PREFIX": "/cloudUpload/",
     "CUSTOM_RESOURCE_BUNDLE": "/api/data/v1/form/read",
     "REPORT": {
       "READ": "/get",
@@ -124,7 +117,8 @@
       "GET_MANAGED_USER": "user/v1/managed",
       "USER_EXISTS_GET_USER_BY_KEY": "isUserExists/user/v1/get",
       "USER_DECLARATION": "user/v1/declarations",
-      "GET_SESSION": "get/user/sessionId"
+      "GET_SESSION": "get/user/sessionId",
+      "DELETE": "user/v1/delete"
     },
     "CERTIFICATE": {
       "FETCH_CERTIFICATES": "v1/certs/search",
@@ -270,7 +264,8 @@
       "GENERATE": "otp/v1/generate",
       "VERIFY": "otp/v1/verify",
       "ANONYMOUS": {
-        "GENERATE": "anonymous/otp/v1/generate"
+        "GENERATE": "anonymous/otp/v1/generate",
+        "GENERATE_USERDELETE": "anonymous/delete/otp/v1/generate"
       }
     },
     "OFFLINE": {
@@ -343,10 +338,15 @@
       "READ": "org/v2/preferences/read"
     },
     "QUESTIONSET": {
-      "CREATE": "questionset/v1/create",
-      "READ": "questionset/v1/read",
-      "HIERARCHY_READ": "questionset/v1/hierarchy",
-      "COPY": "questionset/v1/copy"
+      "V1": {
+        "HIERARCHY_READ": "questionset/v1/hierarchy",
+        "READ": "questionset/v1/read"
+      },
+      "CREATE": "questionset/v2/create",
+      "READ": "questionset/v2/read",
+      "HIERARCHY_READ": "questionset/v2/hierarchy",
+      "COPY": "questionset/v2/copy",
+      "LIST_API": "api/question/v2/list"
     },
     "OBJECTCATEGORY": {
       "READ": "object/category/definition/v1/read"
@@ -357,26 +357,25 @@
       "SEARCH_ENTITY": "observations/mlsurvey/v1/searchEntities",
       "OBSERVATION_UPDATE_ENTITES": "observations/mlsurvey/v1/updateEntities/",
       "OBSERVATION_SUBMISSION_CREATE": "observationSubmissions/mlsurvey/v1/create/",
-      "OBSERVATION_LISTING":"solutions/mlcore/v1/targetedSolutions?type=observation",
-      "MANDATORY_ENTITY_TYPES_FOR_ROLES":"entities/mlcore/v1/entityTypesByLocationAndRole/",
-      "OBSERVATION_SUBMISSION_UPDATE":"observationSubmissions/mlsurvey/v1/update/",
+      "OBSERVATION_LISTING": "solutions/mlcore/v1/targetedSolutions?type=observation",
+      "MANDATORY_ENTITY_TYPES_FOR_ROLES": "entities/mlcore/v1/entityTypesByLocationAndRole/",
+      "OBSERVATION_SUBMISSION_UPDATE": "observationSubmissions/mlsurvey/v1/update/",
       "GET_ASSESSMENT": "observations/mlsurvey/v1/assessment/",
       "OBSERVATION_REPORT_SOLUTION_LIST": "observationSubmissions/mlsurvey/v1/solutionList?",
-      "JOIN_PROGRAM":"programs/mlcore/v1/join",
-      "READ_PROGRAM":"users/mlcore/v1/solutions"
+      "JOIN_PROGRAM": "programs/mlcore/v1/join",
+      "READ_PROGRAM": "users/mlcore/v1/solutions"
     },
     "KENDRA": {
       "TARGETTED_ENTITY_TYPES": "users/mlcore/v1/targetedEntity/",
       "PRESIGNED_URLS": "cloud-services/mlcore/v1/files/preSignedUrls",
       "PROGRAMS_BY_PLATFORM_ROLES": "user-extension/mlcore/v1/programsByPlatformRoles",
       "SOLUTIONS_BY_PROGRAMID": "user-extension/mlcore/v1/solutions",
-      "DISTRICTS_AND_ORGANISATIONS":"resource/mlreports/v1/filtervalues"
+      "DISTRICTS_AND_ORGANISATIONS": "resource/mlreports/v1/filtervalues"
     },
-    "DHITI":{
+    "DHITI": {
       "GENERIC_REPORTS": "reports/mlreports/v1/fetch",
-      "ALL_EVIDENCE":"observations/mlreports/v1/listAllEvidences"
+      "ALL_EVIDENCE": "observations/mlreports/v1/listAllEvidences"
     },
     "UCI": "/uci"
-
   }
 }

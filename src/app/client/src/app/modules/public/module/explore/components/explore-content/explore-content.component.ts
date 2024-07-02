@@ -12,6 +12,7 @@ import { takeUntil, map, mergeMap, first, debounceTime, tap, delay } from 'rxjs/
 import { CacheService } from '../../../../../shared/services/cache-service/cache.service';
 import { ContentManagerService } from '../../../offline/services';
 import {omit, groupBy, get, uniqBy, toLower, find, map as _map, forEach, each} from 'lodash-es';
+import { CslFrameworkService } from '../../../../../public/services/csl-framework/csl-framework.service';
 
 @Component({
   templateUrl: './explore-content.component.html',
@@ -60,6 +61,10 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   showModal = false;
   isDesktopApp = false;
   showBackButton = false;
+  frameworkCategories;
+  globalFilterCategories;
+  categoryKeys;
+  frameworkCategoriesList;
 
   constructor(public searchService: SearchService, public router: Router,
     public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
@@ -69,11 +74,15 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     public userService: UserService, public frameworkService: FrameworkService,
     public cacheService: CacheService, public navigationhelperService: NavigationHelperService, public layoutService: LayoutService,
     public contentManagerService: ContentManagerService, private offlineCardService: OfflineCardService,
-    public telemetryService: TelemetryService, private schemaService: SchemaService) {
+    public telemetryService: TelemetryService, private schemaService: SchemaService, public cslFrameworkService: CslFrameworkService) {
     this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
     this.filterType = this.configService.appConfig.explore.filterType;
   }
   ngOnInit() {
+    this.globalFilterCategories = this.cslFrameworkService?.getAlternativeCodeForFilter();
+    this.categoryKeys = this.cslFrameworkService.transformDataForCC();
+    this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
+    console.log('onit-explore', this.globalFilterCategories)
     this.isDesktopApp = this.utilService.isDesktopApp;
     this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe$)).subscribe(queryParams => {
       this.queryParams = { ...queryParams };
@@ -166,8 +175,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     }
     this.selectedFilters = filterData;
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
-      if (element.code === 'board') {
-        collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
+      if (element.code === this.frameworkCategoriesList[0]) {
+        collector[this.frameworkCategoriesList[0]] = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
       }
       return collector;
     }, {});
@@ -219,7 +228,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     });
     const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
     if (this.queryParams.key) {
-      delete softConstraints['board'];
+      delete softConstraints[this.frameworkCategoriesList[0]];
     }
     const option: any = {
       filters: _.omitBy(filters || {}, value => _.isArray(value) ? (!_.get(value, 'length') ? true : false) : false),
@@ -251,51 +260,16 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     if (this.frameworkId) {
       option.params.framework = this.frameworkId;
     }
+
     // Replacing cbse/ncert value with cbse
-    const cbseNcertExists = [_.get(filters, 'board[0]'), _.get(filters, 'board'), _.get(filters, 'se_boards[0]'), _.get(filters, 'se_boards')].some(board => _.toLower(board) === 'cbse/ncert');
+    const cbseNcertExists = [_.get(filters, `${this.frameworkCategoriesList[0]}[0]`), _.get(filters, this.frameworkCategoriesList[0]), _.get(filters, `${this.globalFilterCategories[0]}[0]`), _.get(filters, this.globalFilterCategories[0])].some(board => _.toLower(board) === 'cbse/ncert');
     if (cbseNcertExists) {
-      option.filters.se_boards = ['CBSE'];
+      option.filters[this.globalFilterCategories[0]] = ['CBSE'];
     }
     this.searchService.contentSearch(option)
       .pipe(
         mergeMap(data => {
-        //   const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
-        //   const filteredContents = omit(groupBy(get(data, 'result.content') || get(data, 'result.QuestionSet'), content => {
-        //     return ((this.queryParams['primaryCategory'] && this.queryParams['primaryCategory'].length > 0) ? content['subject'] : content['primaryCategory']);
-        // }), ['undefined']);
-        // for (const [key, value] of Object.entries(filteredContents)) {
-        //     const isMultipleSubjects = key && key.split(',').length > 1;
-        //     if (isMultipleSubjects) {
-        //         const subjects = key && key.split(',');
-        //         subjects.forEach((subject) => {
-        //             if (filteredContents[subject]) {
-        //                 filteredContents[subject] = uniqBy(filteredContents[subject].concat(value), 'identifier');
-        //             } else {
-        //                 filteredContents[subject] = value;
-        //             }
-        //         });
-        //         delete filteredContents[key];
-        //     }
-        // }
-       // const sections = [];
-        // for (const section in filteredContents) {
-        //     if (section) {
-        //         if (selectedSubjects.length && !(find(selectedSubjects, selectedSub => toLower(selectedSub) === toLower(section)))) {
-        //             continue;
-        //         }
-        //         sections.push({
-        //             name: section,
-        //             contents: filteredContents[section]
-        //         });
-        //     }
-        // }
-        // _map(sections, (section) => {
-        //     forEach(section.contents, contents => {
-        //         contents.cardImg = contents.appIcon || 'assets/images/book.png';
-        //     });
-        //     return section;
-        // });
-        //this.contentList = sections;
+        
         if(get(data, 'result.content') && get(data, 'result.QuestionSet')){
           this.contentList = _.concat(get(data, 'result.content'), get(data, 'result.QuestionSet'));
         } else if(get(data, 'result.content')){
@@ -529,7 +503,8 @@ logTelemetry(content, actionId) {
     }
     this.telemetryService.interact(appTelemetryInteractData);
   }
-  public viewAll(event) {
+  public viewAll(event) {  
+    let globalFilterAltCat4 = this.globalFilterCategories.fwCategory4?.alternativeCode ?? this.globalFilterCategories.fwCategory4?.code;
     this.moveToTop();
     this.logViewAllTelemetry(event);
     const searchQueryParams: any = {};
@@ -537,8 +512,8 @@ logTelemetry(content, actionId) {
     searchQueryParams['exists'] = undefined;
     searchQueryParams['primaryCategory'] = (this.queryParams.primaryCategory && this.queryParams.primaryCategory.length) ?
      this.queryParams.primaryCategory : [event.name];
-    (this.queryParams.primaryCategory && this.queryParams.primaryCategory.length) ? (searchQueryParams['subject'] = [event.name]) :
-    (searchQueryParams['se_subjects'] = this.queryParams.se_subjects);
+    (this.queryParams.primaryCategory && this.queryParams.primaryCategory.length) ? (searchQueryParams[this.frameworkCategoriesList[3]] = [event.name]) :
+    (searchQueryParams[globalFilterAltCat4] = this.queryParams[globalFilterAltCat4]);
     searchQueryParams['selectedTab'] = 'all';
     if (this.queryParams.channel) {
       searchQueryParams['channel'] = this.queryParams.channel;

@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { ConfigService } from '../../../shared/services/config/config.service';
 import { ServerResponse } from '../../../shared/interfaces/serverResponse';
-import {  IUserProfile,IUserData,IOrganization} from '../../../shared/interfaces/userProfile';
+import { IUserProfile, IUserData, IOrganization } from '../../../shared/interfaces/userProfile';
 import { LearnerService } from './../learner/learner.service';
 import { ContentService } from './../content/content.service';
 import { Injectable, Inject, EventEmitter } from '@angular/core';
@@ -16,7 +16,6 @@ import { APP_BASE_HREF } from '@angular/common';
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { DataService } from './../data/data.service';
 import { environment } from '@sunbird/environment';
-
 
 /**
  * Service to fetch user details from server
@@ -38,12 +37,14 @@ export class UserService {
   timeDiff: any;
 
   //default Board for the instance 
-  defaultBoard:any;
+  defaultBoard: any;
 
   /**
    * Contains root org id
    */
   public _rootOrgId: string;
+  private setGuest: boolean;
+  public formatedName: string;
   /**
    * Contains user profile.
    */
@@ -97,6 +98,7 @@ export class UserService {
   public orgNames: Array<string> = [];
 
   public rootOrgName: string;
+  public frameworkCategories;
 
   public organizationsDetails: Array<IOrganization>;
   public createManagedUser = new EventEmitter();
@@ -130,6 +132,8 @@ export class UserService {
     this.contentService = contentService;
     this.publicDataService = publicDataService;
     this.isDesktopApp = environment.isDesktopApp;
+    let fwObj = localStorage.getItem('fwCategoryObject');
+    this.frameworkCategories = JSON.parse(fwObj);
     try {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
       DataService.userId = this._userid;
@@ -142,9 +146,9 @@ export class UserService {
       DataService.sessionId = this._anonymousSid;
     }
     try {
-      this._appId = document.getElementById('appId')?(<HTMLInputElement>document.getElementById('appId')).value: undefined;
+      this._appId = document.getElementById('appId') ? (<HTMLInputElement>document.getElementById('appId')).value : undefined;
       this.defaultBoard = (<HTMLInputElement>document.getElementById('defaultBoard')).value;
-      this._cloudStorageUrls = document.getElementById('cloudStorageUrls')?(<HTMLInputElement>document.getElementById('cloudStorageUrls')).value.split(','):[];
+      this._cloudStorageUrls = document.getElementById('cloudStorageUrls') ? (<HTMLInputElement>document.getElementById('cloudStorageUrls')).value.split(',') : [];
     } catch (error) {
     }
     this._slug = baseHref && baseHref.split('/')[1] ? baseHref.split('/')[1] : '';
@@ -280,7 +284,6 @@ export class UserService {
     if (!this._userProfile.managedBy) {
       this.cacheService.set('userProfile', this._userProfile);
     }
-
     if (window['TagManager']) {
       window['TagManager'].SBTagService.pushTag({ userLoocation: profileData.userLocations, userTyep: profileData.profileUserType }, 'USERLOCATION_', true);
       window['TagManager'].SBTagService.pushTag(profileData.framework, 'USERFRAMEWORK_', true);
@@ -332,6 +335,21 @@ export class UserService {
         this.getUserProfile();
       }
     ));
+  }
+
+  /**
+ * This method invokes learner service to delete tthe user account
+ */
+  public deleteUser() {
+    const options = {
+      url: this.config.urlConFig.URLS.USER.DELETE,
+      data: {
+        request: {
+          'userId': this.userid
+        }
+      }
+    };
+    return this.learnerService.post(options);
   }
 
   get orgIdNameMap() {
@@ -486,11 +504,19 @@ export class UserService {
     }));
   }
 
+  /**
+    * @description - This method is called in the case where either of onboarding or framework popup is disabled and setGuest value is made true
+  */
+  setGuestUser(value: boolean, defaultFormatedName: string): void {
+    this.setGuest = value;
+    this.formatedName = defaultFormatedName;
+  }
+
   getGuestUser(): Observable<any> {
     if (this.isDesktopApp) {
       return this.getAnonymousUserPreference().pipe(map((response: ServerResponse) => {
         this.guestUserProfile = _.get(response, 'result');
-        if(!localStorage.getItem('guestUserDetails')) {
+        if (!localStorage.getItem('guestUserDetails')) {
           localStorage.setItem('guestUserDetails', JSON.stringify(this.guestUserProfile));
         }
         this._guestData$.next({ userProfile: this.guestUserProfile });
@@ -498,12 +524,16 @@ export class UserService {
       }));
     } else {
       const guestUserDetails = localStorage.getItem('guestUserDetails');
-
       if (guestUserDetails) {
         this.guestUserProfile = JSON.parse(guestUserDetails);
         this._guestData$.next({ userProfile: this.guestUserProfile });
         return of(this.guestUserProfile);
-      } else {
+      }
+      else if (this.setGuest) {
+        const configData = { "formatedName": this.formatedName }
+        return of(configData);
+      }
+      else {
         return throwError(undefined);
       }
     }
@@ -549,9 +579,9 @@ export class UserService {
       let userDetails = JSON.parse(localStorage.getItem('guestUserDetails'));
       userFramework = _.get(userDetails, 'framework');
     } else {
-      userFramework = (isUserLoggedIn && framework && _.pick(framework, ['medium', 'gradeLevel', 'board', 'id'])) || {};
+      userFramework = (isUserLoggedIn && framework && _.pick(framework, [this.frameworkCategories?.fwCategory2?.code, this.frameworkCategories?.fwCategory3?.code, this.frameworkCategories?.fwCategory1?.code, 'id'])) || {};
     }
-  
-    return { board: this.defaultBoard, ...userFramework };
+
+    return { [this.frameworkCategories?.fwCategory1?.code]: this.defaultBoard, ...userFramework };
   }
 }

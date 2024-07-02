@@ -437,7 +437,7 @@ module.exports = {
     var data = this.prepareTelemetryRequestBody(req, eventsData)
     var options = {
       method: 'POST',
-      url: envHelper.TELEMETRY_SERVICE_LOCAL_URL + 'v1/telemetry',
+      url: envHelper?.TELEMETRY_SERVICE_LOCAL_URL + 'v1/telemetry',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + getBearerToken(req)

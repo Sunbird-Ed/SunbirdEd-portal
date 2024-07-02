@@ -11,7 +11,8 @@ export const serverRes = {
         },
         'result': {
             'updateAvailable': true,
-            'url': 'https://dev.sunbirded.org/desktop/latest/artifactUrl/dev.0.0_64bit.dmg'
+            'url': 'https://dev.sunbirded.org/desktop/latest/artifactUrl/dev.0.0_64bit.dmg',
+            'version': '5.2.0'
         },
 
 
@@ -51,5 +52,14 @@ export const serverRes = {
             'responseCode': 'INTERNAL_SERVER_ERROR',
             'result': {}
         }
-    }
+    },
+    telemetryInteractObject :{ id: 'update-app-link', type: 'click', ver: '1.0.0' },
+    telemetryInteractEdata: {
+        id: 'update-app-link',
+        type: 'click',
+        pageid: 'library',
+        extra: {
+            'newVersion':'5.2.0'
+         }
+      }
 };

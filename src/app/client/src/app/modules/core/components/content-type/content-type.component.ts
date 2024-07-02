@@ -6,7 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TelemetryService } from '@sunbird/telemetry';
-
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 @Component({
   selector: 'app-content-type',
@@ -24,6 +24,8 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   subscription: any;
   userType: any;
   returnTo: string;
+  public globalFilterCategories;
+  public frameworkCategoriesList;
   constructor(
     public formService: FormService,
     public resourceService: ResourceService,
@@ -34,6 +36,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     public layoutService: LayoutService,
     private utilService: UtilService,
     public navigationhelperService: NavigationHelperService,
+    public cslFrameworkService:CslFrameworkService
   ) {}
 
 
@@ -76,6 +79,8 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   }
 
   showContentType(data) {
+    this.globalFilterCategories = this.cslFrameworkService.getAlternativeCodeForFilter();
+    this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
     this.generateTelemetry(data.contentType);
     let userPreference;
     let params;
@@ -96,7 +101,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
 
     // All and myDownloads Tab should not carry any filters from other tabs / user can apply fresh filters
     if (data.contentType === 'mydownloads' || data.contentType === 'all') {
-      params = _.omit(params, ['board', 'medium', 'gradeLevel', 'subject', 'se_boards', 'se_mediums', 'se_gradeLevels', 'se_subjects']);
+      params = _.omit(params, [...this.frameworkCategoriesList, ...this.globalFilterCategories]);
     }
 
     if (this.userService.loggedIn) {

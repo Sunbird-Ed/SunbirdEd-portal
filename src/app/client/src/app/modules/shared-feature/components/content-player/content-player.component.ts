@@ -13,6 +13,7 @@ import { takeUntil, mergeMap } from 'rxjs/operators';
 import { Subject, of, throwError } from 'rxjs';
 import { PublicPlayerService, ComponentCanDeactivate } from '@sunbird/public';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 @Component({
   selector: 'app-content-player',
@@ -47,15 +48,16 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
   groupId: string;
   isQuestionSet = false;
   isDesktopApp = false;
-  isTypeCopyQuestionset:boolean = false;
+  isTypeCopyQuestionset: boolean = false;
+  frameworkCategoriesList;
 
   @HostListener('window:beforeunload')
-    canDeactivate() {
-      // returning true will navigate without confirmation
-      // returning false will show a confirm dialog before navigating away
-      const deviceType = this.telemetryService.getDeviceType();
-      return deviceType === 'Desktop' && this.isQuestionSet && !this.isTypeCopyQuestionset ? false : true;
-    }
+  canDeactivate() {
+    // returning true will navigate without confirmation
+    // returning false will show a confirm dialog before navigating away
+    const deviceType = this.telemetryService.getDeviceType();
+    return deviceType === 'Desktop' && this.isQuestionSet && !this.isTypeCopyQuestionset ? false : true;
+  }
 
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
@@ -64,7 +66,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
     public copyContentService: CopyContentService, public permissionService: PermissionService,
     public contentUtilsServiceService: ContentUtilsServiceService, public popupControlService: PopupControlService,
     private configService: ConfigService,
-    public layoutService: LayoutService, public telemetryService: TelemetryService) {
+    public layoutService: LayoutService, public telemetryService: TelemetryService, public cslFrameworkService: CslFrameworkService) {
     this.playerOption = {
       showContentRating: true
     };
@@ -72,6 +74,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
 
   ngOnInit() {
     console.log('content');
+    this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
     this.isQuestionSet = _.includes(this.router.url, 'questionset');
     this.isDesktopApp = this.userService.isDesktopApp;
     this.initLayout();
@@ -91,7 +94,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
       this.getContent();
       CsGroupAddableBloc.instance.state$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
         this.isGroupAdmin = !_.isEmpty(_.get(this.activatedRoute.snapshot, 'queryParams.groupId'))
-        && _.get(data.params, 'groupData.isAdmin');
+          && _.get(data.params, 'groupData.isAdmin');
       });
     });
 
@@ -115,7 +118,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: this.groupId ? [{id: this.groupId, type: 'Group'}] : [],
+        cdata: this.groupId ? [{ id: this.groupId, type: 'Group' }] : [],
       },
       object: {
         id: this.contentId,
@@ -182,18 +185,18 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
   }
 
   getQuestionSetHierarchy() {
-    const serveiceRef =  this.userService.loggedIn ? this.playerService : this.publicPlayerService;
+    const serveiceRef = this.userService.loggedIn ? this.playerService : this.publicPlayerService;
     this.publicPlayerService.getQuestionSetHierarchy(this.contentId).pipe(
       takeUntil(this.unsubscribe$))
       .subscribe((response) => {
         this.showLoader = false;
         const contentDetails = {
           contentId: this.contentId,
-          contentData: response.questionSet
+          contentData: response?.questionset || response?.questionSet
         };
         this.playerConfig = serveiceRef.getConfig(contentDetails);
         this.playerConfig.context.objectRollup = this.objectRollup;
-        this.contentData = response.questionSet;
+        this.contentData = response?.questionset || response?.questionSet;
         this.showPlayer = true;
       }, (err) => {
         this.showLoader = false;

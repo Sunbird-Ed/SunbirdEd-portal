@@ -1,22 +1,6 @@
 import { ProfileService } from '../../services';
-import {
-    CertRegService,
-    CoursesService,
-    OrgDetailsService,
-    PlayerService,
-    SearchService,
-    UserService,
-    FormService
-} from '@sunbird/core';
-import {
-    ConfigService,
-    LayoutService,
-    NavigationHelperService,
-    ResourceService,
-    ToasterService,
-    UtilService,
-    ConnectionService
-} from '@sunbird/shared';
+import { CertRegService, CoursesService, OrgDetailsService, PlayerService, SearchService, UserService, FormService } from '@sunbird/core';
+import { ConfigService, LayoutService, NavigationHelperService, ResourceService, ToasterService, UtilService, ConnectionService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { of, throwError } from 'rxjs';
 import { TelemetryService } from '@sunbird/telemetry';
@@ -27,6 +11,7 @@ import { CsCourseService } from '@project-sunbird/client-services/services/cours
 import { CsCertificateService } from '@project-sunbird/client-services/services/certificate/interface';
 import { ProfilePageComponent } from './profile-page.component';
 import { Response } from './profile-page.spec.data';
+import { CslFrameworkService } from '../../../../modules/public/services/csl-framework/csl-framework.service';
 
 describe("ProfilePageComponent", () => {
     let profilePageComponent: ProfilePageComponent;
@@ -105,6 +90,7 @@ describe("ProfilePageComponent", () => {
 
     };
     const mockUtilService: Partial<UtilService> = {
+        getDataForCard: jest.fn(),
         isDesktopApp: true,
     };
     const mockSearchService: Partial<SearchService> = {};
@@ -138,6 +124,12 @@ describe("ProfilePageComponent", () => {
         monitor: jest.fn()
     };
     const mockCsCertificateService: Partial<CsCertificateService> = {};
+    const mockCslFrameworkService: Partial<CslFrameworkService> = {
+        getFrameworkCategoriesObject: jest.fn(),
+        frameworkLabelTransform: jest.fn(),
+        getAllFwCatName: jest.fn(),
+    };
+
 
     beforeAll(() => {
         profilePageComponent = new ProfilePageComponent(
@@ -162,9 +154,11 @@ describe("ProfilePageComponent", () => {
             mockFormService as FormService,
             mockCertificateDownloadAsPdfService as CertificateDownloadAsPdfService,
             mockConnectionService as ConnectionService,
+            mockCslFrameworkService as CslFrameworkService,
             mockCsCertificateService as CsCertificateService
         );
     });
+
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -193,6 +187,31 @@ describe("ProfilePageComponent", () => {
             profilePageComponent.userProfile = Response.userData;
             //act
             profilePageComponent.getOrgDetails();
+            expect(profilePageComponent.disableDelete).toBeFalsy();
+        });
+    });
+
+    describe('calling the org details method',() =>{
+        it('should return the org details with the role and disableDelete as true', () => {
+            //arrange
+            profilePageComponent.userProfile = Response.userProfileforDeleteUser
+            profilePageComponent.userProfile['roles'] = [{
+                "role": "ORG_ADMIN",
+            }];
+            profilePageComponent.userRoles = ['ORG_ADMIN', 'CONTENT_CREATOR', 'PUBLIC'];
+            //act
+            profilePageComponent.getOrgDetails();
+            expect(profilePageComponent.disableDelete).toBeTruthy();
+        });
+        it('should return the org details with the role and disableDelete as false', () => {
+            //arrange
+            profilePageComponent.userRoles = ['PUBLIC'];
+            profilePageComponent.userProfile['roles'] = [{
+                "role": "PUBLIC",
+            }];
+            //act
+            profilePageComponent.getOrgDetails();
+            expect(profilePageComponent.disableDelete).toBeFalsy();
         });
     });
 
@@ -276,12 +295,14 @@ describe("ProfilePageComponent", () => {
             mockLayoutService.switchableLayout = jest.fn(() => of([{ isConnected: true }]));
             mockCoursesService._enrolledCourseData$ = jest.fn(() => of({ err: null, enrolledCourses: Response.courseSuccess.result.courses })) as any;
             mockConnectionService.monitor = jest.fn(() => of(true));
+            profilePageComponent.userRoles = ['ORG_ADMIN', 'CONTENT_CREATOR', 'PUBLIC'];
             jest.spyOn(profilePageComponent, 'getOrgDetails').mockImplementation();
             jest.spyOn(profilePageComponent, 'getContribution').mockImplementation();
             jest.spyOn(profilePageComponent, 'getTrainingAttended').mockImplementation();
             jest.spyOn(profilePageComponent, 'getOtherCertificates').mockImplementation(() => {
                 return {}
             });
+            jest.spyOn(mockCslFrameworkService, 'getAllFwCatName').mockReturnValue(['category1', 'category2']);
             const expectedFormConfig = { code: 'persona1', name: 'Persona 1' };
             //act
             profilePageComponent.ngOnInit();
@@ -294,6 +315,7 @@ describe("ProfilePageComponent", () => {
                 expect(profilePageComponent.getContribution).toHaveBeenCalled();
                 expect(profilePageComponent.getTrainingAttended).toHaveBeenCalled();
                 expect(mockFormService.getFormConfig).toHaveBeenCalledTimes(2);
+		        expect(mockCslFrameworkService.getAllFwCatName).toHaveBeenCalled();
                 done();
             });
         });
@@ -302,6 +324,7 @@ describe("ProfilePageComponent", () => {
             //arrange
             mockUserService._userData$ = jest.fn(() => of({ err: null, userProfile: Response.userData })) as any;
             mockConnectionService.monitor = jest.fn(() => of(true));
+            profilePageComponent.userRoles = ['ORG_ADMIN', 'CONTENT_CREATOR', 'PUBLIC'];
             jest.spyOn(profilePageComponent, 'getOrgDetails').mockImplementation();
             mockFormService.getFormConfig = jest.fn(() => of([{ code: 'teacher' }, { code: 'persona', children: { teacher: [{ code: 'subPersona', templateOptions: { multiple: 'true', options: [{ value: 'sampleType', lablel: 'samplelabel' }] } }] } }])) as any;
             mockCoursesService._enrolledCourseData$ = jest.fn(() => of({ err: null, enrolledCourses: Response.courseSuccess.result.courses })) as any;
@@ -650,6 +673,8 @@ describe("ProfilePageComponent", () => {
         });
     });
 
+   
+
     describe("ngOnDestroy", () => {
         it('should destroy sub', () => {
             //arrange
@@ -859,5 +884,21 @@ describe("ProfilePageComponent", () => {
             //assert
             expect(navigateSpy).toHaveBeenCalledWith([url], { queryParams: { formaction: formAction } });
         });
+        it('should call a method navigatetoRoute when the delete user button is clicked', () => {
+            profilePageComponent.userProfile = Response.userProfileforDeleteUser
+            const url = '/profile/delete-user';
+            const navigateSpy = jest.spyOn(mockRouter, 'navigate');
+            profilePageComponent.navigatetoRoute(url);
+            expect(navigateSpy).toHaveBeenCalledWith([url]);
+        });
+        it('should call a method navigatetoRoute when the delete user button is clicked with more roles', () => {
+            profilePageComponent.userProfile = Response.userProfileforDeleteUser
+            profilePageComponent.userProfile.userRoles =['PUBLIC','BOOK_CREATOR','CONTENT_CREATOR'];
+            const url = '/profile/delete-user';
+            const msg = 'Your role doesnot allow you to delete your account. Please contact support!'
+            profilePageComponent.navigatetoRoute(url);
+            expect(mockToasterService.warning).toBeCalledWith(msg)
+        });
     });
+    
 });

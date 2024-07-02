@@ -5,7 +5,7 @@ import { WorkspaceRoutingModule } from './workspace-routing.module';
 import { SharedModule } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
-import { WorkSpaceService, EditorService , BatchService, ReviewCommentsService} from './services';
+import { WorkSpaceService, EditorService, BatchService, ReviewCommentsService } from './services';
 import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, UploadedComponent,
@@ -25,7 +25,7 @@ import { PlayerHelperModule } from '@sunbird/player-helper';
 import { ContentSearchModule } from '@sunbird/content-search';
 import { CollectionEditorLibraryModule } from '@project-sunbird/sunbird-collection-editor'; //commented for infinite-scroll
 import { MatTooltipModule } from '@angular/material/tooltip';
-
+import { QuestionsetEditorLibraryModule } from '@project-sunbird/sunbird-questionset-editor';
 @NgModule({
   imports: [
     CommonModule,
@@ -39,7 +39,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     PlayerHelperModule,
     ContentSearchModule,
     CollectionEditorLibraryModule, //commented for infinte-scroll
-    MatTooltipModule
+    MatTooltipModule,
+    QuestionsetEditorLibraryModule
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent, DateFilterXtimeAgoPipe,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,

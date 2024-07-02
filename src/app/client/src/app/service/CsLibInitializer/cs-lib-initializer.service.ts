@@ -32,35 +32,38 @@ export class CsLibInitializerService {
             }
           },
           services: {
-              groupServiceConfig: {
-                apiPath: '/learner/group/v1',
-                dataApiPath: '/learner/data/v1/group',
-                updateGroupGuidelinesApiPath: '/learner/group/membership/v1'
-              },
-              userServiceConfig: {
-                apiPath: '/learner/user/v2',
-              },
-              formServiceConfig: {
-                apiPath: '/learner/data/v1/form',
-              },
-              courseServiceConfig: {
-                apiPath: '/learner/course/v1',
-                certRegistrationApiPath: '/learner/certreg/v2/certs'
-              },
-              discussionServiceConfig: {
-                apiPath: '/discussion',
-              },
-              contentServiceConfig: {
-                hierarchyApiPath: '/learner/questionset/v1',
-                questionListApiPath: '/api/question/v1'
-              },
-              notificationServiceConfig: {
-                apiPath: '/learner/notification/v1/feed'
-              },
-              certificateServiceConfig: {
-                apiPath: 'v1/certs/search',
-                rcApiPath: 'api/rc/certificate/v1'
-              }
+            groupServiceConfig: {
+              apiPath: '/learner/group/v1',
+              dataApiPath: '/learner/data/v1/group',
+              updateGroupGuidelinesApiPath: '/learner/group/membership/v1'
+            },
+            userServiceConfig: {
+              apiPath: '/learner/user/v2',
+            },
+            formServiceConfig: {
+              apiPath: '/learner/data/v1/form',
+            },
+            courseServiceConfig: {
+              apiPath: '/learner/course/v1',
+              certRegistrationApiPath: '/learner/certreg/v2/certs'
+            },
+            discussionServiceConfig: {
+              apiPath: '/discussion',
+            },
+            contentServiceConfig: {
+              hierarchyApiPath: '/learner/questionset/v2',
+              questionListApiPath: '/api/question/v2'
+            },
+            notificationServiceConfig: {
+              apiPath: '/learner/notification/v1/feed'
+            },
+            certificateServiceConfig: {
+              apiPath: 'v1/certs/search',
+              rcApiPath: 'api/rc/certificate/v1'
+            },
+            frameworkServiceConfig: {
+              apiPath: '/api/framework/v1'
+            }
           }
       },
       null,

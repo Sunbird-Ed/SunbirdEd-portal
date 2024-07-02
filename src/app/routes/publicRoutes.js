@@ -1,8 +1,9 @@
 const proxyHeaders = require('../proxy/proxyUtils.js')
 const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')
-const envHelper = require('../helpers/environmentVariablesHelper.js')
-const contentProxyUrl = envHelper.CONTENT_PROXY_URL
+const envHelper = require('../helpers/environmentVariablesHelper.js');
+const utils = require('../helpers/utils.js');
+const contentProxyUrl  = utils?.defaultHost(utils?.envVariables?.CONTENT_PROXY_URL);
 const contentServiceBaseUrl = envHelper.CONTENT_URL
 const { logger } = require('@project-sunbird/logger');
 const proxyUtils = require('../proxy/proxyUtils.js')

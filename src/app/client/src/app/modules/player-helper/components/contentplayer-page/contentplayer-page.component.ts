@@ -9,6 +9,7 @@ import { takeUntil, filter } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { PublicPlayerService } from '@sunbird/public';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 @Component({
   selector: 'app-contentplayer-page',
@@ -41,7 +42,8 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
   playerOption: any;
   layoutConfiguration;
   isDesktopApp = false;
-
+  transformCollectionData;
+  frameworkCategoriesList;
   constructor(private activatedRoute: ActivatedRoute,
     private configService: ConfigService,
     public router: Router,
@@ -51,10 +53,13 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
     private utilService: UtilService,
     private telemetryService: TelemetryService,
     public layoutService: LayoutService,
-    private playerService: PublicPlayerService
+    private playerService: PublicPlayerService,
+    public cslFrameworkService:CslFrameworkService
   ) { }
 
   ngOnInit() {
+    this.frameworkCategoriesList = this.cslFrameworkService.getGlobalFilterCategoriesObject();
+    this.transformCollectionData = this.cslFrameworkService.transformContentDataFwBased(this.frameworkCategoriesList,this.collectionData);
     this.isDesktopApp = this.utilService.isDesktopApp;
     this.initLayout();
     this.utilService.emitHideHeaderTabsEvent(true);
@@ -113,7 +118,7 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
       this.playerService.getContent(this.contentId, params)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(response => {
-          this.contentDetails = _.get(response, 'result.content') || _.get(response, 'result.questionSet');
+          this.contentDetails = _.get(response, 'result.content') || _.get(response, 'result.questionset') || _.get(response, 'result.questionSet');
           const status = !_.has(this.contentDetails, 'desktopAppMetadata.isAvailable') ? false :
           !_.get(this.contentDetails, 'desktopAppMetadata.isAvailable');
           this.isContentDeleted.next({value: status});

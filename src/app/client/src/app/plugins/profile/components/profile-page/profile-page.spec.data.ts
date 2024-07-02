@@ -118,6 +118,7 @@ export const Response = {
             }
         ],
         'rootOrgId': 'ORG_001',
+        'userRoles':['ORG_ADMIN', 'COURSE_MENTOR', 'CONTENT_REVIEWER', 'PUBLIC'],
         'firstName': 'Reviewer',
         'phone': '******7418',
         'dob': '2018-04-23',
@@ -552,6 +553,72 @@ export const Response = {
             ]
         }
     },
+    userProfileforDeleteUser: {
+      'identifier': '3730d46a-2f28-4b98-b39a-1b4bd440025f',
+      'thumbnail': null,
+      'profileVisibility': {
+          'lastName': 'public',
+      },
+      'updatedBy': '3730d46a-2f28-4b98-b39a-1b4bd440025f',
+      'externalIds': [],
+      'registryId': null,
+      'roleList': [
+          {
+              'name': 'public',
+              'id': 'PUBLIC'
+          }
+      ],
+      'rootOrgId': '0126632859575746566',
+      'organisations': [
+          {
+              'updatedBy': null,
+              'approvedBy': null,
+          }
+      ],
+      'maskedEmail': 'am********@tarento.com',
+      'tempPassword': null,
+      'email': 'am********@tarento.com',
+      'rootOrg': {
+          'dateTime': null,
+          'status': 1
+      },
+      'userName': 'amitkumar2045',
+      'userId': '3730d46a-2f28-4b98-b39a-1b4bd440025f',
+      'promptTnC': false,
+      'emailVerified': true,
+      'userRoles':['PUBLIC'],
+      "roles": [
+        {
+            "role": "BOOK_CREATOR",
+            "createdDate": null,
+            "updatedBy": "fbe926ac-a395-40e4-a65b-9b4f711d7642",
+            "createdBy": "4cd4c690-eab6-4938-855a-447c7b1b8ea9",
+            "scope": [
+                {
+                    "organisationId": "01269878797503692810"
+                }
+            ],
+            "updatedDate": "2022-03-23 10:14:23:517+0000"
+        },
+        ],
+      'framework': {
+          'gradeLevel': [
+              'Class 5'
+          ],
+          'subject': [
+              'English'
+          ],
+          'id': [
+              'as_k-12'
+          ],
+          'medium': [
+              'Hindi'
+          ],
+          'board': [
+              'State (Assam)'
+          ]
+      }
+  },
     finalDeclarationObjStructure: [
         {
             'label': 'NCERT type',

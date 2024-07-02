@@ -246,6 +246,57 @@ export const resourceData = {
     },
     option: {
         dialCode: '6G5YNV'
+    },
+    getContentResponse: {
+        'id': 'api.content.read',
+        'ver': '1.0',
+        'ts': '2019-09-10T09:23:52.401Z',
+        'params': {
+            'resmsgid': 'b448b410-d3ac-11e9-953c-0be7c8ef2b37',
+            'msgid': '0ca19e30-846d-9a68-80b8-f823fdd7c974',
+            'status': 'successful',
+            'err': null,
+            'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+            'content': {
+                'copyright': 'ORG_002',
+                'channel': '01246944855007232011',
+                'language': [
+                    'English'
+                ],
+                'mimeType': 'video/mp4',
+                'contentType': 'Resource',
+                'identifier': 'do_112831862871203840114',
+                'audience': [
+                    'Learner'
+                ],
+                'visibility': 'Default',
+                'mediaType': 'content',
+                'osId': 'org.ekstep.quiz.app',
+                'license': 'Creative Commons Attribution (CC BY)',
+                'concepts': [
+
+                ],
+                'name': 'Test Resource Cert',
+                'status': 'Live',
+                'code': '7e6630c7-3818-4319-92ac-4d08c33904d8',
+                'createdOn': '2019-08-21T12:11:50.644+0000',
+                'lastUpdatedOn': '2019-08-21T12:15:13.020+0000',
+                'creator': 'Pradyumna',
+                'pkgVersion': 1,
+                'versionKey': '1566389713020',
+                'framework': 'K-12',
+                'createdBy': 'c4cc494f-04c3-49f3-b3d5-7b1a1984abad',
+                'resourceType': 'Learn',
+                'languageCode': 'en',
+                'orgDetails': {
+                    'email': null,
+                    'orgName': 'ORG_002'
+                }
+            }
+        }
     }
 };
 

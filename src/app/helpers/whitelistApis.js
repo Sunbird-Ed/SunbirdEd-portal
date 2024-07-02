@@ -24,7 +24,7 @@ const ROLE = {
   TEMP_ROLE: 'TEMP_ROLE', // Use only for deprecated APIs
   ALL: 'ALL',  // Use when user does not have PUBLIC role (Case: User bulk upload),
   ANONYMOUS: 'ANONYMOUS',
-  PROGRAM_MANAGER:"PROGRAM_MANAGER",
+  PROGRAM_MANAGER: "PROGRAM_MANAGER",
   PROGRAM_DESIGNER: "PROGRAM_DESIGNER"
 };
 
@@ -434,6 +434,10 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+    '/learner/user/v1/delete': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
     '/learner/user/v1/managed': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
@@ -675,7 +679,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
-    '/learner/questionset/v1/hierarchy/:do_id': {
+    '/learner/questionset/v2/hierarchy/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ANONYMOUS]
     },
@@ -688,6 +692,10 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/learner/anonymous/otp/v1/generate': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
+    },
+    '/learner/anonymous/delete/otp/v1/generate': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ANONYMOUS]
     },
@@ -1354,7 +1362,7 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/apple/auth': {
-        checksNeeded: []
+      checksNeeded: []
     },
     // discussion forum apis
     '/discussion/user/v1/create': {
@@ -1602,100 +1610,107 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     // Question & QuestionSet API's
-    '/action/questionset/v1/create': {
+    '/action/questionset/v2/create': {
       description: 'QuestionSet create',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_CREATOR
       ]
     },
-    '/action/questionset/v1/review/:do_id': {
+    '/action/questionset/v2/review/:do_id': {
       description: 'QuestionSet review',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_CREATOR
       ]
     },
-    '/action/questionset/v1/hierarchy/update': {
+    '/action/questionset/v2/hierarchy/update': {
       description: 'QuestionSet hierarchy update',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_CREATOR
       ]
     },
-    '/action/questionset/v1/update/:do_id': {
+    '/action/questionset/v2/update/:do_id': {
       description: 'QuestionSet update',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_CREATOR
       ]
     },
-    '/action/questionset/v1/add': {
+    '/action/questionset/v2/add': {
       description: 'Link Question to QuestionSet',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_CREATOR
       ]
     },
-    '/action/questionset/v1/publish/:do_id': {
+    '/action/questionset/v2/publish/:do_id': {
       description: 'QuestionSet publish',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_REVIEWER
       ]
     },
-    '/action/questionset/v1/reject/:do_id': {
+    '/action/questionset/v2/reject/:do_id': {
       description: 'QuestionSet reject',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_REVIEWER
       ]
     },
-    '/action/questionset/v1/read/:do_id': {
+    '/action/questionset/v2/read/:do_id': {
       description: 'Question read',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
-    '/action/questionset/v1/hierarchy/:do_id': {
+    '/action/questionset/v2/hierarchy/:do_id': {
       description: 'QuestionSet hierarchy read',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
-    '/content/questionset/v1/copy/:do_id': {
+    '/content/questionset/v2/copy/:do_id': {
       description: 'QuestionSet Copy',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_CREATOR
       ]
     },
-    '/action/question/v1/read/:do_id': {
+    '/action/question/v2/read/:do_id': {
       description: 'Question read',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
-    '/action/question/v1/create': {
+    '/action/question/v2/create': {
       description: 'Question create',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_CREATOR
       ]
     },
-    '/action/question/v1/review/:do_id': {
+    '/action/question/v2/review/:do_id': {
       description: 'Question Review',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_CREATOR
       ]
     },
-    '/action/question/v1/publish/:do_id': {
+    '/action/question/v2/publish/:do_id': {
       description: 'Question publish',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_REVIEWER
       ]
     },
-    '/action/question/v1/update/:do_id': {
+    '/action/question/v2/update/:do_id': {
       description: 'Question update',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR
+      ]
+    },
+    '/action/question/v2/list': {
+      description: 'Question List',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_CREATOR
@@ -1712,11 +1727,11 @@ const API_LIST = {
     },
     '/report/request/list/:tag': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR,ROLE.PROGRAM_DESIGNER,ROLE.PROGRAM_MANAGER]
+      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR, ROLE.PROGRAM_DESIGNER, ROLE.PROGRAM_MANAGER]
     },
     '/dataset/v1/request/list/:tag': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR,ROLE.PROGRAM_DESIGNER,ROLE.PROGRAM_MANAGER]
+      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR, ROLE.PROGRAM_DESIGNER, ROLE.PROGRAM_MANAGER]
     },
     '/report/request/read/:tag': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1728,11 +1743,11 @@ const API_LIST = {
     },
     '/report/request/submit': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR,ROLE.PROGRAM_DESIGNER,ROLE.PROGRAM_MANAGER]
+      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR, ROLE.PROGRAM_DESIGNER, ROLE.PROGRAM_MANAGER]
     },
     '/dataset/v1/request/submit': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR,ROLE.PROGRAM_DESIGNER,ROLE.PROGRAM_MANAGER]
+      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR, ROLE.PROGRAM_DESIGNER, ROLE.PROGRAM_MANAGER]
     },
     '/kendra/entities/mlcore/v1/entityTypesByLocationAndRole/:stateId': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1742,7 +1757,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/kendra/resource/mlreports/v1/filtervalues':{
+    '/kendra/resource/mlreports/v1/filtervalues': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
@@ -1810,11 +1825,11 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    "/assessment/programs/mlcore/v1/join/:id":{
+    "/assessment/programs/mlcore/v1/join/:id": {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    "/assessment/users/mlcore/v1/solutions/:id":{
+    "/assessment/users/mlcore/v1/solutions/:id": {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
@@ -1919,7 +1934,7 @@ const API_LIST = {
     '/content/content/v1/reject/:do_id',
     '/content/content/v1/flag/accept/:do_id',
     '/content/content/v1/flag/reject/:do_id',
-    '/learner/questionset/v1/hierarchy/:do_id',
+    '/learner/questionset/v2/hierarchy/:do_id',
     '/learner/data/v1/system/settings/get/:slug',
     '/learner/course/v1/hierarchy/:do_id',
     '/learner/user/v5/read/:userId',
@@ -2010,17 +2025,18 @@ const API_LIST = {
     '/discussion/user/uid/:uid',
     '/device/register/:deviceId',
     '/user/v1/switch/:userId',
-    '/action/questionset/v1/review/:do_id',
-    '/action/questionset/v1/update/:do_id',
-    '/action/questionset/v1/publish/:do_id',
-    '/action/questionset/v1/reject/:do_id',
-    '/action/questionset/v1/read/:do_id',
-    '/action/questionset/v1/hierarchy/:do_id',
-    '/content/questionset/v1/copy/:do_id',
-    '/action/question/v1/read/:do_id',
-    '/action/question/v1/review/:do_id',
-    '/action/question/v1/publish/:do_id',
-    '/action/question/v1/update/:do_id',
+    '/action/questionset/v2/review/:do_id',
+    '/action/questionset/v2/update/:do_id',
+    '/action/questionset/v2/publish/:do_id',
+    '/action/questionset/v2/reject/:do_id',
+    '/action/questionset/v2/read/:do_id',
+    '/action/questionset/v2/hierarchy/:do_id',
+    '/content/questionset/v2/copy/:do_id',
+    '/action/question/v2/read/:do_id',
+    '/action/question/v2/review/:do_id',
+    '/action/question/v2/publish/:do_id',
+    '/action/question/v2/update/:do_id',
+    '/action/question/v2/list',
     '/report/request/list/:tag',
     '/dataset/v1/request/list/:tag',
     '/dataset/v1/request/read/:tag',
@@ -2056,6 +2072,7 @@ const API_LIST = {
     '/kendra/resource/mlreports/v1/filtervalues',
     '/assessment/programs/mlcore/v1/join/:id',
     '/assessment/users/mlcore/v1/solutions/:id',
+    '/learner/user/v1/delete',
   ]
 };
 module.exports = API_LIST;

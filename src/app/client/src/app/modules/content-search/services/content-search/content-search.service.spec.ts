@@ -1,13 +1,15 @@
 import { FrameworkService, ChannelService } from '../../../core';
 import { ContentSearchService } from './content-search.service';
 import { of } from "rxjs";
-
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 describe('ContentSearchService', () => {
 
   let contentSearchService: ContentSearchService;
 
-  const mockFrameworkService: Partial<FrameworkService> = {};
+  const mockFrameworkService: Partial<FrameworkService> = {
+    getSelectedFrameworkCategories: jest.fn(),
+    };
   const mockChannelService: Partial<ChannelService> = {
     getFrameWork: jest.fn(() => of({
       'id': 'api.channel.read',
@@ -68,10 +70,21 @@ describe('ContentSearchService', () => {
     })),
   };
 
+  const mockCslFrameworkService: Partial<CslFrameworkService> = {
+    getAlternativeCodeForFilter: jest.fn(() => ['category1', 'category2', 'category3', 'category4']),
+    getFrameworkCategories: jest.fn(),
+    setDefaultFWforCsl: jest.fn(),
+    getFrameworkCategoriesObject : jest.fn(),
+    getGlobalFilterCategories: jest.fn(() => ({
+      fwCategory1: { },
+    })),
+  };
+
   beforeAll(() => {
     contentSearchService = new ContentSearchService(
       mockFrameworkService as FrameworkService,
-      mockChannelService as ChannelService
+      mockChannelService as ChannelService,
+      mockCslFrameworkService as CslFrameworkService
     );
   });
 
@@ -109,10 +122,152 @@ describe('ContentSearchService', () => {
     expect(contentSearchService.fetchChannelData).toHaveBeenCalled();
   });
 
-  it('should map categories to new keys', () => {
-    const input = { subject: [], medium: [], gradeLevel: [], board: [], contentType: 'course' };
-    const result = contentSearchService.mapCategories({ filters: input });
-    expect(result).toEqual({ subject: [], se_mediums: [], se_gradeLevels: [], se_boards: [], contentType: 'course' });
+  it('should map categories correctly using getCategoriesMapping', () => {
+    contentSearchService.frameworkCategories = {
+      fwCategory1: { code: 'code1' },
+      fwCategory2: { code: 'code2' },
+      fwCategory3: { code: 'code3' },
+    };
+
+    const filters = {
+      'code1': 'value1',
+      'code2': 'value2',
+      'code3': 'value3',
+    };
+    const mappedCategories = contentSearchService.mapCategories({ filters });
+    expect(mappedCategories).toEqual({
+      'category1': 'value1',
+      'category2': 'value2',
+      'category3': 'value3',
+    });
   });
+
+  it('should not map fwCategory4 in mapCategories', () => {
+    contentSearchService.frameworkCategories = {
+      fwCategory1: { code: 'code1' },
+      fwCategory2: { code: 'code2' },
+      fwCategory3: { code: 'code3' },
+    };
+
+    const filters = {
+      'code1': 'value1',
+      'code2': 'value2',
+      'code3': 'value3',
+    };
+    const mappedCategories = contentSearchService.mapCategories({ filters });
+    expect(mappedCategories['category4']).toBeUndefined();
+  });
+
+  it('should return filters when custodianOrg is false or boardName is not provided', () => {
+    contentSearchService['custodianOrg'] = false;
+    const result = contentSearchService.fetchFilter();
+    result.subscribe(filters => {
+      expect(filters).toEqual(contentSearchService.filters);
+    });
+  });
+
+  it('should return filters for the specified boardName', () => {
+    contentSearchService['custodianOrg'] = true;
+    contentSearchService.frameworkCategories = {
+      fwCategory1: { code: 'code1' },
+      fwCategory2: { code: 'code2' },
+      fwCategory3: { code: 'code3' },
+      fwCategory4: { code: 'code4' },
+    };
+
+    const boardName = 'SampleBoard';
+    const selectedBoard = {
+      name: 'SampleBoard',
+      identifier: 'sampleIdentifier',
+    };
+
+    contentSearchService['_filters'][contentSearchService.frameworkCategories?.fwCategory1?.code] = [selectedBoard];
+    mockFrameworkService.getSelectedFrameworkCategories = jest.fn(() => of({
+      result: {
+        framework: {
+          categories: [
+            { code: 'code2', terms: ['term1', 'term2'] },
+            { code: 'code3', terms: ['term3', 'term4'] },
+            { code: 'code4', terms: ['term5', 'term6'] },
+          ],
+        },
+      },
+    }) as any
+    );
+
+    const result = contentSearchService.fetchFilter(boardName);
+    result.subscribe(filters => {
+      expect(filters[contentSearchService.frameworkCategories?.fwCategory2?.code]).toEqual(['term1', 'term2']);
+      expect(filters[contentSearchService.frameworkCategories?.fwCategory3?.code]).toEqual(['term3', 'term4']);
+      expect(filters[contentSearchService.frameworkCategories?.fwCategory4?.code]).toEqual(['term5', 'term6']);
+    });
+  });
+
+  it('should fetch channel data and set filters accordingly', () => {
+    contentSearchService['channelId'] = 'sampleChannelId';
+    contentSearchService['custodianOrg'] = true;
+    contentSearchService['defaultBoard'] = 'fw1';
+    contentSearchService.frameworkCategories = {
+      fwCategory1: { code: 'code1' },
+      fwCategory2: { code: 'code2' },
+      fwCategory3: { code: 'code3' },
+      fwCategory4: { code: 'code4' },
+    };
+    const result = contentSearchService.fetchChannelData();
+    result.subscribe(success => {
+      expect(success).toBeTruthy();
+      expect(contentSearchService._frameworkId).toEqual('fw1');
+      expect(contentSearchService['_filters']['code1']).toEqual(['term1', 'term2']);
+      expect(contentSearchService['_filters']['code2']).toEqual(['term3', 'term4']);
+      expect(contentSearchService['_filters']['code3']).toEqual(['term5', 'term6']);
+      expect(contentSearchService['_filters']['code4']).toBeUndefined();
+      expect(contentSearchService['_filters']['publisher']).toEqual([{ name: 'Publisher1' }]);
+    });
+  });
+
+  it('should set filters for fwCategory1 when custodianOrg is false and category.code matches', () => {
+    contentSearchService['channelId'] = 'sampleChannelId';
+    contentSearchService['custodianOrg'] = false;
+    contentSearchService['defaultBoard'] = 'fw1';
+    contentSearchService.frameworkCategories = {
+      fwCategory1: { code: 'code1' },
+      fwCategory2: { code: 'code2' },
+      fwCategory3: { code: 'code3' },
+      fwCategory4: { code: 'code4' },
+    };
+
+    const result = contentSearchService.fetchChannelData();
+
+    result.subscribe(success => {
+      expect(success).toBeTruthy();
+      expect(contentSearchService._frameworkId).toEqual('fw1');
+      expect(contentSearchService['_filters']['code1']).toEqual(['term1', 'term2']);
+      expect(contentSearchService['_filters']['code2']).toBeUndefined();
+      expect(contentSearchService['_filters']['code3']).toBeUndefined();
+      expect(contentSearchService['_filters']['code4']).toBeUndefined();
+      expect(contentSearchService['_filters']['publisher']).toBeUndefined();
+    });
+  });
+
+  it('should return filters when custodianOrg is false or boardName is not provided', ()  => {
+    contentSearchService['custodianOrg'] = false;
+    const result = contentSearchService.fetchFilter();
+    result.subscribe(filters => {
+      expect(filters).toEqual(contentSearchService.filters);
+    });
+  });
+
+  it('should return an observable that skips while data is undefined or null', () => {
+    const testData = [1, 2, 3];
+    const expectedData = testData.slice();
+    const observable$ = contentSearchService.searchResults$;
+    const emittedData: any[] = [];
+    observable$.subscribe(data => {
+      emittedData.push(data);
+    });
+    contentSearchService['_searchResults$'].next(testData);
+    expect(emittedData).toEqual([expectedData]);
+  });
+
 
 });

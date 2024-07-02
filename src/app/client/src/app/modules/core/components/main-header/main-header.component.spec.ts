@@ -135,6 +135,7 @@ xdescribe('MainHeaderComponent', () => {
   const mockcacheService: Partial<CacheService> = {
     set: jest.fn(),
     exists: jest.fn(() => true),
+    remove:jest.fn()
   };
   const mockcdr: Partial<ChangeDetectorRef> = {
     detectChanges: jest.fn()
@@ -503,18 +504,49 @@ xdescribe('MainHeaderComponent', () => {
       expect(component.searchBox.smallBox).toBeFalsy();
       expect(component.searchBox.mediumBox).toBeTruthy();
     });
-    
+
   });
 
-   it('should call set window config method innerWidth < 548', () => {
-    Object.defineProperty(window, 'innerWidth', {
-      value: 400,
+  it('should call set window config method innerWidth < 548', () => {
+    Object.defineProperty(window, 'onresize', (e) => {
+      Object.defineProperty(window, 'innerWidth', {
+        value: 400,
+      });
+      component.setWindowConfig();
+      expect(component.searchBox.largeBox).toBeFalsy();
+      expect(component.searchBox.smallBox).toBeTruthy();
+      expect(component.searchBox.mediumBox).toBeFalsy();
     });
-    component.setWindowConfig();
-    expect(component.searchBox.largeBox).toBeFalsy();
-    expect(component.searchBox.smallBox).toBeTruthy();
-    expect(component.searchBox.mediumBox).toBeFalsy();
+  });
+  it('should call the logout method', (done) => {
+    Object.defineProperty(window, 'location', {
+      writable: true,
+      value: { 
+        replace: jest.fn(),
+      }
+    });
+    component.logout();
+    jest.spyOn(component, 'logout').mockImplementation();
+    jest.spyOn(mockcacheService, 'remove').mockImplementation();
+    component.logout();
+    expect(component.logout).toHaveBeenCalled();
+    expect(mockcacheService.remove).toHaveBeenCalled();
+    done();
   });
 
+  it('should call getLogoutInteractEdata and update the telemetry objects of logout Interact data', () => {
+    const obj = component.getLogoutInteractEdata();
+    expect(JSON.stringify(obj)).toBe(JSON.stringify(mockData.LogoutInteractEdata));
+  });
+
+  it('should call the navigate method with the url', () => {
+    let url ='/explore'
+    component.navigate(url);
+    jest.spyOn(mockrouter, 'navigate').mockImplementation();
+    jest.spyOn(component, 'navigate').mockImplementation();
+    component.navigate(url);
+    expect(component.navigate).toHaveBeenCalledWith(url);
+    expect(mockrouter.navigate).toHaveBeenCalledWith([url]);
+});
 
 });

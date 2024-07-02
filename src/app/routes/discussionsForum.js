@@ -1,7 +1,8 @@
 const proxyUtils = require('../proxy/proxyUtils.js');
 const BASE_REPORT_URL = "/discussion";
 const proxy = require('express-http-proxy');
-const { discussions_middleware } = require('../helpers/environmentVariablesHelper.js');
+const utils = require('../helpers/utils.js');
+const  discussions_middleware = utils?.defaultHost(utils?.envVariables?.discussions_middleware);
 const jwt = require('jsonwebtoken');
 const _ = require('lodash')
 const bodyParser = require('body-parser');
@@ -69,7 +70,7 @@ module.exports = function (app) {
     // app.get(`${BASE_REPORT_URL}/user/admin/upvoted`, verifyToken(), proxyObject());
     // app.get(`${BASE_REPORT_URL}/user/admin/downvoted`, verifyToken(), proxyObject());
 
-    // topics apis 
+    // topics apis
     app.post(`${BASE_REPORT_URL}/v2/topics`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.post(`${BASE_REPORT_URL}/v2/topics/:tid`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.post(`${BASE_REPORT_URL}/v2/topics/update/:tid`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
@@ -91,7 +92,7 @@ module.exports = function (app) {
     app.put(`${BASE_REPORT_URL}/v2/categories/:cid/privileges`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/categories/:cid/privileges`, verifyToken(), proxyObject());
 
-    // groups apis 
+    // groups apis
     app.post(`${BASE_REPORT_URL}/v2/groups`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/groups/:slug`, verifyToken(), proxyObject());
     app.put(`${BASE_REPORT_URL}/v2/groups/:slug/membership`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
@@ -100,7 +101,7 @@ module.exports = function (app) {
     app.delete(`${BASE_REPORT_URL}/v2/groups/:slug/membership/:uid`, verifyToken(), proxyObject());
 
 
-    // post apis 
+    // post apis
     app.post(`${BASE_REPORT_URL}/v2/posts/:pid`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/posts/:pid`, verifyToken(), proxyObject());
     app.put(`${BASE_REPORT_URL}/v2/posts/:pid/state`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
@@ -183,7 +184,7 @@ function checkEmail() {
 
 // TODO: this token logic we have to add in middleware itself;
 function addHeaders() {
-    return function (proxyReqOpts, srcReq) { 
+    return function (proxyReqOpts, srcReq) {
         var sessionId = _.get(srcReq, 'headers.x-session-id') || _.get(srcReq, 'sessionID');
         proxyReqOpts.headers['X-Session-Id'] = sessionId;
         return proxyReqOpts;
@@ -209,7 +210,7 @@ function proxyObject() {
                 } else {
                     return require('url').parse(discussions_middleware + urlParam+ '?_uid='+ uid).path
                 }
-            } 
+            }
         },
         userResDecorator: (proxyRes, proxyResData, req, res) => {
             try {
@@ -232,7 +233,7 @@ function proxyObjectForForum() {
             console.log("Request comming from :", urlParam)
             let query = require('url').parse(req.url).query;
             return require('url').parse(discussions_middleware + urlParam).path
-            
+
         },
         userResDecorator: (proxyRes, proxyResData, req, res) => {
             try {

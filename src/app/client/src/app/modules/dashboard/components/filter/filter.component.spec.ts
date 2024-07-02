@@ -2,12 +2,13 @@
 import { FilterComponent } from './filter.component';
 import { mockChartData } from './filter.component.spec.data';
 import { ChangeDetectorRef, NO_ERRORS_SCHEMA } from '@angular/core';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { of } from 'rxjs';
 import { ResourceService } from '../../../shared';
 import { fakeAsync, tick } from '@angular/core/testing';
+import { MatAutocomplete } from '@angular/material/autocomplete';
 
 describe('FilterComponent', () => {
   let component: FilterComponent;
@@ -36,7 +37,8 @@ describe('FilterComponent', () => {
         close: 'close'
       },
       lbl: {
-        reportSummary: 'Report Summary'
+        reportSummary: 'Report Summary',
+        selectDependentFilter: 'Select {displayName} filter'
       }
     },
     languageSelected$: of({})
@@ -45,11 +47,12 @@ describe('FilterComponent', () => {
     queryParams: of({})
   };
   const mockFormBuilder: Partial<FormBuilder> = {
-    group: jest.fn()
+    group: jest.fn(() => new FormGroup({})),
+    control: jest.fn(() => new FormControl('')),
   };
   const mockChangeDetectionRef: Partial<ChangeDetectorRef> = {
   };
-  const selectedDialogData:Partial<typeof MAT_DIALOG_DATA>={}
+  const selectedDialogData: Partial<typeof MAT_DIALOG_DATA> = {}
   beforeAll(() => {
     component = new FilterComponent(
       mockResourceService as ResourceService,
@@ -136,8 +139,8 @@ describe('FilterComponent', () => {
 
   it('should call formUpdate and update the form', fakeAsync(() => {
     component.filtersFormGroup = new FormBuilder().group({
-          state: ['1']
-        });
+      state: ['1']
+    });
     jest.spyOn(component, 'formUpdate');
     component.ngOnInit();
     tick(1000);
@@ -145,8 +148,8 @@ describe('FilterComponent', () => {
     tick(1000);
     component.filters = mockChartData.filters;
     component.chartData = [{ data: mockChartData.chartData, id: 'chartId' }];
-    component.selectedFilters = {"state":['01285019302823526477']};
-    component.previousFilters = {"state":['b00bc992ef25f1a9a8d']}
+    component.selectedFilters = { "state": ['01285019302823526477'] };
+    component.previousFilters = { "state": ['b00bc992ef25f1a9a8d'] }
     component.formUpdate(component.chartData)
     expect(component.formUpdate).toHaveBeenCalled();
   }));
@@ -194,15 +197,15 @@ describe('FilterComponent', () => {
 
   it('should call getSelectedData', () => {
     component.filterQuery = '';
-    jest.spyOn(component,'getFilters')
+    jest.spyOn(component, 'getFilters')
     component.getFilters(['cd', 'ef']);
     expect(component.getFilters).toHaveBeenCalled();
   });
 
   it('should call formUpdate and update the form with first filter', fakeAsync(() => {
     component.filtersFormGroup = new FormBuilder().group({
-          state: ['1']
-        });
+      state: ['1']
+    });
     jest.spyOn(component, 'formUpdate');
     component.ngOnInit();
     tick(1000);
@@ -212,8 +215,8 @@ describe('FilterComponent', () => {
     component.chartData = [{ data: mockChartData.chartData, id: 'chartId' }];
     component.firstFilter = 'state';
     component.currentReference = 'state';
-    component.selectedFilters = {"state":['01285019302823526477']};
-    component.previousFilters = {"state":['b00bc992ef25f1a9a8d']}
+    component.selectedFilters = { "state": ['01285019302823526477'] };
+    component.previousFilters = { "state": ['b00bc992ef25f1a9a8d'] }
     component.formUpdate(component.chartData)
     expect(component.formUpdate).toHaveBeenCalled();
   }));
@@ -221,10 +224,10 @@ describe('FilterComponent', () => {
   it('should call filterData', fakeAsync(() => {
     jest.spyOn(component, 'filterData');
     component.filters = mockChartData.filters;
-    component.chartData = [{ data: mockChartData.chartData, 'selectedFilters':{"state":['b00bc992ef25f1a9a8d63291e20efc8d'],"Date": '2020-04-28'}, id: 'chartId' }];
+    component.chartData = [{ data: mockChartData.chartData, 'selectedFilters': { "state": ['b00bc992ef25f1a9a8d63291e20efc8d'], "Date": '2020-04-28' }, id: 'chartId' }];
     component.firstFilter = ['state'];
     component.currentReference = 'state';
-    component.selectedFilters = {"state":['b00bc992ef25f1a9a8d63291e20efc8d'],"Date": '2020-04-28'};
+    component.selectedFilters = { "state": ['b00bc992ef25f1a9a8d63291e20efc8d'], "Date": '2020-04-28' };
     component.filterData();
     expect(component.filterData).toHaveBeenCalled();
   }));
@@ -234,7 +237,7 @@ describe('FilterComponent', () => {
     component.filters = mockChartData.filters;
     component.chartData = [{ data: mockChartData.chartData, id: 'chartId' }];
     component.currentReference = 'state';
-    component.selectedFilters = {"Plays":['10']};
+    component.selectedFilters = { "Plays": ['10'] };
     component.filterData();
     expect(component.filterData).toHaveBeenCalled();
   }));
@@ -245,7 +248,7 @@ describe('FilterComponent', () => {
     component.previousFilters = {};
     component.chartData = [{ data: mockChartData.chartData, id: 'chartId' }];
     component.currentReference = 'state';
-    component.selectedFilters = {"Plays":['10']};
+    component.selectedFilters = { "Plays": ['10'] };
     component.filterData();
     expect(component.filterData).toHaveBeenCalled();
   }));
@@ -258,14 +261,14 @@ describe('FilterComponent', () => {
     expect(response).toEqual(false);
   }));
 
-  it('should call getFiltersValues', ()=>{
-    jest.spyOn(component,'getFiltersValues');
+  it('should call getFiltersValues', () => {
+    jest.spyOn(component, 'getFiltersValues');
     component.getFiltersValues('state');
     expect(component.getFiltersValues).toHaveBeenCalled();
   })
 
-  it('should call getFiltersValues with array arg', ()=>{
-    jest.spyOn(component,'getFiltersValues');
+  it('should call getFiltersValues with array arg', () => {
+    jest.spyOn(component, 'getFiltersValues');
     component.getFiltersValues(['state']);
     expect(component.getFiltersValues).toHaveBeenCalled();
   })
@@ -276,7 +279,7 @@ describe('FilterComponent', () => {
     component.previousFilters = {};
     component.chartData = [{ data: mockChartData.chartData, id: 'chartId' }];
     component.currentReference = 'state';
-    component.selectedFilters = {"Plays":['10'],"state":['b00bc992ef25f1a9a8d63291e20efc8d'],"Date": '2020-04-28'};
+    component.selectedFilters = { "Plays": ['10'], "state": ['b00bc992ef25f1a9a8d63291e20efc8d'], "Date": '2020-04-28' };
     component.filterData();
     expect(component.filterData).toHaveBeenCalled();
   }));
@@ -284,9 +287,9 @@ describe('FilterComponent', () => {
   it('should call getDateRange', () => {
     jest.spyOn(component, 'getDateRange');
     component.filtersFormGroup = new FormBuilder().group({
-          Date: ['1']
+      Date: ['1']
     });
-    component.getDateRange({startDate:"2022-07-04T18:30:00.000Z", endDate:"2022-07-06T18:30:00.000Z"},'Date');
+    component.getDateRange({ startDate: "2022-07-04T18:30:00.000Z", endDate: "2022-07-06T18:30:00.000Z" }, 'Date');
     expect(component.getDateRange).toHaveBeenCalled();
   })
 
@@ -294,7 +297,7 @@ describe('FilterComponent', () => {
     component.filtersFormGroup = new FormBuilder().group({
       Organisation: new FormControl('xyz')
     });
-    jest.spyOn(component,'checkDependencyFilters')
+    jest.spyOn(component, 'checkDependencyFilters')
     component.filters = mockChartData.dependencyFilters;
     component.selectedFilters = mockChartData.selectedFiltersWithoutDependecy;
     component.checkDependencyFilters();
@@ -306,9 +309,66 @@ describe('FilterComponent', () => {
     component.unsubscribe = {
       next: jest.fn(),
       complete: jest.fn()
-  } as any;
-    jest.spyOn(component,'ngOnDestroy')
+    } as any;
+    jest.spyOn(component, 'ngOnDestroy')
     component.ngOnDestroy();
     expect(component.unsubscribe).toBeDefined()
-});
+  });
+
+  it('should choose the first option', () => {
+    const mockMatAutocomplete: any = {
+      options: { first: { select: jest.fn() } }
+    };
+    component.matAutocomplete = mockMatAutocomplete;
+    component.chooseOption();
+    expect(mockMatAutocomplete.options.first.select).toHaveBeenCalled();
+  });
+
+  it('should set error message with displayName', () => {
+    const event = { displayName: 'ExampleFilter' };
+    component.showErrorMessage(event);
+    expect(component.errorMessage).toBe('Select ExampleFilter filter');
+  });
+
+  it('should not set error message without displayName', () => {
+    const event = { displayName: undefined };
+    component.showErrorMessage(event);
+    expect(component.errorMessage).toBeUndefined();
+  });
+
+  it('should set selected filters and generate form when selectedFilter is set', fakeAsync(() => {
+    const mockSelectedFilter = {
+      filters: [
+        { controlType: 'text', reference: 'Organisation' },
+      ],
+      data: [],
+      selectedFilters: {
+        Organisation: 'Organisation 1',
+      },
+    };
+    jest.spyOn(component, 'formGeneration').mockImplementation(() => { });
+    component.selectedFilter = mockSelectedFilter;
+    jest.advanceTimersByTime(0);
+    expect(component.formGeneration).toHaveBeenCalledWith(mockSelectedFilter.data);
+    expect(component.selectedFilters).toEqual(mockSelectedFilter.selectedFilters);
+    expect(component.filtersFormGroup.value).toEqual(mockSelectedFilter.selectedFilters);
+  }));
+
+  it('should set filters from val.filters when reset is not true and val.filters is provided', () => {
+    const mockFilters = {
+      Organisation: 'Organisation 1',
+    };
+    component.filtersFormGroup.setValue({
+      Organisation: 'Organisation 1',
+    });
+    component.resetFilters = {
+      data: mockChartData,
+      filters: mockFilters,
+      reset: false,
+    };
+    expect(component.filtersFormGroup.value).toEqual(mockFilters);
+    expect(component.selectedFilters).toEqual(mockFilters);
+  });
+
+
 });

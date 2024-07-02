@@ -939,3 +939,17 @@ export const iconObj = {
   'science': 'assets/images/globe.svg',
   'default': 'assets/images/book_default.svg'
 };
+
+export const collectionData =  {
+  'id': 'api.course.hierarchy',
+  'ver': '1.0',
+  'ts': '2020-01-10T06:02:18.087Z',
+  'params': {
+    'resmsgid': 'c1e85770-336e-11ea-9761-03f00e501b7f',
+    'msgid': 'fafe06ce-c943-dd1f-a7c1-bd6601c5fba4',
+    'status': 'successful',
+    'err': null,
+    'errmsg': null
+  },
+  'responseCode': 'OK',
+}

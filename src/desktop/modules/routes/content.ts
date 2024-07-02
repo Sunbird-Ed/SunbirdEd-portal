@@ -260,7 +260,7 @@ export default (app, proxyURL, contentDownloadManager) => {
       });
 
       app.get(
-        "/learner/questionset/v1/hierarchy/:id",
+        "/learner/questionset/v2/hierarchy/:id",
         async (req, res, next) => {
           logger.debug(
             `Received API call to get questionset hierarchy: ${req.params.id}`,
@@ -287,7 +287,7 @@ export default (app, proxyURL, contentDownloadManager) => {
         proxy(proxyURL, {
           proxyReqPathResolver(req) {
             const queryParams = req.url.split("?")[1];
-            return queryParams ? `/learner/questionset/v1/hierarchy/${req.params.id}?${queryParams}` : `/learner/questionset/v1/hierarchy/${req.params.id}`;
+            return queryParams ? `/learner/questionset/v2/hierarchy/${req.params.id}?${queryParams}` : `/learner/questionset/v2/hierarchy/${req.params.id}`;
           },
           userResDecorator(proxyRes, proxyResData, req) {
             return new Promise(function(resolve) {
@@ -296,7 +296,7 @@ export default (app, proxyURL, contentDownloadManager) => {
                 `ReqId = "${req.headers["X-msgid"]}": Convert buffer data to json`,
               );
               const proxyData = content.convertBufferToJson(proxyResData, req);
-              const contents = _.get(proxyData, "result.questionSet");
+              const contents = _.get(proxyData, "result.questionset");
               if (!_.isEmpty(contents)) {
                 logger.debug(
                   `ReqId = "${req.headers["X-msgid"]}": Calling decorateDialCodeContent to decorate a content`,
@@ -307,7 +307,7 @@ export default (app, proxyURL, contentDownloadManager) => {
                     logger.info(
                       `ReqId = "${req.headers["X-msgid"]}": Resolving Data after decorating DialCodecontent `,
                     );
-                    proxyData.result.questionSet = data[0];
+                    proxyData.result.questionset = data[0];
                     resolve(proxyData);
                   })
                   .catch((err) => {
@@ -326,7 +326,7 @@ export default (app, proxyURL, contentDownloadManager) => {
       );
       
       app.get(
-        "/api/questionset/v1/read/:id",
+        "/api/questionset/v2/read/:id",
         async (req, res, next) => {
           standardLog.debug({ id: 'QUESTIONSET_API_REQUEST', message: `Received API call to read questionset: ${req.params.id}` });
           const offlineData = await content.getOfflineContents([req.params.id], req.headers["X-msgid"]).catch(error => {
@@ -347,7 +347,7 @@ export default (app, proxyURL, contentDownloadManager) => {
         proxy(proxyURL, {
           proxyReqPathResolver(req) {
             const query = require('url').parse(req.url).query;
-            return `/api/questionset/v1/read/${req.params.id}?${query}`;
+            return `/api/questionset/v2/read/${req.params.id}?${query}`;
           },
           userResDecorator(proxyRes, proxyResData, req) {
             return new Promise(function(resolve) {
@@ -386,7 +386,7 @@ export default (app, proxyURL, contentDownloadManager) => {
       );
 
       app.post(
-        "/api/question/v1/list",
+        "/api/question/v2/list",
         async (req, res, next) => {
           standardLog.debug({ id: 'CONTENT_API_REQUEST', message: `Received API call to read question list: ${req.body.request.search.identifier}` });
           const offlineData = await content.getOfflineContents([...req.body.request.search.identifier], req.headers["X-msgid"]).catch(error => {
@@ -406,7 +406,7 @@ export default (app, proxyURL, contentDownloadManager) => {
         },
         proxy(proxyURL, {
           proxyReqPathResolver(req) {
-            return "/api/question/v1/list";
+            return "/api/question/v2/list";
           },
           userResDecorator(proxyRes, proxyResData, req) {
             return new Promise(function(resolve) {
@@ -462,10 +462,10 @@ const updateRequestBody = (req) => {
         `ReqId = "${req.headers["X-msgid"]}": Updating request body filters`,
     );
     if (_.get(req, "body.request.filters")) {
-        req.body.request.filters.compatibilityLevel = {
-            "<=": config.get("CONTENT_COMPATIBILITY_LEVEL"),
-        };
-    }
+      req.body.request.filters.compatibilityLevel = {
+          "<=": config.get("CONTENT_COMPATIBILITY_LEVEL"),
+      };
+  }
     return req;
 };
 

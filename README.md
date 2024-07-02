@@ -13,7 +13,7 @@
 [Sunbird](http://sunbird.org) is a next-generation scalable open-source learning solution for teachers and tutors. Built for the 21st century with [state-of-the-art technology](http://www.sunbird.org/architecture/views/physical/), Sunbird runs natively in [cloud/mobile environments](http://www.sunbird.org/features/). The [open-source governance](LICENSE) of Sunbird allows a massive community of nation-builders to co-create and extend the solution in novel ways.
 
 ## What is the project mission?
-Project Sunbird has a mission to improve learning outcomes for 200 million children across India. This is a multi-dimensional problem unique to the multi-lingual offline population of India (and other developing countries). It's not a problem of any single organization or stakeholder and it cannot be realistically addressed by individual effort. 
+Project Sunbird has a mission to improve learning outcomes for 200 million children across India. This is a multi-dimensional problem unique to the multi-lingual offline population of India (and other developing countries). It's not a problem of any single organization or stakeholder and it cannot be realistically addressed by individual effort.
 
 Project Sunbird is an [open, iterative and collaborative](http://www.sunbird.org/participate/) approach to bring together the best minds in pursuit of this audacious goal.
 
@@ -31,8 +31,8 @@ Have node version 10 and follow the next steps
 
 Prerequisities
 
-	1. Node > 14x
-	2. Angular 10x
+	1. Node > 18x
+	2. Angular 1x
 	3. Yarn
 
 Sunbird dev has 2 parts 
@@ -145,49 +145,20 @@ Installing Sunbird requires two primary software components:
           |  sunbird_default_tenant   | sunbird |   string  |
 
     > The initialization of these environmental variables can take place in a common place like in your **.bashrc** or **.bash_profile**
-    
+
 
 4. Edit the Application Configuration
+   > To configure your application for local development, rename the file `example.env` in `/src/app` folder to `.env` and enter the values of the following environment variables
 
-    > These are the mandatory keys required to run the application in Local environment. Please update them with appropriatte values in `<PROJECT-FOLDER>/src/app/helpers/environmentVariablesHelper.js`
+          |       Environment Variable              |                   Description                                       |
+          | :-------------------------------------- |---------------------------------------------------------------------|
+          |  sunbird_default_token                  |   To set the Default Mandatory Token for Anonymous and Logged User  |
+          |  cloud_private_storage_secret           |   To set the Cloud Account Key                                      |
+          |  cloud_private_storage_accountname      |   To set the Cloud Private Storage Account Name                     |
+          |  sunbird_cloud_storage_provider         |   To set the Cloud Storage Provider                                 |
+          |  sb_domain                              |   To set the Environment of the Application                         |
 
-        |           Environment Variable        |  Data Type |             Description                |
-        | :-------------------------------------| ---------- | -------------------------------------  |
-        |     sunbird_cloud_storage_provider    |   string   |        Cloud Service Provider          |
-        |   cloud_private_storage_accountname   |   string   |          Cloud Account Name            |
-        |      cloud_private_storage_secret     |   string   |          Cloud Account Key             |
-        |  KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN |   boolean  |   Flag value to allow anonymous user   |
-        |  sunbird_anonymous_device_register_api|   string   |The API for registering anonymous device|
-        |  sunbird_anonymous_register_token     |   string   |    Token to register anonymous device  |
-        |               SB_DOMAIN               |   string   |    The host for Sunbird Environment    |
-        |         PORTAL_API_AUTH_TOKEN         |   string   |     User generated API auth token      |
-
-
-    > Open `<PROJECT-FOLDER>/src/app/helpers/environmentVariablesHelper.js` in any available text editor and update the contents of the file so that it contains exactly the following values
-
-      ```console
-          module.exports = {
-              // 1. LEARNER_URL   
-              LEARNER_URL: env.sunbird_learner_player_url || <'https://<host for adopter's instance>',
-              
-              // 2. CONTENT_URL
-              CONTENT_URL: env.sunbird_content_player_url || <'https://<host for adopter's instance>',
-              
-              // 3. CONTENT_PROXY  
-              CONTENT_PROXY_URL: env.sunbird_content_proxy_url || <'https://<host for adopter's instance>',
-              PORTAL_REALM: env.sunbird_portal_realm || 'sunbird',
-              
-              // 4. PORTAL_AUTH_SERVER_URL
-              PORTAL_AUTH_SERVER_URL: env.sunbird_portal_auth_server_url || <'https://<host for adopter's instance>',
-              PORTAL_AUTH_SERVER_CLIENT: env.sunbird_portal_auth_server_client || "portal",
-              ...
-              PORTAL_PORT: env.sunbird_port || 3000,
-                
-              // 5. PORTAL_ECHO_API_URL
-              PORTAL_ECHO_API_URL: env.sunbird_echo_api_url || '',
-              ...
-          }
-      ```
+    > For further environment variable reference refer to this confluence wiki link: [https://project-sunbird.atlassian.net/wiki/spaces/SP/pages/3353378817/Portal+-+Min+environment+variables](https://project-sunbird.atlassian.net/wiki/spaces/SP/pages/3353378817/Portal+-+Min+environment+variables)
 
     > Once the file is updated with appropriate values, then you can proceed with running the application
 
@@ -202,15 +173,15 @@ Installing Sunbird requires two primary software components:
 2. Sunbird services stack or the backend API interface
 
     1. Run the following command in the **{PROJECT-FOLDER}/src/app** folder
-    2. $ npm run server
+    2. $ npm run local-server
 
 3. The local HTTP server is launched at `http://localhost:3000`
 
 ### Project Structure
 
     .
-    ├── Sunbirded-portal                                            
-    |   ├── /.circleci                           # 
+    ├── Sunbirded-portal
+    |   ├── /.circleci                           #
     │   |   └── config.yml                       # Circleci Configuration file
     |   ├── /src/app                             # Sunbird portal or web application
     │   |   ├── /client                          # -|-

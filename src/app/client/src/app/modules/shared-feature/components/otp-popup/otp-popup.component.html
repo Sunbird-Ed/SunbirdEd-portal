@@ -1,3 +1,5 @@
+
+<div *ngIf="!delete">
 <!--Content-->
 <div class="sb-mat__modal__content">
   <div class="container-wrapper">
@@ -34,3 +36,54 @@
     (click)="verifyOTP()">{{resourceService?.frmelmnts?.lbl?.submitOTP}}</button>
 </div>
 <!--/Actions-->
+</div>
+
+<!-- Delete user functionality popup -->
+<div *ngIf="delete">
+<!--Content-->
+<div class="sb-mat__modal__content">
+  <div class="d-flex flex-jc-center py-16 px-16 ">
+    <div role="heading" aria-level="1" class=" delete__title">{{resourceService?.frmelmnts?.lbl?.deleteConfirmMessage}}
+    </div>
+  </div>
+  <div class="container">
+    <div class="mt-20">
+      <div class="fs-1 font-weight-bold text-center mb-16">{{resourceService?.frmelmnts?.lbl?.verification}}</div>
+      <p *ngIf="!disableResendButton" class="line-height-1-3 black text text-center mb-24">{{otpData?.instructions}}</p>
+      <div *ngIf="disableResendButton" class="grey text fs-1 text-center mb-30 line-height-1-3">
+        {{otpData?.retryMessage}}<br><span mat-dialog-close class="fs-1 blue text font-weight-bold cursor-pointer"
+          role="button" tabindex="0">{{resourceService?.frmelmnts?.lbl?.clickHere}}</span>
+        {{resourceService?.frmelmnts?.lbl?.toTryAgain}}</div>
+      <form class="sb-form borderd mb-16 d-flex flex-column flex-ai-center text-center flex-jc-center "
+        [formGroup]="otpForm">
+        <label *ngIf="errorMessage" class="sb-text-error d-inline-block line-height-1-3">{{errorMessage | interpolate:
+          '{remainingAttempt}': remainingAttempt}}</label>
+        <label *ngIf="infoMessage" class="text-center mb-10 d-inline-block line-height-1-3">{{infoMessage}}</label>
+        <div class="sb-field">
+          <input class="sb-form-control text-center" [ngClass]="{'orange-border': errorMessage}" formControlName="otp"
+            type="text" name="otp">
+        </div>
+      </form>
+      <div appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+        [telemetryInteractEdata]="resendOtpInteractEdata" [ngClass]="{'grey cursor-pointerText': !enableResendButton}"
+        (click)="resendOTP(); disableResendButton = true" class="fs-1 text-center blue text mb-30 cursor-pointer"
+        role="button" tabindex="0">{{resendOTPbtn}}</div>
+    </div>
+  </div>
+</div>
+<!--/Content-->
+
+<!--Actions-->
+<div class="sb-mat__modal__actions d-flex flex-jc-space-evenly pb-16 px-16">
+  <button appTelemetryInteract [telemetryInteractEdata]="cancelInteractEdata" type="button"
+    class="sb-btn sb-btn-normal sb-btn-primary mr-8" tabindex="0" mat-dialog-close>
+    {{resourceService?.frmelmnts?.btn?.cancel|uppercase}}</button>
+  <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+    [telemetryInteractEdata]="submitUserDeleteInteractEdata" [disabled]="!enableSubmitBtn" (click)="verifyOTP()" tabindex="0"
+    [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}" class="sb-btn sb-btn-normal sb-btn-error">
+    {{resourceService?.frmelmnts.lbl.deleteAccount|uppercase}}
+  </button>
+</div>
+<!--/Actions-->
+
+</div>

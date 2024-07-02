@@ -7,6 +7,7 @@ import { BehaviorSubject, of, throwError } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as mockData from './reports.service.spec.data';
 import { ConfigService } from '../../../shared';
+import { CslFrameworkService } from '../../../../../app/modules/public/services/csl-framework/csl-framework.service';
 
 describe('ReportService', () => {
   let reportService: ReportService;
@@ -107,6 +108,10 @@ describe('ReportService', () => {
       }
     }) as any
   };
+  const mockCslFrameworkService: Partial<CslFrameworkService> = {
+    getFrameworkCategories: jest.fn(),
+  };
+
   beforeAll(() => {
     reportService = new ReportService(
       mockDomSanitizer as DomSanitizer,
@@ -119,6 +124,7 @@ describe('ReportService', () => {
       mockSearchService as SearchService,
       mockFrameworkService as FrameworkService,
       mockProfileService as ProfileService,
+      mockCslFrameworkService as CslFrameworkService
     )
   });
 

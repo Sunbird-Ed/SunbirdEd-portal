@@ -582,11 +582,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   * course id and timeperiod
   */
   ngOnInit() {
-    // ---- Mock data Start-----
-    const apiData = {
-      userConsent: 'No',
-      audience: 'Teacher'
-    };
     this.fileName = 'State wise report';
     this.isDownloadReport = true;
     // this.searchFields = ['state', 'district'];

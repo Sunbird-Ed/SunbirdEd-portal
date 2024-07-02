@@ -13,6 +13,7 @@ import { CollectionHierarchyAPI } from '../../interfaces';
 import * as _ from 'lodash-es';
 import { environment } from '@sunbird/environment';
 import { PublicDataService } from './../public-data/public-data.service';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 /**
  * helper services to fetch content details and preparing content player config
  */
@@ -29,9 +30,10 @@ export class PlayerService {
    */
   collectionData: ContentData;
   previewCdnUrl: string;
+  frameworkCategoriesList;
   constructor(public userService: UserService, public contentService: ContentService,
     public configService: ConfigService, public router: Router, public navigationHelperService: NavigationHelperService,
-    public publicDataService: PublicDataService, private utilService: UtilService, private activatedRoute: ActivatedRoute) {
+    public publicDataService: PublicDataService, private utilService: UtilService, private activatedRoute: ActivatedRoute, public cslFrameworkService: CslFrameworkService) {
       this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
       ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
   }
@@ -65,10 +67,12 @@ export class PlayerService {
    * @returns {Observable<ServerResponse>}
    */
   getContent(contentId: string, option: any = { params: {} }): Observable<ServerResponse> {
+    this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
+    let contentGetConfig = [...this.configService.urlConFig.params.contentGet.split(','), ...this.frameworkCategoriesList];
     const licenseParam = {
       licenseDetails: 'name,description,url'
     };
-    let param = { fields: this.configService.urlConFig.params.contentGet };
+    let param = { fields: contentGetConfig.join(',') };
     if (this.userService.isDesktopApp) {
       param.fields = `${param.fields},downloadUrl`;
     }

@@ -7,23 +7,23 @@
     <dd>{{metaData.author}}</dd>
   </dl>
 
-  <dl class="sb-meta-data" *ngIf="metaData.medium">
-    <dt>{{resourceService?.frmelmnts?.lbl?.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}}</dt>
-    <dd>{{metaData.medium}}</dd>
+  <dl class="sb-meta-data" *ngIf="metaData?.[frameworkCategoriesList[1]]">
+    <dt>{{resourceService?.frmelmnts?.lbl[frameworkCategoriesList[1]] | transposeTerms: resourceService?.frmelmnts?.lbl[frameworkCategoriesList[1]] : resourceService?.selectedLang}}</dt>
+    <dd>{{metaData?.[frameworkCategoriesList[1]]}}</dd>
   </dl>
 
-  <dl class="sb-meta-data" *ngIf="metaData.gradeLevel">
-    <dt>{{resourceService?.frmelmnts?.lbl?.class | transposeTerms: 'frmelmnts.lbl.class' : resourceService?.selectedLang}}</dt>
+  <dl class="sb-meta-data" *ngIf="metaData?.[frameworkCategoriesList[2]]">
+      <dt>{{resourceService?.frmelmnts?.lbl[frameworkCategoriesList[2]] | transposeTerms: resourceService?.frmelmnts?.lbl[frameworkCategoriesList[2]] : resourceService?.selectedLang}}</dt>
     <dd>
-      <span class="d-inline-block" *ngFor="let gradeLevel of metaData.gradeLevel; let isLast=last;">
+      <span class="d-inline-block" *ngFor="let gradeLevel of metaData?.[frameworkCategoriesList[2]]; let isLast=last;">
         {{gradeLevel}}<span *ngIf="!isLast">,&nbsp;</span> 
       </span>
     </dd>
   </dl>
 
-  <dl class="sb-meta-data" *ngIf="metaData.subject">
-    <dt>{{resourceService?.frmelmnts?.lbl?.subject | transposeTerms: 'frmelmnts.lbl.subject': resourceService?.selectedLang}}</dt>
-    <dd>{{metaData.subject}}</dd>
+  <dl class="sb-meta-data" *ngIf="metaData?.[frameworkCategoriesList[3]]">
+    <dt>{{resourceService?.frmelmnts?.lbl[frameworkCategoriesList[3]] | transposeTerms: resourceService?.frmelmnts?.lbl[frameworkCategoriesList[3]] : resourceService?.selectedLang}}</dt>
+    <dd>{{metaData?.[frameworkCategoriesList[3]]}}</dd>
   </dl>
 
   <dl class="sb-meta-data" *ngIf="metaData.lastUpdatedOn">

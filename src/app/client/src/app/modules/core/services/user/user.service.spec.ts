@@ -6,6 +6,7 @@ import { ContentService, DataService, LearnerService, PublicDataService } from '
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { Inject } from '@angular/core';
 import { mockUserData } from './user.mock.spec.data';
+import { combineAll } from 'rxjs/operators';
 
 describe('UserService', () => {
   let userService: UserService;
@@ -25,7 +26,9 @@ describe('UserService', () => {
           GET_PROFILE: 'user/v5/read/',
           USER_MIGRATE: 'user/v1/migrate',
           END_SESSION: 'endSession',
-          GET_USER_FEED: 'user/v1/feed/'
+          GET_USER_FEED: 'user/v1/feed/',
+          DELETE: '/user/v1/delete',
+          TNC_ACCEPT: 'user/v1/tnc/accept'
         },
         OFFLINE: {
           READ_USER: 'desktop/user/v1/read',
@@ -40,6 +43,7 @@ describe('UserService', () => {
   const mockLearnerService: Partial<LearnerService> = {
     post: jest.fn().mockImplementation(() => { }),
     get: jest.fn().mockImplementation(() => { }),
+    delete: jest.fn().mockImplementation(() => { }),
     getWithHeaders: jest.fn().mockImplementation(() => {
       return of(mockUserData.success)
     })
@@ -73,6 +77,10 @@ describe('UserService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.resetAllMocks();
+    userService._appId = 'sunbirdApp';
+    userService._sessionId = 'daxeVBKC8xKVn8lbMUB5AVcw5yjLnNbZ';
+    userService._cloudStorageUrls = ['https://sunbird.sunbird'];
+    userService._userProfile = mockUserData.userProfile;
   });
 
   it('should create a instance of UserService', () => {
@@ -99,7 +107,7 @@ describe('UserService', () => {
 
   it('should emit error on api failure', () => {
     jest.spyOn(mockLearnerService, 'getWithHeaders').mockImplementation(() => {
-      return of(mockUserData.error)
+      return throwError(mockUserData.error)
     });
     userService.initialize(true);
     userService.userData$.subscribe(userData => {
@@ -237,6 +245,146 @@ describe('UserService', () => {
   it('should call getFeedData', () => {
     userService.getFeedData();
     expect(mockLearnerService.get).toBeCalled();
+  });
+
+  it('should call slug method', () => {
+    const obj = userService.slug;
+    expect(obj).toEqual('sunbird');
+  });
+
+  it('should call anonymousSid method', () => {
+    const obj = userService.anonymousSid;
+    expect(obj).toBeDefined();
+  });
+
+  it('should call loggedIn method', () => {
+    const obj = userService.loggedIn;
+    expect(obj).toBeFalsy();
+  });
+
+  it('should call userid method', () => {
+    userService.setUserId('0008ccab-2103-46c9-adba-6cdf84d37f06');
+    const obj = userService.userid;
+    expect(obj).toBe('0008ccab-2103-46c9-adba-6cdf84d37f06');
+  });
+
+  it('should call sessionId method', () => {
+    const obj = userService.sessionId;
+    expect(obj).toBe('daxeVBKC8xKVn8lbMUB5AVcw5yjLnNbZ');
+  });
+
+  it('should call setIsCustodianUser method and also get the value isCustodianUser', () => {
+    userService.setIsCustodianUser(true);
+    const obj = userService.isCustodianUser;
+    expect(obj).toBeTruthy();
+  });
+
+  it('should call appId method', () => {
+    const obj = userService.appId;
+    expect(obj).toEqual('sunbirdApp');
+  });
+
+  it('should call cloudStorageUrls method', () => {
+    const obj = userService.cloudStorageUrls;
+    expect(obj).toEqual(['https://sunbird.sunbird']);
+  });
+
+  it('should call userProfile method', () => {
+    const obj = userService.userProfile;
+    expect(obj).toEqual(mockUserData.userProfile);
+  });
+
+  it('should call rootOrgId method', () => {
+    const obj = userService.rootOrgId;
+    expect(obj).toEqual('ORG_001');
+  });
+
+  it('should call hashTagId method', () => {
+    const obj = userService.hashTagId;
+    expect(obj).toEqual('b00bc992ef25f1a9a8d63291e20efc8d');
+  });
+
+  it('should call getServerTimeDiff method', () => {
+    const obj = userService.getServerTimeDiff;
+    expect(obj).toEqual('2018-02-28 12:07:33:518+0000');
+  });
+
+  it('should call dims method', () => {
+    const res = [
+      'ORG_001',
+      '0123653943740170242',
+      'b00bc992ef25f1a9a8d63291e20efc8d'
+    ];
+    const obj = userService.dims;
+    expect(obj).toEqual(res);
+  });
+
+  it('should call UserOrgDetails method', () => {
+    const obj = userService.UserOrgDetails;
+    expect(obj).toBe(undefined);
+  });
+
+  it('should call RoleOrgMap method', () => {
+    const obj = userService.RoleOrgMap;
+    expect(obj).toBe(undefined);
+  });
+
+  it('should call deleteUser method', () => {
+    const postSpy = jest.spyOn(userService.learnerService, 'post');
+    const expectedOptions = {
+      url: userService.config.urlConFig.URLS.USER.DELETE,
+      data: {
+        request: {
+          userId: '0008ccab-2103-46c9-adba-6cdf84d37f06'
+        }
+      }
+    };
+    userService.deleteUser();
+    expect(postSpy).toHaveBeenCalledWith(expectedOptions);
+    postSpy.mockClear();
+  });
+
+  it('should call acceptTermsAndConditions method', () => {
+    jest.spyOn(mockLearnerService, 'post').mockImplementation(() => {return of(mockUserData.success) as any
+    });
+    const opt = {
+      url: 'user/v1/tnc/accept',
+      data: {  version: '4', identifier: 'adminTnC'}
+    }
+    const request = {
+      version: '4',
+      identifier: 'adminTnC'
+    }
+    userService.acceptTermsAndConditions(request);
+    expect(mockLearnerService.post).toHaveBeenCalledWith(opt)
+  });
+  it('should return defaultFrameworkFilters with user logged in', () => {
+    const mockUserProfile = {
+      framework: {
+        [userService.frameworkCategories?.fwCategory2?.code]: 'MockCategory2',
+        [userService.frameworkCategories?.fwCategory3?.code]: 'MockCategory3',
+        [userService.frameworkCategories?.fwCategory1?.code]: 'MockCategory1',
+        id: 'MockUserId',
+      },
+    };
+
+    Object.defineProperty(userService, 'loggedIn', { get: jest.fn(() => true) });
+    Object.defineProperty(userService, 'userProfile', { get: jest.fn(() => mockUserProfile) });
+    const result = userService.defaultFrameworkFilters;
+    expect(result).toEqual({
+      [userService.frameworkCategories?.fwCategory1?.code]: userService.defaultBoard,
+      [userService.frameworkCategories?.fwCategory2?.code]: 'MockCategory2',
+      [userService.frameworkCategories?.fwCategory3?.code]: 'MockCategory3',
+      [userService.frameworkCategories?.fwCategory1?.code]: 'MockCategory1',
+      id: 'MockUserId',
+    });
+  });
+
+  it('should return defaultFrameworkFilters with user not logged in', () => {
+    Object.defineProperty(userService, 'loggedIn', { get: jest.fn(() => false) });
+    const result = userService.defaultFrameworkFilters;
+    expect(result[userService.frameworkCategories?.fwCategory1?.code]).toEqual(userService.defaultBoard);
+    expect(result['undefined']).toBeUndefined();
   });
 
 });

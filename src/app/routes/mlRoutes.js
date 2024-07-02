@@ -5,7 +5,8 @@
  */
 const proxyUtils = require('../proxy/proxyUtils.js')
 const envHelper = require('../helpers/environmentVariablesHelper.js')
-const mlURL = envHelper.LEARNER_URL
+const utils = require('../helpers/utils.js');
+const mlURL  = utils?.defaultHost(utils?.envVariables?.LEARNER_URL);
 const telemetryHelper = require('../helpers/telemetryHelper.js')
 const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')

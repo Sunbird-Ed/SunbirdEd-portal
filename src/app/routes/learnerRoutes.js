@@ -4,29 +4,30 @@
  * @version 1.0
  */
 
-const proxyUtils        = require('../proxy/proxyUtils.js')
-const envHelper         = require('../helpers/environmentVariablesHelper.js')
-const learnerURL        = envHelper.LEARNER_URL
-const telemetryHelper   = require('../helpers/telemetryHelper.js')
-const proxy             = require('express-http-proxy')
-const bodyParser        = require('body-parser')
-const healthService     = require('../helpers/healthCheckService.js')
-const { decrypt }       = require('../helpers/crypto');
-const isAPIWhitelisted  = require('../helpers/apiWhiteList');
-const googleService     = require('../helpers/googleService')
+const proxyUtils = require('../proxy/proxyUtils.js')
+const envHelper = require('../helpers/environmentVariablesHelper.js')
+const utils = require('../helpers/utils.js');
+const learnerURL = utils?.defaultHost(utils?.envVariables?.LEARNER_URL);
+const telemetryHelper = require('../helpers/telemetryHelper.js')
+const proxy = require('express-http-proxy')
+const bodyParser = require('body-parser')
+const healthService = require('../helpers/healthCheckService.js')
+const { decrypt } = require('../helpers/crypto');
+const isAPIWhitelisted = require('../helpers/apiWhiteList');
+const googleService = require('../helpers/googleService')
 const reqDataLimitOfContentUpload = '50mb'
 const { logger } = require('@project-sunbird/logger');
-const {parseJson, isDateExpired, decodeNChkTime} = require('../helpers/utilityService');
+const { parseJson, isDateExpired, decodeNChkTime } = require('../helpers/utilityService');
+const learner_Service_Local_BaseUrl = utils?.defaultHost(utils?.envVariables?.learner_Service_Local_BaseUrl);
 const _ = require('lodash');
 
 module.exports = function (app) {
   require('./accountRecoveryRoute.js')(app) // account recovery route
-
   // Helper route to enable enable admin to update user fields
   app.patch('/learner/portal/user/v1/update',
     proxyUtils.verifyToken(),
-    proxy(envHelper.learner_Service_Local_BaseUrl, {
-      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(envHelper.learner_Service_Local_BaseUrl),
+    proxy(learner_Service_Local_BaseUrl, {
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learner_Service_Local_BaseUrl),
       proxyReqPathResolver: (req) => {
         return '/private/user/v3/update';
       },
@@ -44,7 +45,34 @@ module.exports = function (app) {
       }
     })
   )
-
+  app.post('/learner/user/v1/delete',
+    bodyParser.json(),
+    proxyUtils.verifyToken(),
+    isAPIWhitelisted.isAllowed(),
+    telemetryHelper.generateTelemetryForLearnerService,
+    telemetryHelper.generateTelemetryForProxy,
+    proxy(learnerURL, {
+      limit: reqDataLimitOfContentUpload,
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
+      proxyReqPathResolver: (req) => {
+        logger.info({ msg: '/learner/user/v1/delete called upstream url /user/v1/delete in request path resolver' });
+        return require('url').parse(envHelper.LEARNER_URL + req.originalUrl.replace('/learner/', '')).path
+      },
+      userResDecorator: (proxyRes, proxyResData, req, res) => {
+        logger.info({ msg: '/learner/user/v1/delete called upstream url /user/v1/delete' });
+        try {
+          const data = JSON.parse(proxyResData.toString('utf8'));
+          if (req.method === 'POST' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+          else return proxyUtils.handleSessionExpiry(proxyRes, data, req, res, data);
+        } catch (err) {
+          logger.error({ msg: 'learner route : userResDecorator json parse error:', proxyResData });
+          logger.error({ msg: 'learner route : error for /learner/user/v1/delete upstram url is /private/user/v1/delete ', err });
+          return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, null);
+        }
+      }
+    })
+  )
+  
   app.get('/learner/user/v1/managed/*', proxyManagedUserRequest());
 
   // Route to check user email id exists (or) already registered
@@ -57,7 +85,7 @@ module.exports = function (app) {
 
   // Route to check user email exists - SSO update contact workflow
   app.all('/learner/user/v1/get/email/*', googleService.validateRecaptcha, proxyObj());
-  
+
   // Route to check user phone exists - SSO update contact workflow
   app.all('/learner/user/v1/get/phone/*', googleService.validateRecaptcha, proxyObj());
 
@@ -85,9 +113,10 @@ module.exports = function (app) {
         let urlParam = req.params['0']
         let query = require('url').parse(req.url).query
         if (urlParam.indexOf('anonymous') > -1) urlParam = urlParam.replace('anonymous/', '');
+        if (urlParam.indexOf('delete/otp') > -1) urlParam = urlParam.replace('delete/otp', 'otp');
         if (req.url.indexOf('/otp/') > 0) {
           proxyUtils.addReqLog(req);
-        }
+        }       
         if (req.originalUrl === '/learner/data/v1/role/read') {
           urlParam = req.originalUrl.replace('/learner/', '')
         }
@@ -97,10 +126,11 @@ module.exports = function (app) {
           logger.info({ msg: '/learner/rc/certificate/v1/search called - ' + req.method + ' - ' + '/api/rc/certificate/v1/search' });
           return `/api/rc/certificate/v1/search`;
         }
-       
+
         if (query) {
           return require('url').parse(learnerURL + urlParam + '?' + query).path
         } else {
+          console.log('Request URL:',learnerURL + urlParam)
           return require('url').parse(learnerURL + urlParam).path
         }
       },
@@ -190,7 +220,7 @@ function checkForValidUser() {
   });
 }
 
-function proxyObj (){
+function proxyObj() {
   return proxy(learnerURL, {
     limit: reqDataLimitOfContentUpload,
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
@@ -204,21 +234,20 @@ function proxyObj (){
         return require('url').parse(learnerURL + urlParam).path
       }
     },
-    userResDecorator: function (proxyRes, proxyResData,  req, res) {
+    userResDecorator: function (proxyRes, proxyResData, req, res) {
       try {
-        logger.info({msg: 'proxyObj'});
         let data = JSON.parse(proxyResData.toString('utf8'));
-        let response = data.result.response;
-        data.result.response = {id: '', rootOrgId: '',isUserExists:''};
+       let response = data.result.response;
+        data.result.response = { id: '', rootOrgId: '', isUserExists: '' };
         if (data.responseCode === 'OK') {
           data.result.response.id = response.id;
           data.result.response.rootOrgId = response.rootOrgId;
           data.result.response.isUserExists = true;
         }
-        if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+        if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
         else return proxyUtils.handleSessionExpiry(proxyRes, data, req, res, data);
       } catch (err) {
-        logger.error({msg:'learner route : userResDecorator json parse error:', proxyResData})
+        logger.error({ msg: 'learner route : userResDecorator json parse error:', proxyResData })
         return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
       }
     }

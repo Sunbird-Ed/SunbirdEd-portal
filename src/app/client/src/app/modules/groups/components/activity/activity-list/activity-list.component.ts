@@ -6,6 +6,7 @@ import { fromEvent, Subject } from 'rxjs';
 import { takeUntil, delay } from 'rxjs/operators';
 import { GroupsService } from '../../../services/groups/groups.service';
 import { ToasterService, ConfigService, ResourceService, LayoutService, ActivityDashboardService } from '../../../../shared/services';
+import { CslFrameworkService } from '../../../../public/services/csl-framework/csl-framework.service';
 export interface IActivity {
   name: string;
   identifier: string;
@@ -36,6 +37,7 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   selectedTypeContents = {};
   config: any;
   layoutConfiguration: any;
+  public categoryKeys;
 
 
   constructor(
@@ -48,11 +50,13 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     private playerService: PlayerService,
     private layoutService: LayoutService,
     public activityDashboardService: ActivityDashboardService,
+    public cslFrameworkService:CslFrameworkService
   ) {
     this.config = this.configService.appConfig;
   }
 
   ngOnInit() {
+    this.categoryKeys = this.cslFrameworkService.transformDataForCC();
     this.showLoader = false;
     this.initLayout();
     fromEvent(document, 'click')

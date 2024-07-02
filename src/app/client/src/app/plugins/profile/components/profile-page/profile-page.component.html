@@ -1,74 +1,84 @@
-<app-landing-section [textToDisplay]=""
-[layoutConfiguration]="{}" [noTitle]="true"></app-landing-section>
-  <!--profile Content Header -->
-  <div [ngClass]="layoutConfiguration ? 'sb-back-actionbar' : 'sb-bg-white cc-player__btn-back'" class="relative position mt-0">
-    <div class="ui container py-0 px-0 d-flex flex-ai-center">
-      <button type="button" (click)="goBack()" [ngClass]="layoutConfiguration ? 'sb-btn-primary sb-btn-round' : 'sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0'" class="sb-btn sb-btn-normal" tabindex="0" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
+<app-landing-section [textToDisplay]="" [layoutConfiguration]="{}" [noTitle]="true"></app-landing-section>
+<!--profile Content Header -->
+<div [ngClass]="layoutConfiguration ? 'sb-back-actionbar' : 'sb-bg-white cc-player__btn-back'"
+  class="relative position mt-0">
+  <div class="ui container py-0 px-0 d-flex flex-ai-center">
+    <button type="button" (click)="goBack()"
+      [ngClass]="layoutConfiguration ? 'sb-btn-primary sb-btn-round' : 'sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0'"
+      class="sb-btn sb-btn-normal" tabindex="0" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
       <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
           <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
         </svg></i>
-     <span>{{resourceService?.frmelmnts?.btn?.back}}</span>
+      <span>{{resourceService?.frmelmnts?.btn?.back}}</span>
     </button>
-      <div class="content-header__content w-100 ml-16">
-        <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0 content-header__content__title">
-          <div class="content-header__title font-weight-bold ellipsis text-left"  tabindex="0" role="heading" aria-level="2">{{resourceService.frmelmnts?.lnk?.profile}}</div>
-        </div>
+    <div class="content-header__content w-100 ml-16">
+      <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0 content-header__content__title">
+        <div class="content-header__title font-weight-bold ellipsis text-left" tabindex="0" role="heading"
+          aria-level="2">{{resourceService.frmelmnts?.lnk?.profile}}</div>
       </div>
     </div>
   </div>
-  
+</div>
+
 <div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''">
-<div [ngClass]="layoutConfiguration ? 'relative9' : ''">
-<div [appTelemetryImpression]="telemetryImpression" *ngIf="userProfile">
-  <section class="py-24 d-flex flex-ai-center flex-dc">
-    <div class="ui container">
-      <div class="mb-15 d-flex flex-jc-center relative avatar-container" aria-label="Profile">
-       <img *ngIf="userProfile.stateValidated || !isCustodianOrgUser" role="img" src="assets/images/avatar-tickmark.svg" alt="certified" class="avatar-tickmark"
-        matTooltip="{{resourceService.frmelmnts.lbl.stateVerified}}" [matTooltipPosition]="'right'">
+  <div [ngClass]="layoutConfiguration ? 'relative9' : ''">
+    <div [appTelemetryImpression]="telemetryImpression" *ngIf="userProfile">
+      <section class="py-24 d-flex flex-ai-center flex-dc">
+        <div class="ui container">
+          <div class="mb-15 d-flex flex-jc-center relative avatar-container" aria-label="Profile">
+            <img *ngIf="userProfile.stateValidated || !isCustodianOrgUser" role="img"
+              src="assets/images/avatar-tickmark.svg" alt="certified" class="avatar-tickmark"
+              matTooltip="{{resourceService.frmelmnts.lbl.stateVerified}}" [matTooltipPosition]="'right'">
 
-       <sb-avatar [ngClass]="{verified: userProfile.stateValidated}" class="my-avatar"   [style]="avtarDesktopStyle"
-                     [config]=avatarConfig initialsSize="1" [initial]="userProfile?.firstName[0]"
-                    [title]="userProfile?.firstName">
-                  </sb-avatar>
-      </div>
-    </div>
-    <div class="profile-user-label font-w-bold d-flex text-center relative position">{{userProfile.firstName | titlecase}} {{userProfile.lastName |
+            <sb-avatar [ngClass]="{verified: userProfile.stateValidated}" class="my-avatar" [style]="avtarDesktopStyle"
+              [config]=avatarConfig initialsSize="1" [initial]="userProfile?.firstName[0]"
+              [title]="userProfile?.firstName">
+            </sb-avatar>
+          </div>
+        </div>
+        <div class="profile-user-label font-w-bold d-flex text-center relative position">
+          {{userProfile.firstName | titlecase}} {{userProfile.lastName |
       titlecase}}
-    </div>
-    <div class="mt-8 mb-16 d-flex flex-jc-center">
-      <div class="fnormal">{{resourceService?.frmelmnts?.lbl?.instacnceId | interpolate:'{instance}': instance}} :</div>
-      <div class="fnormal ml-5" id="copyUser">{{userProfile.userName}}</div>
-      <div role="button" class="ml-8 cursor-pointer" tabindex="0" (click)="copyToClipboard(userProfile.userName)" matTooltip="{{resourceService.frmelmnts?.lbl?.copyid | interpolate:'{instance}': instance}}" [matTooltipPosition]="'left'">
-        <i class="icon-svg icon-svg--xs icon-edit">
-          <svg class="icon icon-svg--primary">
-          <use xlink:href="assets/images/sprite.svg#copy-alternate"></use>
-        </svg>
-        </i>
-        <span class="sb-color-primary" role="link" tabindex="0" attr.aria-label=“{{resourceService?.frmelmnts?.lbl?.copy}}”>{{resourceService?.frmelmnts?.lbl?.copy}}</span>
-      </div>
+        </div>
+        <div class="mt-8 mb-16 d-flex flex-jc-center">
+          <div class="fnormal">{{resourceService?.frmelmnts?.lbl?.instacnceId | interpolate:'{instance}': instance}} :
+          </div>
+          <div class="fnormal ml-5" id="copyUser">{{userProfile.userName}}</div>
+          <div role="button" class="ml-8 cursor-pointer" tabindex="0" (click)="copyToClipboard(userProfile.userName)"
+            matTooltip="{{resourceService.frmelmnts?.lbl?.copyid | interpolate:'{instance}': instance}}"
+            [matTooltipPosition]="'left'">
+            <i class="icon-svg icon-svg--xs icon-edit">
+              <svg class="icon icon-svg--primary">
+                <use xlink:href="assets/images/sprite.svg#copy-alternate"></use>
+              </svg>
+            </i>
+            <span class="sb-color-primary" role="link" tabindex="0"
+              attr.aria-label=“{{resourceService?.frmelmnts?.lbl?.copy}}”>{{resourceService?.frmelmnts?.lbl?.copy}}</span>
+          </div>
 
-    </div>
-    <div class="mb-15 text-center profile-label-container" *ngIf="roles && roles.length > 0">
-      <span class="ui dodger-blue basic label mr-15 mt-5"
-        *ngFor="let role of roles | slice:0:showMoreRolesLimit">{{role}}</span>
-    </div>
-    <div *ngIf="roles.length > configService.appConfig.PROFILE.defaultShowMoreLimit"
-      class="fs-1 color-2 mb-8 font-w-bold cursor-pointer">
-      <span tabindex="0" *ngIf="showMoreRoles" (click)="toggle(true)">+ {{roles.length -
+        </div>
+        <div class="mb-15 text-center profile-label-container" *ngIf="roles && roles.length > 0">
+          <span class="ui dodger-blue basic label mr-15 mt-5"
+            *ngFor="let role of roles | slice:0:showMoreRolesLimit">{{role}}</span>
+        </div>
+        <div *ngIf="roles.length > configService.appConfig.PROFILE.defaultShowMoreLimit"
+          class="fs-1 color-2 mb-8 font-w-bold cursor-pointer">
+          <span tabindex="0" *ngIf="showMoreRoles" (click)="toggle(true)">+ {{roles.length -
         configService.appConfig.PROFILE.defaultShowMoreLimit}} {{resourceService.frmelmnts.lbl.more}}
-        <i class="chevron down icon"></i>
-      </span>
-      <span (click)="toggle(false)" *ngIf="!showMoreRoles">
-        {{resourceService.frmelmnts.lbl.showLess}}
-        <i class="chevron up icon"></i>
-      </span>
-    </div>
-    <div class="ui container">
-      
-  </div>
-    <div class="fs-1-5 font-w-bold d-flex mb-8 text-center org-info" *ngIf=" orgDetails && orgDetails.orgName">{{orgDetails.orgName}}
-    </div>
-    <!-- <div class="ui container" *ngIf="!isCustodianOrgUser">
+            <i class="chevron down icon"></i>
+          </span>
+          <span (click)="toggle(false)" *ngIf="!showMoreRoles">
+            {{resourceService.frmelmnts.lbl.showLess}}
+            <i class="chevron up icon"></i>
+          </span>
+        </div>
+        <div class="ui container">
+
+        </div>
+        <div class="fs-1-5 font-w-bold d-flex mb-8 text-center org-info" *ngIf=" orgDetails && orgDetails.orgName">
+          {{orgDetails.orgName}}
+        </div>
+        <!-- <div class="ui container" *ngIf="!isCustodianOrgUser">
       <div class="d-flex flex-dc flex-jcc-center flex-ai-center">
         <button appTelemetryInteract
           [telemetryInteractEdata]="editProfileInteractEdata"
@@ -76,7 +86,7 @@
           (click)="showEditUserDetailsPopup=true">{{resourceService.frmelmnts.lbl.edit}}</button>
           </div>
     </div> -->
-    <!-- <div class="m-0 pl-0 computer only" *ngIf="nonCustodianUserLocation && !isCustodianOrgUser">
+        <!-- <div class="m-0 pl-0 computer only" *ngIf="nonCustodianUserLocation && !isCustodianOrgUser">
       <div class="mb-0 d-flex mb-5 flex-jc-center" *ngIf="nonCustodianUserLocation.block">
         <div class="fmedium">{{resourceService.frmelmnts.lbl.block}} :</div>
         <div class="fmedium font-w-bold ml-5">{{nonCustodianUserLocation.block}}</div>
@@ -91,7 +101,7 @@
       </div>
     </div> -->
 
-    <!-- <div class="m-0 pl-0 mobile only" *ngIf="orgDetails && orgDetails.locations && !isCustodianOrgUser">
+        <!-- <div class="m-0 pl-0 mobile only" *ngIf="orgDetails && orgDetails.locations && !isCustodianOrgUser">
       <div class="mb-0 d-flex m-responsive-flex-dc mt-15" *ngIf="getLocationDetails(orgDetails.locations, 'block')">
         <span class="fmedium text-center">{{resourceService.frmelmnts.lbl.block}} :</span>
         <span class="fmedium font-w-bold text-center">{{getLocationDetails(orgDetails.locations, 'block')}}</span>
@@ -105,284 +115,330 @@
         <span class="fmedium font-w-bold text-center">{{getLocationDetails(orgDetails.locations, 'state')}}</span>
       </div>
     </div> -->
-  </section>
+      </section>
 
-  <section class="d-flex flex-ai-center flex-dc pb-24 content-preference">
-    <h3 class="content-header-info font-weight-bold mb-16">{{resourceService.frmelmnts.lbl.profiledetails}}</h3>
-    <!-- add state and district -->
-      <div class="ui container content-preference__info pt-16">
-        <div *ngIf="persona?.name" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-          <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.role}} :</div>
-          <div class="fmedium ml-5 font-w-bold text-center">{{persona.name}}</div>
-        </div>
-        <div *ngIf="subPersona" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-          <div class="fmedium text-center white-space-nowrap">{{resourceService.frmelmnts.lbl.subRole}} :</div>
-          <div class="fmedium ml-5 font-w-bold text-center">{{subPersona.join(', ')}}</div>
-        </div>
-        <div *ngIf="userLocation?.district && userLocation?.district?.name" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-          <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.district}} :</div>
-          <div class="fmedium ml-5 font-w-bold text-center">
-            {{userLocation.district.name}} </div>
-        </div>
-        <div *ngIf="userLocation?.state && userLocation?.state?.name" class="d-flex mb-5 flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-          <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.state}} :</div>
-          <div class="fmedium ml-5 font-w-bold text-center">
-            {{userLocation.state.name}}</div>
-        </div>
-        <div *ngIf="userLocation?.block && userLocation?.block?.name" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-          <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.block}} :</div>
-          <div class="fmedium ml-5 font-w-bold text-center">
-            {{userLocation.block.name}} </div>
-        </div>
-        <div *ngIf="userLocation?.cluster && userLocation?.cluster?.name" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-          <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.cluster}} :</div>
-          <div class="fmedium ml-5 font-w-bold text-center">
-            {{userLocation.cluster.name}} </div>
-        </div>
-        <div *ngIf="userLocation?.school && userLocation?.school?.name" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-          <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.school}} :</div>
-          <div class="fmedium ml-5 font-w-bold text-center">
-            {{userLocation.school.name}} </div>
-        </div>
-        
-        <div class="d-flex flex-dc flex-jcc-center flex-ai-center">
-          <button appTelemetryInteract appOnlineOnly
-            [telemetryInteractEdata]="editProfileInteractEdata"
-            class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border my-16" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.editPersonalDetails}}" tabindex="0"
-            (click)="showEditUserDetailsPopup=true" tabindex="0">{{resourceService.frmelmnts.lbl.edit}}</button>
-          <button appTelemetryInteract appOnlineOnly tabindex="0"
-                  [telemetryInteractEdata]="submitTeacherDetailsInteractEdata"
-                  *ngIf="!declarationDetails && isCustodianOrgUser && !userProfile.isMinor"
-                  (click)="navigate('/profile/submit-declaration','submit')" tabindex="0"
-                  class="no-text-transform sb-btn sb-btn-normal sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
-          {{resourceService?.frmelmnts?.lbl?.iAmStateTeacher}} </button>
-        </div>
-      </div>
-  </section>
-  
-  <section class="d-flex flex-ai-center flex-dc pt-30 pb-30 profile-bg-c-4 content-preference">
-    <!-- User info computer view starts-->
-    <div class="ui container">
-      <div class="d-flex flex-jc-center flex-ai-center flex-dc" *ngIf="userProfile && userProfile.framework ">
-        <div class="max-w-400 computer only">
-          <div class="mb-15 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.board)">
-            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.boards | transposeTerms: 'frmelmnts.lbl.boards' : resourceService?.selectedLang}} :</span>
-            <span class="fmedium font-w-bold pl-4"
-              *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board)}}</span>
+      <section class="d-flex flex-ai-center flex-dc pb-24 content-preference">
+        <h3 class="content-header-info font-weight-bold mb-16">{{resourceService.frmelmnts.lbl.profiledetails}}</h3>
+        <!-- add state and district -->
+        <div class="ui container content-preference__info pt-16">
+          <div *ngIf="persona?.name" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+            <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.role}} :</div>
+            <div class="fmedium ml-5 font-w-bold text-center">{{persona.name}}</div>
           </div>
-          <div class="mb-15 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.medium)">
-            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}} :</span>
-            <span class="fmedium font-w-bold pl-4"
-              *ngIf="userProfile.framework">{{convertToString(userProfile.framework.medium)}}</span>
+          <div *ngIf="subPersona" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+            <div class="fmedium text-center white-space-nowrap">{{resourceService.frmelmnts.lbl.subRole}} :</div>
+            <div class="fmedium ml-5 font-w-bold text-center">{{subPersona.join(', ')}}</div>
           </div>
-          <div class="mb-15 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.gradeLevel)">
-            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.classes | transposeTerms: 'frmelmnts.lbl.classes' : resourceService?.selectedLang}} :</span>
-            <span class="fmedium font-w-bold pl-4"
-              *ngIf="userProfile.framework">{{convertToString(userProfile.framework.gradeLevel)}}</span>
+          <div *ngIf="userLocation?.district && userLocation?.district?.name"
+            class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+            <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.district}} :</div>
+            <div class="fmedium ml-5 font-w-bold text-center">
+              {{userLocation.district.name}}
+            </div>
           </div>
-          <div class="d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.subject)">
-            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.subjects | transposeTerms: 'frmelmnts.lbl.subjects' : resourceService?.selectedLang}} :</span>
-            <span class="fmedium font-w-bold pl-4"
-              *ngIf="userProfile.framework">{{convertToString(userProfile.framework.subject)}}</span>
+          <div *ngIf="userLocation?.state && userLocation?.state?.name"
+            class="d-flex mb-5 flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+            <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.state}} :</div>
+            <div class="fmedium ml-5 font-w-bold text-center">
+              {{userLocation.state.name}}
+            </div>
+          </div>
+          <div *ngIf="userLocation?.block && userLocation?.block?.name"
+            class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+            <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.block}} :</div>
+            <div class="fmedium ml-5 font-w-bold text-center">
+              {{userLocation.block.name}}
+            </div>
+          </div>
+          <div *ngIf="userLocation?.cluster && userLocation?.cluster?.name"
+            class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+            <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.cluster}} :</div>
+            <div class="fmedium ml-5 font-w-bold text-center">
+              {{userLocation.cluster.name}}
+            </div>
+          </div>
+          <div *ngIf="userLocation?.school && userLocation?.school?.name"
+            class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+            <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.school}} :</div>
+            <div class="fmedium ml-5 font-w-bold text-center">
+              {{userLocation.school.name}}
+            </div>
+          </div>
+
+          <div class="d-flex flex-dc flex-jcc-center flex-ai-center">
+            <button appTelemetryInteract appOnlineOnly [telemetryInteractEdata]="editProfileInteractEdata"
+              class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border my-16"
+              attr.aria-label="{{resourceService?.frmelmnts?.lbl?.editPersonalDetails}}" tabindex="0"
+              (click)="showEditUserDetailsPopup=true" tabindex="0">{{resourceService.frmelmnts.lbl.edit}}</button>
+            <button appTelemetryInteract appOnlineOnly tabindex="0"
+              [telemetryInteractEdata]="submitTeacherDetailsInteractEdata"
+              *ngIf="!declarationDetails && isCustodianOrgUser && !userProfile.isMinor"
+              (click)="navigate('/profile/submit-declaration','submit')" tabindex="0"
+              class="no-text-transform sb-btn sb-btn-normal sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24"
+              type="submit">
+              {{resourceService?.frmelmnts?.lbl?.iAmStateTeacher}} </button>
           </div>
         </div>
-        <button class="sb-btn sb-btn-primary sb-btn-normal my-16 sb-btn-border computer only"
-          appTelemetryInteract appOnlineOnly
-          [telemetryInteractEdata]="myFrameworkEditEdata" attr.aria-label="{{resourceService.frmelmnts.lbl.edit}} {{resourceService.frmelmnts.lbl.boards}},{{resourceService.frmelmnts.lbl.medium}},{{resourceService.frmelmnts.lbl.classes}},{{convertToString(userProfile.framework.gradeLevel)}},{{resourceService.frmelmnts.lbl.subjects}}"
-          (click)="showEdit = !showEdit" tabindex="0">{{resourceService.frmelmnts.lbl.edit}}</button>
-      </div>
-    </div>
-    <!-- User info computer view ends-->
+      </section>
 
-    <!-- User info mobile view starts-->
-    <div class="max-w-300 mobile only">
-      <div class="mb-15 d-flex flex-ai-center flex-dc">
-        <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.boards | transposeTerms: 'frmelmnts.lbl.boards' : resourceService?.selectedLang}}:</span>
-        <span class="fmedium font-w-bold text-center"
-          *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board)}}</span>
-      </div>
-      <div class="mb-15 d-flex flex-ai-center flex-dc">
-        <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}} :</span>
-        <span class="fmedium font-w-bold text-center"
-          *ngIf="userProfile.framework">{{convertToString(userProfile.framework.medium)}}</span>
-      </div>
-      <div class="mb-15 d-flex flex-ai-center flex-dc">
-        <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.classes | transposeTerms: 'frmelmnts.lbl.classes' : resourceService?.selectedLang}} :</span>
-        <span class="fmedium font-w-bold text-center"
-          *ngIf="userProfile.framework">{{convertToString(userProfile.framework.gradeLevel)}}</span>
-      </div>
-      <div class="mb-15 d-flex flex-ai-center flex-dc">
-        <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.subjects | transposeTerms: 'frmelmnts.lbl.subjects' : resourceService?.selectedLang}} :</span>
-        <span class="fmedium font-w-bold text-center"
-          *ngIf="userProfile.framework">{{convertToString(userProfile.framework.subject)}}</span>
-      </div>
-      <div class="d-flex flex-ai-center flex-jc-center" appTelemetryInteract
-        [telemetryInteractEdata]="myFrameworkEditEdata" tabindex="0"
-        (click)="showEdit = !showEdit" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.editPersonalDetails}}">
-        <button appOnlineOnly class="sb-btn sb-btn-primary sb-btn-xs mt-30">{{resourceService.frmelmnts.lbl.edit}}</button>
-      </div>
-    </div>
-    <!-- User info mobile view ends-->
-  </section>
-
-  <section class="pt-30 pb-30 d-flex flex-jc-center profile-bg-c-3" *ngIf="userProfile.email || userProfile.phone">
-    <div class="d-flex flex-dc">
-      <div class="d-flex flex-jc-center">
-        <div role="button" appOnlineOnly (click)="showContactPopup=true;contactType='phone'" tabindex="0"
-          class="ui semi-circular dodger-blue basic label mb-15 cursor-pointer" *ngIf="userProfile.phone"
-          appTelemetryInteract
-          [telemetryInteractEdata]="editMobileInteractEdata">
-          <i class="phone blue icon mr-5"></i> &#x200E;+91 {{userProfile.phone}}
+      <section class="d-flex flex-ai-center flex-dc pt-30 pb-30 profile-bg-c-4 content-preference">
+        <!-- User info computer view starts-->
+        <div class="ui container">
+          <div class="d-flex flex-jc-center flex-ai-center flex-dc" *ngIf="userProfile && userProfile.framework ">
+            <div class="max-w-400 computer only">
+              <div class="mb-15 d-flex flex-jc-center flex-w-wrap flex-ai-center"
+                *ngFor="let category of transormUserProfile">
+                <span
+                  class="fmedium white-space-nowrap">{{ (resourceService?.frmelmnts?.lbl[category?.code] | transposeTerms: resourceService?.frmelmnts?.lbl[category?.code] : resourceService?.selectedLang) || category?.labels }}:</span>
+                <span class="fmedium font-w-bold pl-4"
+                  *ngFor="let item of category?.values let last=last">{{item}}{{!last && category.values.length > 1 ? ',' : ''}}</span>
+              </div>
+            </div>
+            <button class="sb-btn sb-btn-primary sb-btn-normal my-16 sb-btn-border computer only" appTelemetryInteract
+              appOnlineOnly [telemetryInteractEdata]="myFrameworkEditEdata"
+              attr.aria-label="{{resourceService.frmelmnts.lbl.edit}} {{resourceService.frmelmnts.lbl[frameworkCategoriesList[0]]}},{{resourceService.frmelmnts.lbl[frameworkCategoriesList[1]]}},{{resourceService.frmelmnts.lbl[frameworkCategoriesList[2]]}},{{convertToString(userProfile?.framework?.[frameworkCategoriesList[2]])}},{{resourceService.frmelmnts.lbl[frameworkCategoriesList[3]]}}"
+              (click)="showEdit = !showEdit" tabindex="0">{{resourceService.frmelmnts.lbl.edit}}</button>
+          </div>
         </div>
-        <div appOnlineOnly (click)="showContactPopup=true;contactType='phone'" attr.aria-label=“{{resourceService?.frmelmnts?.lbl?.addPhoneNo}}” tabindex="0"
-          class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.phone"
-          appTelemetryInteract
-          [telemetryInteractEdata]="editMobileInteractEdata">
-          <i class="phone icon mr-5"></i> {{resourceService?.frmelmnts?.lbl?.addPhoneNo}}
+        <!-- User info computer view ends-->
+
+        <!-- User info mobile view starts-->
+        <div class="max-w-300 mobile only">
+
+          <div class="mb-15 d-flex flex-ai-center flex-w-wrap flex-jc-center"
+            *ngFor="let category of transormUserProfile">
+            <span
+              class="fmedium mb-8 white-space-nowrap">{{ (resourceService?.frmelmnts?.lbl[category?.code] | transposeTerms: resourceService?.frmelmnts?.lbl[category?.code] : resourceService?.selectedLang) || category?.labels }}:
+            </span>
+            <span class="fmedium font-w-bold text-center"
+              *ngFor="let item of category?.values let last=last">{{item}}{{!last && category.values.length > 1 ? ',' : ''}}</span>
+          </div>
+          <div class="d-flex flex-ai-center flex-jc-center" appTelemetryInteract
+            [telemetryInteractEdata]="myFrameworkEditEdata" tabindex="0" (click)="showEdit = !showEdit"
+            attr.aria-label="{{resourceService?.frmelmnts?.lbl?.editPersonalDetails}}">
+            <button appOnlineOnly
+              class="sb-btn sb-btn-primary sb-btn-xs mt-30">{{resourceService.frmelmnts.lbl.edit}}</button>
+          </div>
         </div>
-      </div>
-     <div class="d-flex flex-jc-center">
-      <div appOnlineOnly (click)="showContactPopup=true;contactType='email'" tabindex="0"
-      class="ui semi-circular dodger-blue basic label cursor-pointer mb-15" attr.aria-label=“{{userProfile.email}}” *ngIf="userProfile.email" appTelemetryInteract
-      [telemetryInteractEdata]="editEmailInteractEdata">
-      <i class="mail blue icon mr-5"></i> {{userProfile.email}}
-    </div>
-    <div appOnlineOnly (click)="showContactPopup=true;contactType='email'" tabindex="0" attr.aria-label=“{{resourceService?.frmelmnts?.lbl?.addEmailID}}”
-      class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.email"
-      appTelemetryInteract
-      [telemetryInteractEdata]="editEmailInteractEdata">
-      <i class="mail icon mr-5"></i> {{resourceService?.frmelmnts?.lbl?.addEmailID}}
-    </div>
-     </div>
+        <!-- User info mobile view ends-->
+      </section>
 
-      <!-- Add/edit recovery email/phone-->
-    <div class="d-flex flex-jc-center">
-      <div appOnlineOnly *ngIf="userProfile.recoveryEmail || userProfile.recoveryPhone" tabindex="0" (click)="showRecoveryId=true; mode='edit'" attr.aria-label=“{{userProfile.recoveryEmail}}” class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 d-flex"
-      appTelemetryInteract
-      [telemetryInteractEdata]="editRecoveryIdInteractEdata">
-        <div class="recovery-img mr-5"></div>
-        <span *ngIf="userProfile.recoveryEmail">{{userProfile.recoveryEmail}}</span>
-        <span *ngIf="userProfile.recoveryPhone">{{userProfile.recoveryPhone}}</span>
-       </div>
-       <div appOnlineOnly *ngIf="!(userProfile.recoveryEmail || userProfile.recoveryPhone)" attr.aria-label=“{{resourceService?.frmelmnts?.lbl?.addRecoveryAccount}}” tabindex="0" (click)="showRecoveryId=true; mode='add'" class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal d-flex"
-      appTelemetryInteract
-      [telemetryInteractEdata]="addRecoveryIdInteractEdata">
-        <div class="recovery-img mr-5"></div>
-       <span>{{resourceService?.frmelmnts?.lbl?.addRecoveryAccount}}</span>
-       </div>
-     </div>
-    </div>
-  </section>
+      <section class="pt-30 pb-30 d-flex flex-jc-center profile-bg-c-3" *ngIf="userProfile.email || userProfile.phone">
+        <div class="d-flex flex-dc">
+          <div class="d-flex flex-jc-center">
+            <div role="button" appOnlineOnly (click)="showContactPopup=true;contactType='phone'" tabindex="0"
+              class="ui semi-circular dodger-blue basic label mb-15 cursor-pointer" *ngIf="userProfile.phone"
+              appTelemetryInteract [telemetryInteractEdata]="editMobileInteractEdata">
+              <i class="phone blue icon mr-5"></i> &#x200E;+91 {{userProfile.phone}}
+            </div>
+            <div appOnlineOnly (click)="showContactPopup=true;contactType='phone'"
+              attr.aria-label=“{{resourceService?.frmelmnts?.lbl?.addPhoneNo}}” tabindex="0"
+              class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal"
+              *ngIf="!userProfile.phone" appTelemetryInteract [telemetryInteractEdata]="editMobileInteractEdata">
+              <i class="phone icon mr-5"></i> {{resourceService?.frmelmnts?.lbl?.addPhoneNo}}
+            </div>
+          </div>
+          <div class="d-flex flex-jc-center">
+            <div appOnlineOnly (click)="showContactPopup=true;contactType='email'" tabindex="0"
+              class="ui semi-circular dodger-blue basic label cursor-pointer mb-15"
+              attr.aria-label=“{{userProfile.email}}” *ngIf="userProfile.email" appTelemetryInteract
+              [telemetryInteractEdata]="editEmailInteractEdata">
+              <i class="mail blue icon mr-5"></i> {{userProfile.email}}
+            </div>
+            <div appOnlineOnly (click)="showContactPopup=true;contactType='email'" tabindex="0"
+              attr.aria-label=“{{resourceService?.frmelmnts?.lbl?.addEmailID}}”
+              class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal"
+              *ngIf="!userProfile.email" appTelemetryInteract [telemetryInteractEdata]="editEmailInteractEdata">
+              <i class="mail icon mr-5"></i> {{resourceService?.frmelmnts?.lbl?.addEmailID}}
+            </div>
+          </div>
 
-  
+          <!-- Add/edit recovery email/phone-->
+          <div class="d-flex flex-jc-center">
+            <div appOnlineOnly *ngIf="userProfile.recoveryEmail || userProfile.recoveryPhone" tabindex="0"
+              (click)="showRecoveryId=true; mode='edit'" attr.aria-label=“{{userProfile.recoveryEmail}}”
+              class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 d-flex" appTelemetryInteract
+              [telemetryInteractEdata]="editRecoveryIdInteractEdata">
+              <div class="recovery-img mr-5"></div>
+              <span *ngIf="userProfile.recoveryEmail">{{userProfile.recoveryEmail}}</span>
+              <span *ngIf="userProfile.recoveryPhone">{{userProfile.recoveryPhone}}</span>
+            </div>
+            <div appOnlineOnly *ngIf="!(userProfile.recoveryEmail || userProfile.recoveryPhone)"
+              attr.aria-label=“{{resourceService?.frmelmnts?.lbl?.addRecoveryAccount}}” tabindex="0"
+              (click)="showRecoveryId=true; mode='add'"
+              class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal d-flex"
+              appTelemetryInteract [telemetryInteractEdata]="addRecoveryIdInteractEdata">
+              <div class="recovery-img mr-5"></div>
+              <span>{{resourceService?.frmelmnts?.lbl?.addRecoveryAccount}}</span>
+            </div>
+          </div>
+          <section class="d-flex flex-ai-center flex-dc content-preference">
+            <!-- Delete Account computer view starts-->
+            <div class="ui container">
+              <div class="d-flex flex-jc-center flex-ai-center flex-dc">
+                <div class="max-w-400 computer only">
+                  <div class="mb-15 d-flex flex-jc-center">
+                    <!-- <span class="fmedium font-w-bold pl-4">Delete Account</span> -->
+                  </div>
+                </div>
+                <button class="sb-btn sb-btn-normal computer only" appTelemetryInteract appOnlineOnly
+                  [telemetryInteractEdata]="deleteAccountEdata" (click)="navigatetoRoute('/profile/delete-user')"
+                  tabindex="0" [class.sb-btn-gray]="disableDelete" [class.sb-btn-outline-primary]="!disableDelete">
+                  {{resourceService?.frmelmnts.lbl.deleteAccount|uppercase}}</button>
+              </div>
+            </div>
+            <!-- Delete Account computer view ends-->
 
-  <!-- 4 section start teacher profile-->
-  <section class="pt-30 pb-30 d-flex flex-jc-center profile-bg-c-3" *ngIf="declarationDetails && !userProfile.stateValidated">
-  <div class="flex-ai-jc-center flex-dc text-center school-id-section">
-    <div class="self-declared-title">{{resourceService.frmelmnts?.lbl?.selfDeclaredInfo}}</div>
-      <div>
-        {{resourceService?.frmelmnts?.lbl?.wishToShareDataWith}} : <span>{{ tenantInfo?.label }}</span>
-      </div>
+            <!-- Delete Account mobile view starts-->
+            <div class="max-w-300 mobile only">
+              <div class="mb-15 d-flex flex-ai-center flex-dc">
+                <!-- <span class="fmedium font-w-bold text-center">Delete Account</span> -->
+              </div>
+              <div class="d-flex flex-ai-center flex-jc-center" appTelemetryInteract
+                [telemetryInteractEdata]="deleteAccountEdata" tabindex="0"
+                (click)="navigatetoRoute('/profile/delete-user')">
+                <button appOnlineOnly class="sb-btn sb-btn-normal delete sb-btn-xs mt-30"
+                  [class.sb-btn-gray]="disableDelete" [class.sb-btn-outline-primary]="!disableDelete">
+                  {{resourceService?.frmelmnts.lbl.deleteAccount|uppercase}}</button>
+              </div>
+            </div>
+            <!-- Delete Account mobile view ends-->
+          </section>
+        </div>
 
-      <div *ngFor="let item of selfDeclaredInfo">
-        <div class="fnormal white-space-nowrap">{{ item.label }}:</div>
-        <div class="fnormal font-w-bold mt-4 mb-8">{{ item.code === 'declared-phone' ? '+91' : '' }} {{ item.value }}</div>
-      </div>
-      <div class="my-8">
-        <button appTelemetryInteract appOnlineOnly
-        [telemetryInteractEdata]="updateTeacherDetailsInteractEdata" tabindex="0" type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary sb-btn-border"
-        (click)="navigate('/profile/submit-declaration','update')">{{resourceService.frmelmnts?.btn?.update}}</button>
-      </div>
+      </section>
 
-    </div>
-  </section>
-  <!-- 4 section end -->
 
-  <!-- my badges section starts -->
-  <!-- <extension-point *ngIf="userProfile.badgeAssertions && userProfile.badgeAssertions.length > 0"
+
+      <!-- 4 section start teacher profile-->
+      <section class="pt-30 pb-30 d-flex flex-jc-center profile-bg-c-3"
+        *ngIf="declarationDetails && !userProfile.stateValidated">
+        <div class="flex-ai-jc-center flex-dc text-center school-id-section">
+          <div class="self-declared-title">{{resourceService.frmelmnts?.lbl?.selfDeclaredInfo}}</div>
+          <div>
+            {{resourceService?.frmelmnts?.lbl?.wishToShareDataWith}} : <span>{{ tenantInfo?.label }}</span>
+          </div>
+
+          <div *ngFor="let item of selfDeclaredInfo">
+            <div class="fnormal white-space-nowrap">{{ item.label }}:</div>
+            <div class="fnormal font-w-bold mt-4 mb-8">{{ item.code === 'declared-phone' ? '+91' : '' }}
+              {{ item.value }}</div>
+          </div>
+          <div class="my-8">
+            <button appTelemetryInteract appOnlineOnly [telemetryInteractEdata]="updateTeacherDetailsInteractEdata"
+              tabindex="0" type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary sb-btn-border"
+              (click)="navigate('/profile/submit-declaration','update')">{{resourceService.frmelmnts?.btn?.update}}</button>
+          </div>
+        </div>
+      </section>
+      <!-- 4 section end -->
+
+      <!-- my badges section starts -->
+      <!-- <extension-point *ngIf="userProfile.badgeAssertions && userProfile.badgeAssertions.length > 0"
     [name]="'profile-widget'"></extension-point> -->
-  <app-profile-badge *ngIf="userProfile.badgeAssertions && userProfile.badgeAssertions.length > 0"></app-profile-badge>
-  <!-- my badges section ends -->
+      <app-profile-badge
+        *ngIf="userProfile.badgeAssertions && userProfile.badgeAssertions.length > 0"></app-profile-badge>
+      <!-- my badges section ends -->
 
-  <div class="pt-30">
-    <div class="sb-profile-page-container" [ngClass]="layoutConfiguration ? 'sbt-center-container' : 'ui container'">
+      <div class="pt-30">
+        <div class="sb-profile-page-container"
+          [ngClass]="layoutConfiguration ? 'sbt-center-container' : 'ui container'">
 
-      <!--contributions view starts-->
-      <div class="fs-1-7 font-w-bold pl-20 mobile only" *ngIf="contributions && contributions.length > 0">
-        {{resourceService.frmelmnts.scttl.contributions}}
-        ({{totalContributions}})&#x200E;</div>
-      <div class="ui divider my-5 mobile only"></div>
-      <!--contributions computer view starts-->
-      <div class="ui segments" *ngIf="contributions && contributions.length > 0">
-        <div class="ui segment computer only">
-          <div class="fs-1-7 pl-10 font-w-bold">{{resourceService.frmelmnts.scttl.contributions}}
-            ({{totalContributions}})&#x200E;</div>
-        </div>
-        <div class="ui segment">
-          <div class="regular slider pt-10">
-            <app-page-section [section]="{ contents: contributions}" (visits)="prepareVisits($event)"
-              (playEvent)="openContent($event)" [layoutConfiguration]="layoutConfiguration"></app-page-section>
+          <!--contributions view starts-->
+          <div class="fs-1-7 font-w-bold pl-20 mobile only" *ngIf="contributions && contributions.length > 0">
+            {{resourceService.frmelmnts.scttl.contributions}}
+            ({{totalContributions}})&#x200E;
           </div>
-        </div>
-      </div>
-      <!--contributions computer view ends-->
-      <!--contributions view ends-->
-
-      <!-- tarainings attended computer view strats-->
-      <div class="container my-16 sb-certificate-trained" *ngIf="attendedTraining && attendedTraining.length">
-          <div class="list-heading">
-            <label class="mb-0">{{resourceService?.frmelmnts?.lbl?.myLearning}}({{attendedTraining.length}})&#x200E;</label>
-            <span class="fsmall mt-4 font-weight-bold">&nbsp;({{resourceService?.frmelmnts?.lbl?.refreshedDaily}})</span>
-          </div>
-          <div class="list-item-parent">
-            <div class="list-items sb-course-progress-status-label">
-              <div class="list-items__item"><span class="sb__ellipsis mr-auto mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.course}}</span></div>
-              <div class="list-items__item"><span class="sb__ellipsis mr-auto mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.batch}}</span></div>
-              <div class="list-items__item"><span class="sb__ellipsis mr-auto mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.coursecompletiondate}}</span></div>
-              <div class="list-items__item"><span class="sb__ellipsis mr-auto mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.status}}</span></div>
-              <div class="list-items__item"><span class="sb__ellipsis mr-auto mb-0 text-left"></span></div>
+          <div class="ui divider my-5 mobile only"></div>
+          <!--contributions computer view starts-->
+          <div class="ui segments" *ngIf="contributions && contributions.length > 0">
+            <div class="ui segment computer only">
+              <div class="fs-1-7 pl-10 font-w-bold">{{resourceService.frmelmnts.scttl.contributions}}
+                ({{totalContributions}})&#x200E;</div>
             </div>
-          </div>
-          <div class="list-item-parent" *ngFor="let data of attendedTraining | slice:0:courseLimit">
-            <div class="list-items" *ngIf="data.courseName">
-              <div class="list-items__item"><a tabindex="0" (click)="navigateToCourse(data)" class="sb__ellipsis mr-auto mb-0 text-left">{{data.courseName}}</a></div>
-              <div class="list-items__item"><span class="sb__ellipsis mr-auto mb-0 text-left">{{data.batch.name}}</span></div>
-              <div class="list-items__item list-date" *ngIf="data.completedOn">{{data.completedOn | date :'MMMM yyy' }}</div>
-              <div class="list-items__item list-items__bar computer only" *ngIf="!data.completedOn">
-                  <span class="bar mr-4"></span>
-                  <span class="bar"></span>
-              </div>
-              <div class="list-items__item status-progress fsmall font-weight-bold text-left" *ngIf="(data.status === 0 || data.status === 1) && (data.batch.status !== 2)" >{{resourceService?.frmelmnts?.lbl?.ongoing}}</div>
-              <div class="list-items__item status-progress fsmall font-weight-bold text-left" *ngIf="(data.status === 0 || data.status === 1) && (data.batch.status === 2)" >{{resourceService?.frmelmnts?.lbl?.expiredbatch}}</div>
-              <div class="list-items__item status-completed fsmall font-weight-bold text-left" *ngIf="data.status === 2 " >{{resourceService?.frmelmnts?.lbl?.completed}}</div>
-              <div class="list-items__item" *ngIf="data?.certificates?.length || data?.issuedCertificates?.length">
-                <button appTelemetryInteract
-                 [telemetryInteractEdata]="downloadCertificateEData"
-                [telemetryInteractCdata]="[{id: 'course:download:cert', type: 'Feature'},{id: 'SB-14120', type: 'Task'}]"
-                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn fnormal" (click)="downloadCert(data)" tabindex="0">
-                <i class="download icon"></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
-              </div>
-              <div class="list-items__item list-items__bar computer only" *ngIf="!data?.certificates?.length && !data?.issuedCertificates?.length">
-                  <span class="bar mr-4"></span>
-                  <span class="bar"></span>
+            <div class="ui segment">
+              <div class="regular slider pt-10">
+                <app-page-section [section]="{ contents: contributions}" (visits)="prepareVisits($event)"
+                  (playEvent)="openContent($event)" [layoutConfiguration]="layoutConfiguration"></app-page-section>
               </div>
             </div>
           </div>
-          <div class="flex-ai-jc-center sb-ct-list" *ngIf="attendedTraining.length > 3">
-            <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
-              [telemetryInteractEdata]="{id:'view-more' , type:'click' , pageid:'profile-read'}" *ngIf="showMoreTrainings"
-              (click)="toggleCourse(true, attendedTraining.length)" tabindex="0"> +{{attendedTraining.length - 3}} {{resourceService.frmelmnts.lbl.viewmore}}<i
-                class="chevron down icon"></i></button>
-            <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
-              [telemetryInteractEdata]="{id:'view-less' , type:'click' , pageid:'profile-read'}"
-              (click)="toggleCourse(false, attendedTraining.length)" tabindex="0" *ngIf="!showMoreTrainings">{{resourceService.frmelmnts.lbl.viewless}}<i
-                class="chevron up icon"></i></button>
-          </div>
-        </div>
-         <!-- trainings attended computer view ends-->
+          <!--contributions computer view ends-->
+          <!--contributions view ends-->
 
-         <!-- certificates - old layout-->
-        <!-- <div class="container my-16 sb-certificate-trained" id="learner-passbook" *ngIf="otherCertificates && otherCertificates.length">
+          <!-- trainings attended computer view strats-->
+          <div class="container my-16 sb-certificate-trained" *ngIf="attendedTraining && attendedTraining.length">
+            <div class="list-heading">
+              <label
+                class="mb-0">{{resourceService?.frmelmnts?.lbl?.myLearning}}({{attendedTraining.length}})&#x200E;</label>
+              <span
+                class="fsmall mt-4 font-weight-bold">&nbsp;({{resourceService?.frmelmnts?.lbl?.refreshedDaily}})</span>
+            </div>
+            <div class="list-item-parent">
+              <div class="list-items sb-course-progress-status-label">
+                <div class="list-items__item"><span
+                    class="sb__ellipsis mr-auto mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.course}}</span></div>
+                <div class="list-items__item"><span
+                    class="sb__ellipsis mr-auto mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.batch}}</span></div>
+                <div class="list-items__item"><span
+                    class="sb__ellipsis mr-auto mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.coursecompletiondate}}</span>
+                </div>
+                <div class="list-items__item"><span
+                    class="sb__ellipsis mr-auto mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.status}}</span></div>
+                <div class="list-items__item"><span class="sb__ellipsis mr-auto mb-0 text-left"></span></div>
+              </div>
+            </div>
+            <div class="list-item-parent" *ngFor="let data of attendedTraining | slice:0:courseLimit">
+              <div class="list-items" *ngIf="data.courseName">
+                <div class="list-items__item"><a tabindex="0" (click)="navigateToCourse(data)"
+                    class="sb__ellipsis mr-auto mb-0 text-left">{{data.courseName}}</a></div>
+                <div class="list-items__item"><span
+                    class="sb__ellipsis mr-auto mb-0 text-left">{{data.batch.name}}</span></div>
+                <div class="list-items__item list-date" *ngIf="data.completedOn">
+                  {{data.completedOn | date :'MMMM yyy' }}</div>
+                <div class="list-items__item list-items__bar computer only" *ngIf="!data.completedOn">
+                  <span class="bar mr-4"></span>
+                  <span class="bar"></span>
+                </div>
+                <div class="list-items__item status-progress fsmall font-weight-bold text-left"
+                  *ngIf="(data.status === 0 || data.status === 1) && (data.batch.status !== 2)">
+                  {{resourceService?.frmelmnts?.lbl?.ongoing}}</div>
+                <div class="list-items__item status-progress fsmall font-weight-bold text-left"
+                  *ngIf="(data.status === 0 || data.status === 1) && (data.batch.status === 2)">
+                  {{resourceService?.frmelmnts?.lbl?.expiredbatch}}</div>
+                <div class="list-items__item status-completed fsmall font-weight-bold text-left"
+                  *ngIf="data.status === 2 ">{{resourceService?.frmelmnts?.lbl?.completed}}</div>
+                <div class="list-items__item" *ngIf="data?.certificates?.length || data?.issuedCertificates?.length">
+                  <button appTelemetryInteract [telemetryInteractEdata]="downloadCertificateEData"
+                    [telemetryInteractCdata]="[{id: 'course:download:cert', type: 'Feature'},{id: 'SB-14120', type: 'Task'}]"
+                    class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn fnormal"
+                    (click)="downloadCert(data)" tabindex="0">
+                    <i class="download icon"></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
+                </div>
+                <div class="list-items__item list-items__bar computer only"
+                  *ngIf="!data?.certificates?.length && !data?.issuedCertificates?.length">
+                  <span class="bar mr-4"></span>
+                  <span class="bar"></span>
+                </div>
+              </div>
+            </div>
+            <div class="flex-ai-jc-center sb-ct-list" *ngIf="attendedTraining.length > 3">
+              <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
+                [telemetryInteractEdata]="{id:'view-more' , type:'click' , pageid:'profile-read'}"
+                *ngIf="showMoreTrainings" (click)="toggleCourse(true, attendedTraining.length)" tabindex="0">
+                +{{attendedTraining.length - 3}} {{resourceService.frmelmnts.lbl.viewmore}}<i
+                  class="chevron down icon"></i></button>
+              <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
+                [telemetryInteractEdata]="{id:'view-less' , type:'click' , pageid:'profile-read'}"
+                (click)="toggleCourse(false, attendedTraining.length)" tabindex="0"
+                *ngIf="!showMoreTrainings">{{resourceService.frmelmnts.lbl.viewless}}<i
+                  class="chevron up icon"></i></button>
+            </div>
+          </div>
+          <!-- trainings attended computer view ends-->
+
+          <!-- certificates - old layout-->
+          <!-- <div class="container my-16 sb-certificate-trained" id="learner-passbook" *ngIf="otherCertificates && otherCertificates.length">
           <div class="list-heading">
             <label class="mb-0">{{resourceService.frmelmnts?.lbl?.learnerPassbook }}&#x200E;</label>
           </div>
@@ -421,57 +477,62 @@
                 class="chevron up icon"></i></button>
           </div>
         </div> -->
-        <!-- certificates - old layout-->
+          <!-- certificates - old layout-->
 
-        <!-- RC Certificates -->
-        <div class="container my-16 sb-certificate-trained" id="learner-passbook" *ngIf="otherCertificates && otherCertificates.length">
-          <div class="list-heading">
-            <label class="mb-0">{{resourceService.frmelmnts?.lbl?.learnerPassbook }}&#x200E;</label>
-          </div>
-          <div class="list-item-parent">
-            <div class="list-items sb-course-progress-status-label">
-              <label class="list-items__item mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.course}}</label>
-              <label class="list-items__item mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.certgivenby}}</label>
-              <label class="list-items__item mb-0 last-date">{{resourceService?.frmelmnts?.lbl?.certissuedon}}</label>
-              <label class="list-items__item mb-0 text-left"></label>
-              <label class="list-items__item mb-0 text-left"></label>
+          <!-- RC Certificates -->
+          <div class="container my-16 sb-certificate-trained" id="learner-passbook"
+            *ngIf="otherCertificates && otherCertificates.length">
+            <div class="list-heading">
+              <label class="mb-0">{{resourceService.frmelmnts?.lbl?.learnerPassbook }}&#x200E;</label>
             </div>
-          </div>
-          <div class="list-item-parent" *ngFor="let data of otherCertificates | slice:0:otherCertificateLimit">
-            <div class="list-items" *ngIf="data?.issuerName">
-              <label class="list-items__item mb-0 text-left">{{data.trainingName}}</label>
-              <label class="list-items__item mb-0 text-left">{{data?.issuerName}}</label>
-              <label class="list-items__item list-date" *ngIf="data.issuedOn">{{data.issuedOn | date :'dd MMMM yyy' }}</label>
-              <div class="list-items__item" *ngIf="data?.id">
-                <button appOnlineOnly appTelemetryInteract [telemetryInteractEdata]="downloadOthersCertificateEData"
-                  class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"
-                  (click)="downloadOldAndRCCert(data)" tabindex="0" >
-                  <i class="download icon"></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
-              </div>
-              <div class="list-items__item list-items__bar computer only" *ngIf="!data?.length">
-                <span class="bar"></span>
-                <span class="bar"></span>
+            <div class="list-item-parent">
+              <div class="list-items sb-course-progress-status-label">
+                <label class="list-items__item mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.course}}</label>
+                <label class="list-items__item mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.certgivenby}}</label>
+                <label class="list-items__item mb-0 last-date">{{resourceService?.frmelmnts?.lbl?.certissuedon}}</label>
+                <label class="list-items__item mb-0 text-left"></label>
+                <label class="list-items__item mb-0 text-left"></label>
               </div>
             </div>
+            <div class="list-item-parent" *ngFor="let data of otherCertificates | slice:0:otherCertificateLimit">
+              <div class="list-items" *ngIf="data?.issuerName">
+                <label class="list-items__item mb-0 text-left">{{data.trainingName}}</label>
+                <label class="list-items__item mb-0 text-left">{{data?.issuerName}}</label>
+                <label class="list-items__item list-date"
+                  *ngIf="data.issuedOn">{{data.issuedOn | date :'dd MMMM yyy' }}</label>
+                <div class="list-items__item" *ngIf="data?.id">
+                  <button appOnlineOnly appTelemetryInteract [telemetryInteractEdata]="downloadOthersCertificateEData"
+                    class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"
+                    (click)="downloadOldAndRCCert(data)" tabindex="0">
+                    <i class="download icon"></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
+                </div>
+                <div class="list-items__item list-items__bar computer only" *ngIf="!data?.length">
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                </div>
+              </div>
+            </div>
+            <div class="flex-ai-jc-center sb-ct-list" *ngIf="otherCertificates.length > 3 ">
+              <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
+                [telemetryInteractEdata]="{id:'view-more' , type:'click' , pageid:'profile-read'}"
+                *ngIf="showMoreCertificates" (click)="toggleOtherCertific(true)"
+                tabindex="0">{{resourceService.frmelmnts.lbl.viewmore}}<i class="chevron down icon"></i></button>
+              <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
+                [telemetryInteractEdata]="{id:'view-less' , type:'click' , pageid:'profile-read'}"
+                (click)="toggleOtherCertific(false)" tabindex="0"
+                *ngIf="!showMoreCertificates">{{resourceService.frmelmnts.lbl.viewless}}<i
+                  class="chevron up icon"></i></button>
+            </div>
           </div>
-          <div class="flex-ai-jc-center sb-ct-list" *ngIf="otherCertificates.length > 3 ">
-            <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
-              [telemetryInteractEdata]="{id:'view-more' , type:'click' , pageid:'profile-read'}" *ngIf="showMoreCertificates"
-              (click)="toggleOtherCertific(true)" tabindex="0">{{resourceService.frmelmnts.lbl.viewmore}}<i
-                class="chevron down icon"></i></button>
-            <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
-              [telemetryInteractEdata]="{id:'view-less' , type:'click' , pageid:'profile-read'}"
-              (click)="toggleOtherCertific(false)" tabindex="0"
-              *ngIf="!showMoreCertificates">{{resourceService.frmelmnts.lbl.viewless}}<i class="chevron up icon"></i></button>
-          </div>
+          <!-- RC Certificates -->
         </div>
-        <!-- RC Certificates -->
       </div>
+    </div>
   </div>
 </div>
-</div>
-</div>
-<app-modal-wrapper #profileModal *ngIf="showEdit" [config]="{disableClose: false, panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="showEdit = !showEdit">
+
+<app-modal-wrapper #profileModal *ngIf="showEdit"
+  [config]="{disableClose: false, panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="showEdit = !showEdit">
   <ng-template sbModalContent let-data>
     <app-popup [dialogProps]="data" [formInput]="userFrameWork" [showCloseIcon]="true"
       [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" (submit)="updateProfile($event)">
@@ -479,27 +540,29 @@
   </ng-template>
 </app-modal-wrapper>
 
-<app-modal-wrapper *ngIf="showContactPopup" [config]="{disableClose: false, panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="showContactPopup = !showContactPopup">
+<app-modal-wrapper *ngIf="showContactPopup"
+  [config]="{disableClose: false, panelClass: ['overflow-visible', 'material-modal']}"
+  (dismiss)="showContactPopup = !showContactPopup">
   <ng-template sbModalContent let-data>
-    <app-update-contact-details [dialogProps]="data" (close)="showContactPopup = !showContactPopup" [contactType]="contactType" [userProfile]="userProfile">
+    <app-update-contact-details [dialogProps]="data" (close)="showContactPopup = !showContactPopup"
+      [contactType]="contactType" [userProfile]="userProfile">
     </app-update-contact-details>
   </ng-template>
 </app-modal-wrapper>
 
-  <app-location-selection
-    (close)="onLocationModalClose($event)"
-    *ngIf="showEditUserDetailsPopup">
+<app-location-selection (close)="onLocationModalClose($event)" *ngIf="showEditUserDetailsPopup">
 
-    <div slot="popup-sub-header">
-      <p class="subtitle">{{resourceService?.frmelmnts?.lbl?.editPersonalDetails}}&lrm;</p>
-    </div>
-  </app-location-selection>
-  <app-full-page-loader *ngIf="showFullScreenLoader"></app-full-page-loader>
+  <div slot="popup-sub-header">
+    <p class="subtitle">{{resourceService?.frmelmnts?.lbl?.editPersonalDetails}}&lrm;</p>
+  </div>
+</app-location-selection>
+<app-full-page-loader *ngIf="showFullScreenLoader"></app-full-page-loader>
 
-  <app-modal-wrapper *ngIf="showRecoveryId" [config]="{disableClose: false, panelClass: 'material-modal'}" (dismiss)="showRecoveryId = !showRecoveryId">
-    <ng-template sbModalContent let-data>
-      <app-account-recovery-info [dialogProps]="data" [mode]="mode" (close)="showRecoveryId = !showRecoveryId"
+<app-modal-wrapper *ngIf="showRecoveryId" [config]="{disableClose: false, panelClass: 'material-modal'}"
+  (dismiss)="showRecoveryId = !showRecoveryId">
+  <ng-template sbModalContent let-data>
+    <app-account-recovery-info [dialogProps]="data" [mode]="mode" (close)="showRecoveryId = !showRecoveryId"
       [userProfile]="userProfile"></app-account-recovery-info>
-    </ng-template>
-  </app-modal-wrapper>
+  </ng-template>
+</app-modal-wrapper>
 <router-outlet></router-outlet>

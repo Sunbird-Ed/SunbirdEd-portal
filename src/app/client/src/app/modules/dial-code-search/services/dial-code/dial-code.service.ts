@@ -6,7 +6,7 @@ import { map, catchError } from 'rxjs/operators';
 import { of, Observable, iif, forkJoin } from 'rxjs';
 import TreeModel from 'tree-model';
 const treeModel = new TreeModel();
-
+import { CslFrameworkService } from '../../../../modules/public/services/csl-framework/csl-framework.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,8 +14,10 @@ export class DialCodeService {
 
 
   private dialSearchResults;
+  private frameworkCategories;
   constructor(private searchService: SearchService, private configService: ConfigService, private playerService: PlayerService,
-    private config: ConfigService, private user: UserService, private publicDataService: PublicDataService ) {
+    private config: ConfigService, private user: UserService, private publicDataService: PublicDataService, private cslFrameworkService:CslFrameworkService ) {
+      this.frameworkCategories = this.cslFrameworkService.getFrameworkCategories();
     }
 
 
@@ -137,8 +139,9 @@ export class DialCodeService {
             contentType: this.config.appConfig.DialAssembleSearch.contentType,
           },
           userProfile:
-            this.user.loggedIn && _.get(this.user.userProfile, 'framework.board')
-              ? { board: this.user.userProfile.framework.board }
+            this.user.loggedIn && _.get(this.user.userProfile, 'framework.[this.frameworkCategories.fwCategory1.code]')
+              ? { [this.frameworkCategories?.fwCategory1?.code]: this.user.userProfile.framework[this.frameworkCategories?.fwCategory1?.code]
+              }
               : {},
         },
       },

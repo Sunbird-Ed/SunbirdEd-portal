@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { takeUntil, map, tap, filter } from 'rxjs/operators';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 
 @Component({
@@ -142,13 +143,19 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   public selectedFilters;
   public initFilters = false;
   private _enrolledSectionNames: string[];
+  public frameworkCategories;
+  public globalFilterCategoriesObject;
+  public categoryKeys;
+  public frameworkCategoriesList;
+  public globalFilterCategories;
+  public CourseSearchFieldCategory;
 
   constructor(searchService: SearchService, router: Router, private playerService: PlayerService, private formService: FormService,
     activatedRoute: ActivatedRoute, paginationService: PaginationService,
     resourceService: ResourceService, toasterService: ToasterService, private publicPlayerService: PublicPlayerService,
     configService: ConfigService, coursesService: CoursesService, public utilService: UtilService,
     private orgDetailsService: OrgDetailsService, userService: UserService, private browserCacheTtlService: BrowserCacheTtlService,
-    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
+    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService, public cslFrameworkService:CslFrameworkService) {
     this.searchService = searchService;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -165,6 +172,13 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.frameworkCategories = this.cslFrameworkService.getFrameworkCategories();
+    this.globalFilterCategoriesObject = this.cslFrameworkService.getGlobalFilterCategoriesObject();
+    this.categoryKeys = this.cslFrameworkService.transformDataForCC();
+    this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
+    this.globalFilterCategories = this.cslFrameworkService.getAlternativeCodeForFilter();
+    this.CourseSearchFieldCategory = [...this.globalFilterCategories, ...this.frameworkCategoriesList];
+    this.facetsList = ['channel', this.frameworkCategories?.fwCategory2?.code,this.frameworkCategories?.fwCategory3?.code,this.frameworkCategories?.fwCategory4?.code];
     this.initLayout();
     if (!this.userService.loggedIn) {
       this.getChannelId();
@@ -359,7 +373,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     const requestParams = {
       filters: _.get(this.queryParams, 'appliedFilters') ? this.filters : { ..._.get(manipulatedData, 'filters'), ...this.filters },
       limit: this.pageLimit,
-      fields: this.configService.urlConFig.params.CourseSearchField,
+      fields: [...this.configService.urlConFig.params.CourseSearchField, ...this.CourseSearchFieldCategory],
       pageNumber: Number(request.params.pageNumber),
       mode: _.get(manipulatedData, 'mode'),
       params: this.configService.appConfig.ViewAll.contentApiQueryParams,
@@ -569,89 +583,32 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
 
   updateFacetsData(facets) {
     const facetsData = [];
-    _.forEach(facets, (facet, key) => {
-      switch (key) {
-        case 'board':
-          const boardData = {
-            index: '1',
-            label: _.get(this.resourceService, 'frmelmnts.lbl.boards'),
-            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectBoard'),
-            values: facet,
-            name: key
-          };
-          facetsData.push(boardData);
-          break;
-        case 'medium':
-          const mediumData = {
-            index: '2',
-            label: _.get(this.resourceService, 'frmelmnts.lbl.medium'),
-            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectMedium'),
-            values: facet,
-            name: key
-          };
-          facetsData.push(mediumData);
-          break;
-        case 'gradeLevel':
-          const gradeLevelData = {
-            index: '3',
-            label: _.get(this.resourceService, 'frmelmnts.lbl.class'),
-            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectClass'),
-            values: facet,
-            name: key
-          };
-          facetsData.push(gradeLevelData);
-          break;
-        case 'subject':
-          const subjectData = {
-            index: '4',
-            label: _.get(this.resourceService, 'frmelmnts.lbl.subject'),
-            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectSubject'),
-            values: facet,
-            name: key
-          };
-          facetsData.push(subjectData);
-          break;
-        case 'publisher':
-          const publisherData = {
-            index: '5',
-            label: _.get(this.resourceService, 'frmelmnts.lbl.publisher'),
-            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectPublisher'),
-            values: facet,
-            name: key
-          };
-          facetsData.push(publisherData);
-          break;
-        case 'contentType':
-          const contentTypeData = {
-            index: '6',
-            label: _.get(this.resourceService, 'frmelmnts.lbl.contentType'),
-            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectContentType'),
-            values: facet,
-            name: key
-          };
-          facetsData.push(contentTypeData);
-          break;
-        case 'channel':
-          const channelLists = [];
-          _.forEach(facet, (channelList) => {
-            if (channelList.orgName) {
-              channelList.name = channelList.orgName;
-            }
-            channelLists.push(channelList);
-          });
-          const channelData = {
-            index: '1',
-            label: _.get(this.resourceService, 'frmelmnts.lbl.orgname'),
-            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.orgname'),
-            values: channelLists,
-            name: key
-          };
-          facetsData.push(channelData);
-          break;
+    this.globalFilterCategoriesObject.forEach((filter) => {
+      const facet = facets[filter.code];
+      if (facet) {
+        const facetData = {
+          index: filter.code === 'channel' ? '1' : filter.index.toString(),
+          label: filter.label,
+          placeholder: filter.placeHolder,
+          values: filter.code === 'channel' ? this.processChannelData(facet) : facet,
+          name: filter.code
+        };
+
+        facetsData.push(facetData);
       }
     });
     return facetsData;
   }
+  // Helper method to process channel data
+  processChannelData(facet) {
+    return facet.map((channelList) => {
+      if (channelList.orgName) {
+        channelList.name = channelList.orgName;
+      }
+      return channelList;
+    });
+  }
+
   public handleCloseButton() {
     if (this.queryParams.selectedTab === 'all') {
     const previousPageUrl = this.navigationhelperService.getPreviousUrl();

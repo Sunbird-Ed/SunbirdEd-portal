@@ -56,21 +56,9 @@
             </a>
         </dd>
     </dl>
-    <dl class="sb-meta-data">
-        <dt>{{resourceService.frmelmnts.lbl.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}}</dt>
-        <dd *ngIf="metadata.medium">{{metadata.medium}}</dd>
-    </dl>
-    <dl class="sb-meta-data">
-        <dt>{{resourceService.frmelmnts.lbl.board | transposeTerms: 'frmelmnts.lbl.board' : resourceService?.selectedLang}}</dt>
-        <dd *ngIf="metadata.board">{{metadata.board}}</dd>    
-    </dl>
-    <dl class="sb-meta-data">
-        <dt>{{resourceService.frmelmnts.lbl.class | transposeTerms: 'frmelmnts.lbl.class' : resourceService?.selectedLang}}</dt>
-        <dd *ngIf="metadata.gradeLevel">{{metadata.gradeLevel}}</dd>
-    </dl>
-    <dl class="sb-meta-data">
-        <dt>{{resourceService.frmelmnts.lbl.subject | transposeTerms: 'frmelmnts.lbl.subject' : resourceService?.selectedLang}}</dt>
-        <dd *ngIf="metadata.subject">{{metadata.subject}}</dd>
+    <dl class="sb-meta-data" *ngFor= "let transformMetadataInfo of transformMetadata">
+        <dt>{{transformMetadataInfo?.labels | translateJson}}</dt>
+        <dd *ngIf="transformMetadataInfo?.value">{{transformMetadataInfo?.value}}</dd>
     </dl>
     <dl class="sb-meta-data" *ngIf="metadata.createdOn">
         <dt>{{resourceService.frmelmnts.lbl.createdon}}</dt>

@@ -53,3 +53,4 @@ src/desktop/chromedriverlog.txt
 **/.DS_Store
 
 .vscode/*
+.env

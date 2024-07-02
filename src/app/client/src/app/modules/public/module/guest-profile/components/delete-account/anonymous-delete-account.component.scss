@@ -1,0 +1,45 @@
+@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "@project-sunbird/sb-styles/assets/varSass" as *;
+@use 'components/form' as *;
+
+.ui.grey.button {
+  font-size: 1rem;
+}
+
+.ui.dodger-blue.button {
+  background: var(--primary-color);
+  color: var(--white);
+  font-size: 1rem;
+  height: calculateRem(38px) !important;
+}
+
+.ui.left.icon.input .icon {
+  font-size: 1rem;
+}
+
+.height-200 {
+  height: calculateRem(200px) !important;
+}
+
+.sb-field.ui.input {
+  display: block;
+
+  .icon {
+    left: 0;
+    top: 0.625rem;
+  }
+
+  .sb-form-control {
+    border: $sb-input-border-normal;
+    line-height: 1.5;
+    padding: 0.5714rem;
+
+    &:hover {
+      border: $sb-input-border-hover;
+    }
+  }
+}
+.delete__title{
+  margin: auto;
+  color: #dd4841 !important;
+}

@@ -1,14 +1,15 @@
+const utils = require('../helpers/utils.js');
 const proxyUtils = require('./proxyUtils.js')
 const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')
-const envHelper = require('./../helpers/environmentVariablesHelper.js')
-const contentProxyUrl = envHelper.CONTENT_PROXY_URL
-const learnerServiceBaseUrl = envHelper.LEARNER_URL
-const learner_Service_Local_BaseUrl = envHelper.learner_Service_Local_BaseUrl
-const contentServiceBaseUrl = envHelper.CONTENT_URL
+const contentProxyUrl  = utils?.defaultHost(utils?.envVariables?.CONTENT_PROXY_URL);
+const learnerServiceBaseUrl  = utils?.defaultHost(utils?.envVariables?.LEARNER_URL);
+const learner_Service_Local_BaseUrl = utils?.defaultHost(utils?.envVariables?.learner_Service_Local_BaseUrl);
+const PORTAL_EXT_PLUGIN_URL = utils?.defaultHost(utils?.envVariables?.PORTAL_EXT_PLUGIN_URL);
+const contentServiceBaseUrl = utils?.defaultHost(utils?.envVariables?.CONTENT_URL);
 const reqDataLimitOfContentUpload = '30mb'
 const telemetryHelper = require('../helpers/telemetryHelper')
-const learnerURL = envHelper.LEARNER_URL
+const learnerURL  = utils?.defaultHost(utils?.envVariables?.LEARNER_URL);
 const isAPIWhitelisted = require('../helpers/apiWhiteList');
 
 module.exports = function (app) {
@@ -105,7 +106,7 @@ module.exports = function (app) {
   app.all('/action/review/comment/*',
   isAPIWhitelisted.isAllowed(),
   addCorsHeaders,
-  proxy(envHelper.PORTAL_EXT_PLUGIN_URL, {
+  proxy(PORTAL_EXT_PLUGIN_URL, {
     proxyReqPathResolver: req => {
       return req.originalUrl.replace('/action', '/plugin')
     },
@@ -143,9 +144,9 @@ module.exports = function (app) {
   // Question & QuestionSet API's START
 
   app.get([
-    '/action/questionset/v1/read/:do_id',
-    '/action/question/v1/read/:do_id',
-    '/action/questionset/v1/hierarchy/:do_id',
+    '/action/questionset/v2/read/:do_id',
+    '/action/question/v2/read/:do_id',
+    '/action/questionset/v2/hierarchy/:do_id'
     ],
     isAPIWhitelisted.isAllowed(),
     addCorsHeaders,
@@ -162,13 +163,14 @@ module.exports = function (app) {
   )
 
   app.post([
-    '/action/questionset/v1/create',
-    '/action/questionset/v1/review/:do_id',
-    '/action/questionset/v1/publish/:do_id',
-    '/action/questionset/v1/reject/:do_id',
-    '/action/question/v1/create',
-    '/action/question/v1/review/:do_id',
-    '/action/question/v1/publish/:do_id'
+    '/action/questionset/v2/create',
+    '/action/questionset/v2/review/:do_id',
+    '/action/questionset/v2/publish/:do_id',
+    '/action/questionset/v2/reject/:do_id',
+    '/action/question/v2/create',
+    '/action/question/v2/review/:do_id',
+    '/action/question/v2/publish/:do_id',
+    '/action/question/v2/list'
     ],
     isAPIWhitelisted.isAllowed(),
     addCorsHeaders,
@@ -185,10 +187,10 @@ module.exports = function (app) {
   )
 
   app.patch([
-    '/action/questionset/v1/hierarchy/update',
-    '/action/questionset/v1/update/:do_id',
-    '/action/questionset/v1/add',
-    '/action/question/v1/update/:do_id'
+    '/action/questionset/v2/hierarchy/update',
+    '/action/questionset/v2/update/:do_id',
+    '/action/questionset/v2/add',
+    '/action/question/v2/update/:do_id'
     ],
     isAPIWhitelisted.isAllowed(),
     addCorsHeaders,
@@ -255,7 +257,7 @@ module.exports = function (app) {
     })
   )
   // Collection import & export API's END
-  
+
   app.post('/action/content/v3/upload/*',
     isAPIWhitelisted.isAllowed(),
     proxy(contentProxyUrl, {
@@ -266,7 +268,7 @@ module.exports = function (app) {
       userResDecorator: userResDecorator
     })
   )
-  // asset create , upload and read api's 
+  // asset create , upload and read api's
   app.post('/action/asset/v1/upload/:do_id',
     isAPIWhitelisted.isAllowed(),
     proxy(contentServiceBaseUrl, {

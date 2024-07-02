@@ -37,12 +37,12 @@
               (viewAll)="viewAll($event)"></app-page-section>
             <sb-library-cards-grid *ngIf="!isPageAssemble && !isDesktopApp" [layoutConfig]="layoutConfiguration" [title]="section.name"
               [contentList]="section.contents | sortBy:'name':'asc'" [type]="'infinite_card_grid'"
-              (cardClick)="playContent($event)" (enterKey)="playContent($event)" >
+              (cardClick)="playContent($event)" (enterKey)="playContent($event)" [categoryKeys]="categoryKeys">
             </sb-library-cards-grid>
             <div class="sb-desktop-library-card relative9">
               <sb-library-cards-grid *ngIf="!isPageAssemble && isDesktopApp" [layoutConfig]="layoutConfiguration" [type]="'infinite_card_grid_with_hover'" 
               [title]="section?.name" [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3" 
-              (hoverActionClick)="hoverActionClicked($event)">
+              (hoverActionClick)="hoverActionClicked($event)" [categoryKeys]="categoryKeys">
               </sb-library-cards-grid>
             </div>
           </div>

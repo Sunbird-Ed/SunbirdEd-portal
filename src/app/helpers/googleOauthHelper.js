@@ -8,84 +8,96 @@ const envHelper = require('./environmentVariablesHelper.js')
 const request = require('request-promise'); //  'request' npm package with Promise support
 const uuid = require('uuid/v1')
 const dateFormat = require('dateformat')
-const {decodeToken} = require('./jwtHelper');
+const { decodeToken } = require('./jwtHelper');
 const { logger } = require('@project-sunbird/logger');
 const { ProxyLogger } = require("@project-sunbird/logger/decorator");
 const { getBearerToken } = require('../helpers/kongTokenHelper')
 
 const keycloakGoogle = getKeyCloakClient({
-  resource: envHelper.KEYCLOAK_GOOGLE_CLIENT.clientId,
+  resource: envHelper?.KEYCLOAK_GOOGLE_CLIENT?.clientId,
   bearerOnly: true,
-  serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
-  realm: envHelper.PORTAL_REALM,
+  serverUrl: envHelper?.PORTAL_AUTH_SERVER_URL,
+  realm: envHelper?.PORTAL_REALM,
   credentials: {
-    secret: envHelper.KEYCLOAK_GOOGLE_CLIENT.secret
+    secret: envHelper?.KEYCLOAK_GOOGLE_CLIENT?.secret
   }
 })
 
-const keycloakGoogleAndroid = getKeyCloakClient({
-  resource: envHelper.KEYCLOAK_GOOGLE_ANDROID_CLIENT.clientId,
+// keycloack client for account merge poiting to subdomain
+const keycloakMergeGoogle = getKeyCloakClient({
+  resource: envHelper?.KEYCLOAK_GOOGLE_CLIENT?.clientId,
   bearerOnly: true,
-  serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
-  realm: envHelper.PORTAL_REALM,
+  serverUrl: envHelper?.PORTAL_MERGE_AUTH_SERVER_URL,
+  realm: envHelper?.PORTAL_REALM,
   credentials: {
-    secret: envHelper.KEYCLOAK_GOOGLE_ANDROID_CLIENT.secret
+    secret: envHelper?.KEYCLOAK_GOOGLE_CLIENT?.secret
+  }
+})
+
+
+const keycloakGoogleAndroid = getKeyCloakClient({
+  resource: envHelper?.KEYCLOAK_GOOGLE_ANDROID_CLIENT?.clientId,
+  bearerOnly: true,
+  serverUrl: envHelper?.PORTAL_AUTH_SERVER_URL,
+  realm: envHelper?.PORTAL_REALM,
+  credentials: {
+    secret: envHelper?.KEYCLOAK_GOOGLE_ANDROID_CLIENT?.secret
   }
 })
 const keycloakMergeGoogleAndroid = getKeyCloakClient({
-  resource: envHelper.KEYCLOAK_GOOGLE_ANDROID_CLIENT.clientId,
+  resource: envHelper?.KEYCLOAK_GOOGLE_ANDROID_CLIENT?.clientId,
   bearerOnly: true,
-  serverUrl: envHelper.PORTAL_MERGE_AUTH_SERVER_URL,
-  realm: envHelper.PORTAL_REALM,
+  serverUrl: envHelper?.PORTAL_MERGE_AUTH_SERVER_URL,
+  realm: envHelper?.PORTAL_REALM,
   credentials: {
-    secret: envHelper.KEYCLOAK_GOOGLE_ANDROID_CLIENT.secret
+    secret: envHelper?.KEYCLOAK_GOOGLE_ANDROID_CLIENT?.secret
   }
 })
 const keycloakGoogleIos = getKeyCloakClient({
-  resource: envHelper.KEYCLOAK_GOOGLE_IOS_CLIENT.clientId,
+  resource: envHelper?.KEYCLOAK_GOOGLE_IOS_CLIENT?.clientId,
   bearerOnly: true,
-  serverUrl: envHelper.PORTAL_MERGE_AUTH_SERVER_URL,
-  realm: envHelper.PORTAL_REALM,
+  serverUrl: envHelper?.PORTAL_MERGE_AUTH_SERVER_URL,
+  realm: envHelper?.PORTAL_REALM,
   credentials: {
-    secret: envHelper.KEYCLOAK_GOOGLE_IOS_CLIENT.secret
+    secret: envHelper?.KEYCLOAK_GOOGLE_IOS_CLIENT?.secret
   }
 })
 
 const keycloakGoogleDesktop = getKeyCloakClient({
-  resource: envHelper.KEYCLOAK_GOOGLE_DESKTOP_CLIENT.clientId,
+  resource: envHelper?.KEYCLOAK_GOOGLE_DESKTOP_CLIENT?.clientId,
   bearerOnly: true,
-  serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
+  serverUrl: envHelper?.PORTAL_AUTH_SERVER_URL,
   realm: envHelper.PORTAL_REALM,
   credentials: {
-    secret: envHelper.KEYCLOAK_GOOGLE_DESKTOP_CLIENT.secret
+    secret: envHelper?.KEYCLOAK_GOOGLE_DESKTOP_CLIENT?.secret
   }
 })
 const keycloakMergeGoogleDesktop = getKeyCloakClient({
-  resource: envHelper.KEYCLOAK_GOOGLE_DESKTOP_CLIENT.clientId,
+  resource: envHelper?.KEYCLOAK_GOOGLE_DESKTOP_CLIENT?.clientId,
   bearerOnly: true,
-  serverUrl: envHelper.PORTAL_MERGE_AUTH_SERVER_URL,
-  realm: envHelper.PORTAL_REALM,
+  serverUrl: envHelper?.PORTAL_MERGE_AUTH_SERVER_URL,
+  realm: envHelper?.PORTAL_REALM,
   credentials: {
-    secret: envHelper.KEYCLOAK_GOOGLE_DESKTOP_CLIENT.secret
+    secret: envHelper?.KEYCLOAK_GOOGLE_DESKTOP_CLIENT?.secret
   }
 })
 
-const keycloakMergeGoogleIos =  getKeyCloakClient({
-  resource: envHelper.KEYCLOAK_GOOGLE_CLIENT.clientId,
+const keycloakMergeGoogleIos = getKeyCloakClient({
+  resource: envHelper?.KEYCLOAK_GOOGLE_CLIENT?.clientId,
   bearerOnly: true,
-  serverUrl: envHelper.PORTAL_MERGE_AUTH_SERVER_URL,
-  realm: envHelper.PORTAL_REALM,
+  serverUrl: envHelper?.PORTAL_MERGE_AUTH_SERVER_URL,
+  realm: envHelper?.PORTAL_REALM,
   credentials: {
-    secret: envHelper.KEYCLOAK_GOOGLE_CLIENT.secret
+    secret: envHelper?.KEYCLOAK_GOOGLE_CLIENT?.secret
   }
 })
 
 class GoogleOauth {
   createConnection(req) {
-    const  { clientId, clientSecret } = GOOGLE_OAUTH_CONFIG;
+    const { clientId, clientSecret } = GOOGLE_OAUTH_CONFIG;
     const protocol = envHelper.SUNBIRD_PROTO;
     /* need to delete post debugging*/
-    logger.info({msg: 'google auth protocol-->', protocol});
+    logger.info({ msg: 'google auth protocol-->', protocol });
     /* need to delete post debugging*/
     const redirect = `${protocol}://${req.get('host')}${redirectPath}`;
     return new google.auth.OAuth2(clientId, clientSecret, redirect);
@@ -93,14 +105,14 @@ class GoogleOauth {
   generateAuthUrl(req) {
     const connection = this.createConnection(req);
     return connection.generateAuthUrl({
-        access_type: 'offline',
-        prompt: 'consent',
-        scope: defaultScope
+      access_type: 'offline',
+      prompt: 'consent',
+      scope: defaultScope
     });
   }
   async getProfile(req) {
     const client = this.createConnection(req);
-    if(req.query.error === 'access_denied'){
+    if (req.query.error === 'access_denied') {
       throw new Error('GOOGLE_ACCESS_DENIED');
     }
     const { tokens } = await client.getToken(req.query.code).catch(this.handleError)
@@ -139,13 +151,13 @@ class GoogleOauth {
       msg: 'googleOauthHelper: getProfile failed',
       error: error
     });
-    if(_.get(error, 'response.data')){
+    if (_.get(error, 'response.data')) {
       throw error.response.data
-    } else if(error instanceof Error) {
+    } else if (error instanceof Error) {
       throw error.message
     } else {
       throw 'unhandled exception while getting tokens'
-    } 
+    }
   }
 }
 const googleOauth = new GoogleOauth()
@@ -164,7 +176,7 @@ const createSession = async (emailId, reqQuery, req, res) => {
     keycloakClient = keycloakGoogleDesktop;
     keycloakMergeClient = keycloakMergeGoogleDesktop;
     scope = 'offline_access';
-  } else if(reqQuery.client_id === 'ios'){
+  } else if (reqQuery.client_id === 'ios') {
     keycloakClient = keycloakGoogleIos;
     keycloakMergeClient = keycloakMergeGoogleIos;
     scope = 'offline_access';
@@ -198,10 +210,10 @@ const createSession = async (emailId, reqQuery, req, res) => {
     return new Promise((resolve, reject) => {
       keycloakClient.authenticated(req, function (error) {
         if (error) {
-          logger.info({msg: 'googleauthhelper:createSession error creating session', additionalInfo: error});
+          logger.info({ msg: 'googleauthhelper:createSession error creating session', additionalInfo: error });
           reject('GOOGLE_CREATE_SESSION_FAILED')
         } else {
-          resolve({access_token: grant.access_token.token, refresh_token: grant.refresh_token.token})
+          resolve({ access_token: grant.access_token.token, refresh_token: grant.refresh_token.token })
         }
       });
     })
@@ -210,7 +222,7 @@ const createSession = async (emailId, reqQuery, req, res) => {
 const fetchUserByEmailId = async (emailId, req) => {
   const options = {
     method: 'GET',
-    url: envHelper.LEARNER_URL + 'user/v1/exists/email/'+ emailId,
+    url: envHelper.LEARNER_URL + 'user/v1/exists/email/' + emailId,
     headers: getHeaders(req),
     json: true
   }
@@ -219,7 +231,7 @@ const fetchUserByEmailId = async (emailId, req) => {
     if (data.responseCode === 'OK') {
       return _.get(data, 'result.exists');
     } else {
-      logger.error({msg: 'googleOauthHelper: fetchUserByEmailId failed', additionalInfo: {data}});
+      logger.error({ msg: 'googleOauthHelper: fetchUserByEmailId failed', additionalInfo: { data } });
       throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
     }
   })
@@ -249,7 +261,7 @@ const createUserWithMailId = async (accountDetails, client_id, req) => {
     if (data.responseCode === 'OK') {
       return data;
     } else {
-      logger.error({msg: client_id + 'OauthHelper: createUserWithMailId failed', additionalInfo: {data}});
+      logger.error({ msg: client_id + 'OauthHelper: createUserWithMailId failed', additionalInfo: { data } });
       throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
     }
   })

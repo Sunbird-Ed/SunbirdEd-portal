@@ -81,9 +81,9 @@
     </app-onboarding-popup>
 
     <!-- popup disabled  -->
-    <div *ngIf="loadPopUps && isPopupEnabled">
+    <div *ngIf="loadPopUps && isOnboardingEnabled">
       <!-- 2nd popup BMGS  -->
-      <app-modal-wrapper #frameWorkPopUp *ngIf="showFrameWorkPopUp"
+      <app-modal-wrapper #frameWorkPopUp *ngIf="showFrameWorkPopUp && isFWSelectionEnabled"
         [config]="{disableClose: true, panelClass: ['overflow-visible', 'material-modal'], autoFocus: false}">
         <ng-template sbModalContent let-data>
           <app-popup [dialogProps]="data" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit"
