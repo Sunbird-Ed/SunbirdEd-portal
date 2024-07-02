@@ -10,7 +10,6 @@ import {SunbirdPdfPlayerModule} from '@project-sunbird/sunbird-pdf-player-v9';
 import { SunbirdVideoPlayerModule } from '@project-sunbird/sunbird-video-player-v9';
 
 
-
 @NgModule({
   declarations: [
     OnboardingPopupComponent,
@@ -27,6 +26,7 @@ import { SunbirdVideoPlayerModule } from '@project-sunbird/sunbird-video-player-
   ],
   exports: [
     OnboardingPopupComponent
-  ]
+  ],
+
 })
 export class UserOnboardingModule { }

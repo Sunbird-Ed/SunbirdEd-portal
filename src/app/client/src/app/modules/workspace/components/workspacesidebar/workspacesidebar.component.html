@@ -10,71 +10,71 @@
       {{resourceService?.frmelmnts?.snav?.start}}
     </a>
 
-  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('alltextbooks-button')"  *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/alltextbooks') " 
+  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('alltextbooks-button')"  *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/alltextbooks',false) " 
     appPermission [permission]='alltextbookRole' class="item" [routerLink]="['alltextbooks',1]"  matTooltip="View all Textbooks"
     [matTooltipPosition]="'right'">
          {{resourceService?.frmelmnts?.snav?.alltextbook}}
   </a>  
 
-  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('allmycontents-button')"  *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/allcontent') " 
+  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('allmycontents-button')"  *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/allcontent',false) " 
   appPermission [permission]='allContentRole' class="item" [routerLink]="['allcontent',1]"  matTooltip="View all your content in draft, review, published and more"
   [matTooltipPosition]="'right'">
        {{resourceService?.frmelmnts?.snav?.allmycontents}}
   </a>
-  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('draft-button')" *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/draft') " appPermission
+  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('draft-button')" *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/draft',false) " appPermission
     [permission]='draftRole' class="item" [routerLink]="['draft',1]"   matTooltip="View drafts you are working on. Submit them for review when completed"
     [matTooltipPosition]="'right'">
        {{resourceService?.frmelmnts?.snav?.draft}}
     </a>
   <a class="item" appTelemetryInteract [telemetryInteractEdata]="setInteractData('submittedForReview-button')"  *ngIf='permissionService.permissionAvailable' appPermission [permission]='inreviewRole' [routerLink]="['review',1]"
-    [class.active]="router.isActive('/workspace/content/review')"  matTooltip="View all content you have submitted for review"
+    [class.active]="router.isActive('/workspace/content/review',false)"  matTooltip="View all content you have submitted for review"
     [matTooltipPosition]="'right'">
     {{resourceService?.frmelmnts?.snav?.submittedForReview}}
   </a>
   <a class="item" appTelemetryInteract [telemetryInteractEdata]="setInteractData('publish-button')"  *ngIf='permissionService.permissionAvailable' appPermission [permission]='publishedRole' [routerLink]="['published',1]"
-    [class.active]="router.isActive('/workspace/content/published')"  matTooltip="View all your published content"
+    [class.active]="router.isActive('/workspace/content/published',false)"  matTooltip="View all your published content"
     [matTooltipPosition]="'right'">
     {{resourceService?.frmelmnts?.snav?.published}}
   </a>
   <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('alluploads-button')"  class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='alluploadsRole' [routerLink]="['uploaded',1]"
-    [class.active]="router.isActive('/workspace/content/uploaded')"  matTooltip="View all your uploads"
+    [class.active]="router.isActive('/workspace/content/uploaded',false)"  matTooltip="View all your uploads"
     [matTooltipPosition]="'right'">
     {{resourceService?.frmelmnts?.snav?.alluploads}}
   </a>
   <!-- <a class="item" [routerLink]="['upForReview',1]" routerLinkActive="active"> -->
-  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('upforreview-button')"  class="item" *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/upForReview')"
+  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('upforreview-button')"  class="item" *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/upForReview',false)"
     [routerLink]="['upForReview',1]" appPermission [permission]='upForReviewRole'  matTooltip="Content awaiting your review"
     [matTooltipPosition]="'right'">
     {{resourceService?.frmelmnts?.snav?.upForReview}}
   </a>
-  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('flagreview-button')"  class="item" *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/flagreviewer')"
+  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('flagreview-button')"  class="item" *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/flagreviewer',false)"
     [routerLink]="['flagreviewer',1]" appPermission [permission]='flagReviewer'>
     {{resourceService?.frmelmnts?.snav?.flagReviewer}}
   </a>
   <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('coursebatch-button')"  class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='courseBatchRoles' [routerLink]="['batches','created']"
-    [class.active]="router.isActive('/workspace/content/batches')"  matTooltip="Manage course batches"
+    [class.active]="router.isActive('/workspace/content/batches',false)"  matTooltip="Manage course batches"
     [matTooltipPosition]="'right'">
     {{resourceService?.frmelmnts?.lnk?.coursebacthes}}
   </a>
   <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('createdbyme-button')" class="item ml-15 fs-0-785" *ngIf='permissionService.permissionAvailable' appPermission [permission]='courseBatchRoles'
-    [routerLink]="['batches','created']" [class.active]="router.isActive('/workspace/content/batches/created')">
+    [routerLink]="['batches','created']" [class.active]="router.isActive('/workspace/content/batches/created',false)">
     {{resourceService?.frmelmnts?.lnk?.createdByMe}}<span></span>
   </a>
   <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('assignedtome-button')" class="item ml-15 fs-0-785" *ngIf='permissionService.permissionAvailable' appPermission [permission]='courseBatchRoles'
-    [routerLink]="['batches','assigned']" [class.active]="router.isActive('/workspace/content/batches/assigned')">
+    [routerLink]="['batches','assigned']" [class.active]="router.isActive('/workspace/content/batches/assigned',false)">
     {{resourceService?.frmelmnts?.lnk?.assignedToMe}}<span></span>
   </a>
   <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('flag-button')"  class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='flaggedRole' [routerLink]="['flagged',1]"
-    [class.active]="router.isActive('/workspace/content/flagged')">
+    [class.active]="router.isActive('/workspace/content/flagged',false)">
     {{resourceService?.frmelmnts?.snav?.flagged}}
   </a>
   <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('sharevialink-button')"  class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='limitedPublishingRole' [routerLink]="['limited-publish',1]"
-    [class.active]="router.isActive('/workspace/content/limited-publish')"  matTooltip="View content shared via link. This is not searchable until published by submitting for review"
+    [class.active]="router.isActive('/workspace/content/limited-publish',false)"  matTooltip="View content shared via link. This is not searchable until published by submitting for review"
     [matTooltipPosition]="'right'">
    {{resourceService?.frmelmnts?.snav?.shareViaLink}}
   </a>
   <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('collaborations-button')"  class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='collaboratingRole' [routerLink]="['collaborating-on',1]"
-  [class.active]="router.isActive('/workspace/content/collaborating-on')"  matTooltip="View content you are collaborating on" [matTooltipPosition]="'right'">
+  [class.active]="router.isActive('/workspace/content/collaborating-on',false)"  matTooltip="View content you are collaborating on" [matTooltipPosition]="'right'">
  {{resourceService?.frmelmnts?.snav?.Collaboratingon}}
 </a>
 </div>

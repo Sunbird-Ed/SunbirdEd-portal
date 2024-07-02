@@ -1,4 +1,4 @@
-@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 .course-card-width {
   width: calculateRem(280px) !important;
 }
@@ -66,8 +66,9 @@
 }
 :host {
   .banner-image {
-    overflow: hidden;
+    // overflow: hidden;
     cursor: pointer;
+    // width: 16rem;
     @include respond-below(sm) {
     }
   }
@@ -106,5 +107,12 @@
     font-weight: bold;
     padding: calculateRem(24px) calculateRem(32px);
     z-index: 1;
+  }
+}
+
+::ng-deep {
+  .web-item {
+    width:16rem !important;
+    box-shadow: var(--sbt-box-shadow-6px);
   }
 }

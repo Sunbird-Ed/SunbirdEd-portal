@@ -110,27 +110,29 @@ export class ObservationUtilService {
     return new Promise((resolve, reject) => {
       let profileData:any;
       try {
-        profileData = JSON.parse(
-          sessionStorage.getItem('CacheServiceuserProfile')
-        );
+        profileData = JSON.parse(localStorage.getItem('userProfile'));
       } catch {
         reject();
       }
       const obj = {};
-      for (const location of profileData?.value['userLocations']) {
-        obj[location.type] = location.id;
-      }
-      for (const org of profileData?.value['organisations']) {
-        if (org.isSchool) {
-          obj['school'] = org.externalId;
+      if(profileData){
+        for (const location of profileData.userLocations) {
+          obj[location.type] = location.id;
         }
+        for (const org of profileData.organisations) {
+          if (org.isSchool) {
+            obj['school'] = org.externalId;
+            break;
+          }
+        }
+  
+        const roles = [];
+        for (const userRole of profileData.profileUserTypes) {
+         userRole.subType ? roles.push(userRole.subType.toUpperCase()) : roles.push(userRole.type.toUpperCase());
+        }
+        obj['role'] = roles.toString();
       }
 
-      const roles = [];
-      for (const userRole of profileData?.value['profileUserTypes']) {
-       userRole.subType ? roles.push(userRole.subType.toUpperCase()) : roles.push(userRole.type.toUpperCase());
-      }
-      obj['role'] = roles.toString();
       this.dataParam = obj;
       resolve(obj);
     });

@@ -26,7 +26,40 @@ export let mockChartData = {
         'displayName': 'Select Date',
         'options': [],
         'reference': 'Date'
-    }]
+    }],
+    dependencyFilters:[
+        {
+            "reference": "Program name",
+            "controlType": "multi-select",
+            "displayName": "Program"
+        },
+        {
+            "reference": "Observation name",
+            "controlType": "multi-select",
+            "displayName": "Observation"
+        },
+        {
+            "reference": "District name",
+            "controlType": "multi-select",
+            "displayName": "District"
+        },
+        {
+            "reference": "Organisation",
+            "controlType": "multi-select",
+            "displayName": "Organisation",
+            "dependency":{
+              "reference": "District name",
+              "displayName": "district name"
+            }
+        }
+    ],
+    selectedFiltersWithoutDependecy:{
+        "Program name":['abc'],
+        "Organisation":['xyz']
+    },
+    resultedFilters:{
+        "Program name":['abc']
+    }
 
 
 };

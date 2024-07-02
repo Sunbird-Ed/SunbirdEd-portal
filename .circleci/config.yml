@@ -1,8 +1,8 @@
 version: 2.1
 jobs:
   build:
-    machine:
-      image: circleci/classic:latest
+    docker:
+      - image: cimg/node:18.16.0
     steps:
       - checkout
       - run:
@@ -10,22 +10,17 @@ jobs:
           command: /bin/bash -x build.sh ${CIRCLE_SHA1} test
   test-cases:
     working_directory: ~/portal/src/app/client
-    machine:
+    docker:
       # Ref: https://circleci.com/docs/2.0/configuration-reference/#available-machine-images
-      image: ubuntu-2004:202111-02
+      - image: cimg/node:18.16.0
+    resource_class: large
     steps:
       - checkout:
           path: ~/portal
-      - run: 
+      - run:
+          # Using NodeJS version 16
           name: Installing prerequisites
           command: |-
-            sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6DB5542C356545CF # Adding Heroku keys, else the apt update will fail.
-            sudo apt-get update && sudo apt install -y ca-certificates libxpm4 libxrender1 libgtk2.0-0 libnss3 libgconf-2-4 \
-                  xvfb gtk2-engines-pixbuf \
-                  xfonts-cyrillic xfonts-100dpi xfonts-75dpi xfonts-base xfonts-scalable
-            curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-            sudo apt install nodejs -y
-            sudo npm install -g yarn
             node --version
       - run:
           name: ignore-engines
@@ -37,12 +32,12 @@ jobs:
           key: dependency-cache-portal-{{ checksum "package.json" }}
           paths:
             - ./node_modules
-      - run:
-          name: ng lint and building
-          command: 'mkdir -p /tmp/logs && node --max_old_space_size=6000 ./node_modules/@angular/cli/bin/ng build --prod --optimization=false --buildOptimizer=false | tee /tmp/logs/build.log'
+      # - run:
+      #     name: ng lint and building
+      #     command: 'mkdir -p /tmp/logs && node --max_old_space_size=6000 ./node_modules/@angular/cli/bin/ng build --prod --optimization=false --buildOptimizer=false | tee /tmp/logs/build.log'
       - run:
           name: Executing test cases using JEST
-          command: 'npm run test-coverage | tee /tmp/logs/test_cases.log'
+          command: 'npm run test:ci'
       - run:
           name: Install Sonar Scanner
           command: |

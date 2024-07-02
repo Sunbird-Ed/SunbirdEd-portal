@@ -1,5 +1,6 @@
 import { TemplateRef } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
+import { PdServiceService } from "../services/pd-service/pd-service.service";
 import { SbChartComponent } from "./sb-chart.component";
 import { mockChart } from "./sb-chart.component.spec.data";
 
@@ -7,9 +8,13 @@ describe("SbChartComponent", () => {
   let component: SbChartComponent;
   let resourceService;
   let dialog;
+  let filterService:PdServiceService = {
+    getFilteredData:jest.fn().mockReturnValue([mockChart.chart.chartData[0]]) as any
+  }
+  
 
   beforeAll(() => {
-    component = new SbChartComponent(resourceService, dialog);
+    component = new SbChartComponent(resourceService, dialog,filterService);
     component.hideElements = false;
     component.chart = mockChart.chart;
     component.lastUpdatedOn = mockChart.chart.lastUpdatedOn;
@@ -18,8 +23,11 @@ describe("SbChartComponent", () => {
   });
 
   beforeEach(() => {
-    component.globalOrg = undefined;
-    component.globalDistrict = undefined;
+    component.appliedFilters =  {
+      district_externalId:'2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03',
+      block_externalId:["966c3be4-c125-467d-aaff-1eb1cd525923", "8df55ad6-7b21-41d0-a93a-efda45d34857"] ,
+      organisation_id:'0126796199493140480'
+}
     jest.clearAllMocks();
   });
 
@@ -48,7 +56,6 @@ describe("SbChartComponent", () => {
   });
 
   it("should call checkForGlobalChanges with only globalDistrict", () => {
-    component.globalDistrict = "b617e607-0a5b-45a0-9894-7a325ffa45c7";
     component.lib = {
       instance: {
         update(): void {},
@@ -59,13 +66,11 @@ describe("SbChartComponent", () => {
     component.checkForGlobalChanges();
     expect(component.checkForGlobalChanges).toHaveBeenCalled();
     expect(component.globalData).toBeDefined();
-    expect(component.globalOrg).toBeUndefined();
     expect(component.globalChange).toBeTruthy();
     expect(component.updatedData).toBeDefined();
   });
 
   it("should call checkForGlobalChanges with only globalOrg", () => {
-    component.globalOrg = "0126796199493140480";
     component.lib = {
       instance: {
         update(): void {},
@@ -76,14 +81,11 @@ describe("SbChartComponent", () => {
     component.checkForGlobalChanges();
     expect(component.checkForGlobalChanges).toHaveBeenCalled();
     expect(component.globalData).toBeDefined();
-    expect(component.globalDistrict).toBeUndefined();
     expect(component.globalChange).toBeTruthy();
     expect(component.updatedData).toBeDefined();
   });
 
   it("should call checkForGlobalChanges with globalDistrict and globalOrg", () => {
-    component.globalOrg = "0126796199493140480";
-    component.globalDistrict = "b617e607-0a5b-45a0-9894-7a325ffa45c7";
     component.lib = {
       instance: {
         update(): void {},
@@ -96,11 +98,10 @@ describe("SbChartComponent", () => {
     expect(component.globalData).toBeDefined();
     expect(component.globalChange).toBeTruthy();
     expect(component.updatedData).toBeDefined();
-    expect(component.globalDistrict).toBeDefined();
-    expect(component.globalOrg).toBeDefined();
   });
 
   it("should call checkForGlobalChanges without globalDistrict and globalOrg", () => {
+    component.appliedFilters = {}
     component.lib = {
       instance: {
         update(): void {},
@@ -111,8 +112,6 @@ describe("SbChartComponent", () => {
     component.checkForGlobalChanges();
     expect(component.checkForGlobalChanges).toHaveBeenCalled();
     expect(component.globalData).toBeDefined();
-    expect(component.globalDistrict).toBeUndefined();
-    expect(component.globalOrg).toBeUndefined();
     expect(component.globalChange).toBeFalsy();
   });
 

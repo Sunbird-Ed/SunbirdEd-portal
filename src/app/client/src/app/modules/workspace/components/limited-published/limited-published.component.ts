@@ -326,6 +326,7 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit, Afte
           duration: this.navigationhelperService.getPageLoadTime()
         }
       };
+      this.inview({ inview: [] });
     });
   }
   setTelemetryShareData(param) {

@@ -1,4 +1,4 @@
-@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @use 'pages/content-header' as *;
 /* fonts */
 .font-w-bold {
@@ -225,4 +225,24 @@
       color: var(--black);
     }
   }
+}
+
+::ng-deep {
+  .avatar-container {
+     .my-avatar.verified .sb-avatar-list-item .sb-avatar__img {
+      border: 1px solid  !important;
+      border-color: var(--secondary-color) !important;
+    }
+     .avatar-tickmark {
+      width: 2rem;
+      height: 2rem;
+      position: absolute;
+      right: 0%;
+      z-index: 9;
+      top: 0.2rem; 
+
+    }
+
+  }
+
 }

@@ -1,20 +1,24 @@
-<app-landing-section [textToDisplay]="" 
-[layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
+<app-landing-section [textToDisplay]="" [layoutConfiguration]="layoutConfiguration" [noTitle]="true">
+</app-landing-section>
 <!--CC-Player Content Header -->
-  <div [ngClass]="layoutConfiguration ? 'sb-back-actionbar' : 'sb-bg-white cc-player__btn-back'" class="relative position mt-0" [ngClass]="{'header-block': isFullScreenView}">
-    <div class="ui container py-0 px-0 d-flex flex-ai-center">
-      <div class="w-100 d-flex flex-ai-center flex-w-wrap flex-jc-space-between" *ngIf="contentData">
-        <div class="d-flex flex-ai-center">
-          <button type="button" (click)="goBack()" [ngClass]="layoutConfiguration ? 'sb-btn-primary sb-btn-round' : 'sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0'" class="sb-btn sb-btn-normal"
-          tabindex="0" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
+<div
+  [ngClass]="{'sb-back-actionbar' : layoutConfiguration,'sb-bg-white cc-player__btn-back': !layoutConfiguration,'header-block': isFullScreenView}"
+  class="relative position mt-0">
+  <div class="ui container py-0 px-0 d-flex flex-ai-center">
+    <div class="w-100 d-flex flex-ai-center flex-w-wrap flex-jc-space-between" *ngIf="contentData">
+      <div class="d-flex flex-ai-center">
+        <button type="button" (click)="goBack()"
+          [ngClass]="layoutConfiguration ? 'sb-btn-primary sb-btn-round' : 'sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0'"
+          class="sb-btn sb-btn-normal" tabindex="0" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
           <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
               <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
             </svg></i>
-         <span>{{resourceService?.frmelmnts?.btn?.back}}</span>
+          <span>{{resourceService?.frmelmnts?.btn?.back}}</span>
         </button>
         <div class="textbook__details d-flex ml-16 flex-basis-1 flex-ai-center">
           <div class="textbook__heading">
-            <h5 class="sb-color-primary font-weight-bold mb-0 sb__ellipsis" tabindex="0" role="heading" aria-level="2">{{contentData.name}}</h5>
+            <h5 class="sb-color-primary font-weight-bold mb-0 sb__ellipsis" tabindex="0" role="heading" aria-level="2">
+              {{contentData.name}}</h5>
             <div class="content-header__info mt-4">
               <span class="fnormal" *ngIf="contentData?.subject">{{contentData?.subject}}</span>
               <span class="dot-divider" *ngIf="contentData.gradeLevel"></span>
@@ -23,54 +27,58 @@
           </div>
         </div>
       </div>
-        <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons ml-auto">
-          <a href="javascript:void(0)" tabindex="0" (click)="onShareLink();sharelinkModal=true;" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
-              <i class="blue share alternate icon"></i>
-              {{resourceService?.frmelmnts?.lbl?.share}}
-          </a>
+      <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons ml-auto">
+        <a href="javascript:void(0)" tabindex="0" (click)="onShareLink();sharelinkModal=true;"
+          class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
+          <i class="blue share alternate icon"></i>
+          {{resourceService?.frmelmnts?.lbl?.share}}
+        </a>
 
-          <button type="button" *ngIf='!isDesktopApp && permissionService?.permissionAvailable ' appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']"
-          tabindex="0" (click)="copyContent(contentData)" appTelemetryInteract [telemetryInteractEdata]="copyContentInteractEdata" [telemetryInteractObject]="objectInteract"
-         class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
+        <button type="button" *ngIf='!isDesktopApp && permissionService?.permissionAvailable ' appPermission
+          [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" tabindex="0" (click)="copyContent(contentData)"
+          appTelemetryInteract [telemetryInteractEdata]="copyContentInteractEdata"
+          [telemetryInteractObject]="objectInteract" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
           <i class="blue clone outline icon"></i> {{resourceService?.frmelmnts?.lbl?.copy}}
-          </button>
+        </button>
 
 
-          <div class="certified-course__btn" *ngIf="isGroupAdmin">
-              <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn" 
-              appAddToGroup [identifier]="contentData?.identifier" [pageId]="contentData?.primaryCategory.toLowerCase()">
-              {{resourceService?.frmelmnts?.lbl?.AddtoGroup}}</button>
-          </div>
+        <div class="certified-course__btn" *ngIf="isGroupAdmin">
+          <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn" appAddToGroup
+            [identifier]="contentData?.identifier" [pageId]="contentData?.primaryCategory.toLowerCase()">
+            {{resourceService?.frmelmnts?.lbl?.AddtoGroup}}</button>
+        </div>
       </div>
-        
-      </div>
+
     </div>
   </div>
+</div>
 
 <div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''">
-<div  class="relative9" [style.display]="!showLoader ? 'block' : 'none'" *ngIf="contentData">
+  <div class="relative9" [ngStyle]="{'height':'fit-content'}" [style.display]="!showLoader ? 'block' : 'none'"
+    *ngIf="contentData">
     <!-- CC-Player Video -->
     <div class="sb-single-resource">
-    <div class="ui container">
+      <div class="ui container">
         <div class="cc-player sb-g">
-            <section class="sb-g-col-xs-12 sb-g-col-md-12 sb-g-col-lg-12 sb-g-col-xxxl-16 cc-player__video"
-                [appTelemetryImpression]="telemetryImpression">
-                <app-contentplayer-page [playerConfig]="playerConfig" [tocPage]="true" [contentDetails]="contentData"
-                    [isContentPresent]="isContentPresent" [objectRollUp]="objectRollup">
-                </app-contentplayer-page>
-            </section>
+          <section class="sb-g-col-xs-12 sb-g-col-md-12 sb-g-col-lg-12 sb-g-col-xxxl-16 cc-player__video"
+            [appTelemetryImpression]="telemetryImpression">
+            <app-contentplayer-page [playerConfig]="playerConfig" [tocPage]="true" [contentDetails]="contentData"
+              [isContentPresent]="isContentPresent" [objectRollUp]="objectRollup">
+            </app-contentplayer-page>
+          </section>
         </div>
+      </div>
     </div>
-</div>
     <div class="twelve wide column" *ngIf="showLoader">
-        <app-loader [data]='loaderMessage'></app-loader>
+      <app-loader [data]='loaderMessage'></app-loader>
     </div>
 
-    <app-modal-wrapper *ngIf="sharelinkModal" [config]="{disableClose: false, panelClass: 'material-modal'}" (dismiss)="sharelinkModal = false">
+    <app-modal-wrapper *ngIf="sharelinkModal" [config]="{disableClose: false, panelClass: 'material-modal'}"
+      (dismiss)="sharelinkModal = false">
       <ng-template sbModalContent>
         <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData">
         </app-share-link>
       </ng-template>
     </app-modal-wrapper>
-</div>
+  </div>
 </div>

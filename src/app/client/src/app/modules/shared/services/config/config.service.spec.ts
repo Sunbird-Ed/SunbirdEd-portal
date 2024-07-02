@@ -5,6 +5,7 @@ describe('ConfigService', () => {
 
     beforeEach(() => {
         configService = new ConfigService();
+        jest.clearAllMocks();
     });
 
     it('should be created', () => {

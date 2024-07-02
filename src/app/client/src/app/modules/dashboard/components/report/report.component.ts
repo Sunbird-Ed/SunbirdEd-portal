@@ -179,7 +179,6 @@ export class ReportComponent implements OnInit {
                 result['reportSummary'] = reportSummary;
                 result['files'] = this.reportService.getParameterizedFiles(files || [], this.hash);
                 result['lastUpdatedOn'] = this.reportService.getFormattedDate(this.reportService.getLatestLastModifiedOnDate(data));
-
                 this.chartsReportData = JSON.parse(JSON.stringify(result));
                 this.reportData = JSON.parse(JSON.stringify(result));
                 return result;

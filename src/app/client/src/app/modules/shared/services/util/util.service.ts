@@ -1,4 +1,4 @@
-import * as TreeModel from 'tree-model';
+import TreeModel from 'tree-model';
 import { Injectable, EventEmitter } from '@angular/core';
 import * as _ from 'lodash-es';
 import { ICard, ILanguage } from '@sunbird/shared';

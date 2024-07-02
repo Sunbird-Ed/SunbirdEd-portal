@@ -13,7 +13,7 @@ import { map, tap, switchMap, skipWhile, takeUntil, catchError, startWith } from
 import { ContentSearchService } from '@sunbird/content-search';
 import { ContentManagerService } from '../../../public/module/offline/services';
 import * as _ from 'lodash-es';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { ProfileService } from '@sunbird/profile';
 import { SegmentationTagService } from '../../../core/services/segmentation-tag/segmentation-tag.service';
 
@@ -203,9 +203,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 if (this.isUserLoggedIn()) {
                     this.prepareVisits([]);
                 }
-                if (_.get(params, 'board') && params.board[0] === 'CBSE') {
-                    params.board[0] = 'CBSE/NCERT';
-                }
                 this.queryParams = { ...params, ...queryParams };
             }));
     }
@@ -379,9 +376,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         //this.cacheService.set('searchFilters', filters, { expires: Date.now() + _cacheTimeout });
         this.showLoader = true;
         this.selectedFilters = pick(filters, _.get(currentPageData, 'metaData.filters'));
-        if (this.selectedFilters && this.selectedFilters['board'] && this.selectedFilters['board'][0] === 'CBSE/NCERT') {
-            this.selectedFilters['board'][0] = 'CBSE';
-        }
         if (has(filters, 'audience') || (localStorage.getItem('userType') && currentPageData.contentType !== 'all')) {
             const userTypes = get(filters, 'audience') || [localStorage.getItem('userType')];
             const audienceSearchFilterValue = _.get(filters, 'audienceSearchFilterValue');
@@ -645,11 +639,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             const preferences = _.pick(searchOptions.filters, requiredProps);
             section.apiConfig.req.request.filters = { ...section.apiConfig.req.request.filters, ...preferences };
         }
-
         return {
             isEnabled: Boolean(_.get(section, 'isEnabled')),
             searchRequest: _.get(section, 'apiConfig.req'),
-            title: get(this.resourceService, section.title) || section.defaultTitle
+            title: get(this.resourceService, section.title) ? section.title : section.defaultTitle
         };
     }
 
@@ -1117,7 +1110,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         });
 
         const paramValuesInLowerCase = _.mapValues(updatedCategoriesMapping, value => {
-            if (_.toLower(value) === 'cbse') { return 'CBSE/NCERT'; }
             return Array.isArray(value) ? _.map(value, _.toLower) : _.toLower(value);
         });
 
@@ -1140,11 +1132,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             return;
         }
         if (this.isUserLoggedIn()) {
-            if (pillData.name === 'observation') {
+            if (pillData.name === 'observations') {
                 this.router.navigate(['observation']);
             }
         } else {
-            window.location.href = pillData.name === 'observation' ? '/observation' : '/resources'
+            window.location.href = pillData.name === 'observations' ? '/observation' : '/resources'
         }
     }
 
@@ -1153,6 +1145,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         let _sectionTitle = this.utilService.transposeTerms(get(this.resourceService, title), get(this.resourceService, title) || '', this.resourceService.selectedLang);
         return get(this.resourceService, 'frmelmnts.lbl.browseBy') + ' ' + _sectionTitle;
 
+    }
+
+    getContentSectionTitle(title) {
+        let _sectionTitle = this.utilService.transposeTerms(get(this.resourceService, title), get(this.resourceService, title) || '', this.resourceService.selectedLang) || title;
+        return _sectionTitle;
     }
 
     getSectionCategoryTitle(title) {

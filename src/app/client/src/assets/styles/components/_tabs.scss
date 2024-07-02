@@ -1,5 +1,5 @@
 
-@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 .ui.secondary.pointing.menu {
   &.sb-tabs__header {
     height: calculateRem(56px);

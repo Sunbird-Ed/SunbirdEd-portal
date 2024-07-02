@@ -36,6 +36,8 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   public isLargeFileUpload = false;
   genericEditorURL: string = (<HTMLInputElement>document.getElementById('genericEditorURL')) ?
   (<HTMLInputElement>document.getElementById('genericEditorURL')).value : '';
+  cloudProvider: string = (<HTMLInputElement>document.getElementById('cloudProvider')) ?
+  (<HTMLInputElement>document.getElementById('cloudProvider')).value : '';
 
   constructor(private userService: UserService, public _zone: NgZone, private activatedRoute: ActivatedRoute,
     private tenantService: TenantService, private telemetryService: TelemetryService, private router: Router,
@@ -225,6 +227,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
     window.config.videoMaxSize = this.videoMaxSize;
     window.config.defaultContentFileSize = this.defaultContentFileSize; // making configurable upload limit in workspace for content upload
+    window.config.cloudStorage.provider = this.cloudProvider;
   }
   /**
   * Re directed to the workspace on close of modal

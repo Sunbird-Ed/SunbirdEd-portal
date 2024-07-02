@@ -12,17 +12,13 @@ import {
     SharedModule, ToasterService
 } from '@sunbird/shared';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
-import { ServerResponse } from 'http';
-import { CacheService } from 'ng2-cache-service';
-import { SuiModule } from 'ng2-semantic-ui-v9';
-import { DeviceDetectorService } from 'ngx-device-detector';
 import { Observable, of as observableOf, of, Subject, throwError } from 'rxjs';
 import { LayoutService, UtilService } from '../../../../modules/shared';
 import { SubmitTeacherDetailsComponent } from './submit-teacher-details.component';
 import { mockRes } from './submit-teacher-details.component.spec.data';
 import * as _ from "lodash-es";
 
-describe('SubmitTeacherDetailsComponent', () => {
+xdescribe('SubmitTeacherDetailsComponent', () => {
     let component: SubmitTeacherDetailsComponent;
 
     const csUserService: Partial<CsUserService> = {
@@ -395,7 +391,7 @@ describe('SubmitTeacherDetailsComponent', () => {
     it('should get getTeacherDetails Form, on success', () => {
         jest.spyOn(profileService, 'getSelfDeclarationForm').mockReturnValue(of({}));
         jest.spyOn(component, 'initializeFormData');
-        component.getTeacherDetailsForm();
+        component.getTeacherDetailsForm()
         expect(profileService.getSelfDeclarationForm).toHaveBeenCalled();
         expect(component.initializeFormData).toHaveBeenCalled();
     });

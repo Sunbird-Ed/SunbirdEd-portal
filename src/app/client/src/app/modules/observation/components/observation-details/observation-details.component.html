@@ -1,4 +1,4 @@
-<div [ngClass]="layoutConfiguration ? 'sb-back-actionbar' : 'sb-bg-white cc-player__btn-back py-8'" class="relative position mt-0">
+<div [ngClass]="layoutConfiguration ? 'sb-back-actionbar' : 'sb-bg-white cc-player__btn-back py-8'" class="relative position mt-0 customBackBtnBar">
   <div class="ui container py-0 px-0 d-flex flex-ai-center">
     <!-- /* Back button */ -->
     <button type="button" (click)="goBack()" [ngClass]="layoutConfiguration ? 'sb-btn-primary sb-btn-round' : 'sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0'" class="sb-btn sb-btn-normal" tabindex="0" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
@@ -12,6 +12,8 @@
       <h4 class="mb-4">{{solution}}</h4>
       <div class="fsmall">{{programName}} </div>
     </div>
+    <button *ngIf="!programJoined" (click)="joinProgram()" class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"> {{resourceService?.frmelmnts?.lbl?.joinProgram}}
+    </button>
   </div>
 </div>
 <div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''">
@@ -29,7 +31,7 @@
               </div>
             </div>
             <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
-              <button class="sb-btn sb-btn-primary sb-btn-normal mr-8" tabindex="0" [disabled]="disableAddEntity" [ngClass]="{'sb-btn-disabled': disableAddEntity}" (click)="addEntity()">
+              <button class="sb-btn sb-btn-primary sb-btn-normal mr-8" tabindex="0" [disabled]="disableAddEntity" [ngClass]="{'sb-btn-disabled': disableAddEntity}" (click)="!programJoined ? joinProgramPopUp = true :  addEntity()">
                 {{resourceService.frmelmnts?.btn?.add}} {{entityType|titlecase}}
               </button>
             </div>
@@ -49,7 +51,7 @@
             </div>
             <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons"
               *ngIf="entities?.allowMultipleAssessemts">
-              <button class="sb-btn sb-btn-primary sb-btn-normal mr-8" tabindex="0" (click)="observeAgainConfirm()">
+              <button class="sb-btn sb-btn-primary sb-btn-normal mr-8" tabindex="0" (click)="!programJoined ? joinProgramPopUp = true :observeAgainConfirm()">
                 {{resourceService.frmelmnts?.btn?.observeAgain}}
               </button>
             </div>
@@ -63,7 +65,7 @@
               <!-- Observation With Rubric -->
               <submission [submission]="submission" [allowMultipleAssessemts]="entities?.allowMultipleAssessemts"
                 *ngIf="(submission?.evidencesStatus?.length > 1  || (submission.criteriaLevelReport && submission.isRubricDriven));else rubricCard"
-                (selectedSubmission)="redirectToQuestions($event)" (onAction)="actionOnSubmission($event)">
+                (selectedSubmission)="!programJoined ? joinProgramPopUp = true :redirectToQuestions($event)" (onAction)="actionOnSubmission($event)">
               </submission>
               <!-- Observation Without Rubric -->
               <ng-template #rubricCard>
@@ -125,3 +127,32 @@
 <div *ngIf="openEditModal?.show">
   <app-edit-submission [editData]="openEditModal.data" (onAction)="closeEditModal($event)"> </app-edit-submission>
 </div>
+<app-global-consent-pii *ngIf="openConsentPopUp" [type]="'program-consent'" [isglobalConsent]="false" [consentConfig]="consentConfig" [collection]="{'programId':programId,'rootOrganisations':rootOrganisations}" (consentShare)="checkConsent($event)"></app-global-consent-pii>
+<app-modal-wrapper *ngIf="joinProgramPopUp" #modal [config]="{disableClose: true, size: 'large'}" (dismiss)="modal.deny()">
+  <ng-template  sbModalContent>
+    <app-loader *ngIf="joinProgramLoader" [data]="{loaderMessage:resourceService?.frmelmnts?.lbl?.joinProgramLoader}"></app-loader>
+    <div *ngIf="!joinProgramLoader" class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible normal">
+              <div class="container-wrapper">
+                <div class="sb-merged-account-content text-left">
+                  <div class="d-flex flex-dir-row px-32 my-24">
+                    <div class="title text-left font-weight-bold">
+                      {{resourceService?.frmelmnts?.lbl?.joinProgram}}</div>
+                      <mat-icon (click)="joinProgramPopUp = !joinProgramPopUp" class="close-btn sb-color-error ml-auto ">highlight_off</mat-icon>
+                  </div>
+                  <p class="py-8 px-32 ">
+                    {{resourceService?.frmelmnts?.lbl?.joinProgramSubtitle | interpolate: '{programName}' : programName}}
+                  </p>
+                </div>
+                <div class="d-flex flex-jc-flex-end py-16 px-32">
+                  <button (click)="joinProgram()" class="sb-btn sb-btn-primary sb-btn-normal"
+                    >{{resourceService?.frmelmnts?.lbl?.joinProgram}}
+                  </button>
+                </div>
+              </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</app-modal-wrapper>

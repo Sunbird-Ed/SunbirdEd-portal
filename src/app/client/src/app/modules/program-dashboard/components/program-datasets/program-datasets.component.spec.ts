@@ -8,6 +8,8 @@ import { TelemetryService } from '@sunbird/telemetry';
 import { mockData } from './program-datasets.component.spec.data';
 import { ReportService } from '../../../dashboard';
 import { Location } from '@angular/common';
+import { ChangeDetectorRef } from '@angular/core';
+import dayjs from 'dayjs';
 
 describe('DatasetsComponent', () => {
   let component: DatasetsComponent;
@@ -21,7 +23,8 @@ describe('DatasetsComponent', () => {
   const telemetryService: Partial<TelemetryService> = {};
   const resourceService: Partial<ResourceService> = {};
   const kendraService: Partial<KendraService> = {
-    get: jest.fn()
+    get: jest.fn(),
+    post: jest.fn()
   }
   const userService: Partial<UserService> = {
     loggedIn: true,
@@ -34,7 +37,8 @@ describe('DatasetsComponent', () => {
   };
   const onDemandReportService: Partial<OnDemandReportService> = {
     getReportList: jest.fn() as any,
-    submitRequest: jest.fn() as any
+    submitRequest: jest.fn() as any,
+    isInProgress: jest.fn() as any
   };
   const config: Partial<ConfigService> = {
     urlConFig: mockData.urlConfig
@@ -53,6 +57,9 @@ describe('DatasetsComponent', () => {
     downloadMultipleDataSources:jest.fn() as any,
     prepareChartData:jest.fn() as any
   };
+  const changeDetectorRef: Partial<ChangeDetectorRef> = {
+    detectChanges: jest.fn() as any
+  }
 
   beforeAll(() => {
     component = new DatasetsComponent(
@@ -68,7 +75,8 @@ describe('DatasetsComponent', () => {
       formService as FormService,
       router as Router,
       location as Location,
-      reportService as ReportService
+      reportService as ReportService,
+      changeDetectorRef as ChangeDetectorRef
     )
     component.layoutConfiguration = {};
     component.formData = mockData.FormData;
@@ -92,13 +100,25 @@ describe('DatasetsComponent', () => {
   });
 
   it('should call programSelection', () => {
+    jest.spyOn(component, 'getReportTypes');
     component.programs = mockData.programs.result;
+    component.formData = mockData.FormData;
+    component.reportTypes = [];
+    component.userId = '1234567890';
     jest.spyOn(kendraService, 'get').mockReturnValue(of(mockData.solutions));
+    jest.spyOn(reportService,'listAllReports').mockReturnValue(of(mockData.reportConfig));
+    jest.spyOn(kendraService, 'post').mockReturnValue(of(mockData.districtAndOrganisations));
     component.programSelection({
       value: '5f34ec17585244939f89f90c'
     });
+    const reqBody = {
+      type:'program',
+      id:'xxxx-yyyy-zzzz',
+      projection:'district'
+    }
+    component.getDistritAndOrganisationList(reqBody);
+    component.getReportTypes("5f34ec17585244939f89f90c", "user_detail_report");
     expect(component.solutions).toEqual(mockData.solutions.result);
-
   });
 
   it('should call getSolutionList', () => {
@@ -271,9 +291,15 @@ describe('DatasetsComponent', () => {
     component.organisations = mockData.districtAndOrganisations.result.organisations;
     jest.spyOn(onDemandReportService, 'getReportList').mockReturnValue(of({ result: mockData.reportListResponse.result }));
     jest.spyOn(reportService, 'listAllReports').mockReturnValue(of(mockData.reportConfig));
-    jest.spyOn(kendraService, 'get').mockReturnValue(of(mockData.districtAndOrganisations));
+    jest.spyOn(kendraService, 'post').mockReturnValue(of(mockData.districtAndOrganisations));
     component.loadReports();
-    component.getDistritAndOrganisationList();
+    const reqBody = {
+      type:'program',
+      id:'xxxx-yyyy-zzzz',
+      projection:'district',
+      solutionType:'observation'
+    }
+    component.getDistritAndOrganisationList(reqBody);
     tick(1000);
     jest.spyOn(component, 'loadReports');
     component.reportForm.get('solution').setValue(['5f34ec17585244939f89f90d']);
@@ -321,7 +347,7 @@ describe('DatasetsComponent', () => {
     component.onDemandReportData = [];
     jest.spyOn(onDemandReportService, 'getReportList').mockReturnValue(of({ result: mockData.reportListResponse.result }));
     jest.spyOn(reportService, 'listAllReports').mockReturnValue(of(mockData.reportConfig));
-    jest.spyOn(kendraService, 'get').mockReturnValue(of(mockData.districtAndOrganisations));
+    jest.spyOn(kendraService, 'post').mockReturnValue(of(mockData.districtAndOrganisations));
     component.loadReports();
     tick(1000);
     jest.spyOn(component, 'loadReports');
@@ -362,7 +388,7 @@ describe('DatasetsComponent', () => {
     component.onDemandReportData = [];
     jest.spyOn(onDemandReportService, 'getReportList').mockReturnValue(of({ result: mockData.reportListResponse.result }));
     jest.spyOn(reportService, 'listAllReports').mockReturnValue(of(mockData.reportConfig));
-    jest.spyOn(kendraService, 'get').mockReturnValue(of(mockData.districtAndOrganisations));
+    jest.spyOn(kendraService, 'post').mockReturnValue(of(mockData.districtAndOrganisations));
     component.loadReports();
     component.solutions = mockData.solutions.result;
     component.selectSolution({
@@ -443,8 +469,14 @@ describe('DatasetsComponent', () => {
 
     component.programSelected = '5f34ec17585244939f89f90c';
     component.reportForm.get('solution').setValue(['01285019302823526477']);
-    const spy = jest.spyOn(kendraService, 'get').mockReturnValue(of(mockData.districtAndOrganisations));
-    component.getDistritAndOrganisationList();
+    const spy = jest.spyOn(kendraService, 'post').mockReturnValue(of(mockData.districtAndOrganisations));
+    const reqBody = {
+      type:'program',
+      id:'xxxx-yyyy-zzzz',
+      projection:'district',
+      solutionType:'observation'
+    }
+    component.getDistritAndOrganisationList(reqBody);
     expect(spy).toHaveBeenCalled();
     expect(component.districts).toEqual(mockData.districtAndOrganisations.result.districts);
     expect(component.organisations).toEqual(mockData.districtAndOrganisations.result.organisations);
@@ -522,6 +554,20 @@ describe('DatasetsComponent', () => {
       }
     ]);
 
+  }));
+
+  it('should call addFilters for user detail report', fakeAsync(() => {
+
+    const spy = jest.spyOn(component, 'addFilters');
+    component.reportForm.get('programName').setValue('5f34ec17585244939f89f90c');
+    component.reportForm.get('districtName').setValue('2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03');
+    component.reportForm.get('organisationName').setValue('01269878797503692810');
+    component.reportForm.get('startDate').setValue('10/10/2022');
+    component.selectedReport = mockData.selectedReportUserDetailReport
+    component.addFilters();
+    tick(1000);
+    expect(spy).toHaveBeenCalled();
+    expect(component.filter).toEqual(mockData.filterForUserDeatilReport)
   }));
 
   it('should call goBack', () => {
@@ -732,22 +778,28 @@ describe('DatasetsComponent', () => {
 
   it('should set the startDate', () => {
     jest.spyOn(component,'dateChanged');
+    const isValidSpy = jest.spyOn(dayjs.prototype, 'isValid');
+    isValidSpy.mockReturnValue(true);
     component.dateChanged({
       value:{
         _d:"2022-07-04T18:30:00.000Z"
       },
     },'startDate')
     expect(component.dateChanged).toHaveBeenCalled();
+    isValidSpy.mockRestore();
   });
 
-  it('should set the startDate', () => {
+  it('should set the Date', () => {
     jest.spyOn(component,'dateChanged');
+    const isValidSpy = jest.spyOn(dayjs.prototype, 'isValid');
+    isValidSpy.mockReturnValue(true);
     component.dateChanged({
       value:{
         _d:"2022-07-04T18:30:00.000Z"
       },
     },'endDate')
     expect(component.dateChanged).toHaveBeenCalled();
+    isValidSpy.mockRestore();
   });
 
   it('should call the getTableData', () => {
@@ -771,6 +823,89 @@ describe('DatasetsComponent', () => {
     expect(component.closeDashboard).toHaveBeenCalled();
   });
 
+  it('should call checkStatus', () => {
+    component.selectedSolution = "607d3410e9cce45e22ce90c1"
+    jest.spyOn(onDemandReportService,'isInProgress').mockReturnValue(true)
+    component.onDemandReportData = mockData.onDemandReportForSolutionTest
+    component.selectedReport = mockData.selectedReportForSolutionTest
+    jest.spyOn(component,'checkStatus');
+    component.checkStatus();
+    expect(component.checkStatus).toHaveBeenCalled();
+  });
+
+  it('should call checkStatus with completed request', () => {
+    component.selectedSolution = "607d3410e9cce45e22ce90c1"
+    jest.spyOn(onDemandReportService,'isInProgress').mockReturnValue(false)
+    component.onDemandReportData = mockData.onDemandReportForSolutionTest
+    component.selectedReport = mockData.selectedReportForSolutionTest
+    jest.spyOn(component,'checkStatus');
+    component.checkStatus();
+    expect(component.checkStatus).toHaveBeenCalled();
+  });
+
+  it('should call checkStatus with program', () => {
+    component.selectedSolution = undefined;
+    jest.spyOn(onDemandReportService,'isInProgress').mockReturnValue(true)
+    component.onDemandReportData = mockData.onDemandReportForProgramTest
+    component.selectedReport = mockData.selectedReportForProgramTest;
+    jest.spyOn(component,'checkStatus');
+    component.checkStatus();
+    expect(component.checkStatus).toHaveBeenCalled();
+  });
+
+  it("should invalidate the end date", () => {
+    jest.spyOn(component, "dateChanged");
+    component.reportForm.controls.endDate.setValue(null)
+    component.reportForm.controls.startDate.setValue("2023-07-10");
+    const isValidSpy = jest.spyOn(dayjs.prototype, 'isValid');
+    isValidSpy.mockReturnValue(true);
+
+    component.dateChanged(
+      {
+        value: {
+          _d: "2023-07-04T18:30:00.000Z",
+        },
+      },
+      "endDate"
+    );
+    expect(component.dateChanged).toHaveBeenCalled();
+    expect(component.reportForm.controls.endDate.value).toBe(null);
+    isValidSpy.mockRestore();
+  });
+
+  it('should invalidate the start date', () => {
+    jest.spyOn(component,'dateChanged');
+    component.reportForm.controls.startDate.setValue(null)
+    component.reportForm.controls.endDate.setValue('2023-07-10');
+    const isValidSpy = jest.spyOn(dayjs.prototype, 'isValid');
+    isValidSpy.mockReturnValue(true);
+    component.dateChanged({
+      value:{
+        _d:"2023-07-14T18:30:00.000Z"
+      },
+    },'startDate')
+    expect(component.dateChanged).toHaveBeenCalled();
+    expect(component.reportForm.controls.startDate.value).toBe(null);
+    isValidSpy.mockRestore();
+  });
+
+  it('should invalidate the date for text input', () => {
+    jest.spyOn(component,'dateChanged');
+    component.reportForm.controls.startDate.setValue(null);
+    component.reportForm.controls.endDate.setValue(null);
+    const isValidSpy = jest.spyOn(dayjs.prototype, 'isValid');
+    isValidSpy.mockReturnValue(false);
+    component.dateChanged({
+      value:{
+        _d:"abc"
+      },
+    },'startDate')
+    expect(component.dateChanged).toHaveBeenCalled();
+    expect(component.reportForm.controls.startDate.value).toBe(null);
+    expect(component.reportForm.controls.endDate.value).toBe(null);
+    isValidSpy.mockRestore();
+  });
+
   it('should call ngOnDestroy', () => {
     component.userDataSubscription = of().subscribe();
     component.ngOnDestroy();
@@ -778,5 +913,3 @@ describe('DatasetsComponent', () => {
   });
   
 });
-
-

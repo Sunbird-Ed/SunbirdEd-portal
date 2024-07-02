@@ -15,17 +15,17 @@ import { CoreModule } from '@sunbird/core';
 import { FormsModule } from '@angular/forms';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import {SunbirdPdfPlayerModule} from '@project-sunbird/sunbird-pdf-player-v9';
-import { SunbirdVideoPlayerModule } from '@project-sunbird/sunbird-video-player-v9';
-import { SunbirdEpubPlayerModule } from '@project-sunbird/sunbird-epub-player-v9';
 import { QumlPlayerService } from './service/quml-player/quml-player.service';
-import { QumlLibraryModule, QuestionCursor } from '@project-sunbird/sunbird-quml-player';
+import { QumlLibraryModule as QsLibModule, QuestionCursor as QsCursor} from '@project-sunbird/sunbird-quml-player';
+import { QumlLibraryModule, QuestionCursor } from '@project-sunbird/sunbird-quml-player-v9';
 import { EditorCursor } from '@project-sunbird/sunbird-collection-editor';
-
-
+import { SunbirdEpubPlayerModule } from '@project-sunbird/sunbird-epub-player-v9';
+import { SunbirdVideoPlayerModule } from '@project-sunbird/sunbird-video-player-v9';
 
 @NgModule({
   providers: [
     { provide: QuestionCursor, useExisting: QumlPlayerService },
+    { provide: QsCursor, useExisting: QumlPlayerService },
     { provide: EditorCursor, useExisting: QumlPlayerService }
   ],
   imports: [
@@ -37,9 +37,10 @@ import { EditorCursor } from '@project-sunbird/sunbird-collection-editor';
     FormsModule,
     CommonConsumptionModule,
     SunbirdPdfPlayerModule,
-    SunbirdVideoPlayerModule,
+    QumlLibraryModule,
+    QsLibModule,
     SunbirdEpubPlayerModule,
-   QumlLibraryModule
+    SunbirdVideoPlayerModule,
   ],
   declarations: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
     FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent,
@@ -52,6 +53,6 @@ import { EditorCursor } from '@project-sunbird/sunbird-collection-editor';
     FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent,
     CommingSoonComponent, CreditsAndLicenceComponent, ContentActionsComponent,
     ContentPlayerComponent, ContentPlayerPageComponent, ContentChapterlistComponent,
-    ContentLicenceComponent, CurriculumInfoComponent, CourseInfoComponent]
+    ContentLicenceComponent, CurriculumInfoComponent, CourseInfoComponent],
 })
 export class PlayerHelperModule { }

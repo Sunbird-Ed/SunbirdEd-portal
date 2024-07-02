@@ -1,4 +1,4 @@
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit, EventEmitter, Output, Input, OnDestroy, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
 import * as ClassicEditor from '@project-sunbird/ckeditor-build-classic';
 import { ISummaryObject } from '../../interfaces';
@@ -19,9 +19,9 @@ export class AddSummaryModalComponent implements OnInit, OnDestroy, AfterViewIni
   private toolbarItems = ['undo', 'redo', 'bold', 'italic', 'blockQuote', 'heading', 'link', 'numberedList', 'bulletedList', 'fontFamily',
     'fontSize', 'fontColor', 'fontBackgroundColor', 'underline', 'subscript', 'superscript', 'insertTable', 'tableColumn', 'tableRow', 'mergeTableCells'];
 
-  public summaryFormGroup: FormGroup;
+  public summaryFormGroup: UntypedFormGroup;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: UntypedFormBuilder) { }
 
   ngOnInit() {
     this.initForm();

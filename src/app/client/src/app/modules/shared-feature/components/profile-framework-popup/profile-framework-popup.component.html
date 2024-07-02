@@ -30,8 +30,8 @@
                   </mat-label>
                   <mat-select name={{field.code}} role="listbox" aria-label="field?.label"
                   class="selection" [(ngModel)]="selectedOption[field.code]" (selectionChange)="handleFieldChange($event, field)">
-                    <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option?.name | interpolate: 'CBSE': 'CBSE/NCERT'"
-                    attr.aria-label="{{option?.name | interpolate: 'CBSE': 'CBSE/NCERT'}}">{{option?.name}}</mat-option>
+                    <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option?.name"
+                    attr.aria-label="{{option?.name}}">{{option?.name}}</mat-option>
                   </mat-select>
                 </mat-form-field>
             </div>

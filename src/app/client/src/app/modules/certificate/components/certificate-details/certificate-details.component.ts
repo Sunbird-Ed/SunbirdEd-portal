@@ -4,7 +4,7 @@ import { ServerResponse, ResourceService, ConfigService, PlayerConfig, ToasterSe
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy, Inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { Subscription} from 'rxjs';
 import { CsCertificateService } from '@project-sunbird/client-services/services/certificate/interface';

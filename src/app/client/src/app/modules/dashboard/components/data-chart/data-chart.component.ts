@@ -13,7 +13,7 @@ import * as _ from 'lodash-es';
 import { FormBuilder } from '@angular/forms';
 import { Subscription, Subject, timer, of } from 'rxjs';
 import { map, takeUntil, switchMap } from 'rxjs/operators';
-import * as moment from 'moment';
+import dayjs from 'dayjs';
 import { IInteractEventObject } from '@sunbird/telemetry';
 import { IBigNumberChart } from '../../interfaces/chartData';
 import { MatDialog } from '@angular/material/dialog';
@@ -101,7 +101,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
     this.chartData = _.get(this.chartInfo, 'chartData');
     this.chartSummarylabel = 'Add ' + _.get(this.resourceService, 'frmelmnts.lbl.chartSummary');
     if (_.get(this.chartInfo, 'lastUpdatedOn')) {
-      this.lastUpdatedOn = moment(_.get(this.chartInfo, 'lastUpdatedOn')).format('DD-MMMM-YYYY');
+      this.lastUpdatedOn = dayjs(_.get(this.chartInfo, 'lastUpdatedOn')).format('DD-MMMM-YYYY');
     }
 
     this.prepareChart();
@@ -236,7 +236,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
   private sortData(chartData, labelsExpr) {
     return _.orderBy(chartData, data => {
-      const date = moment(data[labelsExpr], 'DD-MM-YYYY');
+      const date = dayjs(data[labelsExpr], 'DD-MM-YYYY');
       if (date.isValid()) { return date; }
       return data[labelsExpr];
     });
@@ -488,7 +488,9 @@ export class DataChartComponent implements OnInit, OnDestroy {
   }
   openDialog() {
     if (this.filterPopUpMat) {
-      this.dialogRef = this.dialog.open(this.filterPopUpMat);
+      this.dialogRef = this.dialog.open(this.filterPopUpMat, {
+        data: this.chartData['selectedFilters'],
+      });
     }
   }
   closeDialog() {

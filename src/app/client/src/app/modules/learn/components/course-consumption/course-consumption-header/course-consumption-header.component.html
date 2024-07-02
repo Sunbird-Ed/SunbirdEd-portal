@@ -155,7 +155,7 @@
         </div>
       </div>
       <!--Activity Dashboard-->
-      <div *ngIf="isGroupAdmin" class="sb-activity-dashboard-btn-content py-8">
+      <div *ngIf="isGroupAdmin && groupId" class="sb-activity-dashboard-btn-content py-8">
         <button
           class="sb-btn sb-btn-normal  sb-left-icon-btn ml-8 sb-btn-icon-fix disabled sb-btn-secondary sb-activity-dashboard-btn"
           appActivityDashboard [hierarchyData]="courseHierarchy">

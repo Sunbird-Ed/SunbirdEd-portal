@@ -1,4 +1,11 @@
 #!/bin/bash
+# Install python
+apt update && apt install -y python3.7 build-essential git
+
+export PYTHON=/usr/bin/python3.7
+
+npm install typescript@4.6.4 -g
+npm install fs-extra@11.1.1 -g
 
 # ARGUMENTS copy=false build=false yarn=false
 # https://stackoverflow.com/questions/46354149/how-do-i-parse-command-line-argumentsas-key-value-pair-in-bash-with-arguments
@@ -60,23 +67,26 @@ done
 
 
       cd ../app/client
-      checkArgument yarn install
+      checkArgument yarn install --force
 
       printLog "Build prod desktop build."
       checkArgument npm run prod-desktop
       cd ..
   fi
 
-  yarn install
-  npm run  resource-bundles
+  yarn cache clean --all && yarn install --force
+  yarn add properties
+  npm run resource-bundles
   cd ../desktop/OpenRAP
-  yarn install
+  yarn cache clean --all && yarn install --force
 
   printLog "Packaging OpenRAP"
+  chown -R root:root  /offline
+
   npm run pack
   cd ..
-  yarn --update-checksums
-  yarn install
+  yarn cache clean --all && yarn install --force
+  yarn add fs-extra@11.1.1
 
   printLog "Starting tsc to compile/execute tsconfig.json"
   npm run build-ts
@@ -84,7 +94,22 @@ done
   printLog "Copying all the the required files to output app_dist folder"
 
   set -e
-  node scripts/copy.js
+  echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+  # Copy directories
+  mkdir app_dist/OpenRAP/dist
+  mkdir -p app_dist/openrap-sunbirded-plugin/data/resourceBundles
+
+  cp -r ./loading ./app_dist/loading
+  cp -r ./scripts ./app_dist/scripts
+  cp -r ./public ./app_dist/public
+  cp ./package.json ./app_dist/package.json
+  cp ./modules/sdk/database/schema_1.0.json ./app_dist/modules/sdk/database/schema_1.0.json
+  cp ./OpenRAP/dist/project-sunbird-OpenRAP-1.0.2.tgz ./app_dist/OpenRAP/dist/project-sunbird-OpenRAP-1.0.2.tgz
+  cp ./logo.png ./app_dist/logo.png
+  cp -r ../app/resourcebundles/json/* ./app_dist/openrap-sunbirded-plugin/data/resourceBundles/
+  cp ./helper/appconfig.desktop ./app_dist/helper/appconfig.desktop
+  echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+  # node scripts/copy.js
 
 
   printLog "Generating TAR file from app_dist"

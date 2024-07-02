@@ -3,7 +3,7 @@ import { ResourceService, UtilService, ConfigService } from '@sunbird/shared';
 import { Observable } from 'rxjs';
 import { TelemetryService } from '@sunbird/telemetry';
 import { IStartEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, Validators, UntypedFormGroup } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 
@@ -17,7 +17,7 @@ export class SignupBasicInfoComponent implements OnInit {
   @Output() subformInitialized: EventEmitter<{}> = new EventEmitter<{}>();
   @Output() triggerIsMinor: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() triggerNext: EventEmitter<boolean> = new EventEmitter<boolean>();
-  public personalInfoForm: FormGroup;
+  public personalInfoForm: UntypedFormGroup;
   @Input() isIOSDevice;
   @Input() telemetryImpression;
   @Input() submitInteractEdata;
@@ -32,7 +32,7 @@ export class SignupBasicInfoComponent implements OnInit {
   
   constructor(
     public resourceService: ResourceService, public telemetryService: TelemetryService,
-    public utilService: UtilService, public configService: ConfigService, private _fb: FormBuilder) { }
+    public utilService: UtilService, public configService: ConfigService, private _fb: UntypedFormBuilder) { }
   
 
   ngOnInit(): void {

@@ -49,8 +49,13 @@
 .white-space-wrap {
   text-overflow: ellipsis;
 }
-
+.close-btn{
+  cursor: pointer;
+}
 ::ng-deep{
+  .profile-field-label{
+    width: 10rem !important;
+  }
   .sb-mat-accordion__title span{
     line-break: anywhere;
   }
@@ -58,5 +63,9 @@
   .sb-mat-accordion__title div{
     display: flex;
     align-items: inherit;
+  }
+
+  html[data-mode="darkmode"] .customBackBtnBar{
+    color:var(--gray-800);
   }
 }

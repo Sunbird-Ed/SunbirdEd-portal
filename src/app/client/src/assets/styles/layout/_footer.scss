@@ -1,4 +1,4 @@
-@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 .download-mobile-app {
   border-radius: calculateRem(20px) calculateRem(20px) 0 0;
   position: absolute;

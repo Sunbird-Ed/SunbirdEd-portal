@@ -3,7 +3,7 @@ import { ConfigService } from '../../../shared/services/config/config.service';
 import { HttpClient } from "@angular/common/http";
 import { ManagedUserService } from './managed-user.service';
 import { LearnerService, UserService } from '../../../core';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { TelemetryService } from '../../../telemetry/services';
 
 describe('ManagedUserService', () => {

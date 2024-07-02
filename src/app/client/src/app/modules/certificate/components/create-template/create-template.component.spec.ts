@@ -166,7 +166,7 @@ describe("CreateTemplateComponent", () => {
             component.images = MockData.imagesArray;
             const image = `<image></image>`;
             jest.spyOn(component, 'certificateCreation').mockImplementation();
-            jest.spyOn(component, 'editSVG').mockImplementation(() => Promise.resolve({}));
+            jest.spyOn(component, 'editSVG').mockImplementation(() => Promise.resolve({})as any);
             const state = new DOMParser().parseFromString(image, 'text/html');
             component.updateStateLogos(state);
             expect(component.editSVG).toHaveBeenCalled();

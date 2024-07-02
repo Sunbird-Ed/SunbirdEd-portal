@@ -200,7 +200,7 @@ export class ContentDownloader implements ITaskExecuter {
     }
   }
   private async extractZipEntry(zipHandler, entry: string, distFolder): Promise<boolean | any> {
-    return new Promise(async (resolve, reject) => zipHandler.extract(entry,
+    return new Promise<void>(async (resolve, reject) => zipHandler.extract(entry,
       distFolder, (err) => err ? reject(err) : resolve()));
   }
   private async extractContent(contentId, contentDetails: IContentDownloadList) {

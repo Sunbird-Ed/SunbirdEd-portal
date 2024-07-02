@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserSearchService } from './../../services';
 import { UserService, PermissionService, RolesAndPermissions, OrgDetailsService } from '@sunbird/core';
@@ -19,8 +19,8 @@ export class UserEditComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('modal') modal;
   userId: string;
   allRoles: Array<RolesAndPermissions>;
-  userDetailsForm: FormGroup;
-  sbFormBuilder: FormBuilder;
+  userDetailsForm: UntypedFormGroup;
+  sbFormBuilder: UntypedFormBuilder;
   selectedOrgName: string;
   selectedOrgId: string;
   rootOrgRoles: Array<string>;
@@ -45,7 +45,7 @@ export class UserEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(private userSearchService: UserSearchService, public activatedRoute: ActivatedRoute,
     private permissionService: PermissionService, public resourceService: ResourceService,
-    public route: Router, private toasterService: ToasterService, formBuilder: FormBuilder,
+    public route: Router, private toasterService: ToasterService, formBuilder: UntypedFormBuilder,
     public routerNavigationService: RouterNavigationService, public profileService: ProfileService,
     public userService: UserService, public orgDetailsService: OrgDetailsService,
     public navigationhelperService: NavigationHelperService) {
@@ -128,10 +128,10 @@ export class UserEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
   initializeFormFields() {
     this.userDetailsForm = this.sbFormBuilder.group({
-      role: new FormControl(this.selectedOrgUserRoles),
-      district: new FormControl(null),
-      block: new FormControl(null),
-      school: new FormControl(null)
+      role: new UntypedFormControl(this.selectedOrgUserRoles),
+      district: new UntypedFormControl(null),
+      block: new UntypedFormControl(null),
+      school: new UntypedFormControl(null)
     });
     this.getDistrict();
     this.onDistrictChange();

@@ -288,6 +288,7 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
   setEditorConfig() {
     // tslint:disable-next-line:max-line-length
     const additionalCategories = _.merge(this.frameworkService['_channelData'].contentAdditionalCategories, this.frameworkService['_channelData'].collectionAdditionalCategories) || this.config.appConfig.WORKSPACE.primaryCategory;
+    const cloudProvider = (<HTMLInputElement>document.getElementById('cloudProvider')).value ? (<HTMLInputElement>document.getElementById('cloudProvider')).value : '' ;
     this.editorConfig = {
       context: {
         identifier: this.routeParams.contentId,
@@ -325,9 +326,11 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
         },
         channelData: this.frameworkService['_channelData'],
         cloudStorageUrls : this.userService.cloudStorageUrls,
-        cloudStorage: _.get(this.config, 'editorConfig.COLLECTION_EDITOR.cloudStorage', {})
+        cloudStorage:{ provider: cloudProvider}
       },
       config: {
+        primaryCategory: this.collectionDetails.primaryCategory,
+        objectType: _.get(this.collectionDetails, 'objectType') || 'QuestionSet',
         mode: this.getEditorMode(),
         questionSet: {
           maxQuestionsLimit: this.sunbirdQuestionSetChildrenLimit

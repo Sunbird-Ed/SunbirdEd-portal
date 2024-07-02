@@ -17,8 +17,8 @@ import { Subject } from 'rxjs';
 import { debounceTime, map, takeUntil, filter } from 'rxjs/operators';
 import { LibraryFiltersLayout } from '@project-sunbird/common-consumption';
 import { UserService } from '@sunbird/core';
-import { IFacetFilterFieldTemplateConfig } from '@project-sunbird/common-form-elements';
-import { CacheService } from 'ng2-cache-service';
+import { IFacetFilterFieldTemplateConfig } from '@project-sunbird/common-form-elements-full';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 
 @Component({
   selector: 'app-global-search-filter',
@@ -214,7 +214,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
 
   public updateRoute() {
     let queryFilters = _.get(this.activatedRoute, 'snapshot.queryParams');
-    if (this.selectedFilters.channel) {
+    if (this?.selectedFilters?.channel) {
       const channelIds = [];
       const facetsData = _.find(this.facets, {'name': 'channel'});
       _.forEach(this.selectedFilters.channel, (value, index) => {
@@ -223,7 +223,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
       });
       this.selectedFilters.channel = channelIds;
     }
-    if(this.utilService.isDesktopApp && queryFilters.selectedTab === 'mydownloads' && this.isConnected) {
+    if(this?.utilService?.isDesktopApp && queryFilters?.selectedTab === 'mydownloads' && this.isConnected) {
       this.queryParamsToOmit = this.queryParamsToOmit && this.queryParamsToOmit.length ? this.queryParamsToOmit.push('key') : ['key']
       if(this.selectedFilters.key) {
         delete this.selectedFilters.key;

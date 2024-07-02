@@ -20,8 +20,8 @@
       </th>
     </tr>
   </thead>
-  <tbody [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="upForReviewContentData">
-    <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let content of upForReviewContentData;let i = index;" [id]="i" [data]="content" tabindex="0" (click)="contentClick(content)"
+  <tbody [appTelemetryImpression]="telemetryImpression" [throttle]="[1000]" [trigger]="upForReviewContentData">
+    <tr class="UpForReviewListHover cursor-pointer" *ngFor="let content of upForReviewContentData;let i = index;" [id]="i" [data]="content" tabindex="0" (click)="contentClick(content)"
      appTelemetryInteract [telemetryInteractObject]="{id:content.identifier,type:content.contentType,ver:content.pkgVersion ? content.pkgVersion: 1.0}" [telemetryInteractEdata]="{id:'upForReview-filter',type:'click',pageid:'UpForReview'}">
       <td>
         <h5 class="ui image header">

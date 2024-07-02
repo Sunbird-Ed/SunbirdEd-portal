@@ -6,7 +6,7 @@ import { UserService } from './../user/user.service';
 import { IPageSection } from './../../interfaces/index';
 import { Injectable } from '@angular/core';
 import { ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import * as _ from 'lodash-es';
 import { PublicDataService } from './../public-data/public-data.service';
 

@@ -3,7 +3,7 @@ import { CertConfigModel } from './../../models/cert-config-model/cert-config-mo
 import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
 import { CertificateService, UserService, PlayerService, CertRegService, FormService } from '@sunbird/core';
 import * as _ from 'lodash-es';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { ResourceService, NavigationHelperService, ToasterService, LayoutService, COLUMN_TYPE } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { combineLatest, of, Subject } from 'rxjs';
@@ -34,7 +34,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   certTypes: any;
   issueTo: any;
   telemetryImpression: IImpressionEventInput;
-  userPreference: FormGroup;
+  userPreference: UntypedFormGroup;
   disableAddCertificate = true;
   queryParams: any;
   courseDetails: any;
@@ -271,10 +271,10 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
 
 
   initializeFormFields() {
-    this.userPreference = new FormGroup({
-      scoreRange: new FormControl(''),
-      issueTo: new FormControl('', [Validators.required]),
-      allowPermission: new FormControl('', [Validators.required])
+    this.userPreference = new UntypedFormGroup({
+      scoreRange: new UntypedFormControl(''),
+      issueTo: new UntypedFormControl('', [Validators.required]),
+      allowPermission: new UntypedFormControl('', [Validators.required])
     });
     this.userPreference.valueChanges.subscribe(val => {
       this.validateForm();

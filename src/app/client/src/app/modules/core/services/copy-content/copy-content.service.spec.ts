@@ -46,13 +46,19 @@ describe('CopyContentService', () => {
         }) as any
     };
     const mockContentService: Partial<ContentService> = {};
+    const mockDocument: Partial<Document> = {
+        location:{
+            origin:'https://test.com'
+        }as any
+    };
     beforeAll(() => {
         copyContentService = new CopyContentService(
             mockConfigService as ConfigService,
             mockRouter as Router,
             mockUserService as UserService,
             mockContentService as ContentService,
-            mockFrameworkService as FrameworkService
+            mockFrameworkService as FrameworkService,
+            mockDocument as Document
         );
     });
 ​

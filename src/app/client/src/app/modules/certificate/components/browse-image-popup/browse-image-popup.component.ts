@@ -3,7 +3,7 @@ import { UploadCertificateService } from '../../services/upload-certificate/uplo
 import { ToasterService, ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { UserService } from '@sunbird/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 
 
 @Component({
@@ -21,7 +21,7 @@ export class BrowseImagePopupComponent implements OnInit {
   @Input() showUploadUserModal = false;
   imageName;
   imagesList = [];
-  uploadForm: FormGroup;
+  uploadForm: UntypedFormGroup;
   fileObj: any;
   selectedLogo: any;
   sign = 'SIGN';
@@ -35,10 +35,10 @@ export class BrowseImagePopupComponent implements OnInit {
     public toasterService: ToasterService,
     public resourceService: ResourceService,
     public userService: UserService) {
-    this.uploadForm = new FormGroup({
-      assetCaption: new FormControl('', [Validators.required]),
-      creator: new FormControl('', [Validators.required]),
-      creatorId: new FormControl('', [Validators.required])
+    this.uploadForm = new UntypedFormGroup({
+      assetCaption: new UntypedFormControl('', [Validators.required]),
+      creator: new UntypedFormControl('', [Validators.required]),
+      creatorId: new UntypedFormControl('', [Validators.required])
     });
   }
 
