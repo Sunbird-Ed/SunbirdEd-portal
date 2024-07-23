@@ -138,6 +138,7 @@ export default (app, contentFilesPath, ecarsFolderPath ) => {
     locals.contentEditorURL = null;
     locals.genericEditorURL = null;
     locals.botConfigured = null;
+    locals.uciConfigured = null;
     locals.botServiceURL = null;
     locals.superAdminSlug = null;
     locals.p1reCaptchaEnabled = null;

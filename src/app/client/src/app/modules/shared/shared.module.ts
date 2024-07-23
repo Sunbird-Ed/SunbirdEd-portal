@@ -1,7 +1,7 @@
 import {
   SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
   SuiProgressModule, SuiRatingModule, SuiCollapseModule
-} from 'ng2-semantic-ui-v9';
+} from '@project-sunbird/ng2-semantic-ui';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   NoResultComponent, AppLoaderComponent, CardComponent,
@@ -19,7 +19,7 @@ import {
 import { ContentDirectionDirective, HighlightTextDirective, MarkdownDirective, TelemetryEventsDirective } from './directives';
 import { CommonModule } from '@angular/common';
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { DateFormatPipe, FilterPipe, InterpolatePipe, SortByPipe, SbDataTablePipe, TransposeTermsPipe } from './pipes';
+import { DateFormatPipe, FilterPipe, InterpolatePipe, SortByPipe, SbDataTablePipe, TransposeTermsPipe,TranslateJsonPipe } from './pipes';
 import { CacheService } from '../shared/services/cache-service/cache.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { TelemetryModule } from '../telemetry/telemetry.module';
@@ -69,7 +69,7 @@ import { MaterialModule } from './modules/material/material.module';
         ConfirmPopupComponent, AddToGroupDirective, SelectOptionGroupComponent, AppLandingSectionComponent, MarkdownDirective,
         SbDatatableComponent, OnDemandReportsComponent, SbDataTablePipe, NetworkStatusComponent, LoadOfflineContentComponent,
         TelemetryEventsDirective, DesktopAppUpdateComponent, AlertModalComponent, SystemWarningComponent, FullPageLoaderComponent, ModalWrapperComponent, ModalContentDirective,
-        AutocompletePipe, MaterialAutoCompleteComponent, TransposeTermsPipe, SlickComponent
+        AutocompletePipe, MaterialAutoCompleteComponent, TransposeTermsPipe, SlickComponent, TranslateJsonPipe
     ],
     exports: [AppLoaderComponent, DateFormatPipe, TranslateModule,
         BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
@@ -80,7 +80,7 @@ import { MaterialModule } from './modules/material/material.module';
         MarkdownDirective, AddToGroupDirective, SbDatatableComponent, OnDemandReportsComponent, NgxDatatableModule, SbDataTablePipe,
         InterpolatePipe, NetworkStatusComponent, LoadOfflineContentComponent, DesktopAppUpdateComponent, SystemWarningComponent, TelemetryEventsDirective,
         AlertModalComponent, FullPageLoaderComponent, MatTooltipModule, MatTabsModule, MatDialogModule, ModalWrapperComponent, ModalContentDirective,
-        AutocompletePipe, MaterialAutoCompleteComponent, MaterialModule, TransposeTermsPipe, SlickComponent
+        AutocompletePipe, MaterialAutoCompleteComponent, MaterialModule, TransposeTermsPipe, SlickComponent,TranslateJsonPipe
     ]
 })
 export class SharedModule {

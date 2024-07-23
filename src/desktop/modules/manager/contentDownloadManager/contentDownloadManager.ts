@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as  _ from "lodash";
-import { AutoWired, Inject, Singleton } from "typescript-ioc";
+import { Inject, Singleton } from "typescript-ioc";
 import * as path from "path";
 import DatabaseSDK from "../../sdk/database";
 import { logger } from "@project-sunbird/logger";
@@ -9,7 +9,7 @@ import { manifest } from "../../manifest";
 import { ContentDownloader } from "./ContentDownloader";
 import { HTTPService } from "@project-sunbird/OpenRAP/services/httpService";
 import Response from "../../utils/response";
-import uuid from "uuid/v4";
+import { v4 as uuid } from 'uuid';
 const DefaultRequestOptions = { headers: { "Content-Type": "application/json" } };
 import HardDiskInfo from "../../utils/hardDiskInfo";
 @Singleton
@@ -19,8 +19,8 @@ export class ContentDownloadManager {
   private systemSDK;
   private ContentReadUrl = `${process.env.APP_BASE_URL}/api/content/v1/read/`;
   private ContentSearchUrl = `${process.env.APP_BASE_URL}/api/content/v1/search`;
-  private QuestionSetReadUrl = `${process.env.APP_BASE_URL}/learner/questionset/v1/hierarchy/`;
-  private QuestionListUrl = `${process.env.APP_BASE_URL}/api/question/v1/list`;
+  private QuestionSetReadUrl = `${process.env.APP_BASE_URL}/learner/questionset/v2/hierarchy/`;
+  private QuestionListUrl = `${process.env.APP_BASE_URL}/api/question/v2/list`;
   @Inject private standardLog = containerAPI.getStandardLoggerInstance();
   public async initialize() {
     this.systemQueue = containerAPI.getSystemQueueInstance(manifest.id);
@@ -417,6 +417,6 @@ export class ContentDownloadManager {
 
   private async getQuestionsetHierarchy(contentId) {
     const quesionset = await HTTPService.get(`${this.QuestionSetReadUrl}/${contentId}`, {}).toPromise();
-    return quesionset.data.result.questionSet;
+    return quesionset.data.result.questionset;
   }
 }

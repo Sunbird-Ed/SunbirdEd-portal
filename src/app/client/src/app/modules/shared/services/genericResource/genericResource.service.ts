@@ -66,12 +66,6 @@ export class GenericResourceService {
    * method to fetch resource bundle
   */
   public getResource(language = 'en', range: any = {}): void {
-    // this.post({ url: this.config.urlConFig.URLS.CUSTOM_RESOURCE_BUNDLE }).subscribe((data: ServerResponse) => {
-    //   this.terms = _.get(data, 'result.form.data') || {};
-    //   this.getLanguageChange(range);
-    // }, (err) => {
-    //   console.error('Custom resource form config fetch failed ', err);
-    // });
     this.formService.getHashTagID().pipe(
       // @ts-ignore
       mergeMap((rootOrgId: any) => {
@@ -81,7 +75,8 @@ export class GenericResourceService {
             action: 'list',
             subType: 'global',
             component: 'portal',
-            rootOrgId: rootOrgId
+            rootOrgId: rootOrgId,
+            framework: localStorage.getItem('selectedFramework') || '*'
           }
         };
         return this.http.post(this.config.urlConFig.URLS.CUSTOM_RESOURCE_BUNDLE, formServiceInputParams).pipe(
@@ -99,31 +94,6 @@ export class GenericResourceService {
     this.translateService.use(language);
   }
 
-  // post(requestParam: RequestParam): Observable<any> {
-  //   return this.formService.getHashTagID().pipe(
-  //     // @ts-ignore
-  //     mergeMap((rootOrgId: any) => {
-  //       const formServiceInputParams = {
-  //         request: {
-  //           type: 'customResourcebundles',
-  //           action: 'list',
-  //           subType: 'global',
-  //           component: 'portal',
-  //           rootOrgId: rootOrgId
-  //         }
-  //       };
-  //       this.http.post(requestParam.url, formServiceInputParams).pipe(
-  //         mergeMap((data: ServerResponse) => {
-  //           if (data.responseCode !== 'OK') {
-  //             return observableThrowError(data);
-  //           }
-  //           return observableOf(data);
-  //         }));
-  //     })).subscribe((data: any) => {
-  //       return data;
-  //     });
-    
-  // }
   /**
    * @description - Function to generate HTTP headers for API request
    * @returns HttpOptions

@@ -1,22 +1,17 @@
-
-import { SuiModal } from 'ng2-semantic-ui-v9';
-import { Location, LocationStrategy } from '@angular/common';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Location } from '@angular/common';
 import { ResourceService } from '../../services';
+import { AlertModalComponent } from './alert-modal.component';
+import { metaData } from './alert-modal.component.spec.data';
 import * as _ from 'lodash-es';
-import { AlertModalComponent, AlertModal } from './alert-modal.component'
 
-interface IAlertModalContext {
-  data: any;
-}
-
-describe("Alert-Modal Component", () => {
+describe("AlertModalComponent", () => {
   let component: AlertModalComponent;
   const mockLocation: Partial<Location> = {
     back: jest.fn()
   };
-  const mockModal: Partial<SuiModal<IAlertModalContext, void, void>> = {
-    deny:jest.fn(),
-    approve:jest.fn()
+  const mockDialogRef: Partial<MatDialogRef<AlertModalComponent>> = {
+    close: jest.fn()
   };
   const mockResourceService: Partial<ResourceService> = {
     frmelmnts: {
@@ -39,154 +34,52 @@ describe("Alert-Modal Component", () => {
       }
     }
   };
-  const mockLocationStratergy: Partial<LocationStrategy> = {
-    onPopState: jest.fn() as any
-  }
+
   beforeAll(() => {
     component = new AlertModalComponent(
-      mockModal as SuiModal<IAlertModalContext, void, void>,
+      mockDialogRef as MatDialogRef<AlertModalComponent>,
+      metaData,
       mockLocation as Location,
-      mockResourceService as ResourceService,
-      mockLocationStratergy as LocationStrategy
+      mockResourceService as ResourceService
     );
   });
 
   beforeEach(() => {
     jest.clearAllMocks();
   });
-  it('should be create a instance of Alert-Modal Component', () => {
+
+  it('should create an instance of AlertModalComponent', () => {
     expect(component).toBeTruthy();
   });
-  it('should be create a instance and call the getMethod method with the data', () => {
-    let data = {
+
+  it('should call getMethod with cancel data', () => {
+    const data = {
       type: 'cancel',
-      returnValue:'abcd'
-    }
-    jest.spyOn(component.modal,'deny');
+      returnValue: 'abcd'
+    };
     component.getMethod(data);
-    expect(component.modal.deny).toBeCalled();
+    expect(mockDialogRef.close).toHaveBeenCalledWith({ returnValue: 'abcd', action: 'cancel' });
   });
-  it('should be create a instance and call the getMethod method with the data with save ', () => {
-    let data = {
+
+  it('should call getMethod with approve data', () => {
+    const data = {
       type: 'save',
-      returnValue:'abcd'
-    }
-    jest.spyOn(component.modal,'approve');
+      returnValue: 'abcd'
+    };
     component.getMethod(data);
-    expect(component.modal.approve).toBeCalled();
+    expect(mockDialogRef.close).toHaveBeenCalledWith({ returnValue: 'abcd', action: 'approve' });
   });
-  it('should be create a instance and call the navigatePrevious method with the data', () => {
-    let data = {
+
+  it('should call navigatePrevious', () => {
+    const data = {
       footer: {
-        buttons:[{
+        buttons: [{
           returnValue: 'abcd'
         }]
       }
-    }
-    jest.spyOn(component.modal,'deny');
+    };
     component.navigatePrevious(data);
-    expect(component.modal.deny).toBeCalled();
-  });
-  describe("Alert-Modal inner Component", () => {
-    let alertModelComponent : AlertModal;
-    let mockData = {
-      size:'mini'
-    } as any;
-    beforeAll(() => {
-      alertModelComponent = new AlertModal(
-        mockData
-      );
-    });
-    beforeEach(() => {
-      jest.clearAllMocks();
-    });
-    it('should be create a instance of Alert-Modal inner mini Component', () => {
-      expect(alertModelComponent).toBeTruthy();
-    });
-  });
-  describe("Alert-Modal inner mini Component", () => {
-    let alertModelComponent : AlertModal;
-    let mockData = {
-      size:'tiny'
-    } as any;
-    beforeAll(() => {
-      alertModelComponent = new AlertModal(
-        mockData
-      );
-    });
-    beforeEach(() => {
-      jest.clearAllMocks();
-    });
-    it('should be create a instance of Alert-Modal inner tiny Component', () => {
-      expect(alertModelComponent).toBeTruthy();
-    });
-  });
-  describe("Alert-Modal inner tiny Component", () => {
-    let alertModelComponent : AlertModal;
-    let mockData = {
-      size:'tiny'
-    } as any;
-    beforeAll(() => {
-      alertModelComponent = new AlertModal(
-        mockData
-      );
-    });
-    beforeEach(() => {
-      jest.clearAllMocks();
-    });
-    it('should be create a instance of Alert-Modal inner tiny Component', () => {
-      expect(alertModelComponent).toBeTruthy();
-    });
-  });
-  describe("Alert-Modal inner small Component", () => {
-    let alertModelComponent : AlertModal;
-    let mockData = {
-      size:'small'
-    } as any;
-    beforeAll(() => {
-      alertModelComponent = new AlertModal(
-        mockData
-      );
-    });
-    beforeEach(() => {
-      jest.clearAllMocks();
-    });
-    it('should be create a instance of Alert-Modal inner small Component', () => {
-      expect(alertModelComponent).toBeTruthy();
-    });
-  });
-  describe("Alert-Modal inner normal Component", () => {
-    let alertModelComponent : AlertModal;
-    let mockData = {
-      size:'normal'
-    } as any;
-    beforeAll(() => {
-      alertModelComponent = new AlertModal(
-        mockData
-      );
-    });
-    beforeEach(() => {
-      jest.clearAllMocks();
-    });
-    it('should be create a instance of Alert-Modal inner normal Component', () => {
-      expect(alertModelComponent).toBeTruthy();
-    });
-  });
-  describe("Alert-Modal inner large Component", () => {
-    let alertModelComponent : AlertModal;
-    let mockData = {
-      size:'large'
-    } as any;
-    beforeAll(() => {
-      alertModelComponent = new AlertModal(
-        mockData
-      );
-    });
-    beforeEach(() => {
-      jest.clearAllMocks();
-    });
-    it('should be create a instance of Alert-Modal inner large Component', () => {
-      expect(alertModelComponent).toBeTruthy();
-    });
+    expect(mockDialogRef.close).toHaveBeenCalledWith({ returnValue: false, action: 'deny' });
+    expect(mockLocation.back).toHaveBeenCalled();
   });
 });

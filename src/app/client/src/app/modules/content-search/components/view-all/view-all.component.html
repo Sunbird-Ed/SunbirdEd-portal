@@ -37,7 +37,7 @@
                                         appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata"
                                         [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType || 'Content',ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}"
                                         (cardClick)="playContent($event, content)" (enterKey)="playContent($event, content)" [content]="content"
-                                        [cardImg]="content?.image || 'assets/images/book.png'"></sb-library-card>
+                                        [cardImg]="content?.image || 'assets/images/book.png'" [categoryKeys]="categoryKeys"></sb-library-card>
                                 </ng-container>
 
                             </div>

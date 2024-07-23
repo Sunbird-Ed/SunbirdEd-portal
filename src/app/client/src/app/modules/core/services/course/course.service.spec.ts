@@ -6,7 +6,7 @@ import { ContentService } from './../content/content.service';
 import { LearnerService } from './../learner/learner.service';
 import { ContentDetailsModule } from "@project-sunbird/common-consumption";
 import { Console } from "console";
-
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 describe('CoursesService', () => {
   let coursesService: CoursesService;
@@ -60,12 +60,18 @@ describe('CoursesService', () => {
     post: jest.fn().mockImplementation(() => { }),
     get: jest.fn()
   };
+
+  const mockCslFrameworkService: Partial<CslFrameworkService> = {
+    getAllFwCatName: jest.fn(),
+  };
+
   beforeAll(() => {
     coursesService = new CoursesService(
       mockUserService as UserService,
       mockLearnerService as LearnerService,
       mockConfigService as ConfigService,
-      mockContentService as ContentService
+      mockContentService as ContentService,
+      mockCslFrameworkService as CslFrameworkService
     );
   });
   const  ServerResponse = {
@@ -108,6 +114,7 @@ const  error = {
 
   describe('should get the enrolled courses for a user', () => {
     it('should call the getEnrolledCourses method and get the enrolled courses', (done) => {
+			jest.spyOn(mockCslFrameworkService, 'getAllFwCatName').mockReturnValue(['category1', 'category2']);
       jest.spyOn(coursesService['learnerService'], 'get').mockReturnValue(of({
         id: 'id',
         params: {
@@ -129,6 +136,7 @@ const  error = {
 
     it('should call the getEnrolledCourses method and get the enrolled courses and should throw error', () => {
       // arrange
+			jest.spyOn(mockCslFrameworkService, 'getAllFwCatName').mockReturnValue(['category1', 'category2']);
       jest.spyOn(coursesService['learnerService'], 'get').mockImplementation(() => {
         return throwError({ error: {} });
       });

@@ -1,36 +1,11 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
-.sb-modal-actions {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.sb-modal .ui.modal {
-  margin-top: 15% !important;
-}
-
 .ngx-datatable.fixed-header .datatable-header {
   padding: 0.625rem;
 }
 
-.sidebar-block {
-  min-height: 25rem;
-}
-
 .ngx-datatable.datatable-header {
   background: var(--mat-accordion-tab-body-active-bg) !important;
-}
-
-
-.custom_mat_dd .mat-select-arrow-wrapper {
-  vertical-align: bottom !important;
-}
-
-.reset-filter{
-  color: var(--primary);
-  background-color: var(--brand-header-tail-text);
-  width: fit-content;
 }
 
 .newData{
@@ -51,37 +26,18 @@
   color: var(--ck-color-button-cancel);
 }
 
-.ppFilter{
-  margin-top: 1.25rem;
-}
-
 .col-gap{
-  gap:2rem;
-}
-
-.btn-col{
-  flex-grow: 1;
-  margin-left: 5rem !important;
-}
-
-.modalNote{
-  line-height: initial;
+  gap:1rem;
 }
 
 .infoIcon{
   width: 1.125rem;
 }
 .sb-graph-section{
-
   box-shadow: 0 calculateRem(2px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.16);
   background: var(--sb-graph-section-bg);
   border: 0.0625rem solid var(--rc-dddddd);
 
-}
-
-.sb-last-update-status {
-  font-size: calculateRem(12px);
-  font-weight: bold;
 }
 
 .sb-label-name {
@@ -102,13 +58,9 @@
 }
 
 ::ng-deep {
-  .exportBtn .mat-form-field-wrapper {
-      float: right;
-  }
-
-  .cdk-overlay-container{
-    z-index: 9 !important;
-  }
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
 
   .customTable{
     sb-dashlets-filters{
@@ -121,10 +73,26 @@
       justify-content: flex-end !important;
     }
     .chart-title{
-      font-weight: 700;
+      font-weight: 700 !important;
+      color: var(--primary-color);
     }
-    table{
-      width: 100% !important;
+    .export-btn {
+      position: absolute;
+      top: -3rem !important;
+      right: 0 !important;
+    }
+    div.dt-container .dt-length, div.dt-container .dt-search, div.dt-container .dt-info, div.dt-container .dt-processing, div.dt-container .dt-paging{
+      display: flex;
+      align-items: center;
+      flex-direction: row-reverse;
+      gap: 1rem;
+      label{
+        margin: 0;
+        text-transform: capitalize;
+      }
+    }
+    div.dt-container div.dt-layout-row.dt-layout-table, div.dt-container div.dt-layout-row.dt-layout-table div.dt-layout-cell{
+      overflow: auto;
     }
   }
   .customGraph{
@@ -137,10 +105,6 @@
     }
   }
   
-  .customDate{
-    .mat-form-field-infix{
-      width: 8.75rem !important;
-    }
   }
   .chart-title {
     font-size: 1rem;
@@ -149,45 +113,3 @@
     padding-top: 0.5rem;
   }
 
-  
-  .custom_mat_dd{
-    
-    .mat-form-field-flex{
-      display: flex;
-      align-items: center !important;
-      box-sizing: border-box;
-      width: 100%;
-      
-      input::placeholder{
-        color: rgba(0,0,0,.42) !important;
-        font-weight: bold !important;
-      }
-    }
-
-    .mat-select-arrow-wrapper {
-      vertical-align: unset !important;
-    }
-
-  }
-  .mat-select-panel .mat-option {
-    white-space: normal !important;
-    display: inline-table !important;
-    width: 100% !important;
-    line-height: 1.5em !important;
-    padding: 0.625rem 1.5em;
-  }
-  .mat-option-text{
-    display: flex !important;
-  }
-
-  .mat-dropdown__options span {
-    position: unset !important;
-  }
-  .mat-dropdown__options span:before {
-    display: flex !important;
-    align-self: flex-end !important;
-  }
-  .custom_mat_multi.mat-option{
-    display: flex !important;
-  }
-}

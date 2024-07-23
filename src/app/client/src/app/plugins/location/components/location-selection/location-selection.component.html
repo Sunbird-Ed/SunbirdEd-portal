@@ -1,5 +1,5 @@
 <!-- New Pop up -->
-<app-modal-wrapper *ngIf="showModal && !isStepper" [config]="{disableClose: true, id: locationSelectionModalId, panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="closeModal()">
+<app-modal-wrapper *ngIf="showModal && !isStepper && (isLocationEnabled || showEditLocationDetailsPopup)" [config]="{disableClose: true, id: locationSelectionModalId, panelClass: ['material-modal', 'overflow-visible']}" (dismiss)="closeModal()">
   <ng-template sbModalContent let-data>
 
     <div class="sb-mat__modal sb-onboard">
@@ -12,8 +12,8 @@
         </button>
       </div>
 
-      <mat-dialog-content>
-        <div class="sb-mat__modal__content">
+      <mat-dialog-content class="p-0">
+        <div class="sb-mat__modal__content" mat-dialog-content>
           <div>
             <ng-content select="[slot=popup-sub-header]"></ng-content>
           </div>
@@ -37,7 +37,7 @@
         <div class="sb-onboard__footer mt-0">
           <ng-content select="[slot=popup-footer]"></ng-content>
         </div>
-        <div class="sb-onboard__footer d-flex flex-ai-center flex-jc-center w-80 m-auto">
+        <div class="sb-onboard__footer d-flex flex-ai-center flex-jc-center w-80 m-auto pt-24">
           <button type="button" class="sb-btn sb-btn-sm sb-btn-white text-uppercase flex-basis-1" type="submit"
             [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading"
             [disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading" (click)="clearUserLocationSelections()"

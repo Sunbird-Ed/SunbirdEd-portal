@@ -3,7 +3,7 @@ import SettingSDK from './SettingSDK';
 import * as _ from "lodash";
 import SystemSDK from "./SystemSDK";
 import { HTTPService } from "./../services/httpService";
-import uuid = require("uuid");
+const { v4: uuid } = require('uuid');
 import axios from "axios";
 import jwt from "jsonwebtoken";
 import { DataBaseSDK } from "./DataBaseSDK";
@@ -41,7 +41,7 @@ export default class DeviceSDK {
                 ver: process.env.APP_VERSION,
                 ts: new Date().toISOString(),
                 params: {
-                    msgid: uuid.v4()
+                    msgid: uuid()
                 },
                 request: {
                     channel: process.env.CHANNEL,

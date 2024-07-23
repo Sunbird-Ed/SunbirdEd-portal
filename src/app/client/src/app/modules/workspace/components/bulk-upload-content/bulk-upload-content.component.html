@@ -1,24 +1,16 @@
 <!-- Important note(developer):- whenever the component is going to be used just create a scss file of the component and paste the below code
-@use "~@project-sunbird/sb-styles/assets/varIndex" as *;
-@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "@project-sunbird/sb-styles/assets/varIndex" as *;
+@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @use 'components/metadata' as *;
  -->
-
-<sui-modal
-  [mustScroll]="true" 
-  [isClosable]="true"
-  [transitionDuration]="0"
-  [size]="'normal'"
-  class="sb-modal" 
-  appBodyScroll
-  (dismissed)="close()"
-  #modal
->
-<!-- sb-success -->
-  <!--Header-->
-  <div class="sb-modal-header">Upload .CSV file</div>
-  <!--/Header-->
-  <div class="sb-modal-content o-y-visible">
+ <app-modal-wrapper [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [config]="{disableClose: true, size: 'small', panelClass: 'material-modal', transitionDuration: 0}" #modal>
+  <ng-template sbModalContent>
+  <div mat-dialog-title class="flex-jc-center">
+    <div class="title" tabindex="0">Upload .CSV file</div>
+      <button aria-label="close dialog" mat-dialog-close class="close-btn"></button>
+  </div>
+  <mat-dialog-content>
+    <div class="sb-modal-content o-y-visible">
       <p class="m-0">Please upload the CSV file in the required format</p>
       <div class="pt-16 sb-bulk-upload-file d-flex flex-ai-center">
           <img src="" alt="" class="sb-upload-file mr-15">
@@ -73,8 +65,11 @@
           </div>
       </div>
   </div>
-  <div class="sb-modal-actions">
-      <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" (click)="modal.approve('done')">Start Upload</button>
+  </mat-dialog-content>
+  <mat-dialog-actions class="sb-mat__modal__actions">
+    <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" (click)="modal.approve('done')">Start Upload</button>
       <button class="sb-btn sb-btn-secondary sb-btn-normal mr-8" tabindex="0" (click)="modal.approve('done')"> Download Report </button>
   </div>
-</sui-modal>
+  </mat-dialog-actions>
+  </ng-template>
+ </app-modal-wrapper>

@@ -12,8 +12,8 @@ describe('TenantService', () => {
     urlConFig: {
       URLS: {
         OTP: {
-          GENERATE: 'otp/v1/generate',
-          VERIFY: 'otp/v1/verify',
+          GENERATE: 'otp/v2/generate',
+          VERIFY: 'otp/v2/verify',
         },
         TENANT: {
           INFO: 'sunbird'

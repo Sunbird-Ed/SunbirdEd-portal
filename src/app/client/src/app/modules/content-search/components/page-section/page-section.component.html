@@ -9,7 +9,7 @@
         </h4>
         <!--/Section Title-->
         <!--View all button-->
-        <button class="sb-btn sb-btn-xs sb-btn-secondary ml-auto" type="button" *ngIf="section?.contents?.length >= 10"
+        <button class="sb-btn sb-btn-normal sb-btn-outline-secondary sb-btn-white ml-auto" type="button" *ngIf="section?.contents?.length >= 10"
             (click)="navigateToViewAll(section)" tabindex="0" appTelemetryInteract
             [telemetryInteractEdata]="{id:'viewall-button' , type:'click' ,pageid:pageid , extra : {section: section.name}}">
             {{ resourceService?.frmelmnts?.lnk?.viewall}}
@@ -46,7 +46,7 @@
                                 [telemetryInteractCdata]="telemetryInteractCdata"
                                 [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
                                 (cardClick)="playContent($event)" (enterKey)="playContent($event)" [content]="content"
-                                [cardImg]="content?.image || 'assets/images/book.png'"></sb-library-card>
+                                [cardImg]="content?.image || 'assets/images/book.png'" [categoryKeys]="categoryKeys"></sb-library-card>
                         </ng-container>
                     </ng-template>
                     <!--/Course & Resourse Card-->

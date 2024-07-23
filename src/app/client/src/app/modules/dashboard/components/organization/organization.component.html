@@ -11,42 +11,18 @@
             &nbsp; {{myOrganizations[0].orgName}}
           </span>
           <!-- If user is member of multiple organization -->
-          <div class="ui dropdown " suiDropdown *ngIf="myOrganizations && myOrganizations.length > 1">
-            <div class="text dashBoardSectionHeading">{{SelectedOrg ||
-              resourceService?.frmelmnts?.lbl?.dashboardselectorg}}
-              <span>
-                <i class="dropdown icon"></i>
-              </span>
-            </div>
-            <div class="menu" suiDropdownMenu>
-              <div class="item" [ngClass]="{'active': organization.id === identifier }"
-                *ngFor="let organization of myOrganizations" tabindex="0"
-                (click)="onAfterOrgChange(organization.id, organization.orgName); SelectedOrg = organization.orgName;"
-                appTelemetryInteract
-                [telemetryInteractObject]="{ id: organization.id, type: 'organization', ver: '1.0' }"
-                [telemetryInteractEdata]="{id:'orgDropdown',type:'click',pageid:'org-admin-dashboard'}">
-                {{organization.orgName}}
-              </div>
-            </div>
-          </div>
+          <button mat-icon-button [matMenuTriggerFor]="menu" tabindex="0" *ngIf="myOrganizations && myOrganizations.length > 1">
+            {{SelectedOrg || resourceService?.frmelmnts?.lbl?.dashboardselectorg}}<mat-icon>keyboard_arrow_down</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item [ngClass]="{'active': organization.id === identifier }"
+            *ngFor="let organization of myOrganizations" tabindex="0"
+            (click)="onAfterOrgChange(organization.id, organization.orgName); SelectedOrg = organization.orgName;"
+            appTelemetryInteract
+            [telemetryInteractObject]="{ id: organization.id, type: 'organization', ver: '1.0' }"
+            [telemetryInteractEdata]="{id:'orgDropdown',type:'click',pageid:'org-admin-dashboard'}">{{organization.orgName}}</button>
+          </mat-menu>
         </div>
-        <!-- Dataset types - Creation, Consumption -->
-        <!-- <div class="right floated three wide column padding-right-dropdown pr-10" *ngIf="identifier && myOrganizations && myOrganizations.length > 0">
-        <div class="ui dropdown float-ContentRight" suiDropdown>
-          <div class="text dashBoardSectionHeading">
-            {{datasetType === 'creation' ? resourceService?.frmelmnts?.lbl?.creationdataset : resourceService?.frmelmnts?.lbl?.consumptiondataset}}
-          </div>
-          <span class="dashBoardSectionHeading">
-            <i class="dropdown icon"></i>
-          </span>
-          <div class="menu" suiDropdownMenu>
-            <div class="active item" [ngClass]="{'active': datasetType === 'creation' }" (click)="onAfterDatasetChange('creation'); SelectedDataSet = 'Creation'"
-            appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'creation',type:'click',pageid:'org-admin-dashboard'}">Creation</div>
-            <div class="item" [ngClass]="{'active': datasetType === 'consumption' }" (click)="onAfterDatasetChange('consumption'); SelectedDataSet = 'Consumption'"
-            appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'consumption',type:'click',pageid:'org-admin-dashboard'}">Consumption</div>
-          </div>
-        </div>
-      </div> -->
         <div class="right floated three wide column padding-right-dropdown pr-10"
           *ngIf="identifier && myOrganizations && myOrganizations.length > 0">
           <div class="ui dropdown float-ContentRight">

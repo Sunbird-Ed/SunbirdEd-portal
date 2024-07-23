@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
-import { SuiModalModule } from 'ng2-semantic-ui-v9';
+import { SuiModalModule } from '@project-sunbird/ng2-semantic-ui';
 import { CommonModule } from '@angular/common';
 import { CoreModule, SessionExpiryInterceptor } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
@@ -24,6 +24,15 @@ import { SbSearchFilterModule } from '@project-sunbird/common-form-elements-full
 import { UserOnboardingModule} from '../app/modules/user-onboarding';
 import { MatStepperModule} from '@angular/material/stepper';
 import { CdkStepperModule} from '@angular/cdk/stepper';
+import { CsModule } from '@project-sunbird/client-services';
+import { CsLibInitializerService } from '../app/service/CsLibInitializer/cs-lib-initializer.service';
+import { TranslateJsonPipe } from '../app/modules/shared/pipes/TranslateJsonPipe/translate-json.pipe';
+export const csFrameworkServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
+  if (!CsModule.instance.isInitialised) {
+    csLibInitializerService.initializeCs();
+  }
+  return CsModule.instance.frameworkService;
+};
 
 @NgModule({
     declarations: [
@@ -63,7 +72,10 @@ import { CdkStepperModule} from '@angular/cdk/stepper';
         TranslateStore,
         DeviceDetectorService,
         { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true },
-        { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy }
+        { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy },
+        {provide: 'CS_FRAMEWORK_SERVICE',useFactory: csFrameworkServiceFactory,deps: [CsLibInitializerService]},
+        TranslateJsonPipe
+        
     ],
 })
 export class AppModule {

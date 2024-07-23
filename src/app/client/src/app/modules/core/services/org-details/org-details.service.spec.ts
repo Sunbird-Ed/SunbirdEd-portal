@@ -67,7 +67,10 @@ describe('OrgDetailsService', () => {
     post: jest.fn().mockImplementation(() => { }),
     get: jest.fn().mockImplementation(() => { of({}) })
   };
-  const mockPublicDataService: Partial<PublicDataService> = {};
+  const mockPublicDataService: Partial<PublicDataService> = {
+    postWithHeaders: jest.fn(),
+    post: jest.fn().mockImplementation(() => {})
+  };
 
   beforeAll(() => {
     orgDetailsService = new OrgDetailsService(
@@ -131,4 +134,164 @@ describe('OrgDetailsService', () => {
     });
   });
 
+  it('should set and get orgInfo correctly', () => {
+    const orgdata = { id: 'org123', name: 'Organization' };
+    orgDetailsService.setOrg(orgdata);
+    const retrievedOrg = orgDetailsService.getOrg();
+    expect(retrievedOrg).toEqual(orgdata);
+  });
+
+  it('should return coming soon message for orgids', () => {
+    const orgids = ['org1', 'org2'];
+    const systemSetting = {
+      url: 'sample-url'
+    };
+    const contentComingSoon = {
+      result: {
+        response: {
+          value: JSON.stringify({
+            org1: 'Coming soon for org1',
+            org2: 'Coming soon for org2'
+          })
+        }
+      }
+    };
+
+    jest.spyOn(orgDetailsService['learnerService'] as any, 'get').mockReturnValue(of(contentComingSoon));
+    const cacheSetSpy = jest.spyOn(orgDetailsService['cacheService'], 'set');
+    const expectedMessage = {
+      org1: 'Coming soon for org1',
+      org2: 'Coming soon for org2'
+    };
+
+    orgDetailsService.getCommingSoonMessage(orgids).subscribe((message) => {
+      expect(message).toEqual(expectedMessage);
+      expect(cacheSetSpy).toHaveBeenCalledWith('contentComingSoon', expectedMessage, {
+        maxAge: expect.any(Number)
+      });
+    });
+  });
+
+  it('should return an empty object if orgids are not provided', () => {
+    const orgids = null;
+
+    orgDetailsService.getCommingSoonMessage(orgids).subscribe((message) => {
+      expect(message).toEqual({});
+    });
+  });
+
+  it('should return an empty object if system setting response is empty', () => {
+    const orgids = ['org1', 'org2'];
+    const systemSetting = {
+      url: 'sample-url'
+    };
+    const contentComingSoon = {
+      result: {}
+    };
+
+    jest.spyOn(orgDetailsService['learnerService'] as any, 'get').mockReturnValue(of(contentComingSoon));
+
+    orgDetailsService.getCommingSoonMessage(orgids).subscribe((message) => {
+      expect(message).toEqual({});
+    });
+  });
+
+  it('should return an empty object if system setting response value is not valid JSON', () => {
+    const orgids = ['org1', 'org2'];
+    const systemSetting = {
+      url: 'sample-url'
+    };
+    const contentComingSoon = {
+      result: {
+        response: {
+          value: 'invalid-json'
+        }
+      }
+    };
+
+    jest.spyOn(orgDetailsService['learnerService'] as any, 'get').mockReturnValue(of(contentComingSoon));
+
+    orgDetailsService.getCommingSoonMessage(orgids).subscribe((message) => {
+      expect(message).toEqual({});
+    });
+  });
+
+  it('should return an empty object if learnerService.get fails', () => {
+    const orgids = ['org1', 'org2'];
+    const systemSetting = {
+      url: 'sample-url'
+    };
+
+    jest.spyOn(orgDetailsService['learnerService'], 'get').mockReturnValue(throwError('Error'));
+
+    orgDetailsService.getCommingSoonMessage(orgids).subscribe((message) => {
+      expect(message).toEqual({});
+    });
+  });
+
+  it('should return custodian org details', () => {
+    orgDetailsService._custodianOrg$ = 'mock' as any;
+    const custodianOrgDetails = orgDetailsService.getCustodianOrgDetails();
+    expect(custodianOrgDetails).toEqual('mock');
+  });
+
+  it('should process org data', () => {
+    const channels = [{ name: 'orgId1' }, { name: 'orgId2' }];
+    const rootOrgIds = orgDetailsService.processOrgData(channels);
+    expect(rootOrgIds).toEqual(['orgId1', 'orgId2']);
+  });
+
+   it('should return the server time difference', () => {
+    const timeDiff = orgDetailsService.getServerTimeDiff;
+    expect(timeDiff).toBeUndefined();
+  });
+
+  it('should return the root org ID', () => {
+    const rootOrgId = orgDetailsService.getRootOrgId;
+    expect(rootOrgId).toBeUndefined();
+  });
+
+  it('should return the comming soon message object for a given rootOrgId', () => {
+    const data = [
+        { rootOrgId: 'org1', message: 'Message 1' },
+        { rootOrgId: 'org2', message: 'Message 2' },
+        { rootOrgId: 'org3', message: 'Message 3' }
+    ];
+    const orgids = ['org2'];
+    const result = orgDetailsService.getCommingSoonMessageObj(data, orgids);
+
+    expect(result).toEqual({ rootOrgId: 'org2', message: 'Message 2' });
+  });
+
+  it('should return an empty object if data is empty', () => {
+      const data = [];
+      const orgids = ['org1'];
+
+      const result = orgDetailsService.getCommingSoonMessageObj(data, orgids);
+
+      expect(result).toEqual({});
+  });
+
+  it('should return an empty object if no matching rootOrgId is found', () => {
+    jest.spyOn(orgDetailsService, 'getCommingSoonMessageObj').mockReturnValue({});
+      const data = [
+          { rootOrgId: 'org1', message: 'Message 1' },
+          { rootOrgId: 'org2', message: 'Message 2' }
+      ];
+      const orgids = ['org3'];
+      const result = orgDetailsService.getCommingSoonMessageObj(data, orgids);
+      expect(result).toEqual({});
+  });
+
+  it('should handle error when API call fails', () => {
+    const getElementByIdMock = jest.spyOn(document, 'getElementById');
+    getElementByIdMock.mockReturnValue({ value: 'mockedValue' } as HTMLInputElement);
+    jest.spyOn(mockPublicDataService as any,'postWithHeaders').mockReturnValue(throwError({}));
+
+    orgDetailsService.getOrgDetails().subscribe({
+      error: (err) => {
+        expect(err).toBeDefined();
+      }
+    });
+  });
 });

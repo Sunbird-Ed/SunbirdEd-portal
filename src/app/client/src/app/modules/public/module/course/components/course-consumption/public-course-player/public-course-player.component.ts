@@ -13,6 +13,7 @@ import TreeModel from 'tree-model';
 import { UserService, GeneraliseLabelService } from '@sunbird/core';
 import { TocCardType } from '@project-sunbird/common-consumption';
 import { ITelemetryShare, ContentUtilsServiceService } from '@sunbird/shared';
+import { CslFrameworkService } from '../../../../../services/csl-framework/csl-framework.service';
 
 @Component({
   selector: 'app-public-course-player',
@@ -43,6 +44,9 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
   shareLink: string;
   @ViewChild('joinTrainingModal') joinTrainingModal;
   isExpandedAll: boolean;
+  public globalFilterCategories;
+  public frameworkCategoriesList;
+  public transformCourseHierarchy;
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -54,12 +58,15 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
     private userService: UserService,
     public telemetryService: TelemetryService,
     private contentUtilsServiceService: ContentUtilsServiceService,
-    public generaliseLabelService: GeneraliseLabelService
+    public generaliseLabelService: GeneraliseLabelService,
+    public cslFrameworkService: CslFrameworkService
   ) {
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
   }
 
   ngOnInit() {
+    this.globalFilterCategories = this.cslFrameworkService.getAlternativeCodeForFilter();
+    this.frameworkCategoriesList = this.cslFrameworkService.getGlobalFilterCategoriesObject();
     const routeParams: any = { ...this.activatedRoute.snapshot.params };
     this.courseId = routeParams.courseId;
     const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
@@ -68,6 +75,7 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
       .subscribe(courseHierarchy => {
         this.loader = false;
         this.courseHierarchy = courseHierarchy;
+        this.transformCourseHierarchy = this.cslFrameworkService.transformContentDataFwBased(this.frameworkCategoriesList,this.courseHierarchy);
         this.isExpandedAll = this.courseHierarchy.children && this.courseHierarchy.children.length === 1 ? true : undefined;
         this.parseChildContent();
         this.collectionTreeNodes = { data: this.courseHierarchy };

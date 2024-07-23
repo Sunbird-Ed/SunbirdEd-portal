@@ -19,7 +19,7 @@ const isAPIWhitelisted = require('../helpers/apiWhiteList');
 const courseSearchURI = '/content/course/v1/search';
 const assetUploadURI = '/content/asset/v1/upload/:id';
 const contentAllURI = '/content/*';
-const copyQuestionSetURI = '/content/questionset/v1/copy/:id';
+const copyQuestionSetURI = '/content/questionset/v2/copy/:id';
 
 module.exports = (app) => {
     app.all(courseSearchURI,
@@ -46,7 +46,7 @@ module.exports = (app) => {
     );
     /**
     * function indicating that it handles HTTP POST requests.
-    * @description The route path is /content/questionset/v1/copy/:id, where :id is a route parameter that can be accessed within the route handler.
+    * @description The route path is /content/questionset/v2/copy/:id, where :id is a route parameter that can be accessed within the route handler.
     * @function proxyUtils.verifyToken(),isAPIWhitelisted.isAllowed() : it is used to handle the authentication and authorization.
     */
     app.post(copyQuestionSetURI,

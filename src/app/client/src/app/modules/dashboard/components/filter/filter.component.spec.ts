@@ -2,12 +2,13 @@
 import { FilterComponent } from './filter.component';
 import { mockChartData } from './filter.component.spec.data';
 import { ChangeDetectorRef, NO_ERRORS_SCHEMA } from '@angular/core';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { of } from 'rxjs';
 import { ResourceService } from '../../../shared';
 import { fakeAsync, tick } from '@angular/core/testing';
+import { MatAutocomplete } from '@angular/material/autocomplete';
 
 describe('FilterComponent', () => {
   let component: FilterComponent;
@@ -36,7 +37,8 @@ describe('FilterComponent', () => {
         close: 'close'
       },
       lbl: {
-        reportSummary: 'Report Summary'
+        reportSummary: 'Report Summary',
+        selectDependentFilter: 'Select {displayName} filter'
       }
     },
     languageSelected$: of({})
@@ -45,7 +47,8 @@ describe('FilterComponent', () => {
     queryParams: of({})
   };
   const mockFormBuilder: Partial<FormBuilder> = {
-    group: jest.fn()
+    group: jest.fn(() => new FormGroup({})),
+    control: jest.fn(() => new FormControl('')),
   };
   const mockChangeDetectionRef: Partial<ChangeDetectorRef> = {
   };
@@ -311,4 +314,61 @@ describe('FilterComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe).toBeDefined()
 });
+
+  it('should choose the first option', () => {
+    const mockMatAutocomplete: any = {
+      options: { first: { select: jest.fn() } }
+    };
+    component.matAutocomplete = mockMatAutocomplete;
+    component.chooseOption();
+    expect(mockMatAutocomplete.options.first.select).toHaveBeenCalled();
+  });
+
+  it('should set error message with displayName', () => {
+    const event = { displayName: 'ExampleFilter' };
+    component.showErrorMessage(event);
+    expect(component.errorMessage).toBe('Select ExampleFilter filter');
+  });
+
+  it('should not set error message without displayName', () => {
+    const event = { displayName: undefined };
+    component.showErrorMessage(event);
+    expect(component.errorMessage).toBeUndefined();
+  });
+
+  it('should set selected filters and generate form when selectedFilter is set', fakeAsync(() => {
+    const mockSelectedFilter = {
+      filters: [
+        { controlType: 'text', reference: 'Organisation' },
+      ],
+      data: [],
+      selectedFilters: {
+        Organisation: 'Organisation 1',
+      },
+    };
+    jest.spyOn(component, 'formGeneration').mockImplementation(() => {});
+    component.selectedFilter = mockSelectedFilter;
+    jest.advanceTimersByTime(0);
+    expect(component.formGeneration).toHaveBeenCalledWith(mockSelectedFilter.data);
+    expect(component.selectedFilters).toEqual(mockSelectedFilter.selectedFilters);
+    expect(component.filtersFormGroup.value).toEqual(mockSelectedFilter.selectedFilters);
+  }));
+
+  it('should set filters from val.filters when reset is not true and val.filters is provided', () => {
+    const mockFilters = {
+      Organisation: 'Organisation 1',
+    };
+    component.filtersFormGroup.setValue({
+      Organisation: 'Organisation 1',
+    });
+    component.resetFilters = {
+      data: mockChartData,
+      filters: mockFilters,
+      reset: false,
+    };
+    expect(component.filtersFormGroup.value).toEqual(mockFilters);
+    expect(component.selectedFilters).toEqual(mockFilters);
+  });
+
+
 });

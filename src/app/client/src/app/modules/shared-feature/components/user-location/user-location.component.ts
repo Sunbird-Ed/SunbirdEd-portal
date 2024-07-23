@@ -1,3 +1,5 @@
+// This component is not getting used
+
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild, OnDestroy, AfterViewInit} from '@angular/core';
 import {ResourceService, ToasterService, NavigationHelperService} from '@sunbird/shared';
 import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';

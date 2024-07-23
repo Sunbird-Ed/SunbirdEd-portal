@@ -1,5 +1,5 @@
 <div class="sb-autocomp-dropdown">
-  <mat-form-field class="sb-autocomp-dropdown__formfield">
+  <mat-form-field class="sb-mat__dropdown w-100">
     <input matInput (focus)="DisplayDropdown()" readonly name="selectedDpdwnInput" 
       [value]="_selectedDpdwnInput ? _selectedDpdwnInput : ''" />
   </mat-form-field>
@@ -7,7 +7,7 @@
     <input matInput #autocompleteInput placeholder="Search" name="search"/>
     <ul>
       <li *ngFor="let listItem of dropdownList | autocomplete: {filterKey: autocompleteInput.value}">
-        <mat-checkbox class="sb-mat__checkbox sb-mat__checkbox--primary" [checked]="isChecked(listItem)" (change)="DropdownValueSelected(listItem)">{{ listItem }}
+        <mat-checkbox color="primary" class="sb-mat__checkbox sb-mat__checkbox--primary" [checked]="isChecked(listItem)" (change)="DropdownValueSelected(listItem)">{{ listItem }}
         </mat-checkbox>
       </li>
     </ul>

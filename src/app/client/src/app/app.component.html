@@ -81,9 +81,9 @@
     </app-onboarding-popup>
 
     <!-- popup disabled  -->
-    <div *ngIf="loadPopUps && isPopupEnabled">
+    <div *ngIf="loadPopUps && isOnboardingEnabled">
       <!-- 2nd popup BMGS  -->
-      <app-modal-wrapper #frameWorkPopUp *ngIf="showFrameWorkPopUp"
+      <app-modal-wrapper #frameWorkPopUp *ngIf="showFrameWorkPopUp && isFWSelectionEnabled"
         [config]="{disableClose: true, panelClass: ['overflow-visible', 'material-modal'], autoFocus: false}">
         <ng-template sbModalContent let-data>
           <app-popup [dialogProps]="data" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit"
@@ -128,21 +128,19 @@
 <app-footer [layoutConfiguration]="layoutConfiguration" *ngIf="!hideHeaderNFooter"></app-footer>
 
 <app-modal-wrapper *ngIf="sessionExpiryInterceptor.sessionExpired"
-  [config]="{disableClose: true, size: 'small', panelClass: 'material-modal'}">
+  [config]="{disableClose: true, size: 'small', panelClass: ['material-modal', 'material-modal--small']}">
   <ng-template sbModalContent let-data>
-    <div class="sb-mat__modal sb-mat__modal--small">
+    <div class="sb-mat__modal">
 
       <div mat-dialog-title>
         <div class="title">{{resourceService?.frmelmnts?.lbl?.sesnexrd}}</div>
       </div>
-      <mat-dialog-content>
-        <div class="sb-mat__modal__content d-flex flex-ai-center text-center flex-jc-center p-24">
-          <p>
-            {{resourceService?.frmelmnts?.lbl?.plslgn |
-            interpolate:'{instance}': instance }}
-          </p>
-        </div>
-      </mat-dialog-content>
+      <div class="sb-mat__modal__content d-flex flex-ai-center text-center flex-jc-center p-24" mat-dialog-content>
+        <p>
+          {{resourceService?.frmelmnts?.lbl?.plslgn |
+          interpolate:'{instance}': instance }}
+        </p>
+      </div>
       <mat-dialog-actions class="sb-mat__modal__actions">
         <button type="button" (click)="handleLogin()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-primary">
           {{ resourceService?.frmelmnts?.btn?.login }}

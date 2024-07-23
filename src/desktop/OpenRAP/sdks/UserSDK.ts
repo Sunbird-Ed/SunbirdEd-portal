@@ -1,6 +1,6 @@
 import * as _ from "lodash";
 import { Inject, Singleton } from "typescript-ioc";
-import uuid from "uuid/v4";
+import { v4 as uuid } from 'uuid';
 import { ILoggedInUser } from '../interfaces/IUser';
 import { IFramework, IUser } from "./../interfaces";
 import { DataBaseSDK } from "./DataBaseSDK";

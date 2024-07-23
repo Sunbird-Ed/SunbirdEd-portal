@@ -10,8 +10,11 @@ describe('OtpService', () => {
     urlConFig: {
       URLS: {
         OTP: {
-          GENERATE: 'otp/v1/generate',
-          VERIFY: 'otp/v1/verify',
+          GENERATE: 'otp/v2/generate',
+          VERIFY: 'otp/v2/verify',
+          ANONYMOUS:{
+            GENERATE_USERDELETE:'anonymous/delete/otp/v2/generate'
+          }
         }
       }
     }
@@ -65,6 +68,42 @@ describe('OtpService', () => {
       });
       // act
       otpService.generateOTP(data).subscribe(() => {
+      });
+      expect(otpService['learnerService'].post).toHaveBeenCalled();
+    });
+  });
+
+
+  describe('should call the anonymous generate otp method with data object', () => {
+    const data = {
+      userId: '874ed8a5-782e-4f6c-8f36-e0288455901e'
+    }
+    it('should return otp for a user', (done) => {
+      jest.spyOn(otpService['learnerService'], 'post').mockReturnValue(of({
+        id: 'id',
+        params: {
+          resmsgid: '',
+          status: 'staus'
+        },
+        responseCode: 'OK',
+        result: {},
+        ts: '',
+        ver: ''
+      }));
+      // act
+      otpService.generateAnonymousOTP(data).subscribe(() => {
+        done();
+      });
+      expect(otpService['learnerService'].post).toHaveBeenCalled();
+    });
+
+    it('should call the generate anonymous otp method with data object with error', () => {
+      // arrange
+      jest.spyOn(otpService['learnerService'], 'post').mockImplementation(() => {
+        return throwError({ error: {} });
+      });
+      // act
+      otpService.generateAnonymousOTP(data).subscribe(() => {
       });
       expect(otpService['learnerService'].post).toHaveBeenCalled();
     });

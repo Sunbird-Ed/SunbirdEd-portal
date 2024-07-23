@@ -2,6 +2,7 @@ import { Component,OnInit,ViewChild,Input } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ResourceService } from '../../services/index';
 import { BrowserCompatibilityComponent } from './browser-compatibility.component';
+import { of } from 'rxjs';
 
 describe('BrowserCompatibilityComponent', () => {
     let component: BrowserCompatibilityComponent;
@@ -43,4 +44,22 @@ describe('BrowserCompatibilityComponent', () => {
         component.modalHandler();
         expect(component.browserCompatible).toBe(true);
     });
+
+    it('should initialize on ngOninit',()=>{
+       const mockDeviceInfo = {browser: 'chrome'};
+       jest.spyOn(component['_deviceDetectorService'] as any,'getDeviceInfo').mockReturnValue(mockDeviceInfo);
+       jest.spyOn(component,'showCompatibilityModal');
+       component.ngOnInit();
+       expect(component.showCompatibilityModal).toHaveBeenCalled();
+    });
+
+    it('should call modalHandler on showCompatibilityModal',()=>{
+        const mockDeviceInfo = {browser: 'firefox'};
+        component.showModal= true;
+        jest.spyOn(component['_deviceDetectorService'] as any,'getDeviceInfo').mockReturnValue(mockDeviceInfo);
+        jest.spyOn(component,'modalHandler');
+        component.showCompatibilityModal();
+        expect(component.deviceInfo).toEqual(mockDeviceInfo);
+        expect(component.modalHandler).toHaveBeenCalled();
+    })
 });

@@ -34,29 +34,33 @@
 
         <div class="sb-prominent-filter-field" *ngFor="let field of filtersDetails">
           <div *ngIf="(field.inputType==='select' || field.inputType === 'multi-select') && field.code !== 'channel'">
-            <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
+            <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+              <mat-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
+              defaultSelectionText={{field.label}} zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} 
+              class="selection" [(ngModel)]="formInputData[field.code]" [options]="options"
+              [hasLabels]="false" *ngIf="field.code !== frameworkCategoriesList[2]" multiple>
+                <mat-option *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option.name">{{option.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+              <mat-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
               defaultSelectionText={{field.label}} zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
-              class="ui selection dropdown multiple" [(ngModel)]="formInputData[field.code]" [options]="options"
-              [hasLabels]="false" #multiSelect *ngIf="field.code !== 'gradeLevel'">
-              <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option.name">
-              </sui-select-option>
-            </sui-multi-select>
-            <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
-              defaultSelectionText={{field.label}} zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
-              class="ui selection dropdown multiple" [(ngModel)]="formInputData[field.code]" [options]="options"
-              [hasLabels]="false" #multiSelect *ngIf="field.code === 'gradeLevel'">
-              <sui-select-option *ngFor="let option of field.range" [value]="option.name"></sui-select-option>
-            </sui-multi-select>
+              class="selection" [(ngModel)]="formInputData[field.code]" [options]="options"
+              [hasLabels]="false" *ngIf="field.code === frameworkCategoriesList[2]" multiple>
+                <mat-option *ngFor="let option of field.range" [value]="option.name">{{option.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
           </div>
           <div *ngIf="field.code === 'channel'">
-            <sui-multi-select (ngModelChange)="modelChange($event);setFilterInteractData()" id={{field.code}}
+            <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+              <mat-select (ngModelChange)="modelChange($event);setFilterInteractData()" id={{field.code}}
               name={{field.code}} defaultSelectionText={{field.name}}
-              zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} class="ui selection dropdown multiple"
+              zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} class="selection"
               [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false" labelField="name"
-              valueField="identifier" #multiSelect>
-              <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option">
-              </sui-select-option>
-            </sui-multi-select>
+              valueField="identifier" multiple>
+                <mat-option *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option">{{option}}</mat-option>
+              </mat-select>
+            </mat-form-field>
           </div>
           <div *ngIf="field.code==='topic'">
             <app-topic-picker [selectedTopics]="formInputData[field.code]" [formTopic]="field"
@@ -145,32 +149,36 @@
               <div class="" *ngFor="let field of filtersDetails">
                 <div
                   *ngIf="(field.inputType==='select' || field.inputType === 'multi-select') && field.code !== 'channel'">
-                  <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
+                  <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+                    <mat-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
                     defaultSelectionText={{field.label}} zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
                     class="ui selection dropdown multiple selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg w-100 mb-16"
                     [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false" #multiSelect
-                    *ngIf="field.code !== 'gradeLevel'">
-                    <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option.name">
-                    </sui-select-option>
-                  </sui-multi-select>
-                  <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
+                    *ngIf="field.code !== frameworkCategoriesList[2]" multiple>
+                      <mat-option *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option.name">{{option.name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+                    <mat-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
                     defaultSelectionText={{field.label}} zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
                     class="ui selection dropdown multiple selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg w-100 mb-16"
-                    [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false" #multiSelect
-                    *ngIf="field.code === 'gradeLevel'">
-                    <sui-select-option *ngFor="let option of field.range" [value]="option.name"></sui-select-option>
-                  </sui-multi-select>
+                    [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false"
+                    *ngIf="field.code === frameworkCategoriesList[2]" multiple>
+                      <mat-option *ngFor="let option of field.range" [value]="option.name">{{option.name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
                 </div>
                 <div *ngIf="field.code === 'channel'">
-                  <sui-multi-select (ngModelChange)="modelChange($event);setFilterInteractData()" id={{field.code}}
+                  <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+                    <mat-select (ngModelChange)="modelChange($event);setFilterInteractData()" id={{field.code}}
                     name={{field.code}} defaultSelectionText={{field.name}}
                     zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
                     class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg w-100 mb-16"
                     [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false" labelField="name"
-                    valueField="identifier" #multiSelect>
-                    <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option">
-                    </sui-select-option>
-                  </sui-multi-select>
+                    valueField="identifier" multiple>
+                      <mat-option *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option">{{option}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
                 </div>
                 <div *ngIf="field.code==='topic'">
                   <app-topic-picker [selectedTopics]="formInputData[field.code]" [formTopic]="field"

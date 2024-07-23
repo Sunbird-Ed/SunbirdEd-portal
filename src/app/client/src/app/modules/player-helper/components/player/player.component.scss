@@ -124,5 +124,14 @@
   &__text{
       max-width: calculateRem(300px);   
   }
-}
 
+}
+.custom-web-player {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+.contentViewerIframeShadow.player-fullscreen .custom-web-player{
+  height: calc(100vh - 4rem);
+}

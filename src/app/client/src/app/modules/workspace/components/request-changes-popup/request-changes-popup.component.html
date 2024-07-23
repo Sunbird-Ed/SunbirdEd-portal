@@ -1,23 +1,19 @@
-<sui-modal 
+<app-modal-wrapper [config]="{disableClose: true, size: 'small', panelClass: 'material-modal'}"
     [mustScroll]="true" 
     [isClosable]="false"
     [transitionDuration]="0"
-    [size]="'normal'"
-    class="sb-modal"
     appBodyScroll
     (dismissed)="redirect()" 
     #modal 
     *ngIf="showModal"
     >
-
-    <i class="icon close" (click)="modal.deny('denied')" tabindex="0"></i>
-    <!--Header-->
-    <div class="sb-modal-header">
-        {{resourceService.frmelmnts.btn.checkListRequestChanges}}
-    </div>
-    <!--/Header-->
+    <ng-template sbModalContent>
+    <div mat-dialog-title class="flex-jc-center">
+        <div class="title" tabindex="0"> {{resourceService.frmelmnts.btn.checkListRequestChanges}}</div>
+          <button aria-label="close dialog" mat-dialog-close class="close-btn" (click)="modal.deny('denied')"></button>
+      </div>
     <!--Content-->
-    <div class="sb-modal-content">
+    <mat-dialog-content>
         <div *ngIf="rejectCheckListData">
             <div class="ui small header">
                 <h4>{{rejectCheckListData.title}}</h4>
@@ -59,27 +55,18 @@
         <div *ngIf="showloader">
             <app-loader></app-loader>
         </div>
-    </div>
+    </mat-dialog-content>
     <!--/Content-->
 
     <!--Actions-->
-    <div class="sb-modal-actions">
-        <button 
-            class="sb-btn sb-btn-normal sb-btn-primary" 
-            type="button" 
-            [disabled]="isDisabled" 
-            tabindex="0" (click)="submitRequestChanges()"
-        >
+    <mat-dialog-actions class="sb-mat__modal__actions">
+        <button class="sb-btn sb-btn-normal sb-btn-primary" type="button" [disabled]="isDisabled" tabindex="0" (click)="submitRequestChanges()">
             {{resourceService.frmelmnts.btn.checkListRequestChanges}}
         </button>
-        <button 
-            class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" 
-            type="button" 
-            tabindex="0" (click)="redirect();modal.deny();"
-        >
+        <button class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" type="button" tabindex="0" (click)="redirect();modal.deny();">
             {{resourceService.frmelmnts.btn.checklistCancel}}
         </button>
-    </div>
+    </mat-dialog-actions>
     <!--/Actions-->
-
-</sui-modal>
+</ng-template>
+</app-modal-wrapper>

@@ -6,7 +6,7 @@ import Response from "../utils/response";
 import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
 import { EventManager } from "@project-sunbird/OpenRAP/managers/EventManager";
 import { Inject } from 'typescript-ioc';
-const uuidv1 = require('uuid/v1');
+import { v1 as uuidv1 } from 'uuid';
 
 export default class AuthController {
     private deviceId;

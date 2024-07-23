@@ -26,14 +26,16 @@
               <div class="ui segments">
                 <div class="ui segment">
                   <p>{{resourceService?.frmelmnts?.lbl?.chooseContentLocationDrive}}</p>
-                  <sui-select class="selection min-width-18" [(ngModel)]="selectedDrive"
-                    [placeholder]="resourceService?.frmelmnts?.lbl?.selectDrive" [options]="drives" #drivesOption
-                    labelField="label">
-                    <sui-select-option *ngFor="let drive of drivesOption?.filteredOptions" [value]="drive"
-                      [ngClass]="{disabled: drive?.isCurrentContentLocation}" appTelemetryInteract
-                      [telemetryInteractEdata]="getDriveSelectInteractEdata(drive)">
-                    </sui-select-option>
-                  </sui-select>
+                  <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+                    <mat-label>{{resourceService?.frmelmnts?.lbl?.selectDrive}}</mat-label>
+                    <mat-select [(ngModel)]="selectedDrive" (ngModelChange)="onAfterCourseChange($event)" [options]="drives" class="selection min-width-18"
+                    labelField="label" #drivesOption>
+                      <mat-option class="mat-dropdown__options" [disabled]="drive?.isCurrentContentLocation" role="option" [ngClass]="{'active': course.identifier === identifier }"
+                      *ngFor="let drive of drivesOption?.filteredOptions" [value]="drive" appTelemetryInteract
+                      [telemetryInteractEdata]="getDriveSelectInteractEdata(drive)"
+                      attr.aria-label="{{drive}}">{{drive}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
                 </div>
               </div>
             </div>

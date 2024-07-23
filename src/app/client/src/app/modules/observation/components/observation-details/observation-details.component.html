@@ -72,7 +72,7 @@
                 <div content class="pt-0 pb-8">
                   <div *ngFor="let evidance of submission?.evidencesStatus"
                     class="evidences-list cc-player__content-header sb-g">
-                    <div class="sb-g-col-xs-12 sb-g-col-sm-12 sb-g-col-md-8 sb-g-col-lg-9">
+                    <div class="sb-g-col-xs-12 sb-g-col-sm-12 sb-g-col-md-8 sb-g-col-lg-9 flex-as-center">
                       <div class="content-header__title font-weight-bold ellipsis text-left">
                         <div class="white-space-wrap">{{submission.title}} </div>
                         <small *ngIf="evidance.status == 'notstarted'" class="txt-transform">{{resourceService?.frmelmnts.lbl.dashboardsortbystatus}} :
@@ -81,30 +81,28 @@
                           {{evidance.status}}</small>
                       </div>
                     </div>
-                    <div class="certified-course__btn ng-star-inserted sb-g-col-xs-12 sb-g-col-sm-12 sb-g-col-md-4 sb-g-col-lg-3 center-align">
+                    <div class="certified-course__btn ng-star-inserted sb-g-col-xs-12 sb-g-col-sm-12 sb-g-col-md-4 sb-g-col-lg-3 d-flex center-align">
                       <button *ngIf="evidance?.status === 'notstarted'"
                         tabindex="0" (click)="open(submission.submissionNumber,evidance)"
-                        class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.btn?.start}}
+                        class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn flex-as-center">{{resourceService.frmelmnts?.btn?.start}}
                       </button>
                       <button *ngIf="evidance?.status === 'draft'" tabindex="0" (click)="open(submission.submissionNumber,evidance)"
-                        class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.lbl?.continue }}
+                        class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn flex-as-center">{{resourceService.frmelmnts?.lbl?.continue }}
                       </button>
                       <button *ngIf="evidance?.status === 'completed' || evidence?.status === 'ratingPending'"
                         tabindex="0" (click)="open(submission.submissionNumber,evidance)"
-                        class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.lbl?.view }}
+                        class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn flex-as-center">{{resourceService.frmelmnts?.lbl?.view }}
                       </button>
-                      <div class="ui dropdown" suiDropdown *ngIf="entities?.allowMultipleAssessemts"
-                        tabindex="0" (click)="$event.stopPropagation()">
-                        <i class="ellipsis vertical icon large"
-                          *ngIf="submission.status != 'completed' && submission.status !='ratingPending'"></i>
-                        <div class="menu" suiDropdownMenu>
-                          <div class="item" tabindex="0" (click)="dropDownAction(submission,action.type)"
-                            *ngFor="let action of actions">
-                            {{action.name}}
+
+                      <button mat-icon-button [matMenuTriggerFor]="menu" tabindex="0" (click)="$event.stopPropagation()">
+                        <mat-icon *ngIf="submission.status != 'completed' && submission.status !='ratingPending'">more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="dropDownAction(submission,action.type)" *ngFor="let action of actions">
+                            <span>{{action.name}}</span>
                             <span class="description"><i class="{{action.icon}}"></i></span>
-                          </div>
-                        </div>
-                      </div>
+                        </button>
+                      </mat-menu>
                     </div>
                   </div>
                 </div>

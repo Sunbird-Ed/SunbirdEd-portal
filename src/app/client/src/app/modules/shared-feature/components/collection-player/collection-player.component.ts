@@ -18,6 +18,7 @@ import { PublicPlayerService } from '@sunbird/public';
 import { TocCardType, PlatformType } from '@project-sunbird/common-consumption';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 import { ContentManagerService } from '../../../public/module/offline/services';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 @Component({
   selector: 'app-collection-player',
@@ -103,6 +104,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   disableDelete: Boolean = false;
   isAvailableLocally = false;
   noContentMessage = '';
+  frameworkCategoriesList;
+  public transformcollectionTreeNodes;
 
   constructor(public route: ActivatedRoute, public playerService: PlayerService,
     private windowScrollService: WindowScrollService, public router: Router, public navigationHelperService: NavigationHelperService,
@@ -115,7 +118,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     public publicPlayerService: PublicPlayerService, public coursesService: CoursesService,
     private utilService: UtilService, public contentManagerService: ContentManagerService,
     public connectionService: ConnectionService, private telemetryService: TelemetryService,
-    private offlineCardService: OfflineCardService) {
+    private offlineCardService: OfflineCardService, public cslFrameworkService: CslFrameworkService) {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
     this.playerOption = { showContentRating: true };
@@ -123,6 +126,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   ngOnInit() {
+    this.frameworkCategoriesList = this.cslFrameworkService.getGlobalFilterCategoriesObject();
     this.setMimeTypeFilters();
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.isDesktopApp = this.utilService.isDesktopApp;
@@ -216,10 +220,10 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     this.playerConfig = this.getPlayerConfig(id).pipe(map((content:any) => {
 
       if(this.activeContent.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
-        const contentDetails = {contentId: id, contentData: content.questionSet };
+        const contentDetails = { contentId: id, contentData: content.questionset || content.questionSet };
         content = this.playerServiceReference.getConfig(contentDetails);
         this.publicPlayerService.getQuestionSetRead(id).subscribe((data: any) => {
-          content['metadata']['instructions'] = _.get(data, 'result.questionset.instructions');
+          _.merge(content.metadata, this.publicPlayerService.getProperties(data.questionset, this.configService.editorConfig.QUESTIONSET_EDITOR.additionalProperties))
         });
       }
 
@@ -385,6 +389,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       }))
       .subscribe((data) => {
         this.collectionTreeNodes = data;
+        this.transformcollectionTreeNodes = this.cslFrameworkService.transformContentDataFwBased(this.frameworkCategoriesList,this.collectionTreeNodes);
         this.showLoader = false;
         this.isAvailableLocally = Boolean(_.get(data, 'data.desktopAppMetadata.isAvailable'));
         if (this.isDesktopApp && this.isAvailableLocally) {

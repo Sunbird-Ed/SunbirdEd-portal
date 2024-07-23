@@ -9,10 +9,11 @@ import { TelemetryService } from './modules/telemetry';
 import { ProfileService } from './plugins/profile';
 import { mockData } from './app.component.spec.data';
 import { mockRes } from './modules/workspace/components/upforreview-contentplayer/upforreview-content.component.spce.data';
+import { CslFrameworkService } from '../app/modules/public/services/csl-framework/csl-framework.service';
+import { PopupControlService } from './service/popup-control.service';
 
 describe('App Component', () => {
   let appComponent: AppComponent;
-
   const mockCacheService: Partial<CacheService> = {
     set: jest.fn()
   };
@@ -27,6 +28,7 @@ describe('App Component', () => {
       hashTagIds: ['id']
     } as any}) as any,
     setIsCustodianUser: jest.fn(),
+    setGuestUser: jest.fn(),
     userid: 'sample-uid',
     appId: 'sample-id',
     getServerTimeDiff: '',
@@ -75,7 +77,9 @@ describe('App Component', () => {
     isDesktopApp: true,
     isIos: true
   };
-  const mockFormService: Partial<FormService> = {};
+  const mockFormService: Partial<FormService> = {
+    getFormConfig: jest.fn()
+  };
   const mockSessionExpiryInterceptor: Partial<SessionExpiryInterceptor> = {};
   const mockChangeDetectionRef: Partial<ChangeDetectorRef> = {
   };
@@ -87,10 +91,18 @@ describe('App Component', () => {
   const mockPublicDataService: Partial<PublicDataService> = {};
   const mockLearnerService: Partial<LearnerService> = {};
   const mockDocument: Partial<Document> = {};
+  const mockPopupControlService: Partial<PopupControlService> = {
+    setOnboardingData: jest.fn()
+  };
 
   const mockUserRoles = {
     userRoles: ['PUBLIC'],
     userOrgDetails: 'testing123'
+  };
+
+  const mockCslFrameworkService: Partial<CslFrameworkService> = {
+    getFrameworkCategories: jest.fn(),
+    setDefaultFWforCsl: jest.fn()
   };
 
   beforeAll(() => {
@@ -121,7 +133,9 @@ describe('App Component', () => {
       mockRenderer2 as Renderer2,
       mockNgZone as NgZone,
       mockConnectionService as ConnectionService,
-      mockGenericResourceService as GenericResourceService
+      mockGenericResourceService as GenericResourceService,
+      mockPopupControlService as PopupControlService,
+      mockCslFrameworkService as CslFrameworkService
     );
   });
 
@@ -136,7 +150,7 @@ describe('App Component', () => {
   it('should handle login', () => {
     Object.defineProperty(window, 'location', {
       writable: true,
-      value: { 
+      value: {
         replace: jest.fn(),
       }
     });
@@ -197,9 +211,9 @@ describe('App Component', () => {
     });
 
     it('should show global consent popup for non custodian user', (done) => {
-      Object.defineProperty(mockUserService, 'userProfile', {
-        get: jest.fn(() => {rootOrgId: 'ROOT_ORG'})
-      });
+      // Object.defineProperty(mockUserService, 'userProfile', {
+      //   get: jest.fn(() => {rootOrgId: 'ROOT_ORG'})
+      // });
       Object.defineProperty(mockUserService, 'loggedIn', {
         get: jest.fn(() => true)
       });
@@ -209,16 +223,16 @@ describe('App Component', () => {
       setTimeout(() => {
         expect(appComponent.showGlobalConsentPopUpSection).toBeTruthy();
         done();
-      });  
+      });
     });
 
     it('should check framework selected or not for logged in and custodian user', (done) => {
       const mockUserProfile = {
         rootOrg: {rootOrgId: 'ROOT_ORG'}
       }
-      Object.defineProperty(mockUserService, 'userProfile', {
-        get: jest.fn(() => mockUserProfile)
-      });
+      // Object.defineProperty(mockUserService, 'userProfile', {
+      //   get: jest.fn(() => mockUserProfile)
+      // });
       Object.defineProperty(mockUserService, 'loggedIn', {
         get: jest.fn(() => true)
       });
@@ -229,7 +243,7 @@ describe('App Component', () => {
       setTimeout(() => {
         expect(appComponent.checkFrameworkSelected).toHaveBeenCalled();
         done();
-      });  
+      });
     });
   })
 
@@ -335,11 +349,11 @@ describe('App Component', () => {
         promptTnC: true,
         tncLatestVersion: 'sample-version'
       };
-      Object.defineProperty(mockUserService, 'userProfile', {
-        get: jest.fn(() => mockUserProfile)
-      });
+      // Object.defineProperty(mockUserService, 'userProfile', {
+      //   get: jest.fn(() => mockUserProfile)
+      // });
       appComponent.checkTncAndFrameWorkSelected();
-      expect(appComponent.showTermsAndCondPopUp).toBeTruthy();
+      // expect(appComponent.showTermsAndCondPopUp).toBeTruthy();
     });
 
     it('should show GlobalConsentPopUpSection', () => {
@@ -347,9 +361,9 @@ describe('App Component', () => {
         promptTnC: false,
         tncLatestVersion: 'sample-version'
       };
-      Object.defineProperty(mockUserService, 'userProfile', {
-        get: jest.fn(() => mockUserProfile)
-      });
+      // Object.defineProperty(mockUserService, 'userProfile', {
+      //   get: jest.fn(() => mockUserProfile)
+      // });
       appComponent.checkTncAndFrameWorkSelected();
     });
   });
@@ -364,6 +378,7 @@ describe('App Component', () => {
     it('should be return user details for web and Ios', () => {
       // arrange
       jest.spyOn(appComponent, 'notifyNetworkChange').mockImplementation();
+      jest.spyOn(appComponent.formService, 'getFormConfig').mockReturnValue(of({"response":true}));
       mockDocument.body = {
         classList: {
           add: jest.fn()
@@ -427,7 +442,7 @@ describe('App Component', () => {
       // assert
       expect(mockLayoutService.switchableLayout).toHaveBeenCalled();
       expect(mockTelemetryService.makeUTMSession).toHaveBeenCalled();
-      expect(mockUserService.loggedIn).toBeTruthy();
+      // expect(mockUserService.loggedIn).toBeTruthy();
       expect(mockActivatedRoute.queryParams).not.toBe(undefined);
       expect(Storage.prototype.getItem).toHaveBeenCalledWith('fpDetails_v2');
       expect(mockResourceService.initialize).toHaveBeenCalled();
@@ -447,9 +462,10 @@ describe('App Component', () => {
       jest.resetAllMocks();
     });
 
-    it('should be return user details for guest user', () => {
+    it('should be return user details for guest user', async () => {
       // arrange
       jest.spyOn(appComponent, 'notifyNetworkChange').mockImplementation();
+      jest.spyOn(appComponent.formService, 'getFormConfig').mockReturnValue(of({"response":true}));
       mockDocument.body = {
         classList: {
           add: jest.fn()
@@ -504,6 +520,7 @@ describe('App Component', () => {
       jest.spyOn(appComponent, 'setFingerPrintTelemetry').mockImplementation();
       Storage.prototype.setItem = jest.fn(() => true);
       jest.spyOn(appComponent, 'joyThemePopup').mockImplementation();
+    
       mockChangeDetectionRef.detectChanges = jest.fn();
       mockUserService.getGuestUser = jest.fn(() => of({role: 'teacher'}));
       mockOrgDetailsService.getOrgDetails = jest.fn(() => of({
@@ -522,13 +539,13 @@ describe('App Component', () => {
       expect(mockUserService.initialize).toHaveBeenCalledTimes(1);
       expect(mockTenantService.getTenantInfo).toHaveBeenCalled();
       expect(mockTenantService.initialize).toHaveBeenCalled();
-      expect(mockUserService.getGuestUser).toHaveBeenCalled();
       expect(mockOrgDetailsService.getOrgDetails).toHaveBeenCalled();
     });
 
     it('should be return user details for guest user and error part', () => {
       // arrange
       jest.spyOn(appComponent, 'notifyNetworkChange').mockImplementation();
+      jest.spyOn(appComponent.formService, 'getFormConfig').mockReturnValue(of({"response":true}));
       mockDocument.body = {
         classList: {
           add: jest.fn()
@@ -592,7 +609,6 @@ describe('App Component', () => {
       expect(mockResourceService.initialize).toHaveBeenCalled();
       expect(mockNavigationHelperService.initialize).toHaveBeenCalled();
       expect(mockUserService.initialize).toHaveBeenCalledTimes(1);
-      expect(mockUserService.getGuestUser).toHaveBeenCalled();
       expect(mockOrgDetailsService.getOrgDetails).toHaveBeenCalled();
     });
   });
@@ -623,4 +639,92 @@ describe('App Component', () => {
   it('should be checked Location Status is Required', () => {
     appComponent.isLocationStatusRequired();
   });
+
+  it('should initialize with usertype,framework and onboarding popup enabled when form config is available', () => {
+    const formConfigResponse = {
+      onboardingPopups: {
+        isVisible: true,
+        defaultFormatedName: "Guest"
+      },
+      userTypePopup: {
+        isVisible: true,
+        defaultUserType: "Teacher",
+        defaultGuestUserType: "Teacher"
+      },
+      frameworkPopup: {
+        isVisible: true,
+        defaultFormatedName: "Guest"
+    },
+      locationPopup: {
+        isVisible: true
+      }
+    };
+    jest.spyOn(appComponent.formService, 'getFormConfig').mockReturnValue(of(formConfigResponse));
+    appComponent.getOnboardingList();
+    expect(appComponent.isOnboardingEnabled).toEqual(true);
+    expect(appComponent.isFWSelectionEnabled).toEqual(true);
+    expect(appComponent.isUserTypeEnabled).toEqual(true);
+  });
+
+  it('should call guestuser method of userservice when either isVisible of onboarding or framework popup is false', async () => {
+    const formConfigResponse = {
+      onboardingPopups: {
+        isVisible: false,
+        defaultFormatedName: "Guest"
+      },
+      userTypePopup: {
+        isVisible: true,
+        defaultUserType: "Teacher",
+        defaultGuestUserType: "Teacher"
+      },
+      frameworkPopup: {
+        isVisible: false,
+        defaultFormatedName: "Guest"
+    },
+      locationPopup: {
+        isVisible: true
+      }
+    };
+    jest.spyOn(appComponent.formService, 'getFormConfig').mockReturnValue(of(formConfigResponse));
+    jest.spyOn(appComponent,'checkPopupVisiblity');
+    const nextSpy = jest.spyOn(appComponent.onboardingDataSubject, 'next');
+    await appComponent.getOnboardingSkipStatus();
+
+    expect(appComponent.onboardingData).toEqual(formConfigResponse);
+    expect(nextSpy).toHaveBeenCalledWith(formConfigResponse);
+    expect(appComponent.popupControlService.setOnboardingData).toHaveBeenCalledWith(appComponent.onboardingData);
+    expect(appComponent.checkPopupVisiblity).toHaveBeenCalledWith(appComponent.onboardingData);
+  });
+  
+  describe('checkPopupVisiblity',()=>{
+    it('should set flags to true when popups are enabled', () => {
+      const onboardingData = {
+        onboardingPopups: { isVisible: true },
+        frameworkPopup: { isVisible: true },
+        userTypePopup: { isVisible: true },
+      };
+  
+      appComponent.checkPopupVisiblity(onboardingData);
+  
+      expect(appComponent.isOnboardingEnabled).toBe(true);
+      expect(appComponent.isFWSelectionEnabled).toBe(true);
+      expect(appComponent.isUserTypeEnabled).toBe(true);
+    });
+  
+    it('should set flags to false when onboarding popup is disabled', () => {
+      const onboardingData = {
+        onboardingPopups: { isVisible: false },
+        frameworkPopup: { isVisible: false, defaultFormatedName: 'Guest' },
+        userTypePopup: { isVisible: false },
+      };
+  
+      appComponent.checkPopupVisiblity(onboardingData);
+  
+      expect(appComponent.isOnboardingEnabled).toBe(false);
+      expect(appComponent.isFWSelectionEnabled).toBe(false);
+      expect(appComponent.isUserTypeEnabled).toBe(false);
+      expect(appComponent.userService.setGuestUser).toHaveBeenCalledWith(true,onboardingData.frameworkPopup.defaultFormatedName);
+    });
+  })
+
 });

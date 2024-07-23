@@ -9,7 +9,7 @@ import { Observable, throwError, of, forkJoin, Subject, merge, combineLatest } f
 import { mergeMap, switchMap, map, retry, catchError, tap, pluck, first } from 'rxjs/operators';
 import { DataChartComponent } from '../data-chart/data-chart.component';
 import html2canvas from 'html2canvas';
-import * as jspdf from 'jspdf';
+import {jsPDF} from 'jspdf';
 import { ISummaryObject } from '../../interfaces';
 import { Location } from '@angular/common';
 
@@ -262,11 +262,11 @@ export class ReportComponent implements OnInit {
       scale: 2
     }).then(canvas => {
       const imageURL = canvas.toDataURL('image/jpeg');
-      const pdf = new jspdf('p', 'px', 'a4');
+      const pdf = new jsPDF('p', 'px', 'a4');
       const pageWidth = pdf.internal.pageSize.getWidth();
 
       const imageHeight = (canvas.height * pageWidth) / canvas.width;
-      pdf.internal.pageSize.setHeight(imageHeight);
+      pdf.internal.pageSize.height = imageHeight;
       pdf.addImage(imageURL, 'JPEG', 10, 8, pageWidth - 28, imageHeight - 24);
       pdf.save('report.pdf');
       this.toggleHtmlVisibilty(false);

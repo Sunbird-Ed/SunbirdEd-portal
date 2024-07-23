@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { ContentSearchService } from './../../services';
 import * as _ from 'lodash-es';
+import { CslFrameworkService } from  '../../../public/services/csl-framework/csl-framework.service';
 
 describe('SearchFilterComponent', () => {
     let component: SearchFilterComponent;
@@ -16,7 +17,7 @@ describe('SearchFilterComponent', () => {
             medium: 'se_mediums',
             gradeLevel: 'se_gradeLevels',
             board: 'se_boards'
-        },
+        } as any,
         fetchFilter:jest.fn()
     };
     const mockFormService: Partial<FormService> = {};
@@ -30,6 +31,7 @@ describe('SearchFilterComponent', () => {
     };
 
     const mockChangeDetectionRef: Partial<ChangeDetectorRef> = {
+        detectChanges: jest.fn(),
     };
     const mockRouter: Partial<Router> = {
         events: of({ id: 1, url: 'sample-url' }) as any,
@@ -47,6 +49,12 @@ describe('SearchFilterComponent', () => {
     };
     const mockUtilService: Partial<UtilService> = {
     };
+    const mockCslFrameworkService: Partial<CslFrameworkService> = {
+        getFrameworkCategories: jest.fn(),
+        setDefaultFWforCsl: jest.fn(),
+        getAlternativeCodeForFilter: jest.fn(),
+        getAllFwCatName: jest.fn(),
+    };
 
     beforeAll(() => {
         component = new SearchFilterComponent(
@@ -58,7 +66,8 @@ describe('SearchFilterComponent', () => {
             mockLayoutService as LayoutService,
             mockFormService as FormService,
             mockCacheService as CacheService,
-            mockUtilService as UtilService
+            mockUtilService as UtilService,
+            mockCslFrameworkService as CslFrameworkService
         );
     });
 
@@ -93,6 +102,17 @@ describe('SearchFilterComponent', () => {
         expect(res).toBeTruthy();
     });
 
+    describe('hardRefreshFilter', ()=> {
+        it('should call refresh true', () => {
+            //@ts-ignore
+            component.refresh = false;
+            jest.spyOn(component['cdr'], 'detectChanges')
+            component['hardRefreshFilter']();
+            expect(component['cdr'].detectChanges).toBeCalled();
+            expect(component.refresh).toBe(true)
+        });
+    });
+
     it('should call interactEdata', () => {
         component.selectedFilters = {
             board: ['sample-board'],
@@ -107,11 +127,13 @@ describe('SearchFilterComponent', () => {
             'id': 'reset-filter', 'type': 'click',
             'pageid': 'resource-search', 'extra': {
                 'filters': {
-                    board: ['AP Board'],
+                    board: [],
                     channel: [],
                     medium: [],
                     publisher: [],
-                    subject: ['subject-1'],
+                    undefined: [
+                        "AP Board",
+                    ],
                     selectedTab: 'textbook'
                 }
             }
@@ -129,21 +151,14 @@ describe('SearchFilterComponent', () => {
     });
 
     it('should call filterData', () => {
+        component.frameworkCategoriesList = ['mock-framework1','mock-framework2'];
+        component.globalFilterCategories = ['categories1','categories2'];
         const returnData = component.filterData;
-        expect(returnData).toEqual([
-            'medium',
-            'gradeLevel',
-            'board',
-            'channel',
-            'subject',
-            'audience',
-            'publisher',
-            'se_subjects',
-            'se_boards',
-            'se_gradeLevels',
-            'se_mediums'
+        expect(returnData).toEqual(["mock-framework1", "mock-framework2","categories1",
+            "categories2", "channel","audience", "publisher",
         ]);
     });
+
 
     it('should call getChannelId', () => {
         const returnData = component.getChannelId(0);
@@ -157,7 +172,7 @@ describe('SearchFilterComponent', () => {
         component['checkForWindowSize']();
         expect(component.isOpen).toBeFalsy();
     });
-    
+
 
     describe('ngOnInit', () => {
         it('should invoked ngOnInit for reset filters', () => {
@@ -183,10 +198,22 @@ describe('SearchFilterComponent', () => {
                 audience: ['sample-audience'],
                 publisher: 'publisher'
             };
+            const getFilterSpy = jest.spyOn(component as any,'getFilterForm$' as any);
+            const checkWindowSpy = jest.spyOn(component as any,'checkForWindowSize' as any);
+            const boardChangeSpy =  jest.spyOn(component as any,'boardChangeHandler' as any);
+            const fetchSelectedFilterSpy = jest.spyOn(component as any,'fetchSelectedFilterOptions' as any);
+            const handleFilterSpy = jest.spyOn(component as any,'handleFilterChange' as any);
+            const getFacetSpy = jest.spyOn(component as any,'getFacets' as any);
             component.ngOnInit();
-            expect(mockContentSearchService.fetchFilter).toHaveBeenCalled();
-            expect(mockFormService.getFormConfig).toHaveBeenCalled();
-            expect(mockChangeDetectionRef.detectChanges).toHaveBeenCalled();
+            expect(component['cslFrameworkService'].getFrameworkCategories).toHaveBeenCalled();
+            expect(component['cslFrameworkService'].getAlternativeCodeForFilter).toHaveBeenCalled();
+            expect(component['cslFrameworkService'].getAllFwCatName).toHaveBeenCalled();
+            expect(getFilterSpy).toHaveBeenCalled();
+            expect(checkWindowSpy).toHaveBeenCalled();
+            expect(boardChangeSpy).toHaveBeenCalled();
+            expect(fetchSelectedFilterSpy).toHaveBeenCalled();
+            expect(handleFilterSpy).toHaveBeenCalled();
+            expect(getFacetSpy).toHaveBeenCalled();
         });
 
         it('should return error for catch part', () => {
@@ -194,9 +221,14 @@ describe('SearchFilterComponent', () => {
             mockFormService.getFormConfig = jest.fn(() => throwError([{ visibility: { data: {} } }]));
             component.facets$ = of({ id: 'sample-id' }) as any;
             mockChangeDetectionRef.detectChanges = jest.fn();
+            const getFilterSpy = jest.spyOn(component as any,'getFilterForm$' as any);
+            const checkWindowSpy = jest.spyOn(component as any,'checkForWindowSize' as any);
             component.ngOnInit();
-            expect(mockContentSearchService.fetchFilter).toHaveBeenCalled();
-            expect(mockFormService.getFormConfig).toHaveBeenCalled();
+            expect(component['cslFrameworkService'].getFrameworkCategories).toHaveBeenCalled();
+            expect(component['cslFrameworkService'].getAlternativeCodeForFilter).toHaveBeenCalled();
+            expect(component['cslFrameworkService'].getAllFwCatName).toHaveBeenCalled();
+            expect(getFilterSpy).toHaveBeenCalled();
+            expect(checkWindowSpy).toHaveBeenCalled();
         });
     });
 
@@ -283,8 +315,132 @@ describe('SearchFilterComponent', () => {
 
     it('should call getFramework when no boardname is present', () => {
         let obj={}
-    //@ts-ignore
-     component.getFramework(obj);
-     expect(mockContentSearchService.fetchFilter).toHaveBeenCalled();
+        //@ts-ignore
+        component.getFramework(obj);
+        expect(mockContentSearchService.fetchFilter).toHaveBeenCalled();
     });
+
+    it('should fetch filters and emit filterChange event', () => {
+        const mockFilters = {  };
+        const mockAudienceTypeFilter = {  };
+        const queryParams = {
+            sampleBoard: ['board'],
+            sampleMedium: ['medium'],
+            gradeLevel: ['grade-1']
+        };
+        component['fetchAndFormatQueryParams'] = jest.fn(() => of(queryParams));
+        component['getFramework'] = jest.fn(() => of(mockFilters));
+        component['getAudienceTypeFormConfig'] = jest.fn(() => of(mockAudienceTypeFilter));
+        component['fetchFilters']().subscribe(() => {
+            expect(component.filterChange.emit).toHaveBeenCalledWith({
+                status: 'FETCHING'
+            });
+            expect(component['filters']).toEqual({ });
+        });
+        mockChangeDetectionRef.detectChanges();
+    });
+
+    it('should fetch selected filter options and perform necessary operations', () => {
+        const mockFilters = { };
+        jest.spyOn(component, 'fetchFilters' as any).mockReturnValue(of(mockFilters));
+        jest.spyOn(component, 'updateBoardList' as any).mockImplementation(() => {});
+        jest.spyOn(component, 'updateFiltersList' as any).mockImplementation(() => {});
+        jest.spyOn(component, 'emitFilterChangeEvent' as any).mockImplementation(() => {});
+        jest.spyOn(component, 'hardRefreshFilter' as any).mockImplementation(() => {});
+        component['fetchSelectedFilterOptions']().subscribe(() => {
+            expect(component['fetchFilters']).toHaveBeenCalled();
+            expect(component['filters']).toEqual({});
+            expect(component['updateBoardList']).toHaveBeenCalled();
+            expect(component['updateFiltersList' as any]).toHaveBeenCalledWith({ filters: {} });
+            expect(component['emitFilterChangeEvent']).toHaveBeenCalledWith(true);
+            expect(component['hardRefreshFilter' as any]).toHaveBeenCalled();
+        });
+    });
+
+    describe('popFilter', () => {
+        it('should remove the specified index from the selectedFilters', () => {
+            component.selectedFilters = { type1: [1, 2, 3] };
+            const type = 'type1';
+            const index = 2;
+            component['popFilter']({ type, index });
+            expect(component.selectedFilters[type]).toEqual([1, 3]);
+        });
+    });
+
+    describe('pushNewFilter', () => {
+        it('should add a new index to the selectedFilters', () => {
+            component.selectedFilters = {};
+            const type = 'type1';
+            const index = 1;
+            component['pushNewFilter']({ type, index });
+            expect(component.selectedFilters[type]).toEqual([1]);
+        });
+
+        it('should add updatedValues to the selectedFilters when index is null', () => {
+            component.selectedFilters = {};
+            const type = 'type2';
+            const updatedValues = [1, 2, 3];
+            component['pushNewFilter']({ type, updatedValues });
+            expect(component.selectedFilters[type]).toEqual(updatedValues);
+        });
+
+        it('should append index to existing selectedFilters[type] if index is not null', () => {
+            component.selectedFilters = { type1: [2, 3] };
+            const type = 'type1';
+            const index = 1;
+            component['pushNewFilter']({ type, index });
+            expect(component.selectedFilters[type]).toEqual([1, 2, 3]);
+        });
+    });
+
+    describe('getIndicesFromDefaultFilters', () => {
+        it('should return indices of default values for a given type', () => {
+            component.defaultFilters = { type1: [1, 2, 3] };
+            component.allValues = { type1: [1, 2, 3, 4, 5] };
+            const indices = component['getIndicesFromDefaultFilters']({ type: 'type1' });
+            expect(indices).toEqual([0, 1, 2]);
+        });
+
+        it('should return an empty array if default values are not found', () => {
+            component.defaultFilters = {};
+            component.allValues = { type2: [1, 2, 3, 4, 5] };
+            const indices = component['getIndicesFromDefaultFilters']({ type: 'type2' });
+            expect(indices).toEqual([]);
+        });
+
+        it('should return an empty array for certain types if no indices are found', () => {
+            component.defaultFilters = { type3: [1, 2, 3] };
+            component.allValues = { type3: [] };
+            const indices = component['getIndicesFromDefaultFilters']({ type: 'type3' });
+            expect(indices).toEqual([]);
+        });
+    });
+
+    describe('getAudienceTypeFormConfig', () => {
+        it('should handle error gracefully', (done) => {
+            const mockFormService = {
+                getFormConfig: jest.fn(() => throwError('Error')),
+            };
+            component['getAudienceTypeFormConfig']().subscribe((response) => {
+                expect(response).toEqual({});
+                done();
+            });
+        });
+    });
+
+    describe('getFacets', () => {
+        it('should update filters list and refresh filter', (done) => {
+            const mockFacets$ = of({ subjects: ['Math', 'Science'], grades: [1, 2, 3] });
+            const mockContentSearchService = {
+                getCategoriesMapping: { subjects: 'se_subjects', grades: 'se_gradeLevels' },
+            };
+            component.facets$ = mockFacets$ as any;
+            component['contentSearchService'] = mockContentSearchService as any;
+            component['getFacets']().subscribe(() => {
+                expect(component['filters']).toEqual({ subjects: ['Math', 'Science'], grades: [1, 2, 3] });
+                done();
+            });
+        });
+    });
+
 });

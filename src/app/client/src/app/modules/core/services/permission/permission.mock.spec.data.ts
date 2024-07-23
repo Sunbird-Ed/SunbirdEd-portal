@@ -330,6 +330,188 @@ export const mockPermissionRes = {
           }
         ]
       }
+    },
+    rolelist: [
+      {
+          "name": "Book Creator",
+          "id": "BOOK_CREATOR"
+      },
+      {
+          "name": "Membership Management",
+          "id": "MEMBERSHIP_MANAGEMENT"
+      },
+      {
+          "name": "Flag Reviewer",
+          "id": "FLAG_REVIEWER"
+      },
+      {
+          "name": "Report Viewer",
+          "id": "REPORT_VIEWER"
+      },
+      {
+          "name": "Program Manager",
+          "id": "PROGRAM_MANAGER"
+      },
+      {
+          "name": "Program Designer",
+          "id": "PROGRAM_DESIGNER"
+      },
+      {
+          "name": "System Administration",
+          "id": "SYSTEM_ADMINISTRATION"
+      },
+      {
+          "name": "Content Curation",
+          "id": "CONTENT_CURATION"
+      },
+      {
+          "name": "Book Reviewer",
+          "id": "BOOK_REVIEWER"
+      },
+      {
+          "name": "Content Creator",
+          "id": "CONTENT_CREATOR"
+      },
+      {
+          "name": "Org Management",
+          "id": "ORG_MANAGEMENT"
+      },
+      {
+          "name": "Course Admin",
+          "id": "COURSE_ADMIN"
+      },
+      {
+          "name": "Org Moderator",
+          "id": "ORG_MODERATOR"
+      },
+      {
+          "name": "Public",
+          "id": "PUBLIC"
+      },
+      {
+          "name": "Admin",
+          "id": "ADMIN"
+      },
+      {
+          "name": "Course Mentor",
+          "id": "COURSE_MENTOR"
+      },
+      {
+          "name": "Content Reviewer",
+          "id": "CONTENT_REVIEWER"
+      },
+      {
+          "name": "Report Admin",
+          "id": "REPORT_ADMIN"
+      },
+      {
+          "name": "Org Admin",
+          "id": "ORG_ADMIN"
+      }
+  ],
+    roles:[
+      'COURSE_MENTOR',
+      'CONTENT_CREATOR',
+      'COURSE_ADMIN',
+      'BOOK_CREATOR',
+      'ORG_ADMIN',
+      'REPORT_ADMIN',
+      'CONTENT_REVIEWER',
+      'ADMIN',
+      'PUBLIC'
+    ],
+    RolesAndPermissions:[
+      {
+        "roleName": "Book Creator",
+        "role": "BOOK_CREATOR",
+        'actions': [
+          {
+            'urls': [
+              'v1/Book/create'
+            ],
+            'name': 'Book Creator',
+            'id': 'BOOK_CREATOR'
+          }
+          
+        ]
+    },
+    {
+      "roleName": "Book Reviewer",
+      "role": "BOOK_REVIEWER",
+      'actions': [
+        {
+          'urls': [
+            'v1/Book/review'
+          ],
+          'name': 'Book Reviewer',
+          'id': 'BOOK_REVIEWER'
+        }
+        
+      ]
+  },
+    {
+        "roleName": "Content Creator",
+        "role": "CONTENT_CREATOR",
+        'actions': [
+          {
+            'urls': [
+              'v1/course/create'
+            ],
+            'name': 'Course Creator',
+            'id': 'CONTENT_CREATOR'
+          }
+          
+        ]
     }
+    ],
+    WORKSPACEAUTHGARDROLES:[
+      {
+          "roles":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
+          "roleName":"createRole","url":"workspace/content/create","tab":"CREATE"
+      },
+      {
+          "roles":["ORG_ADMIN"],
+          "roleName":"alltextbookRole","url":"workspace/content/alltextbooks","tab":"ALLTEXTBOOKS"
+      },
+      {
+          "roles":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
+          "roleName":"draftRole","url":"workspace/content/draft/1","tab":"DRAFTS"
+      },
+      {
+          "roles":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
+          "roleName":"inreviewRole","url":"/workspace/content/review/1","tab":"Review Submissions"
+      },
+      {
+          "roles":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
+          "roleName":"publishedRole","url":"workspace/content/published/1","tab":"PUBLISHED"
+      },
+      {
+          "roles":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW"],
+          "roleName":"alluploadsRole","url":"workspace/content/uploaded/1","tab":"All UPLOADS"
+      },
+      {
+          "roles":["CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_REVIEWER"],
+          "roleName":"upForReviewRole","url":"workspace/content/upForReview/1","tab":"Up FOR REVIEW"
+      },
+      {
+          "roles":["COURSE_MENTOR"],"roleName":"courseBatchRoles","url":"/workspace/content/batches/1","tab":"Course Batches"
+      },
+      {
+          "roles":["FLAG_REVIEWER"],
+          "roleName":"flagReviewerRole","url":"workspace/content/flagreviewer/1","tab":"FLAG REVIEWER"
+      },
+      {
+          "roles":["FLAG_REVIEWER"],
+          "roleName":"flaggedRole","url":"workspace/content/flagged/1","tab":"Flagged"
+      },
+      {
+          "roles":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
+          "roleName":"limitedPublishingRole","url":"workspace/content/upForReview/1","tab":"Limited Publishing"
+      },
+      {
+          "roles":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
+          "roleName":"collaboratingRole","url":"workspace/content/collaborating-on","tab":"Collaborating On"
+      }
+     ],
 };
 

@@ -9,6 +9,7 @@ import { ITenantData } from './../../../core/services/tenant/interfaces/tenant';
 import { ProfileService } from '@sunbird/profile';
 import { BehaviorSubject, merge, empty, of, Subject } from 'rxjs';
 import { switchMap, retry, tap, skipWhile, catchError, takeUntil, concatMap, take, skip } from 'rxjs/operators';
+import { PopupControlService } from '../../../../service/popup-control.service';
 
 interface IGuest {
   code: string;
@@ -37,6 +38,7 @@ export class OnboardingUserSelectionComponent implements OnInit, OnDestroy {
 
   private updateUserSelection$ = new BehaviorSubject<string>(undefined);
   public unsubscribe$ = new Subject<void>();
+  isUserTypeEnabled = true;
 
   constructor(
     public resourceService: ResourceService,
@@ -48,10 +50,21 @@ export class OnboardingUserSelectionComponent implements OnInit, OnDestroy {
     private formService: FormService,
     private profileService: ProfileService,
     private userService: UserService,
-    private toasterService: ToasterService
+    private toasterService: ToasterService,
+    private popupControlService: PopupControlService
   ) { }
 
   ngOnInit() {
+    /**
+      * @description - popupcontrol service returned value is used to enable/disable the usertype popup based on the isvisible value
+    */
+    this.popupControlService.getOnboardingData().subscribe((formResponsedata) => {
+        this.isUserTypeEnabled = formResponsedata?.userTypePopup ? formResponsedata?.userTypePopup?.isVisible : true;
+        if (!(this.isUserTypeEnabled)) {
+          localStorage.setItem('userType', formResponsedata?.userTypePopup?.defaultUserType);
+          localStorage.setItem('guestUserType', formResponsedata?.userTypePopup?.defaultGuestUserType);
+      }
+    });
     this.setPopupInteractEdata();
     this.initialize().subscribe();
     if(this.isStepper) {

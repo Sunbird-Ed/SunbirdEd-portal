@@ -67,15 +67,15 @@ export default (app, proxyURL) => {
     });
 
     const user = new User(manifest);
-    app.post("/api/desktop/user/v1/create",
+    app.post("/api/desktop/user/v1/sso/create",
         user.create.bind(user),
     );
 
-    app.get("/api/desktop/user/v1/read",
+    app.get("/api/desktop/user/v5/read",
         user.read.bind(user),
     );
     app.post(
-        "/api/desktop/user/v1/update", user.update.bind(user),
+        "/api/desktop/user/v3/update", user.update.bind(user),
     );
 
 

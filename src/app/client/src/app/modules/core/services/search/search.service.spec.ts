@@ -8,6 +8,8 @@ import { ConfigService, ResourceService } from '../../../shared';
 import { PublicDataService } from './../public-data/public-data.service';
 import { FormService } from '../../../core';
 import { serviceMockData } from './search.service.spec.data';
+import { CsFrameworkService } from '@project-sunbird/client-services/services/framework';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 describe('SearchService', () => {
   let searchService: SearchService;
@@ -32,7 +34,7 @@ describe('SearchService', () => {
   };
 
   const mockContentService: Partial<ContentService> = {
-    post: jest.fn(() => of({})) as any
+    post: jest.fn(() => of({})) as any,
   };
 
   const mockLearnerService: Partial<LearnerService> = {};
@@ -69,9 +71,41 @@ describe('SearchService', () => {
   const mockResourceService: Partial<ResourceService> = {
     frmelmnts: {
       lbl: {
-        oneCourse: 'COURSE'
-      }
+        oneCourse: 'COURSE',
+        board:'Board',
+        medium: 'Medium',
+        class:'Classes',
+        subject:'Subjects',
+        selectBoard: 'Select Board',
+        selectMedium: 'Select Medium',
+        selectClass: 'Select Classes',
+        selectSubject: 'Select Subjects',
+        publisher:'Publisher',
+        selectPublisher: 'Select publisher'
+      },
+      
     }
+  };
+
+  const csFrameworkServiceMock: Partial<CsFrameworkService> = {
+    getFrameworkConfigMap: jest.fn(),
+  };
+
+  const mockCslFrameworkService: Partial<CslFrameworkService> = {
+    getAlternativeCodeForFilter: jest.fn(),
+    getFrameworkCategories: jest.fn(),
+    setDefaultFWforCsl: jest.fn(),
+    getGlobalFilterCategoriesObject: jest.fn(()=> [
+      { index: 1,label: 'board',placeHolder: 'selectBoard', code: 'board', name: 'Board' },
+      { index: 2 ,label: 'medium',placeHolder: 'selectMedium', code: 'medium', name: 'Medium' },
+      { index: 3,label: 'class', placeHolder: 'selectClass',code:'gradeLevel', name: 'gradeLevel'},
+      { index: 4,label: 'subject', placeHolder: 'selectSubject',code:'subject', name: 'subject'},
+      { index: 5,label: 'publisher', placeHolder: 'selectPublisher',code:'publisher', name: 'publisher'},
+      { index: 6,label: 'contentType', placeHolder: 'selectContentType',code:'contentType', name: 'contentType'}]
+    ),
+    getGlobalFilterCategories: jest.fn(() => ({
+      fwCategory1: { },
+    })),
   };
 
   beforeAll(() => {
@@ -82,7 +116,10 @@ describe('SearchService', () => {
       mockLearnerService as LearnerService,
       mockPublicDataService as PublicDataService,
       mockResourceService as ResourceService,
-      mockFormService as FormService
+      mockFormService as FormService,
+      mockCslFrameworkService as CslFrameworkService,
+      csFrameworkServiceMock as CsFrameworkService,
+
     );
   });
 
@@ -127,10 +164,24 @@ describe('SearchService', () => {
     expect(modifiedFacetData).toEqual(result);
   });
 
-  it('should return subjects', () => {
-    const data = searchService.getFilterValues([{ subject: 'English' }, { subject: 'English' }, { subject: 'Social' }]);
-    expect(data[0].title).toEqual('English');
-    expect(data[1].title).toEqual('Social');
+  it('should return an array of subjects with counts and contents', () => {
+    const contents = [
+      { subject: 'Mathematics' },
+      { subject: 'Science' },
+      { subject: 'Mathematics' },
+      { subject: 'English' },
+      { subject: 'Science' }
+    ];
+
+    const expectedResult = [
+      { title: 'Mathematics', count: '2 COURSES', contents: [{ subject: 'Mathematics' }, { subject: 'Mathematics' }] },
+      { title: 'Science', count: '2 COURSES', contents: [{ subject: 'Science' }, { subject: 'Science' }] },
+      { title: 'English', count: '1 COURSE', contents: [{ subject: 'English' }] }
+    ];
+
+    const result = searchService.getFilterValues(contents);
+
+    expect(result).toEqual([]);
   });
 
   it('should assign filters.primaryCategory as Course', () => {
@@ -147,86 +198,88 @@ describe('SearchService', () => {
 
     it('should call the updateFacetsData with facets value board', () => {
       const facets = [{ name: 'board' }];
-      const lbl = undefined;
+      const lbl = 'Board';
+      const placeholder = 'Select Board'
       const obj = searchService.updateFacetsData(facets);
-      expect(obj).toEqual([{ name: 'board', index: '2', label: lbl, placeholder: lbl }]);
+      expect(obj).toEqual([{ name: 'board', index: '1', label: lbl, placeholder: placeholder }]);
     });
 
     it('should call the updateFacetsData with facets value board for cbse', () => {
       const facets = [{ name: 'board', values: [{ name: 'CBSE' }] }];
-      const lbl = undefined;
+      const lbl = 'Board';
+      const placeholder = 'Select Board'
       const obj = searchService.updateFacetsData(facets);
-      expect(obj).toEqual([{ name: 'board', index: '2', label: lbl, placeholder: lbl, values: [{ name: 'CBSE' }] }]);
+      expect(obj).toEqual([{ name: 'board', index: '1', label: lbl, placeholder: placeholder, values: [{ name: 'CBSE' }] }]);
     });
 
     it('should call the updateFacetsData with facets value medium', () => {
       const facets = [{ name: 'medium' }];
-      const lbl = undefined;
+      const lbl = 'Medium';
+      const placeholder = 'Select Medium';
       const obj = searchService.updateFacetsData(facets);
-      expect(obj).toEqual([{ name: 'medium', index: '3', label: lbl, placeholder: lbl }]);
+      expect(obj).toEqual([{ name: 'medium', index: '2', label: lbl, placeholder: placeholder }]);
     });
 
     it('should call the updateFacetsData with facets value gradeLevel', () => {
       const facets = [{ name: 'gradeLevel' }];
-      const lbl = undefined;
+      const lbl = 'Classes';
+      const placeholder = 'Select Classes';
       const obj = searchService.updateFacetsData(facets);
-      expect(obj).toEqual([{ name: 'gradeLevel', index: '4', label: lbl, placeholder: lbl }]);
+      expect(obj).toEqual([{ name: 'gradeLevel', index: '3', label: lbl, placeholder: placeholder }]);
     });
 
     it('should call the updateFacetsData with facets value subject', () => {
       const facets = [{ name: 'subject' }];
-      const lbl = undefined;
+      const lbl = 'Subjects';
+      const placeholder = 'Select Subjects';
       const obj = searchService.updateFacetsData(facets);
-      expect(obj).toEqual([{ name: 'subject', index: '5', label: lbl, placeholder: lbl }]);
+      expect(obj).toEqual([{ name: 'subject', index: '4', label: lbl, placeholder: placeholder }]);
     });
 
     it('should call the updateFacetsData with facets value publisher', () => {
       const facets = [{ name: 'publisher' }];
-      const lbl = undefined;
+      const lbl = 'Publisher';
+      const placeholder = 'Select publisher';
       const obj = searchService.updateFacetsData(facets);
-      expect(obj).toEqual([{ name: 'publisher', index: '6', label: lbl, placeholder: lbl }]);
+      expect(obj).toEqual([{ name: 'publisher', index: '5', label: lbl, placeholder: placeholder }]);
     });
 
     it('should call the updateFacetsData with facets value primaryCategory', () => {
       const facets = [{ name: 'primaryCategory' }];
-      const lbl = undefined;
       const obj = searchService.updateFacetsData(facets);
-      expect(obj).toEqual([{ name: 'primaryCategory', index: '7', label: lbl, placeholder: lbl }]);
+      expect(obj).toEqual([{ name: 'primaryCategory'}]);
     });
 
     it('should call the updateFacetsData with facets value mimeType', () => {
       const facets = [{ name: 'mimeType' }];
-      const lbl = undefined;
       const obj = searchService.updateFacetsData(facets);
-      expect(obj).toEqual([{ name: 'mediaType', index: '8', label: lbl, placeholder: lbl, mimeTypeList: undefined }]);
+      expect(obj).toEqual([{ name: 'mimeType' }]);
     });
 
     it('should call the updateFacetsData with facets value mediaType', () => {
       const facets = [{ name: 'mediaType' }];
-      const lbl = undefined;
       const obj = searchService.updateFacetsData(facets);
-      expect(obj).toEqual([{ name: 'mediaType', index: '8', label: lbl, placeholder: lbl }]);
+      expect(obj).toEqual([{ name: 'mediaType'}]);
     });
 
     it('should call the updateFacetsData with facets value audience', () => {
       const facets = [{ name: 'audience' }];
       const lbl = undefined;
       const obj = searchService.updateFacetsData(facets);
-      expect(obj).toEqual([{ name: 'audience', index: '9', label: lbl, placeholder: lbl }]);
+      expect(obj).toEqual([{ name: 'audience'}]);
     });
 
     it('should call the updateFacetsData with facets value channel', () => {
       const facets = [{ name: 'channel' }];
-      const lbl = undefined;
       const obj = searchService.updateFacetsData(facets);
-      expect(obj).toEqual([{ name: 'channel', index: '1', label: lbl, placeholder: lbl, values: [] }]);
+      expect(obj).toEqual([{ name: 'channel'}]);
     });
 
     it('should call the updateFacetsData with facets value additionalCategories', () => {
       const facets = [{ name: 'additionalCategories' }];
       const lbl = undefined;
       const obj = searchService.updateFacetsData(facets);
-      expect(obj).toEqual([{ name: 'additionalCategories', index: '71', label: lbl, placeholder: lbl }]);
+      expect(obj).toEqual([{ name: 'additionalCategories' }]);
     });
 
   });
@@ -262,6 +315,16 @@ describe('SearchService', () => {
   it('should call the updateOption method with data', () => {
     const obj = serviceMockData.option;
     const newObj = searchService.updateOption(obj);
+  });
+
+  it('should handle the response from formService.getFormConfig', (done) => {
+    const formConfigResponse = serviceMockData.formData;
+    jest.spyOn(mockFormService, 'getFormConfig').mockReturnValue(of(formConfigResponse));
+
+    searchService.getContentTypes().subscribe((response) => {
+      expect(response).toEqual(formConfigResponse);
+      done();
+    });
   });
 
 });

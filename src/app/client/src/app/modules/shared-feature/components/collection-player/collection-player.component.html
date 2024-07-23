@@ -21,11 +21,10 @@
             <div class="content-header__title font-weight-bold ellipsis text-left" role="heading" aria-level="2">
               {{collectionData.name}}</div>
             <div class="content-header__info mt-4" *ngIf="collectionTreeNodes">
-              <span *ngIf="collectionTreeNodes?.data?.board">{{collectionTreeNodes?.data?.board}}</span>
-              <span class="dot-divider" *ngIf="collectionTreeNodes?.data?.medium"></span>
-              <span *ngIf="collectionTreeNodes?.data?.medium">{{collectionTreeNodes?.data?.medium}}</span>
-              <span class="dot-divider" *ngIf="collectionTreeNodes?.data?.gradeLevel"></span>
-              <span *ngIf="collectionTreeNodes?.data?.gradeLevel">{{collectionTreeNodes?.data?.gradeLevel}}</span>
+              <div *ngFor="let transformcollection of transformcollectionTreeNodes">
+              <span [ngClass]="transformcollection?.index !== 1 ? 'dot-divider' : ''"></span>
+              <span *ngIf="transformcollection?.value">{{transformcollection?.value}}</span>
+            </div>
             </div>
           </div>
           <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">

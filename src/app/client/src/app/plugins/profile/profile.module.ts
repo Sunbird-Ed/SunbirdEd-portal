@@ -8,14 +8,14 @@ import {
   AccountRecoveryInfoComponent, CreateUserComponent,DeleteUserComponent,DeleteAccountComponent, ChooseUserComponent, SubmitTeacherDetailsComponent
 } from './components';
 import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
-  SuiProgressModule, SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui-v9';
+  SuiProgressModule, SuiRatingModule, SuiCollapseModule } from '@project-sunbird/ng2-semantic-ui';
 import { CoreModule } from '@sunbird/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ContentSearchModule } from '@sunbird/content-search';
 import {CommonConsumptionModule} from '@project-sunbird/common-consumption';
-import { CertificateDirectivesModule } from 'sb-svg2pdf-v13';
+import { CertificateDirectivesModule } from '@project-sunbird/sb-svg2pdf';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
 import { CommonFormElementsModule } from '@project-sunbird/common-form-elements-full';

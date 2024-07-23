@@ -10,6 +10,7 @@ import * as _ from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ContentManagerService } from '../../../public/module/offline/services';
 import { takeUntil } from 'rxjs/operators';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 @Component({
   selector: 'app-content-actions',
@@ -41,6 +42,7 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
   mimeType: string;
   subscription;
   isDesktopApp;
+  frameworkCategoriesList;
   telemetryEventSubscription$: EventEmitter<object>;
 
   constructor(
@@ -55,9 +57,11 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
     public contentManagerService: ContentManagerService,
     public offlineCardService: OfflineCardService,
     public utilService: UtilService,
+    public cslFrameworkService: CslFrameworkService
   ) { }
 
   ngOnInit() {
+    this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
     this.enableDisableactionButtons();
     this.isDesktopApp = this.utilService.isDesktopApp;
     const isVideoMimetype = _.includes(['video/mp4', 'video/webm'], _.get(this.contentData, 'mimeType'));

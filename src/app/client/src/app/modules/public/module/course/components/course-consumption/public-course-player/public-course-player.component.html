@@ -8,18 +8,11 @@
           <div class="training-relevant mb-16">
             <h6 class="mt-0 mb-8 fsmall training-relevant__heading">
               {{generaliseLabelService?.frmelmnts?.lbl?.courseRelevantFor}}</h6>
-              <div class="training-relevant__class mb-4 sb-color-gray-400 fnormal" *ngIf="courseHierarchy?.se_boards">
-                <span>{{resourceService?.frmelmnts?.lbl?.board | transposeTerms: 'frmelmnts.lbl.board' : resourceService?.selectedLang}}:&nbsp;</span><span>{{ courseHierarchy?.se_boards?.join(', ')}}</span>
+            
+              <div class="training-relevant__class mb-4 sb-color-gray-400 fnormal" *ngFor="let transformCourse of transformCourseHierarchy" >
+                <span>{{ (resourceService?.frmelmnts?.lbl[transformCourse?.code] | transposeTerms: resourceService?.frmelmnts?.lbl[transformCourse?.code] : resourceService?.selectedLang) || transformCourse?.labels }}:
+                  &nbsp;</span><span>{{transformCourse?.value}}</span>
               </div>
-              <div class="training-relevant__medium mb-4 sb-color-gray-400 fnormal" *ngIf="courseHierarchy?.se_mediums">
-                <span>{{resourceService?.frmelmnts?.lbl?.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}}:&nbsp;</span><span>{{ courseHierarchy?.se_mediums?.join(', ')}}</span>
-              </div>
-              <div class="training-relevant__subject mb-4 sb-color-gray-400 fnormal" *ngIf="courseHierarchy?.se_gradeLevels">
-                <span>{{resourceService?.frmelmnts?.lbl?.class | transposeTerms: 'frmelmnts.lbl.class' : resourceService?.selectedLang}}:&nbsp;</span><span>{{ courseHierarchy?.se_gradeLevels?.join(', ')}}</span>
-              </div>
-              <!-- <div class="training-relevant__medium mb-4 sb-color-gray-400 fnormal" *ngIf="courseHierarchy?.se_subjects">
-                <span>{{resourceService?.frmelmnts?.lbl?.subject}}:&nbsp;</span><span>{{ courseHierarchy?.se_subjects?.join(', ')}}</span>
-              </div> -->
               <div class="training-relevant__medium mb-4 sb-color-gray-400 fnormal" *ngIf="courseHierarchy?.audience">
                 <span>{{resourceService?.frmelmnts?.lbl?.userType}}:&nbsp;</span><span>{{ courseHierarchy?.audience?.join(', ')}}</span>
               </div>

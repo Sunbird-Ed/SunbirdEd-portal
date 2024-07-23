@@ -158,7 +158,7 @@ module.exports = {
    */
   logAPICallEvent: function (req) { // function call is commented in all files    
     const apiConfig = telemtryEventConfig.URL[req.uri] || {}
-    
+
     let object = {}
     const params = this.getParamsData(req.options, req.statusCode, req.resp, req.uri)
     const edata = telemetry.logEventData('api_call', 'INFO', apiConfig.message, params)
@@ -228,7 +228,7 @@ module.exports = {
       params = this.getParamsData(req.reqObj, req.statusCode, req.resp, uri)
     }
 
-    const edata = telemetry.logEventData('api_access', 'INFO', apiConfig.message,JSON.stringify(params))
+    const edata = telemetry.logEventData('api_access', 'INFO', apiConfig.message, JSON.stringify(params))
 
     if (req.id && req.type) {
       object = telemetry.getObjectData({ id: req.id, type: req.type, ver: req.version, rollup: req.rollup })
@@ -310,7 +310,7 @@ module.exports = {
     }
 
     const actor = this.getTelemetryActorData(req);
-  
+
     /* istanbul ignore if  */
     if (!channel) {
       console.log('logApiErrorEventV2 failed due to no channel')

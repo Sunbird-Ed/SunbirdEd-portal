@@ -3,6 +3,12 @@ import { NgModule } from '@angular/core';
 import { ErrorPageComponent } from './modules/core/components/error-page/error-page.component';
 import { RouterModule, Routes } from '@angular/router';
 import { MlGuard } from './modules/observation/guards';
+import { UciConfigService } from './modules/uci-admin/services/uci-config.service';
+
+export function uciAdminModuleFactory(): Promise<any>{
+  const uciConfigService = new UciConfigService();
+  return uciConfigService.isUciAdminEnabled() ? import('./modules/uci-admin/uci-admin.module').then(m => m.UciAdminModule) : null;
+}
 
 const appRoutes: Routes = [
   {
@@ -45,7 +51,7 @@ const appRoutes: Routes = [
     path: 'manage', loadChildren: () => import('./modules/manage/manage.module').then(m => m.ManageModule)
   },
   {
-    path: 'uci-admin', loadChildren: () => import('./modules/uci-admin/uci-admin.module').then(m => m.UciAdminModule)
+    path: 'uci-admin',loadChildren: uciAdminModuleFactory,
   },
   {
     path: '', loadChildren: () => import('./modules/public/public.module').then(m => m.PublicModule)
@@ -80,7 +86,8 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(appRoutes, { relativeLinkResolution: 'corrected' })],
-  exports: [RouterModule]
+  imports: [RouterModule.forRoot(appRoutes, {})],
+  exports: [RouterModule],
+  providers: [UciConfigService]
 })
 export class AppRoutingModule { }

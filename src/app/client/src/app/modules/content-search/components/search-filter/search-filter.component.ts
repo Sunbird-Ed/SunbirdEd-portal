@@ -9,6 +9,7 @@ import { ContentSearchService } from '../../services';
 import { FormService } from '@sunbird/core';
 import { IFrameworkCategoryFilterFieldTemplateConfig } from '@project-sunbird/common-form-elements-full';
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
+import { CslFrameworkService } from  '../../../public/services/csl-framework/csl-framework.service';
 
 @Component({
   selector: 'app-search-filter',
@@ -27,9 +28,9 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   public selectedBoard: { label: string, value: string, selectedOption: string };
   public selectedOption: { label: string, value: string, selectedOption: string };
   public optionLabel = {
-    Publisher: _.get(this.resourceService, 'frmelmnts.lbl.publisher'), Board: _.get(this.resourceService, 'frmelmnts.lbl.boards')
+    Publisher: _.get(this.resourceService, 'frmelmnts.lbl.publisher'), Board: _.get(this.resourceService, 'frmelmnts.lbl.board')
   };
-  public boards: any[] = [];
+  public fwCategory1: any[] = [];
   filterChangeEvent = new Subject();
   @Input() isOpen;
   @Input() defaultFilters = {};
@@ -46,6 +47,10 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   selectedNgModels = {};
   private audienceList;
   public refreshSearchFilterComponent = true;
+  public frameworkCategories;
+  public frameworkCategoriesObject;
+  public globalFilterCategories;
+  public frameworkCategoriesList;
 
   @ViewChild('sbSearchFrameworkFilterComponent') searchFrameworkFilterComponent: any;
   filterFormTemplateConfig: IFrameworkCategoryFilterFieldTemplateConfig[];
@@ -54,10 +59,10 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     private contentSearchService: ContentSearchService,
     private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef,
     public layoutService: LayoutService, private formService: FormService,
-    private cacheService: CacheService, private utilService: UtilService) { }
+    private cacheService: CacheService, private utilService: UtilService, private cslFrameworkService: CslFrameworkService ) { }
 
   get filterData() {
-    return _.get(this.pageData, 'metaData.filters') || ['medium', 'gradeLevel', 'board', 'channel', 'subject', 'audience', 'publisher', 'se_subjects', 'se_boards', 'se_gradeLevels', 'se_mediums'];
+    return _.get(this.pageData, 'metaData.filters') || [ ...this.frameworkCategoriesList, ...this.globalFilterCategories, 'channel', 'audience', 'publisher'];
   }
 
   public getChannelId(index) {
@@ -93,7 +98,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     return this.contentSearchService.fetchFilter(boardName);
   }
 
-  private sortFilters({ filters, filterBy = 'name', omitKeys = ['gradeLevel'] }) {
+  private sortFilters({ filters, filterBy = 'name', omitKeys = [this.frameworkCategories?.fwCategory3?.code] }) {
     const sortedFilters = _.cloneDeep(filters);
     _.forEach(sortedFilters, (values, key) => {
       sortedFilters[key] = _.includes(omitKeys, key) ? values : _.sortBy(values, [filterBy]);
@@ -106,7 +111,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(queryParams => {
           this.filterChange.emit({ status: 'FETCHING' });
-          let boardName = _.get(queryParams, 'board[0]') || _.get(this.boards, '[0]');
+          let boardName = _.get(queryParams, `${this.frameworkCategories?.fwCategory1?.code}[0]`) || _.get(this.fwCategory1, '[0]');
           return zip(this.getFramework({ boardName }), this.getAudienceTypeFormConfig())
             .pipe(map(([filters, audienceTypeFilter]: [object, object]) => ({ ...filters, audience: audienceTypeFilter })));
         })
@@ -114,6 +119,9 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.frameworkCategories = this.cslFrameworkService.getFrameworkCategories();
+    this.globalFilterCategories = this.cslFrameworkService.getAlternativeCodeForFilter();
+    this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
     this.getFilterForm$();
     this.checkForWindowSize();
     merge(this.boardChangeHandler(), this.fetchSelectedFilterOptions(), this.handleFilterChange(), this.getFacets(), this.filterConfig$)
@@ -153,7 +161,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
           filters = _.pick(filters || {}, this.filterData);
           this.filters = filters = this.sortFilters({ filters });
           this.updateBoardList();
-          this.updateFiltersList({ filters: _.omit(filters, 'board') });
+          this.updateFiltersList({ filters: _.omit(filters, this.frameworkCategories?.fwCategory1?.code) });
           this.emitFilterChangeEvent(true);
           this.hardRefreshFilter();
         })
@@ -176,7 +184,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
               this.pushNewFilter({ type, index });
             }
           } else {
-            if (type === 'subject') {
+            if (type === this.frameworkCategories?.fwCategory4?.code) {
               this.selectedNgModels['selected_subjects'] = event;
             }
             this.pushNewFilter({
@@ -189,24 +197,24 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   }
 
   private updateBoardList() {
-    if (_.get(this.filters, 'board') || !_.get(this.filters, 'board.length')) {
+    if (_.get(this.filters, this.frameworkCategories?.fwCategory1?.code) || !_.get(this.filters, `${this.frameworkCategories?.fwCategory1?.code}.length`)) {
       this.emptyBoard = true;
     }
-    this.boards = this.allValues['board'] = this.filters.board || [];
-    this.boards = _.map(this.boards, node => ({
+    this.fwCategory1 = this.allValues[this.frameworkCategories?.fwCategory1?.code] = this.filters[this.frameworkCategories?.fwCategory1?.code] || [];
+    this.fwCategory1 = _.map(this.fwCategory1, node => ({
       name: node.name,
       value: node.name,
     }));
     this.optionData.push({
-      label: this.optionLabel.Board,
-      value: 'board',
-      option: this.boards
+      label: this.frameworkCategories?.fwCategory1?.label,
+      value: this.frameworkCategories?.fwCategory1?.code,
+      option: this.fwCategory1
     });
     this.optionData = _.uniqBy(this.optionData, 'label');
-    if (this.boards.length) {
-      const selectedOption = _.find(this.boards, { name: _.get(this.queryFilters, 'board[0]') }) ||
-        _.find(this.boards, { name: _.get(this.defaultFilters, 'board[0]') }) || this.boards[0];
-      this.selectedBoard = { label: this.optionLabel.Board, value: 'board', selectedOption: _.get(selectedOption, 'name') };
+    if (this.fwCategory1.length) {
+      const selectedOption = _.find(this.fwCategory1, { name: _.get(this.queryFilters, `${this.frameworkCategories?.fwCategory1?.code}[0]`) }) ||
+        _.find(this.fwCategory1, { name: _.get(this.defaultFilters, `${this.frameworkCategories?.fwCategory1?.code}[0]`) }) || this.fwCategory1[0];
+      this.selectedBoard = { label: this.frameworkCategories?.fwCategory1?.label, value: this.frameworkCategories?.fwCategory1?.code, selectedOption: _.get(selectedOption, 'name') };
       this.selectedOption = this.selectedBoard;
     }
   }
@@ -232,7 +240,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       indices = _.filter(_.map(defaultValues, defaultValue => _.findIndex(this.allValues[type] || [],
         val => val === defaultValue)), index => index !== -1);
     }
-    if (['audience', 'publisher', 'subject'].includes(type) && !indices.length) {
+    if (['audience', 'publisher', this.frameworkCategories?.fwCategory4?.code].includes(type) && !indices.length) {
       return [];
     }
     return indices.length ? indices : [];
@@ -260,7 +268,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
         }
         this.selectedFilters[filterKey] = selectedIndices;
         this.selectedNgModels[filterKey] = _.map(selectedIndices, index => this.allValues[filterKey][index]);
-        if (filterKey === 'subject') {
+        if (filterKey === this.frameworkCategories?.fwCategory4?.code) {
           this.selectedNgModels['selected_subjects'] = filterValuesFromQueryParams;
         }
       }
@@ -292,7 +300,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       filters['channel'] = _.compact(_.map(this.selectedFilters['publisher'], publisher => this.getChannelId(publisher)));
     }
     if (_.has(this.selectedNgModels, 'selected_subjects')) {
-      filters['subject'] = this.selectedNgModels['selected_subjects'] || [];
+      filters[this.frameworkCategories?.fwCategory4?.code] = this.selectedNgModels['selected_subjects'] || [];
     }
     if (_.has(this.selectedFilters, 'audience')) {
       filters['audienceSearchFilterValue'] = _.flatten(_.compact(_.map(filters['audience'] || {}, audienceType => {
@@ -300,7 +308,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
         return audience ? _.get(audience, 'searchFilter') : null;
       })));
     }
-    filters['board'] = _.get(this.selectedBoard, 'selectedOption') ? [this.selectedBoard.selectedOption] : [];
+    filters[this.frameworkCategories?.fwCategory1?.code] = _.get(this.selectedBoard, 'selectedOption') ? [this.selectedBoard.selectedOption] : [];
     filters['selectedTab'] = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook';
     return filters;
   }

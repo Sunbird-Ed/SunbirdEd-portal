@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OrgManagementRoutingModule } from './org-management-routing.module';
-import { SuiModule } from 'ng2-semantic-ui-v9';
+import { SuiModule } from '@project-sunbird/ng2-semantic-ui';
 import { ResourceService, ToasterService, RouterNavigationService, SharedModule } from '@sunbird/shared';
 import { OrgTypeService, OrgManagementService } from './services';
 import {

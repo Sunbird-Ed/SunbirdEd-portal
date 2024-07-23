@@ -3,7 +3,7 @@ import Response from "./../utils/response";
 import { manifest } from "./../manifest";
 import AuthController from "../controllers/authController";
 import { containerAPI } from '@project-sunbird/OpenRAP/api';
-const uuidv1 = require('uuid/v1');
+import { v1 as uuidv1 } from 'uuid';
 import { ILoggedInUser } from '../../OpenRAP/interfaces/IUser';
 import { customProxy } from '../helper/proxyHandler';
 import { EventManager } from "@project-sunbird/OpenRAP/managers/EventManager";
@@ -71,7 +71,7 @@ export default (app, proxyURL) => {
     });
 
     app.patch([
-        '/learner/user/v1/update',
+        '/learner/user/v3/update',
         '/learner/user/v3/update',
         "/learner/notification/v1/feed/update",
         '/learner/user/v1/declarations'
@@ -118,16 +118,17 @@ export default (app, proxyURL) => {
     });
 
     app.post([
-        "/learner/otp/v1/generate", 
-        "/learner/otp/v1/verify", 
-        "/learner/user/v1/consent/read",
+        "/learner/otp/v2/generate", 
+        "/learner/otp/v2/verify", 
+        "/learner/user/v2/consent/read",
         "/learner/user/v1/consent/update",
-        "/learner/user/v1/tnc/accept"
+        "/learner/user/v1/tnc/accept",
+        "/learner/user/v1/delete"
     ], customProxy(proxyURL, defaultProxyConfig), (req, res) => {
         res.status(res.statusCode).send(res.body);
     });
 
-    app.post(["/learner/user/v4/create", "/learner/user/v5/create", "/learner/user/v1/managed/create"], customProxy(proxyURL, defaultProxyConfig),async (req, res) => {
+    app.post(["/learner/user/v4/create", "/learner/user/v5/create", "/learner/user/v2/managed/create"], customProxy(proxyURL, defaultProxyConfig),async (req, res) => {
         const userSDK: any = containerAPI.getUserSdkInstance();
         const userId = _.get(res, 'body.result.userId');
         const userToken: string = await userSDK.getUserToken().catch(error => { 
@@ -169,7 +170,7 @@ export default (app, proxyURL) => {
     }
   });
 
-    app.post(["/learner/anonymous/otp/v1/generate"], (req, res, next) => {
+    app.post(["/learner/anonymous/otp/v2/generate","/learner/anonymous/delete/otp/v2/generate"], (req, res, next) => {
         if (req.url.indexOf('anonymous') > -1) {
             req.originalUrl = req.originalUrl.replace('anonymous/', '');
         }

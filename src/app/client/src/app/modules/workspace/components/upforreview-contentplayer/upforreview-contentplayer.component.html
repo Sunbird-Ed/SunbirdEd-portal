@@ -85,17 +85,12 @@
 </div>
 <!-- publish warning modal -->
 
-<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-  appBodyScroll *ngIf="showPublishWarningModal" #publishWarningModal>
-  <!--Header-->
-  <i class="icon close" (click)="showPublishWarningModal = false" tabindex="0"></i>
-  <div class="sb-modal-header">
-    &nbsp;
+<app-modal-wrapper *ngIf="showPublishWarningModal" [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [config]="{disableClose: true, size: 'small', panelClass: 'material-modal'}" #publishWarningModal>
+  <ng-template sbModalContent>
+  <div mat-dialog-title class="flex-jc-center">
+      <button aria-label="close dialog" mat-dialog-close class="close-btn" (click)="showPublishWarningModal = false"></button>
   </div>
-  <!--/Header-->
-
-  <!--Content-->
-  <div class="sb-modal-content">
+  <mat-dialog-content>
     <div class="ui centered grid">
       <div class="row">
         <div class="ui basic icon circular button cursor-pointer">
@@ -108,11 +103,8 @@
         </div>
       </div>
     </div>
-  </div>
-  <!--/Content-->
-
-  <!--Actions-->
-  <div class="sb-modal-actions">
+  </mat-dialog-content>
+  <mat-dialog-actions class="sb-mat__modal__actions">
     <button class="sb-btn sb-btn-normal sb-btn-primary" type="button "
       tabindex="0" (click)="showPublishWarningModal = false; goToPublish();" appTelemetryInteract
       [telemetryInteractObject]="telemetryInteractObject"
@@ -124,8 +116,8 @@
       [telemetryInteractEdata]="reviewCommentsWarningNoInteractEdata">
       {{resourceService?.frmelmnts?.btn?.no}}
     </button>
-  </div>
-  <!--Actions-->
+  </mat-dialog-actions>
+</ng-template>
+</app-modal-wrapper>
 
-</sui-modal>
 <router-outlet></router-outlet>

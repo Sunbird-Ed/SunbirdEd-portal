@@ -257,8 +257,12 @@ export class ContentDownloader implements ITaskExecuter {
           metaData = _.get(hierarchy, 'content') ? hierarchy.content : metaData;
         } else {
           const instructions = _.get(metaData, 'instructions') ? metaData.instructions : "";
+          const outcomeDeclaration = _.get(metaData, 'outcomeDeclaration');
           metaData = _.get(hierarchy, 'questionset') ? hierarchy.questionset : metaData;
           metaData["instructions"] = instructions;
+          if (outcomeDeclaration) {
+            metaData["outcomeDeclaration"] = outcomeDeclaration;
+          }
           metaData.isAvailableLocally = true;
           metaData.basePath = `http://localhost:${process.env.APPLICATION_PORT}/${contentDetails.identifier}`;
         }

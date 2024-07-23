@@ -11,7 +11,7 @@ import { Location } from '@angular/common';
 import { ReportService } from '../../../dashboard/services';
 import dayjs from 'dayjs';
 import html2canvas from 'html2canvas';
-import * as jspdf from 'jspdf';
+import { jsPDF } from "jspdf";
 import { Md5 } from 'ts-md5';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -430,6 +430,8 @@ export class DatasetsComponent implements OnInit, OnDestroy {
           result['reportMetaData'] = reportConfig;
           result['lastUpdatedOn'] = this.reportService.getFormattedDate(this.reportService.getLatestLastModifiedOnDate(data));
           this.chartsReportData = JSON.parse(JSON.stringify(result));
+          //adding for debugging purpose for now
+          console.log('report result',result)
           return result;
         }))
       })
@@ -508,10 +510,10 @@ export class DatasetsComponent implements OnInit, OnDestroy {
       scale: 2
     }).then(canvas => {
       const imageURL = canvas.toDataURL('image/jpeg');
-      const pdfFormat = new jspdf('p', 'px', 'a4');
+      const pdfFormat = new jsPDF('p', 'px', 'a4');
       const docWidth = pdfFormat.internal.pageSize.getWidth();
       const imageHeight = (canvas.height * docWidth) / canvas.width;
-      pdfFormat.internal.pageSize.setHeight(imageHeight);
+      pdfFormat.internal.pageSize.height = imageHeight;
       pdfFormat.addImage(imageURL, 'JPEG', 10, 8, docWidth - 28, imageHeight - 24);
       pdfFormat.save('report.pdf');
       this.toggleHtmlVisibilty(false);

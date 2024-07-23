@@ -13,12 +13,13 @@ import {
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
 import { Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin, zip, Subject } from 'rxjs';
-import { first, filter, mergeMap, tap, skipWhile, startWith, takeUntil, debounceTime } from 'rxjs/operators';
+import { first, filter, mergeMap, tap, skipWhile, startWith, takeUntil, debounceTime, catchError } from 'rxjs/operators';
 import { CacheService } from '../app/modules/shared/services/cache-service/cache.service';
 import { DOCUMENT } from '@angular/common';
 import { image } from '../assets/images/tara-bot-icon';
 import { SBTagModule } from 'sb-tag-manager';
-
+import { CslFrameworkService } from '../app/modules/public/services/csl-framework/csl-framework.service';
+import { PopupControlService } from './service/popup-control.service';
 /**
  * main app component
  */
@@ -126,6 +127,12 @@ export class AppComponent implements OnInit, OnDestroy {
   OnboardingFormConfig: any;
   isStepperEnabled = false;
   isPopupEnabled = false;
+  onboardingData: any;
+  onboardingDataSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  onboardingData$ = this.onboardingDataSubject;
+  isOnboardingEnabled = true;
+  isFWSelectionEnabled = true;
+  isUserTypeEnabled = true;
   @ViewChild('increaseFontSize') increaseFontSize: ElementRef;
   @ViewChild('decreaseFontSize') decreaseFontSize: ElementRef;
   @ViewChild('resetFontSize') resetFontSize: ElementRef;
@@ -141,7 +148,7 @@ export class AppComponent implements OnInit, OnDestroy {
     public formService: FormService, @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
     public changeDetectorRef: ChangeDetectorRef, public layoutService: LayoutService,
     public generaliseLabelService: GeneraliseLabelService, private renderer: Renderer2, private zone: NgZone,
-    private connectionService: ConnectionService, public genericResourceService: GenericResourceService) {
+    private connectionService: ConnectionService, public genericResourceService: GenericResourceService, public popupControlService: PopupControlService, private cslFrameworkService: CslFrameworkService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
     const layoutType = localStorage.getItem('layoutType') || 'base';
@@ -313,11 +320,55 @@ export class AppComponent implements OnInit, OnDestroy {
     //       this.isStepperEnabled = true;
     //     }
     //     else { this.isPopupEnabled = true; }
-    //   }, error => { this.isPopupEnabled = true; });
+    //   }, error => { this.isPopupEnabled = true; });;
     this.isPopupEnabled = true;
   }
+  
+  /**
+      * @description - This method enables/disables the onboarding popups based on the isvisible values returned from the form config request
+  */
+  async getOnboardingSkipStatus(){
+    const formReadInputParams = {
+      formType: 'onboardingPopupVisibility',
+      formAction: 'onboarding',
+      contentType: "global",
+      component: "portal"
+    };
+    try {
+      const formResponsedata = await this.formService
+        .getFormConfig(formReadInputParams)
+        .pipe(
+          catchError((error) => {
+            console.error('Error fetching form config:', error);
+            return [];
+          })
+        )
+        .toPromise();
+      this.onboardingData = formResponsedata;
+      this.onboardingDataSubject.next(this.onboardingData);
+    } catch (error) {
+      console.log('Cant read the form:', error);
+      return null;
+    }
+    this.popupControlService.setOnboardingData(this.onboardingData);
+    this.checkPopupVisiblity(this.onboardingData);
+  }
+  
+  /**
+    * @description - This method sets the popup show values to true/false based on values from form config
+  */
+  checkPopupVisiblity(onboardingData) {
+      this.isOnboardingEnabled = onboardingData?.onboardingPopups ? onboardingData?.onboardingPopups?.isVisible : true;
+      this.isFWSelectionEnabled = onboardingData?.frameworkPopup ? onboardingData?.frameworkPopup?.isVisible : true;
+      this.isUserTypeEnabled = onboardingData?.userTypePopup ? onboardingData?.userTypePopup?.isVisible : true;
+      if (!(this.isOnboardingEnabled) || !(this.isFWSelectionEnabled)) {
+        this.userService.setGuestUser(true, onboardingData?.frameworkPopup?.defaultFormatedName); //user service method is set to true in case either of onboarding or framework popup is disabled
+      }
+  }
+
   ngOnInit() {
     this.getOnboardingList();
+    this.getOnboardingSkipStatus();
     this.checkToShowPopups();
     this.getStepperInfo();
     this.isIOS = this.utilService.isIos;
@@ -366,16 +417,32 @@ export class AppComponent implements OnInit, OnDestroy {
             this.setUserOptions();
           } else {
             this.isGuestUser = true;
-            this.userService.getGuestUser().subscribe((response) => {
-              this.guestUserDetails = response;
-            }, error => {
-              console.error('Error while fetching guest user', error);
+            const onboardingPromise = new Promise((resolve) => {
+              this.onboardingData$.subscribe((data) => {
+                if (data) {
+                  resolve(this.onboardingData);
+                }
+              });
             });
-
+            onboardingPromise.then((onboardingData) => {
+              this.onboardingData = onboardingData;
+              this.checkPopupVisiblity(this.onboardingData);
+              this.userService.getGuestUser().subscribe(
+                (response) => {
+                  this.guestUserDetails = response;
+                },
+                (error) => {
+                  console.error('Error while fetching guest user', error);
+                }
+              );
+            });
             return this.setOrgDetails();
-          }
+          }            
         }))
       .subscribe(data => {
+        const channelId = data.hashTagId || data.rootOrgId;
+        this.cacheService.set('channelId', channelId);        
+        this.cslFrameworkService.setDefaultFWforCsl('',channelId );
         this.tenantService.getTenantInfo(this.userService.slug);
         this.tenantService.initialize();
         this.setPortalTitleLogo();
@@ -386,6 +453,7 @@ export class AppComponent implements OnInit, OnDestroy {
         localStorage.setItem('joyThemePopup', 'true');
         this.joyThemePopup();
         this.changeDetectorRef.detectChanges();
+        this.cslFrameworkService.setTransFormGlobalFilterConfig(channelId);
       }, error => {
         this.initApp = true;
         this.changeDetectorRef.detectChanges();

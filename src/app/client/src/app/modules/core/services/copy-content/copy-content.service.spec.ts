@@ -17,7 +17,7 @@ describe('CopyContentService', () => {
                     COPY: {}
                 },
                 QUESTIONSET: {
-                    "COPY": "questionset/v1/copy"
+                    "COPY": "questionset/v2/copy"
                 }
             }
         }
@@ -283,7 +283,7 @@ describe('CopyContentService', () => {
                             }
                         }
                     },
-                    url: 'questionset/v1/copy' + '/' + 'sample-id'
+                    url: 'questionset/v2/copy' + '/' + 'sample-id'
                 });
                 done();
             });

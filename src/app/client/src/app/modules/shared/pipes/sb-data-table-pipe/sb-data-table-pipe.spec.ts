@@ -34,4 +34,10 @@ describe('SbDataTablePipe', () => {
     const transformedValue = pipe.transform(emptyValue, 'date');
     expect(transformedValue).toEqual('');
   });
+
+  it('should return value string when type is not provided', () => {
+    const value = 'Test Value';
+    const result = pipe.transform(value, undefined);
+    expect(result).toBe(value);
+  });
 });

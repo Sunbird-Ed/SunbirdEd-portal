@@ -10,6 +10,7 @@ import { WorkSpaceService } from '../../../services';
 import { TelemetryService, IInteractEventEdata } from '@sunbird/telemetry';
 import { combineLatest, of, throwError } from 'rxjs';
 import { map, mergeMap, tap, delay, first } from 'rxjs/operators';
+import { CslFrameworkService } from '../../../../public/services/csl-framework/csl-framework.service';
 jQuery.fn.iziModal = iziModal;
 
 /**
@@ -33,6 +34,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   public ownershipType: Array<string>;
   public queryParams: object;
   public videoMaxSize: any;
+  public fwCategoriAsNames: any;
   contentEditorURL: string = (<HTMLInputElement>document.getElementById('contentEditorURL')) ?
   (<HTMLInputElement>document.getElementById('contentEditorURL')).value : '';
   cloudProvider: string = (<HTMLInputElement>document.getElementById('cloudProvider')) ?
@@ -47,7 +49,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     private userService: UserService, private _zone: NgZone, private renderer: Renderer2,
     private tenantService: TenantService, private telemetryService: TelemetryService, private router: Router,
     private navigationHelperService: NavigationHelperService, private workspaceService: WorkSpaceService,
-    private frameworkService: FrameworkService
+    private frameworkService: FrameworkService,
+    private cslFrameworkService: CslFrameworkService
   ) {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     this.buildNumber = buildNumber ? buildNumber.value : '1.0';
@@ -56,6 +59,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     this.portalVersion = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
     this.videoMaxSize = (<HTMLInputElement>document.getElementById('videoMaxSize')) ?
       (<HTMLInputElement>document.getElementById('videoMaxSize')).value : '100';
+    this.fwCategoriAsNames = this.cslFrameworkService?.getAllFwCatName();
   }
   ngOnInit() {
     this.userProfile = this.userService.userProfile;
@@ -215,6 +219,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     window.config.lock = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     window.config.videoMaxSize = this.videoMaxSize;
     window.config.cloudStorage.provider = this.cloudProvider;
+    window.config.contentFields = this.fwCategoriAsNames.join();
   }
   /**
    * checks the permission using state, status and userId

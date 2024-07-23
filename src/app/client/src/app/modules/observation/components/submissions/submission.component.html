@@ -1,54 +1,66 @@
-<sui-accordion class="styled fluid sb-accordion sb-new-theme-accordion submissions">
-    <sui-accordion-panel class="sb-accordion-title submission-title">
-        <div title class="sb-mat-accordion__title d-flex flex-ai-center flex-jc-space-between" tabindex="0" (click)="isOpen = !isOpen" [attr.aria-expanded]="isOpen" attr.aria-label="{{submission?.title}} accordion" aria-controls="submissionTitle">
-            <span>{{submission?.title}}</span>
-            <div>
-                <i class="dropdown large icon" role="img" title="expand"></i>
-                <div class="ui dropdown" suiDropdown *ngIf="allowMultipleAssessemts" tabindex="0" (click)="$event.stopPropagation()">
-                    <i class="ellipsis vertical icon large"
-                        *ngIf="submission.status != 'completed' && submission.status !='ratingPending'"></i>
-                    <div class="menu" suiDropdownMenu>
-                        <div class="item" tabindex="0" (click)="actionEvent(submission,action.type)" *ngFor="let action of actions">
-                            {{action.name}}
-                            <span class="description"><i class="{{action.icon}}"></i></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div content class="content-submission sb-bg-color-white pt-0 pb-8 sb-g-col-xs-12" role="region" id="submissionTitle" aria-labelledby="submissionTitle">
-            <div *ngFor="let evidance of submission?.evidencesStatus" class="evidences-list cc-player__content-header sb-g ">
+<mat-accordion class="submissions mat-accordion sb-mat-accordion">
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title color="primary">
+                {{submission?.title}}
+            </mat-panel-title>
+            <button mat-icon-button [matMenuTriggerFor]="menu" *ngIf="allowMultipleAssessemts" tabindex="0"
+                (click)="$event.stopPropagation()">
+                <mat-icon
+                    *ngIf="submission.status != 'completed' && submission.status !='ratingPending'">more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="actionEvent(submission,action.type)" *ngFor="let action of actions">
+                    <span>{{action.name}}</span>
+                    <span class="description"><i class="{{action.icon}}"></i></span>
+                </button>
+            </mat-menu>
+        </mat-expansion-panel-header>
+        <div class="pt-0 pb-8 sb-g-col-xs-12" role="region" id="submissionTitle"
+            aria-labelledby="submissionTitle">
+            <div *ngFor="let evidance of submission?.evidencesStatus"
+                class="evidences-list cc-player__content-header sb-g ">
                 <div class=" sb-g-col-xs-12 sb-g-col-sm-12 sb-g-col-lg-8">
                     <div class="content-header__title font-weight-bold ellipsis text-left sb-g-col-xs-12">
                         <div class="white-space-wrap">{{evidance.name}} </div>
-                        <small *ngIf="evidance.status == 'notstarted'" class="txt-transform">{{resourceService?.frmelmnts.lbl.dashboardsortbystatus}} :
+                        <small *ngIf="evidance.status == 'notstarted'"
+                            class="txt-transform">{{resourceService?.frmelmnts.lbl.dashboardsortbystatus}} :
                             {{resourceService.frmelmnts?.lbl?.notstarted}}</small>
-                        <small *ngIf="evidance.status != 'notstarted' && !evidance?.notApplicable" class="txt-transform">{{resourceService?.frmelmnts.lbl.dashboardsortbystatus}} : {{evidance.status}}</small>
-                        <small *ngIf="evidance?.notApplicable" class="txt-transform">{{resourceService?.frmelmnts.lbl.dashboardsortbystatus}} : {{resourceService.frmelmnts.lbl.notApplicable}}</small>
+                        <small *ngIf="evidance.status != 'notstarted' && !evidance?.notApplicable"
+                            class="txt-transform">{{resourceService?.frmelmnts.lbl.dashboardsortbystatus}} :
+                            {{evidance.status}}</small>
+                        <small *ngIf="evidance?.notApplicable"
+                            class="txt-transform">{{resourceService?.frmelmnts.lbl.dashboardsortbystatus}} :
+                            {{resourceService.frmelmnts.lbl.notApplicable}}</small>
                     </div>
                 </div>
                 <div class="certified-course__btn center-align sb-g-col-xs-12 sb-g-col-sm-12 sb-g-col-lg-4 d-flex">
-                    <button *ngIf="evidance?.status === 'notstarted'"
-                        tabindex="0" (click)="open(submission.submissionNumber,evidance)"
+                    <button *ngIf="evidance?.status === 'notstarted'" tabindex="0"
+                        (click)="open(submission.submissionNumber,evidance)"
                         class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.btn?.start}}
                     </button>
-                    <button *ngIf="evidance?.status === 'draft'" tabindex="0" (click)="open(submission.submissionNumber,evidance)"
-                        class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.lbl?.continue }}
-                    </button>
-                    <button *ngIf="!evidance?.notApplicable && (evidance?.status === 'completed' || evidence?.status === 'ratingPending')"
+                    <button *ngIf="evidance?.status === 'draft'" tabindex="0"
                         (click)="open(submission.submissionNumber,evidance)"
-                        class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.lbl?.view }}
+                        class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.lbl?.continue
+                        }}
                     </button>
-                    <button *ngIf="evidance?.notApplicable"
-                        disabled
-                        class="sb-btn sb-btn-normal sb-btn-disabled ml-auto textbook__addbtn">{{resourceService.frmelmnts?.btn?.start }}
+                    <button
+                        *ngIf="!evidance?.notApplicable && (evidance?.status === 'completed' || evidence?.status === 'ratingPending')"
+                        (click)="open(submission.submissionNumber,evidance)"
+                        class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.lbl?.view
+                        }}
                     </button>
-                    <button *ngIf="(evidance?.canBeNotAllowed && evidance?.status !== 'completed' && evidence?.status !== 'ratingPending') || (evidance?.notApplicable)" 
+                    <button *ngIf="evidance?.notApplicable" disabled
+                        class="sb-btn sb-btn-normal sb-btn-disabled ml-auto textbook__addbtn">{{resourceService.frmelmnts?.btn?.start
+                        }}
+                    </button>
+                    <button
+                        *ngIf="(evidance?.canBeNotAllowed && evidance?.status !== 'completed' && evidence?.status !== 'ratingPending') || (evidance?.notApplicable)"
                         (click)="actionEvent(evidance,'markEcmNotApplicable')"
                         class="sb-btn sb-btn-secondary sb-btn-normal ml-8 textbook__addbtn">{{resourceService.frmelmnts.lbl.notApplicable}}
                     </button>
                 </div>
             </div>
         </div>
-    </sui-accordion-panel>
-</sui-accordion>
+    </mat-expansion-panel>
+</mat-accordion>

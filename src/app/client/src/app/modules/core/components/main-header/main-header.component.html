@@ -437,7 +437,7 @@
             {{resourceService.frmelmnts?.lbl?.manage}}
           </li>
 
-          <li class="list-item" tabindex="0" (click)="toggleSideMenu(false)" *ngIf='isUciConfigured && !isDesktopApp && permissionService.permissionAvailable'
+          <li class="list-item" tabindex="0" (click)="toggleSideMenu(false)" *ngIf="!isDesktopApp && permissionService.permissionAvailable && isUciEnabled === 'true'"
             appPermission [permission]='orgAdminRole' routerLink="uci-admin">
             <i class="icon-svg icon-svg--sm icon-manage mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#Admin-icon"></use>

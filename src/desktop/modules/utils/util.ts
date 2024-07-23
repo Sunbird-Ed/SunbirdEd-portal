@@ -1,5 +1,5 @@
 const Hashids = require('hashids/cjs');
-import * as UUID from 'uuid';
+import { v4 as UUID } from 'uuid';
 
 export class Util {
     public static hash(text: string): string {

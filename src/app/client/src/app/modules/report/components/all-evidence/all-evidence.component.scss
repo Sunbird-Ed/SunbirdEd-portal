@@ -79,7 +79,7 @@
   mat-ink-bar.mat-ink-bar {
     display: none !important;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
   .mat-tab-label-active {
     border-bottom: 2px solid var(--primary-color) !important;
   }

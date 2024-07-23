@@ -17,6 +17,14 @@ export class OtpService {
     return this.learnerService.post(options);
   }
 
+  generateAnonymousOTP(data) {
+    const options = {
+      url: this.configService.urlConFig.URLS.OTP.ANONYMOUS.GENERATE_USERDELETE,
+      data: data
+    };
+    return this.learnerService.post(options);
+  }
+
   verifyOTP(data) {
     const options = {
       url: this.configService.urlConFig.URLS.OTP.VERIFY,

@@ -117,10 +117,10 @@ export const OtpComponentMockResponse = {
         },
         'status': 400,
         'statusText': 'Bad Request',
-        'url': 'http://localhost:3000/learner/otp/v1/verify',
+        'url': 'http://localhost:3000/learner/otp/v2/verify',
         'ok': false,
         'name': 'HttpErrorResponse',
-        'message': 'Http failure response for http://localhost:3000/learner/otp/v1/verify: 400 Bad Request',
+        'message': 'Http failure response for http://localhost:3000/learner/otp/v2/verify: 400 Bad Request',
         'error': {
             'id': 'api.otp.verify',
             'ver': 'v1',

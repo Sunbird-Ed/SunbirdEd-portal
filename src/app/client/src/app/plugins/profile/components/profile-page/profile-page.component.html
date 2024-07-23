@@ -165,30 +165,14 @@
     <div class="ui container">
       <div class="d-flex flex-jc-center flex-ai-center flex-dc" *ngIf="userProfile && userProfile.framework ">
         <div class="max-w-400 computer only">
-          <div class="mb-15 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.board)">
-            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.boards | transposeTerms: 'frmelmnts.lbl.boards' : resourceService?.selectedLang}} :</span>
-            <span class="fmedium font-w-bold pl-4"
-              *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board)}}</span>
-          </div>
-          <div class="mb-15 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.medium)">
-            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}} :</span>
-            <span class="fmedium font-w-bold pl-4"
-              *ngIf="userProfile.framework">{{convertToString(userProfile.framework.medium)}}</span>
-          </div>
-          <div class="mb-15 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.gradeLevel)">
-            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.classes | transposeTerms: 'frmelmnts.lbl.classes' : resourceService?.selectedLang}} :</span>
-            <span class="fmedium font-w-bold pl-4"
-              *ngIf="userProfile.framework">{{convertToString(userProfile.framework.gradeLevel)}}</span>
-          </div>
-          <div class="d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.subject)">
-            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.subjects | transposeTerms: 'frmelmnts.lbl.subjects' : resourceService?.selectedLang}} :</span>
-            <span class="fmedium font-w-bold pl-4"
-              *ngIf="userProfile.framework">{{convertToString(userProfile.framework.subject)}}</span>
+          <div class="mb-15 d-flex flex-jc-center flex-w-wrap flex-ai-center" *ngFor="let category of transormUserProfile">
+            <span class="fmedium white-space-nowrap">{{ (resourceService?.frmelmnts?.lbl[category?.code] | transposeTerms: resourceService?.frmelmnts?.lbl[category?.code] : resourceService?.selectedLang) || category?.labels }}:</span>
+            <span class="fmedium font-w-bold pl-4" *ngFor="let item of category?.values let last=last" >{{item}}{{!last && category.values.length > 1 ? ',' : ''}}</span>
           </div>
         </div>
         <button class="sb-btn sb-btn-primary sb-btn-normal my-16 sb-btn-border computer only"
           appTelemetryInteract appOnlineOnly
-          [telemetryInteractEdata]="myFrameworkEditEdata" attr.aria-label="{{resourceService.frmelmnts.lbl.edit}} {{resourceService.frmelmnts.lbl.boards}},{{resourceService.frmelmnts.lbl.medium}},{{resourceService.frmelmnts.lbl.classes}},{{convertToString(userProfile.framework.gradeLevel)}},{{resourceService.frmelmnts.lbl.subjects}}"
+          [telemetryInteractEdata]="myFrameworkEditEdata" attr.aria-label="{{resourceService.frmelmnts.lbl.edit}} {{resourceService.frmelmnts.lbl[frameworkCategoriesList[0]]}},{{resourceService.frmelmnts.lbl[frameworkCategoriesList[1]]}},{{resourceService.frmelmnts.lbl[frameworkCategoriesList[2]]}},{{convertToString(userProfile?.framework?.[frameworkCategoriesList[2]])}},{{resourceService.frmelmnts.lbl[frameworkCategoriesList[3]]}}"
           (click)="showEdit = !showEdit" tabindex="0">{{resourceService.frmelmnts.lbl.edit}}</button>
       </div>
     </div>
@@ -196,25 +180,10 @@
 
     <!-- User info mobile view starts-->
     <div class="max-w-300 mobile only">
-      <div class="mb-15 d-flex flex-ai-center flex-dc">
-        <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.boards | transposeTerms: 'frmelmnts.lbl.boards' : resourceService?.selectedLang}}:</span>
-        <span class="fmedium font-w-bold text-center"
-          *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board)}}</span>
-      </div>
-      <div class="mb-15 d-flex flex-ai-center flex-dc">
-        <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}} :</span>
-        <span class="fmedium font-w-bold text-center"
-          *ngIf="userProfile.framework">{{convertToString(userProfile.framework.medium)}}</span>
-      </div>
-      <div class="mb-15 d-flex flex-ai-center flex-dc">
-        <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.classes | transposeTerms: 'frmelmnts.lbl.classes' : resourceService?.selectedLang}} :</span>
-        <span class="fmedium font-w-bold text-center"
-          *ngIf="userProfile.framework">{{convertToString(userProfile.framework.gradeLevel)}}</span>
-      </div>
-      <div class="mb-15 d-flex flex-ai-center flex-dc">
-        <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.subjects | transposeTerms: 'frmelmnts.lbl.subjects' : resourceService?.selectedLang}} :</span>
-        <span class="fmedium font-w-bold text-center"
-          *ngIf="userProfile.framework">{{convertToString(userProfile.framework.subject)}}</span>
+
+      <div class="mb-15 d-flex flex-ai-center flex-w-wrap flex-jc-center" *ngFor="let category of transormUserProfile">
+        <span class="fmedium mb-8 white-space-nowrap">{{ (resourceService?.frmelmnts?.lbl[category?.code] | transposeTerms: resourceService?.frmelmnts?.lbl[category?.code] : resourceService?.selectedLang) || category?.labels }}: </span>
+        <span class="fmedium font-w-bold text-center" *ngFor="let item of category?.values let last=last" >{{item}}{{!last && category.values.length > 1 ? ',' : ''}}</span>
       </div>
       <div class="d-flex flex-ai-center flex-jc-center" appTelemetryInteract
         [telemetryInteractEdata]="myFrameworkEditEdata" tabindex="0"

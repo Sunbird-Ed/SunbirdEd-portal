@@ -78,21 +78,20 @@
               <div class="sb-prominent-filter-field" *ngFor="let facet of facets | sortBy:'index':'asc'">
                 <!-- <label class="fnormal font-weight-bold d-flex">{{facet.label}} </label> -->
                 <label *ngIf="facet.name !== 'mediaType'">
-                  <sui-multi-select *ngIf="facet.name !== 'mediaType'" [hasLabels]="false"
+                  <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+                    <mat-select *ngIf="facet.name !== 'mediaType'" [hasLabels]="false"
                     defaultSelectionText={{facet.label}} zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
-                    labelField="name" valueField="name" class="ui selection dropdown sbt-dropdown-tick multiple"
-                    [(ngModel)]="selectedFilters[facet.name]" (ngModelChange)="onChange(facet)">
+                    labelField="name" valueField="name" class="sbt-dropdown-tick multiple"
+                    [(ngModel)]="selectedFilters[facet.name]" (ngModelChange)="onChange(facet)" multiple>
                     <div *ngIf="facet.name !== 'gradeLevel' else gradeLevel">
-                      <sui-select-option class="text-capitalize"
-                        *ngFor="let dropdownValue of facet.values | sortBy:'name':'asc'" [value]="dropdownValue">
-                      </sui-select-option>
+                      <mat-option *ngFor="let dropdownValue of facet.values | sortBy:'name':'asc'" [value]="dropdownValue">{{dropdownValue}}</mat-option>
                     </div>
                     <ng-template #gradeLevel>
-                      <sui-select-option class="text-capitalize" *ngFor="let dropdownValue of facet.values"
-                        [value]="dropdownValue">
-                      </sui-select-option>
+                      <mat-option class="text-capitalize" *ngFor="let dropdownValue of facet.values"
+                      [value]="dropdownValue">{{dropdownValue}}</mat-option>
                     </ng-template>
-                  </sui-multi-select>
+                    </mat-select>
+                  </mat-form-field>
                 </label>
                 <!-- <div *ngIf="facet.name === 'mediaType'" class="sb-class-bar sb-bg-color-gray-0">
                   <sb-library-filters [list]="facet.mimeTypeList" [layout]="filterLayout.ROUND"

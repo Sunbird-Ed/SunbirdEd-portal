@@ -17,13 +17,14 @@
             </div>
             <form class="sb-form" [formGroup]="userDetailsForm">
               <div *ngIf="processValidation && !(extIdVerified || extIdFailed)" class="sb-field-group mb-16 text-left">
-                <div class="sb-field" *ngIf="showStateDropdown">
-                  <label>{{resourceService?.frmelmnts?.lbl?.state}}</label>
-                  <sui-select id="stateField" [isSearchable]="false" class="selection" [options]="options"
-                    formControlName="state">
-                    <sui-select-option *ngFor="let option of channelData" [value]="option"></sui-select-option>
-                  </sui-select>
-                </div>
+                <mat-form-field  appearance="fill" class="sb-mat__dropdown w-100" *ngIf="showStateDropdown">
+                  <mat-label>{{resourceService?.frmelmnts?.lbl?.state}}</mat-label>
+                  <mat-select formControlName="state" id="stateField" [isSearchable]="false" class="selection" [options]="options">
+                    <mat-option *ngFor="let option of channelData" [value]="option">
+                      {{option}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
                 <div class="sb-field">
                   <label class="required">{{labels?.fieldLabel}}</label>
                   <input #extIdInputField type="text" required name="extId" placeholder="For example, ER12345"

@@ -4,7 +4,7 @@ import * as os from "os";
 import * as path from "path";
 import * as fse from "fs-extra";
 import { manifest } from "../../manifest";
-import * as uuid from "uuid";
+import {v1 as uuid} from "uuid";
 import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import { logger } from "@project-sunbird/logger";
 const fileSDK = containerAPI.getFileSDKInstance(manifest.id);
@@ -241,7 +241,7 @@ export class ExportContent {
       id: "content.archive",
       ver: manifestJson.pkgVersion || "1.0",
       ts: new Date(),
-      params: { resmsgid: uuid.v1() },
+      params: { resmsgid: uuid() },
       archive: {
         count: _.get(manifestJson, "archive.items.length") || 1,
         ttl: 24,

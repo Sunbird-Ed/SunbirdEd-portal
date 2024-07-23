@@ -7,7 +7,7 @@
   "default_userid": "public",
   "default_did": "sunbird-portal",
   "env": "portal-backend",
-  "learnerServiceEnv": "learner-service",
+  "learnerServiceEnv": "userorg-service",
   "contentServiceEnv": "content-service",
   "URL": {
     "data/v1/role/read": {
@@ -17,10 +17,10 @@
       "message": "Calling role read api to get permisions",
       "env": "user"
     },
-    "user/v1/read": {
+    "user/v5/read": {
       "title": "Read user profile",
       "category": "userread",
-      "url": "user/v1/read",
+      "url": "user/v5/read",
       "message": "Calling get user profile",
       "env": "user"
     },
@@ -52,10 +52,10 @@
       "message": "Calling get user profile",
       "env": "user"
     },
-    "user/v1/create": {
+    "user/v1/sso/create": {
       "title": "Create user profile",
       "category": "createuser",
-      "url": "user/v1/create",
+      "url": "user/v1/sso/create",
       "message": "Calling create user",
       "env": "user"
     },

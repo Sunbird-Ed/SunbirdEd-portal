@@ -66,8 +66,7 @@ export class SlickComponent implements OnInit {
         const clientWidth = this.horizontalScrollElem?.nativeElement?.clientWidth;
         this.horizontalScrollElem?.nativeElement?.scrollTo({
           left:
-            this.horizontalScrollElem?.nativeElement?.scrollLeft - clientWidth,
-          behavior: 'smooth',
+            this.horizontalScrollElem?.nativeElement?.scrollLeft - clientWidth
         });
       }
     }
@@ -79,8 +78,7 @@ export class SlickComponent implements OnInit {
         const clientWidth = this.horizontalScrollElem?.nativeElement?.clientWidth;
         this.horizontalScrollElem?.nativeElement?.scrollTo({
           left:
-            this.horizontalScrollElem?.nativeElement?.scrollLeft + clientWidth,
-          behavior: 'smooth',
+            this.horizontalScrollElem?.nativeElement?.scrollLeft + clientWidth
         });
       }
     }
@@ -112,7 +110,6 @@ export class SlickComponent implements OnInit {
     const clientWidth = this.horizontalScrollElem?.nativeElement?.clientWidth;
     this.horizontalScrollElem?.nativeElement?.scrollTo({
       left: (index) * clientWidth,
-      behavior: 'smooth',
     });
   }
 

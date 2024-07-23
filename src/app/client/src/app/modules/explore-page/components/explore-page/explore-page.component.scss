@@ -20,8 +20,14 @@
     .preference {
       position: relative;
       z-index: 1;
+      flex: 1;
       .header {
         font-size: calculateRem(16px);
+        font-weight: 500;
+      }
+
+      .value {
+        font-weight: 500;
       }
       .preference-icon{
         position: relative;
@@ -60,6 +66,9 @@
       z-index: 0;
       display: block !important;
     }
+}
+.featured-text {
+  font-weight: 500;
 }
 .home-container {
   padding:0;

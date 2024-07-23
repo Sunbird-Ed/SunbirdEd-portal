@@ -20,9 +20,9 @@
             <h5 class="sb-color-primary font-weight-bold mb-0 sb__ellipsis" tabindex="0" role="heading" aria-level="2">
               {{contentData.name}}</h5>
             <div class="content-header__info mt-4">
-              <span class="fnormal" *ngIf="contentData?.subject">{{contentData?.subject}}</span>
-              <span class="dot-divider" *ngIf="contentData.gradeLevel"></span>
-              <span class="fnormal" *ngIf="contentData?.gradeLevel">{{contentData?.gradeLevel}}</span>
+              <span class="fnormal" *ngIf="contentData?.[frameworkCategoriesList[3]]">{{contentData?.[frameworkCategoriesList[3]]}}</span>
+              <span class="dot-divider" *ngIf="contentData?.[frameworkCategoriesList[2]]"></span>
+              <span class="fnormal" *ngIf="contentData?.[frameworkCategoriesList[2]]">{{contentData?.[frameworkCategoriesList[2]]}}</span>
             </div>
           </div>
         </div>
@@ -62,7 +62,7 @@
         <div class="cc-player sb-g">
           <section class="sb-g-col-xs-12 sb-g-col-md-12 sb-g-col-lg-12 sb-g-col-xxxl-16 cc-player__video"
             [appTelemetryImpression]="telemetryImpression">
-            <app-contentplayer-page [playerConfig]="playerConfig" [tocPage]="true" [contentDetails]="contentData"
+            <app-contentplayer-page [playerConfig]="playerConfig" [tocPage]="true" [contentDetails]="contentData" [collectionData]="contentData"
               [isContentPresent]="isContentPresent" [objectRollUp]="objectRollup">
             </app-contentplayer-page>
           </section>

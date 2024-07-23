@@ -21,6 +21,7 @@ import { ContentManagerService } from '../../../public/module/offline/services';
 import { CollectionPlayerComponent } from './collection-player.component';
 import { mockResponse, collectionTree, telemetryErrorData, requiredProperties, contentHeaderData, userProfile } from './collection-player.component.spec.data';
 import { partial } from 'lodash';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 describe('collection player component has to be created', () => {
   let component: CollectionPlayerComponent;
@@ -54,7 +55,7 @@ describe('collection player component has to be created', () => {
     getPublicShareUrl: jest.fn()
   };
   const mockConfigService: Partial<ConfigService> = {
-    
+
     appConfig: {
       PLAYER_CONFIG: {
         MIME_TYPE: {
@@ -113,6 +114,10 @@ describe('collection player component has to be created', () => {
   const mockOfflineCardService: Partial<OfflineCardService> = {
     isYoutubeContent: jest.fn()
   };
+  const mockCslFrameworkService: Partial<CslFrameworkService> = {
+    getFrameworkCategories: jest.fn(),
+    setDefaultFWforCsl: jest.fn()
+  };
 
   beforeAll(() => {
     component = new CollectionPlayerComponent(
@@ -141,6 +146,7 @@ describe('collection player component has to be created', () => {
       mockConnectionService as ConnectionService,
       mockTelemetryService as TelemetryService,
       mockOfflineCardService as OfflineCardService,
+      mockCslFrameworkService as CslFrameworkService,
     );
   });
 

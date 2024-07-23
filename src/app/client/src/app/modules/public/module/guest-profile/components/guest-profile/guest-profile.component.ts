@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LayoutService } from '../../../../../shared/services/layoutconfig/layout.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CslFrameworkService } from '../../../../../public/services/csl-framework/csl-framework.service';
 
 const USER_DETAILS_KEY = 'guestUserDetails';
 @Component({
@@ -33,6 +34,9 @@ export class GuestProfileComponent implements OnInit {
   deviceProfile;
   isDesktop = false;
   userRole: string;
+  transFormGuestUser;
+  frameworkCategories;
+  frameworkCategoriesObject;
   avatarConfig = {
     size: this.config.constants.SIZE.LARGE,
     view: this.config.constants.VIEW.VERTICAL,
@@ -53,10 +57,13 @@ export class GuestProfileComponent implements OnInit {
     public router: Router,
     public navigationHelperService: NavigationHelperService,
     public toasterService: ToasterService,
-    public config: ConfigService
+    public config: ConfigService,
+    private cslFrameworkService: CslFrameworkService
   ) { }
 
   ngOnInit() {
+    this.frameworkCategories = this.cslFrameworkService.getAllFwCatName();
+    this.frameworkCategoriesObject = this.cslFrameworkService.getFrameworkCategoriesObject();
     this.isDesktop = this.utilService.isDesktopApp;
     this.getGuestUser();
     this.initLayout();
@@ -67,6 +74,7 @@ export class GuestProfileComponent implements OnInit {
   getGuestUser() {
     this.userService.getGuestUser().subscribe((response) => {
       this.guestUser = response;
+      this.transFormGuestUser = this.cslFrameworkService.frameworkLabelTransform(this.frameworkCategoriesObject, this.guestUser);
       this.userRole = this.isDesktop && _.get(this.guestUser, 'role') ? this.guestUser.role : localStorage.getItem('guestUserType');
     });
   }

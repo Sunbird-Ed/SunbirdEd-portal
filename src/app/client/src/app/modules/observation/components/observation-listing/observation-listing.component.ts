@@ -42,6 +42,7 @@ import {
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
 import {Location} from '@angular/common';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 @Component({
   selector: 'app-observation-listing',
@@ -79,6 +80,7 @@ export class ObservationListingComponent
   showEditUserDetailsPopup: any = true;
   payload: any;
   public limit  = 50;
+  public categoryKeys;
   constructor(
     public searchService: SearchService,
     public router: Router,
@@ -105,6 +107,7 @@ export class ObservationListingComponent
     config: ConfigService,
     private observationUtil: ObservationUtilService,
     private location: Location,
+    public cslFrameworkService: CslFrameworkService
   ) {
     this.config = config;
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -113,6 +116,7 @@ export class ObservationListingComponent
 
   async ngOnInit() {
     this.initLayout();
+    this.categoryKeys = this.cslFrameworkService.transformDataForCC();
     this.showEditUserDetailsPopup = await this.observationUtil.getProfileInfo();
      if (!this.showEditUserDetailsPopup) {
        const metaData = this.observationUtil.getAlertMetaData();
@@ -131,7 +135,7 @@ export class ObservationListingComponent
           className: 'popup-btn'
         }
         );
-      const returnData = await this.observationUtil.showPopupAlert(metaData);
+      const returnData = await this.observationUtil.showPopupAlert(metaData,'250px');
       if (returnData) {
         const queryParam = {
           showEditUserDetailsPopup: true
@@ -228,22 +232,22 @@ export class ObservationListingComponent
       const obj = {
         name: solution_name,
         contentType: 'Observation',
-        metaData: {
-          identifier: value.solutionId,
-        },
         entityType:value.entityType,
         identifier: value.solutionId,
         solutionId: value.solutionId,
         programId: value.programId,
-        medium: value.language,
+        metaData: {
+          identifier: value.solutionId,
+        },
         organization: value.creator,
         _id: value._id,
-        subject: subject
+        [this.categoryKeys[2].code]: value.language,
+        [this.categoryKeys[4].code]: value.programName,
       };
       if (value.creator && value.creator.length) {
         const creator: any = [];
         creator.push(value.creator);
-        obj['gradeLevel'] = creator;
+        obj[this.categoryKeys[3].code] = creator;
       }
       result.push(obj);
       this.contentList = result;
@@ -334,7 +338,7 @@ export class ObservationListingComponent
       solutionId: data.solutionId,
       observationId: data._id,
       solutionName: data.name,
-      programName: data.subject[0],
+      programName: data[this.categoryKeys[4].code],
       entityType:data.entityType
     };
     this.router.navigate(['observation/details'], {

@@ -86,7 +86,7 @@ export class QuestionnaireComponent
         this.evidence = data.result.assessment.evidences[0];
         this.evidence.startTime = Date.now();
         this.sections = this.evidence.sections;
-      },
+     },
       (error) => {}
     );
   }
@@ -198,7 +198,8 @@ export class QuestionnaireComponent
     alertMetaData.footer.className = 'double-btn';
 
     const response = await this.observationUtilService.showPopupAlert(
-      alertMetaData
+      alertMetaData,
+      '250px'
     );
     if (response) {
       this.canLeave = true;
@@ -230,7 +231,7 @@ export class QuestionnaireComponent
       });
       alertMetaData.footer.className = 'double-btn';
     }
-    return await this.observationUtilService.showPopupAlert(alertMetaData);
+    return await this.observationUtilService.showPopupAlert(alertMetaData,'250px');
   }
 
   scrollToContent(id) {

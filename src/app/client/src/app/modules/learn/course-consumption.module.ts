@@ -13,7 +13,7 @@ import { PlayerHelperModule } from '@sunbird/player-helper';
 import {
   SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
   SuiProgressModule, SuiRatingModule, SuiCollapseModule
-} from 'ng2-semantic-ui-v9';
+} from '@project-sunbird/ng2-semantic-ui';
 import { BatchDetailsComponent,  } from './components/batch/batch-details/batch-details.component';
 import { UnEnrollBatchComponent} from './components/batch/unenroll-batch/unenroll-batch.component';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';

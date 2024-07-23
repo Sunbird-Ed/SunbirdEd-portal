@@ -15,15 +15,15 @@ describe("SignupService", () => {
         urlConFig: {
             URLS: {
                 OTP: {
-                    GENERATE: "otp/v1/generate",
-                    VERIFY: "otp/v1/verify",
+                    GENERATE: "otp/v2/generate",
+                    VERIFY: "otp/v2/verify",
                     ANONYMOUS: {
-                        GENERATE: "anonymous/otp/v1/generate",
+                        GENERATE: "anonymous/otp/v2/generate",
                     },
                 },
                 USER: {
-                    GET_USER_BY_KEY: "user/v1/get",
-                    CHECK_USER_EXISTS: "user/v1/exists",
+                    GET_USER_BY_KEY: "user/v2/get",
+                    CHECK_USER_EXISTS: "user/v2/exists",
                     CREATE_V2: "user/v2/create",
                     SIGN_UP_V1: "user/v2/signup",
                     TNC_ACCEPT_LOGIN: "user/v2/accept/tnc",
@@ -53,7 +53,7 @@ describe("SignupService", () => {
     it("should call generate API ", () => {
         const params = { request: { key: "1242142", type: "phone" } };
         jest.spyOn(mockLearnerService, "post").mockReturnValue(of(mock.mockRes.generateOtpData));
-        const options = { url: "otp/v1/generate", data: params };
+        const options = { url: "otp/v2/generate", data: params };
         component.generateOTP(params);
         expect(mockLearnerService.post).toHaveBeenCalledWith(options);
     });
@@ -64,7 +64,7 @@ describe("SignupService", () => {
             .spyOn(mockLearnerService, "post")
             .mockReturnValue(of(mock.mockRes.generateAnonymousOtpData));
         const options = {
-            url: "anonymous/otp/v1/generate" + "?captchaResponse=" + "G-cjkdjflsfkja",
+            url: "anonymous/otp/v2/generate" + "?captchaResponse=" + "G-cjkdjflsfkja",
             data: params,
         };
         component.generateOTPforAnonymousUser(params, "G-cjkdjflsfkja");
@@ -77,7 +77,7 @@ describe("SignupService", () => {
             .spyOn(mockLearnerService, "post")
             .mockReturnValue(of(mock.mockRes.verifyOtpData));
         const options = {
-            url: "otp/v1/verify",
+            url: "otp/v2/verify",
             data: params,
         };
         component.verifyOTP(params);
@@ -87,7 +87,7 @@ describe("SignupService", () => {
     it("should call get User By Key API", () => {
         const params = { request: { key: "1242142", type: "phone" } };
         jest.spyOn(mockLearnerService, "get").mockReturnValue(of(mock.mockRes.getUserData));
-        const options = { url: "user/v1/get" };
+        const options = { url: "user/v2/get" };
         component.getUserByKey(params);
         expect(mockLearnerService.get).toHaveBeenCalled();
     });
@@ -95,7 +95,7 @@ describe("SignupService", () => {
     it("should call check user exists API", () => {
         const params = { request: { key: "1242142", type: "phone" } };
         jest.spyOn(mockLearnerService, "get").mockReturnValue(of(mock.mockRes.verifyUserData));
-        const options = { url: "user/v1/exists" };
+        const options = { url: "user/v2/exists" };
         component.checkUserExists(params);
         expect(mockLearnerService.get).toHaveBeenCalled();
     });

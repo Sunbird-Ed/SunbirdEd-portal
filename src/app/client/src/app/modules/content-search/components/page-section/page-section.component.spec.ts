@@ -7,6 +7,7 @@ import { of } from 'rxjs';
 import { Response } from './page-section.component.spec.data';
 import { PageSectionComponent } from './page-section.component'
 import { compilePipeFromMetadata } from '@angular/compiler';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 describe('PageSectionComponent', () => {
   let component: PageSectionComponent;
@@ -35,12 +36,18 @@ describe('PageSectionComponent', () => {
   const mockChangeDetectionRef: Partial<ChangeDetectorRef> = {
     detectChanges: jest.fn()
   };
+  const mockCslFrameworkService: Partial<CslFrameworkService> = {
+    getFrameworkCategories: jest.fn(),
+    setDefaultFWforCsl: jest.fn(),
+    transformDataForCC: jest.fn()
+  };
   beforeAll(() => {
     component = new PageSectionComponent(
       mockConfigService as ConfigService,
       mockActivatedRoute as ActivatedRoute,
       mockResourceService as ResourceService,
-      mockChangeDetectionRef as ChangeDetectorRef
+      mockCslFrameworkService as CslFrameworkService,
+      mockChangeDetectionRef as ChangeDetectorRef,
     );
   });
 
@@ -79,7 +86,7 @@ describe('PageSectionComponent', () => {
     component.selectedLanguageTranslation(obj);
     expect(component.slideConfig['rtl']).toBeFalsy();
   });
-  
+
   it('should call the playContent method', () => {
     component.playEvent = new EventEmitter<void>();
     jest.spyOn(component.playEvent, 'emit') as any;
@@ -98,7 +105,7 @@ describe('PageSectionComponent', () => {
     component.ngOnInit();
     expect(component.updateSlick).toHaveBeenCalled();
   });
-  
+
   it ('should call updateSlick on reInitSlick', () => {
     jest.spyOn(component, 'updateSlick');
     jest.spyOn(mockChangeDetectionRef, 'detectChanges');
@@ -109,7 +116,7 @@ describe('PageSectionComponent', () => {
     expect(component.refresh).toBeTruthy();
     expect(mockChangeDetectionRef.detectChanges).toHaveBeenCalled();
   });
-  
+
   it ('should emit view all', () => {
     jest.spyOn(component.viewAll, 'emit');
     component.navigateToViewAll({});
@@ -142,6 +149,6 @@ describe('PageSectionComponent', () => {
     const response = component.getObjectRollup(obj);
    expect(response).toEqual({ l1: 'do_112490751857254400131' });
   });
- 
+
 
 });

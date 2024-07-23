@@ -1,25 +1,32 @@
 <div class="sb-modal">
   <div class="popup">
-    <i class="close inside icon" (click)="modal?.deny()"></i>
-    <div class="popup-header" *ngIf="modal.context.data.content.title">
-      <span>{{ modal.context.data.content.title }}</span>
+    <div class="d-flex flex-dir-r flex-ai-center flex-jc-space-between">
+      <div class="popup-header" *ngIf="data.content?.title">
+        <span>{{ data.content?.title }}</span>
+      </div>
+      <button mat-icon-button class="close-icon ml-auto" (click)="dialogRef.close()">
+        <mat-icon>close</mat-icon>
+      </button>
     </div>
-    <div *ngIf="modal.context.data.content.body.type == 'checkbox'" class="popup-body-checkbox">
+
+    <div *ngIf="data.content?.body?.type == 'checkbox'" class="popup-body-checkbox">
       <input type="checkbox" id="myCheck" [(ngModel)]="isChecked" />
-      <label for="myCheck" innerHtml="{{modal.context.data.content.body.data| interpolate:'{instance}': instance | interpolate:'{instance}': instance}}"></label><br />
+      <label for="myCheck" innerHtml="{{data.content?.body?.data | interpolate:'{instance}': instance | interpolate:'{instance}': instance}}"></label><br />
     </div>
-    <div *ngIf="modal.context.data.content.body.type == 'text'">
-      <div class="popup-body" *ngIf="modal.context.data.content.body.data">
-        {{ modal.context.data.content.body.data }}
+    <div *ngIf="data.content?.body?.type == 'text'">
+      <div class="popup-body" *ngIf="data.content?.body?.data">
+        {{ data.content?.body?.data }}
       </div>
     </div>
 
-    <div class={{modal.context.data.footer.className}}>
-      <div *ngFor="let btn of modal.context.data.footer.buttons">
+    <div [class]="data.footer.className">
+      <div *ngFor="let btn of data.footer?.buttons">
         <button
-          [ngClass]="{'sb-btn sb-btn-normal sb-btn-primary':true,'sb-btn-disabled':isChecked == false && btn.type =='accept' && modal.context.data.content.body.type == 'checkbox'}"
-          [disabled]="!isChecked && modal.context.data.content.body.type == 'checkbox' && btn.type=='accept'"
-          tabindex="0" (click)="getMethod(btn)" autofocus>
+          class="sb-btn sb-btn-normal sb-btn-primary"
+          [ngClass]="{'sb-btn-disabled':!isChecked && btn.type =='accept' && data.content?.body?.type == 'checkbox'}"
+          [disabled]="!isChecked && data.content?.body?.type == 'checkbox' && btn.type=='accept'"
+          (click)="getMethod(btn)"
+          autofocus>
           {{ btn.buttonText }}
         </button>
       </div>

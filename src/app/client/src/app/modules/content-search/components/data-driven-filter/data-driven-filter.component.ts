@@ -8,6 +8,7 @@ import { FrameworkService, FormService, PermissionService, UserService, OrgDetai
 import * as _ from 'lodash-es';
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { IInteractEventEdata } from '@sunbird/telemetry';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 @Component({
   selector: 'app-data-driven-filter',
@@ -53,6 +54,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
   public resetFilterInteractEdata: IInteractEventEdata;
   telemetryCdata: Array<{}>;
   private selectedLanguage: string;
+  public frameworkCategoriesList;
   resourceDataSubscription: Subscription;
   // add langauge default value en
 
@@ -61,11 +63,12 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
     public frameworkService: FrameworkService, public formService: FormService,
     public userService: UserService, public permissionService: PermissionService, private utilService: UtilService,
     private browserCacheTtlService: BrowserCacheTtlService, private orgDetailsService: OrgDetailsService,
-    public layoutService: LayoutService) {
+    public layoutService: LayoutService, public cslFrameworkService: CslFrameworkService) {
     this.router.onSameUrlNavigation = 'reload';
   }
 
   ngOnInit() {
+    this.frameworkCategoriesList = this.cslFrameworkService?.getAllFwCatName();
         // screen size
         if (window.innerWidth <= 992 ) {
           this.isOpen = false;

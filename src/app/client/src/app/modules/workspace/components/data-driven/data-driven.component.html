@@ -1,37 +1,25 @@
 
   <div *ngIf="showFrameworkSelection" #formData>
   </div>
-  <sui-modal *ngIf="!showFrameworkSelection" [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'normal'"
-  class="sb-modal sb-course-modal" appBodyScroll (dismissed)="goToCreate();" #modal
-  [appTelemetryImpression]="telemetryImpression">
 
-  <i class="icon close" (click)="modal.deny('denied')" tabindex="0"></i>
-
-  <!-- This section will show as usual creation popup -->
-  <div>
-    <!--Header-->
-    <div class="sb-modal-header">
-      {{resourceService?.frmelmnts?.lbl[creationFormLable]}}
+  <app-modal-wrapper *ngIf="!showFrameworkSelection" [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [config]="{disableClose: true, size: 'small', panelClass: 'material-modal'}" #modal>
+    <ng-template sbModalContent>
+    <div mat-dialog-title class="flex-jc-center">
+      <div class="title" tabindex="0"> {{resourceService?.frmelmnts?.lbl[creationFormLable]}}</div>
+        <button aria-label="close dialog" mat-dialog-close class="close-btn" (click)="modal.deny('denied')"></button>
     </div>
-    <!--/Header-->
-  
-    <!--Content-->
-    <div class="sb-modal-content o-y-visible" *ngIf="formFieldProperties && categoryMasterList">
+    <mat-dialog-content class="o-y-visible pb-0" *ngIf="formFieldProperties && categoryMasterList">
       <app-content-creation-default-template #formData [formFieldProperties]="formFieldProperties"
         [categoryMasterList]="categoryMasterList">
       </app-content-creation-default-template>
-    </div>
-    <!--/Content-->
-  
-    <!--Actions-->
-    <div class="sb-modal-actions">
+    </mat-dialog-content>
+    <mat-dialog-actions class="sb-mat__modal__actions mt-16">
       <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" (click)="createContent(modal)">
         {{resourceService?.frmelmnts?.btn?.startcreating}}
       </button>
-    </div>
-  </div>
+    </mat-dialog-actions>
+    </ng-template>
+  </app-modal-wrapper>
 
-  <!--/Actions-->
-</sui-modal>
 
 

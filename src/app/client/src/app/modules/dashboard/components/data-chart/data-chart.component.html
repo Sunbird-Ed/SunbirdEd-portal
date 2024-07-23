@@ -109,42 +109,40 @@
 
 <ng-template #filterPopUpMat >
   <div class="sb-modal sb-modal-addsummary">
-    <div class="transition ui dimmer page modals active visible">
-      <div class="ui modal transition active visible normal">
-      <!--Header-->
-      <div mat-dialog-title class="mb-0">
-        <button aria-label="close dialog" (click)=" closeDialog()" mat-dialog-close class="mat-close-btn">
-          <span>&times;</span>
-        </button>
-      </div>
-      <!--/Header-->
-      <!--content-->
-      <mat-dialog-content align="left" >
-        <div class="sb-modal-header">
-          {{ resourceService?.frmelmnts?.lbl?.selectFilters }} 
-        </div>
-        <div class="sb-filter mb-10px">
-          <div class="sb-filter__container">
-            <div class="sb-filter__content" >
-              <app-filter [filterType] ="filterType" [resetFilters]="resetFilters"  [hideElements]="hideElements" [selectedFilter]="selectedFilters" [filters]="filters" (filterChanged)="filterChanged($event)" [chartData]="getChartData()"
-              [telemetryInteractObject]="telemetryInteractObject">
-            </app-filter>
-            </div>
 
-          </div>
-        </div>
-      </mat-dialog-content>
-       <!--/content-->
-      <!--Actions-->
-      <mat-dialog-actions align="center" class="mb-0">
-          <div class="sb-modal-actions p-0">
-            <button (click)="resetForm()" class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0">
-              {{resourceService?.frmelmnts?.btn?.reset}} {{resourceService?.frmelmnts?.lbl?.filters  }}
-            </button>
-          </div>
-      </mat-dialog-actions>
-      <!--/Actions-->
+    <!--Header-->
+    <div mat-dialog-title class="mb-0">
+      <button aria-label="close dialog" (click)=" closeDialog()" mat-dialog-close class="mat-close-btn ml-auto">
+        <span>&times;</span>
+      </button>
     </div>
-  </div>
+    <!--/Header-->
+    <!--content-->
+    <mat-dialog-content align="left" >
+      <div class="sb-modal-header">
+        {{ resourceService?.frmelmnts?.lbl?.selectFilters }} 
+      </div>
+      <div class="sb-filter mb-10px">
+        <div class="sb-filter__container">
+          <div class="sb-filter__content" >
+            <app-filter [filterType] ="filterType" [resetFilters]="resetFilters"  [hideElements]="hideElements" [selectedFilter]="selectedFilters" [filters]="filters" (filterChanged)="filterChanged($event)" [chartData]="getChartData()"
+            [telemetryInteractObject]="telemetryInteractObject">
+          </app-filter>
+          </div>
+
+        </div>
+      </div>
+    </mat-dialog-content>
+      <!--/content-->
+    <!--Actions-->
+    <mat-dialog-actions align="center" class="mb-0">
+        <div class="sb-modal-actions p-0">
+          <button (click)="resetForm()" class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0">
+            {{resourceService?.frmelmnts?.btn?.reset}} {{resourceService?.frmelmnts?.lbl?.filters  }}
+          </button>
+        </div>
+    </mat-dialog-actions>
+    <!--/Actions-->
+
 </div>
 </ng-template>

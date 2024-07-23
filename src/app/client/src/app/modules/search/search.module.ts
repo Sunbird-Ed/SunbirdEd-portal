@@ -3,7 +3,7 @@ import { SharedModule } from '@sunbird/shared';
 import { SearchRoutingModule } from './search-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SuiModule } from 'ng2-semantic-ui-v9';
+import { SuiModule } from '@project-sunbird/ng2-semantic-ui';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserSearchService } from './services';
 import { UserFilterComponent, UserEditComponent, UserDeleteComponent, HomeSearchComponent,

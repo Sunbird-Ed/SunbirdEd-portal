@@ -7,7 +7,7 @@ describe('FrameworkCatLabelTranslatePipe', () => {
   const mockResourceService: Partial<ResourceService> = {
     frmelmnts: {
       lbl:{
-        boards: "boards",
+        board: "board",
         medium: "medium",
         gradeLevel: "class",
         class: "class",
@@ -33,7 +33,7 @@ describe('FrameworkCatLabelTranslatePipe', () => {
     it('Should tranform category label', () => {
         const transformedResult = pipe.transform('board');
         expect(transformedResult).toBeDefined();
-        expect(transformedResult).toBe('boards');
+        expect(transformedResult).toBe('board');
     });
 
     it('Should return the label if translation is not available', () => {
@@ -43,9 +43,9 @@ describe('FrameworkCatLabelTranslatePipe', () => {
     });
 
     it('Should return translation if translation key is passed', () => {
-        const transformedResult = pipe.transform('frmelmnts.lbl.boards');
+        const transformedResult = pipe.transform('frmelmnts.lbl.board');
         expect(transformedResult).toBeDefined();
-        expect(transformedResult).toBe('boards');
+        expect(transformedResult).toBe('board');
     });
   });
 });

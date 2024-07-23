@@ -122,11 +122,13 @@
       </div>
     </div>
   </ng-template>
-  <sui-modal *ngIf="collectionListModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'large'"
-  class="sb-modal custom-lg-modal" (dismissed)="this.collectionListModal = false" #modal>
-		<div class="sb-modal-header">
-		</div>
-		<div class="sb-modal-content">
+  <app-modal-wrapper *ngIf="collectionListModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [config]="{disableClose: true, size: 'large', panelClass: 'material-modal custom-lg-modal', transitionDuration: 0}" (dismissed)="this.collectionListModal = false" #modal>
+  <ng-template sbModalContent>
+  <div mat-dialog-title class="mb-0">
+    <button aria-label="close dialog" mat-dialog-close class="close-btn"></button>
+  </div>
+  <mat-dialog-content>
       <h5 class="font-weight-bold sb-color-red">{{resourceService?.frmelmnts?.lbl?.linkedContentErrorMessage}}</h5>
 			<div class="sb-table-responsive">
 				<table aria-hidden="true" class="sb-table sb-table-striped sb-table-sortable sb-table-blue-strip">
@@ -152,11 +154,12 @@
           </tbody>
         </table>
 			</div>
-		</div>
-		<div class="sb-modal-actions">
-		<button class="sb-btn sb-btn-normal sb-btn-primary" (click)="modal.deny('denied')">
+  </mat-dialog-content>
+  <mat-dialog-actions class="sb-mat__modal__actions">
+    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="modal.deny('denied')">
 			{{resourceService?.frmelmnts?.btn?.close}}
 		</button>
-		</div>
-</sui-modal>
+  </mat-dialog-actions>
+  </ng-template>
+  </app-modal-wrapper>
 <app-contentlock-info-popup [content]="lockPopupData" (closeEvent)="onCloseLockInfoPopup($event)" *ngIf="showLockedContentModal"></app-contentlock-info-popup>

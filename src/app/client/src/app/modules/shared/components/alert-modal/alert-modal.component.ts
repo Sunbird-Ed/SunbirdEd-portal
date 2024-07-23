@@ -1,12 +1,8 @@
-import { Component } from '@angular/core';
-import { SuiModal, ComponentModalConfig, ModalSize } from 'ng2-semantic-ui-v9';
-import { Location, LocationStrategy } from '@angular/common';
-import {ResourceService} from '../../services';
+import { Component, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Location } from '@angular/common';
+import { ResourceService } from '../../services';
 import * as _ from 'lodash-es';
-
-interface IAlertModalContext {
-    data: any;
-}
 
 @Component({
   selector: 'app-alert-modal',
@@ -15,55 +11,29 @@ interface IAlertModalContext {
 })
 export class AlertModalComponent {
   isChecked = false;
-  public resourceService: ResourceService;
   instance: string;
-  constructor(public modal: SuiModal<IAlertModalContext, void, void>, private location: Location, resourceService: ResourceService, public locationStrategy: LocationStrategy) {
-    this.resourceService = resourceService;
+
+  constructor(
+    public dialogRef: MatDialogRef<AlertModalComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private location: Location,
+    public resourceService: ResourceService
+  ) {
     this.instance = _.upperCase(this.resourceService.instance);
-    this.locationStrategy.onPopState(() => {
-      this.modal.approve();
-   });
   }
 
-  getMethod(data) {
-    if (data.type == 'cancel') {
-      this.modal.deny(data.returnValue);
+
+  getMethod(data: any) {
+    if (data.type === 'cancel') {
+      this.dialogRef.close({ returnValue: data.returnValue, action: 'cancel' });
       return;
     }
-    this.modal.approve(data.returnValue);
+    this.dialogRef.close({ returnValue: data.returnValue, action: 'approve' });
   }
 
-  navigatePrevious(data) {
+  navigatePrevious(data: any) {
     data.footer.buttons[0].returnValue = false;
-    this.modal.deny(data.footer.buttons[0].returnValue);
+    this.dialogRef.close({ returnValue: data.footer.buttons[0].returnValue, action: 'deny' });
     this.location.back();
   }
-}
-
-export class AlertModal extends ComponentModalConfig<IAlertModalContext, void, void> {
-  constructor(data: any) {
-    super(AlertModalComponent, { data });
-
-    this.transitionDuration = 200;
-    this.isClosable = false;
-
-    switch (data.size) {
-      case 'mini':
-        this.size = ModalSize.Mini;
-        break;
-      case 'tiny':
-        this.size = ModalSize.Tiny;
-        break;
-      case 'small':
-        this.size = ModalSize.Small;
-        break;
-      case 'normal':
-        this.size = ModalSize.Normal;
-        break;
-      case 'large':
-        this.size = ModalSize.Large;
-        break;
-    }
-  }
-
 }

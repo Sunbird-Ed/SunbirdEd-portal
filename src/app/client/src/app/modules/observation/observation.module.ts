@@ -2,7 +2,7 @@ import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SuiModule, SuiModalModule, SuiSelectModule, SuiAccordionModule, SuiPopupModule, SuiDimmerModule, SuiTabsModule, SuiDropdownModule, SuiProgressModule, SuiRatingModule, SuiCollapseModule} from 'ng2-semantic-ui-v9';
+import { SuiModule, SuiModalModule, SuiSelectModule, SuiAccordionModule, SuiPopupModule, SuiDimmerModule, SuiTabsModule, SuiDropdownModule, SuiProgressModule, SuiRatingModule, SuiCollapseModule} from '@project-sunbird/ng2-semantic-ui';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ObservationRoutingModule } from './observation-routing.module';
 import { MlGuard } from './guards';
@@ -17,7 +17,7 @@ import {
 } from './components';
 import { LocationModule } from '../../plugins/location/location.module';
 import {PlayerHelperModule} from '../player-helper';
-
+import {MatMenuModule} from '@angular/material/menu';
 @NgModule({
   declarations: [ObservationListingComponent, ObservationDetailsComponent, AddEntityComponent, SubmissionsComponent,
     EntityListComponent, EditSubmissionComponent],
@@ -49,7 +49,8 @@ import {PlayerHelperModule} from '../player-helper';
     CoreModule,
     SharedFeatureModule,
     LocationModule,
-    PlayerHelperModule
+    PlayerHelperModule,
+    MatMenuModule
   ],
   providers: [MlGuard]
 

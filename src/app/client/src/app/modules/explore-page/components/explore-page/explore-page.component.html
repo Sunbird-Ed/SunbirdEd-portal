@@ -47,37 +47,18 @@
             <div *ngIf="getSelectedTab() === 'home'" (click)="showEdit = !showEdit" class="sb-section-preference"
               tabindex="0">
               <div class="preference">
-                <p class="header font-weight-bold mb-8">{{resourceService?.frmelmnts?.lbl?.hi}} {{userProfile?.firstName
+                <p class="header mb-8">{{resourceService?.frmelmnts?.lbl?.hi}} {{userProfile?.firstName
                   | titlecase}} {{userProfile?.lastName |
                   titlecase}}</p>
                 <p>{{resourceService?.frmelmnts?.lbl?.yourPreferences}}
                   <span class="preference-icon ml-4"><img src="assets/images/icon-info.svg"></span>
                 </p>
                 <p>
-                  <span class="mr-24">
-                    <span *ngIf="userPreference?.framework?.board?.length">{{resourceService?.frmelmnts?.lbl?.boards | transposeTerms: 'frmelmnts.lbl.boards': resourceService?.selectedLang}}:
-                    </span>
-                    <span *ngIf="userPreference?.framework?.board?.length"
-                      class="font-weight-bold">{{convertToString(userPreference?.framework?.board)}}</span>
+                  <span *ngFor="let category of transformUserPreference" class="mr-24">
+                  <span>{{ (resourceService?.frmelmnts?.lbl[category?.code] | transposeTerms: resourceService?.frmelmnts?.lbl[category?.code] : resourceService?.selectedLang) || category?.labels }}:
                   </span>
-
-                  <span class="mr-24">
-                    <span *ngIf="userPreference?.framework?.medium?.length">{{resourceService?.frmelmnts?.lbl?.medium | transposeTerms: 'frmelmnts.lbl.medium': resourceService?.selectedLang}}:
-                    </span>
-                    <span  *ngIf="userPreference?.framework?.medium?.length" class="font-weight-bold">{{userPreference?.framework?.medium[0]}}</span>
-                    <span class="font-weight-bold" *ngIf="userPreference?.framework?.medium?.length > 1">
-                      ... + {{userPreference?.framework?.medium?.length-1}}
-                    </span>
-                  </span>
-
-                  <span class="mr-24">
-                    <span
-                      *ngIf="userPreference?.framework?.gradeLevel?.length">{{resourceService?.frmelmnts?.lbl?.classes | transposeTerms: 'frmelmnts.lbl.classes': resourceService?.selectedLang}}:
-                    </span>
-                    <span *ngIf="userPreference?.framework?.gradeLevel?.length" class="font-weight-bold">{{userPreference?.framework?.gradeLevel[0]}}</span>
-                    <span class="font-weight-bold" *ngIf="userPreference?.framework?.gradeLevel?.length > 1">
-                      ... + {{userPreference?.framework?.gradeLevel?.length-1}}
-                    </span>
+                  <span class="value mb-8" *ngIf="category?.values?.length > 1">{{category?.values[0]}} ...+ {{category?.values?.length-1}}</span>
+                    <span class="value mb-8" *ngIf="category?.values?.length === 1">{{category?.values[0]}}</span>
                   </span>
                 </p>
               </div>
@@ -100,7 +81,7 @@
 
             <div
               *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0">
-              <div class="mt-16 font-weight-bold flarge pl-16 text-left">{{getBannerTitle(section?.section?.title)}}
+              <div class="featured-text mt-16 flarge pl-16 text-left">{{getBannerTitle(section?.section?.title)}}
               </div>
 
 
@@ -146,7 +127,7 @@
               [pillsMultiRow]="'auto_responsive'" [pillTextElipsis]="'two_line'"
               (select)="handleTargetedpillSelected($event)">
               <sb-pill-item *ngFor="let pillData of targetedCategory" [name]="(pillData?.icon?.web ? pillData?.name : '') | titlecase"
-              [icon]="pillData?.icon?.web" [value]="(pillData?.icon?.web ? pillData : '')" [theme]="(pillData?.icon?.web ? (targetedCategorytheme | async) : Categorytheme)"></sb-pill-item>
+              [icon]="pillData?.icon?.web" [value]="(pillData?.icon?.web ? pillData : '')" [theme]="(pillData?.icon?.web ? (targetedCategorytheme) : Categorytheme)"></sb-pill-item>
             </sb-pills-grid>
             <hr class="section-hr my-32" />
           </div>
@@ -155,7 +136,7 @@
               <sb-content-section *ngIf="section?.isEnabled" (cardClick)="playContent($event, section?.title)"
                 [sortBy]="section?.apiConfig?.sortBy" [searchRequest]="section?.searchRequest" [title]="getContentSectionTitle(section?.title)"
                 [layoutConfig]="layoutConfiguration" (viewMoreClick)="viewAll($event, section)"
-                [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall">
+                [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall" [categoryKeys]="categoryKeys">
               </sb-content-section>
             </div>
           </div>
@@ -175,20 +156,20 @@
             <sb-library-cards-grid *ngIf="!isDesktopApp" [layoutConfig]="layoutConfiguration"
               [type]="'infinite_card_grid'" [title]="section.name"
               [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3"
-              (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)" (enterKey)="playContent($event, section.name)">
+              (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)" (enterKey)="playContent($event, section.name)" [categoryKeys]="categoryKeys">
             </sb-library-cards-grid>
             <div class="sb-desktop-library-card relative9">
               <sb-library-cards-grid *ngIf="isDesktopApp" [layoutConfig]="layoutConfiguration"
                 [type]="'infinite_card_grid_with_hover'" [title]="section?.name"
                 [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3"
-                (hoverActionClick)="hoverActionClicked($event)" (viewMoreClick)="viewAll(section)">
+                (hoverActionClick)="hoverActionClicked($event)" (viewMoreClick)="viewAll(section)" [categoryKeys]="categoryKeys"> 
               </sb-library-cards-grid>
             </div>
           </div>
         </div>
         <div *ngIf="showLoader && getSelectedTab() !== 'explore'">
           <sb-library-cards-grid [layoutConfig]="layoutConfiguration" *ngFor="let i of numberOfSections"
-            [type]="'infinite_card_grid'" [isLoading]="true" [maxCardCount]="!isUserLoggedIn() ? 4: 3">
+            [type]="'infinite_card_grid'" [isLoading]="true" [maxCardCount]="!isUserLoggedIn() ? 4: 3" [categoryKeys]="categoryKeys">
           </sb-library-cards-grid>
         </div>
         <div

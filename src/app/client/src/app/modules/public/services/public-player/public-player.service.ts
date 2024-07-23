@@ -10,6 +10,7 @@ import {
 import * as _ from 'lodash-es';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
+import { CslFrameworkService } from '../csl-framework/csl-framework.service';
 
 
 @Injectable({
@@ -28,12 +29,13 @@ export class PublicPlayerService {
   sessionId;
   private _libraryFilters: any = {};
   private contentCsService: any;
+  public frameworkCategoriesList;
 
 
   constructor(private csLibInitializerService: CsLibInitializerService, public userService: UserService, private orgDetailsService: OrgDetailsService,
     public configService: ConfigService, public router: Router,
     public publicDataService: PublicDataService, public navigationHelperService: NavigationHelperService,
-    public resourceService: ResourceService, private utilService: UtilService) {
+    public resourceService: ResourceService, private utilService: UtilService,public cslFrameworkService: CslFrameworkService) {
       this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
       ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
       this.sessionId = (<HTMLInputElement>document.getElementById('sessionId'))
@@ -66,10 +68,12 @@ export class PublicPlayerService {
    * @returns {Observable<ServerResponse>}
    */
   getContent(contentId: string, option: any = { params: {} }): Observable<ServerResponse> {
+    this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
+    let contentGetConfig = [...this.configService.urlConFig.params.contentGet.split(','), ...this.frameworkCategoriesList];
     const licenseParam = {
       licenseDetails: 'name,description,url'
     };
-    let param = { fields: this.configService.urlConFig.params.contentGet };
+    let param = { fields:  contentGetConfig.join(',')};
     if (this.userService.isDesktopApp) {
       param.fields = `${param.fields},downloadUrl`;
     }
@@ -211,8 +215,28 @@ export class PublicPlayerService {
 
   getQuestionSetHierarchy(contentId: string) {
     return this.contentCsService.getQuestionSetHierarchy(contentId).pipe(map((response: any) => {
-      this.contentData = response.questionSet;
+      this.contentData = response?.questionset || response?.questionSet;
       return response;
+    }));
+  }
+
+  getQuestionSetHierarchyV1(contentId: string) {
+    const req = {
+        url: `${this.configService.urlConFig.URLS.QUESTIONSET.V1.HIERARCHY_READ}/${contentId}`
+    };
+    return this.publicDataService.get(req).pipe(map((response: any) => {
+        return response.result;
+    }));
+  }
+
+  getQuestionSetReadV1(contentId: string, option: any = { params: {} }): Observable<ServerResponse> {
+    const param = { fields: this.configService.urlConFig.params.questionSetRead };
+    const req = {
+        url: `${this.configService.urlConFig.URLS.QUESTIONSET.V1.READ}/${contentId}`,
+        param: { ...param, ...option.params }
+    };
+    return this.publicDataService.get(req).pipe(map((response: ServerResponse) => {
+        return response;
     }));
   }
 
@@ -233,6 +257,10 @@ export class PublicPlayerService {
 
     set libraryFilters(filters) {
         this._libraryFilters = filters;
+    }
+
+    getProperties(data, properties) {
+      return _.pickBy( _.pick(data, properties), _.identity);
     }
 
 }

@@ -29,6 +29,8 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
   isSubmitted = false;
   public locationSelectionModalId = 'location-selection';
   @Input() isStepper = false;
+  @Input() showEditLocationDetailsPopup: boolean;
+  public isLocationEnabled = true;
 
   constructor(
     public resourceService: ResourceService,
@@ -40,7 +42,7 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
     public navigationHelperService: NavigationHelperService,
     public popupControlService: PopupControlService,
     protected telemetryService: TelemetryService,
-    protected formService: FormService,
+    public formService: FormService,
     private orgDetailsService: OrgDetailsService,
     private utilService: UtilService,
     private matDialog: MatDialog
@@ -56,10 +58,18 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
 
   ngOnInit() {
     this.popupControlService.changePopupStatus(false);
+    /**
+      * @description - popupcontrol service returned value is used to enable/disable the location popup based on the isvisible value
+    */
+    this.popupControlService.getOnboardingData().subscribe((formResponsedata)=>{
+      this.isLocationEnabled= formResponsedata?.locationPopup? formResponsedata?.locationPopup?.isVisible : true;
+    })
     this.sbFormLocationSelectionDelegate.init(this.deviceProfile, this.showModal, this.isStepper )
       .catch(() => {
         this.closeModal();
-        this.toasterService.error(this.resourceService.messages.fmsg.m0049);
+        if(this.isLocationEnabled){
+          this.toasterService.error(this.resourceService.messages.fmsg.m0049);
+        }
       });
   }
 

@@ -1,15 +1,16 @@
-<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'normal'"
-  class="sb-modal sb-batch-modal" appBodyScroll *ngIf='showUpdateModal' (dismissed)="redirect()" #updateBatchModal>
-  <!--Header-->
-  <i class="close icon" tabindex="0" (click)="redirect()"></i>
-  <div class="sb-modal-header">
-    <span *ngIf="!showFormInViewMode">{{resourceService?.frmelmnts?.intxt?.t0007}}</span>
-    <span *ngIf="showFormInViewMode">{{resourceService?.frmelmnts?.intxt?.t0015}}</span>
-  </div>
-  <!--/Header-->
 
-  <!--Content-->
-  <div class="sb-modal-content o-y-visible" [appTelemetryImpression]="telemetryImpression">
+<app-modal-wrapper *ngIf="showUpdateModal"
+  [config]="{disableClose: false, size: 'normal', width: '47.25rem', panelClass: ['material-modal']}"
+  (dismiss)="redirect()" #updateBatchModal>
+  <ng-template sbModalContent>
+    <div mat-dialog-title class="flex-jc-center">
+      <span *ngIf="!showFormInViewMode">{{resourceService?.frmelmnts?.intxt?.t0007}}</span>
+      <span *ngIf="showFormInViewMode">{{resourceService?.frmelmnts?.intxt?.t0015}}</span>
+      <button aria-label="close dialog" mat-dialog-close class="close-btn" (click)="redirect()"></button>
+    </div>
+     <!--Content-->
+<mat-dialog-content>
+  <div class="o-y-visible" [appTelemetryImpression]="telemetryImpression">
     <form [formGroup]="batchUpdateForm" class="sb-form batchUpdateForm pt-8 px-8">
       <div class="sb-color-primary font-weight-bold pb-24">Batch Details</div>
       <div class="ui stackable grid">
@@ -161,23 +162,25 @@
 
     </form>
   </div>
+</mat-dialog-content>
   <!--/Content-->
 
   <!--Actions-->
-  <div class="sb-modal-actions">
+  <mat-dialog-actions class="sb-mat__modal__actions">
     <button class="sb-btn sb-btn-normal sb-btn-primary"
-      [ngClass]="{ 'sb-btn-disabled': batchDetails.status === 2 || disableSubmitBtn || showFormInViewMode }"
-      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-      [telemetryInteractEdata]="updateBatchInteractEdata" [telemetryInteractCdata]="telemetryCdata"
-      tabindex="0" (click)="updateBatch()">
-      {{resourceService?.frmelmnts?.btn?.update}}
-    </button>
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
-      [ngClass]="{ 'sb-btn-disabled': batchDetails.status === 2 || showFormInViewMode}" appTelemetryInteract
-      [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="clearButtonInteractEdata"
-      [telemetryInteractCdata]="telemetryCdata" tabindex="0" (click)="clearForm()">
-      {{resourceService?.frmelmnts?.btn?.clear}}
-    </button>
-  </div>
+    [ngClass]="{ 'sb-btn-disabled': batchDetails.status === 2 || disableSubmitBtn || showFormInViewMode }"
+    appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+    [telemetryInteractEdata]="updateBatchInteractEdata" [telemetryInteractCdata]="telemetryCdata"
+    tabindex="0" (click)="updateBatch()">
+    {{resourceService?.frmelmnts?.btn?.update}}
+  </button>
+  <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
+    [ngClass]="{ 'sb-btn-disabled': batchDetails.status === 2 || showFormInViewMode}" appTelemetryInteract
+    [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="clearButtonInteractEdata"
+    [telemetryInteractCdata]="telemetryCdata" tabindex="0" (click)="clearForm()">
+    {{resourceService?.frmelmnts?.btn?.clear}}
+  </button>
+  </mat-dialog-actions>
   <!--/Actions-->
-</sui-modal>
+  </ng-template>
+  </app-modal-wrapper>

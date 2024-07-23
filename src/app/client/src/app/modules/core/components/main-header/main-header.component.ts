@@ -25,7 +25,6 @@ import { environment } from '@sunbird/environment';
 import { Subject, zip, forkJoin } from 'rxjs';
 import { EXPLORE_GROUPS, MY_GROUPS } from '../../../public/module/group/components/routerLinks';
 
-
 type reportsListVersionType = 'v1' | 'v2';
 
 @Component({
@@ -139,7 +138,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   routerLinks = { explore: `/${EXPLORE_GROUPS}`, groups: `/${MY_GROUPS}` };
   public unsubscribe = new Subject<void>();
   selected = [];
-  userTypes = [{ id: 1, type: 'Teacher' }, { id: 2, type: 'Student' }];
   groupsMenuIntractEdata: IInteractEventEdata;
   workspaceMenuIntractEdata: IInteractEventEdata;
   helpMenuIntractEdata: IInteractEventEdata;
@@ -160,6 +158,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   isCustodianUser: boolean;
   isConnected = false;
   isDesktopApp = false;
+  isUciEnabled;
   showLoadContentModal = false;
   guestUser;
   subscription: any;
@@ -190,6 +189,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       this.exploreButtonVisibility = 'false';
       this.reportsListVersion = 'v1';
     }
+    this.isUciEnabled=   document.getElementById('isUciConfigured')?(<HTMLInputElement>document.getElementById('isUciConfigured')).value:'false';
     this.adminDashboard = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
     this.myActivityRole = this.config.rolesConfig.headerDropdownRoles.myActivityRole;
     this.orgSetupRole = this.config.rolesConfig.headerDropdownRoles.orgSetupRole;
@@ -548,6 +548,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
 
   logout() {
     window.location.replace('/logoff');
+    this.cacheService.remove('reloadOnFwChange')
     this.cacheService.remove('orgHashTagId');
     this.cacheService.remove('userProfile');
   }
@@ -817,9 +818,12 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     };
   }
 
-  clearFiltersCache () {
+  clearFiltersCache() {
     if (this.cacheService.exists('searchFilters')) {
       this.cacheService.remove('searchFilters');
+    }
+    if (localStorage.getItem('selectedFramework')) {
+      localStorage.removeItem('selectedFramework');
     }
   }
 }
