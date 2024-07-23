@@ -392,7 +392,7 @@
             {{resourceService.frmelmnts?.lnk?.profile}}
           </li>
 
-          <li class="list-item" role="link" *ngIf="userType=='administrator' || showReportMenu" tabindex="0" [routerLink]="['/solution/solution-listing']" (click)="toggleSideMenu(false);" >
+          <li class="list-item" role="link" *ngIf="(userType=='administrator' || showReportMenu) && isMlConfigured" tabindex="0" [routerLink]="['/solution/solution-listing']" (click)="toggleSideMenu(false);" >
             <i class="icon-svg icon-svg--sm icon-profileuser mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/statistics.svg#Layer_1"></use>
               </svg></i>
@@ -408,7 +408,7 @@
             {{resourceService.frmelmnts?.lnk?.dashboard}}
           </li>
         
-          <li class="list-item" *ngIf='!isDesktopApp && permissionService.permissionAvailable' appPermission
+          <li class="list-item" *ngIf='!isDesktopApp && permissionService.permissionAvailable && isMlConfigured' appPermission
           [permission]='programDashboardRole' (click)="toggleSideMenu(false)" routerLink="program">
           <i class="icon-svg icon-svg--sm icon-dashboard mr-8"><svg class="icon icon-svg--primary">
               <use xlink:href="./assets/images/sprite.svg#dashboard"></use>
