@@ -18,6 +18,8 @@ import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/common';
 import { image } from '../assets/images/tara-bot-icon';
 import { SBTagModule } from 'sb-tag-manager';
+import { AngularFireAnalytics } from '@angular/fire/analytics';
+
 /**
  * main app component
  */
@@ -117,12 +119,13 @@ export class AppComponent implements OnInit, OnDestroy {
   showYearOfBirthPopup = false;
   public isIOS = false;
   loadPopUps = true;
+  FORM_CONFIG_ENABLED = false;
   @ViewChild('increaseFontSize') increaseFontSize: ElementRef;
   @ViewChild('decreaseFontSize') decreaseFontSize: ElementRef;
   @ViewChild('resetFontSize') resetFontSize: ElementRef;
   @ViewChild('darkModeToggle') darkModeToggle: ElementRef;
 
-  constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
+  constructor(private analytics: AngularFireAnalytics, private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
     private deviceRegisterService: DeviceRegisterService, private courseService: CoursesService, private tenantService: TenantService,
@@ -135,13 +138,17 @@ export class AppComponent implements OnInit, OnDestroy {
     private connectionService: ConnectionService, public genericResourceService: GenericResourceService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
-    const layoutType = localStorage.getItem('layoutType') || '';
-    if (layoutType === '' || layoutType === 'joy') {
+      // console.log('instance', this.instance);
+    const layoutType = localStorage.getItem('layoutType') || 'base';
+    if (layoutType === 'base' || layoutType === 'joy') {
       this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
       document.documentElement.setAttribute('layout', 'joy');
     } else {
-      document.documentElement.setAttribute('layout', 'old');
+      document.documentElement.setAttribute('layout', 'base');
     }
+
+    this.analytics.logEvent('custom_diksha_web_event', {USER_ID: `DIKSHA${Math.random()*1000}`});
+
   }
   /**
    * dispatch telemetry window unload event before browser closes
@@ -236,7 +243,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   setTheme() {
-    const themeColour = localStorage.getItem('layoutColour') || 'Default';
+    const themeColour = localStorage.getItem('layoutColour') || 'default';
     if (this.darkModeToggle && this.darkModeToggle.nativeElement) {
       this.renderer.setAttribute(this.darkModeToggle.nativeElement, 'aria-label', `Selected theme ${themeColour}`);
     }
@@ -263,8 +270,51 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     );
   }
+
+  preventRefresh(event: Event) {
+    event.preventDefault();
+    return '';
+  }
+  checkFormData(): Observable<any> {
+    const formReadInputParams = {
+      formType: 'newUserOnboarding',
+      formAction: 'onboarding',
+      contentType: 'global',
+      component: 'portal'
+    };
+    const observable = new Observable<any>((observer) => {
+      this.formService.getFormConfig(formReadInputParams).subscribe(
+        (formResponsedata) => {
+          console.log('userOnboarding Form is called and we are trying to get the update', formResponsedata);
+          if (_.get(formResponsedata, 'shownewUserOnboarding') === 'false') {
+            this.FORM_CONFIG_ENABLED = true;
+          }
+          observer.next(formResponsedata);
+          observer.complete();
+          window.removeEventListener('beforeunload', this.preventRefresh);
+        },
+        (error) => {
+          observer.error(error);
+          window.removeEventListener('beforeunload', this.preventRefresh);
+        }
+      );
+    });
+
+    return observable;
+  
+    // return of(this.formService.getFormConfig(formReadInputParams).subscribe(
+    //   (formResponsedata) => {
+    //     console.log('userOnboarding Form is called and we are trying to get the update',formResponsedata);
+    //     if (_.get(formResponsedata, 'shownewUserOnboarding') === 'false') {
+    //       this.FORM_CONFIG_ENABLED = true;
+    //     }
+    //   }
+    // ));
+  }
   
   ngOnInit() {
+    window.addEventListener('beforeunload', this.preventRefresh);
+    this.checkFormData();
     this.checkToShowPopups();
     this.isIOS = this.utilService.isIos;
     this.isDesktopApp = this.utilService.isDesktopApp;
@@ -295,19 +345,21 @@ export class AppComponent implements OnInit, OnDestroy {
     this.handleHeaderNFooter();
     this.resourceService.initialize();
     this.genericResourceService.initialize();
-    combineLatest(queryParams$, this.setDeviceId())
+    combineLatest(queryParams$, this.setDeviceId(), this.checkFormData())
       .pipe(
         mergeMap(data => {
           this.navigationHelperService.initialize();
           this.userService.initialize(this.userService.loggedIn);
           this.getOrgDetails();
-          if (this.userService.loggedIn) {
+          if (this.userService.loggedIn && !this.FORM_CONFIG_ENABLED) {
             this.isGuestUser = false;
             this.permissionService.initialize();
             this.courseService.initialize();
             this.userService.startSession();
             this.checkForCustodianUser();
             return this.setUserDetails();
+          } else if(this.userService.loggedIn && this.FORM_CONFIG_ENABLED){
+            this.setUserOptions();
           } else {
             this.isGuestUser = true;
             this.userService.getGuestUser().subscribe((response) => {
@@ -354,8 +406,37 @@ export class AppComponent implements OnInit, OnDestroy {
         (document.activeElement  as HTMLElement).click();
       }
     };
-  }
 
+    // this method is to close user onboarding pop-up when user come from third party web url.
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        let substring1 = "play/content";
+        let substring2 = "contentType=Resource";
+        if (event.urlAfterRedirects.includes(substring1) && event.urlAfterRedirects.includes(substring2) && event.id === 1) {
+          this.FORM_CONFIG_ENABLED = false;
+          localStorage.setItem('isReturnFromThirdParty', 'true');
+        }
+      }
+    });
+  }
+  setUserOptions() {
+    const userStoredData = JSON.parse(localStorage.getItem('guestUserDetails'));
+    if (userStoredData) {
+      const userFrameworkData = _.get(userStoredData , 'framework');
+      if (userFrameworkData && !(_.get(this.userService.userProfile, 'framework'))) {
+        const req = {
+          framework: userFrameworkData
+        };
+        this.profileService.updateProfile(req).subscribe(res => {
+          console.log('user data updated---->', req);
+        }, err => {
+          this.toasterService.warning(this.resourceService.messages.emsg.m0012);
+          this.closeFrameworkPopup();
+          this.checkLocationStatus();
+        });
+      }
+    }
+  }
   onCloseJoyThemePopup() {
     this.showJoyThemePopUp = false;
     this.checkTncAndFrameWorkSelected();
@@ -816,6 +897,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    window.removeEventListener('beforeunload', this.preventRefresh);
+
     if (this.resourceDataSubscription) {
       this.resourceDataSubscription.unsubscribe();
     }
@@ -986,20 +1069,20 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
   getLocalTheme() {
-    const localDataThemeAttribute = localStorage.getItem('data-theme');
+    const localDataThemeAttribute = localStorage.getItem('data-mode');
     if (localDataThemeAttribute) {
       this.setLocalTheme(localDataThemeAttribute);
     }
   }
-  changeTheme() {
-    this.dataThemeAttribute = document.documentElement.getAttribute('data-theme');
-    this.dataThemeAttribute = this.dataThemeAttribute === 'Default' ? 'Darkmode' : 'Default';
+  toggleLightDarkMode() {
+    this.dataThemeAttribute = document.documentElement.getAttribute('data-mode');
+    this.dataThemeAttribute = this.dataThemeAttribute === 'light' ? 'darkmode' : 'light';
     this.renderer.setAttribute(this.darkModeToggle.nativeElement, 'aria-label', `Selected theme ${this.dataThemeAttribute}`);
     this.setLocalTheme(this.dataThemeAttribute);
-    localStorage.setItem('data-theme', this.dataThemeAttribute);
+    localStorage.setItem('data-mode', this.dataThemeAttribute);
   }
   setLocalTheme(value: string) {
-    document.documentElement.setAttribute('data-theme', value);
+    document.documentElement.setAttribute('data-mode', value);
   }
   notifyNetworkChange() {
     this.connectionService.monitor().pipe(debounceTime(5000)).subscribe((status: boolean) => {
