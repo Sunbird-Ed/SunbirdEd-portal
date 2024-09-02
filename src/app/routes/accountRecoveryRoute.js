@@ -70,7 +70,7 @@ module.exports = (app) => {
         try {
           proxyUtils.addReqLog(req);
           const data = JSON.parse(proxyResData.toString('utf8'));
-          logger.ing({msg: "verify response", data})
+          logger.info({msg: "verify response", data})
           if (data.responseCode === 'OK') {
             req.session.otpVerifiedFor = req.body;
             const _encrypt = {
