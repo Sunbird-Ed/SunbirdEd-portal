@@ -70,6 +70,7 @@ module.exports = (app) => {
         try {
           proxyUtils.addReqLog(req);
           const data = JSON.parse(proxyResData.toString('utf8'));
+          logger.ing({msg: "verify response", data})
           if (data.responseCode === 'OK') {
             req.session.otpVerifiedFor = req.body;
             const _encrypt = {
@@ -78,12 +79,14 @@ module.exports = (app) => {
             if (req.body.request.userId) {
               _encrypt['id'] = req.body.request.userId
             }
+            logger.info({msg: "before encryption", _encrypt})
             var timeInMin = 5;
             var validator = encriptWithTime(_encrypt, timeInMin);
             const reqType = req.body.request.type;
             const dataToEncrypt = {};
             dataToEncrypt[reqType] = req.body.request.key;
             req.session.otpEncryptedInfo = encrypt(JSON.stringify(dataToEncrypt));
+            logger.info({msg: "after encryption", validator})
             data['reqData'] = validator;
           }
           return data;
