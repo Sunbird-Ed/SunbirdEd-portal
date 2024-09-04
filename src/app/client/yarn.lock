@@ -2257,10 +2257,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.6.2"
 
-"@project-sunbird/common-consumption@7.0.5":
-  version "7.0.5"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-7.0.5.tgz#dc45b173cd88dda1fab1d8a0a3fe2967bc9df050"
-  integrity sha512-f5DWvo1nJRzK4RADzzmzyCdW7xYZjq3fNMKTgNGXLEnnYpEMO2zGIhwm5WCmK+DfrKC+zU0ysuATNHS0ScGhdA==
+"@project-sunbird/common-consumption@7.0.8":
+  version "7.0.8"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-7.0.8.tgz#3c8341017a79f2a166b3d9bf1d7ca91e40e4d307"
+  integrity sha512-mU3pmorOCsUGh1c5o/o6ICEYoIiCQzmHo2VD4JBNMDpRb6GH3lFhIRWGZue3KMbKeBae5XvyDzP6ZUxyg9pTjw==
   dependencies:
     tslib "^2.3.0"
 
@@ -2323,10 +2323,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.15.tgz#7e59900fe0f1033b53ffde7cf5d6e95dea19cfdc"
   integrity sha512-YzG3EzZOYoRfl374uCDcfUzBNmkVF8YPTN12lrKjFbTI694GpDMqb6Gge83rtwCtT+hRxw5r/OPftFTguQnBCA==
 
-"@project-sunbird/sb-themes@0.0.90":
-  version "0.0.90"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.90.tgz#a84acc8ec2aa0568c1c67c801cd7d6aabf6fb259"
-  integrity sha512-W+4rn2OrMuFk2jWP0VQJaL7tWE5CHA46qwlEWEs4x8ajCvm4Wdc74dSYR56j+bUpz8HAX5eV/ZgOjwLacPVswQ==
+"@project-sunbird/sb-themes@7.0.2":
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-7.0.2.tgz#8d28410921af0494bedf66e76d27c0bddfd059fd"
+  integrity sha512-xgElQfzoTF+ZTrBGWS8Tp9vvYsyEMUbSxwJNVsMOxQv5FWPe3QrR596LJ6nsIjEuovtproVn0i9nWOVNoRdgtQ==
   dependencies:
     "@project-sunbird/sb-styles" "0.0.14"
 
