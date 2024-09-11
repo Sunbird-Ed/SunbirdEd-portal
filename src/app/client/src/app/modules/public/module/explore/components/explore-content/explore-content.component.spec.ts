@@ -20,6 +20,7 @@ describe('ExploreContentComponent', () => {
 
   const mockSearchService: Partial<SearchService> = {
     getContentTypes: jest.fn(),
+    contentSearch: jest.fn()
   };
   const mockRouter: Partial<Router> = {
     url: '/current/2',
@@ -88,7 +89,8 @@ describe('ExploreContentComponent', () => {
     interact: jest.fn(),
   };
   const mockSchemaService: Partial<SchemaService> = {
-    getSchema:jest.fn()
+    getSchema: jest.fn(),
+    schemaValidator: jest.fn()
   };
   const mockCslFrameworkService: Partial<CslFrameworkService> = {
         setDefaultFWforCsl: jest.fn(),
@@ -140,6 +142,8 @@ describe('ExploreContentComponent', () => {
       { title: 'frmelmnts.tab.all', search: { facets: 'yourMockedFacets' } },
     ];
     jest.spyOn(mockSchemaService, 'getSchema' as any).mockReturnValue(of({}));
+    jest.spyOn(mockSchemaService, 'schemaValidator' as any).mockReturnValue(of({}));
+    jest.spyOn(mockSearchService, 'contentSearch').mockReturnValue(of({ result: {count: 0} }));
     jest.spyOn(mockSearchService, 'getContentTypes').mockReturnValue(of(mockFormData));
     const goBackSpy = jest.spyOn(mockNavigationHelperService, 'goBack');
     component.ngOnInit();
