@@ -137,6 +137,7 @@ describe('ExploreContentComponent', () => {
     const mockFormData = [
       { title: 'frmelmnts.tab.all', search: { facets: 'yourMockedFacets' } },
     ];
+    jest.spyOn(mockSchemaService, 'getSchema' as any).mockReturnValue(of({}));
     jest.spyOn(mockSearchService, 'getContentTypes').mockReturnValue(of(mockFormData));
     const goBackSpy = jest.spyOn(mockNavigationHelperService, 'goBack');
     component.ngOnInit();
