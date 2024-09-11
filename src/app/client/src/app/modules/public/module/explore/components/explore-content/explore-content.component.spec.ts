@@ -140,18 +140,10 @@ describe('ExploreContentComponent', () => {
     jest.spyOn(mockCslFrameworkService, 'transformDataForCC' as any).mockReturnValue(['key1', 'key2']);
     const mockFormData = [
       { title: 'frmelmnts.tab.all', search: { facets: 'yourMockedFacets' } },
-    ];
-    const mockContentData = {
-      id: 'some-id',
-      params: {},
-      responseCode: 'OK',
-      ts: 'timestamp',
-      ver: '1.0',
-      result: { count: 0 },
-    };
+    ];    
     jest.spyOn(mockSchemaService, 'getSchema' as any).mockReturnValue(of({}));
     jest.spyOn(mockSchemaService, 'schemaValidator' as any).mockReturnValue(of({}));
-    jest.spyOn(mockSearchService, 'contentSearch').mockReturnValue(of(mockContentData));
+    jest.spyOn(mockSearchService, 'contentSearch').mockReturnValue(of({}));
     jest.spyOn(mockSearchService, 'getContentTypes').mockReturnValue(of(mockFormData));
     const goBackSpy = jest.spyOn(mockNavigationHelperService, 'goBack');
     component.ngOnInit();
