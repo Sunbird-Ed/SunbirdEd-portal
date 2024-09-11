@@ -87,7 +87,9 @@ describe('ExploreContentComponent', () => {
   const mockTelemetryService: Partial<TelemetryService> = {
     interact: jest.fn(),
   };
-  const mockSchemaService: Partial<SchemaService> = {};
+  const mockSchemaService: Partial<SchemaService> = {
+    getSchema:jest.fn()
+  };
   const mockCslFrameworkService: Partial<CslFrameworkService> = {
         setDefaultFWforCsl: jest.fn(),
         getAllFwCatName: jest.fn(),
