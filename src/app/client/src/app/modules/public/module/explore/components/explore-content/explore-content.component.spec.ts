@@ -14,6 +14,7 @@ import { ContentManagerService } from '../../../offline/services';
 import {omit, groupBy, get, uniqBy, toLower, find, map as _map, forEach, each} from 'lodash-es';
 import { CslFrameworkService } from '../../../../services/csl-framework/csl-framework.service';
 import { ExploreContentComponent } from './explore-content.component';
+import { ServerResponse } from '@project-sunbird/sunbird-questionset-editor/lib/interfaces/serverResponse';
 
 describe('ExploreContentComponent', () => {
   let component: ExploreContentComponent;
@@ -141,9 +142,19 @@ describe('ExploreContentComponent', () => {
     const mockFormData = [
       { title: 'frmelmnts.tab.all', search: { facets: 'yourMockedFacets' } },
     ];    
+    const mockContentResponse: ServerResponse = {
+      id: 'id',
+      params: { resmsgid: '', status: ''},
+      responseCode: 'OK',
+      result: { count: 0, content: [], facets: [], QuestionSet: [] },
+      ts: '',
+      ver: ''
+    };
+    component.paginationDetails = { currentPage: 5 } as any;
+    component.configService.appConfig.ExplorePage = { contentApiQueryParams: "" } as any;
     jest.spyOn(mockSchemaService, 'getSchema' as any).mockReturnValue(of({}));
     jest.spyOn(mockSchemaService, 'schemaValidator' as any).mockReturnValue(of({}));
-    jest.spyOn(mockSearchService, 'contentSearch').mockReturnValue(of({}));
+    jest.spyOn(mockSearchService, 'contentSearch').mockReturnValue(of(mockContentResponse));
     jest.spyOn(mockSearchService, 'getContentTypes').mockReturnValue(of(mockFormData));
     const goBackSpy = jest.spyOn(mockNavigationHelperService, 'goBack');
     component.ngOnInit();
