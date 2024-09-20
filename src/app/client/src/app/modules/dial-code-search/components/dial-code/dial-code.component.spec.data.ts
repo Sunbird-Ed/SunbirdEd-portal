@@ -17,7 +17,7 @@ export const Response = {
                 'ownershipType': [
                     'createdBy'
                 ],
-                'copyright': '345 org, Diksha QA Tenant, DikshaQA 3',
+                'copyright': '345 org, Sunbird QA Tenant, SunbirdQA 3',
                 'keywords': [
                     'test',
                     'nadiya'
@@ -31,8 +31,8 @@ export const Response = {
                 'downloadUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_212925261140451328114/rf-book-3_1577791108524_do_212925261140451328114_1.0_spine.ecar',
                 'organisation': [
                     '345 org',
-                    'Diksha QA Tenant',
-                    'DikshaQA 3'
+                    'Sunbird QA Tenant',
+                    'SunbirdQA 3'
                 ],
                 'language': [
                     'English'
@@ -114,7 +114,7 @@ export const Response = {
                         'status': 'Live'
                     }
                 ],
-                'appId': 'staging.diksha.portal',
+                'appId': 'staging.sunbird.portal',
                 'contentEncoding': 'gzip',
                 'lockKey': 'c55a6cd8-4a79-420c-8241-7927381853d3',
                 'totalCompressedSize': 2486409,
@@ -162,7 +162,7 @@ export const Response = {
                 'rejectComment': 'nolt correct',
                 'publisher': 'Juthika',
                 'status': 'Live',
-                'code': 'org.diksha.zPXGMQ',
+                'code': 'org.sunbird.zPXGMQ',
                 'description': 'Enter description for TextBook',
                 'medium': [
                     'Hindi'
@@ -366,7 +366,7 @@ export const Response = {
                         'ownershipType': [
                             'createdBy'
                         ],
-                        'copyright': '345 org, Diksha QA Tenant, DikshaQA 3',
+                        'copyright': '345 org, Sunbird QA Tenant, SunbirdQA 3',
                         'keywords': [
                             'test',
                             'nadiya'
@@ -378,8 +378,8 @@ export const Response = {
                         'downloadUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_212925261140451328114/rf-book-3_1577791108524_do_212925261140451328114_1.0_spine.ecar',
                         'organisation': [
                             '345 org',
-                            'Diksha QA Tenant',
-                            'DikshaQA 3'
+                            'Sunbird QA Tenant',
+                            'SunbirdQA 3'
                         ],
                         'language': [
                             'English'
@@ -419,7 +419,7 @@ export const Response = {
                             'do_2125678785313259521740',
                             'do_2125678797343047681742'
                         ],
-                        'appId': 'staging.diksha.portal',
+                        'appId': 'staging.sunbird.portal',
                         'contentEncoding': 'gzip',
                         'lockKey': 'c55a6cd8-4a79-420c-8241-7927381853d3',
                         // tslint:disable-next-line: max-line-length
@@ -466,7 +466,7 @@ export const Response = {
                         'rejectComment': 'nolt correct',
                         'publisher': 'Juthika',
                         'status': 'Live',
-                        'code': 'org.diksha.zPXGMQ',
+                        'code': 'org.sunbird.zPXGMQ',
                         'description': 'Enter description for TextBook',
                         'medium': 'Hindi',
                         'idealScreenSize': 'normal',
