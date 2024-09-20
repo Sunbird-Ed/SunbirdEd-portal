@@ -417,18 +417,16 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   private getFilterForm$() {
     if (this.filterResponseData) {
       this._filterConfig$ = defer(() => of(
-        this.filterResponseData
-          .filter(value => _.includes(["board", "medium", "subject", "gradeLevel"], _.get(value, "category")) === false)
-          .map((value) => {
-            return {
-              category: _.get(value, 'category'),
-              type: _.get(value, 'type'),
-              labelText: _.get(this.resourceService, value.labelText) ? _.get(this.resourceService, value.labelText) : _.get(value, 'defaultLabelText'),
-              placeholderText: _.get(this.resourceService, value.placeholderText) ? _.get(this.resourceService, value.placeholderText) : _.get(value, 'defaultPlaceholderText'),
-              multiple: _.get(value, 'multiple'),
-            }
+        this.filterResponseData.map((value) => {
+          return {
+            category: _.get(value, 'category'),
+            type: _.get(value, 'type'),
+            labelText: _.get(this.resourceService, value.labelText) ? _.get(this.resourceService, value.labelText) : _.get(value, 'defaultLabelText'),
+            placeholderText: _.get(this.resourceService, value.placeholderText) ? _.get(this.resourceService, value.placeholderText) : _.get(value, 'defaultPlaceholderText'),
+            multiple: _.get(value, 'multiple'),
           }
-          )));
+        }
+        )));
     }
     return this._filterConfig$;
   }
