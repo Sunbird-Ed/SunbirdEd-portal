@@ -2,7 +2,7 @@ export let mockData = {
   rowsData: [
     {
       'District': 'SRIKAKULAM',
-      'channel_slug': 'dikshapreprodcustodian',
+      'channel_slug': 'sunbirdpreprodcustodian',
       'Program Name': 'Test Program',
       'Observation Form Name': 'AP-TEST-PROGRAM-3.6.5-OBS-ALL-QUESTION-TYPES-1-HM',
       'No of unique users': '1.0',
@@ -10,7 +10,7 @@ export let mockData = {
     },
     {
       'District': 'CHITTOOR',
-      'channel_slug': 'dikshapreprodcustodian',
+      'channel_slug': 'sunbirdpreprodcustodian',
       'Program Name': 'Test Program',
       'Observation Form Name': 'AP-TEST-PROGRAM-3.6.5-OBS-1-DEO',
       'No of unique users': '1.0',
@@ -18,7 +18,7 @@ export let mockData = {
     },
     {
       'District': 'ANANTAPUR',
-      'channel_slug': 'dikshapreprodcustodian',
+      'channel_slug': 'sunbirdpreprodcustodian',
       'Program Name': 'Test Program',
       'Observation Form Name': 'AP-TEST-PROGRAM-3.6.5-OBS-1-DEO',
       'No of unique users': '1.0',
@@ -26,7 +26,7 @@ export let mockData = {
     },
     {
       'District': 'GUNTUR',
-      'channel_slug': 'dikshapreprodcustodian',
+      'channel_slug': 'sunbirdpreprodcustodian',
       'Program Name': 'Test Program',
       'Observation Form Name': 'AP-TEST-PROGRAM-3.6.5-OBS-IMP-PROJECT-2-DEO',
       'No of unique users': '1.0',

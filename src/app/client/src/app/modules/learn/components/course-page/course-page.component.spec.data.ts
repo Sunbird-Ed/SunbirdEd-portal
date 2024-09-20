@@ -187,7 +187,7 @@ export const Response = {
                   'createdBy'
                 ],
                 'copyright': 'Tamil Nadu',
-                'c_diksha_preprod_private_batch_count': 0,
+                'c_sunbird_preprod_private_batch_count': 0,
                 'channel': '0128325322816552960',
                 'downloadUrl': 'https://preprodall.blob.core.windows.net/ntp-content-preprod/ecar_files/do_21308940206039040011229/cbse-cred_1597827561207_do_21308940206039040011229_1.0_spine.ecar',
                 'organisation': [
@@ -219,7 +219,7 @@ export const Response = {
                   'do_2130881079552655361117',
                   'do_2130881070880604161116'
                 ],
-                'appId': 'preprod.diksha.portal',
+                'appId': 'preprod.sunbird.portal',
                 'contentEncoding': 'gzip',
                 'lockKey': '3613adb4-fb01-48fb-ad0c-27d58537d7fe',
                 'totalCompressedSize': 2013060,
@@ -297,7 +297,7 @@ export const Response = {
                 'os': [
                   'All'
                 ],
-                'c_diksha_preprod_open_batch_count': 1,
+                'c_sunbird_preprod_open_batch_count': 1,
                 'pkgVersion': 1,
                 'versionKey': '1597827560968',
                 'idealScreenDensity': 'hdpi',
@@ -325,7 +325,7 @@ export const Response = {
                   'Aryabhata',
                   'Math'
                 ],
-                'c_diksha_preprod_private_batch_count': 0,
+                'c_sunbird_preprod_private_batch_count': 0,
                 'subject': [
                   'Mathematics'
                 ],
@@ -443,7 +443,7 @@ export const Response = {
                 'os': [
                   'All'
                 ],
-                'c_diksha_preprod_open_batch_count': 0,
+                'c_sunbird_preprod_open_batch_count': 0,
                 'pkgVersion': 1,
                 'versionKey': '1597848145819',
                 'idealScreenDensity': 'hdpi',
@@ -473,7 +473,7 @@ export const Response = {
                   'Aryabhata',
                   'Math'
                 ],
-                'c_diksha_preprod_private_batch_count': 0,
+                'c_sunbird_preprod_private_batch_count': 0,
                 'channel': '0128325322816552960',
                 'downloadUrl': 'https://preprodall.blob.core.windows.net/ntp-content-preprod/ecar_files/do_2130887206273843201640/aryabhata-ganit-challenge_1597758638370_do_2130887206273843201640_3.0_spine.ecar',
                 'organisation': [
@@ -503,7 +503,7 @@ export const Response = {
                   'do_2130887113301852161639',
                   'do_2130887380954972161690'
                 ],
-                'appId': 'preprod.diksha.portal',
+                'appId': 'preprod.sunbird.portal',
                 'contentEncoding': 'gzip',
                 'lockKey': '6fa285ec-c9f8-4f22-8bcf-ab60e52d95b9',
                 'totalCompressedSize': 380968,
@@ -587,7 +587,7 @@ export const Response = {
                   'All'
                 ],
                 'pkgVersion': 3,
-                'c_diksha_preprod_open_batch_count': 0,
+                'c_sunbird_preprod_open_batch_count': 0,
                 'versionKey': '1597758638226',
                 'idealScreenDensity': 'hdpi',
                 'framework': 'TPD',
@@ -951,7 +951,7 @@ export const Response = {
     'channel': [
       {
         'identifier': '01272777697873100812',
-        'orgName': 'diksha_ntptest_org',
+        'orgName': 'sunbird_ntptest_org',
         'slug': 'disha_ntptest'
       }
     ],
@@ -1019,8 +1019,8 @@ export const Response = {
       values: [
         {
           'identifier': '01272777697873100812',
-          'orgName': 'diksha_ntptest_org',
-          'name': 'diksha_ntptest_org',
+          'orgName': 'sunbird_ntptest_org',
+          'name': 'sunbird_ntptest_org',
           'slug': 'disha_ntptest'
         }
       ]

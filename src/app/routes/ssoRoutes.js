@@ -517,11 +517,11 @@ const getErrorMessage = (error, errorType) => {
   if(_.get(error, 'params.err') === 'USER_ACCOUNT_BLOCKED') {
     return 'User account is blocked. Please contact admin';
   } else if (['VERIFY_SIGNATURE', 'PAYLOAD_DATA_MISSING', 'VERIFY_TOKEN'].includes(errorType) ) {
-    return 'Your account could not be signed in to DIKSHA due to invalid credentials provided. Please try again with valid credentials.';
+    return 'Your account could not be signed in to SUNBIRD due to invalid credentials provided. Please try again with valid credentials.';
   } else if (error === 'SCHOOL_ID_NOT_REGISTERED') {
     return 'Login failed. Details received from your State seem to be invalid. Contact your State administration for more details';
   } else {
-    return 'Your account could not be signed in to DIKSHA due to technical issue. Please try again after some time';
+    return 'Your account could not be signed in to SUNBIRD due to technical issue. Please try again after some time';
   }
 }
 
