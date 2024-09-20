@@ -41,7 +41,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   public selectChapterTelemetryCdata: Array<{}> = [];
   public selectChapterInteractEdata: IInteractEventEdata;
   public showMobilePopup = false;
-  public isRedirectToDikshaApp = false;
+  public isRedirectToSunbirdApp = false;
   public closeMobilePopupInteractData: any;
   public appMobileDownloadInteractData: any;
   public dialSearchSource: string;
@@ -296,14 +296,14 @@ export class DialCodeComponent implements OnInit, OnDestroy {
     if (localStorage) {
       localStorage.setItem('showMobilePopUp', 'true');
     }
-    if (!this.isRedirectToDikshaApp) {
+    if (!this.isRedirectToSunbirdApp) {
       this.telemetryService.interact(this.closeMobilePopupInteractData);
       (document.querySelector('.mobile-app-popup') as HTMLElement).style.bottom = '-999px';
       (document.querySelector('.mobile-popup-dimmer') as HTMLElement).style.display = 'none';
     }
   }
-  redirectToDikshaApp() {
-    this.isRedirectToDikshaApp = true;
+  redirectToSunbirdApp() {
+    this.isRedirectToSunbirdApp = true;
     this.telemetryService.interact(this.appMobileDownloadInteractData);
     let applink = this.configService.appConfig.UrlLinks.downloadDikshaApp;
     const utm_source = this.userService.slug ? `diksha-${this.userService.slug}` : 'diksha';
