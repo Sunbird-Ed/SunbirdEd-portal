@@ -11,7 +11,7 @@ export const Questionnaire = {
          '_id': '6054abd9823d601f0af5c3a0',
          'externalId': '57c41d60-88af-11eb-a7a2-441ca8998ea1-OBSERVATION-TEMPLATE_CHILD',
          'name': 'Obs Form for All Question type',
-         'description': 'Survey Form to understand the challenges that the parents are facing in getting their children enrolled in DIKSHA courses',
+         'description': 'Survey Form to understand the challenges that the parents are facing in getting their children enrolled in SUNBIRD courses',
          'registry': [
 
          ],
@@ -33,7 +33,7 @@ export const Questionnaire = {
       },
       'assessment': {
          'name': 'Obs Form for All Question type',
-         'description': 'Survey Form to understand the challenges that the parents are facing in getting their children enrolled in DIKSHA courses',
+         'description': 'Survey Form to understand the challenges that the parents are facing in getting their children enrolled in SUNBIRD courses',
          'externalId': '57c41d60-88af-11eb-a7a2-441ca8998ea1-OBSERVATION-TEMPLATE_CHILD',
          'pageHeading': 'Domains',
          'submissionId': '60bd96564bb0a824895b9720',
@@ -572,7 +572,7 @@ export const Questionnaire = {
                               {
                                  '_id': '6054abd9823d601f0af5c398',
                                  'question': [
-                                    'Were you able to enrol your child in courses on DIKSHA?',
+                                    'Were you able to enrol your child in courses on SUNBIRD?',
                                     ''
                                  ],
                                  'isCompleted': false,
@@ -660,7 +660,7 @@ export const Questionnaire = {
                                     },
                                     {
                                        'value': 'R2',
-                                       'label': 'Not aware of classrooms on DIKSHA'
+                                       'label': 'Not aware of classrooms on SUNBIRD'
                                     },
                                     {
                                        'value': 'R3',

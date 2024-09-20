@@ -50,7 +50,7 @@ export const ObservationData = {
           },
         ],
         programName: 'School development Program',
-        name: 'Enrollment challenges in DIKSHA Courses-1615274138124',
+        name: 'Enrollment challenges in SUNBIRD Courses-1615274138124',
         allowMultipleAssessemts: false,
       },
       {
@@ -86,7 +86,7 @@ export const ObservationData = {
           },
         ],
         programName: 'Regression Test Program 3.6.5',
-        name: 'Enrollment challenges in DIKSHA Courses-1614596183034',
+        name: 'Enrollment challenges in SUNBIRD Courses-1614596183034',
         allowMultipleAssessemts: false,
       },
       {
@@ -201,7 +201,7 @@ export const ModalEventData = {
       },
     ],
     programName: 'School development Program',
-    name: 'Enrollment challenges in DIKSHA Courses-1621760198612',
+    name: 'Enrollment challenges in SUNBIRD Courses-1621760198612',
     allowMultipleAssessemts: false,
   },
   selectedEntity: {
