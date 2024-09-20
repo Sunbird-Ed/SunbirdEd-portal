@@ -362,7 +362,7 @@ export const reportData = {
     },
     {
       order: 'Q7_1616157220157-1616161753207',
-      question: 'Were you able to enrol your child in courses on DIKSHA?',
+      question: 'Were you able to enrol your child in courses on SUNBIRD?',
       responseType: 'radio',
       answers: [
         'No',
@@ -426,20 +426,20 @@ export const reportData = {
       responseType: 'multiselect',
       answers: [
         ['Don’t find the courses useful'],
-        ['Not aware of classrooms on DIKSHA'],
-        ['Not aware of classrooms on DIKSHA'],
+        ['Not aware of classrooms on SUNBIRD'],
+        ['Not aware of classrooms on SUNBIRD'],
         ['Not aware of the enrolment process in the classroom'],
         ['Not aware of the enrolment process in the classroom'],
         ['Not aware of the enrolment process in the classroom'],
-        ['Not aware of classrooms on DIKSHA'],
+        ['Not aware of classrooms on SUNBIRD'],
         ['Not able to use the app'],
-        ['Not aware of classrooms on DIKSHA'],
+        ['Not aware of classrooms on SUNBIRD'],
         ['Not aware of the enrolment process in the classroom'],
-        ['Not aware of classrooms on DIKSHA'],
-        ['Not aware of classrooms on DIKSHA'],
+        ['Not aware of classrooms on SUNBIRD'],
+        ['Not aware of classrooms on SUNBIRD'],
         ['Not aware of the enrolment process in the classroom'],
-        ['Not aware of classrooms on DIKSHA'],
-        ['Not able to use the app', 'Not aware of classrooms on DIKSHA'],
+        ['Not aware of classrooms on SUNBIRD'],
+        ['Not able to use the app', 'Not aware of classrooms on SUNBIRD'],
         ['Not able to use the app'],
       ],
       chart: {
@@ -448,7 +448,7 @@ export const reportData = {
           labels: [
             'Don’t find the courses useful',
             'Not aware of the enrolment process in the classroom',
-            'Not aware of classrooms on DIKSHA',
+            'Not aware of classrooms on SUNBIRD',
             'Not able to use the app',
           ],
           datasets: [
@@ -697,7 +697,7 @@ export const reportData = {
             _id: 'Q9_1616157220157-1616161753210',
           },
           {
-            name: 'Were you able to enrol your child in courses on DIKSHA?',
+            name: 'Were you able to enrol your child in courses on SUNBIRD?',
             _id: 'Q7_1616157220157-1616161753207',
           },
           {
@@ -1078,7 +1078,7 @@ export const reportSectionData = [
       },
       {
         order: 'Q7_1616157220157-1616161753207',
-        question: 'Were you able to enrol your child in courses on DIKSHA?',
+        question: 'Were you able to enrol your child in courses on SUNBIRD?',
         responseType: 'radio',
         answers: [
           'No',
@@ -1142,20 +1142,20 @@ export const reportSectionData = [
         responseType: 'multiselect',
         answers: [
           ['Don’t find the courses useful'],
-          ['Not aware of classrooms on DIKSHA'],
-          ['Not aware of classrooms on DIKSHA'],
+          ['Not aware of classrooms on SUNBIRD'],
+          ['Not aware of classrooms on SUNBIRD'],
           ['Not aware of the enrolment process in the classroom'],
           ['Not aware of the enrolment process in the classroom'],
           ['Not aware of the enrolment process in the classroom'],
-          ['Not aware of classrooms on DIKSHA'],
+          ['Not aware of classrooms on SUNBIRD'],
           ['Not able to use the app'],
-          ['Not aware of classrooms on DIKSHA'],
+          ['Not aware of classrooms on SUNBIRD'],
           ['Not aware of the enrolment process in the classroom'],
-          ['Not aware of classrooms on DIKSHA'],
-          ['Not aware of classrooms on DIKSHA'],
+          ['Not aware of classrooms on SUNBIRD'],
+          ['Not aware of classrooms on SUNBIRD'],
           ['Not aware of the enrolment process in the classroom'],
-          ['Not aware of classrooms on DIKSHA'],
-          ['Not able to use the app', 'Not aware of classrooms on DIKSHA'],
+          ['Not aware of classrooms on SUNBIRD'],
+          ['Not able to use the app', 'Not aware of classrooms on SUNBIRD'],
           ['Not able to use the app'],
         ],
         chart: {
@@ -1164,7 +1164,7 @@ export const reportSectionData = [
             labels: [
               'Don’t find the courses useful',
               'Not aware of the enrolment process in the classroom',
-              'Not aware of classrooms on DIKSHA',
+              'Not aware of classrooms on SUNBIRD',
               'Not able to use the app',
             ],
             datasets: [
@@ -1415,7 +1415,7 @@ export const filterData = [
           _id: 'Q9_1616157220157-1616161753210',
         },
         {
-          name: 'Were you able to enrol your child in courses on DIKSHA?',
+          name: 'Were you able to enrol your child in courses on SUNBIRD?',
           _id: 'Q7_1616157220157-1616161753207',
         },
         {
@@ -1820,7 +1820,7 @@ export const CriteriaData = {
         },
         {
           order: 'Q7_1616157220157-1616161753207',
-          question: 'Were you able to enrol your child in courses on DIKSHA?',
+          question: 'Were you able to enrol your child in courses on SUNBIRD?',
           responseType: 'radio',
           answers: [
             'No',
@@ -1886,20 +1886,20 @@ export const CriteriaData = {
           responseType: 'multiselect',
           answers: [
             ['Don’t find the courses useful'],
-            ['Not aware of classrooms on DIKSHA'],
-            ['Not aware of classrooms on DIKSHA'],
+            ['Not aware of classrooms on SUNBIRD'],
+            ['Not aware of classrooms on SUNBIRD'],
             ['Not aware of the enrolment process in the classroom'],
             ['Not aware of the enrolment process in the classroom'],
             ['Not aware of the enrolment process in the classroom'],
-            ['Not aware of classrooms on DIKSHA'],
+            ['Not aware of classrooms on SUNBIRD'],
             ['Not able to use the app'],
-            ['Not aware of classrooms on DIKSHA'],
+            ['Not aware of classrooms on SUNBIRD'],
             ['Not aware of the enrolment process in the classroom'],
-            ['Not aware of classrooms on DIKSHA'],
-            ['Not aware of classrooms on DIKSHA'],
+            ['Not aware of classrooms on SUNBIRD'],
+            ['Not aware of classrooms on SUNBIRD'],
             ['Not aware of the enrolment process in the classroom'],
-            ['Not aware of classrooms on DIKSHA'],
-            ['Not able to use the app', 'Not aware of classrooms on DIKSHA'],
+            ['Not aware of classrooms on SUNBIRD'],
+            ['Not able to use the app', 'Not aware of classrooms on SUNBIRD'],
             ['Not able to use the app'],
           ],
           chart: {
@@ -1908,7 +1908,7 @@ export const CriteriaData = {
               labels: [
                 'Don’t find the courses useful',
                 'Not aware of the enrolment process in the classroom',
-                'Not aware of classrooms on DIKSHA',
+                'Not aware of classrooms on SUNBIRD',
                 'Not able to use the app',
               ],
               datasets: [

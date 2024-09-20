@@ -42,12 +42,12 @@ export const FaqData = {
       ],
       'faqs': [
         {
-          'topic': 'I want to register on DIKSHA',
-          'description': 'I want to register on DIKSHA'
+          'topic': 'I want to register on SUNBIRD',
+          'description': 'I want to register on SUNBIRD'
         },
         {
-          'topic': 'I want to login on DIKSHA through my State portal',
-          'description': 'I want to login on DIKSHA through my State portal'
+          'topic': 'I want to login on SUNBIRD through my State portal',
+          'description': 'I want to login on SUNBIRD through my State portal'
         }
       ]
     },
@@ -66,7 +66,7 @@ export const FaqData = {
           'id': 'add-content-offline',
           'name': 'How do I download content from {instance} Library?',
           'thumbnail': 'assets/images/play-icon.svg',
-          'url': 'assets/videos/How_do_I_download_content_from_DIKSHA_Library.mp4'
+          'url': 'assets/videos/How_do_I_download_content_from_SUNBIRD_Library.mp4'
         }
       ],
       'faqs': [
@@ -103,8 +103,8 @@ export const FaqData = {
           'description': 'I have completed my course, but the progress does not show as 100%  completed'
         },
         {
-          'topic': 'I want to contribute content to DIKSHA',
-          'description': 'I want to contribute content to DIKSHA'
+          'topic': 'I want to contribute content to SUNBIRD',
+          'description': 'I want to contribute content to SUNBIRD'
         },
         {
           'topic': 'I cannot find my course',
