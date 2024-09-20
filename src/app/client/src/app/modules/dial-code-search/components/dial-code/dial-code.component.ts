@@ -90,7 +90,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
         const { constantData, metaData, dynamicFields } = this.configService.appConfig.GetPage;
         this.searchResults = this.utilService.getDataForCard(linkedContents, constantData, dynamicFields, metaData);
         if (_.get(this.searchResults[0], 'contentType') === 'TextBook') {
-          sessionStorage.setItem('l1parent', this.searchResults[0].identifier);
+          sessionStorage.setItem('l1parent',  this.searchResults[0].identifier);
         }
         this.appendItems(0, this.itemsToLoad);
         if (this.searchResults.length === 1) {
