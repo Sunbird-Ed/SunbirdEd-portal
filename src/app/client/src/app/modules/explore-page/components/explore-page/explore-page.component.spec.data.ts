@@ -66,7 +66,7 @@ export const RESPONSE = {
             'do_2123178641611407361570',
             'do_2125393116783165441232'
           ],
-          'appId': 'staging.diksha.portal',
+          'appId': 'staging.sunbird.portal',
           'contentEncoding': 'gzip',
           'lockKey': 'c98ba06f-cd7c-4507-b286-68d5aa960b60',
           'mimeTypesCount': '',
@@ -192,7 +192,7 @@ export const RESPONSE = {
             'Class 8'
           ],
           'appIcon': 'https://ntpsta1285725285052416011433/artifact/1_1565067478206.thumb.png',
-          'appId': 'staging.diksha.portal',
+          'appId': 'staging.sunbird.portal',
           'contentEncoding': 'gzip',
           'lockKey': '93e020b8-de57-45ad-9863-737ad82e51d2',
           'totalCompressedSize': 50594,
@@ -916,7 +916,7 @@ export const RESPONSE = {
             'do_2123178641611407361570',
             'do_2125393116783165441232'
           ],
-          'appId': 'staging.diksha.portal',
+          'appId': 'staging.sunbird.portal',
           'contentEncoding': 'gzip',
           'lockKey': 'c98ba06f-cd7c-4507-b286-68d5aa960b60',
           // tslint:disable-next-line:max-line-length
@@ -1053,7 +1053,7 @@ export const RESPONSE = {
           'children': [
             'do_212848119817945088185'
           ],
-          'appId': 'staging.diksha.portal',
+          'appId': 'staging.sunbird.portal',
           'contentEncoding': 'gzip',
           'lockKey': '9a50546f-683c-417d-96fc-6a7969f34a58',
           'totalCompressedSize': 7757867,
@@ -1166,7 +1166,7 @@ export const RESPONSE = {
           ],
           // tslint:disable-next-line:max-line-length
           'appIcon': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21285725285052416011433/artifact/1_1565067478206.thumb.png',
-          'appId': 'staging.diksha.portal',
+          'appId': 'staging.sunbird.portal',
           'contentEncoding': 'gzip',
           'lockKey': '93e020b8-de57-45ad-9863-737ad82e51d2',
           'totalCompressedSize': 50594,
@@ -1286,7 +1286,7 @@ export const RESPONSE = {
           'children': [
             'do_2126724652597657601590'
           ],
-          'appId': 'staging.diksha.portal',
+          'appId': 'staging.sunbird.portal',
           'contentEncoding': 'gzip',
           'lockKey': '7b8401fc-f37b-4e2d-bab5-bf7ab801563a',
           'mimeTypesCount': '{"application/vnd.ekstep.content-collection":2,"application/vnd.ekstep.ecml-archive":1}',
@@ -1455,7 +1455,7 @@ export const RESPONSE = {
           'children': [
             'do_212848119817945088185'
           ],
-          'appId': 'staging.diksha.portal',
+          'appId': 'staging.sunbird.portal',
           'contentEncoding': 'gzip',
           'lockKey': '52064784-2f88-40b3-80a7-4e29dab94f13',
           'mimeTypesCount': '{"application/vnd.ekstep.content-collection":1,"application/vnd.ekstep.ecml-archive":1}',
@@ -1513,7 +1513,7 @@ export const RESPONSE = {
           'lastUpdatedOn': '2019-12-18T10:30:58.236+0000',
           'SYS_INTERNAL_LAST_UPDATED_ON': '2019-12-18T10:30:58.771+0000',
           'dialcodeRequired': 'No',
-          'creator': 'Diksha Test',
+          'creator': 'Sunbird Test',
           'createdFor': [
             '0125196778210263043',
             '012337869197770752697',
@@ -1610,7 +1610,7 @@ export const RESPONSE = {
         'do_2123178641611407361570',
         'do_2125393116783165441232'
       ],
-      'appId': 'staging.diksha.portal',
+      'appId': 'staging.sunbird.portal',
       'contentEncoding': 'gzip',
       'lockKey': 'c98ba06f-cd7c-4507-b286-68d5aa960b60',
       'mimeTypesCount': '{"application/vnd.ekstep.content-collection":4,"application/vnd.ekstep.ecml-archive":7,\'video/x-youtube\':1}',
@@ -3118,42 +3118,42 @@ export const RESPONSE = {
           'infiniteCard': false,
           'colorMapping': [],
           'icons': {
-            'ekstep_ncert_k-12': 'https://diksha.gov.in/cbse/cbse-logo.png',
-            'igot_health': 'https://diksha.gov.in/igot/logo.png',
-            'ar_k-12': 'https://diksha.gov.in/ar/logo.png',
-            'ap_k-12': 'https://diksha.gov.in/ap/logo.png',
-            'as_k-12': 'https://diksha.gov.in/as/logo.png',
-            'br_k-12': 'https://diksha.gov.in/br/logo.png',
-            'ch_k-12': 'https://diksha.gov.in/logo.png',
-            'cg_k-12': 'https://diksha.gov.in/cg/logo.png',
-            'dl_k-12': 'https://diksha.gov.in/dl/logo.png',
-            'ga_k-12': 'https://diksha.gov.in/ga/logo.png',
-            'gj_k-12': 'https://diksha.gov.in/gj/logo.png',
-            'hr_k-12': 'https://diksha.gov.in/hr/logo.png',
-            'hp_k-12': 'https://diksha.gov.in/logo.png',
-            'jk_k-12': 'https://diksha.gov.in/jk/logo.png',
-            'jh_k-12': 'https://diksha.gov.in/jh/logo.png',
-            'ka_k-12': 'https://diksha.gov.in/ka/appLogo.png',
-            'kl_k-12': 'https://diksha.gov.in/logo.png',
-            'mp_k-12': 'https://diksha.gov.in/mp/logo.png',
-            'mh_k-12_1': 'https://diksha.gov.in/mh/logo.png',
-            'mn_k-12': 'https://diksha.gov.in/mn/appLogo.png',
-            'ml_k-12': 'https://diksha.gov.in/ml/logo.png',
-            'mz_k-12': 'https://diksha.gov.in/mz/logo.png',
-            'nl_k-12': 'https://diksha.gov.in/nl/logo.png',
-            'od_k-12': 'https://diksha.gov.in/od/appLogo.png',
-            'pb_k-12': 'https://diksha.gov.in/pb/appLogo.png',
-            'rj_k-12': 'https://diksha.gov.in/rj/appLogo.png',
-            'sk_k-12_1': 'https://diksha.gov.in/sk/logo.png',
-            'tn_k-12_5': 'https://diksha.gov.in/tn/appLogo.png',
-            'ts_k-12': 'https://diksha.gov.in/ts/logo.png',
-            'tp_k-12': 'https://diksha.gov.in/logo.png',
-            'up_k-12': 'https://diksha.gov.in/up/appLogo.png',
-            'uk_k-12': 'https://diksha.gov.in/logo.png',
-            'an_k-12': 'https://diksha.gov.in/an/logo.png',
-            'dd_k-12': 'https://diksha.gov.in/dd/appLogo.png',
-            'ld_k-12': 'https://diksha.gov.in/ld/appLogo.png',
-            'py_k-12': 'https://diksha.gov.in/py/appLogo.png',
+            'ekstep_ncert_k-12': 'https://sunbird.gov.in/cbse/cbse-logo.png',
+            'igot_health': 'https://sunbird.gov.in/igot/logo.png',
+            'ar_k-12': 'https://sunbird.gov.in/ar/logo.png',
+            'ap_k-12': 'https://sunbird.gov.in/ap/logo.png',
+            'as_k-12': 'https://sunbird.gov.in/as/logo.png',
+            'br_k-12': 'https://sunbird.gov.in/br/logo.png',
+            'ch_k-12': 'https://sunbird.gov.in/logo.png',
+            'cg_k-12': 'https://sunbird.gov.in/cg/logo.png',
+            'dl_k-12': 'https://sunbird.gov.in/dl/logo.png',
+            'ga_k-12': 'https://sunbird.gov.in/ga/logo.png',
+            'gj_k-12': 'https://sunbird.gov.in/gj/logo.png',
+            'hr_k-12': 'https://sunbird.gov.in/hr/logo.png',
+            'hp_k-12': 'https://sunbird.gov.in/logo.png',
+            'jk_k-12': 'https://sunbird.gov.in/jk/logo.png',
+            'jh_k-12': 'https://sunbird.gov.in/jh/logo.png',
+            'ka_k-12': 'https://sunbird.gov.in/ka/appLogo.png',
+            'kl_k-12': 'https://sunbird.gov.in/logo.png',
+            'mp_k-12': 'https://sunbird.gov.in/mp/logo.png',
+            'mh_k-12_1': 'https://sunbird.gov.in/mh/logo.png',
+            'mn_k-12': 'https://sunbird.gov.in/mn/appLogo.png',
+            'ml_k-12': 'https://sunbird.gov.in/ml/logo.png',
+            'mz_k-12': 'https://sunbird.gov.in/mz/logo.png',
+            'nl_k-12': 'https://sunbird.gov.in/nl/logo.png',
+            'od_k-12': 'https://sunbird.gov.in/od/appLogo.png',
+            'pb_k-12': 'https://sunbird.gov.in/pb/appLogo.png',
+            'rj_k-12': 'https://sunbird.gov.in/rj/appLogo.png',
+            'sk_k-12_1': 'https://sunbird.gov.in/sk/logo.png',
+            'tn_k-12_5': 'https://sunbird.gov.in/tn/appLogo.png',
+            'ts_k-12': 'https://sunbird.gov.in/ts/logo.png',
+            'tp_k-12': 'https://sunbird.gov.in/logo.png',
+            'up_k-12': 'https://sunbird.gov.in/up/appLogo.png',
+            'uk_k-12': 'https://sunbird.gov.in/logo.png',
+            'an_k-12': 'https://sunbird.gov.in/an/logo.png',
+            'dd_k-12': 'https://sunbird.gov.in/dd/appLogo.png',
+            'ld_k-12': 'https://sunbird.gov.in/ld/appLogo.png',
+            'py_k-12': 'https://sunbird.gov.in/py/appLogo.png',
             'default': 'assets/images/default_circle.png'
           }
         },
@@ -3196,7 +3196,7 @@ export const RESPONSE = {
                         'type': 'navigate',
                         'subType': 'externalUrl',
                         'params': {
-                            'route': 'https://diksha.gov.in/'
+                            'route': 'https://sunbird.gov.in/'
                         }
                     },
                     'expiry': '1653031067'
@@ -3306,7 +3306,7 @@ export const RESPONSE = {
                         'type': 'navigate',
                         'subType': 'externalUrl',
                         'params': {
-                            'route': 'https://diksha.gov.in/'
+                            'route': 'https://sunbird.gov.in/'
                         }
                     },
                     'expiry': '1653031067'
