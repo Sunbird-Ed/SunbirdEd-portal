@@ -125,7 +125,7 @@
       <div class="mobile-app-popup-close">
         <i class="close icon" aria-hidden="true"></i>
       </div>
-      <div class="download-mobile-app-logo p-15" tabindex="0" (click)="redirectToSunbirdApp()">
+      <div class="download-mobile-app-logo p-15" tabindex="0" (click)="redirectToDikshaApp()">
         <div class="mobile-circles">
           <div class="big-box border-round border-r50"></div>
           <div class="oval-box border-round ml-24"></div>
@@ -133,11 +133,11 @@
           <div class="small-box border-round border-r50"></div>
         </div>
         <label
-          class="d-block text-center">{{resourceService?.frmelmnts?.lbl?.downloadSunbirdForMobile | interpolate:'{instance}': instance}}</label>
+          class="d-block text-center">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile | interpolate:'{instance}': instance}}</label>
         <a id='app-download-mobile' class="d-block pb-10 text-center app-download">
           <img class="playStore-img" src="assets/images/google_playstore.png"
-            alt="{{resourceService?.frmelmnts?.lbl?.sunbirdForMobile | interpolate:'{instance}':instance}}"
-            title="{{resourceService?.frmelmnts?.lbl?.sunbirdForMobile | interpolate:'{instance}':instance}}">
+            alt="{{resourceService?.frmelmnts?.lbl?.dikshaForMobile | interpolate:'{instance}':instance}}"
+            title="{{resourceService?.frmelmnts?.lbl?.dikshaForMobile | interpolate:'{instance}':instance}}">
         </a>
         <p class="d-block text-center py-8">{{resourceService.frmelmnts?.lbl?.getUnlimitedAccess}}
         </p>
