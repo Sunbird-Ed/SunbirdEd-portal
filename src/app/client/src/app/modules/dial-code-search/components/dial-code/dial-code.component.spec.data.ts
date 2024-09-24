@@ -114,7 +114,7 @@ export const Response = {
                         'status': 'Live'
                     }
                 ],
-                'appId': 'staging.diksha.portal',
+                'appId': 'staging.sunbird.portal',
                 'contentEncoding': 'gzip',
                 'lockKey': 'c55a6cd8-4a79-420c-8241-7927381853d3',
                 'totalCompressedSize': 2486409,
@@ -419,7 +419,7 @@ export const Response = {
                             'do_2125678785313259521740',
                             'do_2125678797343047681742'
                         ],
-                        'appId': 'staging.diksha.portal',
+                        'appId': 'staging.sunbird.portal',
                         'contentEncoding': 'gzip',
                         'lockKey': 'c55a6cd8-4a79-420c-8241-7927381853d3',
                         // tslint:disable-next-line: max-line-length

@@ -14,7 +14,7 @@
               <div class="small-box border-round border-r50"></div>
             </div>
             <label
-              class="d-block text-center font-weight-bold">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile | interpolate:'{instance}': instance}}</label>
+              class="d-block text-center font-weight-bold">{{resourceService?.frmelmnts?.lbl?.downloadSunbirdForMobile | interpolate:'{instance}': instance}}</label>
             <a class="d-block app-download" (click)="redirectToMobileApp()" tabindex="0">
               <img class="playStore-img cursor-pointer" src="/assets/images/google_playstore.png"
                 alt="{{ resourceService?.frmelmnts?.lbl?.altGoogleplay }}">
@@ -72,7 +72,7 @@
           <div class="six wide column p-0 d-flex sbt-footer-download-app">
             <div class="sbt-footer-bg relative">
               <img [attr.aria-label]="resourceService.frmelmnts?.lnk?.footerAppDownload | interpolate:'{instance}':  instance" class="sbt-footer-bg-img cursor-pointer" tabindex="0" src="/assets/images/footer-mobile-frame.svg" alt="">
-              <label class="d-block text-center font-weight-bold sbt-footer-title">{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile | interpolate:'{instance}':  instance}}</label>
+              <label class="d-block text-center font-weight-bold sbt-footer-title">{{resourceService.frmelmnts?.lnk?.footerSUNBIRDForMobile | interpolate:'{instance}':  instance}}</label>
               <a class="d-block app-download" (click)="redirectToMobileApp()">
                 <img tabindex="0" class="playStore-img cursor-pointer" src="/assets/images/google_playstore.png"
                   alt="{{ resourceService?.frmelmnts?.lbl?.altGoogleplay }}">

@@ -474,7 +474,7 @@ export const contentList = [
     'cardImg': 'content/do_31288771643112652813019/notebook_1491393332116.thumb.png',
     'resourceType': 'Book',
     'organisation': [
-      'DIKSHA Support'
+      'SUNBIRD Support'
     ],
     'action': {
       'onImage': {
@@ -631,7 +631,7 @@ export const contentListWithHoverData = [
     'cardImg': 'content/do_31288771643112652813019/notebook_1491393332116.thumb.png',
     'resourceType': 'Book',
     'organisation': [
-      'DIKSHA Support'
+      'SUNBIRD Support'
     ],
     'hoverData': {
       'note': '',
@@ -681,7 +681,7 @@ export const duplicateData = {
   'channel': [
     {
       'identifier': '01272777697873100812',
-      'orgName': 'diksha_ntptest_org',
+      'orgName': 'sunbird_ntptest_org',
       'slug': 'disha_ntptest'
     },
     {
@@ -702,7 +702,7 @@ export const nonDuplicateData = {
   'channel': [
     {
       'identifier': '01272777697873100812',
-      'orgName': 'diksha_ntptest_org',
+      'orgName': 'sunbird_ntptest_org',
       'slug': 'disha_ntptest'
     }
   ]
