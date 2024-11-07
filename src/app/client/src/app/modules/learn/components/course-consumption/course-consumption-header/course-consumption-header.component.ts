@@ -393,7 +393,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
       const navigateUrl = this.userService.loggedIn ? '/resources/play/collection' : '/play/collection';
       this.router.navigate([navigateUrl, this.tocId], { queryParams: { textbook: this.tocId } });
     } else if (!previousPageUrl) {
-      this.router.navigate(['/resources'], { queryParams: { selectedTab: 'course' } });
+      this.router.navigate(['/resources'], { queryParams: { selectedTab: 'homegit ' } });
       return;
     }
     if (previousPageUrl.url.indexOf('/my-groups/') >= 0) {
