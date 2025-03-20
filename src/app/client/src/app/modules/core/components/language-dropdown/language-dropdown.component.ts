@@ -46,6 +46,11 @@ export class LanguageDropdownComponent implements OnInit {
     this.resourceService.getLanguageChange(_.find(this.languageRange, ['value', this.selectedLanguage]));
     this.genericResourceService.getLanguageChange(_.find(this.languageRange, ['value', this.selectedLanguage]));
     window['TagManager']?.SBTagService?.pushTag({portalLanguage: this.selectedLanguage}, 'USERLANG_', true);
+    this.languageRange = [
+      { label: 'English', value: 'en' },
+      { label: 'French', value: 'fr' },
+      { label: 'Arabic', value: 'ar' }
+    ];
   }
 
   onLanguageChange(event) {

@@ -48,7 +48,8 @@ const appRoutes: Routes = [
     path: 'uci-admin', loadChildren: () => import('./modules/uci-admin/uci-admin.module').then(m => m.UciAdminModule)
   },
   {
-    path: '', loadChildren: () => import('./modules/public/public.module').then(m => m.PublicModule)
+    path: '', redirectTo: 'resources', pathMatch: 'full'
+    // path: '', loadChildren: () => import('./modules/public/public.module').then(m => m.PublicModule)
   },
   {
     path: 'discussion-forum', loadChildren: () => import('./modules/discussion/discussion.module').then(m => m.DiscussionModule)
