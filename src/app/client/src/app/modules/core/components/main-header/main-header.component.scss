@@ -324,9 +324,10 @@ __textbooks {
 }
 
 .sbt-logo {
-  height: calculateRem(80px);
+  height: calculateRem(112px);
   display:flex;
   align-items: center;
+  margin-left: 2rem;
   img {
     min-height: 65%;
     height: 80%;
