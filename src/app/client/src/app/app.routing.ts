@@ -44,9 +44,9 @@ const appRoutes: Routes = [
   {
     path: 'manage', loadChildren: () => import('./modules/manage/manage.module').then(m => m.ManageModule)
   },
-  {
-    path: 'uci-admin', loadChildren: () => import('./modules/uci-admin/uci-admin.module').then(m => m.UciAdminModule)
-  },
+  // {
+  //   path: 'uci-admin', loadChildren: () => import('./modules/uci-admin/uci-admin.module').then(m => m.UciAdminModule)
+  // },
   {
     path: '', redirectTo: 'resources', pathMatch: 'full'
     // path: '', loadChildren: () => import('./modules/public/public.module').then(m => m.PublicModule)
@@ -54,9 +54,9 @@ const appRoutes: Routes = [
   {
     path: 'discussion-forum', loadChildren: () => import('./modules/discussion/discussion.module').then(m => m.DiscussionModule)
   },
-  {
-    path: MY_GROUPS, loadChildren: () => import('./modules/groups/groups.module').then(m => m.GroupsModule)
-  },
+  // {
+  //   path: MY_GROUPS, loadChildren: () => import('./modules/groups/groups.module').then(m => m.GroupsModule)
+  // },
   {
     path: NOTIFICATION, loadChildren: () => import('./modules/notification/notification.module').then(m => m.NotificationModule)
   },
