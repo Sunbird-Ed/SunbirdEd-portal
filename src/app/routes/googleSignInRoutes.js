@@ -13,6 +13,7 @@ const envHelper = require('../helpers/environmentVariablesHelper.js');
 const { GOOGLE_OAUTH_CONFIG, GOOGLE_OAUTH_CONFIG_IOS } = require('../helpers/environmentVariablesHelper.js')
 const {OAuth2Client} = require('google-auth-library');
 
+const allowedGoogleEmails = process.env.google_allowed_emails.split(',');
 /**
  * keycloack adds this string to track auth redirection and
  * with this it triggers auth code verification to get token and create session
@@ -92,6 +93,7 @@ module.exports = (app) => {
   app.get('/google/auth/callback', async (req, res) => {
     logger.info({msg: 'google auth callback called' });
     let googleProfile, isUserExist, newUserDetails, keyCloakToken, redirectUrl, errType, reqQuery = {};
+    
     try {
       errType = 'BASE64_STATE_DECODE';
       reqQuery = _.pick(JSON.parse(req.query.state), REQUIRED_STATE_FIELD);
@@ -102,6 +104,9 @@ module.exports = (app) => {
       }
       errType = 'GOOGLE_PROFILE_API';
       googleProfile = await googleOauth.getProfile(req).catch(handleGoogleProfileError);
+      if(!allowedGoogleEmails.includes(googleProfile.emailId)) {
+        throw 'google email not allowed';
+      }
       logger.info({msg: 'googleProfile fetched' + JSON.stringify(googleProfile)});
       errType = 'USER_FETCH_API';
       isUserExist = await fetchUserByEmailId(googleProfile.emailId, req).catch(handleGetUserByIdError);
