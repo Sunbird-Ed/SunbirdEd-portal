@@ -64,7 +64,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     private _facets$ = new Subject();
     public showBatchInfo = false;
     public enrolledCourses: Array<any>;
+    public completeCourses: Array<any>;
     public enrolledSection: any;
+    public completedCourseSection: any;
     public selectedCourseBatches: any;
     frameworkCategories;
     frameworkCategoriesObject;
@@ -129,7 +131,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         public contentManagerService: ContentManagerService, private cacheService: CacheService,
         private browserCacheTtlService: BrowserCacheTtlService, private profileService: ProfileService,
         private segmentationTagService: SegmentationTagService, private observationUtil: ObservationUtilService,
-        private genericResourceService: GenericResourceService, private cdr: ChangeDetectorRef, private cslFrameworkService:CslFrameworkService) {
+        private genericResourceService: GenericResourceService, private cdr: ChangeDetectorRef, private cslFrameworkService: CslFrameworkService) {
         this.genericResourceService.initialize();
         this.instance = (<HTMLInputElement>document.getElementById('instance'))
             ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
@@ -266,6 +268,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             .pipe(
                 tap(({ enrolledCourses, err }) => {
                     this.enrolledCourses = this.enrolledSection = [];
+                    this.completeCourses = this.completedCourseSection = [];
                     const sortingField = (get(this.getCurrentPageData(), 'sortingField')) ?
                         (get(this.getCurrentPageData(), 'sortingField')) : 'enrolledDate';
                     const sortingOrder = (get(this.getCurrentPageData(), 'sortingOrder')) ?
@@ -276,6 +279,13 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         count: 0,
                         contents: []
                     };
+                    const completedCourseSection = {
+                        name: this.getSectionName(get(this.activatedRoute, 'snapshot.queryParams')),
+                        length: 0,
+                        count: 0,
+                        contents: []
+                    };
+                    console.log('enrolledSection', enrolledSection)
                     const { contentType: pageContentType = null, search: { filters: { primaryCategory: pagePrimaryCategories = [] } } } = this.getCurrentPageData();
                     if (err) { return enrolledSection; }
                     const enrolledContentPredicate = course => {
@@ -288,18 +298,43 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     filteredCourses = _.orderBy(filteredCourses, [sortingField], [sortingOrder]);
                     this.enrolledCourses = _.orderBy(filteredCourses, [sortingField], [sortingOrder]);
                     const { constantData, metaData, dynamicFields } = _.get(this.configService, 'appConfig.CoursePageSection.enrolledCourses');
-                    enrolledSection.contents = _.map(filteredCourses, content => {
+                    enrolledSection.contents = _.compact(_.map(filteredCourses, content => {
+                        if (content.status === 2) {
+                            return null;
+                        }
+
                         const formatedContent = this.utilService.processContent(content, constantData, dynamicFields, metaData);
                         formatedContent.metaData.mimeType = 'application/vnd.ekstep.content-collection';
                         formatedContent.metaData.contentType = _.get(content, 'content.primaryCategory') || _.get(content, 'content.contentType');
+
                         const trackableObj = _.get(content, 'content.trackable');
                         if (trackableObj) {
                             formatedContent.metaData.trackable = trackableObj;
                         }
                         return formatedContent;
-                    });
+                    }));
+                    completedCourseSection.contents = _.compact(_.map(filteredCourses, content => {
+                        if (content.status !== 2) {
+                            return null;
+                        }
+
+                        const formatedContent = this.utilService.processContent(content, constantData, dynamicFields, metaData);
+                        formatedContent.metaData.mimeType = 'application/vnd.ekstep.content-collection';
+                        formatedContent.metaData.contentType = _.get(content, 'content.primaryCategory') || _.get(content, 'content.contentType');
+
+                        const trackableObj = _.get(content, 'content.trackable');
+                        if (trackableObj) {
+                            formatedContent.metaData.trackable = trackableObj;
+                        }
+                        return formatedContent;
+                    }));
+
+
                     enrolledSection.count = enrolledSection.contents.length;
+                    completedCourseSection.count = completedCourseSection.contents.length;
                     this.enrolledSection = enrolledSection;
+                    this.completedCourseSection = completedCourseSection
+
                 }));
     }
 
@@ -443,7 +478,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         }
                         const option = this.searchService.getSearchRequest(request, get(filters, 'primaryCategory'));
                         const params = _.get(this.activatedRoute, 'snapshot.queryParams');
-                        _.filter(Object.keys(params),filterValue => { 
+                        _.filter(Object.keys(params), filterValue => {
                             if (((_.get(currentPageData, 'metaData.filters').indexOf(filterValue) !== -1))) {
                                 let param = {};
                                 param[filterValue] = (typeof (params[filterValue]) === "string") ? params[filterValue].split(',') : params[filterValue];
@@ -555,8 +590,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                     });
                                 }), tap(data => {
                                     // this.userPreference = this.setUserPreferences();
-                                    this.showLoader = false;              
-                                    const userProfileSubjects = _.get(this.userService,  `userProfile.framework.${this.frameworkCategoriesList[3]}`) || [];
+                                    this.showLoader = false;
+                                    const userProfileSubjects = _.get(this.userService, `userProfile.framework.${this.frameworkCategoriesList[3]}`) || [];
                                     const [userSubjects, notUserSubjects] = partition(sortBy(data, ['name']), value => {
                                         const { name = null } = value || {};
                                         if (!name) { return false; }
@@ -608,7 +643,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         data[currentBoard][currentUserType]) {
                         this.showTargetedCategory = true;
                         this.dataThemeAttribute = document.documentElement.getAttribute('data-mode');
-                        const pillBgColor = this.dataThemeAttribute === 'light'? "rgba(255,255,255,1)" :"rgba(36,37,36,1)" 
+                        const pillBgColor = this.dataThemeAttribute === 'light' ? "rgba(255,255,255,1)" : "rgba(36,37,36,1)"
                         this.targetedCategory = data[currentBoard][currentUserType];
                         this.targetedCategorytheme = {
                             "iconBgColor": "rgba(255,255,255,1)",
@@ -1032,8 +1067,12 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 sectionName = 'tvc.trk.frmelmnts.lbl.mytrainings';
                 break;
             }
-            default: {
+            case 'home': {
                 sectionName = 'frmelmnts.lbl.myEnrolledCollections';
+                break;
+            }
+            default: {
+                sectionName = 'frmelmnts.lbl.myCompletedCollections';
             }
         }
         return sectionName;
@@ -1072,11 +1111,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         try {
             if (this.isUserLoggedIn()) {
                 this.userPreference = { framework: this.userService.defaultFrameworkFilters };
-                this.transformUserPreference = this.cslFrameworkService.frameworkLabelTransform(this.frameworkCategoriesObject,this.userPreference);
+                this.transformUserPreference = this.cslFrameworkService.frameworkLabelTransform(this.frameworkCategoriesObject, this.userPreference);
             } else {
                 this.userService.getGuestUser().subscribe((response) => {
                     this.userPreference = response;
-                    this.transformUserPreference = this.cslFrameworkService.frameworkLabelTransform(this.frameworkCategoriesObject,this.userPreference);
+                    this.transformUserPreference = this.cslFrameworkService.frameworkLabelTransform(this.frameworkCategoriesObject, this.userPreference);
                 });
             }
         } catch (error) {
@@ -1170,7 +1209,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.isUserLoggedIn()) {
             this.profileService.updateProfile({ framework: event }).subscribe(res => {
                 this.userPreference.framework = event;
-                this.transformUserPreference = this.cslFrameworkService.frameworkLabelTransform(this.frameworkCategoriesObject,this.userPreference);
+                this.transformUserPreference = this.cslFrameworkService.frameworkLabelTransform(this.frameworkCategoriesObject, this.userPreference);
                 this.getFormConfigs();
                 this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
                 this._addFiltersInTheQueryParams(event);
@@ -1185,7 +1224,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             const req = { ...this.userPreference, framework: event };
             this.userService.updateGuestUser(req).subscribe(res => {
                 this.userPreference.framework = event;
-                this.transformUserPreference = this.cslFrameworkService.frameworkLabelTransform(this.frameworkCategoriesObject,this.userPreference);
+                this.transformUserPreference = this.cslFrameworkService.frameworkLabelTransform(this.frameworkCategoriesObject, this.userPreference);
                 this.getFormConfigs();
                 this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
                 this.showorHideBanners();

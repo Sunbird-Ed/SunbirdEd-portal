@@ -13,7 +13,7 @@ const envHelper = require('../helpers/environmentVariablesHelper.js');
 const { GOOGLE_OAUTH_CONFIG, GOOGLE_OAUTH_CONFIG_IOS } = require('../helpers/environmentVariablesHelper.js')
 const {OAuth2Client} = require('google-auth-library');
 
-const allowedGoogleEmails = process.env.google_allowed_emails.split(',');
+const allowedGoogleEmails = process.env.google_allowed_emails?.split(',');
 /**
  * keycloack adds this string to track auth redirection and
  * with this it triggers auth code verification to get token and create session
@@ -197,7 +197,7 @@ const getErrorMessage = (error) => {
   } else if(_.get(error, 'params.err') === 'USER_ACCOUNT_BLOCKED') {
     return 'User account is blocked. Please contact admin';
   } else {
-    return 'Your account could not be signed in to DIKSHA due to technical issue. Please try again after some time';
+    return 'Your account could not be signed into FMPS because your email is not whitelisted. Please try again with an authorized email.';
   }
 }
 const handleCreateUserError = (error) => {

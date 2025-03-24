@@ -23,7 +23,7 @@ body {
 body {
   background: var(--sbt-body-bg) !important;
   position: relative;
-  font-family: var(--font-stack-en) !important;
+  font-family: 'Times New Roman' !important;
   letter-spacing: calculateRem(0.2px);
   height: auto;
   color: var(--gray-800);
@@ -59,15 +59,23 @@ body {
 }
 
 *[lang="en"] body {
-  font-family: var(--font-stack-en) !important;
+  font-family: 'Times New Roman' !important;
 }
 
 *[lang="hi"] body {
-  font-family: var(--font-stack-hi) !important;
+  font-family: 'Times New Roman' !important;
 }
 
 *[lang="ur"] body {
-  font-family: var(--font-stack-ur) !important;
+  font-family: 'Times New Roman' !important;
+}
+
+*[lang="fr"] body {
+  font-family: 'Times New Roman' !important;
+}
+
+*[lang="ar"] body {
+  font-family: 'Times New Roman' !important;
 }
 
 .publicmenusection.ui.secondary.menu .active.item {

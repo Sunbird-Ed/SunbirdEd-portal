@@ -83,6 +83,17 @@
               </div>
               <hr class="section-hr my-32" />
             </div>
+            <div
+              *ngIf="getSelectedTab() === 'home' && section?.section?.facetKey === 'ContinueLearning' && completedCourseSection?.contents?.length && isUserLoggedIn()"
+              class="sb-library-cards relative9">
+              <div class="twelve wide column relative9">
+                <app-page-section [hideProgress]="true" (visits)="prepareVisits($event)" [section]="completedCourseSection"
+                  (playEvent)="playEnrolledContent($event, 'My courses')" (viewAll)="viewAll($event)"
+                  [layoutConfiguration]="layoutConfiguration">
+                </app-page-section>
+              </div>
+              <hr class="section-hr my-32" />
+            </div>
 
             <div
               *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0">
