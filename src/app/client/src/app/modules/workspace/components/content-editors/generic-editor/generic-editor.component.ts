@@ -210,7 +210,9 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
       framework: this.routeParams.framework,
       ownershipType: this.ownershipType,
       timeDiff: this.userService.getServerTimeDiff,
-      primaryCategories: _.without(this.frameworkService['_channelData'].contentPrimaryCategories, 'Course Assessment')
+      primaryCategories: _.without(this.frameworkService['_channelData'].contentPrimaryCategories, 'Course Assessment'),
+      videoMaxSize: this.videoMaxSize,
+      defaultContentFileSize: this.defaultContentFileSize
     };
     if (this.isLargeFileUpload || (_.get(this.contentDetails, 'contentDisposition') === 'online-only')) {
       window.context['uploadInfo'] = {
