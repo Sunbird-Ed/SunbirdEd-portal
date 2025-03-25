@@ -85,7 +85,7 @@
         </div>
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.contentuploaddescription}}</p>
       </div>
-      <div class="three wide column"
+      <!-- <div class="three wide column"
         *ngIf="permissionService.permissionAvailable  && showCategory('contentuploadlarge')" appPermission
         [permission]='contentUploadRole'>
         <div class="ui link card" routerLink="../edit/editorforlargecontent/" appTelemetryInteract
@@ -98,7 +98,7 @@
           </div>
         </div>
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.contentuploaddescription}}</p>
-      </div>
+      </div> -->
       <!-- Assessment -->
       <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('assessment')"
         appPermission [permission]='assessmentRole'>
