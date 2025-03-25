@@ -135,12 +135,6 @@ export class CslFrameworkService {
           apiPath: '/api/framework/v1'
         }).subscribe(
           (fwData) => {
-            fwData = fwData?.map((item) => {
-              return {
-                ...item,
-                type: "framework"
-              }
-            })
             localStorage.removeItem('fwCategoryObject');
             localStorage.setItem('fwCategoryObject', JSON.stringify(fwData));
             localStorage.setItem('selectedFramework', userSelFramework);
