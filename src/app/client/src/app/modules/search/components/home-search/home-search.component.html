@@ -1,21 +1,7 @@
-<app-landing-section
-  *ngIf="allTabData"
-  [textToDisplay]="resourceService?.frmelmnts?.tab?.all"
-  [layoutConfiguration]="layoutConfiguration"
-  [svgToDisplay]="allTabData?.theme?.imageName"
-></app-landing-section>
-<div
-  [ngClass]="
-    layoutConfiguration ? 'sbt-fluid-content-bg sbt-home-search-component' : ''
-  "
->
-  <div
-    class="sb-g"
-    [ngClass]="
-      layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'
-    "
-  >
-    <div [ngClass]="FIRST_PANEL_LAYOUT" [ngStyle]="{ display: 'none' }">
+<app-landing-section *ngIf="allTabData" [textToDisplay]="resourceService?.frmelmnts?.tab?.all" [layoutConfiguration]="layoutConfiguration" [svgToDisplay]="allTabData?.theme?.imageName"></app-landing-section>
+<div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg sbt-home-search-component':''">
+  <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'">
+    <div [ngClass]="FIRST_PANEL_LAYOUT">
       <div *ngIf="layoutConfiguration">
         <ng-container *ngIf="isDesktopApp">
           <app-network-status></app-network-status>
@@ -23,145 +9,63 @@
           <app-system-warning></app-system-warning>
         </ng-container>
       </div>
-      <div [ngClass]="isDesktopApp ? 'sb-desktop-filter-section' : ''" >
+      <div [ngClass]="isDesktopApp ? 'sb-desktop-filter-section' : ''">
         <ng-container>
-          <app-global-search-filter
-            [layoutConfiguration]="layoutConfiguration"
-            [facets]="facets"
-            [isOpen]="true"
-            *ngIf="initFilters && allTabData"
-            (filterChange)="handleFilterChange($event)"
-            [cachedFilters]="selectedFilters"
-            
-          >
+          <app-global-search-filter [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
+            *ngIf="initFilters && allTabData" (filterChange)="handleFilterChange($event)" [cachedFilters]="selectedFilters">
           </app-global-search-filter>
         </ng-container>
       </div>
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT">
-      <div
-        [ngClass]="
-          layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-16'
-        "
-      >
-        <div class="content-grid relative9">
-          <div
-            class="sb-pageSection"
-            *ngIf="!showLoader && contentList?.length && !showBackButton"
-          >
-            <div class="sb-pageSection-header mb-10">
-              <h4 class="sb-pageSection-title mb-10 mr-5">
-                {{ resourceService.frmelmnts?.lbl?.showingResults | translate }}
-                <span
-                  class="text-lowercase"
-                  *ngIf="this.queryParams.key"
-                  appHighlightText
-                  [config]="{
-                    resourcePath: 'frmelmnts.lbl.forSearch',
-                    key: '{searchString}',
-                    value: queryParams?.key
-                  }"
-                ></span>
-                {{ resourceService.frmelmnts?.lbl?.inAll | translate }}
-              </h4>
-              <button
-                appTelemetryInteract
-                [telemetryInteractEdata]="closeIntractEdata"
-                *ngIf="showBackButton"
-                class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn"
-                type="button"
-                tabindex="0"
-                (click)="goback()"
-              >
-                {{ resourceService?.frmelmnts?.btn?.close | translate }}
-                <i class="close icon"></i>
-              </button>
-            </div>
-          </div>
-          <div class="twelve wide column">
-            <app-global-search-selected-filter
-              [facets]="facets"
-              [selectedFilters]="selectedFilters"
-              *ngIf="initFilters && facets && layoutConfiguration"
-              (filterChange)="handleFilterChange($event)"
-            ></app-global-search-selected-filter>
-            <div
-              [appTelemetryImpression]="telemetryImpression"
-              *ngIf="!showLoader && contentList?.length"
-              class="dynamic-section-card"
-            >
-              <ng-container>
-                <!-- <ng-container *ngFor="let data of contentList;let i = index;"> -->
-                <div class="sb-grid mb-16">
-                  <div
-                    *ngFor="let content of contentList; let i = index"
-                    [id]="i"
-                    [data]="content"
-                    class="sb-grid--item"
-                    [ngClass]="{ 'last mb-0': last }"
-                  >
-                    <sb-library-card
-                      *ngIf="!isDesktopApp; else desktopCard"
-                      [indexToDisplay]="i"
-                      [layoutConfig]="layoutConfiguration"
-                      appTelemetryInteract
+      <div [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-16'">
+  <div class="content-grid relative9" >
+    <div class="sb-pageSection" *ngIf="!showLoader && contentList?.length && !showBackButton">
+        <div  class="sb-pageSection-header mb-10">
+                <h4 class="sb-pageSection-title mb-10 mr-5"> {{resourceService.frmelmnts?.lbl?.showingResults | translate}}
+                    <span class="text-lowercase" *ngIf="this.queryParams.key" appHighlightText [config]="{'resourcePath': 'frmelmnts.lbl.forSearch', 'key': '{searchString}', 'value': queryParams?.key}"></span>
+                      {{resourceService.frmelmnts?.lbl?.inAll | translate}}
+                </h4>
+            <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" *ngIf="showBackButton" class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn " type="button"  tabindex="0" (click)= "goback()">
+              {{resourceService?.frmelmnts?.btn?.close | translate}} <i class="close icon"></i></button>
+        </div>
+    </div>
+    <div class="twelve wide column">
+      <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"
+              *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="handleFilterChange($event)"></app-global-search-selected-filter>
+      <div [appTelemetryImpression]="telemetryImpression"  *ngIf="!showLoader && contentList?.length"
+        class="dynamic-section-card">
+        <ng-container>
+          <!-- <ng-container *ngFor="let data of contentList;let i = index;"> -->
+            <div class="sb-grid mb-16">
+              <div *ngFor="let content of contentList;let i = index;" [id]="i" [data]="content" class="sb-grid--item"
+                [ngClass]="{'last mb-0':last}">
+                <sb-library-card *ngIf="!isDesktopApp;else desktopCard" [indexToDisplay]="i"
+                  [layoutConfig]="layoutConfiguration" appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata"
+                  [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
+                  (cardClick)="playContent($event)" (enterKey)="playContent($event)" [content]="content"
+                  [cardImg]="content?.appIcon || 'assets/images/book.png'" [categoryKeys]="categoryKeys">
+                </sb-library-card>
+                <ng-template #desktopCard>
+                  <div class="sb-desktop-library-card relative9">
+                    <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" appTelemetryInteract
                       [telemetryInteractEdata]="cardIntractEdata"
-                      [telemetryInteractObject]="{
-                        id: content.identifier,
-                        type: content.contentType || 'content',
-                        ver: content.pkgVersion
-                          ? content.pkgVersion.toString()
-                          : '1.0'
-                      }"
-                      (cardClick)="playContent($event)"
-                      (enterKey)="playContent($event)"
-                      [content]="content"
-                      [cardImg]="content?.appIcon || 'assets/images/book.png'"
-                      [categoryKeys]="categoryKeys"
-                    >
+                      [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
+                      [hover-template]="hoverTemplate" [content]="content"
+                      [cardImg]="content?.appIcon || 'assets/images/book.png'" [categoryKeys]="categoryKeys">
+                      <ng-template #hoverTemplate let-hoverData="hoverData" let-content="content">
+                        <sb-card-hover class="card-hover" [content]="content" [hoverData]="hoverData"
+                          (hoverActionClick)="hoverActionClicked($event)">
+                        </sb-card-hover>
+                      </ng-template>
                     </sb-library-card>
-                    <ng-template #desktopCard>
-                      <div class="sb-desktop-library-card relative9">
-                        <sb-library-card
-                          [indexToDisplay]="i"
-                          [layoutConfig]="layoutConfiguration"
-                          appTelemetryInteract
-                          [telemetryInteractEdata]="cardIntractEdata"
-                          [telemetryInteractObject]="{
-                            id: content.identifier,
-                            type: content.contentType || 'content',
-                            ver: content.pkgVersion
-                              ? content.pkgVersion.toString()
-                              : '1.0'
-                          }"
-                          [hover-template]="hoverTemplate"
-                          [content]="content"
-                          [cardImg]="
-                            content?.appIcon || 'assets/images/book.png'
-                          "
-                          [categoryKeys]="categoryKeys"
-                        >
-                          <ng-template
-                            #hoverTemplate
-                            let-hoverData="hoverData"
-                            let-content="content"
-                          >
-                            <sb-card-hover
-                              class="card-hover"
-                              [content]="content"
-                              [hoverData]="hoverData"
-                              (hoverActionClick)="hoverActionClicked($event)"
-                            >
-                            </sb-card-hover>
-                          </ng-template>
-                        </sb-library-card>
-                      </div>
-                    </ng-template>
                   </div>
-                </div>
-                <!-- </ng-container> -->
-              </ng-container>
-              <!-- <div *ngFor="let section of contentList; let last = last" [ngClass]="{'last mb-0':last}">
+                </ng-template>
+              </div>
+            </div>
+          <!-- </ng-container> -->
+        </ng-container>
+        <!-- <div *ngFor="let section of contentList; let last = last" [ngClass]="{'last mb-0':last}">
           <sb-library-cards-grid *ngIf="!isDesktopApp" [layoutConfig]="layoutConfiguration" [type]="'infinite_card_grid'"
             [title]="section.name" [contentList]="section.contents" [maxCardCount]="3" [viewMore]="true"
             (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)">
@@ -173,149 +77,55 @@
             </sb-library-cards-grid>
           </div>
         </div> -->
-            </div>
-          </div>
-          <div
-            class="twelve wide column"
-            [appTelemetryImpression]="telemetryImpression"
-            *ngIf="contentList?.length === 0 && !showLoader"
-          >
-            <app-no-result [data]="noResultMessage"></app-no-result>
-          </div>
-          <div
-            class="twelve wide column right aligned mt-16"
-            *ngIf="
-              paginationDetails.totalItems >
-                configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader
-            "
-          >
-            <div
-              class="sb-pagination-container flex-jc-flex-end"
-              *ngIf="paginationDetails.pages.length"
-            >
-              <div class="sb-pagination my-0">
-                <a
-                  role="button"
-                  title="{{ resourceService?.frmelmnts?.lbl?.first }}"
-                  attr.aria-label="{{ resourceService?.frmelmnts?.lbl?.first }}"
-                  [ngClass]="{ disabled: paginationDetails.currentPage === 1 }"
-                  class="sb-item"
-                  tabindex="0"
-                  (click)="navigateToPage(1)"
-                  >&laquo;</a
-                >
-                <a
-                  role="button"
-                  title="{{ resourceService?.frmelmnts?.lbl?.previous }}"
-                  attr.aria-label="{{
-                    resourceService?.frmelmnts?.lbl?.previous
-                  }}"
-                  [ngClass]="{ disabled: paginationDetails.currentPage === 1 }"
-                  class="sb-item"
-                  tabindex="0"
-                  (click)="navigateToPage(paginationDetails.currentPage - 1)"
-                  >&lt;</a
-                >
-                <a
-                  role="“button”"
-                  aria-current="“page”"
-                  title="{{ page }}"
-                  attr.aria-label="{{ page }}"
-                  *ngFor="let page of paginationDetails.pages"
-                  [ngClass]="{ active: paginationDetails.currentPage === page }"
-                  tabindex="0"
-                  (click)="navigateToPage(page)"
-                  class="sb-item"
-                  >{{ page }}</a
-                >
-                <a
-                  role="button"
-                  title="{{ resourceService?.frmelmnts?.lbl?.next }}"
-                  attr.aria-label="{{ resourceService?.frmelmnts?.lbl?.next }}"
-                  [ngClass]="{
-                    disabled:
-                      paginationDetails.currentPage ===
-                      paginationDetails.totalPages
-                  }"
-                  tabindex="0"
-                  (click)="navigateToPage(paginationDetails.currentPage + 1)"
-                  class="sb-item"
-                  >&gt;</a
-                >
-                <a
-                  role="button"
-                  title="{{ resourceService?.frmelmnts?.lbl?.last }}"
-                  attr.aria-label="{{ resourceService?.frmelmnts?.lbl?.last }}"
-                  [ngClass]="{
-                    disabled:
-                      paginationDetails.currentPage ===
-                      paginationDetails.totalPages
-                  }"
-                  tabindex="0"
-                  (click)="navigateToPage(paginationDetails.totalPages)"
-                  class="sb-item"
-                  >&raquo;</a
-                >
-              </div>
-            </div>
-          </div>
-          <div class="twelve wide column" *ngIf="showLoader">
-            <app-loader [data]="loaderMessage"></app-loader>
-          </div>
-        </div>
       </div>
     </div>
+    <div class="twelve wide column" [appTelemetryImpression]="telemetryImpression" *ngIf="contentList?.length === 0 && !showLoader">
+      <app-no-result [data]="noResultMessage"></app-no-result>
+    </div>
+    <div class="twelve wide column right aligned mt-16" *ngIf="paginationDetails.totalItems > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader">
+      <div class="sb-pagination-container flex-jc-flex-end" *ngIf="paginationDetails.pages.length">
+        <div class="sb-pagination my-0">
+            <a role="button" title="{{resourceService?.frmelmnts?.lbl?.first}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.first}}" [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item " tabindex="0" (click)="navigateToPage(1) ">&laquo;</a>
+            <a role="button" title="{{resourceService?.frmelmnts?.lbl?.previous}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.previous}}" [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item " tabindex="0" (click)="navigateToPage(paginationDetails.currentPage - 1)">&lt;</a>
+            <a role=“button” aria-current=“page” title="{{page}}" attr.aria-label="{{page}}" *ngFor="let page of paginationDetails.pages" [ngClass]="{active:paginationDetails.currentPage===page}" tabindex="0" (click)="navigateToPage(page)" class="sb-item">{{page}}</a>
+            <a role="button" title="{{resourceService?.frmelmnts?.lbl?.next}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.next}}" [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}" tabindex="0" (click)="navigateToPage(paginationDetails.currentPage + 1)" class="sb-item">&gt;</a>
+            <a role="button" title="{{resourceService?.frmelmnts?.lbl?.last}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.last}}" [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}" tabindex="0" (click)="navigateToPage(paginationDetails.totalPages)" class="sb-item ">&raquo;</a>
+        </div>
+        
+      </div>
+    </div>
+    <div class="twelve wide column" *ngIf="showLoader">
+      <app-loader [data]='loaderMessage'></app-loader>
+    </div>
   </div>
+      </div>
+    </div>
 </div>
-<app-batch-info
-  *ngIf="showBatchInfo"
-  [enrolledBatchInfo]="selectedCourseBatches"
-  (modelClose)="showBatchInfo = false"
-></app-batch-info>
+</div>
+<app-batch-info *ngIf="showBatchInfo" [enrolledBatchInfo]="selectedCourseBatches" (modelClose)="showBatchInfo = false"></app-batch-info>
 
-<app-modal-wrapper
-  *ngIf="showModal"
-  [config]="{ disableClose: false }"
-  (dismiss)="showModal = !showModal"
->
+<app-modal-wrapper *ngIf="showModal" [config]="{disableClose: false}" (dismiss)="showModal = !showModal;">
   <ng-template sbModalContent>
     <div class="sb-modal">
       <div class="transition ui dimmer page modals active visible">
         <div class="ui modal transition active visible small">
-          <button
-            aria-label="close dialog"
-            mat-dialog-close
-            class="mat-close-btn"
-          >
+          <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
             <span>&times;</span>
           </button>
           <div class="sb-modal-header">
-            {{ resourceService.frmelmnts?.btn?.download }}
+            {{resourceService.frmelmnts?.btn?.download}}
           </div>
           <div class="sb-modal-content">
-            <p>{{ resourceService?.messages?.stmsg?.m0137 }}</p>
+            <p>{{resourceService?.messages?.stmsg?.m0137 }}</p>
           </div>
           <div class="sb-modal-actions">
-            <button
-              class="sb-btn sb-btn-normal sb-btn-primary"
-              tabindex="0"
-              (click)="
-                callDownload();
-                showModal = !showModal;
-                logTelemetry(contentData, 'confirm-download-content')
-              "
-            >
-              {{ resourceService.frmelmnts?.btn?.yes }}
+            <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
+              (click)="callDownload(); showModal = !showModal; logTelemetry(contentData, 'confirm-download-content');">
+              {{resourceService.frmelmnts?.btn?.yes}}
             </button>
-            <button
-              class="sb-btn sb-btn-normal sb-btn-outline-primary"
-              tabindex="0"
-              (click)="
-                showModal = !showModal;
-                logTelemetry(contentData, 'cancel-download-content')
-              "
-            >
-              {{ resourceService.frmelmnts?.btn?.cancel }}
+            <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
+              (click)="showModal = !showModal; logTelemetry(contentData, 'cancel-download-content');">
+              {{resourceService.frmelmnts?.btn?.cancel}}
             </button>
           </div>
         </div>
