@@ -1,16 +1,16 @@
-import {Location as SbLocation} from '@project-sunbird/client-services/models/location';
-import {FieldConfig, FieldConfigOption} from '@project-sunbird/common-form-elements-full';
-import {UntypedFormGroup} from '@angular/forms';
-import {delay, distinctUntilChanged, map, mergeMap, take} from 'rxjs/operators';
-import {SbFormLocationOptionsFactory} from './sb-form-location-options.factory';
-import {concat, defer, of, Subscription} from 'rxjs';
-import {IDeviceProfile} from '@sunbird/shared-feature';
+import { Location as SbLocation } from '@project-sunbird/client-services/models/location';
+import { FieldConfig, FieldConfigOption } from '@project-sunbird/common-form-elements-full';
+import { UntypedFormGroup } from '@angular/forms';
+import { delay, distinctUntilChanged, map, mergeMap, take } from 'rxjs/operators';
+import { SbFormLocationOptionsFactory } from './sb-form-location-options.factory';
+import { concat, defer, of, Subscription } from 'rxjs';
+import { IDeviceProfile } from '@sunbird/shared-feature';
 import * as _ from 'lodash-es';
 
-import {LocationService} from '../../services/location/location.service';
-import {UserService} from '../../../../modules/core/services/user/user.service';
-import {DeviceRegisterService} from '../../../../modules/core/services/device-register/device-register.service';
-import {FormService} from '../../../../modules/core/services/form/form.service';
+import { LocationService } from '../../services/location/location.service';
+import { UserService } from '../../../../modules/core/services/user/user.service';
+import { DeviceRegisterService } from '../../../../modules/core/services/device-register/device-register.service';
+import { FormService } from '../../../../modules/core/services/form/form.service';
 import { OrgDetailsService } from '@sunbird/core';
 
 type UseCase = 'SIGNEDIN_GUEST' | 'SIGNEDIN' | 'GUEST';
@@ -52,7 +52,7 @@ export class SbFormLocationSelectionDelegate {
     );
   }
 
-  async init(deviceProfile?: IDeviceProfile, showModal = true, isStepper= false) {
+  async init(deviceProfile?: IDeviceProfile, showModal = true, isStepper = false) {
     if (deviceProfile) {
       this.deviceProfile = deviceProfile;
     }
@@ -77,7 +77,7 @@ export class SbFormLocationSelectionDelegate {
             loc.code :
             SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST.contentType;
         })();
-      } 
+      }
       await this.loadForm(formInputParams, true, showModal, isStepper);
     } catch (e) {
       // load default form
@@ -210,19 +210,30 @@ export class SbFormLocationSelectionDelegate {
           profileUserTypes.push(userType);
         } else if (Array.isArray(_.get(formValue, 'children.persona.subPersona'))) {
           formValue.children.persona.subPersona.forEach(element => {
-            profileUserTypes.push({type: formValue.persona, subType: element});
+            profileUserTypes.push({ type: formValue.persona, subType: element });
           });
           userType = profileUserTypes[0];
         }
       } else {
         profileUserTypes.push({ type: formValue.persona });
       }
+      const profileConfig = {
+        ...(_.get(formValue, 'name') ? { firstName: _.get(formValue, 'name') } : {}),
+        ...(_.get(formValue, 'category') ? { category: _.get(formValue, 'category') } : {}),
+        ...(_.get(formValue, 'trainingGroup') ? { trainingGroup: _.get(formValue, 'trainingGroup') } : {}),
+        ...(_.get(formValue, 'cin') ? { cin: _.get(formValue, 'cin') } : {}),
+        ...(_.get(formValue, 'idFmps') ? { idFmps: _.get(formValue, 'idFmps') } : {}),
+        ...(_.get(formValue, 'province') ? { province: _.get(formValue, 'province') } : {}),
+      }
+      const updatedFramework = this.userService.userProfile?.framework || {};
+
+      const newProfileConfig = JSON.stringify(profileConfig);
+      updatedFramework.profileConfig = [newProfileConfig];
+
       const payload: any = {
-        userId: _.get(this.userService, 'userid'),
-        profileLocation: locationDetails,
-        profileUserTypes,
-        ...(_.get(formValue, 'name') ? { firstName: _.get(formValue, 'name') } : {} )
-      };
+        "framework": updatedFramework,
+        "userId": this.userService.userProfile?.userId
+      }
 
       const task = this.locationService.updateProfile(payload).toPromise()
         .then(() => ({ userProfile: 'success', type: _.get(formValue, 'persona') }))
@@ -325,11 +336,35 @@ export class SbFormLocationSelectionDelegate {
 
       if (config.code === 'persona') {
         if (this.userService.loggedIn) {
-          config.templateOptions.hidden = false;
+          // config.templateOptions.hidden = false;
           config.default = (_.get(this.userService.userProfile.profileUserType, 'type') || '').toLowerCase() || 'teacher';
         } else {
           config.templateOptions.hidden = false;
           config.default = (localStorage.getItem('userType') || '').toLowerCase() || 'teacher';
+        }
+      }
+
+      if (config.code === 'email') {
+        if (this.userService.loggedIn) {
+          config.templateOptions.hidden = false;
+          config.editable = false;
+          config.templateOptions.disabled = true;
+          config.default = (_.get(this.userService.userProfile, 'email') || '') || null;
+        }
+      }
+
+      const defaultValues = JSON.parse(this.userService.userProfile.framework?.profileConfig?.[0])
+      if (defaultValues.hasOwnProperty(config.code)) {
+        config.templateOptions.hidden = false;
+
+        if (this.userService.loggedIn) {
+          config.default =
+            (_.get(this.userService.userProfile, config.code) || '').toLowerCase() ||
+            defaultValues[config.code];
+        } else {
+          config.default =
+            (localStorage.getItem(config.code) || '').toLowerCase() ||
+            defaultValues[config.code];
         }
       }
 
