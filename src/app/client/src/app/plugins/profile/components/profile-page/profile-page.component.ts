@@ -669,8 +669,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     const personaConfig = formFields.find(formField => formField.code === 'persona');
-    const personaChildrenConfig: FieldConfig<any>[] = personaConfig['children'][persona];
-    const subPersonaConfig = personaChildrenConfig.find(formField => formField.code === 'subPersona');
+    const personaChildrenConfig: FieldConfig<any>[] = personaConfig?.['children'][persona];
+    const subPersonaConfig = personaChildrenConfig?.find(formField => formField.code === 'subPersona');
     if (!subPersonaConfig) {
       return undefined;
     }
@@ -690,9 +690,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     const subPersonaFieldConfigOption = [];
-    subPersonaList.forEach((ele) => {
-      subPersonaFieldConfigOption.push((subPersonaConfig.templateOptions.options as FieldConfigOption<any>[]).
-        find(option => option.value === ele).label);
+    subPersonaList?.forEach((ele) => {
+      subPersonaFieldConfigOption?.push((subPersonaConfig?.templateOptions.options as FieldConfigOption<any>[]).
+        find(option => option?.value === ele)?.label);
     });
 
     return subPersonaFieldConfigOption;

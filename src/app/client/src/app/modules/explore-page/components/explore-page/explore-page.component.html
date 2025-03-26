@@ -121,11 +121,11 @@
                 </ng-container>
               </app-slick>
 
-              <hr
+              <!-- <hr
                 *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0"
-                class="section-hr my-32" />
+                class="section-hr my-32" /> -->
             </div>
-            <sb-pills-grid *ngIf="section?.section?.isEnabled" [title]="getSectionTitle(section?.section?.title)"
+            <!-- <sb-pills-grid *ngIf="section?.section?.isEnabled" [title]="getSectionTitle(section?.section?.title)"
               [minDisplayCount]="section?.section?.theme?.limit || 4"
               [viewMoreText]="resourceService?.frmelmnts?.lbl?.viewmore"
               [viewLessText]="resourceService?.frmelmnts?.lbl?.viewless" [pillSize]="'medium'" [platform]="'portal'"
@@ -134,11 +134,11 @@
               <sb-pill-item *ngFor="let pillData of section.data" [name]="pillData?.name | titlecase"
                 [icon]="utilService.getSectionPillIcon(section?.section?.theme?.icons, pillData?.value)"
                 [value]="pillData" [theme]="pillData?.theme"></sb-pill-item>
-            </sb-pills-grid>
-            <hr *ngIf="section?.section?.isEnabled && section?.data?.length" class="section-hr my-32" />
+            </sb-pills-grid> -->
+            <!-- <hr *ngIf="section?.section?.isEnabled && section?.data?.length" class="section-hr my-32" /> -->
 
           </div>
-          <div *ngIf="showTargetedCategory && targetedCategory.length">
+          <!-- <div *ngIf="showTargetedCategory && targetedCategory.length">
             <sb-pills-grid [title]="getSectionCategoryTitle('frmelmnts.lbl.targetCategory')" [minDisplayCount]="4"
               [pillSize]="'medium'" [platform]="'portal'" [pillBorder]="'semi_round'"
               [pillsMultiRow]="'auto_responsive'" [pillTextElipsis]="'two_line'"
@@ -149,7 +149,7 @@
                 [theme]="(pillData?.icon?.web ? (targetedCategorytheme | async) : Categorytheme)"></sb-pill-item>
             </sb-pills-grid>
             <hr class="section-hr my-32" />
-          </div>
+          </div> -->
           <div *ngIf="getSelectedTab() === 'home'">
             <div *ngFor="let section of contentSections" class="pl-16">
               <sb-content-section *ngIf="section?.isEnabled" (cardClick)="playContent($event, section?.title)"
