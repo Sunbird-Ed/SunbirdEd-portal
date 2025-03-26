@@ -229,7 +229,6 @@ export class SbFormLocationSelectionDelegate {
 
       const newProfileConfig = JSON.stringify(profileConfig);
       updatedFramework.profileConfig = [newProfileConfig];
-
       const payload: any = {
         "framework": updatedFramework,
         "userId": this.userService.userProfile?.userId
@@ -352,8 +351,7 @@ export class SbFormLocationSelectionDelegate {
           config.default = (_.get(this.userService.userProfile, 'email') || '') || null;
         }
       }
-
-      const defaultValues = JSON.parse(this.userService.userProfile.framework?.profileConfig?.[0])
+      const defaultValues = JSON.parse(this.userService.userProfile?.framework?.profileConfig?.[0] || "{}")
       if (defaultValues.hasOwnProperty(config.code)) {
         config.templateOptions.hidden = false;
 
