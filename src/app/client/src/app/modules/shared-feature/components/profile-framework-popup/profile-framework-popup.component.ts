@@ -351,12 +351,12 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       });
     } else {
       const req = {
-        framework: selectedOption
+        framework: {...selectedOption, profileConfig: this.userService.userProfile?.framework?.profileConfig || [] }
       };
       this.profileService.updateProfile(req).subscribe(res => {
         this.userService.setUserFramework(selectedOption);
       });
-    }
+    } 
     this.submit.emit(selectedOption);
   }
   private enableSubmitButton() {
