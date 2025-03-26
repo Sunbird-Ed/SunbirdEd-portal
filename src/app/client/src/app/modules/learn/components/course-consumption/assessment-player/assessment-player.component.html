@@ -89,7 +89,7 @@
     <div *ngIf="!isUnitCompleted"> 
       <div class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.moduleProgress}}</div>         
       <div class="sb-color-primary fnormal font-weight-bold mt-4">{{consumedContents}}/{{totalContents}} {{resourceService?.frmelmnts?.lbl?.completed}}</div>
-      <mat-progress-bar mode="determinate" [value]="consumedContents" class="mb-0 mr-0 mt-8 tiny"></mat-progress-bar>
+      <mat-progress-bar mode="determinate" [value]="(consumedContents/totalContents)/100" class="mb-0 mr-0 mt-8 tiny"></mat-progress-bar>
     </div>
   
   <div class="module-complete-content d-flex flex-ai-center py-8 px-16 mb-8" *ngIf="isUnitCompleted">
