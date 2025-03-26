@@ -109,15 +109,15 @@ export class SbFormLocationSelectionDelegate {
     if ('LOADED' === $event) {
       this.isLocationFormLoading = false;
 
-      const subPersonaFormControl = this.formGroup.get('children.persona.subPersona');
-      if (subPersonaFormControl && !subPersonaFormControl.value) {
-        subPersonaFormControl.patchValue((_.get(this.userService.userProfile.profileUserType, 'subType') || '') || null);
-      }
+      // const subPersonaFormControl = this.formGroup.get('children.persona.subPersona');
+      // if (subPersonaFormControl && !subPersonaFormControl.value) {
+      //   subPersonaFormControl.patchValue((_.get(this.userService.userProfile.profileUserType, 'subType') || '') || null);
+      // }
 
       if (!this.stateChangeSubscription) {
         this.stateChangeSubscription = concat(
-          of(this.formGroup.get('persona').value),
-          this.formGroup.get('persona').valueChanges
+          of(this.formGroup.get('persona')?.value),
+          this.formGroup.get('persona')?.valueChanges
         ).pipe(
           distinctUntilChanged(),
           delay(100),
@@ -336,10 +336,12 @@ export class SbFormLocationSelectionDelegate {
       if (config.code === 'persona') {
         if (this.userService.loggedIn) {
           // config.templateOptions.hidden = false;
-          config.default = (_.get(this.userService.userProfile.profileUserType, 'type') || '').toLowerCase() || 'teacher';
+          // config.default = (_.get(this.userService.userProfile.profileUserType, 'type') || '').toLowerCase() || 'teacher';
+          config.default =  'teacher';
         } else {
           config.templateOptions.hidden = false;
-          config.default = (localStorage.getItem('userType') || '').toLowerCase() || 'teacher';
+          // config.default = (localStorage.getItem('userType') || '').toLowerCase() || 'teacher';
+          config.default =  'teacher';
         }
       }
 
