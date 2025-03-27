@@ -58,7 +58,7 @@
           <!--/Header-->
 
           <!--Content-->
-          <div class="sb-mat__modal__content d-flex flex-dc o-y-visible lineHeight-normal">
+          <!-- <div class="sb-mat__modal__content d-flex flex-dc o-y-visible lineHeight-normal">
             <div class="profile-fields">
               <div class="d-flex mb-16 fnormal">
                 <label
@@ -124,6 +124,9 @@
                 alt="info">{{resourceService?.frmelmnts?.lbl?.canEditProfileDetails}}
             </div>
 
+
+          </div> -->
+          <div class="sb-mat__modal__content d-flex flex-dc o-y-visible lineHeight-normal">
             <p class="mb-0fnormal font-weight-normal">
               <input type="checkbox" [(ngModel)]="isTncAgreed" class="mr-8" aria-label="term and condition checkbox">
               {{consentConfig.tncText | interpolate:'{instance}': instance}}
