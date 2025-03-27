@@ -138,9 +138,9 @@
           <!--/Content-->
           <!--Actions-->
           <div class="sb-mat__modal__actions">
-            <button class="sb-btn  sb-btn-normal sb-btn-outline-primary text-uppercase" tabindex="0"
+            <!-- <button class="sb-btn  sb-btn-normal sb-btn-outline-primary text-uppercase" tabindex="0"
               (click)="updateUserConsent(false)"
-              *ngIf="type === 'course-consent' || type === 'program-consent'">{{resourceService?.frmelmnts?.lbl?.dontShare}}</button>
+              *ngIf="type === 'course-consent' || type === 'program-consent'">{{resourceService?.frmelmnts?.lbl?.dontShare}}</button> -->
             <button type="button" tabindex="0" [ngClass]="{'sb-btn-disabled': !isTncAgreed}" [disabled]="!isTncAgreed"
               class="sb-btn sb-btn-normal sb-btn-primary text-uppercase ml-8" (click)="updateUserConsent(true)"
               *ngIf="type === 'global-consent'">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
