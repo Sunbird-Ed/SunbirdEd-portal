@@ -78,6 +78,7 @@ export class SbFormLocationSelectionDelegate {
             SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST.contentType;
         })();
       }
+      console.log({formInputParams})
       await this.loadForm(formInputParams, true, showModal, isStepper);
     } catch (e) {
       // load default form
@@ -317,6 +318,8 @@ export class SbFormLocationSelectionDelegate {
         return e.code === 'name';
       }), 1);
     }
+
+    console.log({tempLocationFormConfig})
     for (const config of tempLocationFormConfig) {
       if (config.code === 'name') {
         if (this.userService.loggedIn) {
