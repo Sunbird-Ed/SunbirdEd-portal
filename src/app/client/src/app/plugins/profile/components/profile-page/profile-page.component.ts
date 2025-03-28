@@ -658,7 +658,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       return undefined;
     }
     let formFields;
-    console.log({DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST: ProfilePageComponent.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST})
     try {
       const state = userLocation.state;
       formFields = await this.formService.getFormConfig({
@@ -668,7 +667,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     } catch (e) {
       formFields = await this.formService.getFormConfig(ProfilePageComponent.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST).toPromise();
     }
-    console.log({formFields})
 
     const personaConfig = formFields.find(formField => formField.code === 'persona');
     const personaChildrenConfig: FieldConfig<any>[] = personaConfig?.['children'][persona];
