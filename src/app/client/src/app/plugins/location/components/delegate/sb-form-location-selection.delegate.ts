@@ -94,6 +94,7 @@ export class SbFormLocationSelectionDelegate {
   }
 
   async onFormInitialize(formGroup: UntypedFormGroup) {
+    console.log({formGroup})
     this.isLocationFormLoading = false;
     this.formGroup = formGroup;
   }
