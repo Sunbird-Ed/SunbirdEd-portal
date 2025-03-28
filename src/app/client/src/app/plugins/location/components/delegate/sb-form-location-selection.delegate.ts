@@ -53,6 +53,7 @@ export class SbFormLocationSelectionDelegate {
   }
 
   async init(deviceProfile?: IDeviceProfile, showModal = true, isStepper = false) {
+    console.log({deviceProfile, showModal })
     if (deviceProfile) {
       this.deviceProfile = deviceProfile;
     }
@@ -81,8 +82,10 @@ export class SbFormLocationSelectionDelegate {
       }
       await this.loadForm(formInputParams, true, showModal, isStepper);
     } catch (e) {
+      console.log({e})
       // load default form
       console.error(e);
+      console.log({DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST: SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST})
       await this.loadForm(SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST, true, showModal, isStepper);
     }
   }

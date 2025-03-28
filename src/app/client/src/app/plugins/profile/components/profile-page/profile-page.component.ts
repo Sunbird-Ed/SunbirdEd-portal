@@ -138,9 +138,11 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
           (this.userProfile.profileUserType.type && this.userProfile.profileUserType.type === 'OTHER')) ? '' : this.userProfile.profileUserType.type;
         this.userLocation = this.getUserLocation(this.userProfile);
         this.getPersonaConfig(role).then((val) => {
+          console.log({persona : val})
           this.persona = val;
         });
         this.getSubPersonaConfig(role.toLowerCase(), this.userLocation).then((val) => {
+          console.log({subPersona: val})
           this.subPersona = val;
         });
         this.userFrameWork = this.userProfile.framework ? _.cloneDeep(this.userProfile.framework) : {};
