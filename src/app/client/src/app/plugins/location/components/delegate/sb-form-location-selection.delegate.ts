@@ -70,12 +70,15 @@ export class SbFormLocationSelectionDelegate {
       const formInputParams = _.cloneDeep(SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST);
       if (this.userService.loggedIn) {
         // override contentType to userLocation's state ID if available
+        console.log("userLocations" , this.userService.userProfile['userLocations'])
         formInputParams['contentType'] = (() => {
           const loc: SbLocation = (this.userService.userProfile['userLocations'] || [])
             .find((l: SbLocation) => l.type === 'state');
-          return (loc && loc.code) ?
-            loc.code :
-            SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST.contentType;
+          console.log({ loc })
+          return "default"
+          // return (loc && loc.code) ?
+          //   loc.code :
+          //   SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST.contentType;
         })();
       }
       console.log({formInputParams})
@@ -548,6 +551,7 @@ export class SbFormLocationSelectionDelegate {
         ];
       }
     }
+    console.log({suggestions})
 
     return suggestions;
   }
