@@ -70,18 +70,15 @@ export class SbFormLocationSelectionDelegate {
       const formInputParams = _.cloneDeep(SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST);
       if (this.userService.loggedIn) {
         // override contentType to userLocation's state ID if available
-        console.log("userLocations" , this.userService.userProfile['userLocations'])
         formInputParams['contentType'] = (() => {
           const loc: SbLocation = (this.userService.userProfile['userLocations'] || [])
             .find((l: SbLocation) => l.type === 'state');
-          console.log({ loc })
           return "default"
           // return (loc && loc.code) ?
           //   loc.code :
           //   SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST.contentType;
         })();
       }
-      console.log({formInputParams})
       await this.loadForm(formInputParams, true, showModal, isStepper);
     } catch (e) {
       // load default form
@@ -98,7 +95,6 @@ export class SbFormLocationSelectionDelegate {
   }
 
   async onFormInitialize(formGroup: UntypedFormGroup) {
-    console.log({formGroup})
     this.isLocationFormLoading = false;
     this.formGroup = formGroup;
   }
@@ -322,7 +318,6 @@ export class SbFormLocationSelectionDelegate {
       }), 1);
     }
 
-    console.log({tempLocationFormConfig})
     for (const config of tempLocationFormConfig) {
       if (config.code === 'name') {
         if (this.userService.loggedIn) {
@@ -551,8 +546,6 @@ export class SbFormLocationSelectionDelegate {
         ];
       }
     }
-    console.log({suggestions})
-
     return suggestions;
   }
 }
