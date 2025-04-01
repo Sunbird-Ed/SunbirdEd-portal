@@ -145,7 +145,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
           console.log({subPersona: val})
           this.subPersona = val;
         });
-        this.userFrameWork = this.userProfile.framework ? _.cloneDeep(this.userProfile.framework) : {};
+        this.userFrameWork = this.userProfile?.framework ? _.cloneDeep(this.userProfile?.framework) : {};
         this.getOrgDetails();
         this.getContribution();
         this.getOtherCertificates(_.get(this.userProfile, 'userId'), 'all');
@@ -640,11 +640,12 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private getUserLocation(profile: any) {
-    const userLocation = {};
-    if (profile && profile.userLocations && profile.userLocations.length) {
-      profile.userLocations.forEach((d) => {
-        userLocation[d.type] = d;
-      });
+    let userLocation = {};
+    if (profile && profile.framework && profile.framework?.profileConfig?.length) {
+      // profile.userLocations.forEach((d) => {
+      //   userLocation[d.type] = d;
+      // });
+      userLocation = JSON.parse(profile.framework?.profileConfig)
     }
     return userLocation;
   }

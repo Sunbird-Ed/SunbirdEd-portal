@@ -129,13 +129,49 @@
             <div class="fmedium text-center white-space-nowrap">{{resourceService.frmelmnts.lbl.subRole}} :</div>
             <div class="fmedium ml-5 font-w-bold text-center">{{subPersona.join(', ')}}</div>
           </div> -->
-          <!-- <div *ngIf="userLocation?.district && userLocation?.district?.name"
+          <div 
+          *ngIf="userLocation?.category"
             class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-            <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.district}} :</div>
+            <div class="fmedium text-center">Category :</div>
             <div class="fmedium ml-5 font-w-bold text-center">
-              {{userLocation.district.name}}
+              {{userLocation?.category}}
             </div>
-          </div> -->
+          </div>
+
+          <div 
+          *ngIf="userLocation?.cin"
+            class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+            <div class="fmedium text-center">CIN :</div>
+            <div class="fmedium ml-5 font-w-bold text-center">
+              {{userLocation?.cin}}
+            </div>
+          </div>
+          <div 
+          *ngIf="userLocation?.trainingGroup"
+            class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+            <div class="fmedium text-center">Training Group :</div>
+            <div class="fmedium ml-5 font-w-bold text-center">
+              {{userLocation?.trainingGroup}}
+            </div>
+          </div>
+          <div 
+          *ngIf="userLocation?.idFmps"
+            class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+            <div class="fmedium text-center">ID FMPS :</div>
+            <div class="fmedium ml-5 font-w-bold text-center">
+              {{userLocation?.idFmps}}
+            </div>
+          </div>
+          <div 
+          *ngIf="userLocation?.province"
+            class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+            <!-- <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.district}} :</div> -->
+            <div class="fmedium text-center">Province :</div>
+            <div class="fmedium ml-5 font-w-bold text-center">
+              {{userLocation?.province}}
+            </div>
+          </div>
+
           <!-- <div *ngIf="userLocation?.state && userLocation?.state?.name"
             class="d-flex mb-5 flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
             <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.state}} :</div>
