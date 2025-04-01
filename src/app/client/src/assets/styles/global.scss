@@ -1124,6 +1124,13 @@ a.ui.labels .label:hover {
   .multi-select-container .list-border ul {
     padding-left: 1rem;
   }
+
+  .schooling-location-form {
+    max-width: 100%;
+    width: 100%;
+    max-height: 80vh !important;
+    overflow-y: auto !important;
+  }
 }
 
 .sb-notification-container {
