@@ -119,6 +119,8 @@
             },
             "lbl": {
                 "addNewMember": "Add member",
+                "category": "Category",
+                "trainingGroup": "Training Group",
                 "consentsharedetail": "Consent to share details",
                 "fromGroup": "from this group",
                 "groupDescription": "Enter a description to help members understand the purpose of the group",
@@ -307,6 +309,7 @@
                 "confirmPassword": "Confirm Password",
                 "confirmblock": "Are you sure to Block",
                 "congratulations": "Congratulations!",
+                "province": "Province",
                 "contactStateAdmin": "Contact your state admin to add more participants to this batch",
                 "content": {
                     "AUTHOR": "Author",

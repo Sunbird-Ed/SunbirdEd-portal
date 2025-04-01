@@ -132,7 +132,7 @@
           <div 
           *ngIf="userLocation?.category"
             class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-            <div class="fmedium text-center">Category :</div>
+            <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.category}} :</div>
             <div class="fmedium ml-5 font-w-bold text-center">
               {{userLocation?.category}}
             </div>
@@ -149,7 +149,7 @@
           <div 
           *ngIf="userLocation?.trainingGroup"
             class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-            <div class="fmedium text-center">Training Group :</div>
+            <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.trainingGroup}} :</div>
             <div class="fmedium ml-5 font-w-bold text-center">
               {{userLocation?.trainingGroup}}
             </div>
@@ -166,7 +166,7 @@
           *ngIf="userLocation?.province"
             class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
             <!-- <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.district}} :</div> -->
-            <div class="fmedium text-center">Province :</div>
+            <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.province}} :</div>
             <div class="fmedium ml-5 font-w-bold text-center">
               {{userLocation?.province}}
             </div>

@@ -463,7 +463,7 @@ export class SbFormLocationSelectionDelegate {
   private getFormSuggestionsStrategy(): Partial<SbLocation>[] {
     let suggestions: Partial<SbLocation>[] = [];
     const userProfileData = this.userService.userProfile;
-    const isDeviceProfileLocationUpdated = this.deviceProfile && this.deviceProfile.userDeclaredLocation;
+    const isDeviceProfileLocationUpdated = this.deviceProfile && this.deviceProfile?.userDeclaredLocation;
     const isUserProfileLocationUpdated = userProfileData && userProfileData.userLocations &&
       Array.isArray(userProfileData.userLocations) && userProfileData.userLocations.length >= 1;
 
@@ -490,8 +490,8 @@ export class SbFormLocationSelectionDelegate {
           this.shouldDeviceProfileLocationUpdate = false;
 
           suggestions = [
-            { type: 'state', name: this.deviceProfile.userDeclaredLocation.state },
-            { type: 'district', name: this.deviceProfile.userDeclaredLocation.district }
+            { type: 'state', name: this.deviceProfile?.userDeclaredLocation.state },
+            { type: 'district', name: this.deviceProfile?.userDeclaredLocation.district }
           ];
         }
       }
@@ -541,8 +541,8 @@ export class SbFormLocationSelectionDelegate {
         this.shouldDeviceProfileLocationUpdate = false;
 
         suggestions = [
-          { type: 'state', name: this.deviceProfile.userDeclaredLocation.state },
-          { type: 'district', name: this.deviceProfile.userDeclaredLocation.district }
+          { type: 'state', name: this.deviceProfile?.userDeclaredLocation.state },
+          { type: 'district', name: this.deviceProfile?.userDeclaredLocation.district }
         ];
       }
     }
