@@ -42,7 +42,7 @@
         </div>
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.lessondescription}}</p>
       </div>
-      <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('collection')"
+      <!-- <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('collection')"
         appPermission [permission]='collectionRole'>
         <div class="ui link card" routerLink="collection" appTelemetryInteract
           [telemetryInteractEdata]="{id:'createColllection',type:'click',pageid:'create-collection'}">
@@ -54,7 +54,20 @@
           </div>
         </div>
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.collectiondescription}}</p>
+      </div> -->
+      <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('contentupload')"
+      appPermission [permission]='contentUploadRole'>
+      <div class="ui link card" routerLink="../edit/generic/" appTelemetryInteract
+        [telemetryInteractEdata]="{id:'uploadContent',type:'click',pageid:'upload-content'}">
+        <div class="content">
+          <div class="textcontent">
+            <i class='my-icon upload icon'></i>
+            <span class="my-text">{{resourceService?.frmelmnts?.lbl?.contentupload}}</span>
+          </div>
+        </div>
       </div>
+      <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.contentuploaddescription}}</p>
+    </div>
     </div>
   </div>
   <div class="twelve wide column ">
@@ -72,19 +85,7 @@
         </div>
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.lessonplandescription}}</p>
       </div> -->
-      <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('contentupload')"
-        appPermission [permission]='contentUploadRole'>
-        <div class="ui link card" routerLink="../edit/generic/" appTelemetryInteract
-          [telemetryInteractEdata]="{id:'uploadContent',type:'click',pageid:'upload-content'}">
-          <div class="content">
-            <div class="textcontent">
-              <i class='my-icon upload icon'></i>
-              <span class="my-text">{{resourceService?.frmelmnts?.lbl?.contentupload}}</span>
-            </div>
-          </div>
-        </div>
-        <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.contentuploaddescription}}</p>
-      </div>
+
       <!-- <div class="three wide column"
         *ngIf="permissionService.permissionAvailable  && showCategory('contentuploadlarge')" appPermission
         [permission]='contentUploadRole'>

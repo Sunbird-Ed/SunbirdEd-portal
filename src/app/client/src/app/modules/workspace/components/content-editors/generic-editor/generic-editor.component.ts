@@ -230,6 +230,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     window.config.videoMaxSize = this.videoMaxSize;
     window.config.defaultContentFileSize = this.defaultContentFileSize; // making configurable upload limit in workspace for content upload
     window.config.cloudStorage.provider = this.cloudProvider;
+    window.config.headerConfig = { "managecollaborator": false }
   }
   /**
   * Re directed to the workspace on close of modal
