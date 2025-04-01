@@ -53,17 +53,16 @@ export class SbFormLocationSelectionDelegate {
   }
 
   async init(deviceProfile?: IDeviceProfile, showModal = true, isStepper = false) {
-    console.log({deviceProfile, showModal })
     if (deviceProfile) {
       this.deviceProfile = deviceProfile;
     }
 
     try {
-      if (!this.deviceProfile) {
-        this.deviceProfile = await this.deviceRegisterService.fetchDeviceProfile().pipe(
-          map((response) => _.get(response, 'result'))
-        ).toPromise();
-      }
+      // if (!this.deviceProfile) {
+      //   this.deviceProfile = await this.deviceRegisterService.fetchDeviceProfile().pipe(
+      //     map((response) => _.get(response, 'result'))
+      //   ).toPromise();
+      // }
 
       this.formLocationSuggestions = this.getFormSuggestionsStrategy();
 
@@ -82,10 +81,8 @@ export class SbFormLocationSelectionDelegate {
       }
       await this.loadForm(formInputParams, true, showModal, isStepper);
     } catch (e) {
-      console.log({e})
       // load default form
       console.error(e);
-      console.log({DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST: SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST})
       await this.loadForm(SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST, true, showModal, isStepper);
     }
   }
@@ -519,8 +516,8 @@ export class SbFormLocationSelectionDelegate {
           this.shouldDeviceProfileLocationUpdate = true;
 
           suggestions = [
-            { type: 'state', name: this.deviceProfile.ipLocation.state },
-            { type: 'district', name: this.deviceProfile.ipLocation.district }
+            { type: 'state', name: this.deviceProfile?.ipLocation.state },
+            { type: 'district', name: this.deviceProfile?.ipLocation.district }
           ];
         }
       }
