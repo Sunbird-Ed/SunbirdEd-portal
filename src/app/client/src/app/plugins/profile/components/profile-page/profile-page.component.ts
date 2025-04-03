@@ -442,7 +442,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   goBack() {
-    this.navigationhelperService.goBack();
+    window.history.back();
   }
 
   setInteractEventData() {
