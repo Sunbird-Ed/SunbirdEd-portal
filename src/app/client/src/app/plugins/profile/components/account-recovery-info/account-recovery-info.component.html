@@ -26,11 +26,11 @@
               name="contactType" value="emailId" checked>
             <label for="email">{{resourceService?.frmelmnts?.lbl?.emailAddress}}</label>
           </div>
-          <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
+          <!-- <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
             <input type="radio" tabindex="0" id="phone" (change)="onItemChange()" [(ngModel)]="contactType"
               name="contactType" value="phoneNo">
             <label for="phone">{{resourceService?.frmelmnts?.lbl?.phoneNumber}}</label>
-          </div>
+          </div> -->
         </div>
         <form [formGroup]="accountRecoveryForm" class="sb-form">
           <div class="sb-field" *ngIf="contactType === 'emailId'">
