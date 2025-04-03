@@ -5,6 +5,7 @@
 
 @include mat.core();
 
+
 $custom-typography: mat.define-typography-config($font-family: "var(--font-stack-en) !important",
 );
 
@@ -12,6 +13,11 @@ $custom-typography: mat.define-typography-config($font-family: "var(--font-stack
 
 :root {
   font-size: 16px;
+  --font-stack-en: 'Times New Roman' !important;
+  --font-stack-hi: 'Times New Roman' !important;
+  --font-stack-ur: 'Times New Roman' !important;
+  --font-stack-fr: 'Times New Roman' !important;
+  --font-stack-ar: 'Times New Roman' !important;
 }
 
 html,
