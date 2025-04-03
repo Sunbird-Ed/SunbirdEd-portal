@@ -109,7 +109,9 @@ export class ContentSearchService {
   public mapCategories({ filters = {} }) {
     return _.reduce(filters, (acc, value, key) => {
       const mappedValue = _.get(this.getCategoriesMapping, [key]);
-      if (mappedValue && key !== this.frameworkCategories?.fwCategory4?.code) { acc[mappedValue] = value; delete acc[key]; }
+      // if (mappedValue && key !== this.frameworkCategories?.fwCategory4?.code) {
+      //    acc[mappedValue] = value; delete acc[key]; 
+      //   }
       return acc;
     }, filters);
   }

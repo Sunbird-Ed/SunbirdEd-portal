@@ -261,6 +261,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
           return of(data);
         })
       )
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
         this.showLoader = false;
         this.facets = this.searchService.updateFacetsData(_.get(data, 'result.facets'));
