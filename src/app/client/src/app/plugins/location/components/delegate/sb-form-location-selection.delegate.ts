@@ -1,5 +1,5 @@
 import { Location as SbLocation } from '@project-sunbird/client-services/models/location';
-import { FieldConfig, FieldConfigOption } from '@project-sunbird/common-form-elements-full';
+import { FieldConfig,FieldConfigValidationType,  FieldConfigOption } from '@project-sunbird/common-form-elements-full';
 import { UntypedFormGroup } from '@angular/forms';
 import { delay, distinctUntilChanged, map, mergeMap, take } from 'rxjs/operators';
 import { SbFormLocationOptionsFactory } from './sb-form-location-options.factory';
@@ -456,8 +456,16 @@ export class SbFormLocationSelectionDelegate {
         }
       }
     }
-
-    this.locationFormConfig = tempLocationFormConfig;
+    this.locationFormConfig = tempLocationFormConfig.filter((config) => config.code !== 'email' && config.code !== 'name' )
+      .map((config) => {
+        return {...config,   "validations": [
+          {
+            type: FieldConfigValidationType.PATTERN,
+            value: /^\S(?:.*\S)?$/,
+            message: "No leading or trailing spaces allowed."
+          }
+        ]}
+      });
   }
 
   private getFormSuggestionsStrategy(): Partial<SbLocation>[] {
