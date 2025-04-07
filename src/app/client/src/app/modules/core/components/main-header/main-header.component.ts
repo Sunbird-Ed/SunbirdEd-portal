@@ -542,6 +542,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   logout() {
+    localStorage.clear();
     window.location.replace('/logoff');
     this.cacheService.remove('reloadOnFwChange')
     this.cacheService.remove('orgHashTagId');
