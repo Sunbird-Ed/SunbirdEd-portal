@@ -48,7 +48,7 @@ export class PageSectionComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(public config: ConfigService, public activatedRoute: ActivatedRoute, public resourceService: ResourceService, public cslFrameworkService: CslFrameworkService,
     private cdr: ChangeDetectorRef) {
-    // console.log(slick);
+    
     this.pageid = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
   }
   playContent(event) {
@@ -79,6 +79,10 @@ export class PageSectionComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
   updateSlick() {
+    this.contentList.forEach((content) => {
+      content.organisation = [content.organisation]
+      delete content.category
+    })
     if (this.contentList.length && this.contentList.length < this.section.contents.length) {
       const upperLimit = _.get(this.config, 'appConfig.CoursePageSection.slideConfig.slidesToScroll') || 4;
       this.contentList.push(...this.section.contents.slice(this.contentList.length, this.contentList.length + upperLimit));
