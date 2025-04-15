@@ -285,7 +285,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         count: 0,
                         contents: []
                     };
-                    console.log('enrolledSection', enrolledSection)
                     const { contentType: pageContentType = null, search: { filters: { primaryCategory: pagePrimaryCategories = [] } } } = this.getCurrentPageData();
                     if (err) { return enrolledSection; }
                     const enrolledContentPredicate = course => {
@@ -302,8 +301,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         if (content.status === 2) {
                             return null;
                         }
-
                         const formatedContent = this.utilService.processContent(content, constantData, dynamicFields, metaData);
+                        formatedContent.organisation = content.content.organisation
+                        delete formatedContent.category
                         formatedContent.metaData.mimeType = 'application/vnd.ekstep.content-collection';
                         formatedContent.metaData.contentType = _.get(content, 'content.primaryCategory') || _.get(content, 'content.contentType');
 
@@ -321,7 +321,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         const formatedContent = this.utilService.processContent(content, constantData, dynamicFields, metaData);
                         formatedContent.metaData.mimeType = 'application/vnd.ekstep.content-collection';
                         formatedContent.metaData.contentType = _.get(content, 'content.primaryCategory') || _.get(content, 'content.contentType');
-
+                        formatedContent.organisation = content.content.organisation
+                        delete formatedContent.category
                         const trackableObj = _.get(content, 'content.trackable');
                         if (trackableObj) {
                             formatedContent.metaData.trackable = trackableObj;
@@ -1250,11 +1251,13 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     search: facet.search
                 });
             });
+
             this.facetSections.push({
                 name: facet.facetKey,
                 data: _facetArray,
                 section: facet
             });
+
         }));
     }
 
