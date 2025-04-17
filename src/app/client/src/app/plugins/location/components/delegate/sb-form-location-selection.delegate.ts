@@ -1,5 +1,5 @@
 import { Location as SbLocation } from '@project-sunbird/client-services/models/location';
-import { FieldConfig, FieldConfigOption } from '@project-sunbird/common-form-elements-full';
+import { FieldConfig,FieldConfigValidationType,  FieldConfigOption } from '@project-sunbird/common-form-elements-full';
 import { UntypedFormGroup } from '@angular/forms';
 import { delay, distinctUntilChanged, map, mergeMap, take } from 'rxjs/operators';
 import { SbFormLocationOptionsFactory } from './sb-form-location-options.factory';
@@ -58,11 +58,11 @@ export class SbFormLocationSelectionDelegate {
     }
 
     try {
-      if (!this.deviceProfile) {
-        this.deviceProfile = await this.deviceRegisterService.fetchDeviceProfile().pipe(
-          map((response) => _.get(response, 'result'))
-        ).toPromise();
-      }
+      // if (!this.deviceProfile) {
+      //   this.deviceProfile = await this.deviceRegisterService.fetchDeviceProfile().pipe(
+      //     map((response) => _.get(response, 'result'))
+      //   ).toPromise();
+      // }
 
       this.formLocationSuggestions = this.getFormSuggestionsStrategy();
 
@@ -73,9 +73,10 @@ export class SbFormLocationSelectionDelegate {
         formInputParams['contentType'] = (() => {
           const loc: SbLocation = (this.userService.userProfile['userLocations'] || [])
             .find((l: SbLocation) => l.type === 'state');
-          return (loc && loc.code) ?
-            loc.code :
-            SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST.contentType;
+          return "default"
+          // return (loc && loc.code) ?
+          //   loc.code :
+          //   SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST.contentType;
         })();
       }
       await this.loadForm(formInputParams, true, showModal, isStepper);
@@ -316,6 +317,7 @@ export class SbFormLocationSelectionDelegate {
         return e.code === 'name';
       }), 1);
     }
+
     for (const config of tempLocationFormConfig) {
       if (config.code === 'name') {
         if (this.userService.loggedIn) {
@@ -454,14 +456,22 @@ export class SbFormLocationSelectionDelegate {
         }
       }
     }
-
-    this.locationFormConfig = tempLocationFormConfig;
+    this.locationFormConfig = tempLocationFormConfig.filter((config) => config.code !== 'email' && config.code !== 'name' )
+      .map((config) => {
+        return {...config,   "validations": [
+          {
+            type: FieldConfigValidationType.PATTERN,
+            value: /^\S(?:.*\S)?$/,
+            message: "No leading or trailing spaces allowed."
+          }
+        ]}
+      });
   }
 
   private getFormSuggestionsStrategy(): Partial<SbLocation>[] {
     let suggestions: Partial<SbLocation>[] = [];
     const userProfileData = this.userService.userProfile;
-    const isDeviceProfileLocationUpdated = this.deviceProfile && this.deviceProfile.userDeclaredLocation;
+    const isDeviceProfileLocationUpdated = this.deviceProfile && this.deviceProfile?.userDeclaredLocation;
     const isUserProfileLocationUpdated = userProfileData && userProfileData.userLocations &&
       Array.isArray(userProfileData.userLocations) && userProfileData.userLocations.length >= 1;
 
@@ -488,8 +498,8 @@ export class SbFormLocationSelectionDelegate {
           this.shouldDeviceProfileLocationUpdate = false;
 
           suggestions = [
-            { type: 'state', name: this.deviceProfile.userDeclaredLocation.state },
-            { type: 'district', name: this.deviceProfile.userDeclaredLocation.district }
+            { type: 'state', name: this.deviceProfile?.userDeclaredLocation.state },
+            { type: 'district', name: this.deviceProfile?.userDeclaredLocation.district }
           ];
         }
       }
@@ -514,8 +524,8 @@ export class SbFormLocationSelectionDelegate {
           this.shouldDeviceProfileLocationUpdate = true;
 
           suggestions = [
-            { type: 'state', name: this.deviceProfile.ipLocation.state },
-            { type: 'district', name: this.deviceProfile.ipLocation.district }
+            { type: 'state', name: this.deviceProfile?.ipLocation.state },
+            { type: 'district', name: this.deviceProfile?.ipLocation.district }
           ];
         }
       }
@@ -539,12 +549,11 @@ export class SbFormLocationSelectionDelegate {
         this.shouldDeviceProfileLocationUpdate = false;
 
         suggestions = [
-          { type: 'state', name: this.deviceProfile.userDeclaredLocation.state },
-          { type: 'district', name: this.deviceProfile.userDeclaredLocation.district }
+          { type: 'state', name: this.deviceProfile?.userDeclaredLocation.state },
+          { type: 'district', name: this.deviceProfile?.userDeclaredLocation.district }
         ];
       }
     }
-
     return suggestions;
   }
 }

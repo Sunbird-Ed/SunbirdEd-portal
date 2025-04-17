@@ -1,5 +1,9 @@
 export interface PlayerConfig {
-    config: any;
+    config: {
+        sideMenu: {
+            showDownload: false
+        }
+    };
     context: any;
     data: any;
     metadata: any;

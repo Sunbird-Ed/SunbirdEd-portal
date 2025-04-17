@@ -44,9 +44,9 @@
               <div class="two wide column">
                 <div class="re-issue-label">{{toLowerCase(resourceService?.frmelmnts?.lbl?.dashboardsortbyusername)}}</div>
               </div>
-              <div class="two wide column">
+              <!-- <div class="two wide column">
                 <div class="re-issue-label">{{toLowerCase(resourceService?.frmelmnts?.lbl?.userDistrict)}}</div>
-              </div>
+              </div> -->
               <div class="two wide column">
                 <div class="re-issue-label text-center">{{toLowerCase(resourceService?.frmelmnts?.lbl?.courseProgress)}}</div>
               </div>
@@ -68,10 +68,10 @@
                 <div class="re-issue-status" suiPopup popupHeader="{{userData?.userName}}" *ngIf="userData?.userName?.length >= 50">{{userData?.userName}}</div>
                 <div class="re-issue-status" *ngIf="userData?.userName?.length < 50">{{userData?.userName}}</div>
               </div>
-              <div class="two wide column">
+              <!-- <div class="two wide column">
                 <div class="re-issue-status" suiPopup popupHeader="{{userData?.district}}" *ngIf="userData?.district?.length >= 48">{{userData?.district}}"></div>
                 <div class="re-issue-status" *ngIf="userData?.district?.length < 48">{{userData?.district}}</div>
-              </div>
+              </div> -->
               <div class="two wide column text-center">
                 <div class="re-issue-status" >{{batch?.completionPercentage || 0}}%</div>
               </div>

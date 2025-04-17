@@ -357,7 +357,9 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         this.userService.setUserFramework(selectedOption);
       });
     } 
-    this.submit.emit(selectedOption);
+    // this.submit.emit(selectedOption);
+    this.submit.emit({...selectedOption, profileConfig: this.userService.userProfile?.framework?.profileConfig || []  });
+    
   }
   private enableSubmitButton() {
     const optionalFields = _.map(_.filter(this._formFieldProperties, formField => !_.get(formField, 'required')), 'code');

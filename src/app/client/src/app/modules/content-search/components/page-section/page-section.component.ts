@@ -48,7 +48,7 @@ export class PageSectionComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(public config: ConfigService, public activatedRoute: ActivatedRoute, public resourceService: ResourceService, public cslFrameworkService: CslFrameworkService,
     private cdr: ChangeDetectorRef) {
-    // console.log(slick);
+
     this.pageid = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
   }
   playContent(event) {

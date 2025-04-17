@@ -221,11 +221,14 @@ const createSession = async (emailId, reqQuery, req, res) => {
 }
 const fetchUserByEmailId = async (emailId, req) => {
   const options = {
-    method: 'GET',
-    url: envHelper.LEARNER_URL + 'user/v1/exists/email/' + emailId,
+    method: "GET",
+    url:
+      envHelper.LEARNER_URL +
+      "user/v1/exists/email/" +
+      +encodeURIComponent(emailId),
     headers: getHeaders(req),
-    json: true
-  }
+    json: true,
+  };
   console.log('check user exists', JSON.stringify(options));
   return request(options).then(data => {
     if (data.responseCode === 'OK') {

@@ -19,7 +19,7 @@
           </div>
           <div>
             <div class="schooling-location" [appTelemetryImpression]="telemetryImpression">
-              <div class="w-100">
+              <div class="schooling-location-form">
                 <sb-form
                   *ngIf="sbFormLocationSelectionDelegate.locationFormConfig && sbFormLocationSelectionDelegate.locationFormConfig.length"
                   [config]="sbFormLocationSelectionDelegate.locationFormConfig"
@@ -68,7 +68,7 @@
     <div class="sb-mat__modal__content">
       <div>
         <div class="schooling-location" [appTelemetryImpression]="telemetryImpression">
-          <div class="w-100">
+          <div class="schooling-location-form">
             <sb-form
               *ngIf="sbFormLocationSelectionDelegate && sbFormLocationSelectionDelegate.locationFormConfig && sbFormLocationSelectionDelegate.locationFormConfig.length"
               [config]="sbFormLocationSelectionDelegate?.locationFormConfig"
