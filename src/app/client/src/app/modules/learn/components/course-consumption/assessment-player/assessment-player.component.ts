@@ -847,6 +847,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
             this.publicPlayerService.getQuestionSetRead(id).subscribe((data: any) => {
               this.playerConfig['metadata']['instructions'] = _.get(data, 'result.questionset.instructions');
               this.showPlayer = true;
+              
             }, (error) => {
               this.showPlayer = true;
             });
@@ -855,6 +856,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
             const _currentAttempt = _.get(this.contentStatus[_contentIndex], 'score.length') || 0;
             this.playerConfig['metadata']['currentAttempt'] = _currentAttempt == undefined ? 0 : _currentAttempt;
             this.playerConfig['context']['objectRollup'] = this.objectRollUp; 
+            this.playerConfig['config']['sideMenu']['showDownload'] = false
             this.showLoader = false;
           }, (err) => {
             this.toasterService.error(this.resourceService.messages.stmsg.m0009);
@@ -875,6 +877,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
           this.playerConfig['metadata']['maxAttempt'] = _.get(this.activeContent, 'maxAttempts');
           const _currentAttempt = _contentIndex > 0 ? _.get(this.contentStatus[_contentIndex], 'score.length') : 0;
           this.playerConfig['metadata']['currentAttempt'] = _currentAttempt == undefined ? 0 : _currentAttempt;
+          this.playerConfig['config']['sideMenu']['showDownload'] = false
+
           this.showLoader = false;
           this.setTelemetryContentImpression();
         }, (err) => {
