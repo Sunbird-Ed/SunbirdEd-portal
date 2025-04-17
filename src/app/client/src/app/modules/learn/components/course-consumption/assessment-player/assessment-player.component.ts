@@ -885,8 +885,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
           }
           this.playerConfig.config['restrictControls'] = {
             "seekForward": false,
-            "seekBackward": false
+            "seekBackward": false,
+            "seekBar": false
           }
+          this.playerConfig.config['playBackSpeeds'] = [1]
           this.showLoader = false;
           this.setTelemetryContentImpression();
         }, (err) => {
