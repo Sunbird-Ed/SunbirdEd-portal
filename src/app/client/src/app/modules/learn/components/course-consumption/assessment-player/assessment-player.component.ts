@@ -877,8 +877,16 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
           this.playerConfig['metadata']['maxAttempt'] = _.get(this.activeContent, 'maxAttempts');
           const _currentAttempt = _contentIndex > 0 ? _.get(this.contentStatus[_contentIndex], 'score.length') : 0;
           this.playerConfig['metadata']['currentAttempt'] = _currentAttempt == undefined ? 0 : _currentAttempt;
-          this.playerConfig['config']['sideMenu']['showDownload'] = false
-
+          this.playerConfig.config.sideMenu = {
+            "enable": false,
+            "showShare": true,
+            "showDownload": false,
+            "showExit": false
+          }
+          this.playerConfig.config['restrictControls'] = {
+            "seekForward": false,
+            "seekBackward": false
+          }
           this.showLoader = false;
           this.setTelemetryContentImpression();
         }, (err) => {
