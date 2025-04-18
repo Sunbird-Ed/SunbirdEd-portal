@@ -313,6 +313,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
           const varName = (userId + '_' + (this.collectionId ? this.collectionId : '') + '_' + (this.contentId ? this.contentId : '') + '_config');
           const playerConfig: any = JSON.parse(localStorage.getItem(varName)) || {};
           this.playerConfig['config'] = { ...this.playerConfig['config'], ...playerConfig };
+
+          this.playerConfig['config']['sideMenu'] = {
+            "showDownload": false,
+          }
+          this.playerConfig.config['playBackSpeeds'] = [1]
         }
       });
     } else {
