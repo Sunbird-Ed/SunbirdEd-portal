@@ -24,9 +24,14 @@
   height: 100%;
 }
 
-.sb-player .vjs-progress-control {
+.vjs-progress-control {
   pointer-events: none !important;
-  opacity: 0.6; /* optional: make it look inactive */
+  opacity: 0.6; 
+}
+
+.vjs-playback-rate>.vjs-menu-button {
+  pointer-events: none !important;
+  opacity: 0.6; 
 }
 
 @media only screen and (max-width: 768px) {
