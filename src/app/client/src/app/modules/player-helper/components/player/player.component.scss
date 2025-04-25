@@ -24,6 +24,8 @@
   height: 100%;
 }
 
+
+
 @media only screen and (max-width: 768px) {
   .play-icon {
     height: auto;
@@ -114,6 +116,15 @@
   .video-js {
     padding-top:inherit !important;
   }
+    .vjs-progress-control {
+  pointer-events: none !important;
+  opacity: 0.6; 
+}
+
+.vjs-playback-rate>.vjs-menu-button {
+  pointer-events: none !important;
+  opacity: 0.6; 
+}
 }
 
 .no-content-player{

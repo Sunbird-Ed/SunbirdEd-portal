@@ -1,7 +1,8 @@
 export interface PlayerConfig {
     config: {
         sideMenu: {
-            showDownload: false
+            showDownload: boolean
+            showExit: boolean
         }
     };
     context: any;
