@@ -5,7 +5,7 @@
 </div>
 
 <div class="ui grid" *ngIf="!showLoader">
-  <div *ngIf="showCourseQRCodeBtn" class="ml-auto mb-16">
+  <!-- <div *ngIf="showCourseQRCodeBtn" class="ml-auto mb-16">
     <button class="sb-btn sb-btn-normal sb-btn-secondary my-16" appTelemetryInteract 
       [telemetryInteractObject]="{id:course-qrdownload,type:'course-qrcode',ver:'1.0'}" 
       [telemetryInteractEdata]="{id:'download-qrcsv',type:'click',pageid:'course-qrcode'}" 
@@ -13,7 +13,7 @@
       matTooltip="{{resourceService.frmelmnts?.lbl?.downloadQRCode?.tooltip}}" [matTooltipPosition]="'above'">
       {{resourceService?.frmelmnts?.lbl?.downloadCourseQRCode}}
   </button>
-  </div> 
+  </div>  -->
   <div class="twelve wide column" [appTelemetryImpression]="telemetryImpression">
     <div class="ui stackable three column grid" [throttle]="[1000]" [trigger]="publishedContent">
       <div  *ngFor="let content of publishedContent;let i = index;" [id]="i" [data]="content" class="column py-5 pl-10">
