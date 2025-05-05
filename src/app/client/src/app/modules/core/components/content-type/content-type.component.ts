@@ -173,7 +173,11 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   }
 
   processFormData(formData) {
-    this.contentTypes = _.sortBy(formData, 'index').filter((content) => content.contentType !== "all" );
+    const userRoles = JSON.parse(localStorage.getItem('userProfile')).userRoles
+    this.contentTypes = _.sortBy(formData, 'index').filter((content) => {
+      return !(userRoles.length === 1 && userRoles[0].toLowerCase() === 'public' && content.contentType === 'all');
+    } );
+
     const defaultTab = _.find(this.contentTypes, ['default', true]);
     this.selectedContentType = this.activatedRoute.snapshot.queryParams.selectedTab || _.get(defaultTab, 'contentType') || 'textbook';
   }
