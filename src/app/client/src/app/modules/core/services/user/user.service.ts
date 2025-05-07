@@ -220,6 +220,8 @@ export class UserService {
     return this.publicDataService.postWithHeaders(option); 
   }
 
+
+  
   /**
    * get method to fetch appId.
    */
