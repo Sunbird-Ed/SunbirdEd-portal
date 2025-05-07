@@ -81,12 +81,10 @@ echo "Client and Server Build complete Took $[$BUILD_ENDTIME - $STARTTIME] secon
 
 if [ $buildDockerImage == true ]
 then
-cd app_dist
 sed -i "/version/a\  \"buildHash\": \"${commit_hash}\"," package.json
 echo "starting docker build"
 docker build --no-cache --label commitHash=$(git rev-parse --short HEAD) -t ${name}:${build_tag} .
 echo "completed docker build"
-cd ../../..
 fi
 
 ENDTIME=$(date +%s)
