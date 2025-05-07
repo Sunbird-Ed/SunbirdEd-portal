@@ -90,7 +90,7 @@ const routes: Routes = [
   },
   {
     path: 'organization', component: UsageReportsComponent, 
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     data: {
       roles: 'dashboardRole',
       telemetry: { env: 'dashboard', pageid: 'org-admin-dashboard', type: 'view' },
@@ -106,7 +106,7 @@ const routes: Routes = [
     data: {
       telemetry: { env: 'profile', pageid: 'org-admin-dashboard', type: 'view' },
       menuBar: {
-        // visible: false
+        visible: false
       },
       breadcrumbs: [{ label: 'Home', url: '/home' },
       { label: 'Profile', url: '/profile' }, { label: 'Organization Admin Dashboard', url: '' }]
