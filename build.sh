@@ -48,13 +48,12 @@ build_client(){
     echo "completed client yarn install"
     if [ $buildDockerImage == true ]
     then
-    build_client_docker & # run client local build in background 
+    build_client_docker 
     fi
     if [ $buildCdnAssests == true ]
     then
-    build_client_cdn & # run client local build in background
+    build_client_cdn
     fi
-    wait # wait for both build to complete
     echo "completed client post_build"
 }
 
@@ -70,14 +69,12 @@ build_server(){
     node helpers/resourceBundles/build.js -task="phraseAppPull"
 }
 
-build_client & # run client build in background 
+build_client 
 if [ $buildDockerImage == true ]
 then
-   build_server & # run client build in background
+   build_server 
 fi
 
-## wait for both build to complete
-wait 
 
 BUILD_ENDTIME=$(date +%s)
 echo "Client and Server Build complete Took $[$BUILD_ENDTIME - $STARTTIME] seconds to complete."
@@ -90,7 +87,6 @@ echo "starting docker build"
 docker build --no-cache --label commitHash=$(git rev-parse --short HEAD) -t ${name}:${build_tag} .
 echo "completed docker build"
 cd ../../..
-echo {\"image_name\" : \"${name}\", \"image_tag\" : \"${build_tag}\",\"commit_hash\" : \"${commit_hash}\", \"node_name\" : \"$node\"} > metadata.json
 fi
 
 ENDTIME=$(date +%s)
