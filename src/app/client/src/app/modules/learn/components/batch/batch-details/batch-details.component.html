@@ -104,10 +104,10 @@
         <div *ngIf="showError">
           <div class="sb-no-batch-found">{{resourceService.messages.stmsg.m0081}}</div>
         </div>
-        <div class="batch-deatils__button text-right" *ngIf="isTrackable && showCreateBatchBtn">
+        <div class="batch-deatils__button text-right" >
           <button class="sb-btn sb-btn-primary sb-btn-normal width-100" tabindex="0"
             (click)="createBatch(); logTelemetry('create-batch', courseHierarchy);"
-            *ngIf="allowBatchCreation">{{resourceService.frmelmnts.lbl.createbatch}}</button>
+            >{{resourceService.frmelmnts.lbl.createbatch}}</button>
         </div>
       </div>
     </div>
