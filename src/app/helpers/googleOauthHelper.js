@@ -225,7 +225,7 @@ const fetchUserByEmailId = async (emailId, req) => {
     url:
       envHelper.LEARNER_URL +
       "user/v1/exists/email/" +
-      +encodeURIComponent(emailId),
+      encodeURIComponent(emailId),
     headers: getHeaders(req),
     json: true,
   };
