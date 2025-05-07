@@ -27,6 +27,7 @@ import { CdkStepperModule } from '@angular/cdk/stepper';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../app/service/CsLibInitializer/cs-lib-initializer.service';
 import { TranslateJsonPipe } from '../app/modules/shared/pipes/TranslateJsonPipe/translate-json.pipe';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 export const csFrameworkServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
   if (!CsModule.instance.isInitialised) {
     csLibInitializerService.initializeCs();
@@ -59,6 +60,7 @@ export const csFrameworkServiceFactory = (csLibInitializerService: CsLibInitiali
     SharedFeatureModule,
     UserOnboardingModule,
     MatStepperModule,
+    MatSnackBarModule,
     CdkStepperModule,
     ...PluginModules,
     // ngx-translate and the loader module

@@ -6,6 +6,7 @@ import {
   DashboardSidebarComponent
 } from './components/';
 import { AuthGuard } from '../core/guard/auth-gard.service';
+import { AddUserComponent } from './components/add-user/add-user.component';
 const telemetryEnv = 'course-dashboard';
 const routes: Routes = [
   {
@@ -54,6 +55,21 @@ const routes: Routes = [
           }
         }
       },
+      {
+        path: 'add-user', component: AddUserComponent, 
+        // canActivate: [AuthGuard],
+        data: {
+          // roles: 'createBatchRole',
+          roles: 'dashboardRole',
+          telemetry: {
+            env: telemetryEnv, pageid: 'add-user', uri: '/dashboard/add-user',
+            type: 'view', object: { ver: '1.0', type: 'user' }
+          },
+          menuBar: {
+            visible: false
+          }
+        }
+      }
     ]
   },
   {
@@ -73,7 +89,8 @@ const routes: Routes = [
     }
   },
   {
-    path: 'organization', component: UsageReportsComponent, canActivate: [AuthGuard],
+    path: 'organization', component: UsageReportsComponent, 
+    // canActivate: [AuthGuard],
     data: {
       roles: 'dashboardRole',
       telemetry: { env: 'dashboard', pageid: 'org-admin-dashboard', type: 'view' },
@@ -89,7 +106,7 @@ const routes: Routes = [
     data: {
       telemetry: { env: 'profile', pageid: 'org-admin-dashboard', type: 'view' },
       menuBar: {
-        visible: false
+        // visible: false
       },
       breadcrumbs: [{ label: 'Home', url: '/home' },
       { label: 'Profile', url: '/profile' }, { label: 'Organization Admin Dashboard', url: '' }]

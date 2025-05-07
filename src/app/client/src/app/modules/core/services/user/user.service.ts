@@ -209,6 +209,17 @@ export class UserService {
       }
     );
   }
+
+  public createUser(userData: any): Observable<any> {
+    const option = {
+      url: this.config.urlConFig.URLS.USER.CREATE_PRIFIX,
+      data: userData,
+    };
+    console.log(this.config);
+    
+    return this.publicDataService.postWithHeaders(option); 
+  }
+
   /**
    * get method to fetch appId.
    */

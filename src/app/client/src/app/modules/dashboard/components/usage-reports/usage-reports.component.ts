@@ -5,6 +5,9 @@ import * as _ from 'lodash-es';
 import dayjs from 'dayjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UserService, TncService } from '@sunbird/core';
+
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import {
   ToasterService,
   ResourceService,
@@ -15,6 +18,12 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import {Subject} from 'rxjs';
 import {first, takeUntil} from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { PublicDataService } from '../../../../../../../../../src/app/client/src/app/modules/core/services/public-data/public-data.service';
+import { ConfigService } from '../../../../../../../../../src/app/client/src/app/modules/shared/services/config/config.service';
+import { HttpErrorResponse } from '@angular/common/http'; 
+import { FormService } from '../../../../modules/core/services/form/form.service';
 
 @Component({
   selector: 'app-usage-reports',
@@ -22,6 +31,8 @@ import {first, takeUntil} from 'rxjs/operators';
   styleUrls: ['./usage-reports.component.scss']
 })
 export class UsageReportsComponent implements OnInit, AfterViewInit {
+
+  provinceList: { label: string; value: string }[] = [];
   reportMetaData: any;
   chartData: Array<object> = [];
   tables: any;
@@ -46,17 +57,48 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
   showTncPopup = false;
   userProfile;
   @ViewChild(TelemetryInteractDirective) telemetryInteractDirective;
+  isSubmitting: boolean;
+  UserCreationService: any;
   constructor(private usageService: UsageService, private sanitizer: DomSanitizer,
     public userService: UserService, private toasterService: ToasterService,
     public resourceService: ResourceService, activatedRoute: ActivatedRoute, private router: Router,
     public navigationhelperService: NavigationHelperService, public layoutService: LayoutService,
-    courseProgressService: CourseProgressService, public tncService: TncService
-  ) {
+    courseProgressService: CourseProgressService, public tncService: TncService, private fb: FormBuilder,
+    private http: HttpClient , private snackBar: MatSnackBar, public publicDataService: PublicDataService,
+  public configService: ConfigService,  private formService: FormService) {
     this.activatedRoute = activatedRoute;
     this.courseProgressService = courseProgressService;
   }
+  subPersonaList: string[] = [];
+
+  userForm!: FormGroup;
+  rolesList = ['Public', 'Content Creater', 'Content Reviewer']; 
 
   ngOnInit() {
+    this.userForm = this.fb.group({
+      firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(30), Validators.pattern('^[A-Za-z]+$')]],
+      lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(30), Validators.pattern('^[A-Za-z]+$')]],
+      email: ['', [Validators.required, Validators.email]],
+      roles: [[], Validators.required],
+      nationalId: ['', [Validators.required, Validators.pattern('^[A-Za-z0-9]{6,20}$')]],
+      description: ['', [Validators.maxLength(250)]],
+      province: ['', Validators.required]
+    });
+    const formParams = {
+      formType: 'profileConfig_v2',
+      formAction: 'get',
+      contentType: 'default'
+    };
+    this.formService.getFormConfig(formParams, '01429195271738982411', 'data.fields')
+    .subscribe({
+      next: (fields) => {
+        const provinceField = fields.find(f => f.code === 'province');
+        this.provinceList = provinceField?.templateOptions?.options || [];
+      },
+      error: (err) => {
+        console.error('Failed to load provinces:', err);
+      }
+    });
     this.initLayout();
     const reportsLocation = (<HTMLInputElement>document.getElementById('reportsLocation')) ? (<HTMLInputElement>document.getElementById('reportsLocation')).value : '';
     this.slug = _.get(this.userService, 'userProfile.rootOrg.slug');
@@ -254,6 +296,66 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
     downloadURL && this.setDownloadUrl(downloadURL);
   }
 
+  isFieldInvalid(field: string): boolean {
+    const control = this.userForm.get(field);
+    return !!(control && control.invalid && (control.dirty || control.touched));
+  }
+
+  onSubmit(): void {
+    if (this.userForm.valid) {
+      this.isSubmitting = true;
+      const formData = this.userForm.value;
+  
+      const payload = {
+        request: {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          password: 'Fmps@1234',
+          roles: formData.roles.map((role: string) => role.toUpperCase()),
+          nationalId: formData.nationalId || '',
+          description: formData.description || '',
+          framework: {
+            category: [],
+            id: ['FMPS'],
+            language: ['English', 'French'],
+            organisation: ['FMPS'],
+            profileConfig: [
+              JSON.stringify({
+                category: formData.category || '',
+                trainingGroup: formData.trainingGroup || '',
+                cin: formData.cin || '',
+                idFmps: formData.idFmps || '',
+                province: formData.province || ''
+              })
+            ]
+          }
+        }
+      };
+  
+      // Calling createUser() from the service and subscribing to the observable
+      this.userService.createUser(payload).subscribe({
+        next: (res) => {
+          this.isSubmitting = false;
+          this.snackBar.open('User created successfully!', 'Close', {
+            duration: 3000,
+            panelClass: ['snack-success']
+          });
+          this.userForm.reset();
+        },
+        error: (err) => {
+          this.isSubmitting = false;
+          this.snackBar.open(err?.error?.params?.errmsg || 'User creation failed', 'Close', {
+            duration: 3000,
+            panelClass: ['snack-error']
+          });
+        }
+      });
+    }
+  }
+  
+
+  
   getReportViewerTncPolicy() {
     this.tncService.getReportViewerTnc().subscribe((data) => {
       const reportViewerTncData = JSON.parse(_.get(data, 'result.response.value'));
