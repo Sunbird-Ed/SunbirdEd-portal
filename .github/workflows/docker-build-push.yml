@@ -18,12 +18,6 @@ jobs:
         with:
           node-version: '16'
 
-      - name: Install NVM
-        run: |
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-          echo "source $HOME/.nvm/nvm.sh" >> $GITHUB_ENV
-          echo "source $HOME/.nvm/bash_completion" >> $GITHUB_ENV
-
       - name: Run build script
         run: |
           chmod +x build.sh
