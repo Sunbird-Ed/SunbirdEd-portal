@@ -104,18 +104,20 @@ module.exports = (app) => {
       }
       errType = 'GOOGLE_PROFILE_API';
       googleProfile = await googleOauth.getProfile(req).catch(handleGoogleProfileError);
-      if(!allowedGoogleEmails.includes(googleProfile.emailId)) {
-        throw 'google email not allowed';
-      }
+      // if(!allowedGoogleEmails.includes(googleProfile.emailId)) {
+      //   throw 'google email not allowed';
+      // }
       logger.info({msg: 'googleProfile fetched' + JSON.stringify(googleProfile)});
       errType = 'USER_FETCH_API';
       isUserExist = await fetchUserByEmailId(googleProfile.emailId, req).catch(handleGetUserByIdError);
       logger.info({msg: 'sunbird profile fetched' + JSON.stringify(isUserExist)});
       if (!isUserExist) {
-        logger.info({msg: 'creating new google user'});
-        errType = 'USER_CREATE_API';
-        newUserDetails = await createUserWithMailId(googleProfile, reqQuery.client_id, req).catch(handleCreateUserError);
-        await utils.delay(GOOGLE_SIGN_IN_DELAY);
+        // logger.info({msg: 'creating new google user'});
+        // errType = 'USER_CREATE_API';
+        // newUserDetails = await createUserWithMailId(googleProfile, reqQuery.client_id, req).catch(handleCreateUserError);
+        // await utils.delay(GOOGLE_SIGN_IN_DELAY);
+        logger.error({ msg: 'User not registered with the FMPS portal' });
+        throw new Error('User not registered with the FMPS portal. Please contact the administrator.');
       }
       errType = 'KEYCLOAK_SESSION_CREATE';
       keyCloakToken = await createSession(googleProfile.emailId, reqQuery, req, res).catch(handleCreateSessionError);
