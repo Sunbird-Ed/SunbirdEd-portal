@@ -47,10 +47,7 @@
                 *ngIf="checkStatus('PAUSED')">{{resourceService.frmelmnts?.lbl?.downloadingPaused}}</button>
             </div>
 
-            <button type="button" *ngIf="!isCopyAsCourseClicked" tabindex="0"
-              (click)="onShareLink();sharelinkModal=true;" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
-              <i class="blue share alternate icon"></i> {{resourceService?.frmelmnts?.lbl?.share}}
-            </button>
+            
 
             <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
               [telemetryInteractEdata]="copyContentInteractEdata"

@@ -22,15 +22,7 @@
         <h5 class="textbook__title sb-color-primary font-weight-bold mb-0" tabindex="0">{{courseHierarchy?.name | titlecase}}
         </h5>
         <!-- Textbook Rating with share icon -->
-        <div class="textbook__rating mt-4">
-          <button tabindex="0" (click)="onShareLink();shareLinkModal=true;"
-            class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn">
-            <i class="icon-svg icon-svg--xxs icon-share mr-4"><svg class="icon icon-svg--primary">
-              <use xlink:href="assets/images/sprite.svg#share"></use>
-            </svg></i>
-            {{resourceService?.frmelmnts?.lbl?.share}}
-          </button>
-        </div>
+        
       </div>
     </div>
   </div>
@@ -158,12 +150,7 @@
   </div>
 </div>
 
-<app-modal-wrapper *ngIf="shareLinkModal" [config]="{disableClose: false, panelClass: 'material-modal'}" (dismiss)="shareLinkModal = false">
-  <ng-template sbModalContent>
-    <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData">
-    </app-share-link>
-  </ng-template>
-</app-modal-wrapper>
+
 
 <app-course-completion *ngIf="showCourseCompleteMessage" [certificateDescription]="certificateDescription" (close)="onCourseCompleteClose()"></app-course-completion>
 
