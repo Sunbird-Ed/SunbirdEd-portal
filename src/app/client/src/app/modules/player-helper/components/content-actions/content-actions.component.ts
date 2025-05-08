@@ -69,6 +69,8 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
       this.collectionId = params.collectionId;
     });
     this.actionButtons = _.cloneDeep(actionButtons);
+    this.actionButtons = this.actionButtons.filter(button => button.name.toLowerCase() !== 'share');
+    this.fullScreenActionButtons = this.fullScreenActionButtons.filter(button => button.name.toLowerCase() !== 'share');
     this.fullScreenActionButtons = _.cloneDeep(fullScreenActionButtons);
     _.find(this.actionButtons, (button) => {
       button.disabled = (button.label === 'Fullscreen') ? (isVideoMimetype || this.deviceDetectorService.isMobile() ||
