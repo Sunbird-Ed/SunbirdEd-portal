@@ -191,6 +191,22 @@
           <mat-progress-bar mode="determinate" [value]="progressToDisplay" class="mb-0 mr-0 mt-8 tiny"></mat-progress-bar>
         </div>
 
+        <!-- Certificate of Completion -->
+        <mat-accordion class="sb-mat-accordion mb-16" *ngIf="isCertificateReadyForDownload">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title class="sb-mat-accordion__title">
+                Certificate of Completion
+              </mat-panel-title>
+
+            </mat-expansion-panel-header>
+            <button class="sb-btn sb-btn-outline-primary sb-btn-normal" (click)="downloadCertificate()">
+              Download Certificate
+            </button>
+            
+          </mat-expansion-panel>
+        </mat-accordion>
+
         <!-- 3. Join batch, leave batch and show batch popup-->
         <app-batch-details *ngIf="courseStatus !== 'Unlisted'" [courseId]="courseId" [batchId]="batchId"
           [enrolledCourse]="enrolledCourse" [enrolledBatchInfo]="enrolledBatchInfo" [courseHierarchy]="courseHierarchy"
@@ -241,13 +257,7 @@
   </ng-template>
 </app-modal-wrapper>
 
-<app-modal-wrapper *ngIf="shareLinkModal" [config]="{disableClose: false, panelClass: 'material-modal'}"
-  (dismiss)="closeSharePopup('close-share-link-popup')">
-  <ng-template sbModalContent>
-    <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData">
-    </app-share-link>
-  </ng-template>
-</app-modal-wrapper>
+
 
 <app-confirmation-popup *ngIf="showConfirmationPopup" [popupMode]="popupMode" [batchId]="createdBatchId"
   (close)="onPopupClose($event)"></app-confirmation-popup>
