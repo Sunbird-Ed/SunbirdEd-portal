@@ -397,7 +397,8 @@
               </svg></i>
             {{resourceService.frmelmnts?.lnk?.report}}
           </li>
-          <li class="list-item" tabindex="0" role="link" *ngIf='!isDesktopApp && permissionService.permissionAvailable'
+          
+          <!-- <li class="list-item" tabindex="0" role="link" 
             appPermission [permission]='adminDashboard' (click)="toggleSideMenu(false)"
             [routerLink]="reportsListVersion === 'v2' ? 'dashBoard/reports': 'dashBoard/organization' ">
             <i class="icon-svg icon-svg--sm icon-dashboard mr-8"><svg class="icon icon-svg--primary">
@@ -405,11 +406,10 @@
               </svg></i>
             {{resourceService.frmelmnts?.lnk?.dashboard}}
           </li>
-        
-
-         <li class="list-item" tabindex="0" role="link" *ngIf="!isDesktopApp && permissionService.permissionAvailable"
-            appPermission [permission]="adminDashboard" (click)="toggleSideMenu(false)"
-            [routerLink]="'/dashboard/add-user'">
+         -->
+         <li class="list-item" tabindex="0" role="link" 
+             (click)="toggleSideMenu(false)"  appPermission [permission]='orgAdminRole'
+            routerLink="/dashboard/add-user">
             <i class="icon-svg icon-svg--sm icon-dashboard mr-8">
               <svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#add-user"></use>

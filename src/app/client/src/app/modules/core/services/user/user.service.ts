@@ -15,7 +15,8 @@ import { skipWhile, tap } from 'rxjs/operators';
 import { APP_BASE_HREF } from '@angular/common';
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { DataService } from './../data/data.service';
-import { environment } from '@sunbird/environment';
+import { environment } from '../../../../../environments/environment';
+
 
 /**
  * Service to fetch user details from server
@@ -131,7 +132,7 @@ export class UserService {
     this.learnerService = learner;
     this.contentService = contentService;
     this.publicDataService = publicDataService;
-    this.isDesktopApp = environment.isDesktopApp;
+    // this.isDesktopApp = environment.isDesktopApp;
     let fwObj = localStorage.getItem('fwCategoryObject');
     this.frameworkCategories = JSON.parse(fwObj);
     try {
@@ -214,14 +215,16 @@ export class UserService {
     const option = {
       url: this.config.urlConFig.URLS.USER.CREATE_PRIFIX,
       data: userData,
+      header: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${environment.apiKey}`,
+      }
     };
-    console.log(this.config);
-    
     return this.publicDataService.postWithHeaders(option); 
   }
 
 
-  
+
   /**
    * get method to fetch appId.
    */

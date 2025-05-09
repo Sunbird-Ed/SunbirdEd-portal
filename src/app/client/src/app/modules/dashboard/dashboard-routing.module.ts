@@ -54,21 +54,6 @@ const routes: Routes = [
             visible: false
           }
         }
-      },
-      {
-        path: 'add-user', component: AddUserComponent, 
-        // canActivate: [AuthGuard],
-        data: {
-          // roles: 'createBatchRole',
-          roles: 'dashboardRole',
-          telemetry: {
-            env: telemetryEnv, pageid: 'add-user', uri: '/dashboard/add-user',
-            type: 'view', object: { ver: '1.0', type: 'user' }
-          },
-          menuBar: {
-            visible: false
-          }
-        }
       }
     ]
   },
