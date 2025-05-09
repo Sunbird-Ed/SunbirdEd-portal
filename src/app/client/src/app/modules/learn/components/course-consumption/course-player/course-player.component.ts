@@ -19,11 +19,13 @@ import dayjs from 'dayjs';
 import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 import { HttpClient } from '@angular/common/http'; // Import HttpClient
+import { CertificateDownloadAsPdfService } from 'sb-svg2pdf-v13';
 
 @Component({
   selector: 'app-course-player',
   templateUrl: './course-player.component.html',
-  styleUrls: ['course-player.component.scss']
+  styleUrls: ['course-player.component.scss'],
+  providers: [CertificateDownloadAsPdfService]
 })
 export class CoursePlayerComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal;
@@ -120,6 +122,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     private connectionService: ConnectionService,
     @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService,
     @Inject('SB_NOTIFICATION_SERVICE') private notificationService: NotificationServiceImpl,
+    private certDownloadAsPdf: CertificateDownloadAsPdfService,
     private http: HttpClient,
   ) {
     this.router.onSameUrlNavigation = 'ignore';
@@ -760,28 +763,44 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .subscribe(
         (response) => {
           const certificateResponse = response;
-          console.log('Certificate API Response:', certificateResponse);
    
           if (certificateResponse && certificateResponse.length > 0) {
             const currentCourseId = this.courseId; // Get current courseId from the component
             const matchingCertificate = certificateResponse.find(cert => _.get(cert, 'training.id') === currentCourseId);
-   
-            if (matchingCertificate) {
-              const certificateOsid = _.get(matchingCertificate, 'osid');
-              if (certificateOsid) {
-                const downloadBaseUrl = '/';
-                const downloadUrl = `${downloadBaseUrl}learner/rc/certificate/v1/download/${certificateOsid}`;
-                console.log('Attempting to download certificate from:', downloadUrl);
-                window.open(downloadUrl, '_blank');
+
+            const courseName = _.get(matchingCertificate, 'name');
+            this.CsCourseService.getSignedCourseCertificate(_.get(matchingCertificate, 'osid'))
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe((resp) => {
+              if (_.get(resp, 'printUri')) {
                 this.toasterService.success('Certificate download initiated.');
-              } else {
-                console.error('Matching certificate found, but osid is missing:', matchingCertificate);
-                this.toasterService.error('Could not download certificate: OSID missing.');
+                this.certDownloadAsPdf.download(resp.printUri, null, courseName);
               }
-            } else {
-              console.log('No certificate found for the current course ID:', currentCourseId);
-              this.toasterService.info('No certificate available for this course yet.');
-            }
+              // } else if (_.get(course, 'certificates.length')) {
+              //   this.downloadPdfCertificate(course.certificates[0]);
+              // } else {
+              //   this.toasterService.error(this.resourceService.messages.emsg.m0076);
+              // }
+            }, error => {
+              console.error('Error downloading certificate:', error);
+              this.toasterService.error(this.resourceService.messages.emsg.m0076);
+            });
+   
+            // if (matchingCertificate) {
+            //   const certificateOsid = _.get(matchingCertificate, 'osid');
+            //   if (certificateOsid) {
+            //     const downloadBaseUrl = '/';
+            //     const downloadUrl = `${downloadBaseUrl}learner/rc/certificate/v1/download/${certificateOsid}`;
+            //     console.log('Attempting to download certificate from:', downloadUrl);
+            //     window.open(downloadUrl, '_blank');
+            //   } else {
+            //     console.error('Matching certificate found, but osid is missing:', matchingCertificate);
+            //     this.toasterService.error('Could not download certificate: OSID missing.');
+            //   }
+            // } else {
+            //   console.log('No certificate found for the current course ID:', currentCourseId);
+            //   this.toasterService.info('No certificate available for this course yet.');
+            // }
           } else {
             console.log('No certificates found in the API response.');
             this.toasterService.info('No certificates found for your account.');
@@ -792,8 +811,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           this.toasterService.error('Failed to fetch certificate data from the API.');
         }
       );
-    console.log('Current User ID for certificate check:', _.get(this.userService, 'userid'));
-    console.log('Current Course ID for certificate check:', this.courseId);
   }
-}
 
+}
