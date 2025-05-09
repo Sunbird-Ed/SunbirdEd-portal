@@ -785,22 +785,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
               console.error('Error downloading certificate:', error);
               this.toasterService.error(this.resourceService.messages.emsg.m0076);
             });
-   
-            // if (matchingCertificate) {
-            //   const certificateOsid = _.get(matchingCertificate, 'osid');
-            //   if (certificateOsid) {
-            //     const downloadBaseUrl = '/';
-            //     const downloadUrl = `${downloadBaseUrl}learner/rc/certificate/v1/download/${certificateOsid}`;
-            //     console.log('Attempting to download certificate from:', downloadUrl);
-            //     window.open(downloadUrl, '_blank');
-            //   } else {
-            //     console.error('Matching certificate found, but osid is missing:', matchingCertificate);
-            //     this.toasterService.error('Could not download certificate: OSID missing.');
-            //   }
-            // } else {
-            //   console.log('No certificate found for the current course ID:', currentCourseId);
-            //   this.toasterService.info('No certificate available for this course yet.');
-            // }
           } else {
             console.log('No certificates found in the API response.');
             this.toasterService.info('No certificates found for your account.');
