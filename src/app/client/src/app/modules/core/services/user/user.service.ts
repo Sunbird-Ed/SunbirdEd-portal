@@ -132,7 +132,7 @@ export class UserService {
     this.learnerService = learner;
     this.contentService = contentService;
     this.publicDataService = publicDataService;
-    // this.isDesktopApp = environment.isDesktopApp;
+    this.isDesktopApp = environment.isDesktopApp;
     let fwObj = localStorage.getItem('fwCategoryObject');
     this.frameworkCategories = JSON.parse(fwObj);
     try {

@@ -6,7 +6,6 @@ import {
   DashboardSidebarComponent
 } from './components/';
 import { AuthGuard } from '../core/guard/auth-gard.service';
-import { AddUserComponent } from './components/add-user/add-user.component';
 const telemetryEnv = 'course-dashboard';
 const routes: Routes = [
   {
