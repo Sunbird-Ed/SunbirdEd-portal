@@ -352,6 +352,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         }
         this.contentStatus = _parsedResponse.content || [];
         this._routerStateContentStatus = _parsedResponse;
+        this.markContentVisibility(this.courseHierarchy.children, this.contentStatus, this.progressToDisplay)
         this.calculateProgress();
       }, error => {
         console.log('Content state read CSL API failed ', error);
@@ -795,6 +796,43 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           this.toasterService.error('Failed to fetch certificate data from the API.');
         }
       );
+  }
+
+  markContentVisibility(
+    sections = [],
+    contentStatus = [],
+    progress = 0
+  ) {
+    if (!Array.isArray(sections) || !Array.isArray(contentStatus)) {
+      return;
+    }
+
+    const statusMap = new Map(contentStatus.map(cs => [cs.contentId, cs.status]));
+    let showNext = true;
+
+    _.forEach(sections, section => {
+      if (!section?.children?.length) return;
+
+      _.forEach(section.children, (child, i) => {
+        const status = statusMap.get(child.identifier);
+        let showContent = false;
+
+        if (progress === 0) {
+          showContent = section.index === 1 && i === 0;
+        } else if (status === 2 || status === 1) {
+          showContent = true;
+          if (status === 1) showNext = false;
+        } else if (status === 0 && showNext) {
+          const currentIndex = _.findIndex(contentStatus, cs => cs.contentId === child.identifier);
+          const allPrevComplete = _.every(_.slice(contentStatus, 0, currentIndex), cs => cs.status === 2);
+          if (allPrevComplete) {
+            showContent = true;
+            showNext = false;
+          }
+        }
+        child.showContent = showContent;
+      });
+    });
   }
 
 }

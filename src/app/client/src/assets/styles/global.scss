@@ -734,6 +734,10 @@ html.PlayerMediaQueryClass {
   .sbchapter__item__title {
     opacity: 0.3;
     color: var(--black) !important;
+    cursor: not-allowed !important;
+  }
+  .sbchapter__item {
+    cursor: not-allowed !important;
   }
 }
 
