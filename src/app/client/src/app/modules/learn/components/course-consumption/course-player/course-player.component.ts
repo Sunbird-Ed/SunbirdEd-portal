@@ -71,7 +71,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   telemetryShareData: Array<ITelemetryShare>;
   shareLink: string;
   progress = 0;
-  public isCertificateReadyForDownload = true;
+  public isCertificateReadyForDownload = false;
   public introductoryMaterialArray = [];
   public detailedIntroductoryMaterialArray: any[] = [];
   isExpandedAll: boolean;
@@ -807,8 +807,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // const apiUrl = `api/content/v1/read/${this.courseId}`;
-    const apiUrl = `api/content/v1/read/do_21430896324438425611`;
+    const apiUrl = `api/content/v1/read/${this.courseId}`;
 
     this.http.get<any>(apiUrl)
       .pipe(takeUntil(this.unsubscribe))
@@ -827,24 +826,19 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
                 const detailObservables = this.introductoryMaterialArray
                   .map(material => {
-                    // Assuming the 'do_id' is stored in a property like 'identifier'.
-                    // Please verify this matches your actual data structure.
                     const doId = material.identifier; 
                     if (!doId) {
                       console.warn('Introductory material item is missing an identifier:', material);
                       return of(null); // Return an observable of null if id is missing
                     }
-                    // Using the provided base URL for fetching details
+
                     const detailApiUrl = `https://dev-fmps.sunbirded.org/api/content/v1/read/${doId}`;
                     return this.http.get<any>(detailApiUrl).pipe(
                       map(detailResponse => {
-                        // Assuming the relevant content is in 'result.content'
-                        // Adjust if the structure of the detail API response is different
                         return detailResponse.result && detailResponse.result.content ? detailResponse.result.content : null;
                       }),
                       catchError(err => {
                         console.error(`Failed to fetch details for DO_ID ${doId}:`, err);
-                        this.toasterService.error(`Failed to fetch details for an introductory item: ${doId}`);
                         return of(null); // Return null for this item on error, so forkJoin doesn't fail completely
                       })
                     );
@@ -857,11 +851,14 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
                     .subscribe(
                       (detailedResults) => {
                         this.detailedIntroductoryMaterialArray = detailedResults.filter(res => res !== null);
-                        console.log("detailedIntroductoryMaterialArray populated:", this.detailedIntroductoryMaterialArray);
+                        // this.detailedIntroductoryMaterialArray.forEach(item => {
+                        //   item.appIcon = "assets/common-consumption/images/sprite.svg#doc";
+                        // });
+                        // console.log("detailedIntroductoryMaterialArray populated:", this.detailedIntroductoryMaterialArray);
+                        // console.log("courseHierarchy :", this.courseHierarchy);
                       },
                       (forkJoinError) => {
                         // This error block is for errors in forkJoin itself, though individual errors are handled above.
-                        this.toasterService.error('An error occurred while fetching all introductory material details.');
                         console.error('Error in forkJoin for detailed introductory materials:', forkJoinError);
                       }
                     );
@@ -874,7 +871,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
                 console.log('No introductory material items found after parsing, or the format is not an array.');
               }
             } catch (error) {
-              this.toasterService.error('Failed to parse introductory material JSON.');
               console.error('Error parsing introductory material JSON:', error);
             }
           } else {
@@ -889,5 +885,19 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           this.detailedIntroductoryMaterialArray = []; // Ensure reset on error
         }
       );
+  }
+
+  public handleIntroItemClick(event: any, introItem: any): void {
+    if (introItem && introItem.mimeType === 'application/pdf') {
+      const pdfUrl = introItem.previewUrl || introItem.artifactUrl;
+      if (pdfUrl) {
+        window.open(pdfUrl, '_blank');
+        this.logTelemetry('view-pdf-intro-item', introItem);
+      } else {
+        this.toasterService.error(this.resourceService.messages.emsg.m0004); // Or a more specific "PDF URL not found" message
+      }
+    } else {
+      this.navigateToContent(event, introItem, 'child-item');
+    }
   }
 }

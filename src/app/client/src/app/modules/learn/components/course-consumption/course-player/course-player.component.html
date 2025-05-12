@@ -70,14 +70,16 @@
               </sb-accordion-header>
               <sb-accordion-body>
                 <div class="chapter-box">
-                  <div *ngFor="let introItem of introductoryMaterialArray; let i = index">
+                  <div *ngFor="let introItem of detailedIntroductoryMaterialArray; let i = index">
                     <div class="child-content-padding">
+                      <div *ngIf="introItem;else noContent">
                       <sb-toc-child-item
-                            *ngIf="introItem?.contentType !== 'SelfAssess' && child?.mimeType !== 'application/vnd.sunbird.questionset'"
+                            *ngIf="introItem?.contentType !== 'SelfAssess' && introItem?.mimeType !== 'application/vnd.sunbird.questionset'"
                             [childData]="introItem" class="sb-toc-child-item"
-                            (tocCardClick)="navigateToContent($event, introItem, 'child-item')"
+                            (tocCardClick)="handleIntroItemClick($event, introItem)"
                             [contentStatus]="contentStatus" [type]="cardType" >
                       </sb-toc-child-item>
+                      </div>
                     </div>
                   </div>
                 </div>
