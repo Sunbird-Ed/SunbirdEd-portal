@@ -832,7 +832,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
                       return of(null); // Return an observable of null if id is missing
                     }
 
-                    const detailApiUrl = `https://dev-fmps.sunbirded.org/api/content/v1/read/${doId}`;
+                    const detailApiUrl = `/api/content/v1/read/${doId}`;
                     return this.http.get<any>(detailApiUrl).pipe(
                       map(detailResponse => {
                         return detailResponse.result && detailResponse.result.content ? detailResponse.result.content : null;
