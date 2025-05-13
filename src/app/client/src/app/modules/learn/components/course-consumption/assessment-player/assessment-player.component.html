@@ -102,11 +102,13 @@
                     <!-- toc card for Non Self Assess content -->
                 
                     <sb-toc-card *ngIf="item?.contentType !== 'SelfAssess'" [content]="item"
-                      (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType" [contentStatus]="contentStatus">
+                    [ngClass]="{ 'disabled-toc-card': item?.showContent === false }"
+                      (tocCardClick)="(item.hasOwnProperty('showContent') ? item?.showContent : true) && navigateToInitPlayer($event, 'toc-card')" [type]="cardType" [contentStatus]="contentStatus">
                     </sb-toc-card>
                     <!-- toc card for Self Assess content with Label for Best Score -->
                     <sb-toc-card *ngIf="item?.contentType === 'SelfAssess'" [content]="item"
-                      (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType" [contentStatus]="contentStatus"
+                    [ngClass]="{ 'disabled-toc-card': item?.showContent === false }"
+                      (tocCardClick)="(item.hasOwnProperty('showContent') ? item?.showContent : true) && navigateToInitPlayer($event, 'toc-card')" [type]="cardType" [contentStatus]="contentStatus"
                       [maxAttempts]="item?.maxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
                     </sb-toc-card>
                   </div>
@@ -115,7 +117,8 @@
 
               <div *ngIf="item?.mimeType === 'application/vnd.sunbird.questionset'">
                 <div class="child-content-padding">
-                  <sb-toc-card [content]="item" (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType"
+                  <sb-toc-card [content]="item" (tocCardClick)="(item.hasOwnProperty('showContent') ? item?.showContent : true) && navigateToInitPlayer($event, 'toc-card')" [type]="cardType"
+                  [ngClass]="{ 'disabled-toc-card': item?.showContent === false }"
                     [contentStatus]="contentStatus" [maxAttempts]="item?.maxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
                   </sb-toc-card>
                 </div>

@@ -569,6 +569,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
         this.logAuditEvent(true);
       }
     }
+    this.markContentVisibility(this.courseHierarchy.children, this.contentStatus, this.consumedContents)
   }
 
   private subscribeToContentProgressEvents() {
@@ -922,5 +923,28 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
         })
       )
   }
+  markContentVisibility(sections = [], contentStatus = [], progress = 0) {
+    if (!sections.length || !contentStatus.length) return;
 
+    const statusMap = _.fromPairs(contentStatus.map(cs => [cs.contentId, cs.status]));
+    let showNext = true;
+
+    _.forEach(sections, (section, i) => {
+      const status = statusMap[section.identifier];
+      let show = false;
+
+      if (progress === 0) {
+        show = i === 0;
+      } else if (status === 1 || status === 2) {
+        show = true;
+        if (status === 1) showNext = false;
+      } else if (status === 0 && showNext) {
+        const index = _.findIndex(contentStatus, { contentId: section.identifier });
+        show = _.every(_.slice(contentStatus, 0, index), { status: 2 });
+        if (show) showNext = false;
+      }
+
+      section.showContent = show;
+    });
+  }
 }
