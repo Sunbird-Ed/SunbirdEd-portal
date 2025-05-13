@@ -2839,7 +2839,9 @@
 
 "@project-sunbird/sunbird-collection-editor@5.4.12":
   version "5.4.12"
-  resolved "https://registry.npmjs.org/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-5.4.12.tgz"
+
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-5.4.12.tgz#0419f246c89dabb996c727104ec37e0060592168"
+
   integrity sha512-GPByQKU9yKwtZmf1+a6kPlRsgPNtGzrJBE9T2Pd0k9eD8dEDpdUj4yFaOP9bqi36CQCYC1QFq8w4+Ylmli0qiA==
   dependencies:
     tslib "^2.0.0"

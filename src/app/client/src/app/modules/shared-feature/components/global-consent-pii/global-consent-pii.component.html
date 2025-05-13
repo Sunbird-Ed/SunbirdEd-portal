@@ -144,9 +144,7 @@
             <button type="button" tabindex="0" [ngClass]="{'sb-btn-disabled': !isTncAgreed}" [disabled]="!isTncAgreed"
               class="sb-btn sb-btn-normal sb-btn-primary text-uppercase ml-8" (click)="updateUserConsent(true)"
               *ngIf="type === 'global-consent'">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
-            <button type="button" tabindex="0" [ngClass]="{'sb-btn-disabled': !isTncAgreed}" [disabled]="!isTncAgreed"
-            class="sb-btn sb-btn-normal sb-btn-primary text-uppercase ml-8" (click)="updateUserConsent(true)"
-            *ngIf="type === 'course-consent' || type === 'program-consent'">{{resourceService?.frmelmnts?.lbl?.share}}</button>
+            
           </div>
           <!--/Actions-->
 

@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormService, UserService } from '@sunbird/core';
 import * as _ from 'lodash-es';
-import { LayoutService, ResourceService, UtilService, IUserData, NavigationHelperService} from '@sunbird/shared';
+import { LayoutService, ResourceService, UtilService, IUserData, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -36,8 +36,8 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     public layoutService: LayoutService,
     private utilService: UtilService,
     public navigationhelperService: NavigationHelperService,
-    public cslFrameworkService:CslFrameworkService
-  ) {}
+    public cslFrameworkService: CslFrameworkService
+  ) { }
 
 
   ngOnInit() {
@@ -145,7 +145,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       if (this.userService.loggedIn) {
         this.userService.userData$.pipe(takeUntil(this.unsubscribe$)).subscribe((profileData: IUserData) => {
           if (_.get(profileData, 'userProfile.profileUserType.type')) {
-          this.userType = profileData.userProfile['profileUserType']['type'];
+            this.userType = profileData.userProfile['profileUserType']['type'];
           }
           this.makeFormChange();
         });
@@ -154,10 +154,10 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
         if (user) {
           this.userType = user;
           this.makeFormChange();
-        }else{
+        } else {
           this.utilService.currentRole.pipe(takeUntil(this.unsubscribe$)).subscribe((res) => {
-          this.userType = res;
-          this.makeFormChange();
+            this.userType = res;
+            this.makeFormChange();
           });
         }
       }
@@ -173,7 +173,11 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   }
 
   processFormData(formData) {
-    this.contentTypes = _.sortBy(formData, 'index');
+    const userRoles = JSON.parse(localStorage.getItem('userProfile')).userRoles
+    this.contentTypes = _.sortBy(formData, 'index').filter((content) => {
+      return !(userRoles.length === 1 && userRoles[0].toLowerCase() === 'public' && content.contentType === 'all');
+    } );
+
     const defaultTab = _.find(this.contentTypes, ['default', true]);
     this.selectedContentType = this.activatedRoute.snapshot.queryParams.selectedTab || _.get(defaultTab, 'contentType') || 'textbook';
   }

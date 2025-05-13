@@ -18,11 +18,14 @@ import { ContentUtilsServiceService, ConnectionService } from '@sunbird/shared';
 import dayjs from 'dayjs';
 import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
+import { HttpClient } from '@angular/common/http'; // Import HttpClient
+import { CertificateDownloadAsPdfService } from 'sb-svg2pdf-v13';
 
 @Component({
   selector: 'app-course-player',
   templateUrl: './course-player.component.html',
-  styleUrls: ['course-player.component.scss']
+  styleUrls: ['course-player.component.scss'],
+  providers: [CertificateDownloadAsPdfService]
 })
 export class CoursePlayerComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal;
@@ -68,6 +71,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   telemetryShareData: Array<ITelemetryShare>;
   shareLink: string;
   progress = 0;
+  public isCertificateReadyForDownload = false;
   isExpandedAll: boolean;
   isFirst = false;
   addToGroup = false;
@@ -117,7 +121,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     public generaliseLabelService: GeneraliseLabelService,
     private connectionService: ConnectionService,
     @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService,
-    @Inject('SB_NOTIFICATION_SERVICE') private notificationService: NotificationServiceImpl
+    @Inject('SB_NOTIFICATION_SERVICE') private notificationService: NotificationServiceImpl,
+    private certDownloadAsPdf: CertificateDownloadAsPdfService,
+    private http: HttpClient,
   ) {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
@@ -341,8 +347,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .subscribe((res) => {
         const _parsedResponse = this.courseProgressService.getContentProgressState(req, res);
         this.progressToDisplay = Math.floor((_parsedResponse.completedCount / this.courseHierarchy.leafNodesCount) * 100);
+        if(this.progressToDisplay >= 100) {
+          this.isCertificateReadyForDownload = true;
+        }
         this.contentStatus = _parsedResponse.content || [];
         this._routerStateContentStatus = _parsedResponse;
+        this.markContentVisibility(this.courseHierarchy.children, this.contentStatus, this.progressToDisplay)
         this.calculateProgress();
       }, error => {
         console.log('Content state read CSL API failed ', error);
@@ -728,4 +738,101 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       console.log('Content state update CSL API failed ', error);
     });
   }
+
+  public downloadCertificate(): void {
+    const userId = _.get(this.userService, 'userid');
+    if (!userId) {
+      this.toasterService.error('User ID not found.');
+      console.error('User ID is missing, cannot make API call.');
+      return;
+    }
+   
+    const requestBody = {
+      filters: {
+        recipient: {
+          id: {
+            eq: userId
+          }
+        }
+      }
+    };
+   
+    const apiUrl = 'learner/rc/certificate/v1/search';
+   
+    this.http.post<any[]>(apiUrl, requestBody, { withCredentials: true }) // Specify the expected response type as an array
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(
+        (response) => {
+          const certificateResponse = response;
+   
+          if (certificateResponse && certificateResponse.length > 0) {
+            const currentCourseId = this.courseId; // Get current courseId from the component
+            const matchingCertificate = certificateResponse.find(cert => _.get(cert, 'training.id') === currentCourseId);
+
+            const courseName = _.get(matchingCertificate, 'name');
+            this.CsCourseService.getSignedCourseCertificate(_.get(matchingCertificate, 'osid'))
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe((resp) => {
+              if (_.get(resp, 'printUri')) {
+                this.toasterService.success('Certificate download initiated.');
+                this.certDownloadAsPdf.download(resp.printUri, null, courseName);
+              }
+              // } else if (_.get(course, 'certificates.length')) {
+              //   this.downloadPdfCertificate(course.certificates[0]);
+              // } else {
+              //   this.toasterService.error(this.resourceService.messages.emsg.m0076);
+              // }
+            }, error => {
+              console.error('Error downloading certificate:', error);
+              this.toasterService.error(this.resourceService.messages.emsg.m0076);
+            });
+          } else {
+            console.log('No certificates found in the API response.');
+            this.toasterService.info('No certificates found for your account.');
+          }
+        },
+        (error) => {
+          console.error('Certificate API Error:', error);
+          this.toasterService.error('Failed to fetch certificate data from the API.');
+        }
+      );
+  }
+
+  markContentVisibility(
+    sections = [],
+    contentStatus = [],
+    progress = 0
+  ) {
+    if (!Array.isArray(sections) || !Array.isArray(contentStatus)) {
+      return;
+    }
+
+    const statusMap = new Map(contentStatus.map(cs => [cs.contentId, cs.status]));
+    let showNext = true;
+
+    _.forEach(sections, section => {
+      if (!section?.children?.length) return;
+
+      _.forEach(section.children, (child, i) => {
+        const status = statusMap.get(child.identifier);
+        let showContent = false;
+
+        if (progress === 0) {
+          showContent = section.index === 1 && i === 0;
+        } else if (status === 2 || status === 1) {
+          showContent = true;
+          if (status === 1) showNext = false;
+        } else if (status === 0 && showNext) {
+          const currentIndex = _.findIndex(contentStatus, cs => cs.contentId === child.identifier);
+          const allPrevComplete = _.every(_.slice(contentStatus, 0, currentIndex), cs => cs.status === 2);
+          if (allPrevComplete) {
+            showContent = true;
+            showNext = false;
+          }
+        }
+        child.showContent = showContent;
+      });
+    });
+  }
+
 }
