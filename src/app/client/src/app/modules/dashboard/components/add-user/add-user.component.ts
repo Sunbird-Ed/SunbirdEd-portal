@@ -36,6 +36,8 @@ export class AddUserComponent implements OnInit {
       firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(30), Validators.pattern('^[A-Za-z]+$')]],
       lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(30), Validators.pattern('^[A-Za-z]+$')]],
       email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required,  Validators.minLength(8), Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=[\\]{};\'":\\\\|,.<>/?]).{8,}$')       
+      ]],
       roles: [[], Validators.required],
       nationalId: ['', [Validators.required, Validators.pattern('^[A-Za-z0-9]{6,20}$')]],
       description: ['', [Validators.maxLength(250)]],
@@ -82,13 +84,13 @@ export class AddUserComponent implements OnInit {
     if (this.userForm.valid) {
       this.isSubmitting = true;
       const formData = this.userForm.value;
-
+      
       const payload = {
         request: {
           firstName: formData.firstName,
           lastName: formData.lastName,
           email: formData.email,
-          password: 'Fmps@1234',
+          password: formData.password,
           roles: formData.roles.map((role: string) => role.toUpperCase()),
           nationalId: formData.nationalId || '',
           description: formData.description || '',
@@ -109,6 +111,7 @@ export class AddUserComponent implements OnInit {
           }
         }
       };
+      console.log("payload", payload);
       this.userService.createUser(payload).subscribe({
         next: (res) => {
           this.isSubmitting = false;

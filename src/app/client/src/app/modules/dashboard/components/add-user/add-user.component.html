@@ -22,7 +22,6 @@
     <div class="eight wide column sb-workspace-bg" style="display: flex; justify-content: center;">
       <div class="ui segment" style="width: 100%; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); background-color: inherit;">
         <h2 class="ui dividing header sb-color-primary">Create New User</h2>
-  
         <form class="ui form" [formGroup]="userForm" (ngSubmit)="onSubmit()">
           <!-- First & Last Name -->
           <div class="two fields">
@@ -46,24 +45,27 @@
           <!-- Email & National ID -->
           <div class="two fields">
             <div class="field" [ngClass]="{ error: isFieldInvalid('email') }">
-              <label>Email Address</label>
+              <label>Email Address (UserName)</label>
               <input type="email" formControlName="email" placeholder="Enter email address" />
               <div *ngIf="isFieldInvalid('email')" class="ui pointing red basic label">
                 Enter a valid email address.
               </div>
             </div>
   
-            <div class="field" [ngClass]="{ error: isFieldInvalid('nationalId') }">
-              <label>National ID</label>
-              <input type="text" formControlName="nationalId" placeholder="Enter National ID" />
-              <div *ngIf="isFieldInvalid('nationalId')" class="ui pointing red basic label">
-                National ID must be alphanumeric and 6–20 characters.
+            <div class="field" [ngClass]="{ error: isFieldInvalid('password') }">
+              <label>Password</label>
+              <input type="password" formControlName="password" placeholder="Enter Password" />
+              <div *ngIf="isFieldInvalid('password')" class="ui pointing red basic label">
+                Enter a valid Password.
               </div>
             </div>
+  
+  
           </div>
   
+  
           <!-- Roles & Province -->
-                 <div class="two fields">
+          <div class="two fields">
             <!-- Roles Field -->
             <div class="field" [ngClass]="{ error: isFieldInvalid('roles') }">
               <label>Roles</label>
@@ -76,7 +78,7 @@
                 Please select at least one role.
               </div>
             </div>
-          
+  
             <!-- Province Field -->
             <div class="field" [ngClass]="{ error: isFieldInvalid('province') }">
               <label>Province</label>
@@ -92,17 +94,27 @@
               </div>
             </div>
           </div>
-          
+  
           <!-- Description -->
-          <div class="field" [ngClass]="{ error: isFieldInvalid('description') }">
-            <label>Description</label>
-            <textarea formControlName="description" rows="3" placeholder="Enter description (optional)"></textarea>
-            <div *ngIf="isFieldInvalid('description')" class="ui pointing red basic label">
-              Description can be up to 250 characters.
+          <div class="two fields">
+            <div class="field" [ngClass]="{ error: isFieldInvalid('nationalId') }">
+              <label>National ID</label>
+              <input type="text" formControlName="nationalId" placeholder="Enter National ID" />
+              <div *ngIf="isFieldInvalid('nationalId')" class="ui pointing red basic label">
+                National ID must be alphanumeric and 6–20 characters.
+              </div>
             </div>
+            <div class="field" [ngClass]="{ error: isFieldInvalid('description') }">
+              <label>Description</label>
+              <textarea formControlName="description" rows="3" placeholder="Enter description (optional)"></textarea>
+              <div *ngIf="isFieldInvalid('description')" class="ui pointing red basic label">
+                Description can be up to 250 characters.
+              </div>
+            </div>
+  
           </div>
   
-          <button type="submit" class="sb-btn sb-btn-primary sb-btn-normal mt-16" [disabled]="userForm.invalid" style="width: 100%;">
+          <button type="submit" class="sb-btn sb-btn-primary sb-btn-normal mt-16" [disabled]="userForm.invalid" style="width: 100%; font-size: large;">
             Submit
           </button>
         </form>
