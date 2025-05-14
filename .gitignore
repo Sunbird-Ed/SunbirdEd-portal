@@ -54,3 +54,5 @@ src/desktop/chromedriverlog.txt
 
 .vscode/*
 .env
+
+src/app/client/plugins
