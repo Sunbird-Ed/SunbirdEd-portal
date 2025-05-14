@@ -29,7 +29,7 @@ export class AddUserComponent implements OnInit {
     public resourceService: ResourceService,public layoutService: LayoutService,
   ) { }
 
-  rolesList = ['Public', 'Content Creater', 'Content Reviewer'];
+  rolesList = ['Public', 'Content Creator', 'Content Reviewer'];
   userForm!: FormGroup;
   ngOnInit(): void {
     this.userForm = this.fb.group({

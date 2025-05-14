@@ -8,5 +8,4 @@ export const environment = {
   production: false,
   enableTelemetryValidation: false,
   isDesktopApp: false,
-  apiKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhcGlfYWRtaW4ifQ.-qfZEwBAoHFhxNqhGq7Vy_SNVcwB1AtMX8xbiVHF5FQ',
 };
