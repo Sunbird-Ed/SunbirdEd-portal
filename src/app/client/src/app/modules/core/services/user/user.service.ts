@@ -213,7 +213,7 @@ export class UserService {
 
   public createUser(userData: any): Observable<any> {
     const option = {
-      url: this.config.urlConFig.URLS.USER.CREATE_PRIFIX,
+      url: this.config.urlConFig.URLS.USER.CREATE_PREFIX,
       data: userData,
       header: {
         'Content-Type': 'application/json',

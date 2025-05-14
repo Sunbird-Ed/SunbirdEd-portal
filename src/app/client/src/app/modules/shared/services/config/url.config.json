@@ -119,7 +119,7 @@
       "USER_DECLARATION": "user/v1/declarations",
       "GET_SESSION": "get/user/sessionId",
       "DELETE": "user/v1/delete",
-      "CREATE_PRIFIX": "user/v1/create"
+      "CREATE_PREFIX": "user/v1/create"
     },
     "CERTIFICATE": {
       "FETCH_CERTIFICATES": "v1/certs/search",
