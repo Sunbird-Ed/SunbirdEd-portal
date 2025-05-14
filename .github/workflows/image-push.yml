@@ -26,7 +26,6 @@ jobs:
 
       - name: Determine registry and login
         run: |
-            IMAGE_TAG="${{ github.ref_name }}_$(echo $GITHUB_SHA | cut -c1-7)"
 
             if [[ -n "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" ]]; then
             echo "Using Google Container Registry"
@@ -48,10 +47,10 @@ jobs:
             fi
 
             echo "REGISTRY_URL=${REGISTRY_URL}" >> $GITHUB_ENV
-            echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_ENV
 
       - name: Push Docker image
         run: |
+          IMAGE_NAME="player"
           IMAGE_TAG="${{ github.ref_name }}_$(echo $GITHUB_SHA | cut -c1-7)"
-          docker tag player:$IMAGE_TAG $REGISTRY_URL/player:$IMAGE_TAG
-          docker push $REGISTRY_URL/player:$IMAGE_TAG
+          docker tag ${IMAGE_NAME}:$IMAGE_TAG $REGISTRY_URL/${IMAGE_NAME}:$IMAGE_TAG
+          docker push $REGISTRY_URL/${IMAGE_NAME}:$IMAGE_TAG
