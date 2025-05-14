@@ -100,6 +100,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   isConnected = false;
   dropdownContent = true;
   showForceSync = true;
+  expiryDate = null;
   constructor(
     public activatedRoute: ActivatedRoute,
     private configService: ConfigService,
@@ -141,7 +142,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribe)).subscribe(isConnected => {
       this.isConnected = isConnected;
     });
-
+    this.getUserProfileDetail();
     // Set consetnt pop up configuration here
     this.consentConfig = {
       tncLink: _.get(this.resourceService, 'frmelmnts.lbl.tncLabelLink'),
@@ -937,6 +938,50 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         }
         child.showContent = showContent;
       });
+    });
+  }
+
+  async getUserProfileDetail() {
+    var profileDetails: any = localStorage.getItem('userProfile');
+  
+    const payload = {
+      "request": {
+        "filters": {
+          "code": [JSON.parse(JSON.parse(profileDetails).framework.profileConfig).trainingGroup]
+        }
+      }
+    };
+  
+    this.expiryDate = 'NA'; 
+    let matchFound = false;
+  
+    this.userService.expiryDate(payload).subscribe(async res => {
+      console.log("Api called ", res, res.result.content[0].expiry_date);
+      var doIdLink = window.location.href.split('/');
+      var currentDoId;
+  
+      doIdLink.filter(item => {
+        if (item.includes('do')) {
+          currentDoId = item;
+        }
+      });
+  
+      res.result.content.filter(item => {
+        console.log("currentDoId", item, currentDoId);
+        if (item.children && item.children.includes(currentDoId)) {
+          this.expiryDate = item.expiry_date;
+          matchFound = true;
+        }
+      });
+  
+      if (!matchFound) {
+        this.expiryDate = 'NA';
+      }
+  
+      console.log("Final expiryDate", this.expiryDate);
+    }, err => {
+      console.log("Error : ", err);
+      this.expiryDate = 'NA';
     });
   }
 

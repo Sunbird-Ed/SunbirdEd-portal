@@ -151,7 +151,7 @@ export class UserService {
       this._cloudStorageUrls = document.getElementById('cloudStorageUrls') ? (<HTMLInputElement>document.getElementById('cloudStorageUrls')).value.split(',') : [];
     } catch (error) {
     }
-    this._slug = baseHref && baseHref.split('/')[1] ? baseHref.split('/')[1] : '';
+    this._slug = baseHref && baseHref.split('/')[1] ? baseHref.split('/')[1] : '';   
   }
   get slug() {
     return this._slug;
@@ -208,6 +208,14 @@ export class UserService {
         this._userData$.next({ err: err, userProfile: this._userProfile as any });
       }
     );
+  }
+
+  public expiryDate(userData: any): Observable<any> {
+    const option = {
+      url: this.config.urlConFig.URLS.CONTENT.SEARCH,
+      data: userData,
+    };
+    return this.publicDataService.postWithHeaders(option);
   }
   /**
    * get method to fetch appId.
