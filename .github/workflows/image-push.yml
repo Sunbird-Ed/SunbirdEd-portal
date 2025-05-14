@@ -1,0 +1,56 @@
+name: Docker Build and Push Image
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  image-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Run build script
+        run: |
+          chmod +x build.sh
+          ./build.sh ${{ github.ref_name }}_$(echo $GITHUB_SHA | cut -c1-7) true false
+          echo "Build completed successfully."
+
+      - name: Determine registry and login
+        run: |
+
+            if [[ -n "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" ]]; then
+            echo "Using Google Container Registry"
+            echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" | base64 --decode > $HOME/gcloud-key.json
+            gcloud auth activate-service-account --key-file=$HOME/gcloud-key.json
+            gcloud auth configure-docker ${{ secrets.REGISTRY_NAME }}
+            REGISTRY_URL="${{ secrets.REGISTRY_URL }}"
+
+            elif [[ -n "${{ secrets.REGISTRY_USERNAME }}" && -n "${{ secrets.REGISTRY_PASSWORD }}" ]]; then
+            echo "Logging in to custom Docker registry"
+            echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login ${{ secrets.REGISTRY_NAME }} \
+              --username ${{ secrets.REGISTRY_USERNAME }} --password-stdin
+            REGISTRY_URL="${{ secrets.REGISTRY_URL }}"
+
+            else
+            echo "Using GitHub Container Registry (GHCR)"
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            REGISTRY_URL="ghcr.io/${{ github.repository_owner }}"
+            fi
+
+            echo "REGISTRY_URL=${REGISTRY_URL}" >> $GITHUB_ENV
+
+      - name: Push Docker image
+        run: |
+          IMAGE_NAME="player"
+          IMAGE_TAG="${{ github.ref_name }}_$(echo $GITHUB_SHA | cut -c1-7)"
+          docker tag ${IMAGE_NAME}:$IMAGE_TAG $REGISTRY_URL/${IMAGE_NAME}:$IMAGE_TAG
+          docker push $REGISTRY_URL/${IMAGE_NAME}:$IMAGE_TAG
