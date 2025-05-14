@@ -270,7 +270,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
                         }
                         this.setActiveContent(selectedContent, isSingleContent);
                         console.log(response.result.content)
-                        console.log("courseHierarchy", this.courseHierarchy)
                       }, error => {
                         console.error('Error fetching content:', error);
                         this.toasterService.error('Failed to load content details.');
