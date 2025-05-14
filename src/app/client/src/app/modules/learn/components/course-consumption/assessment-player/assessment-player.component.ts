@@ -16,6 +16,7 @@ import TreeModel from 'tree-model';
 import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 import { result } from 'lodash';
+import { HttpClient } from '@angular/common/http'; // Import HttpClient
 
 const ACCESSEVENT = 'renderer:question:submitscore';
 
@@ -46,7 +47,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     public generaliseLabelService: GeneraliseLabelService,
     private CourseProgressService: CourseProgressService,
     @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService,
-    @Inject('SB_NOTIFICATION_SERVICE') private notificationService: NotificationServiceImpl
+    @Inject('SB_NOTIFICATION_SERVICE') private notificationService: NotificationServiceImpl,
+    private http: HttpClient
   ) {
     this.playerOption = {
       showContentRating: true
@@ -95,6 +97,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   showCourseCompleteMessage = false;
   certificateDescription = {};
   parentCourse;
+  hasIntroductoryMaterial: boolean = false;
   prevModule;
   nextModule;
   totalContents = 0;
@@ -234,13 +237,47 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
               const model = new TreeModel();
               this.treeModel = model.parse(data.courseHierarchy);
               this.parentCourse = data.courseHierarchy;
+
+              // Introductory Material
+              this.hasIntroductoryMaterial = _.has(this.parentCourse, 'introductoryMaterial') && !!this.parentCourse.introductoryMaterial;
+              let collectionIdIsPresentInIntro = false;
+              if (this.hasIntroductoryMaterial && typeof this.parentCourse.introductoryMaterial === 'string') {
+                try {
+                  const introductoryMaterialArray = JSON.parse(this.parentCourse.introductoryMaterial);
+                  if (Array.isArray(introductoryMaterialArray)) {
+                    collectionIdIsPresentInIntro = introductoryMaterialArray.some(item => item.identifier === this.collectionId);
+                  }
+                } catch (e) {
+                  console.error("Error parsing introductoryMaterial JSON", e);
+                }
+              }
               const module = this.courseConsumptionService.setPreviousAndNextModule(this.parentCourse, this.collectionId);
               this.nextModule = _.get(module, 'next');
               this.prevModule = _.get(module, 'prev');
               this.getCourseCompletionStatus();
               this.layoutService.updateSelectedContentType.emit(data.courseHierarchy.contentType);
               if (!this.isParentCourse && data.courseHierarchy.children) {
-                this.courseHierarchy = data.courseHierarchy.children.find(item => item.identifier === this.collectionId);
+
+                if(this.hasIntroductoryMaterial && collectionIdIsPresentInIntro) {
+                  this.http.get(`/api/content/v1/read/${this.collectionId}`)
+                      .pipe(takeUntil(this.unsubscribe))
+                      .subscribe((response: { result: { content: any } }) => {
+                        this.courseHierarchy  = response.result.content
+
+                        if (!isSingleContent && _.get(this.courseHierarchy, 'mimeType') !==
+                            this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+                            isSingleContent = true;
+                        }
+                        this.setActiveContent(selectedContent, isSingleContent);
+                        console.log(response.result.content)
+                      }, error => {
+                        console.error('Error fetching content:', error);
+                        this.toasterService.error('Failed to load content details.');
+                      });
+                }
+                 else {
+                  this.courseHierarchy = data.courseHierarchy.children.find(item => item.identifier === this.collectionId);
+                }
               } else {
                 this.courseHierarchy = data.courseHierarchy;
               }

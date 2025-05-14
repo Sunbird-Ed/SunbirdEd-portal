@@ -9,8 +9,8 @@ import {
 import { IEndEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject, IStartEventInput, TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { combineLatest, merge, Subject } from 'rxjs';
-import { map, mergeMap, takeUntil } from 'rxjs/operators';
+import { combineLatest, merge, Subject, forkJoin, of} from 'rxjs';
+import { map, mergeMap, takeUntil, catchError } from 'rxjs/operators';
 import TreeModel from 'tree-model';
 import { PopupControlService } from '../../../../../service/popup-control.service';
 import { CourseBatchService, CourseConsumptionService, CourseProgressService } from './../../../services';
@@ -72,6 +72,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   shareLink: string;
   progress = 0;
   public isCertificateReadyForDownload = false;
+  public introductoryMaterialArray = [];
+  public detailedIntroductoryMaterialArray: any[] = [];
   isExpandedAll: boolean;
   isFirst = false;
   addToGroup = false;
@@ -272,6 +274,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         if (isForceSynced) {
           this.showForceSync = false;
         }
+    this.loadIntroductorymaterial();
   }
 
   /**
@@ -796,6 +799,108 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           this.toasterService.error('Failed to fetch certificate data from the API.');
         }
       );
+  }
+
+
+  loadIntroductorymaterial() {
+    if (!this.courseId) {
+      console.error('Course ID is not available.');
+      this.toasterService.error('Course ID is missing, cannot load introductory material.');
+      return;
+    }
+
+    const apiUrl = `api/content/v1/read/${this.courseId}`;
+
+    this.http.get<any>(apiUrl)
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(
+        (response) => {
+          this.introductoryMaterialArray = []; // Reset
+          this.detailedIntroductoryMaterialArray = []; // Reset
+
+          if (response && response.result && response.result.content && response.result.content.introductoryMaterial) {
+            try {
+              const introductoryMaterialString = response.result.content.introductoryMaterial;
+              const parsedMaterial = JSON.parse(introductoryMaterialString);
+
+              if (Array.isArray(parsedMaterial) && parsedMaterial.length > 0) {
+                this.introductoryMaterialArray = parsedMaterial.sort((a, b) => a.index - b.index);
+
+                const detailObservables = this.introductoryMaterialArray
+                  .map(material => {
+                    const doId = material.identifier; 
+                    if (!doId) {
+                      console.warn('Introductory material item is missing an identifier:', material);
+                      return of(null); // Return an observable of null if id is missing
+                    }
+
+                    const detailApiUrl = `/api/content/v1/read/${doId}`;
+                    return this.http.get<any>(detailApiUrl).pipe(
+                      map(detailResponse => {
+                        return detailResponse.result && detailResponse.result.content ? detailResponse.result.content : null;
+                      }),
+                      catchError(err => {
+                        console.error(`Failed to fetch details for DO_ID ${doId}:`, err);
+                        return of(null); // Return null for this item on error, so forkJoin doesn't fail completely
+                      })
+                    );
+                  })
+                  .filter(obs => obs !== null); // Filter out observables that were initially null (e.g. missing doId)
+
+                if (detailObservables.length > 0) {
+                  forkJoin(detailObservables)
+                    .pipe(takeUntil(this.unsubscribe))
+                    .subscribe(
+                      (detailedResults) => {
+                        this.detailedIntroductoryMaterialArray = detailedResults.filter(res => res !== null);
+                        // this.detailedIntroductoryMaterialArray.forEach(item => {
+                        //   item.appIcon = "assets/common-consumption/images/sprite.svg#doc";
+                        // });
+                        // console.log("detailedIntroductoryMaterialArray populated:", this.detailedIntroductoryMaterialArray);
+                        // console.log("courseHierarchy :", this.courseHierarchy);
+                      },
+                      (forkJoinError) => {
+                        // This error block is for errors in forkJoin itself, though individual errors are handled above.
+                        console.error('Error in forkJoin for detailed introductory materials:', forkJoinError);
+                      }
+                    );
+                } else if (this.introductoryMaterialArray.length > 0) {
+                  console.warn('No valid identifiers found in introductory materials to fetch details.');
+                }
+
+              } else {
+                // Parsed material is not an array or is empty
+                console.log('No introductory material items found after parsing, or the format is not an array.');
+              }
+            } catch (error) {
+              console.error('Error parsing introductory material JSON:', error);
+            }
+          } else {
+            // No introductoryMaterial field in the initial response or it's empty
+            console.log('No "introductoryMaterial" field in the API response, or it is empty.');
+          }
+        },
+        (error) => {
+          this.toasterService.error('Failed to fetch the initial list of introductory material.');
+          console.error('API error fetching initial introductory material list:', error);
+          this.introductoryMaterialArray = []; // Ensure reset on error
+          this.detailedIntroductoryMaterialArray = []; // Ensure reset on error
+        }
+      );
+  }
+
+  public handleIntroItemClick(event: any, introItem: any): void {
+    if (introItem && introItem.mimeType === 'application/pdf') {
+      const pdfUrl = introItem.previewUrl || introItem.artifactUrl;
+      if (pdfUrl) {
+        window.open(pdfUrl, '_blank');
+        this.logTelemetry('view-pdf-intro-item', introItem);
+      } else {
+        this.toasterService.error(this.resourceService.messages.emsg.m0004); // Or a more specific "PDF URL not found" message
+      }
+    } else {
+      this.navigateToContent(event, introItem, 'child-item');
+    }
   }
 
   markContentVisibility(
