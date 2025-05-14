@@ -215,10 +215,10 @@
           [courseProgressData]="courseProgressData" (allBatchDetails)="getAllBatchDetails($event)"></app-batch-details>
 
         <!-- Consent to share PII  -->
-        <div class="mb-16" *ngIf="showDataSettingSection && isConnected">
+        <!-- <div class="mb-16" *ngIf="showDataSettingSection && isConnected">
           <app-global-consent-pii [collection]="courseHierarchy" [isglobalConsent]="false" [type]="courseConsent"
             [consentConfig]="consentConfig"></app-global-consent-pii>
-        </div>
+        </div> -->
 
         <!-- Credits & License information -->
         <div class="course-player--metadata text-left">

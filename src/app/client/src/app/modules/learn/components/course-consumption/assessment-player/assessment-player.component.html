@@ -64,20 +64,20 @@
  <!-- Module Progress bar -->
  <div class="certified-course__progress" *ngIf="totalContents > 0">
      <!-- Previous / next module buttons -->
-     <div class="d-flex flex-ai-center flex-jc-space-between mb-8">
+     <!-- <div class="d-flex flex-ai-center flex-jc-space-between mb-8"> -->
       <!-- Previous module button -->
-      <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-left-icon-btn" aria-label="previous-module" *ngIf="prevModule"
+      <!-- <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-left-icon-btn" aria-label="previous-module" *ngIf="prevModule"
         tabindex="0" (click)="navigateToPlayerPage(prevModule); logTelemetry('previous-module', prevModule, true);">
         <i class="icon-svg icon-svg--xxs icon-back mr-4 rotate-90" role="img" aria-label="arrow-up"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>{{generaliseLabelService?.frmelmnts?.lbl?.prevModule | translate}}
-      </button>
+      </button> -->
       <!-- Previous Module button -->
       <!-- Next Module button -->
-      <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-right-icon-btn ml-auto" aria-label="next-module" *ngIf="nextModule"
+      <!-- <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-right-icon-btn ml-auto" aria-label="next-module" *ngIf="nextModule"
         tabindex="0" (click)="navigateToPlayerPage(nextModule); logTelemetry('next-module', nextModule, true)">
         {{generaliseLabelService?.frmelmnts?.lbl?.nextModule | translate}}<i class="icon-svg icon-svg--xxs icon-back ml-4 rotate90" role="img" aria-label="arrow-up"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>
-      </button>
+      </button> -->
       <!-- Next Module button -->
-    </div>
+    <!-- </div> -->
     <div *ngIf="!isUnitCompleted"> 
       <div class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.moduleProgress}}</div>         
       <div class="sb-color-primary fnormal font-weight-bold mt-4">{{consumedContents}}/{{totalContents}} {{resourceService?.frmelmnts?.lbl?.completed}}</div>
@@ -102,11 +102,13 @@
                     <!-- toc card for Non Self Assess content -->
                 
                     <sb-toc-card *ngIf="item?.contentType !== 'SelfAssess'" [content]="item"
-                      (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType" [contentStatus]="contentStatus">
+                    [ngClass]="{ 'disabled-toc-card': item?.showContent === false }"
+                      (tocCardClick)="(item.hasOwnProperty('showContent') ? item?.showContent : true) && navigateToInitPlayer($event, 'toc-card')" [type]="cardType" [contentStatus]="contentStatus">
                     </sb-toc-card>
                     <!-- toc card for Self Assess content with Label for Best Score -->
                     <sb-toc-card *ngIf="item?.contentType === 'SelfAssess'" [content]="item"
-                      (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType" [contentStatus]="contentStatus"
+                    [ngClass]="{ 'disabled-toc-card': item?.showContent === false }"
+                      (tocCardClick)="(item.hasOwnProperty('showContent') ? item?.showContent : true) && navigateToInitPlayer($event, 'toc-card')" [type]="cardType" [contentStatus]="contentStatus"
                       [maxAttempts]="item?.maxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
                     </sb-toc-card>
                   </div>
@@ -115,7 +117,8 @@
 
               <div *ngIf="item?.mimeType === 'application/vnd.sunbird.questionset'">
                 <div class="child-content-padding">
-                  <sb-toc-card [content]="item" (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType"
+                  <sb-toc-card [content]="item" (tocCardClick)="(item.hasOwnProperty('showContent') ? item?.showContent : true) && navigateToInitPlayer($event, 'toc-card')" [type]="cardType"
+                  [ngClass]="{ 'disabled-toc-card': item?.showContent === false }"
                     [contentStatus]="contentStatus" [maxAttempts]="item?.maxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
                   </sb-toc-card>
                 </div>

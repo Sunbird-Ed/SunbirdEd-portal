@@ -127,7 +127,7 @@
 <div *ngIf="openEditModal?.show">
   <app-edit-submission [editData]="openEditModal.data" (onAction)="closeEditModal($event)"> </app-edit-submission>
 </div>
-<app-global-consent-pii *ngIf="openConsentPopUp" [type]="'program-consent'" [isglobalConsent]="false" [consentConfig]="consentConfig" [collection]="{'programId':programId,'rootOrganisations':rootOrganisations}" (consentShare)="checkConsent($event)"></app-global-consent-pii>
+<!-- <app-global-consent-pii *ngIf="openConsentPopUp" [type]="'program-consent'" [isglobalConsent]="false" [consentConfig]="consentConfig" [collection]="{'programId':programId,'rootOrganisations':rootOrganisations}" (consentShare)="checkConsent($event)"></app-global-consent-pii> -->
 <app-modal-wrapper *ngIf="joinProgramPopUp" #modal [config]="{disableClose: true, size: 'large'}" (dismiss)="modal.deny()">
   <ng-template  sbModalContent>
     <app-loader *ngIf="joinProgramLoader" [data]="{loaderMessage:resourceService?.frmelmnts?.lbl?.joinProgramLoader}"></app-loader>
