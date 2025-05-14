@@ -152,7 +152,8 @@ export class UserService {
       this._cloudStorageUrls = document.getElementById('cloudStorageUrls') ? (<HTMLInputElement>document.getElementById('cloudStorageUrls')).value.split(',') : [];
     } catch (error) {
     }
-    this._slug = baseHref && baseHref.split('/')[1] ? baseHref.split('/')[1] : '';
+    // this._slug = baseHref && baseHref.split('/')[1] ? baseHref.split('/')[1] : '';
+    this._slug = 'sunbird';
   }
   get slug() {
     return this._slug;
@@ -215,12 +216,8 @@ export class UserService {
     const option = {
       url: this.config.urlConFig.URLS.USER.CREATE_PREFIX,
       data: userData,
-      header: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${environment.apiKey}`,
-      }
     };
-    return this.publicDataService.postWithHeaders(option); 
+    return this.learnerService.postWithHeaders(option);
   }
 
 
