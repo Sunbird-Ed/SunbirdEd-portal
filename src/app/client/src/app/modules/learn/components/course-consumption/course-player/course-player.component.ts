@@ -960,7 +960,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     let matchFound = false;
   
     this.userService.expiryDate(payload).subscribe(async res => {
-      console.log("Api called ", res, res.result.content[0].expiry_date);
       var doIdLink = window.location.href.split('/');
       var currentDoId;
   
@@ -971,7 +970,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       });
   
       res.result.content.filter(item => {
-        console.log("currentDoId", item, currentDoId);
         if (item.children && item.children.includes(currentDoId)) {
           this.expiryDate = item.expiry_date;
           matchFound = true;
@@ -981,8 +979,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       if (!matchFound) {
         this.expiryDate = 'NA';
       }
-  
-      console.log("Final expiryDate", this.expiryDate);
+
     }, err => {
       console.log("Error : ", err);
       this.expiryDate = 'NA';
