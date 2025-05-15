@@ -3,8 +3,12 @@ import { NgModule } from '@angular/core';
 import { ErrorPageComponent } from './modules/core/components/error-page/error-page.component';
 import { RouterModule, Routes } from '@angular/router';
 import { MlGuard } from './modules/observation/guards';
+import { AddUserComponent } from './modules/dashboard';
 
 const appRoutes: Routes = [
+  {
+    path: 'dashboard/add-user',  component: AddUserComponent  
+  },
   {
     path: 'learn/course', loadChildren: () => import('./modules/learn/course-consumption.module').then(m => m.CourseConsumptionModule)
   },

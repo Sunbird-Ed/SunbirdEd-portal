@@ -5,6 +5,9 @@ import * as _ from 'lodash-es';
 import dayjs from 'dayjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UserService, TncService } from '@sunbird/core';
+
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import {
   ToasterService,
   ResourceService,
@@ -13,8 +16,8 @@ import {
   LayoutService
 } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
-import {Subject} from 'rxjs';
-import {first, takeUntil} from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { first, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-usage-reports',
@@ -22,6 +25,7 @@ import {first, takeUntil} from 'rxjs/operators';
   styleUrls: ['./usage-reports.component.scss']
 })
 export class UsageReportsComponent implements OnInit, AfterViewInit {
+
   reportMetaData: any;
   chartData: Array<object> = [];
   tables: any;
@@ -46,11 +50,12 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
   showTncPopup = false;
   userProfile;
   @ViewChild(TelemetryInteractDirective) telemetryInteractDirective;
+  isSubmitting: boolean;
   constructor(private usageService: UsageService, private sanitizer: DomSanitizer,
     public userService: UserService, private toasterService: ToasterService,
     public resourceService: ResourceService, activatedRoute: ActivatedRoute, private router: Router,
     public navigationhelperService: NavigationHelperService, public layoutService: LayoutService,
-    courseProgressService: CourseProgressService, public tncService: TncService
+    courseProgressService: CourseProgressService, public tncService: TncService, private fb: FormBuilder,
   ) {
     this.activatedRoute = activatedRoute;
     this.courseProgressService = courseProgressService;
@@ -254,6 +259,7 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
     downloadURL && this.setDownloadUrl(downloadURL);
   }
 
+
   getReportViewerTncPolicy() {
     this.tncService.getReportViewerTnc().subscribe((data) => {
       const reportViewerTncData = JSON.parse(_.get(data, 'result.response.value'));
@@ -262,17 +268,17 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
         this.reportViewerTncUrl = _.get(_.get(reportViewerTncData, _.get(reportViewerTncData, 'latestVersion')), 'url');
         this.showReportViewerTncForFirstUser();
       }
-  });
-}
+    });
+  }
 
-goBack() {
-  this.navigationhelperService.goBack();
-}
+  goBack() {
+    this.navigationhelperService.goBack();
+  }
 
   showReportViewerTncForFirstUser() {
-     const reportViewerTncObj = _.get(this.userProfile, 'allTncAccepted.reportViewerTnc');
-     if (!reportViewerTncObj) {
-     this.showTncPopup = true;
-     }
+    const reportViewerTncObj = _.get(this.userProfile, 'allTncAccepted.reportViewerTnc');
+    if (!reportViewerTncObj) {
+      this.showTncPopup = true;
+    }
   }
 }
