@@ -194,13 +194,13 @@
               {{enrolledBatchInfo?.endDate | dateFormat}}</span>
           </div>
         </div>
-        <div class="batch-deatils__button text-right">
+        <!-- <div class="batch-deatils__button text-right">
           <button
             [ngClass]="{'sb-btn-disabled': isUnenrollbtnDisabled,'sb-btn-outline-primary': !isUnenrollbtnDisabled}"
             class="sb-btn sb-btn-outline-primary sb-btn-normal" tabindex="0"
             (click)="unenrollBatch(enrolledBatchInfo); logTelemetry('unenroll-batch', courseHierarchy);"
             [disabled]="isUnenrollbtnDisabled">{{generaliseLabelService?.frmelmnts?.btn?.unenroll}}</button>
-        </div>
+        </div> -->
         <div class="batch-details__created mt-8 fsmall">
           <span class="right floated" *ngIf="enrolledBatchInfo?.participantCount>=0">
             {{enrolledBatchInfo?.participantCount}} {{resourceService.frmelmnts.lbl.learners}}
