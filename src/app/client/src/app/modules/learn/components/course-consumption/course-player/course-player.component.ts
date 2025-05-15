@@ -770,8 +770,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           const certificateResponse = response;
    
           if (certificateResponse && certificateResponse.length > 0) {
-            const currentCourseId = this.courseId; // Get current courseId from the component
+            const currentCourseId = this.courseId;
             const matchingCertificate = certificateResponse.find(cert => _.get(cert, 'training.id') === currentCourseId);
+            if (!matchingCertificate) {
+              this.isCertificateReadyForDownload = false;
+              return;
+            }
 
             const courseName = _.get(matchingCertificate, 'name');
             this.CsCourseService.getSignedCourseCertificate(_.get(matchingCertificate, 'osid'))

@@ -54,7 +54,7 @@
                     *ngFor="let chart of chartData; let i = index; let l = last;">
                     <app-data-chart [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
                       [chartInfo]="chart"></app-data-chart>
-                    <!-- <hr *ngIf="!l" /> -->
+                    
                   </div>
                   <div class="ui warning message" *ngIf="!chartData.length">
                     {{resourceService?.frmelmnts?.lbl?.graphNotAvailable}}
@@ -192,3 +192,4 @@
     </div>
   </div>
 </ng-template>
+

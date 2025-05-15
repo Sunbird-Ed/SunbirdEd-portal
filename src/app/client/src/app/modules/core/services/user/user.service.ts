@@ -15,7 +15,8 @@ import { skipWhile, tap } from 'rxjs/operators';
 import { APP_BASE_HREF } from '@angular/common';
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { DataService } from './../data/data.service';
-import { environment } from '@sunbird/environment';
+import { environment } from '../../../../../environments/environment';
+
 
 /**
  * Service to fetch user details from server
@@ -210,6 +211,7 @@ export class UserService {
     );
   }
 
+
   public expiryDate(userData: any): Observable<any> {
     const option = {
       url: this.config.urlConFig.URLS.CONTENT.SEARCH,
@@ -217,6 +219,15 @@ export class UserService {
     };
     return this.publicDataService.postWithHeaders(option);
   }
+
+  public createUser(userData: any): Observable<any> {
+    const option = {
+      url: this.config.urlConFig.URLS.USER.CREATE_PREFIX,
+      data: userData,
+    };
+    return this.learnerService.postWithHeaders(option);
+  }
+
   /**
    * get method to fetch appId.
    */
