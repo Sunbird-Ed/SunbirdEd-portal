@@ -100,6 +100,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   isConnected = false;
   dropdownContent = true;
   showForceSync = true;
+  expiryDate = null;
   constructor(
     public activatedRoute: ActivatedRoute,
     private configService: ConfigService,
@@ -141,7 +142,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribe)).subscribe(isConnected => {
       this.isConnected = isConnected;
     });
-
+    this.getUserProfileDetail();
     // Set consetnt pop up configuration here
     this.consentConfig = {
       tncLink: _.get(this.resourceService, 'frmelmnts.lbl.tncLabelLink'),
@@ -943,5 +944,66 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       });
     });
   }
+
+  async getUserProfileDetail() {
+    const profileDetailsRaw = localStorage.getItem('userProfile');
+    let trainingGroupCode = null;
+  
+    try {
+      if (profileDetailsRaw) {
+        const profile = JSON.parse(profileDetailsRaw);
+        const profileConfigStr = profile?.framework?.profileConfig;
+  
+        if (profileConfigStr) {
+          const profileConfig = JSON.parse(profileConfigStr);
+          trainingGroupCode = profileConfig.trainingGroup;
+        }
+      }
+    } catch (error) {
+      console.error('Error parsing userProfile:', error);
+    }
+  
+    if (!trainingGroupCode) {
+      this.expiryDate = 'NA';
+      return;
+    }
+  
+    const payload = {
+      request: {
+        filters: {
+          code: [trainingGroupCode]
+        }
+      }
+    };
+  
+    this.expiryDate = 'NA';
+    let matchFound = false;
+  
+    this.userService.expiryDate(payload).subscribe(res => {
+      const doIdLink = window.location.href.split('/');
+      let currentDoId = '';
+  
+      doIdLink.forEach(item => {
+        if (item.includes('do')) {
+          currentDoId = item;
+        }
+      });
+  
+      res.result.content.forEach(item => {
+        if (item.children && item.children.includes(currentDoId)) {
+          this.expiryDate = item.expiry_date;
+          matchFound = true;
+        }
+      });
+  
+      if (!matchFound) {
+        this.expiryDate = 'NA';
+      }
+    }, err => {
+      console.error('Error:', err);
+      this.expiryDate = 'NA';
+    });
+  }
+  
 
 }
