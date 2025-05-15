@@ -355,7 +355,13 @@ export class SbFormLocationSelectionDelegate {
           config.default = (_.get(this.userService.userProfile, 'email') || '') || null;
         }
       }
+
+      if (config.code === 'trainingGroup') {
+        config.templateOptions.disabled = true;
+        config.editable = false;
+      }
       const defaultValues = JSON.parse(this.userService.userProfile?.framework?.profileConfig?.[0] || "{}")
+
       if (defaultValues.hasOwnProperty(config.code)) {
         config.templateOptions.hidden = false;
 
