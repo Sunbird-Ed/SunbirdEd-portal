@@ -16,9 +16,8 @@ import {
   LayoutService
 } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
-import {Subject} from 'rxjs';
-import {first, takeUntil} from 'rxjs/operators';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Subject } from 'rxjs';
+import { first, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-usage-reports',
@@ -57,7 +56,7 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
     public resourceService: ResourceService, activatedRoute: ActivatedRoute, private router: Router,
     public navigationhelperService: NavigationHelperService, public layoutService: LayoutService,
     courseProgressService: CourseProgressService, public tncService: TncService, private fb: FormBuilder,
-    private http: HttpClient ,) {
+  ) {
     this.activatedRoute = activatedRoute;
     this.courseProgressService = courseProgressService;
   }
@@ -260,7 +259,7 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
     downloadURL && this.setDownloadUrl(downloadURL);
   }
 
-  
+
   getReportViewerTncPolicy() {
     this.tncService.getReportViewerTnc().subscribe((data) => {
       const reportViewerTncData = JSON.parse(_.get(data, 'result.response.value'));
@@ -269,17 +268,17 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
         this.reportViewerTncUrl = _.get(_.get(reportViewerTncData, _.get(reportViewerTncData, 'latestVersion')), 'url');
         this.showReportViewerTncForFirstUser();
       }
-  });
-}
+    });
+  }
 
-goBack() {
-  this.navigationhelperService.goBack();
-}
+  goBack() {
+    this.navigationhelperService.goBack();
+  }
 
   showReportViewerTncForFirstUser() {
-     const reportViewerTncObj = _.get(this.userProfile, 'allTncAccepted.reportViewerTnc');
-     if (!reportViewerTncObj) {
-     this.showTncPopup = true;
-     }
+    const reportViewerTncObj = _.get(this.userProfile, 'allTncAccepted.reportViewerTnc');
+    if (!reportViewerTncObj) {
+      this.showTncPopup = true;
+    }
   }
 }

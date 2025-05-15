@@ -8,7 +8,6 @@ import { UserService, TncService } from '@sunbird/core';
 import { first, takeUntil } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { PublicDataService } from '../../../../../../../../../src/app/client/src/app/modules/core/services/public-data/public-data.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormService } from '../../../../modules/core/services/form/form.service';
 
@@ -25,7 +24,7 @@ export class AddUserComponent implements OnInit {
   public unsubscribe$ = new Subject<void>();
 
   constructor(private formService: FormService, private fb: FormBuilder, public userService: UserService,
-    private snackBar: MatSnackBar,public publicDataService: PublicDataService,public configService: ConfigService,
+    private snackBar: MatSnackBar,public configService: ConfigService,
     public resourceService: ResourceService,public layoutService: LayoutService,
   ) { }
 
