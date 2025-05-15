@@ -954,11 +954,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           "code": [JSON.parse(JSON.parse(profileDetails).framework.profileConfig).trainingGroup]
         }
       }
-    };
-  
+    }; 
     this.expiryDate = 'NA'; 
     let matchFound = false;
-  
+ 
     this.userService.expiryDate(payload).subscribe(async res => {
       var doIdLink = window.location.href.split('/');
       var currentDoId;
