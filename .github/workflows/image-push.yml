@@ -32,18 +32,19 @@ jobs:
             echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" | base64 --decode > $HOME/gcloud-key.json
             gcloud auth activate-service-account --key-file=$HOME/gcloud-key.json
             gcloud auth configure-docker ${{ secrets.REGISTRY_NAME }}
-            REGISTRY_URL="${{ secrets.REGISTRY_URL }}"
+            REGISTRY_URL=$(echo "${{ secrets.REGISTRY_URL }}" | tr '[:upper:]' '[:lower:]')
 
             elif [[ -n "${{ secrets.REGISTRY_USERNAME }}" && -n "${{ secrets.REGISTRY_PASSWORD }}" ]]; then
             echo "Logging in to custom Docker registry"
             echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login ${{ secrets.REGISTRY_NAME }} \
               --username ${{ secrets.REGISTRY_USERNAME }} --password-stdin
-            REGISTRY_URL="${{ secrets.REGISTRY_URL }}"
+            REGISTRY_URL=$(echo "${{ secrets.REGISTRY_URL }}" | tr '[:upper:]' '[:lower:]')
 
             else
             echo "Using GitHub Container Registry (GHCR)"
+            REPO_NAME_LOWERCASE=$(echo "${GITHUB_REPOSITORY}" | tr '[:upper:]' '[:lower:]')
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            REGISTRY_URL="ghcr.io/${{ github.repository_owner }}"
+            REGISTRY_URL="ghcr.io/$REPO_NAME_LOWERCASE"
             fi
 
             echo "REGISTRY_URL=${REGISTRY_URL}" >> $GITHUB_ENV
@@ -51,6 +52,6 @@ jobs:
       - name: Push Docker image
         run: |
           IMAGE_NAME="player"
-          IMAGE_TAG="${{ github.ref_name }}_$(echo $GITHUB_SHA | cut -c1-7)"
+          IMAGE_TAG=$(echo "${{ github.ref_name }}_$(echo $GITHUB_SHA | cut -c1-7)" | tr '[:upper:]' '[:lower:]')
           docker tag ${IMAGE_NAME}:$IMAGE_TAG $REGISTRY_URL/${IMAGE_NAME}:$IMAGE_TAG
           docker push $REGISTRY_URL/${IMAGE_NAME}:$IMAGE_TAG
