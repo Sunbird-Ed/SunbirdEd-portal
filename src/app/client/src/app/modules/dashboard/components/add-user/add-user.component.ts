@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -16,7 +16,7 @@ import { FormService } from '../../../../modules/core/services/form/form.service
   templateUrl: './add-user.component.html',
   styleUrls: ['./add-user.component.scss']
 })
-export class AddUserComponent implements OnInit {
+export class AddUserComponent implements OnInit, OnDestroy {
   provinceList: { label: string; value: string }[] = [];
   isSubmitting: boolean;
   instance: string;
@@ -129,5 +129,10 @@ export class AddUserComponent implements OnInit {
         }
       });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();     
+    this.unsubscribe$.complete(); 
   }
 }
