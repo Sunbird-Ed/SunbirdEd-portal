@@ -20,9 +20,14 @@ jobs:
 
       - name: Run build script
         run: |
+          IMAGE_NAME="player"
+          IMAGE_TAG=$(echo "${{ github.ref_name }}_$(echo $GITHUB_SHA | cut -c1-7)" | tr '[:upper:]' '[:lower:]')
           chmod +x build.sh
-          ./build.sh ${{ github.ref_name }}_$(echo $GITHUB_SHA | cut -c1-7) true false
+          ./build.sh ${IMAGE_TAG} true false
           echo "Build completed successfully."
+
+          echo "IMAGE_NAME=${IMAGE_NAME}" >> $GITHUB_ENV
+          echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_ENV
 
       - name: Determine registry and login
         run: |
@@ -51,7 +56,5 @@ jobs:
 
       - name: Push Docker image
         run: |
-          IMAGE_NAME="player"
-          IMAGE_TAG=$(echo "${{ github.ref_name }}_$(echo $GITHUB_SHA | cut -c1-7)" | tr '[:upper:]' '[:lower:]')
           docker tag ${IMAGE_NAME}:$IMAGE_TAG $REGISTRY_URL/${IMAGE_NAME}:$IMAGE_TAG
           docker push $REGISTRY_URL/${IMAGE_NAME}:$IMAGE_TAG
