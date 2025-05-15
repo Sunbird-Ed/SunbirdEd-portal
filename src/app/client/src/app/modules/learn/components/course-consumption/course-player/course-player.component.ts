@@ -946,29 +946,50 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   async getUserProfileDetail() {
-    var profileDetails: any = localStorage.getItem('userProfile');
+    const profileDetailsRaw = localStorage.getItem('userProfile');
+    let trainingGroupCode = null;
   
-    const payload = {
-      "request": {
-        "filters": {
-          "code": [JSON.parse(JSON.parse(profileDetails).framework.profileConfig).trainingGroup]
+    try {
+      if (profileDetailsRaw) {
+        const profile = JSON.parse(profileDetailsRaw);
+        const profileConfigStr = profile?.framework?.profileConfig;
+  
+        if (profileConfigStr) {
+          const profileConfig = JSON.parse(profileConfigStr);
+          trainingGroupCode = profileConfig.trainingGroup;
         }
       }
-    }; 
-    this.expiryDate = 'NA'; 
-    let matchFound = false;
- 
-    this.userService.expiryDate(payload).subscribe(async res => {
-      var doIdLink = window.location.href.split('/');
-      var currentDoId;
+    } catch (error) {
+      console.error('Error parsing userProfile:', error);
+    }
   
-      doIdLink.filter(item => {
+    if (!trainingGroupCode) {
+      this.expiryDate = 'NA';
+      return;
+    }
+  
+    const payload = {
+      request: {
+        filters: {
+          code: [trainingGroupCode]
+        }
+      }
+    };
+  
+    this.expiryDate = 'NA';
+    let matchFound = false;
+  
+    this.userService.expiryDate(payload).subscribe(res => {
+      const doIdLink = window.location.href.split('/');
+      let currentDoId = '';
+  
+      doIdLink.forEach(item => {
         if (item.includes('do')) {
           currentDoId = item;
         }
       });
   
-      res.result.content.filter(item => {
+      res.result.content.forEach(item => {
         if (item.children && item.children.includes(currentDoId)) {
           this.expiryDate = item.expiry_date;
           matchFound = true;
@@ -978,11 +999,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       if (!matchFound) {
         this.expiryDate = 'NA';
       }
-
     }, err => {
-      console.log("Error : ", err);
+      console.error('Error:', err);
       this.expiryDate = 'NA';
     });
   }
+  
 
 }
