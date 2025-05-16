@@ -958,13 +958,14 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           const profileConfig = JSON.parse(profileConfigStr);
           const groupCodes = profileConfig.trainingGroup;
   
+          // Normalize to array
           trainingGroupCodes = Array.isArray(groupCodes) ? groupCodes : [groupCodes];
         }
       }
     } catch (error) {
       console.error('Error parsing userProfile:', error);
     }
-
+  
     if (!trainingGroupCodes || trainingGroupCodes.length === 0) {
       this.expiryDate = 'NA';
       return;
@@ -1012,5 +1013,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }
     );
   }
+  
   
 }
