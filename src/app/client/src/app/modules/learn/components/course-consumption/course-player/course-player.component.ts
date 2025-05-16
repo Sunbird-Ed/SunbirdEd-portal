@@ -72,6 +72,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   shareLink: string;
   progress = 0;
   public isCertificateReadyForDownload = false;
+  public matchingCertificate: any = null;
   public introductoryMaterialArray = [];
   public detailedIntroductoryMaterialArray: any[] = [];
   isExpandedAll: boolean;
@@ -100,6 +101,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   isConnected = false;
   dropdownContent = true;
   showForceSync = true;
+  expiryDate = null;
   constructor(
     public activatedRoute: ActivatedRoute,
     private configService: ConfigService,
@@ -141,7 +143,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribe)).subscribe(isConnected => {
       this.isConnected = isConnected;
     });
-
+    this.getUserProfileDetail();
     // Set consetnt pop up configuration here
     this.consentConfig = {
       tncLink: _.get(this.resourceService, 'frmelmnts.lbl.tncLabelLink'),
@@ -275,6 +277,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           this.showForceSync = false;
         }
     this.loadIntroductorymaterial();
+    this.fetchAndStoreMatchingCertificate();
   }
 
   /**
@@ -743,68 +746,29 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   public downloadCertificate(): void {
-    const userId = _.get(this.userService, 'userid');
-    if (!userId) {
-      this.toasterService.error('User ID not found.');
-      console.error('User ID is missing, cannot make API call.');
+    if (!this.matchingCertificate) {
+      this.isCertificateReadyForDownload = false;
+      this.toasterService.info('No certificates found for your account.');
       return;
     }
-   
-    const requestBody = {
-      filters: {
-        recipient: {
-          id: {
-            eq: userId
-          }
-        }
+
+    const courseName = _.get(this.matchingCertificate, 'name');
+
+    this.CsCourseService.getSignedCourseCertificate(_.get(this.matchingCertificate, 'osid'))
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe((resp) => {
+      if (_.get(resp, 'printUri')) {
+        this.toasterService.success('Certificate download initiated.');
+        this.certDownloadAsPdf.download(resp.printUri, null, courseName);
+      } else {
+        this.toasterService.error(this.resourceService.messages.emsg.m0076);
       }
-    };
-   
-    const apiUrl = 'learner/rc/certificate/v1/search';
-   
-    this.http.post<any[]>(apiUrl, requestBody, { withCredentials: true }) // Specify the expected response type as an array
-      .pipe(takeUntil(this.unsubscribe))
-      .subscribe(
-        (response) => {
-          const certificateResponse = response;
-   
-          if (certificateResponse && certificateResponse.length > 0) {
-            const currentCourseId = this.courseId;
-            const matchingCertificate = certificateResponse.find(cert => _.get(cert, 'training.id') === currentCourseId);
-            if (!matchingCertificate) {
-              this.isCertificateReadyForDownload = false;
-              return;
-            }
+    }, error => {
+      console.error('Error downloading certificate:', error);
+      this.toasterService.error(this.resourceService.messages.emsg.m0076);
+    });
 
-            const courseName = _.get(matchingCertificate, 'name');
-            this.CsCourseService.getSignedCourseCertificate(_.get(matchingCertificate, 'osid'))
-            .pipe(takeUntil(this.unsubscribe))
-            .subscribe((resp) => {
-              if (_.get(resp, 'printUri')) {
-                this.toasterService.success('Certificate download initiated.');
-                this.certDownloadAsPdf.download(resp.printUri, null, courseName);
-              }
-              // } else if (_.get(course, 'certificates.length')) {
-              //   this.downloadPdfCertificate(course.certificates[0]);
-              // } else {
-              //   this.toasterService.error(this.resourceService.messages.emsg.m0076);
-              // }
-            }, error => {
-              console.error('Error downloading certificate:', error);
-              this.toasterService.error(this.resourceService.messages.emsg.m0076);
-            });
-          } else {
-            console.log('No certificates found in the API response.');
-            this.toasterService.info('No certificates found for your account.');
-          }
-        },
-        (error) => {
-          console.error('Certificate API Error:', error);
-          this.toasterService.error('Failed to fetch certificate data from the API.');
-        }
-      );
   }
-
 
   loadIntroductorymaterial() {
     if (!this.courseId) {
@@ -941,6 +905,101 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         }
         child.showContent = showContent;
       });
+    });
+  }
+
+  public fetchAndStoreMatchingCertificate(): void {
+  const userId = _.get(this.userService, 'userid');
+  if (!userId) {
+    this.matchingCertificate = null;
+    this.isCertificateReadyForDownload = false; // Disable if userId not found
+    return;
+  }
+  const requestBody = {
+    filters: {
+      recipient: {
+        id: { eq: userId }
+      }
+    }
+  };
+  const apiUrl = 'learner/rc/certificate/v1/search';
+  this.http.post<any[]>(apiUrl, requestBody, { withCredentials: true })
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe(
+      (response) => {
+        if (response && response.length > 0) {
+          this.matchingCertificate = response.find(cert => _.get(cert, 'training.id') === this.courseId) || null;
+          this.isCertificateReadyForDownload = !!this.matchingCertificate; // Enable only if found
+        } else {
+          this.matchingCertificate = null;
+          this.isCertificateReadyForDownload = false; // Disable if none found
+        }
+      },
+      (error) => {
+        this.matchingCertificate = null;
+        this.isCertificateReadyForDownload = false; // Disable on error
+        console.error('Certificate API Error:', error);
+      }
+    );
+}
+
+  async getUserProfileDetail() {
+    const profileDetailsRaw = localStorage.getItem('userProfile');
+    let trainingGroupCode = null;
+  
+    try {
+      if (profileDetailsRaw) {
+        const profile = JSON.parse(profileDetailsRaw);
+        const profileConfigStr = profile?.framework?.profileConfig;
+  
+        if (profileConfigStr) {
+          const profileConfig = JSON.parse(profileConfigStr);
+          trainingGroupCode = profileConfig.trainingGroup;
+        }
+      }
+    } catch (error) {
+      console.error('Error parsing userProfile:', error);
+    }
+  
+    if (!trainingGroupCode) {
+      this.expiryDate = 'NA';
+      return;
+    }
+  
+    const payload = {
+      request: {
+        filters: {
+          code: [trainingGroupCode]
+        }
+      }
+    };
+  
+    this.expiryDate = 'NA';
+    let matchFound = false;
+  
+    this.userService.expiryDate(payload).subscribe(res => {
+      const doIdLink = window.location.href.split('/');
+      let currentDoId = '';
+  
+      doIdLink.forEach(item => {
+        if (item.includes('do')) {
+          currentDoId = item;
+        }
+      });
+  
+      res.result.content.forEach(item => {
+        if (item.children && item.children.includes(currentDoId)) {
+          this.expiryDate = item.expiry_date;
+          matchFound = true;
+        }
+      });
+  
+      if (!matchFound) {
+        this.expiryDate = 'NA';
+      }
+    }, err => {
+      console.error('Error:', err);
+      this.expiryDate = 'NA';
     });
   }
 

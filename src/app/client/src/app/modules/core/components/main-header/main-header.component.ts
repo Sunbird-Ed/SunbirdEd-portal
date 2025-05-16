@@ -178,7 +178,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef,
     public navigationHelperService: NavigationHelperService, private deviceRegisterService: DeviceRegisterService,
     private connectionService: ConnectionService, public electronService: ElectronService, private observationUtilService: ObservationUtilService) {
-    try {
+      try {
       this.exploreButtonVisibility = document.getElementById('exploreButtonVisibility') ? (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value : 'true';
       this.reportsListVersion = document.getElementById('reportsListVersion') ? (<HTMLInputElement>document.getElementById('reportsListVersion')).value as reportsListVersionType : 'v1';
     } catch (error) {
@@ -433,6 +433,9 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
             }
           });
         }
+        if ( currentRoute.snapshot.url.map(segment => segment.path).join('/') === 'dashboard/add-user'){
+          this.showMainMenuBar = false;
+        }
       }
       if (_.includes(urlAfterRedirects.url, '/explore-course') || _.includes(urlAfterRedirects.url, '/explore')) {
         this.showExploreComponent = true;
@@ -623,6 +626,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.programDashboardRole = this.config.rolesConfig.headerDropdownRoles.programDashboardRole;
     this.isDesktopApp = this.utilService.isDesktopApp;
+    
     this.connectionService.monitor()
       .pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
         this.isConnected = isConnected;

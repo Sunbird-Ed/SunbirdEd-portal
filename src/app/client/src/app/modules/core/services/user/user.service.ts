@@ -15,7 +15,8 @@ import { skipWhile, tap } from 'rxjs/operators';
 import { APP_BASE_HREF } from '@angular/common';
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { DataService } from './../data/data.service';
-import { environment } from '@sunbird/environment';
+import { environment } from '../../../../../environments/environment';
+
 
 /**
  * Service to fetch user details from server
@@ -151,7 +152,7 @@ export class UserService {
       this._cloudStorageUrls = document.getElementById('cloudStorageUrls') ? (<HTMLInputElement>document.getElementById('cloudStorageUrls')).value.split(',') : [];
     } catch (error) {
     }
-    this._slug = baseHref && baseHref.split('/')[1] ? baseHref.split('/')[1] : '';
+    this._slug = baseHref && baseHref.split('/')[1] ? baseHref.split('/')[1] : '';   
   }
   get slug() {
     return this._slug;
@@ -209,6 +210,24 @@ export class UserService {
       }
     );
   }
+
+
+  public expiryDate(userData: any): Observable<any> {
+    const option = {
+      url: this.config.urlConFig.URLS.CONTENT.SEARCH,
+      data: userData,
+    };
+    return this.publicDataService.postWithHeaders(option);
+  }
+
+  public createUser(userData: any): Observable<any> {
+    const option = {
+      url: this.config.urlConFig.URLS.USER.CREATE_PREFIX,
+      data: userData,
+    };
+    return this.learnerService.postWithHeaders(option);
+  }
+
   /**
    * get method to fetch appId.
    */

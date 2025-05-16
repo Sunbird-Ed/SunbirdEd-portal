@@ -3,6 +3,7 @@ export interface PlayerConfig {
         sideMenu: {
             showDownload: boolean
             showExit: boolean
+            showShare: boolean
         }
     };
     context: any;

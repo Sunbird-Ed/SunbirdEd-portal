@@ -432,7 +432,7 @@ const API_LIST = {
     //User related APIs
     '/learner/user/v1/create': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ORG_ADMIN]
     },
     '/learner/user/v1/delete': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1927,6 +1927,7 @@ const API_LIST = {
     }
   },
   URL_PATTERN: [
+    '/learner/user/v1/create',
     '/learner/user/v1/feed/delete',
     '/content/content/v1/read/:do_id',
     '/content/content/v1/copy/:do_id',

@@ -35,6 +35,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { AddUserComponent } from './components/add-user/add-user.component';
 
 
 
@@ -62,7 +63,7 @@ import { MAT_DIALOG_DATA} from '@angular/material/dialog';
   ],
   declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent,
     DataTableComponent, DataChartComponent, ListAllReportsComponent, ReportSummaryComponent, ReportComponent, AddSummaryModalComponent,
-    CourseDashboardComponent, ReIssueCertificateComponent, DashboardSidebarComponent, DatasetComponent, MapComponent, FilterComponent, SbTableComponent],
+    CourseDashboardComponent, ReIssueCertificateComponent, DashboardSidebarComponent, DatasetComponent, MapComponent, FilterComponent, SbTableComponent, AddUserComponent],
   exports: [CourseProgressComponent, DataTableComponent,FilterComponent],
   providers: [
     RendererService,
