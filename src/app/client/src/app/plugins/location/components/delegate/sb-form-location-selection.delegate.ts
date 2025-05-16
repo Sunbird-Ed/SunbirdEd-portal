@@ -360,6 +360,7 @@ export class SbFormLocationSelectionDelegate {
         config.templateOptions.disabled = true;
         config.editable = false;
       }
+      console.log('config', config);
       const defaultValues = JSON.parse(this.userService.userProfile?.framework?.profileConfig?.[0] || "{}")
 
       if (defaultValues.hasOwnProperty(config.code)) {
