@@ -947,7 +947,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   async getUserProfileDetail() {
     const profileDetailsRaw = localStorage.getItem('userProfile');
-    let trainingGroupCode = null;
+    let trainingGroupCodes: string[] = [];
   
     try {
       if (profileDetailsRaw) {
@@ -956,14 +956,16 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   
         if (profileConfigStr) {
           const profileConfig = JSON.parse(profileConfigStr);
-          trainingGroupCode = profileConfig.trainingGroup;
+          const groupCodes = profileConfig.trainingGroup;
+  
+          trainingGroupCodes = Array.isArray(groupCodes) ? groupCodes : [groupCodes];
         }
       }
     } catch (error) {
       console.error('Error parsing userProfile:', error);
     }
   
-    if (!trainingGroupCode) {
+    if (!trainingGroupCodes || trainingGroupCodes.length === 0) {
       this.expiryDate = 'NA';
       return;
     }
@@ -971,7 +973,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     const payload = {
       request: {
         filters: {
-          code: [trainingGroupCode]
+          code: trainingGroupCodes
         }
       }
     };
@@ -979,31 +981,37 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.expiryDate = 'NA';
     let matchFound = false;
   
-    this.userService.expiryDate(payload).subscribe(res => {
-      const doIdLink = window.location.href.split('/');
-      let currentDoId = '';
+    this.userService.expiryDate(payload).subscribe(
+      res => {
+        const doIdLink = window.location.href.split('/');
+        let currentDoId = '';
   
-      doIdLink.forEach(item => {
-        if (item.includes('do')) {
-          currentDoId = item;
+        doIdLink.forEach(item => {
+          if (item.includes('do')) {
+            currentDoId = item;
+          }
+        });
+  
+        if (res?.result?.content?.length) {
+          for (const item of res.result.content) {
+            if (item.children && item.children.includes(currentDoId)) {
+              this.expiryDate = item.expiry_date || 'NA';
+              matchFound = true;
+              break;
+            }
+          }
         }
-      });
   
-      res.result.content.forEach(item => {
-        if (item.children && item.children.includes(currentDoId)) {
-          this.expiryDate = item.expiry_date;
-          matchFound = true;
+        if (!matchFound) {
+          this.expiryDate = 'NA';
         }
-      });
-  
-      if (!matchFound) {
+      },
+      err => {
+        console.error('Error:', err);
         this.expiryDate = 'NA';
       }
-    }, err => {
-      console.error('Error:', err);
-      this.expiryDate = 'NA';
-    });
+    );
   }
-  
+ 
 
 }
