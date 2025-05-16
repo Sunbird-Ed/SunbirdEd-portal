@@ -964,7 +964,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     } catch (error) {
       console.error('Error parsing userProfile:', error);
     }
-
+   
     if (!trainingGroupCodes || trainingGroupCodes.length === 0) {
       this.expiryDate = 'NA';
       return;
