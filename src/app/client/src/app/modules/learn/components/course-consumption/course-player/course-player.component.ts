@@ -948,7 +948,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   async getUserProfileDetail() {
     const profileDetailsRaw = localStorage.getItem('userProfile');
     let trainingGroupCodes: string[] = [];
-  
+      
     try {
       if (profileDetailsRaw) {
         const profile = JSON.parse(profileDetailsRaw);
@@ -1012,6 +1012,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }
     );
   }
+  
  
 
 }
