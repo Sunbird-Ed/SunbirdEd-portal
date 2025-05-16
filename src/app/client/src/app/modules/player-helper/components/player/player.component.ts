@@ -317,7 +317,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
           this.playerConfig['config']['sideMenu'] = {
             "showDownload": false,
-            showExit: false
+            showExit: false,
+            showShare: false,
           }
           this.playerConfig.config['playBackSpeeds'] = [1]
         }
