@@ -1257,7 +1257,8 @@
     "collection": "createcollection",
     "studymaterial": "createlessontext",
     "lessonplan": "createlessonplan",
-    "assessment": "createassessment"
+    "assessment": "createassessment",
+    "practice_assessment": "practice"
   },
   "contentName": {
     "textbook": "Untitled Textbook",
@@ -1265,7 +1266,8 @@
     "collection": "Untitled Collection",
     "studymaterial": "Untitled Resource",
     "lessonplan": "Untitled Lessonplan",
-    "assessment": "Untitled Assessment"
+    "assessment": "Untitled Assessment",
+    "practice_assessment": "Untitled Practice Assessment"
   },
   "contentDescription": {
     "textbook": "Enter description for TextBook",
@@ -1273,7 +1275,8 @@
     "collection": "Enter description for Collection",
     "studymaterial": "Enter description for Resource",
     "lessonplan": "Enter description for Lessonplan",
-    "assessment": "Enter description for Assessment"
+    "assessment": "Enter description for Assessment",
+    "practice_assessment": "Enter description for Practice Assessment"
   },
   "contentCreateTypeForEditors": {
     "textbook": "TextBook",
@@ -1281,7 +1284,8 @@
     "collection": "Collection",
     "studymaterial": "Resource",
     "lessonplan": "LessonPlan",
-    "assessment": "SelfAssess"
+    "assessment": "SelfAssess",
+    "practice_assessment": "SelfAssess"
   },
   "course": {
     "filterType": "course",

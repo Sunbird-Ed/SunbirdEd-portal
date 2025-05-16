@@ -1652,7 +1652,8 @@
                 },
                 "m0021": "Impossible de mettre à jour l'emplacement. Réessayer plus tard",
                 "m0022": "Impossible de mettre à jour vos préférences. Veuillez réessayer après un certain temps.",
-                "m0023": "Impossible de lever un billet parce que vous n'êtes pas connecté à Internet"
+                "m0023": "Impossible de lever un billet parce que vous n'êtes pas connecté à Internet",
+                "searchinputerror":"Entrez un mot-clé pour effectuer la recherche"
             },
             "imsg": {
                 "m0082": "La suppression {GroupName} supprimera en permanence le groupe de l'application",
@@ -2538,6 +2539,9 @@
                 "assessment": "Évaluation des cours",
                 "courseassessment": "Cours",
                 "assessmentdescription": "Créer des évaluations pour les cours à l'aide des outils de création intégrés",
+                "practiceassessment": "Évaluation pratique",
+                "practice": "Évaluation pratique",
+                "practicedescription": "Créez des évaluations pratiques pour les apprenants à l'aide des outils d'auteur intégrés",
                 "contentCaps": "CONTENU",
                 "lastupdate": "Dernière mise à jour",
                 "statusCaps": "STATUT",
