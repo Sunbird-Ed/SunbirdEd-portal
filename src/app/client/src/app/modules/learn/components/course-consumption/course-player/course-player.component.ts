@@ -9,7 +9,7 @@ import {
 import { IEndEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject, IStartEventInput, TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { combineLatest, merge, Subject, forkJoin, of} from 'rxjs';
+import { combineLatest, merge, Subject, forkJoin, of } from 'rxjs';
 import { map, mergeMap, takeUntil, catchError } from 'rxjs/operators';
 import TreeModel from 'tree-model';
 import { PopupControlService } from '../../../../../service/popup-control.service';
@@ -139,9 +139,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       this.courseMentor = false;
     }
     this.connectionService.monitor()
-    .pipe(takeUntil(this.unsubscribe)).subscribe(isConnected => {
-      this.isConnected = isConnected;
-    });
+      .pipe(takeUntil(this.unsubscribe)).subscribe(isConnected => {
+        this.isConnected = isConnected;
+      });
     this.getUserProfileDetail();
     // Set consetnt pop up configuration here
     this.consentConfig = {
@@ -185,12 +185,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       });
 
     this.activatedRoute.queryParams
-    .pipe(takeUntil(this.unsubscribe))
-    .subscribe(response => {
-      this.addToGroup = Boolean(response.groupId);
-      this.groupId = _.get(response, 'groupId');
-      this.tocId = response.textbook || undefined;
-    });
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(response => {
+        this.addToGroup = Boolean(response.groupId);
+        this.groupId = _.get(response, 'groupId');
+        this.tocId = response.textbook || undefined;
+      });
 
     this.courseConsumptionService.updateContentState
       .pipe(takeUntil(this.unsubscribe))
@@ -272,9 +272,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }, 1000);
     });
     const isForceSynced = localStorage.getItem(this.courseId + '_isforce-sync');
-        if (isForceSynced) {
-          this.showForceSync = false;
-        }
+    if (isForceSynced) {
+      this.showForceSync = false;
+    }
     this.loadIntroductorymaterial();
   }
 
@@ -312,11 +312,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().
-    pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig => {
-    if (layoutConfig != null) {
-      this.layoutConfiguration = layoutConfig.layout;
-    }
-   });
+      pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig => {
+        if (layoutConfig != null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+      });
   }
 
   private parseChildContent() {
@@ -351,7 +351,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .subscribe((res) => {
         const _parsedResponse = this.courseProgressService.getContentProgressState(req, res);
         this.progressToDisplay = Math.floor((_parsedResponse.completedCount / this.courseHierarchy.leafNodesCount) * 100);
-        if(this.progressToDisplay >= 100) {
+        if (this.progressToDisplay >= 100) {
           this.isCertificateReadyForDownload = true;
         }
         this.contentStatus = _parsedResponse.content || [];
@@ -392,7 +392,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
     /* istanbul ignore else */
     setTimeout(() => {
-        if (!this.showLastAttemptsModal && !_.isEmpty(this.navigateToContentObject.event.event)) {
+      if (!this.showLastAttemptsModal && !_.isEmpty(this.navigateToContentObject.event.event)) {
         this.navigateToPlayerPage(this.navigateToContentObject.collectionUnit, this.navigateToContentObject.event);
       }
     }, 100);
@@ -403,7 +403,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     if (this.batchId) {
       this.telemetryCdata.push({ id: this.batchId, type: 'CourseBatch' });
     }
-    if (this.groupId && !_.find(this.telemetryCdata, {id: this.groupId})) {
+    if (this.groupId && !_.find(this.telemetryCdata, { id: this.groupId })) {
       this.telemetryCdata.push({
         id: this.groupId,
         type: 'Group'
@@ -458,7 +458,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   private setTelemetryCourseImpression() {
-    if (this.groupId && !_.find(this.telemetryCdata, {id: this.groupId})) {
+    if (this.groupId && !_.find(this.telemetryCdata, { id: this.groupId })) {
       this.telemetryCdata.push({
         id: this.groupId,
         type: 'Group'
@@ -546,7 +546,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         const allBatchList = _.filter(_.get(this.courseHierarchy, 'batches'), (batch) => {
           return !this.isEnrollmentAllowed(_.get(batch, 'enrollmentEndDate'));
         });
-         this.batchMessage = this.validateBatchDate(allBatchList);
+        this.batchMessage = this.validateBatchDate(allBatchList);
       }
     }
   }
@@ -636,7 +636,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         rollup: this.courseConsumptionService.getRollUp(objectRollUp) || {}
       }
     };
-    if (this.groupId && !_.find(this.telemetryCdata, {id: this.groupId})) {
+    if (this.groupId && !_.find(this.telemetryCdata, { id: this.groupId })) {
       interactData.context.cdata.push({
         id: this.groupId,
         type: 'Group'
@@ -684,7 +684,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }
     };
 
-    if (this.groupId && !_.find(this.telemetryCdata, {id: this.groupId})) {
+    if (this.groupId && !_.find(this.telemetryCdata, { id: this.groupId })) {
       interactData.context.cdata.push({
         id: this.groupId,
         type: 'Group'
@@ -735,12 +735,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       'userId': _.get(this.userService, 'userid')
     };
     this.CsCourseService.updateContentState(req, { apiPath: '/content/course/v1' })
-    .pipe(takeUntil(this.unsubscribe))
-    .subscribe((res) => {
-      this.toasterService.success(this.resourceService.frmelmnts.lbl.forceSyncsuccess);
-    }, error => {
-      console.log('Content state update CSL API failed ', error);
-    });
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe((res) => {
+        this.toasterService.success(this.resourceService.frmelmnts.lbl.forceSyncsuccess);
+      }, error => {
+        console.log('Content state update CSL API failed ', error);
+      });
   }
 
   public downloadCertificate(): void {
@@ -750,7 +750,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       console.error('User ID is missing, cannot make API call.');
       return;
     }
-   
+
     const requestBody = {
       filters: {
         recipient: {
@@ -760,15 +760,15 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         }
       }
     };
-   
+
     const apiUrl = 'learner/rc/certificate/v1/search';
-   
+
     this.http.post<any[]>(apiUrl, requestBody, { withCredentials: true }) // Specify the expected response type as an array
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(
         (response) => {
           const certificateResponse = response;
-   
+
           if (certificateResponse && certificateResponse.length > 0) {
             const currentCourseId = this.courseId;
             const matchingCertificate = certificateResponse.find(cert => _.get(cert, 'training.id') === currentCourseId);
@@ -779,21 +779,21 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
             const courseName = _.get(matchingCertificate, 'name');
             this.CsCourseService.getSignedCourseCertificate(_.get(matchingCertificate, 'osid'))
-            .pipe(takeUntil(this.unsubscribe))
-            .subscribe((resp) => {
-              if (_.get(resp, 'printUri')) {
-                this.toasterService.success('Certificate download initiated.');
-                this.certDownloadAsPdf.download(resp.printUri, null, courseName);
-              }
-              // } else if (_.get(course, 'certificates.length')) {
-              //   this.downloadPdfCertificate(course.certificates[0]);
-              // } else {
-              //   this.toasterService.error(this.resourceService.messages.emsg.m0076);
-              // }
-            }, error => {
-              console.error('Error downloading certificate:', error);
-              this.toasterService.error(this.resourceService.messages.emsg.m0076);
-            });
+              .pipe(takeUntil(this.unsubscribe))
+              .subscribe((resp) => {
+                if (_.get(resp, 'printUri')) {
+                  this.toasterService.success('Certificate download initiated.');
+                  this.certDownloadAsPdf.download(resp.printUri, null, courseName);
+                }
+                // } else if (_.get(course, 'certificates.length')) {
+                //   this.downloadPdfCertificate(course.certificates[0]);
+                // } else {
+                //   this.toasterService.error(this.resourceService.messages.emsg.m0076);
+                // }
+              }, error => {
+                console.error('Error downloading certificate:', error);
+                this.toasterService.error(this.resourceService.messages.emsg.m0076);
+              });
           } else {
             console.log('No certificates found in the API response.');
             this.toasterService.info('No certificates found for your account.');
@@ -833,7 +833,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
                 const detailObservables = this.introductoryMaterialArray
                   .map(material => {
-                    const doId = material.identifier; 
+                    const doId = material.identifier;
                     if (!doId) {
                       console.warn('Introductory material item is missing an identifier:', material);
                       return of(null); // Return an observable of null if id is missing
@@ -948,7 +948,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   async getUserProfileDetail() {
     const profileDetailsRaw = localStorage.getItem('userProfile');
     let trainingGroupCodes: string[] = [];
-      
+  
     try {
       if (profileDetailsRaw) {
         const profile = JSON.parse(profileDetailsRaw);
@@ -964,7 +964,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     } catch (error) {
       console.error('Error parsing userProfile:', error);
     }
-  
+
     if (!trainingGroupCodes || trainingGroupCodes.length === 0) {
       this.expiryDate = 'NA';
       return;
@@ -1013,6 +1013,4 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     );
   }
   
- 
-
 }
