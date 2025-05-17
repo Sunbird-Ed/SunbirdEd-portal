@@ -143,7 +143,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe)).subscribe(isConnected => {
         this.isConnected = isConnected;
       });
-    this.getUserProfileDetail();
     // Set consetnt pop up configuration here
     this.consentConfig = {
       tncLink: _.get(this.resourceService, 'frmelmnts.lbl.tncLabelLink'),
@@ -173,7 +172,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.contentIds = this.courseConsumptionService.parseChildren(this.courseHierarchy);
         this.getContentState();
       });
-
+      
     this.courseConsumptionService.launchPlayer
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(data => {
@@ -223,6 +222,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(({ courseHierarchy, enrolledBatchDetails }: any) => {
         this.courseHierarchy = courseHierarchy;
+        this.courseId = courseHierarchy.identifier;
+        this.getUserProfileDetail();
         this.layoutService.updateSelectedContentType.emit(this.courseHierarchy.contentType);
         this.isExpandedAll = this.courseHierarchy.children.length === 1 ? true : false;
         this.courseInteractObject = {
@@ -957,7 +958,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           const groupCodes = profileConfig.trainingGroup;
 
           if (typeof groupCodes === 'string') {
-            trainingGroupCodes = groupCodes.split(',');
+            trainingGroupCodes = groupCodes.split(',').map(code => code.trim());
           } else if (Array.isArray(groupCodes)) {
             trainingGroupCodes = groupCodes;
           }
@@ -985,15 +986,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
     this.userService.expiryDate(payload).subscribe(
       res => {
-        const doIdLink = window.location.href.split('/');
-        let currentDoId = '';
-
-        doIdLink.forEach(item => {
-          if (item.includes('do')) {
-            currentDoId = item;
-          }
-        });
-
+        const currentDoId = this.courseId;
+    
         if (res?.result?.content?.length) {
           for (const item of res.result.content) {
             if (item.children && item.children.includes(currentDoId)) {
@@ -1003,16 +997,17 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
             }
           }
         }
-
+    
         if (!matchFound) {
           this.expiryDate = 'NA';
         }
       },
       err => {
-        console.error('Error:', err);
+        console.error('Error fetching expiry date :', err);
         this.expiryDate = 'NA';
       }
     );
+    
   }
 
 
