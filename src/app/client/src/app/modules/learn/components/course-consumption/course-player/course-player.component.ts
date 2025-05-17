@@ -756,18 +756,18 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     const courseName = _.get(this.matchingCertificate, 'name');
 
     this.CsCourseService.getSignedCourseCertificate(_.get(this.matchingCertificate, 'osid'))
-      .pipe(takeUntil(this.unsubscribe))
-      .subscribe((resp) => {
-        if (_.get(resp, 'printUri')) {
-          this.toasterService.success('Certificate download initiated.');
-          this.certDownloadAsPdf.download(resp.printUri, null, courseName);
-        } else {
-          this.toasterService.error(this.resourceService.messages.emsg.m0076);
-        }
-      }, error => {
-        console.error('Error downloading certificate:', error);
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe((resp) => {
+      if (_.get(resp, 'printUri')) {
+        this.toasterService.success('Certificate download initiated.');
+        this.certDownloadAsPdf.download(resp.printUri, null, courseName);
+      } else {
         this.toasterService.error(this.resourceService.messages.emsg.m0076);
-      });
+      }
+    }, error => {
+      console.error('Error downloading certificate:', error);
+      this.toasterService.error(this.resourceService.messages.emsg.m0076);
+    });
 
   }
 
@@ -910,39 +910,39 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   public fetchAndStoreMatchingCertificate(): void {
-    const userId = _.get(this.userService, 'userid');
-    if (!userId) {
-      this.matchingCertificate = null;
-      this.isCertificateReadyForDownload = false; // Disable if userId not found
-      return;
-    }
-    const requestBody = {
-      filters: {
-        recipient: {
-          id: { eq: userId }
-        }
-      }
-    };
-    const apiUrl = 'learner/rc/certificate/v1/search';
-    this.http.post<any[]>(apiUrl, requestBody, { withCredentials: true })
-      .pipe(takeUntil(this.unsubscribe))
-      .subscribe(
-        (response) => {
-          if (response && response.length > 0) {
-            this.matchingCertificate = response.find(cert => _.get(cert, 'training.id') === this.courseId) || null;
-            this.isCertificateReadyForDownload = !!this.matchingCertificate; // Enable only if found
-          } else {
-            this.matchingCertificate = null;
-            this.isCertificateReadyForDownload = false; // Disable if none found
-          }
-        },
-        (error) => {
-          this.matchingCertificate = null;
-          this.isCertificateReadyForDownload = false; // Disable on error
-          console.error('Certificate API Error:', error);
-        }
-      );
+  const userId = _.get(this.userService, 'userid');
+  if (!userId) {
+    this.matchingCertificate = null;
+    this.isCertificateReadyForDownload = false; // Disable if userId not found
+    return;
   }
+  const requestBody = {
+    filters: {
+      recipient: {
+        id: { eq: userId }
+      }
+    }
+  };
+  const apiUrl = 'learner/rc/certificate/v1/search';
+  this.http.post<any[]>(apiUrl, requestBody, { withCredentials: true })
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe(
+      (response) => {
+        if (response && response.length > 0) {
+          this.matchingCertificate = response.find(cert => _.get(cert, 'training.id') === this.courseId) || null;
+          this.isCertificateReadyForDownload = !!this.matchingCertificate; // Enable only if found
+        } else {
+          this.matchingCertificate = null;
+          this.isCertificateReadyForDownload = false; // Disable if none found
+        }
+      },
+      (error) => {
+        this.matchingCertificate = null;
+        this.isCertificateReadyForDownload = false; // Disable on error
+        console.error('Certificate API Error:', error);
+      }
+    );
+}
 
   async getUserProfileDetail() {
     const profileDetailsRaw = localStorage.getItem('userProfile');
@@ -1009,6 +1009,5 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     );
     
   }
-
 
 }
