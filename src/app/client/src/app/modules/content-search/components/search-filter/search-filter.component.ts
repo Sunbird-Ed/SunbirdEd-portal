@@ -273,6 +273,8 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
         }
       }
     });
+    this.allValues = { ...this.allValues, ...JSON.parse(localStorage.getItem('userProfile')).framework }
+
   }
   private updateRoute(resetFilters?: boolean) {
     const selectedTab = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook';
