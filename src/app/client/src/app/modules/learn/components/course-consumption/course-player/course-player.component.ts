@@ -789,7 +789,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           if (response && response.result && response.result.content && response.result.content.introductoryMaterial) {
             try {
               const introductoryMaterialString = response.result.content.introductoryMaterial;
-              const parsedMaterial = JSON.parse(introductoryMaterialString);
+              // const parsedMaterial = JSON.parse(introductoryMaterialString);
+              const parsedMaterial = typeof introductoryMaterialString === 'string' ? JSON.parse(introductoryMaterialString) : introductoryMaterialString;
 
               if (Array.isArray(parsedMaterial) && parsedMaterial.length > 0) {
                 this.introductoryMaterialArray = parsedMaterial.sort((a, b) => a.index - b.index);

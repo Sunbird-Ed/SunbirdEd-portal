@@ -356,11 +356,6 @@ export class SbFormLocationSelectionDelegate {
         }
       }
 
-      if (config.code === 'trainingGroup') {
-        config.templateOptions.disabled = true;
-        config.editable = false;
-      }
-      console.log('config', config);
       const defaultValues = JSON.parse(this.userService.userProfile?.framework?.profileConfig?.[0] || "{}")
 
       if (defaultValues.hasOwnProperty(config.code)) {
@@ -465,14 +460,31 @@ export class SbFormLocationSelectionDelegate {
     }
     this.locationFormConfig = tempLocationFormConfig.filter((config) => config.code !== 'email' && config.code !== 'name' )
       .map((config) => {
-        return {...config,   "validations": [
-          {
-            type: FieldConfigValidationType.PATTERN,
-            value: /^\S(?:.*\S)?$/,
-            message: "No leading or trailing spaces allowed."
-          }
-        ]}
+        const newConfig = {
+          ...config,
+          // This part still overwrites validations for ALL fields.
+          // If other fields have specific validations from the form service,
+          // you might want to merge this pattern validation instead of replacing.
+          "validations": [
+            {
+              type: FieldConfigValidationType.PATTERN,
+              value: /^\S(?:.*\S)?$/,
+              message: "No leading or trailing spaces allowed."
+            }
+          ]
+        };
+
+        // Apply changes specifically for 'trainingGroup'
+        if (config.code === 'trainingGroup') {
+          newConfig.editable = false;
+          newConfig.templateOptions = {
+            ...(config.templateOptions || {}), // Ensures templateOptions exists and preserves other properties
+            disabled: true,
+          };
+        }
+        return newConfig;
       });
+      console.log('locationFormConfig', this.locationFormConfig);
   }
 
   private getFormSuggestionsStrategy(): Partial<SbLocation>[] {
