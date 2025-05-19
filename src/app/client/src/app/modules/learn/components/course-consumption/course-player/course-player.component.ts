@@ -9,7 +9,7 @@ import {
 import { IEndEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject, IStartEventInput, TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { combineLatest, merge, Subject, forkJoin, of} from 'rxjs';
+import { combineLatest, merge, Subject, forkJoin, of } from 'rxjs';
 import { map, mergeMap, takeUntil, catchError } from 'rxjs/operators';
 import TreeModel from 'tree-model';
 import { PopupControlService } from '../../../../../service/popup-control.service';
@@ -140,10 +140,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       this.courseMentor = false;
     }
     this.connectionService.monitor()
-    .pipe(takeUntil(this.unsubscribe)).subscribe(isConnected => {
-      this.isConnected = isConnected;
-    });
-    this.getUserProfileDetail();
+      .pipe(takeUntil(this.unsubscribe)).subscribe(isConnected => {
+        this.isConnected = isConnected;
+      });
     // Set consetnt pop up configuration here
     this.consentConfig = {
       tncLink: _.get(this.resourceService, 'frmelmnts.lbl.tncLabelLink'),
@@ -173,7 +172,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.contentIds = this.courseConsumptionService.parseChildren(this.courseHierarchy);
         this.getContentState();
       });
-
+      
     this.courseConsumptionService.launchPlayer
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(data => {
@@ -186,12 +185,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       });
 
     this.activatedRoute.queryParams
-    .pipe(takeUntil(this.unsubscribe))
-    .subscribe(response => {
-      this.addToGroup = Boolean(response.groupId);
-      this.groupId = _.get(response, 'groupId');
-      this.tocId = response.textbook || undefined;
-    });
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(response => {
+        this.addToGroup = Boolean(response.groupId);
+        this.groupId = _.get(response, 'groupId');
+        this.tocId = response.textbook || undefined;
+      });
 
     this.courseConsumptionService.updateContentState
       .pipe(takeUntil(this.unsubscribe))
@@ -223,6 +222,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(({ courseHierarchy, enrolledBatchDetails }: any) => {
         this.courseHierarchy = courseHierarchy;
+        this.courseId = courseHierarchy.identifier;
+        this.getUserProfileDetail();
         this.layoutService.updateSelectedContentType.emit(this.courseHierarchy.contentType);
         this.isExpandedAll = this.courseHierarchy.children.length === 1 ? true : false;
         this.courseInteractObject = {
@@ -273,9 +274,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }, 1000);
     });
     const isForceSynced = localStorage.getItem(this.courseId + '_isforce-sync');
-        if (isForceSynced) {
-          this.showForceSync = false;
-        }
+    if (isForceSynced) {
+      this.showForceSync = false;
+    }
     this.loadIntroductorymaterial();
     this.fetchAndStoreMatchingCertificate();
   }
@@ -314,11 +315,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().
-    pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig => {
-    if (layoutConfig != null) {
-      this.layoutConfiguration = layoutConfig.layout;
-    }
-   });
+      pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig => {
+        if (layoutConfig != null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+      });
   }
 
   private parseChildContent() {
@@ -353,7 +354,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .subscribe((res) => {
         const _parsedResponse = this.courseProgressService.getContentProgressState(req, res);
         this.progressToDisplay = Math.floor((_parsedResponse.completedCount / this.courseHierarchy.leafNodesCount) * 100);
-        if(this.progressToDisplay >= 100) {
+        if (this.progressToDisplay >= 100) {
           this.isCertificateReadyForDownload = true;
         }
         this.contentStatus = _parsedResponse.content || [];
@@ -394,7 +395,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
     /* istanbul ignore else */
     setTimeout(() => {
-        if (!this.showLastAttemptsModal && !_.isEmpty(this.navigateToContentObject.event.event)) {
+      if (!this.showLastAttemptsModal && !_.isEmpty(this.navigateToContentObject.event.event)) {
         this.navigateToPlayerPage(this.navigateToContentObject.collectionUnit, this.navigateToContentObject.event);
       }
     }, 100);
@@ -405,7 +406,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     if (this.batchId) {
       this.telemetryCdata.push({ id: this.batchId, type: 'CourseBatch' });
     }
-    if (this.groupId && !_.find(this.telemetryCdata, {id: this.groupId})) {
+    if (this.groupId && !_.find(this.telemetryCdata, { id: this.groupId })) {
       this.telemetryCdata.push({
         id: this.groupId,
         type: 'Group'
@@ -460,7 +461,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   private setTelemetryCourseImpression() {
-    if (this.groupId && !_.find(this.telemetryCdata, {id: this.groupId})) {
+    if (this.groupId && !_.find(this.telemetryCdata, { id: this.groupId })) {
       this.telemetryCdata.push({
         id: this.groupId,
         type: 'Group'
@@ -548,7 +549,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         const allBatchList = _.filter(_.get(this.courseHierarchy, 'batches'), (batch) => {
           return !this.isEnrollmentAllowed(_.get(batch, 'enrollmentEndDate'));
         });
-         this.batchMessage = this.validateBatchDate(allBatchList);
+        this.batchMessage = this.validateBatchDate(allBatchList);
       }
     }
   }
@@ -638,7 +639,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         rollup: this.courseConsumptionService.getRollUp(objectRollUp) || {}
       }
     };
-    if (this.groupId && !_.find(this.telemetryCdata, {id: this.groupId})) {
+    if (this.groupId && !_.find(this.telemetryCdata, { id: this.groupId })) {
       interactData.context.cdata.push({
         id: this.groupId,
         type: 'Group'
@@ -686,7 +687,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }
     };
 
-    if (this.groupId && !_.find(this.telemetryCdata, {id: this.groupId})) {
+    if (this.groupId && !_.find(this.telemetryCdata, { id: this.groupId })) {
       interactData.context.cdata.push({
         id: this.groupId,
         type: 'Group'
@@ -737,12 +738,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       'userId': _.get(this.userService, 'userid')
     };
     this.CsCourseService.updateContentState(req, { apiPath: '/content/course/v1' })
-    .pipe(takeUntil(this.unsubscribe))
-    .subscribe((res) => {
-      this.toasterService.success(this.resourceService.frmelmnts.lbl.forceSyncsuccess);
-    }, error => {
-      console.log('Content state update CSL API failed ', error);
-    });
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe((res) => {
+        this.toasterService.success(this.resourceService.frmelmnts.lbl.forceSyncsuccess);
+      }, error => {
+        console.log('Content state update CSL API failed ', error);
+      });
   }
 
   public downloadCertificate(): void {
@@ -789,14 +790,15 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           if (response && response.result && response.result.content && response.result.content.introductoryMaterial) {
             try {
               const introductoryMaterialString = response.result.content.introductoryMaterial;
-              const parsedMaterial = JSON.parse(introductoryMaterialString);
+              // const parsedMaterial = JSON.parse(introductoryMaterialString);
+              const parsedMaterial = typeof introductoryMaterialString === 'string' ? JSON.parse(introductoryMaterialString) : introductoryMaterialString;
 
               if (Array.isArray(parsedMaterial) && parsedMaterial.length > 0) {
                 this.introductoryMaterialArray = parsedMaterial.sort((a, b) => a.index - b.index);
 
                 const detailObservables = this.introductoryMaterialArray
                   .map(material => {
-                    const doId = material.identifier; 
+                    const doId = material.identifier;
                     if (!doId) {
                       console.warn('Introductory material item is missing an identifier:', material);
                       return of(null); // Return an observable of null if id is missing
@@ -945,62 +947,68 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   async getUserProfileDetail() {
     const profileDetailsRaw = localStorage.getItem('userProfile');
-    let trainingGroupCode = null;
-  
+    let trainingGroupCodes: string[] = [];
+
     try {
       if (profileDetailsRaw) {
         const profile = JSON.parse(profileDetailsRaw);
         const profileConfigStr = profile?.framework?.profileConfig;
-  
+
         if (profileConfigStr) {
           const profileConfig = JSON.parse(profileConfigStr);
-          trainingGroupCode = profileConfig.trainingGroup;
+          const groupCodes = profileConfig.trainingGroup;
+
+          if (typeof groupCodes === 'string') {
+            trainingGroupCodes = groupCodes.split(',').map(code => code.trim());
+          } else if (Array.isArray(groupCodes)) {
+            trainingGroupCodes = groupCodes;
+          }
         }
       }
     } catch (error) {
       console.error('Error parsing userProfile:', error);
     }
-  
-    if (!trainingGroupCode) {
+
+    if (!trainingGroupCodes || trainingGroupCodes.length === 0) {
       this.expiryDate = 'NA';
       return;
     }
-  
+
     const payload = {
       request: {
         filters: {
-          code: [trainingGroupCode]
+          code: trainingGroupCodes
         }
       }
     };
-  
+
     this.expiryDate = 'NA';
     let matchFound = false;
-  
-    this.userService.expiryDate(payload).subscribe(res => {
-      const doIdLink = window.location.href.split('/');
-      let currentDoId = '';
-  
-      doIdLink.forEach(item => {
-        if (item.includes('do')) {
-          currentDoId = item;
+
+    this.userService.expiryDate(payload).subscribe(
+      res => {
+        const currentDoId = this.courseId;
+    
+        if (res?.result?.content?.length) {
+          for (const item of res.result.content) {
+            if (item.children && item.children.includes(currentDoId)) {
+              this.expiryDate = item.expiry_date || 'NA';
+              matchFound = true;
+              break;
+            }
+          }
         }
-      });
-  
-      res.result.content.forEach(item => {
-        if (item.children && item.children.includes(currentDoId)) {
-          this.expiryDate = item.expiry_date;
-          matchFound = true;
+    
+        if (!matchFound) {
+          this.expiryDate = 'NA';
         }
-      });
-  
-      if (!matchFound) {
+      },
+      err => {
+        console.error('Error fetching expiry date :', err);
         this.expiryDate = 'NA';
       }
-    }, err => {
-      console.error('Error:', err);
-      this.expiryDate = 'NA';
-    });
+    );
+    
   }
 
 }
