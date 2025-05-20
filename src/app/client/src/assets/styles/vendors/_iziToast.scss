@@ -279,10 +279,11 @@
 .iziToast-wrapper {
   z-index: 99999;
   position: fixed;
-  width: 100%;
+  width: max-content;
   pointer-events: none;
   display: flex;
   flex-direction: column;
+  justify-self: center;
 }
 .iziToast-wrapper .iziToast.iziToast-balloon:before {
   border-right: 0 solid transparent;
