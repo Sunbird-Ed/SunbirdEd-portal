@@ -273,7 +273,8 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
         }
       }
     });
-    this.allValues = { ...this.allValues, ...JSON.parse(localStorage.getItem('userProfile')).framework }
+    const userProfile = localStorage.getItem('userProfile')
+    this.allValues = { ...this.allValues, ...(userProfile ? JSON.parse(userProfile).framework : {}) }
 
   }
   private updateRoute(resetFilters?: boolean) {
