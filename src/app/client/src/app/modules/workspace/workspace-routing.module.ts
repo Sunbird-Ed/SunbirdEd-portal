@@ -96,6 +96,16 @@ const routes: Routes = [
             }
           },
           {
+            path: 'practice_assessment', component: DataDrivenComponent,
+            data: {
+              telemetry: {
+                env: telemetryEnv, pageid: 'workspace-create-practice-assessment', subtype: 'paginate', uri: '/workspace/content/create/practice_assessment',
+                type: 'view', mode: 'create', object: { type: objectType, ver: '1.0' }
+              }, breadcrumbs: [{ label: 'Home', url: '/home' },
+              { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+            }
+          },
+          {
             path: 'questionset', component: DataDrivenComponent,
             data: {
               telemetry: {

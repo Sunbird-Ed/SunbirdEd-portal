@@ -273,6 +273,15 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
         }
       }
     });
+    const userProfile = localStorage.getItem('userProfile')
+    if (userProfile){
+      try {
+        const parsedProfile = JSON.parse(userProfile);
+        this.allValues = { ...this.allValues, ...(parsedProfile ? parsedProfile.framework : {}) }
+      } catch (e) {
+        console.error('Invalid JSON data for user profile ');
+      }
+    }
   }
   private updateRoute(resetFilters?: boolean) {
     const selectedTab = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook';
