@@ -154,12 +154,13 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     this.activatedRoute.url.subscribe(url => {
       this.urlString = url[0].path
       this.contentType = this.urlString === 'practice_assessment' ? 'Resource' : url[0].path;
+      const key = this.urlString === 'practice_assessment' ? 'practice_assessment' : this.contentType;
+      this.resourceType = this.configService.appConfig.resourceType[key];
+      this.creationFormLable = this.configService.appConfig.contentCreateTypeLable[key];
+      this.name = this.configService.appConfig.contentName[key] || 'Untitled';
+      this.description = this.configService.appConfig.contentDescription[key] || 'Untitled';
     });
-    const key = this.urlString === 'practice_assessment' ? 'practice_assessment' : this.contentType;
-    this.resourceType = this.configService.appConfig.resourceType[key];
-    this.creationFormLable = this.configService.appConfig.contentCreateTypeLable[key];
-    this.name = this.configService.appConfig.contentName[key] || 'Untitled';
-    this.description = this.configService.appConfig.contentDescription[key] || 'Untitled';
+
   }
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(queryParams => {
