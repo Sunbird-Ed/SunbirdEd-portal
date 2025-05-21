@@ -86,7 +86,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        shard: [1, 2, 3, 4] # Split into 4 parallel jobs
+        shard: [1, 2, 3, 4, 5, 6, 7, 8]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
