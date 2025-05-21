@@ -354,9 +354,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .subscribe((res) => {
         const _parsedResponse = this.courseProgressService.getContentProgressState(req, res);
         this.progressToDisplay = Math.floor((_parsedResponse.completedCount / this.courseHierarchy.leafNodesCount) * 100);
-        if (this.progressToDisplay >= 100) {
-          this.isCertificateReadyForDownload = true;
-        }
         this.contentStatus = _parsedResponse.content || [];
         this._routerStateContentStatus = _parsedResponse;
         this.markContentVisibility(this.courseHierarchy.children, this.contentStatus, this.progressToDisplay)
