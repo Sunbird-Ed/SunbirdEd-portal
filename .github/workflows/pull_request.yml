@@ -34,7 +34,8 @@ jobs:
             ${{ runner.os }}-node-modules-
 
       - name: Install dependencies
-        run: npm ci
+        run: yarn install
+        working-directory: src/app/client
 
       - name: Save node_modules cache
         if: steps.cache.outputs.cache-hit != 'true'
