@@ -11,10 +11,11 @@ on:
       - '*'
 
 jobs:
-  code-quality:
-    name: Run Code Quality Checks
+  setup:
+    name: Setup Environment
     runs-on: ubuntu-latest
-
+    outputs:
+      cache-hit: ${{ steps.cache.outputs.cache-hit }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -44,10 +45,20 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
 
+  lint:
+    name: Run Linting
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
       - name: Run lint
         run: npm run lint
         working-directory: src/app/client
 
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
       - name: Run test
         run: npm run test:ci
         working-directory: src/app/client
