@@ -84,6 +84,9 @@ jobs:
   test:
     name: Run Tests
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        shard: [1, 2, 3, 4] # Split into 4 parallel jobs
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -112,7 +115,11 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
-        
-      - name: Run test
-        run: npm run test:ci
+
+      - name: Run test shard ${{ matrix.shard }}
+        run: npm run test:ci -- --shard=${{ matrix.shard }}/4
         working-directory: src/app/client
+        
+      # - name: Run test
+      #   run: npm run test:ci
+      #   working-directory: src/app/client
