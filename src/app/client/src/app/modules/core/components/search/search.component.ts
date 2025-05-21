@@ -2,7 +2,7 @@ import { filter } from 'rxjs/operators';
 import { Component, OnInit, ChangeDetectorRef, OnDestroy, Input } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { UserService } from './../../services';
-import { ResourceService, ConfigService, IUserProfile, LayoutService, UtilService, ConnectionService } from '@sunbird/shared';
+import { ResourceService, ConfigService, IUserProfile, LayoutService, UtilService, ConnectionService, ToasterService } from '@sunbird/shared';
 import { Subscription } from 'rxjs';
 import * as _ from 'lodash-es';
 /**
@@ -87,7 +87,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    */
   constructor(route: Router, activatedRoute: ActivatedRoute, userService: UserService,
     resourceService: ResourceService, config: ConfigService, public utilService: UtilService,
-    private cdr: ChangeDetectorRef, public layoutService: LayoutService, public connectionService: ConnectionService) {
+    private cdr: ChangeDetectorRef, public toasterService: ToasterService, public layoutService: LayoutService, public connectionService: ConnectionService) {
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
@@ -156,13 +156,15 @@ export class SearchComponent implements OnInit, OnDestroy {
    * it navigate
    */
   onEnter(key) {
-    this.key = key;
+    this.key = key?.trim();
     this.queryParam = {};
     this.queryParam['key'] = this.key;
     if (this.key && this.key.length > 0) {
       this.queryParam['key'] = this.key;
     } else {
       delete this.queryParam['key'];
+      this.toasterService.error(this.resourceService.messages.emsg.searchinputerror);
+      return
     }
     const url = this.route.url.split('?')[0];
     let redirectUrl;

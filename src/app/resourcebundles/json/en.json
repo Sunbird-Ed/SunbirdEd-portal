@@ -1652,7 +1652,8 @@
                 },
                 "m0021": "Unable to update location. Try again later",
                 "m0022": "Unable to update your preference. Please try again after some time.",
-                "m0023": "Unable to raise a ticket because you're not connected to the internet"
+                "m0023": "Unable to raise a ticket because you're not connected to the internet",
+                "searchinputerror": "Enter a keyword to perform the search"
             },
             "imsg": {
                 "m0082": "Deleting {groupName} will permanently remove the group from the application",
@@ -2538,6 +2539,9 @@
                 "assessment": "Course Assessment",
                 "courseassessment": "CourseAssessment",
                 "assessmentdescription": "Create assessments for courses using the in-built authoring tools",
+                "practiceassessment": "PracticeAssessment",
+                "practice": "Practice Assessment",
+                "practicedescription": "Create practice assessments for learners using the in-built authoring tools",
                 "contentCaps": "CONTENT",
                 "lastupdate": "Last update",
                 "statusCaps": "STATUS",

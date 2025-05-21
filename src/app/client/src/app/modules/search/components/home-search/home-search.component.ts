@@ -180,8 +180,10 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     filters.primaryCategory = filters.primaryCategory || _.get(this.allTabData, 'search.filters.primaryCategory');
     filters.mimeType = filters.mimeType || _.get(mimeType, 'values');
     const userRoles = JSON.parse(localStorage.getItem('userProfile')).userRoles
-    filters.identifier = userRoles.length === 1 && userRoles[0].toLowerCase() === 'public'? _.map(this.enrolledSection.contents, content => _.get(content, 'metaData.courseId')) : []
-
+    const enrolledcCourseIds = _.map(this.enrolledSection.contents, content => _.get(content, 'metaData.courseId'));
+    filters.identifier = userRoles.length === 1 && userRoles[0].toLowerCase() === 'public'
+      ? (enrolledcCourseIds.length ? enrolledcCourseIds : ['dummy-course-id'])
+      : [];
     const _filters = _.get(this.allTabData, 'search.filters');
     _.forEach(_filters, (el, key) => {
       if (!['primaryCategory', 'mimeType'].includes(key) && !_.has(filters, key)) {

@@ -152,14 +152,15 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     this.frameworkService = frameworkService;
     this.formService = formService;
     this.activatedRoute.url.subscribe(url => {
-      this.contentType = url[0].path;
+      this.urlString = url[0].path
+      this.contentType = this.urlString === 'practice_assessment' ? 'Resource' : url[0].path;
+      const key = this.urlString === 'practice_assessment' ? 'practice_assessment' : this.contentType;
+      this.resourceType = this.configService.appConfig.resourceType[key];
+      this.creationFormLable = this.configService.appConfig.contentCreateTypeLable[key];
+      this.name = this.configService.appConfig.contentName[key] || 'Untitled';
+      this.description = this.configService.appConfig.contentDescription[key] || 'Untitled';
     });
-    this.resourceType = this.configService.appConfig.resourceType[this.contentType];
-    this.creationFormLable = this.configService.appConfig.contentCreateTypeLable[this.contentType];
-    this.name = this.configService.appConfig.contentName[this.contentType] ?
-                this.configService.appConfig.contentName[this.contentType] : 'Untitled';
-   this.description = this.configService.appConfig.contentDescription[this.contentType] ?
-   this.configService.appConfig.contentDescription[this.contentType] : 'Untitled';
+
   }
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(queryParams => {
@@ -227,7 +228,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
             const formServiceInputParams = {
               formType: this.formType,
               formAction: this.formAction,
-              contentType: this.contentType,
+              contentType: this.urlString.toLowerCase() === 'practice_assessment' ? 'assessment' : this.contentType,
               framework: this.framework
             };
             this.formService.getFormConfig(formServiceInputParams).subscribe(
@@ -326,6 +327,11 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
       requestData.contentType = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];
     }
 
+    if (this.urlString === 'practice_assessment') {
+      requestData.contentType = this.contentType
+      requestData.primaryCategory = "Practise Assess"
+    }
+
     return requestData;
   }
 
@@ -344,7 +350,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     if (!_.isUndefined(modal)) {
       modal.deny();
     }
-    if (this.contentType === 'studymaterial' || this.contentType === 'assessment') {
+    if (this.contentType === 'studymaterial' || this.contentType === 'assessment' || this.urlString === 'practice_assessment') {
       this.editorService.create(requestData).subscribe(res => {
         this.createLockAndNavigateToEditor({identifier: res.result.content_id});
       }, err => {
@@ -362,7 +368,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
   createLockAndNavigateToEditor (content) {
     const state = 'draft';
     const framework = this.framework;
-    if (this.contentType === 'studymaterial' || this.contentType === 'assessment') {
+    if (this.contentType === 'studymaterial' || this.contentType === 'assessment' || this.urlString === 'practice_assessment') {
       this.router.navigate(['/workspace/content/edit/content/', content.identifier, state, framework, 'Draft']);
     }  else if (this.contentType === 'course' || this.contentType === 'collection' || this.contentType === 'textbook') {
       const contentType = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];

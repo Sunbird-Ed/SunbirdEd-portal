@@ -152,7 +152,7 @@ export class UserService {
       this._cloudStorageUrls = document.getElementById('cloudStorageUrls') ? (<HTMLInputElement>document.getElementById('cloudStorageUrls')).value.split(',') : [];
     } catch (error) {
     }
-    this._slug = baseHref && baseHref.split('/')[1] ? baseHref.split('/')[1] : '';
+    this._slug = baseHref && baseHref.split('/')[1] ? baseHref.split('/')[1] : '';   
   }
   get slug() {
     return this._slug;
@@ -211,7 +211,15 @@ export class UserService {
     );
   }
 
-  public createUserWithType(userData: any, isSso: boolean): Observable<any> {
+  public expiryDate(userData: any): Observable<any> {
+    const option = {
+      url: this.config.urlConFig.URLS.CONTENT.SEARCH,
+      data: userData,
+    };
+    return this.publicDataService.postWithHeaders(option);
+  }
+
+public createUserWithType(userData: any, isSso: boolean): Observable<any> {
     const url = isSso
       ? this.config.urlConFig.URLS.USER.CREATE_SSO
       : this.config.urlConFig.URLS.USER.CREATE_PREFIX;
@@ -241,7 +249,6 @@ export class UserService {
     };
     return this.publicDataService.postWithHeaders(option);
   }
-
 
   getAllTrainingGroups(limit = 100): Observable<any[]> {
     return this.getTrainingGroups(limit, 0).pipe(
