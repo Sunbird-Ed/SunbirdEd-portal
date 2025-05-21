@@ -5,8 +5,8 @@ import { IUserProfile, IUserData, IOrganization } from '../../../shared/interfac
 import { LearnerService } from './../learner/learner.service';
 import { ContentService } from './../content/content.service';
 import { Injectable, Inject, EventEmitter } from '@angular/core';
-import { Observable, BehaviorSubject, iif, of, throwError } from 'rxjs';
-import { map, mergeMap, shareReplay } from 'rxjs/operators';
+import { Observable, BehaviorSubject, iif, of, throwError, forkJoin } from 'rxjs';
+import { map, mergeMap, shareReplay, switchMap} from 'rxjs/operators';
 import { v4 as UUID } from 'uuid';
 import * as _ from 'lodash-es';
 import { HttpClient } from '@angular/common/http';
@@ -211,15 +211,68 @@ export class UserService {
     );
   }
 
-  public createUser(userData: any): Observable<any> {
+  public createUserWithType(userData: any, isSso: boolean): Observable<any> {
+    const url = isSso
+      ? this.config.urlConFig.URLS.USER.CREATE_SSO
+      : this.config.urlConFig.URLS.USER.CREATE_PREFIX;
     const option = {
-      url: this.config.urlConFig.URLS.USER.CREATE_PREFIX,
+      url,
       data: userData,
     };
+
     return this.learnerService.postWithHeaders(option);
   }
 
+  getTrainingGroups(limit = 100, offset = 0): Observable<any> {
+    const baseUrl = this.config.urlConFig.URLS.CONTENT.SEARCH;
+    const url = `${baseUrl}?fields=name,code`;
+    const option = {
+      url,
+      data: {
+        request: {
+          filters: {
+            primaryCategory: 'Learner Profile',
+            mimeType: 'application/vnd.ekstep.content-collection'
+          },
+          limit,
+          offset
+        }
+      }
+    };
+    return this.publicDataService.postWithHeaders(option);
+  }
 
+
+  getAllTrainingGroups(limit = 100): Observable<any[]> {
+    return this.getTrainingGroups(limit, 0).pipe(
+      switchMap((initialRes) => {
+        const count = initialRes?.result?.count || 0;
+        const firstBatch = initialRes?.result?.content || [];
+        const totalPages = Math.ceil(count / limit);
+
+        if (totalPages <= 1) {
+          return of(firstBatch); 
+        }
+
+        const requests = Array.from({ length: totalPages - 1 }, (_, i) => {
+          const offset = (i + 1) * limit;
+          return this.getTrainingGroups(limit, offset);
+        });
+
+        return forkJoin(requests).pipe(
+          map((responses) => {
+            const remainingBatches = responses.reduce((acc, res) => {
+              if (res?.result?.content) {
+                acc.push(...res.result.content);
+              }
+              return acc;
+            }, []);
+            return [...firstBatch, ...remainingBatches];
+          })
+        );
+      })
+    );
+  }
 
   /**
    * get method to fetch appId.
