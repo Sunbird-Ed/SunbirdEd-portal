@@ -219,7 +219,7 @@ export class UserService {
     return this.publicDataService.postWithHeaders(option);
   }
 
-public createUserWithType(userData: any, isSso: boolean): Observable<any> {
+  public createUserWithType(userData: any, isSso: boolean): Observable<any> {
     const url = isSso
       ? this.config.urlConFig.URLS.USER.CREATE_SSO
       : this.config.urlConFig.URLS.USER.CREATE_PREFIX;

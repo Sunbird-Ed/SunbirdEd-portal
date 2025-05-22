@@ -18,10 +18,9 @@
     </div>
   </div>
 </div>
-<div class="ui container stackable grid m-0 sb-mid-container-min-height" style="justify-content: center;">
-  <div class="eight wide column sb-workspace-bg" style="display: flex; justify-content: center;">
-    <div class="ui segment"
-      style="width: 100%; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); background-color: inherit;">
+<div class="ui container stackable grid m-0 sb-mid-container-min-height">
+  <div class="eight wide column sb-workspace-bg">
+    <div class="ui segment">
       <h2 class="ui dividing header sb-color-primary">Create New User</h2>
       <form class="ui form" [formGroup]="userForm" (ngSubmit)="onSubmit()">
 
@@ -85,10 +84,9 @@
 
         <!-- Roles & Province -->
         <div class="two fields">
-          <!-- Roles Field -->
           <div class="field" [ngClass]="{ error: isFieldInvalid('roles') }">
             <label>Roles</label>
-            <mat-form-field appearance="fill" style="width: 100%; margin: 0;">
+            <mat-form-field appearance="fill">
               <mat-select formControlName="roles" multiple placeholder="Select roles">
                 <mat-option *ngFor="let role of rolesList" [value]="role">{{ role }}</mat-option>
               </mat-select>
@@ -98,10 +96,9 @@
             </div>
           </div>
 
-          <!-- Province Field -->
           <div class="field" [ngClass]="{ error: isFieldInvalid('province') }">
             <label>Province</label>
-            <mat-form-field appearance="fill" style="width: 100%; margin: 0;">
+            <mat-form-field appearance="fill">
               <mat-select formControlName="province" placeholder="Select province">
                 <mat-option *ngFor="let province of provinceList" [value]="province.value">
                   {{ province.label }}
@@ -114,12 +111,11 @@
           </div>
         </div>
 
-        <!-- Training Group and CIN-->
+        <!-- Training Group and CIN -->
         <div class="two fields">
-          <!-- Training Group -->
           <div class="field" [ngClass]="{ error: isFieldInvalid('trainingGroups') }">
-            <label>Training Group </label>
-            <mat-form-field appearance="fill" style="width: 100%; margin: 0;">
+            <label>Training Group</label>
+            <mat-form-field appearance="fill">
               <mat-select formControlName="trainingGroups" multiple placeholder="Select Training Group">
                 <mat-option *ngFor="let role of trainingGroupList" [value]="role.code">{{ role.code }}</mat-option>
               </mat-select>
@@ -129,7 +125,6 @@
             </div>
           </div>
 
-          <!-- CIN -->
           <div class="field" [ngClass]="{ error: isFieldInvalid('cin') }">
             <label>CIN</label>
             <input type="text" formControlName="cin" placeholder="Enter CIN" />
@@ -142,7 +137,7 @@
         <!-- Category and FMPS ID -->
         <div class="two fields">
           <div class="field" [ngClass]="{ error: isFieldInvalid('category') }">
-            <label>Category </label>
+            <label>Category</label>
             <input type="text" formControlName="category" placeholder="Enter Category" />
             <div *ngIf="isFieldInvalid('category')" class="ui pointing red basic label">
               Enter a valid Category.
@@ -150,7 +145,7 @@
           </div>
 
           <div class="field" [ngClass]="{ error: isFieldInvalid('idFmps') }">
-            <label> ID FMPS </label>
+            <label>ID FMPS</label>
             <input type="number" formControlName="idFmps" placeholder="Enter ID FMPS" />
             <div *ngIf="isFieldInvalid('idFmps')" class="ui pointing red basic label">
               Enter a valid ID of FMPS.
@@ -167,8 +162,7 @@
           </div>
         </div>
 
-        <button type="submit" class="sb-btn sb-btn-primary sb-btn-normal mt-16" [disabled]="userForm.invalid"
-          style="width: 100%; font-size: large;">
+        <button type="submit" class="sb-btn sb-btn-primary sb-btn-normal">
           Submit
         </button>
       </form>

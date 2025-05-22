@@ -1932,7 +1932,7 @@ const API_LIST = {
   },
   URL_PATTERN: [
     '/learner/user/v1/create',
-    'learner/user/v1/sso/create',
+    '/learner/user/v1/sso/create',
     '/learner/user/v1/feed/delete',
     '/content/content/v1/read/:do_id',
     '/content/content/v1/copy/:do_id',

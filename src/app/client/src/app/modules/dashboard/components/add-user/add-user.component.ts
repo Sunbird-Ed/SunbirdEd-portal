@@ -38,6 +38,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
       lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(30), Validators.pattern('^[A-Za-z]+$')]],
       email: ['', [Validators.required, Validators.email]],
       roles: [[], Validators.required],
+      password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/)]],
       province: ['', Validators.required],
       cin: ['', [Validators.required]],
       trainingGroups: ['', Validators.required],
@@ -46,20 +47,17 @@ export class AddUserComponent implements OnInit, OnDestroy {
       description: ['', [Validators.maxLength(500)]],
       userType: ['normal', Validators.required]
     })
-    this.userForm.get('userType')?.valueChanges.subscribe((userType) => {
+    this.userForm.get('userType')?.valueChanges.subscribe(userType => {
       const passwordControl = this.userForm.get('password');
-    
-      if (userType === 'sso') {
-        passwordControl?.clearValidators();          
-        passwordControl?.setValue('');               
+      if (userType !== 'sso') {
+        if (!passwordControl) {
+          this.userForm.addControl('password', this.fb.control('', Validators.required));
+        }
       } else {
-        passwordControl?.setValidators([
-          Validators.required,
-          Validators.minLength(8),
-          Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=[\\]{};\':"\\|,.<>/?]).{8,}$')
-        ]);
+        if (passwordControl) {
+          this.userForm.removeControl('password');
+        }
       }
-      passwordControl?.updateValueAndValidity();     
     });
     
     this.fetchAllTrainingGroups();
