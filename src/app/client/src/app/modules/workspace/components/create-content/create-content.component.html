@@ -115,6 +115,21 @@
         </div>
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.assessmentdescription}}</p>
       </div>
+            <!-- Practice Assessment -->
+      <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('assessment')"
+        appPermission [permission]='assessmentRole'>
+        <div class="ui link card" routerLink="practice_assessment" appTelemetryInteract
+          [telemetryInteractEdata]="{id:'createAssessment',type:'click',pageid:'create-assessment'}"
+          [telemetryInteractCdata]="[{ id: 'user:workspace:assessment:create', type: 'Feature' }, { id: 'SB-17206', type: 'Task' }]">
+          <div class="content">
+            <div class="textcontent">
+              <img src="./assets/images/checklist.png" width="36" class="ml-8" />
+              <span class="my-text ml-12">{{resourceService?.frmelmnts?.lbl?.practice}}</span>
+            </div>
+          </div>
+        </div>
+        <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.practicedescription}}</p>
+      </div>
     </div>
   </div>
   <!-- <div class="twelve wide column ">

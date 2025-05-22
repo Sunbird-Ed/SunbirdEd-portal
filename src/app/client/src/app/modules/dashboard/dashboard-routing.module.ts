@@ -53,7 +53,7 @@ const routes: Routes = [
             visible: false
           }
         }
-      },
+      }
     ]
   },
   {
@@ -73,7 +73,8 @@ const routes: Routes = [
     }
   },
   {
-    path: 'organization', component: UsageReportsComponent, canActivate: [AuthGuard],
+    path: 'organization', component: UsageReportsComponent, 
+    canActivate: [AuthGuard],
     data: {
       roles: 'dashboardRole',
       telemetry: { env: 'dashboard', pageid: 'org-admin-dashboard', type: 'view' },

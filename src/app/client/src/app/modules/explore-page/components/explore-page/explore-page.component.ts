@@ -68,6 +68,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public enrolledSection: any;
     public completedCourseSection: any;
     public selectedCourseBatches: any;
+    public allEnrolledCourses: any
     frameworkCategories;
     frameworkCategoriesObject;
     transformUserPreference;
@@ -313,6 +314,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         }
                         return formatedContent;
                     }));
+                    this.allEnrolledCourses = filteredCourses
                     completedCourseSection.contents = _.compact(_.map(filteredCourses, content => {
                         if (content.status !== 2) {
                             return null;
@@ -502,8 +504,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                     if (_.has(response, 'result.QuestionSet')) {
                                         this.searchResponse = _.merge(this.searchResponse, _.get(response, 'result.QuestionSet'));
                                     }
-                                    const filteredContents = omit(groupBy(this.searchResponse, content => {
-                                        return content[groupByKey] || content[this.frameworkCategoriesList[3]] || 'Others';
+                                    // const filteredContents = omit(groupBy(this.searchResponse, content => {
+                                    //     return content[groupByKey] || content[this.frameworkCategoriesList[3]] || 'My Courses';
+                                    // }), ['undefined']);
+                                    const filteredContents = omit(groupBy(_.filter(this.searchResponse, course => _.includes(_.map(this.allEnrolledCourses, content => _.get(content, 'courseId')), course.identifier)), content => {
+                                        return content[groupByKey] || content[this.frameworkCategoriesList[3]] || 'My courses';
                                     }), ['undefined']);
                                     for (const [key, value] of Object.entries(filteredContents)) {
                                         const isMultipleSubjects = key && key.split(',').length > 1;

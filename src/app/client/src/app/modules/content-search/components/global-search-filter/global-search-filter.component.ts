@@ -46,7 +46,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
   public frameworkCategoriesObject;
   public frameworkCategoriesList;
   public globalFilterCategories;
-
+  public currentSelectedTab: string
   @ViewChild('sbSearchFacetFilterComponent') searchFacetFilterComponent: any;
 
   filterFormTemplateConfig?: IFacetFilterFieldTemplateConfig[];
@@ -221,6 +221,9 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
 
   public updateRoute() {
     let queryFilters = _.get(this.activatedRoute, 'snapshot.queryParams');
+        if (!this.currentSelectedTab){
+      this.currentSelectedTab = queryFilters?.selectedTab
+    }
     if (this?.selectedFilters?.channel) {
       const channelIds = [];
       const facetsData = _.find(this.facets, { 'name': 'channel' });
@@ -244,7 +247,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
       this.selectedFilters['selectedTab'] = 'all';
     }
     this.router.navigate([], {
-      queryParams: this.queryParamsToOmit ? queryFilters : { ...queryFilters, ...this.selectedFilters },
+      queryParams: this.queryParamsToOmit ? { ...queryFilters, selectedTab: this.currentSelectedTab } : { ...this.selectedFilters, selectedTab: this.currentSelectedTab },
       relativeTo: this.activatedRoute.parent
     });
   }

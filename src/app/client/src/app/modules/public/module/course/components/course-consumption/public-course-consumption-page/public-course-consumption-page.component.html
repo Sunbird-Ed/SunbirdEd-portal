@@ -28,13 +28,7 @@
               <sui-rating class="ui star rating" [isReadonly]="true" [ngModel]="courseHierarchy.me_averageRating || 0"
                 [maximum]="5"></sui-rating>
 
-              <button tabindex="0" (click)="onShareLink()"
-                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix">
-                <i class="icon-svg icon-svg--xs icon-share mr-8"><svg class="icon icon-svg--primary">
-                    <use xlink:href="assets/images/sprite.svg#share"></use>
-                  </svg></i>
-                {{resourceService?.frmelmnts?.lbl?.share}}
-              </button>
+              
             </div>
           </div>
         </div>
@@ -85,13 +79,7 @@
   </div>
 </div>
 
-<app-modal-wrapper *ngIf="sharelinkModal" [config]="{disableClose: false, panelClass: 'material-modal'}"
-  (dismiss)="closeSharePopup('close-share-link-popup')">
-  <ng-template sbModalContent>
-    <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData">
-    </app-share-link>
-  </ng-template>
-</app-modal-wrapper>
+
 
 <div *ngIf="isDesktopApp">
   

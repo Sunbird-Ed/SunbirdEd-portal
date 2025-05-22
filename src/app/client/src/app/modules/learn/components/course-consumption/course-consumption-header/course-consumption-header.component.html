@@ -32,13 +32,7 @@
         <sui-rating *ngIf="courseStatus !== 'Unlisted'" class="star mini" [isReadonly]="true"
           [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"></sui-rating>
 
-        <button tabindex="0" (click)="onShareLink();sharelinkModal=true;"
-          class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix">
-          <i class="icon-svg icon-svg--xs icon-share mr-8"><svg class="icon icon-svg--primary">
-              <use xlink:href="assets/images/sprite.svg#share"></use>
-            </svg></i>
-          {{resourceService?.frmelmnts?.lbl?.share}}
-        </button>
+        
 
         <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix"
           *ngIf="!isDesktopApp && permissionService?.permissionAvailable && courseStatus !== 'Unlisted'" appPermission

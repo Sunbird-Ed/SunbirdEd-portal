@@ -225,13 +225,14 @@ const fetchUserByEmailId = async (emailId, req) => {
     url:
       envHelper.LEARNER_URL +
       "user/v1/exists/email/" +
-      +encodeURIComponent(emailId),
+      encodeURIComponent(emailId),
     headers: getHeaders(req),
     json: true,
   };
   console.log('check user exists', JSON.stringify(options));
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
+      console.log({ msg: "fetched user by email id", data })
       return _.get(data, 'result.exists');
     } else {
       logger.error({ msg: 'googleOauthHelper: fetchUserByEmailId failed', additionalInfo: { data } });

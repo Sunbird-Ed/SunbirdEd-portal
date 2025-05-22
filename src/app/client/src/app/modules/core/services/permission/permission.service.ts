@@ -4,7 +4,7 @@ import { UserService } from '../user/user.service';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash-es';
 import { RolesAndPermissions, Roles } from './../../interfaces';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, of } from 'rxjs';
 import { shareReplay, tap } from 'rxjs/operators';
 /**
  * Service to fetch permission and validate user permission
@@ -61,7 +61,7 @@ export class PermissionService {
   private getPermissionsData() {
     const option = {
       url: this.config.urlConFig.URLS.ROLES.READ
-    };
+    };   
     return this.learner.get(option).pipe(tap(
       (data: ServerResponse) => {
         if (data.result.roles) {
