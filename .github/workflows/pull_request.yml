@@ -22,7 +22,7 @@ jobs:
         id: cache
         uses: actions/cache@v4
         with:
-          path: node_modules
+          path: src/app/client/node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-node-modules-
@@ -35,11 +35,11 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         uses: actions/cache@v4
         with:
-          path: node_modules
+          path: src/app/client/node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Run lint
-        run: npm run lint
+        run: yarn lint
         working-directory: src/app/client
 
   test:
@@ -78,5 +78,5 @@ jobs:
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Run test shard ${{ matrix.shard }}
-        run: npm run test:ci -- --shard=${{ matrix.shard }}/8
+        run: yarn test:ci -- --shard=${{ matrix.shard }}/8
         working-directory: src/app/client
