@@ -118,6 +118,15 @@
                 "copyId": "معرف النسخ"
             },
             "lbl": {
+                "page": "مشاركة",
+                "loading": "تحميل",
+                "youJustCompleted": "لقد أكملت للتو",
+                "reply": "الرد",
+                "exit": "خروج.",
+                "upNext": "التالي",
+                "download": "تحميل",
+                "print": "طباعة",
+                "pagesRead": "الصفحات المقروءة:",
                 "province": "مقاطعة",
                 "category": "فئة",
                 "trainingGroup": "مجموعة تدريب",

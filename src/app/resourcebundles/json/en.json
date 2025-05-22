@@ -118,6 +118,15 @@
                 "copyId": "Copy ID"
             },
             "lbl": {
+                "page": "Page",
+                "loading": "Loading",
+                "youJustCompleted": "You just completed",
+                "reply": "Reply",
+                "exit": "Exit",
+                "upNext": "Up Next",
+                "download": "Download",
+                "print": "Print",
+                "pagesRead": "Pages read:",
                 "addNewMember": "Add member",
                 "category": "Category",
                 "trainingGroup": "Training Group",

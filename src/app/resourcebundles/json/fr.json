@@ -118,6 +118,15 @@
                 "copyId": "Copier ID"
             },
             "lbl": {
+              "page": "Page",
+              "loading": "Chargement",
+              "youJustCompleted": "Vous venez de terminer",
+              "reply": "Répondre",
+              "exit": "Quitter",
+              "upNext": "à suivre",
+              "download": "Télécharger",
+              "print": "Imprimer",
+              "pagesRead": "Pages lues:",
               "addNewMember": "Ajouter un membre",
               "province": "Province",
               "category": "Catégorie",
