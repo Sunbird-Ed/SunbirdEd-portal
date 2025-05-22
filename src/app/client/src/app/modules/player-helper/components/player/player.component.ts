@@ -101,6 +101,17 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   ngOnInit() {
     this.checkForQumlPlayer()
+    // Initialize the resourceBundles if it doesn't exist
+    if (this.playerConfig) {
+        this.playerConfig.context = {
+            ...this.playerConfig.context,
+            resourceBundles: {}
+        };
+    }
+    // set the resource bundles
+    if (this.resourceService && this.resourceService.frmelmnts.lbl) {
+        this.playerConfig.context.resourceBundles = this.resourceService.frmelmnts.lbl;
+    } 
     // If `sessionStorage` has UTM data; append the UTM data to context.cdata
     if (this.playerConfig && sessionStorage.getItem('UTM')) {
       let utmData;
