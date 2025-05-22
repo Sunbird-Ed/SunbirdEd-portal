@@ -258,6 +258,15 @@
           "options": {
             "browserTarget": "src:build"
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
@@ -272,6 +281,9 @@
     }
   },
   "cli": {
-    "analytics": "c933c758-ef3b-463a-8d9c-7044a53ab381"
+    "analytics": "c933c758-ef3b-463a-8d9c-7044a53ab381",
+    "schematicCollections": [
+      "angular-eslint"
+    ]
   }
 }

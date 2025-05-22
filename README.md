@@ -274,3 +274,27 @@ Before running this workflow, ensure the following:
 
      - **For GitHub Container Registry (GHCR)**:
        - `GITHUB_TOKEN`: Automatically available for GitHub Container Registry.
+
+#### Code Quality
+
+The project maintains code quality through automated checks that run on every pull request:
+
+1. **Linting**
+   - Runs ESLint to check code style and quality
+   - Command: `yarn lint`
+
+2. **Dependencies**
+   - Uses `yarn install` for deterministic installations
+   - GitHub Actions cache for faster builds
+
+3. **Code Formatting**
+   - Ensures consistent code formatting
+   - Can be automatically fixed using `yarn lint:fix`
+
+4. **Testing**
+   - Runs automated tests using 8 parallel shards for faster execution
+   - Each shard runs a portion of the test suite
+   - Tests are executed in the `src/app/client` directory
+   - Command: `yarn test:ci`
+
+These checks ensure consistent code style and secure dependency management.
