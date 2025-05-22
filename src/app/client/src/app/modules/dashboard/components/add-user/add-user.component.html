@@ -18,106 +18,154 @@
     </div>
   </div>
 </div>
-<div class="ui container stackable grid m-0 sb-mid-container-min-height" style="justify-content: center;">
-    <div class="eight wide column sb-workspace-bg" style="display: flex; justify-content: center;">
-      <div class="ui segment" style="width: 100%; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); background-color: inherit;">
-        <h2 class="ui dividing header sb-color-primary">Create New User</h2>
-        <form class="ui form" [formGroup]="userForm" (ngSubmit)="onSubmit()">
-          <!-- First & Last Name -->
-          <div class="two fields">
-            <div class="field" [ngClass]="{ error: isFieldInvalid('firstName') }">
-              <label>First Name</label>
-              <input type="text" formControlName="firstName" placeholder="Enter first name" />
-              <div *ngIf="isFieldInvalid('firstName')" class="ui pointing red basic label">
-                First name must be 2–30 characters and contain only letters.
+<div class="ui container stackable grid m-0 sb-mid-container-min-height">
+  <div class="eight wide column sb-workspace-bg">
+    <div class="ui segment">
+      <h2 class="ui dividing header sb-color-primary">Create New User</h2>
+      <form class="ui form" [formGroup]="userForm" (ngSubmit)="onSubmit()">
+
+        <!-- USER TYPE -->
+        <div class="field">
+          <label>User Type</label>
+          <div class="inline fields">
+            <div class="field">
+              <div class="ui radio checkbox">
+                <input type="radio" formControlName="userType" value="normal" />
+                <label>Normal</label>
               </div>
             </div>
-  
-            <div class="field" [ngClass]="{ error: isFieldInvalid('lastName') }">
-              <label>Last Name</label>
-              <input type="text" formControlName="lastName" placeholder="Enter last name" />
-              <div *ngIf="isFieldInvalid('lastName')" class="ui pointing red basic label">
-                Last name must be 2–30 characters and contain only letters.
-              </div>
-            </div>
-          </div>
-  
-          <!-- Email & National ID -->
-          <div class="two fields">
-            <div class="field" [ngClass]="{ error: isFieldInvalid('email') }">
-              <label>Email Address (UserName)</label>
-              <input type="email" formControlName="email" placeholder="Enter email address" />
-              <div *ngIf="isFieldInvalid('email')" class="ui pointing red basic label">
-                Enter a valid email address.
-              </div>
-            </div>
-  
-            <div class="field" [ngClass]="{ error: isFieldInvalid('password') }">
-              <label>Password</label>
-              <input type="password" formControlName="password" placeholder="Enter Password" />
-              <div *ngIf="isFieldInvalid('password')" class="ui pointing red basic label">
-                Enter a valid Password.
-              </div>
-            </div>
-  
-  
-          </div>
-  
-  
-          <!-- Roles & Province -->
-          <div class="two fields">
-            <!-- Roles Field -->
-            <div class="field" [ngClass]="{ error: isFieldInvalid('roles') }">
-              <label>Roles</label>
-              <mat-form-field appearance="fill" style="width: 100%; margin: 0;">
-                <mat-select formControlName="roles" multiple placeholder="Select roles">
-                  <mat-option *ngFor="let role of rolesList" [value]="role">{{ role }}</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <div *ngIf="isFieldInvalid('roles')" class="ui pointing red basic label">
-                Please select at least one role.
-              </div>
-            </div>
-  
-            <!-- Province Field -->
-            <div class="field" [ngClass]="{ error: isFieldInvalid('province') }">
-              <label>Province</label>
-              <mat-form-field appearance="fill" style="width: 100%; margin: 0;">
-                <mat-select formControlName="province" placeholder="Select province">
-                  <mat-option *ngFor="let province of provinceList" [value]="province.value">
-                    {{ province.label }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <div *ngIf="isFieldInvalid('province')" class="ui pointing red basic label">
-                Please select a province.
+            <div class="field">
+              <div class="ui radio checkbox">
+                <input type="radio" formControlName="userType" value="sso" />
+                <label>SSO</label>
               </div>
             </div>
           </div>
-  
-          <!-- Description -->
-          <div class="two fields">
-            <div class="field" [ngClass]="{ error: isFieldInvalid('nationalId') }">
-              <label>National ID</label>
-              <input type="text" formControlName="nationalId" placeholder="Enter National ID" />
-              <div *ngIf="isFieldInvalid('nationalId')" class="ui pointing red basic label">
-                National ID must be alphanumeric and 6–20 characters.
-              </div>
+        </div>
+
+        <!-- First & Last Name -->
+        <div class="two fields">
+          <div class="field" [ngClass]="{ error: isFieldInvalid('firstName') }">
+            <label>First Name</label>
+            <input type="text" formControlName="firstName" placeholder="Enter first name" />
+            <div *ngIf="isFieldInvalid('firstName')" class="ui pointing red basic label">
+              First name must be 2–30 characters and contain only letters.
             </div>
-            <div class="field" [ngClass]="{ error: isFieldInvalid('description') }">
-              <label>Description</label>
-              <textarea formControlName="description" rows="3" placeholder="Enter description (optional)"></textarea>
-              <div *ngIf="isFieldInvalid('description')" class="ui pointing red basic label">
-                Description can be up to 250 characters.
-              </div>
-            </div>
-  
           </div>
-  
-          <button type="submit" class="sb-btn sb-btn-primary sb-btn-normal mt-16" [disabled]="userForm.invalid" style="width: 100%; font-size: large;">
-            Submit
-          </button>
-        </form>
-      </div>
+
+          <div class="field" [ngClass]="{ error: isFieldInvalid('lastName') }">
+            <label>Last Name</label>
+            <input type="text" formControlName="lastName" placeholder="Enter last name" />
+            <div *ngIf="isFieldInvalid('lastName')" class="ui pointing red basic label">
+              Last name must be 2–30 characters and contain only letters.
+            </div>
+          </div>
+        </div>
+
+        <!-- Email & Password -->
+        <div class="two fields">
+          <div class="field" [ngClass]="{ error: isFieldInvalid('email') }">
+            <label>Email Address (UserName)</label>
+            <input type="email" formControlName="email" placeholder="Enter email address" />
+            <div *ngIf="isFieldInvalid('email')" class="ui pointing red basic label">
+              Enter a valid email address.
+            </div>
+          </div>
+
+          <div class="field" *ngIf="userForm.value.userType !== 'sso'"
+            [ngClass]="{ error: isFieldInvalid('password') }">
+            <label>Password</label>
+            <input type="password" formControlName="password" placeholder="Enter Password" />
+            <div *ngIf="isFieldInvalid('password')" class="ui pointing red basic label">
+              Enter a valid Password.
+            </div>
+          </div>
+        </div>
+
+        <!-- Roles & Province -->
+        <div class="two fields">
+          <div class="field" [ngClass]="{ error: isFieldInvalid('roles') }">
+            <label>Roles</label>
+            <mat-form-field appearance="fill">
+              <mat-select formControlName="roles" multiple placeholder="Select roles">
+                <mat-option *ngFor="let role of rolesList" [value]="role">{{ role }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div *ngIf="isFieldInvalid('roles')" class="ui pointing red basic label">
+              Please select at least one role.
+            </div>
+          </div>
+
+          <div class="field" [ngClass]="{ error: isFieldInvalid('province') }">
+            <label>Province</label>
+            <mat-form-field appearance="fill">
+              <mat-select formControlName="province" placeholder="Select province">
+                <mat-option *ngFor="let province of provinceList" [value]="province.value">
+                  {{ province.label }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div *ngIf="isFieldInvalid('province')" class="ui pointing red basic label">
+              Please select a province.
+            </div>
+          </div>
+        </div>
+
+        <!-- Training Group and CIN -->
+        <div class="two fields">
+          <div class="field" [ngClass]="{ error: isFieldInvalid('trainingGroups') }">
+            <label>Training Group</label>
+            <mat-form-field appearance="fill">
+              <mat-select formControlName="trainingGroups" multiple placeholder="Select Training Group">
+                <mat-option *ngFor="let role of trainingGroupList" [value]="role.code">{{ role.code }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div *ngIf="isFieldInvalid('trainingGroups')" class="ui pointing red basic label">
+              Please select at least one Training Group.
+            </div>
+          </div>
+
+          <div class="field" [ngClass]="{ error: isFieldInvalid('cin') }">
+            <label>CIN</label>
+            <input type="text" formControlName="cin" placeholder="Enter CIN" />
+            <div *ngIf="isFieldInvalid('cin')" class="ui pointing red basic label">
+              Enter a valid CIN.
+            </div>
+          </div>
+        </div>
+
+        <!-- Category and FMPS ID -->
+        <div class="two fields">
+          <div class="field" [ngClass]="{ error: isFieldInvalid('category') }">
+            <label>Category</label>
+            <input type="text" formControlName="category" placeholder="Enter Category" />
+            <div *ngIf="isFieldInvalid('category')" class="ui pointing red basic label">
+              Enter a valid Category.
+            </div>
+          </div>
+
+          <div class="field" [ngClass]="{ error: isFieldInvalid('idFmps') }">
+            <label>ID FMPS</label>
+            <input type="number" formControlName="idFmps" placeholder="Enter ID FMPS" />
+            <div *ngIf="isFieldInvalid('idFmps')" class="ui pointing red basic label">
+              Enter a valid ID of FMPS.
+            </div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="field" [ngClass]="{ error: isFieldInvalid('description') }">
+          <label>Description</label>
+          <textarea formControlName="description" rows="3" placeholder="Enter description (optional)"></textarea>
+          <div *ngIf="isFieldInvalid('description')" class="ui pointing red basic label">
+            Description can be up to 250 characters.
+          </div>
+        </div>
+
+        <button type="submit" class="sb-btn sb-btn-primary sb-btn-normal">
+          Submit
+        </button>
+      </form>
     </div>
   </div>
+</div>
