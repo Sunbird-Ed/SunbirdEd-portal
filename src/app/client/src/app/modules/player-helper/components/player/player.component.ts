@@ -206,6 +206,16 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
   loadDefaultPlayer(url = this.configService.appConfig.PLAYER_CONFIG.baseURL) {
     const iFrameSrc = url + '&build_number=' + this.buildNumber;
+    if (this.playerConfig) {
+      this.playerConfig.context = {
+          ...this.playerConfig.context,
+          resourceBundles: {}
+      };
+  }
+  // set the resource bundles
+  if (this.resourceService && this.resourceService.frmelmnts.lbl) {
+      this.playerConfig.context.resourceBundles = this.resourceService.frmelmnts.lbl;
+  } 
     this.playerConfig.context.version = this.buildNumber;
     setTimeout(() => {
       const playerElement = this.contentIframe.nativeElement;

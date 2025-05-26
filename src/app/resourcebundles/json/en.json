@@ -118,6 +118,14 @@
                 "copyId": "Copy ID"
             },
             "lbl": {
+                "submitToContinue": "Submit to continue.",
+                "totalQuestions": "Total questions:",
+                "questionsAnswered": "Questions answered:",
+                "questionsSkipped": "Questions skipped:",
+                "review": "Review",
+                "selectAnswersToContinue": "Select one or more answers to continue.",
+
+
                 "page": "Page",
                 "loading": "Loading",
                 "youJustCompleted": "You just completed",

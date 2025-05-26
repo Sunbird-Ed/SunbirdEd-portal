@@ -118,6 +118,12 @@
                 "copyId": "معرف النسخ"
             },
             "lbl": {
+                "submitToContinue": "أرسل للمتابعة.",
+  "totalQuestions": "إجمالي الأسئلة:",
+  "questionsAnswered": "الأسئلة المُجابة:",
+  "questionsSkipped": "الأسئلة المُتخطاة:",
+  "review": "مراجعة",
+  "selectAnswersToContinue": "اختر إجابة أو أكثر للمتابعة.",
                 "page": "صفحة",
                 "loading": "تحميل",
                 "youJustCompleted": "لقد أكملت للتو",
