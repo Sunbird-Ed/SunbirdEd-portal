@@ -12,7 +12,7 @@ echo "buildDockerImage: " $buildDockerImage
 echo "buildCdnAssests: " $buildCdnAssests
 if [ $buildCdnAssests == true ]
 then
-    cdnUrl=$6
+    cdnUrl=$4
     echo "cdnUrl: " $cdnUrl
 fi
 
