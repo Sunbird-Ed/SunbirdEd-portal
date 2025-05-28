@@ -141,13 +141,13 @@
     "video.js": "7.18.1",
     "videojs-contrib-quality-levels": "2.1.0",
     "videojs-http-source-selector": "1.1.6",
+    "@types/jquery.fancytree": "2.7.34",
     "zone.js": "0.11.4"
   },
   "devDependencies": {
     "@angular/language-service": "14.3.0",
     "@types/jest": "29.5.0",
     "@types/jquery": "3.5.29",
-    "@types/jquery.fancytree": "2.7.34",
     "@types/node": "12.20.15",
     "angular-eslint": "19.4.0",
     "codelyzer": "6.0.0",
