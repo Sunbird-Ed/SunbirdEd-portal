@@ -66,7 +66,7 @@ build_server(){
     echo "starting server yarn install"
     yarn install --ignore-engines --no-progress --production=true
     echo "completed server yarn install"
-    node helpers/resourceBundles/build.js -task="phraseAppPull"
+    # node helpers/resourceBundles/build.js -task="phraseAppPull"
 }
 
 build_client 
