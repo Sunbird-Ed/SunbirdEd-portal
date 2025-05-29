@@ -257,7 +257,7 @@ The workflow is defined in [`.github/workflows/image-push.yml`](.github/workflow
 Before running this workflow, ensure the following:
 
 1. ***Secrets Configuration***:
-   - Add the required secrets based on the value passed to `REGISTRY_PROVIDER` variable:
+   - Add the required secrets based on the value passed to `REGISTRY_PROVIDER` variable: If no values are passed in variables and secrets the image will be pushed to GHCR.
      - **For Google Container Registry (GCR)**:
        - `REGISTRY_PROVIDER` : gcp
        - `GCP_SERVICE_ACCOUNT_KEY`: Base64-encoded Google Cloud service account key.
