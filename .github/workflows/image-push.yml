@@ -18,6 +18,31 @@ jobs:
         with:
           node-version: '18.20.*'
 
+      - name: Determine registry and login
+        run: |
+          case "${{ vars.REGISTRY_PROVIDER }}" in
+          "gcp")
+            echo "Using Google Container Registry"
+            echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" | base64 --decode > $HOME/gcloud-key.json
+            gcloud auth activate-service-account --key-file=$HOME/gcloud-key.json
+            gcloud auth configure-docker ${{ secrets.REGISTRY_NAME }}
+            REGISTRY_URL=$(echo "${{ secrets.REGISTRY_URL }}" | tr '[:upper:]' '[:lower:]')
+            ;;
+          "azure" | "dockerhub")
+            echo "Logging in to Container Registry"
+            echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login "${{ secrets.REGISTRY_NAME }}" \
+              --username "${{ secrets.REGISTRY_USERNAME }}" --password-stdin
+            REGISTRY_URL=$(echo "${{ secrets.REGISTRY_URL }}" | tr '[:upper:]' '[:lower:]')
+            ;;
+          *)
+            echo "Using GitHub Container Registry (GHCR)"
+            REPO_NAME_LOWERCASE=$(echo "${GITHUB_REPOSITORY}" | tr '[:upper:]' '[:lower:]')
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            REGISTRY_URL="ghcr.io/$REPO_NAME_LOWERCASE"
+            ;;
+          esac
+          echo "REGISTRY_URL=${REGISTRY_URL}" >> $GITHUB_ENV
+
       - name: Run build script
         run: |
           IMAGE_NAME="player"
@@ -28,31 +53,6 @@ jobs:
 
           echo "IMAGE_NAME=${IMAGE_NAME}" >> $GITHUB_ENV
           echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_ENV
-
-      - name: Determine registry and login
-        run: |
-
-            if [[ -n "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" ]]; then
-            echo "Using Google Container Registry"
-            echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" | base64 --decode > $HOME/gcloud-key.json
-            gcloud auth activate-service-account --key-file=$HOME/gcloud-key.json
-            gcloud auth configure-docker ${{ secrets.REGISTRY_NAME }}
-            REGISTRY_URL=$(echo "${{ secrets.REGISTRY_URL }}" | tr '[:upper:]' '[:lower:]')
-
-            elif [[ -n "${{ secrets.REGISTRY_USERNAME }}" && -n "${{ secrets.REGISTRY_PASSWORD }}" ]]; then
-            echo "Logging in to custom Docker registry"
-            echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login ${{ secrets.REGISTRY_NAME }} \
-              --username ${{ secrets.REGISTRY_USERNAME }} --password-stdin
-            REGISTRY_URL=$(echo "${{ secrets.REGISTRY_URL }}" | tr '[:upper:]' '[:lower:]')
-
-            else
-            echo "Using GitHub Container Registry (GHCR)"
-            REPO_NAME_LOWERCASE=$(echo "${GITHUB_REPOSITORY}" | tr '[:upper:]' '[:lower:]')
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            REGISTRY_URL="ghcr.io/$REPO_NAME_LOWERCASE"
-            fi
-
-            echo "REGISTRY_URL=${REGISTRY_URL}" >> $GITHUB_ENV
 
       - name: Push Docker image
         run: |
