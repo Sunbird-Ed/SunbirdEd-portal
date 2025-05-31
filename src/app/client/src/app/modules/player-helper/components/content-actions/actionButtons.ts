@@ -54,13 +54,13 @@ export const actionButtons: IActionButton[] = [
 
   export const fullScreenActionButtons: IActionButton[] = [
 
-    {
-        name: ActionButtonType.SHARE,
-        label: 'Share',
-        disabled: false,
-        isInActive: false,
-        showSeperator: false
-    },
+    // {
+    //     name: ActionButtonType.SHARE,
+    //     label: 'Share',
+    //     disabled: false,
+    //     isInActive: false,
+    //     showSeperator: false
+    // },
     {
         name: ActionButtonType.RATE,
         label: 'Rate',
