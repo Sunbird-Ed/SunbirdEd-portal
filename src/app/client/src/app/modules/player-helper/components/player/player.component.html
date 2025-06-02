@@ -11,7 +11,14 @@
 </div>
 <!-- Portal player-->
 <div class="h-100" *ngIf="!isMobileOrTab && !showNewPlayer && !isContentDeleted">
-    <iframe #contentIframe id="contentPlayer" title="Content Player" aria-label="Content Player" class="contentViewerIframeShadow" [ngClass]="{'player-fullscreen': isFullScreenView}" name="contentPlayer"></iframe>
+    <iframe #contentIframe id="contentPlayer" 
+        title="Content Player" 
+        aria-label="Content Player" 
+        class="contentViewerIframeShadow" 
+        [ngClass]="{'player-fullscreen': isFullScreenView}"
+        [attr.dir]="getDocumentDir()"
+        name="contentPlayer">
+    </iframe>
 </div>
 <div *ngIf="!isMobileOrTab && showNewPlayer && !isContentDeleted" class="w-100 h-100">
         <div class="contentViewerIframeShadow" [ngClass]="{'player-fullscreen content-full-video': isFullScreenView}">

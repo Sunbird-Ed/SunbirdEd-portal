@@ -137,3 +137,24 @@
   }
 }
 
+
+.contentViewerIframeShadow {
+  &[dir="rtl"] {
+    transform: scaleX(-1); // This will flip the iframe content
+    
+    // If the content inside iframe needs to be flipped back
+    iframe {
+      transform: scaleX(-1); // This will flip the content back to normal
+    }
+  }
+}
+
+// Handle RTL in fullscreen mode
+.player-fullscreen {
+  &[dir="rtl"] {
+    left: auto;
+    right: 0;
+    top: 0 !important;
+  }
+}
+
