@@ -99,10 +99,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       }
   }
 
+  static readonly BLOCKED_KEYS = ['ArrowRight', 'ArrowLeft', ' ', 'k', 'l', 'j'];
+
   @HostListener('window:keydown', ['$event'])
   blockKeys(event: KeyboardEvent) {
-    const blockedKeys = ['ArrowRight', 'ArrowLeft', ' ', 'k', 'l', 'j'];
-    if (this.playerType==="video-player" && blockedKeys.includes(event.key)) {
+    if (this.playerType==="video-player" && PlayerComponent.BLOCKED_KEYS.includes(event.key)) {
       event.preventDefault();
       event.stopPropagation();
       // console.log('Blocked key:', event.key);
