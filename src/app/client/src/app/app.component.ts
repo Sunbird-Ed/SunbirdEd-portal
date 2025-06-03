@@ -480,7 +480,7 @@ export class AppComponent implements OnInit, OnDestroy {
       // Set initial lang and dir attributes on html tag
           const portalLanguage = localStorage.getItem('portalLanguage') || 'ar';
           let dir = 'ltr';
-          if (portalLanguage === 'ar') dir = 'rtl';
+          if (portalLanguage === 'ar'  || portalLanguage === "\"ar\"") dir = 'rtl';
           this._document.documentElement.lang = portalLanguage;
           this._document.documentElement.dir = dir;
       }, 1000);
