@@ -181,6 +181,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   ngAfterViewInit() {
     if (this.playerConfig) {
       this.loadPlayer();
+      this.removeTabIndexToPreventPlayerKeyBoardEvent();
     }
   }
 
@@ -190,8 +191,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.cdr.detectChanges();
     if (this.playerConfig) {
       this.playerOverlayImage = this.overlayImagePath ? this.overlayImagePath : _.get(this.playerConfig, 'metadata.appIcon');
-      this.loadPlayer();
-      this.removeTabIndexToPreventPlayerKeyBoardEvent();
+      this.loadPlayer();      
     }
   }
   loadCdnPlayer() {
