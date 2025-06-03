@@ -95,8 +95,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   public handleOrientationChange() {
     const screenType = _.get(screen, 'orientation.type');
       if ( screenType === 'portrait-primary' || screenType === 'portrait-secondary' ) {
-        this.closeFullscreen();
-      }
+      this.closeFullscreen();
+    }
   }
 
   static readonly BLOCKED_KEYS = ['ArrowRight', 'ArrowLeft', ' ', 'k', 'l', 'j'];
@@ -114,15 +114,15 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.checkForQumlPlayer()
     // Initialize the resourceBundles if it doesn't exist
     if (this.playerConfig) {
-        this.playerConfig.context = {
-            ...this.playerConfig.context,
-            resourceBundles: {}
-        };
+      this.playerConfig.context = {
+        ...this.playerConfig.context,
+        resourceBundles: {}
+      };
     }
     // set the resource bundles
     if (this.resourceService && this.resourceService.frmelmnts.lbl) {
-        this.playerConfig.context.resourceBundles = this.resourceService.frmelmnts.lbl;
-    } 
+      this.playerConfig.context.resourceBundles = this.resourceService.frmelmnts.lbl;
+    }
     // If `sessionStorage` has UTM data; append the UTM data to context.cdata
     if (this.playerConfig && sessionStorage.getItem('UTM')) {
       let utmData;
@@ -143,7 +143,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     // Check for loggedIn user; and append user data to context object
     // User data (`firstName` and `lastName`) is used to show at the end of quiz
     if (this.playerConfig) {
-        this.addUserDataToContext();
+      this.addUserDataToContext();
     }
     this.isMobileOrTab = this.deviceDetectorService.isMobile() || this.deviceDetectorService.isTablet();
     if (this.isSingleContent === false) {
@@ -151,22 +151,22 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
     this.setTelemetryData();
     this.navigationHelperService.contentFullScreenEvent.
-    pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
-      this.isFullScreenView = isFullScreen;
+      pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
+        this.isFullScreenView = isFullScreen;
       const root: HTMLElement = document.getElementsByTagName( 'html' )[0];
-      if (isFullScreen) {
-        root.classList.add('PlayerMediaQueryClass');
-        document.body.classList.add('o-y-hidden');
-      } else {
-        root.classList.remove('PlayerMediaQueryClass');
-        document.body.classList.remove('o-y-hidden');
-      }
-      if (this.isDesktopApp) {
-        const hideCM = isFullScreen ? true : false;
-        this.navigationHelperService.handleContentManagerOnFullscreen(hideCM);
-      }
-      this.loadPlayer();
-    });
+        if (isFullScreen) {
+          root.classList.add('PlayerMediaQueryClass');
+          document.body.classList.add('o-y-hidden');
+        } else {
+          root.classList.remove('PlayerMediaQueryClass');
+          document.body.classList.remove('o-y-hidden');
+        }
+        if (this.isDesktopApp) {
+          const hideCM = isFullScreen ? true : false;
+          this.navigationHelperService.handleContentManagerOnFullscreen(hideCM);
+        }
+        this.loadPlayer();
+      });
 
     this.contentUtilsServiceService.contentShareEvent.pipe(takeUntil(this.unsubscribe)).subscribe(data => {
       if (this.isMobileOrTab && data === 'close') {
@@ -191,6 +191,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     if (this.playerConfig) {
       this.playerOverlayImage = this.overlayImagePath ? this.overlayImagePath : _.get(this.playerConfig, 'metadata.appIcon');
       this.loadPlayer();
+      this.removeTabIndexToPreventPlayerKeyBoardEvent();
     }
   }
   loadCdnPlayer() {
@@ -273,6 +274,21 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     );
   }
 
+  removeTabIndexToPreventPlayerKeyBoardEvent(){
+    setTimeout(() => {
+      const unwantedButtons = document.querySelectorAll(
+        '.vjs-slider, .vjs-playback-rate, .vjs-menu-button, .vjs-menu-item'
+      );
+      
+      unwantedButtons.forEach((el: any) => {
+        el.removeAttribute('tabindex'); // To prevent keyboard selection
+        el.setAttribute('aria-disabled', 'true');
+        (el as HTMLElement).style.pointerEvents = 'none';
+        (el as HTMLElement).style.opacity = '0.5';
+      });
+    }, 1000);    
+  }
+
   checkForQumlPlayer() {
     if (_.get(this.playerConfig, 'metadata.mimeType') === this.configService?.appConfig?.PLAYER_CONFIG?.MIME_TYPE?.questionset) {
       this.playerConfig.config.sideMenu.showDownload = false;
@@ -340,14 +356,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
           this.playerConfig['config']['sideMenu'] = {
             "showDownload": false,
             showExit: false,
-            showShare: false,            
+            showShare: false,
           }
           this.playerConfig.config['playBackSpeeds'] = [1];
-          if(this.playerType==='video-player'){
-            this.playerConfig.config['showPlaybackSpeed'] = false;
-            this.playerConfig.config['showControls'] = false;
-            this.playerConfig.config['enableKeyboardNavigation'] = false;
-          }
         }
       });
     } else {
@@ -408,6 +419,18 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   eventHandler(event) {
+    const events = ["ratechange", "RATE_CHANGE"];
+    if(this.playerType === 'video-player' && events.includes(event?.edata?.type)){
+      const player = (window as any).videojs?.getPlayer?.('vjs_video_3');
+      if (player) {
+        // Disable rate change
+        player.on('ratechange', () => {
+          if (player.playbackRate() !== 1) {
+            player.playbackRate(1);
+          }
+        });
+      }
+    }
     if (event.eid === 'END') {
       const metaDataconfig = event.metaData;
       if (this.userService.loggedIn) {
@@ -548,7 +571,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         this.modal.showContentRatingModal = true;
       }
     }
-     /** to change the view of the content-details page */
+    /** to change the view of the content-details page */
     this.showPlayIcon = true;
     this.closePlayerEvent.emit();
   }
@@ -576,7 +599,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.focusOnReplay();
     this.ratingPopupClose.emit({});
   }
-  
+
   focusOnReplay() {
     if (this.playerType === 'quml-player') {
       const replayButton: HTMLElement = document.querySelector('.replay-section');
@@ -585,7 +608,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       }
     }
   }
-  
+
   public addUserDataToContext() {
     if (this.userService.loggedIn) {
       this.userService.userData$.subscribe((user: any) => {

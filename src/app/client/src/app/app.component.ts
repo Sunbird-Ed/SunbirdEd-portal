@@ -976,8 +976,8 @@ export class AppComponent implements OnInit, OnDestroy {
         this._document.documentElement.lang = item.value;
         this._document.documentElement.dir = item.dir;
       } else {
-        this._document.documentElement.lang = 'en';
-        this._document.documentElement.dir = 'ltr';
+        this._document.documentElement.lang = 'ar';
+        this._document.documentElement.dir = 'rtl';
       }
     });
   }

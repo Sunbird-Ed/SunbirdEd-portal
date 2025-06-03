@@ -143,3 +143,17 @@
   }
 }
 
+/* iOS/Mac specific overrides */
+@supports (-webkit-touch-callout: none) {
+  ::ng-deep .player-container .forward,
+  ::ng-deep .player-container .back-ward {
+    pointer-events: none !important;
+    display: none !important;
+  }
+
+  ::ng-deep .vjs-progress-control,
+  ::ng-deep .vjs-playback-rate .vjs-menu-button {     
+    pointer-events: none !important;
+    opacity: 0.4; 
+  }  
+}
