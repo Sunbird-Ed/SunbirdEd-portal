@@ -275,18 +275,24 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   removeTabIndexToPreventPlayerKeyBoardEvent(){
-    setTimeout(() => {
+    const observer = new MutationObserver((mutationsList, observer) => {
       const unwantedButtons = document.querySelectorAll(
         '.vjs-slider, .vjs-playback-rate, .vjs-menu-button, .vjs-menu-item'
       );
       
-      unwantedButtons.forEach((el: any) => {
-        el.removeAttribute('tabindex'); // To prevent keyboard selection
-        el.setAttribute('aria-disabled', 'true');
-        (el as HTMLElement).style.pointerEvents = 'none';
-        (el as HTMLElement).style.opacity = '0.5';
-      });
-    }, 1000);    
+      if (unwantedButtons.length > 0) {
+        unwantedButtons.forEach((el: any) => {
+          el.removeAttribute('tabindex'); // To prevent keyboard selection
+          el.setAttribute('aria-disabled', 'true');
+          (el as HTMLElement).style.pointerEvents = 'none';
+          (el as HTMLElement).style.opacity = '0.5';
+        });
+        observer.disconnect(); // Stop observing once the elements are modified
+      }
+    });
+    
+    // Start observing the DOM for changes
+    observer.observe(document.body, { childList: true, subtree: true });
   }
 
   checkForQumlPlayer() {
