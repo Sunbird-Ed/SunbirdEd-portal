@@ -76,14 +76,14 @@ export class ResourceService {
     return ResourceService.singletonInstance;
   }
   public initialize() {
-    const range = { value: 'en', label: 'English', dir: 'ltr' };
-    this.getResource(this.cacheService.get('portalLanguage') || 'en', range);
-    this.translateService.setDefaultLang('en');
+    const range = { value: 'ar', label: 'Arabic', dir: 'rtl' };
+    this.getResource(this.cacheService.get('portalLanguage') || 'ar', range);
+    this.translateService.setDefaultLang('ar');
   }
   /**
    * method to fetch resource bundle
   */
-  public getResource(language = 'en', range: any = {}): void {
+  public getResource(language = 'ar', range: any = {}): void {
     this._selectedLang = language;
     const option = {
       url: this.config.urlConFig.URLS.RESOURCEBUNDLES.ENG + '/' + language
