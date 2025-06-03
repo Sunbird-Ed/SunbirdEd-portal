@@ -235,12 +235,12 @@
           <mat-expansion-panel>
             <mat-expansion-panel-header>
               <mat-panel-title class="sb-mat-accordion__title">
-                Certificate of Completion
+                {{resourceService?.frmelmnts?.lbl?.certificateOfCompletion}}
               </mat-panel-title>
 
             </mat-expansion-panel-header>
             <button class="sb-btn sb-btn-outline-primary sb-btn-normal" (click)="downloadCertificate()">
-              Download Certificate
+              {{resourceService?.frmelmnts?.lbl?.downloadCertificate}}
             </button>
             
           </mat-expansion-panel>
@@ -267,7 +267,7 @@
             <mat-panel-title tabindex="0" title class="sb-mat-accordion__title d-flex flex-ai-center flex-jc-space-between"
               [attr.aria-expanded]="isOpen"
               aria-controls="expiryDate">
-              <span>Expiry Date</span>
+              <span>{{resourceService?.frmelmnts?.lbl?.expiryDate}}</span>
             </mat-panel-title>
           </mat-expansion-panel-header>
           <div content class="sb-mat-accordion__content" role="region" id="expiryDate" aria-labelledby="expiryDate">
