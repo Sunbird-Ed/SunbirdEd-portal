@@ -79,7 +79,7 @@ export class GeneraliseLabelService {
     const resourceConfig = _.get(resourceBundleConfig, this.collectionType) || _.get(resourceBundleConfig, 'default');
     this.contentTypeLblKey = resourceConfig.key;
     const resourceBundle = _.get(resourceConfig, `${this.isTrackable}`);
-    const blobFilename = _.get(resourceBundle, `${lang}`) || _.get(resourceBundle, 'en');
+    const blobFilename = _.get(resourceBundle, `${lang}`) || _.get(resourceBundle, 'ar');
     return blobFilename;
   }
 
