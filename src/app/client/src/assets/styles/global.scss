@@ -1472,8 +1472,13 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
 
 [dir="rtl"] {
   .contentViewerIframeShadow {
-    transform: translate(50%, -50%);
-    position: static !important;
+    transform: translate(0%, 0%);
+  }
+}
+
+[dir="rtl"] {
+  .mcqViewerIframeShadow {
+    transform: translate(50%, -50%) !important
   }
 }
 
