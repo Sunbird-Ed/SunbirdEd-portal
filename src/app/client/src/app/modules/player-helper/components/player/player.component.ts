@@ -226,9 +226,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       };
   }
   // set the resource bundles
-  if (this.resourceService && this.resourceService.frmelmnts.lbl) {
+  if (this.resourceService?.frmelmnts?.lbl) {
       this.playerConfig.context.resourceBundles = this.resourceService.frmelmnts.lbl;
-      this.playerConfig.context.dir = this.getDocumentDir() || 'ltr';
+      this.playerConfig.context.dir = this.getDocumentDir() || 'rtl';
   } 
     this.playerConfig.context.version = this.buildNumber;
     setTimeout(() => {
