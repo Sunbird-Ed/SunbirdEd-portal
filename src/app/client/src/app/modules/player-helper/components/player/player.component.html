@@ -4,9 +4,9 @@
     [ngStyle]="{'background': 'url(' + playerOverlayImage + ') center/cover no-repeat '}" *ngIf="showPlayIcon" id="contentPlayer" tabindex="0" (click)="enablePlayer(false)">
     <img class="play-icon" src="assets/images/play_circle.svg">
   </div>
-  <div id="playerFullscreen" *ngIf="!showPlayIcon" > 
+  <div id="mcq-player-fullscreen" *ngIf="!showPlayIcon" > 
     <!-- <img appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeButtonInteractEdata" (click)="closeFullscreen()" class="close-button" src="assets/images/close-Black.svg" alt=""> -->
-    <iframe #contentIframe id="contentPlayer" title="Content Player" aria-label="Content Player" class="contentViewerIframeShadow" name="contentPlayer"></iframe>
+    <iframe #contentIframe id="contentPlayer" title="Content Player" aria-label="Content Player" class="mcqViewerIframeShadow" name="contentPlayer"></iframe>
   </div>
 </div>
 <!-- Portal player-->
