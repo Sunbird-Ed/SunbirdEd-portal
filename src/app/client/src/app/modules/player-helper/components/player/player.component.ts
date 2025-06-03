@@ -99,6 +99,17 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       }
   }
 
+  static readonly BLOCKED_KEYS = ['ArrowRight', 'ArrowLeft', ' ', 'k', 'l', 'j'];
+
+  @HostListener('window:keydown', ['$event'])
+  blockKeys(event: KeyboardEvent) {
+    if (this.playerType==="video-player" && PlayerComponent.BLOCKED_KEYS.includes(event.key)) {
+      event.preventDefault();
+      event.stopPropagation();
+      // console.log('Blocked key:', event.key);
+    }
+  }
+
   ngOnInit() {
     this.checkForQumlPlayer()
     // Initialize the resourceBundles if it doesn't exist
@@ -341,9 +352,14 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
           this.playerConfig['config']['sideMenu'] = {
             "showDownload": false,
             showExit: false,
-            showShare: false,
+            showShare: false,            
           }
-          this.playerConfig.config['playBackSpeeds'] = [1]
+          this.playerConfig.config['playBackSpeeds'] = [1];
+          if(this.playerType==='video-player'){
+            this.playerConfig.config['showPlaybackSpeed'] = false;
+            this.playerConfig.config['showControls'] = false;
+            this.playerConfig.config['enableKeyboardNavigation'] = false;
+          }
         }
       });
     } else {

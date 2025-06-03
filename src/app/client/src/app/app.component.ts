@@ -478,7 +478,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
       setTimeout(() => {
       // Set initial lang and dir attributes on html tag
-          const portalLanguage = localStorage.getItem('portalLanguage') || 'en';
+          const portalLanguage = localStorage.getItem('portalLanguage') || 'ar';
           let dir = 'ltr';
           if (portalLanguage === "\"ar\"") dir = 'rtl';
           this._document.documentElement.lang = portalLanguage;
