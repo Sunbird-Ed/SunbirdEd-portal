@@ -105,7 +105,7 @@ describe('ResourceService', () => {
     expect(resourceService.getResource).toHaveBeenCalledWith('ar', {
       value: 'ar',
       label: 'Arabic',
-      dir: 'ltr'
+      dir: 'rtl'
     });
   });
 });
