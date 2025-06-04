@@ -262,7 +262,7 @@ Before running this workflow, ensure the following:
        - `REGISTRY_PROVIDER` : gcp
        - `GCP_SERVICE_ACCOUNT_KEY`: Base64-encoded Google Cloud service account key.
        - `REGISTRY_NAME`: The registry name (e.g., `asia-south1-docker.pkg.dev`).
-       - `REGISTRY_URL`: The full URL of the registry (e.g., `asia-south1-docker.pkg.dev/sunbird-morocco-sandbox-434709/sunbird-morocco-artifact-dev`).
+       - `REGISTRY_URL`: The full URL of the registry (e.g., `<registry_name>/<project_id>/<artifact_name>`).
      - **For DockerHub Registries**:
        - `REGISTRY_PROVIDER` : dockerhub
        - `REGISTRY_NAME`: The registry name (e.g., `docker.io`).
