@@ -257,16 +257,19 @@ The workflow is defined in [`.github/workflows/image-push.yml`](.github/workflow
 Before running this workflow, ensure the following:
 
 1. ***Secrets Configuration***:
-   - Add or remove the required secrets based on the container registry you want to push to:
+   - Add the required secrets based on the value passed to `REGISTRY_PROVIDER` variable: If no values are passed in variables and secrets the image will be pushed to GHCR.
      - **For Google Container Registry (GCR)**:
+       - `REGISTRY_PROVIDER` : gcp
        - `GCP_SERVICE_ACCOUNT_KEY`: Base64-encoded Google Cloud service account key.
        - `REGISTRY_NAME`: The registry name (e.g., `asia-south1-docker.pkg.dev`).
-       - `REGISTRY_URL`: The full URL of the registry (e.g., `asia-south1-docker.pkg.dev/sunbird-morocco-sandbox-434709/sunbird-morocco-artifact-dev`).
+       - `REGISTRY_URL`: The full URL of the registry (e.g., `<registry_name>/<project_id>/<artifact_name>`).
      - **For DockerHub Registries**:
+       - `REGISTRY_PROVIDER` : dockerhub
        - `REGISTRY_NAME`: The registry name (e.g., `docker.io`).
        - `REGISTRY_URL`: The full URL of the registry (e.g., `docker.io/username`).
        - `REGISTRY_USERNAME` and `REGISTRY_PASSWORD`: Credentials for the registry.
      - **For Azure Container Registry (ACR)**:
+       - `REGISTRY_PROVIDER` : azure
        - `REGISTRY_NAME`: The name of your Azure Container Registry (e.g., `myregistry.azurecr.io`).
        - `REGISTRY_URL`: The full URL of the registry(e.g., `myregistry.azurecr.io`)
        - `REGISTRY_USERNAME`: The username for your Azure Container Registry.
@@ -274,6 +277,8 @@ Before running this workflow, ensure the following:
 
      - **For GitHub Container Registry (GHCR)**:
        - `GITHUB_TOKEN`: Automatically available for GitHub Container Registry.
+
+      > **Note:** All variables and secrets must be configured in **Settings → Secrets and variables → Actions** in your GitHub repository.
 
 #### Code Quality
 
