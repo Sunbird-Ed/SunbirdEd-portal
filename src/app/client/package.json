@@ -141,7 +141,6 @@
     "video.js": "7.18.1",
     "videojs-contrib-quality-levels": "2.1.0",
     "videojs-http-source-selector": "1.1.6",
-    "@types/jquery.fancytree": "2.7.34",
     "zone.js": "0.11.4"
   },
   "devDependencies": {
