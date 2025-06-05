@@ -116,22 +116,22 @@
   .video-js {
     padding-top:inherit !important;
   }
-  .vjs-progress-control {
-    pointer-events: none !important;
-    opacity: 0.6; 
-  }
+  // .vjs-progress-control {
+  //   pointer-events: none !important;
+  //   opacity: 0.6; 
+  // }
 
-  .vjs-playback-rate>.vjs-menu-button {
-    pointer-events: none !important;
-    opacity: 0.6; 
-  }  
+  // .vjs-playback-rate>.vjs-menu-button {
+  //   pointer-events: none !important;
+  //   opacity: 0.6; 
+  // }  
 }
 
-::ng-deep .player-container .forward,
-::ng-deep .player-container .back-ward {
-  pointer-events: none !important;
-  display: none !important;
-}
+// ::ng-deep .player-container .forward,
+// ::ng-deep .player-container .back-ward {
+//   pointer-events: none !important;
+//   display: none !important;
+// }
 
 .no-content-player{
   background: var(--black);
@@ -141,19 +141,4 @@
   &__text{
       max-width: calculateRem(300px);   
   }
-}
-
-/* iOS/Mac specific overrides */
-@supports (-webkit-touch-callout: none) {
-  ::ng-deep .player-container .forward,
-  ::ng-deep .player-container .back-ward {
-    pointer-events: none !important;
-    display: none !important;
-  }
-
-  ::ng-deep .vjs-progress-control,
-  ::ng-deep .vjs-playback-rate .vjs-menu-button {     
-    pointer-events: none !important;
-    opacity: 0.4; 
-  }  
 }
