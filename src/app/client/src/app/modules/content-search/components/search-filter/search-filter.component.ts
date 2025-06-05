@@ -410,8 +410,8 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
         this.filterFormTemplateConfig = config;
         this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe((languageData) => {
           this.filterFormTemplateConfig?.forEach((facet) => {
-            facet['labelText'] = this.utilService.transposeTerms(facet['labelText'], facet['labelText'], this.resourceService.selectedLang);
-            facet['placeholderText'] = this.utilService.transposeTerms(facet['placeholderText'], facet['placeholderText'], this.resourceService.selectedLang);
+            facet['labelText'] = this.utilService.transformStatic(facet['labelText'], facet['labelText'], this.resourceService.selectedLang);
+            facet['placeholderText'] = this.utilService.transformStatic(facet['placeholderText'], facet['placeholderText'], this.resourceService.selectedLang);
           });
         });
         this.refreshSearchFilterComponent = false;
