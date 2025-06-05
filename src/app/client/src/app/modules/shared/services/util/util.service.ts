@@ -498,4 +498,44 @@ export class UtilService {
     let _transpose = new TransposeTermsPipe(this.genericResourceService);
     return _transpose.transform(value, defaultValue, selectedLang, startsWith = '{', endsWith = '}');
   }
+
+  private translationMap = {
+    en: {
+      organisation: 'organisation',
+      "select organisation": 'select organisation',
+      language: 'language',
+      "select language": 'select language',
+      category: 'category',
+      "select category": 'select category',
+      "My courses": 'My courses'
+
+    },
+    fr: {
+      organisation: 'Organisation',
+      "select organisation": 'Sélectionner une organisation',
+      language: 'Langue',
+      "select language": 'sélectionner la langue',
+      category: 'Catégorie',
+      "select category": 'sélectionner une catégorie',
+      "My courses": 'Mes cours'
+    },
+    ar: {
+      organisation: 'المؤسسة',
+      "select organisation": 'حدد المنظمة',
+      language: 'اللغة',
+      "select language": 'حدد اللغة',
+      category: 'الفئة',
+      "select category": 'حدد الفئة',
+      "My courses": 'دوراتي'
+    }
+  };
+
+  transformStatic(value: string, defaultValue: string, selectedLang = 'en'): string {
+    if (!value) return defaultValue ?? '';
+    const key = value.replace('{', '').replace('}', '');
+    return this.translationMap[selectedLang]?.[key] ||
+      this.translationMap['fr']?.[key] ||
+      defaultValue ||
+      value;
+  }
 }
