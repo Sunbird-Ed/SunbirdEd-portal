@@ -300,7 +300,10 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     }
     if (this.contentType === 'studymaterial' || this.contentType === 'assessment') {
       requestData.mimeType = this.configService.appConfig.CONTENT_CONST.CREATE_LESSON;
-    } else {
+    } else if(this.contentType === 'Resource') {
+      // requestData.mimeType = this.configService.urlConFig.URLS.CONTENT_COLLECTION
+      requestData.mimeType = "application/vnd.ekstep.ecml-archive";
+    } else{
       requestData.mimeType = this.configService.urlConFig.URLS.CONTENT_COLLECTION;
     }
     if (data.resourceType) {
@@ -335,7 +338,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     return requestData;
   }
 
-  createContent(modal) {
+  createContent(modal) { 
     let requiredFields = [];
     requiredFields = _.map(_.filter(this.formFieldProperties, { 'required': true }), field => field.code );
     const requestData = {
