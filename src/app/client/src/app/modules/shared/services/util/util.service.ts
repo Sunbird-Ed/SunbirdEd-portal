@@ -499,7 +499,7 @@ export class UtilService {
     return _transpose.transform(value, defaultValue, selectedLang, startsWith = '{', endsWith = '}');
   }
 
-  private translationMap = {
+  private translationMap: Record<string, Record<string, string>> = {
     en: {
       organisation: 'organisation',
       "select organisation": 'select organisation',
@@ -508,7 +508,6 @@ export class UtilService {
       category: 'category',
       "select category": 'select category',
       "My courses": 'My courses'
-
     },
     fr: {
       organisation: 'Organisation',
@@ -528,13 +527,13 @@ export class UtilService {
       "select category": 'حدد الفئة',
       "My courses": 'دوراتي'
     }
-  };
+  }; 
 
   transformStatic(value: string, defaultValue: string, selectedLang = 'en'): string {
     if (!value) return defaultValue ?? '';
     const key = value.replace('{', '').replace('}', '');
     return this.translationMap[selectedLang]?.[key] ||
-      this.translationMap['fr']?.[key] ||
+      this.translationMap['en']?.[key] ||
       defaultValue ||
       value;
   }

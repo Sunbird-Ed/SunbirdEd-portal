@@ -609,10 +609,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                     }
                                     // this.pageSections = this.apiContentList.slice(0, 4);
                                     const temp = this.apiContentList.slice(0, 4);
-                                    this.pageSections = temp.filter(item => {
+                                    this.pageSections = temp.map(item => {
                                         item.name = this.utilService.transformStatic(item.name, item.name, this.resourceService.selectedLang);
                                         return item;
-                                    })                              
+                                    });                            
                                     this.addHoverData();
                                 }, err => {
                                     this.showLoader = false;
