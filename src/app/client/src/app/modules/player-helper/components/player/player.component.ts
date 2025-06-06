@@ -1,5 +1,5 @@
 import { ConfigService, NavigationHelperService, UtilService } from '@sunbird/shared';
-import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter,
+import { Component, AfterViewInit, ViewChild, Renderer2, ElementRef, Input, Output, EventEmitter,
 OnChanges, HostListener, OnInit, ChangeDetectorRef } from '@angular/core';
 import * as _ from 'lodash-es';
 import { PlayerConfig } from '@sunbird/shared';
@@ -22,6 +22,7 @@ import { PublicPlayerService } from '@sunbird/public';
   styleUrls: ['./player.component.scss']
 })
 export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
+  private observer: MutationObserver;
   @Input() playerConfig: PlayerConfig;
   @Output() assessmentEvents = new EventEmitter<any>();
   @Output() questionScoreSubmitEvents = new EventEmitter<any>();
@@ -82,7 +83,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
     private deviceDetectorService: DeviceDetectorService, private userService: UserService, public formService: FormService
     , public contentUtilsServiceService: ContentUtilsServiceService, private contentService: ContentService,
-    private cdr: ChangeDetectorRef, public playerService: PublicPlayerService, private utilService: UtilService) {
+    private cdr: ChangeDetectorRef, public playerService: PublicPlayerService, private utilService: UtilService,
+    private el: ElementRef, private renderer: Renderer2 ) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
     this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
@@ -287,24 +289,59 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   removeTabIndexToPreventPlayerKeyBoardEvent(){
-    const observer = new MutationObserver((mutationsList, observer) => {
-      const unwantedButtons = document.querySelectorAll(
-        '.vjs-slider, .vjs-playback-rate, .vjs-menu-button, .vjs-menu-item'
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isMac = navigator.platform.toUpperCase().includes('MAC');
+
+    this.observer = new MutationObserver(() => {
+      /** Remove playback rate button */
+      const playbackRateBtn = this.el.nativeElement.querySelector(
+        'button.vjs-playback-rate.vjs-menu-button[title="Playback Rate"]'
       );
-      
-      if (unwantedButtons.length > 0) {
-        unwantedButtons.forEach((el: any) => {
-          el.removeAttribute('tabindex'); // To prevent keyboard selection
-          el.setAttribute('aria-disabled', 'true');
-          (el as HTMLElement).style.pointerEvents = 'none';
-          (el as HTMLElement).style.opacity = '0.5';
-        });
-        observer.disconnect(); // Stop observing once the elements are modified
+      if (playbackRateBtn && playbackRateBtn.parentNode) {
+        this.renderer.removeChild(playbackRateBtn.parentNode, playbackRateBtn);
       }
+
+      /** Disable progress control and other unwanted elements */
+      const unwantedElements = document.querySelectorAll(
+        '.vjs-progress-holder, .vjs-progress-control, .vjs-slider, .vjs-menu-item'
+      );
+
+      unwantedElements.forEach((el: any) => {
+        el.removeAttribute('tabindex');
+        el.setAttribute('aria-disabled', 'true');
+        el.style.pointerEvents = 'none';
+        el.style.opacity = '0.5';
+
+        // iOS/Mac specific event blocking
+        if (isIOS || isMac) {
+          el.addEventListener('touchstart', (e: Event) => e.preventDefault(), { passive: false });
+          el.addEventListener('click', (e: Event) => e.preventDefault());
+        }
+      });
+
+      /** Handle custom forward/backward buttons inside player container */
+      const forward = this.el.nativeElement.querySelector('.player-container .forward');
+      const backward = this.el.nativeElement.querySelector('.player-container .back-ward');
+
+      [forward, backward].forEach((btn: HTMLElement | null) => {
+        if (btn) {
+          btn.style.pointerEvents = 'none';
+          btn.style.opacity = '0.4';
+          btn.style.display = 'none';
+
+          // iOS/Mac specific event blocking
+          if (isIOS || isMac) {
+            btn.addEventListener('touchstart', (e: Event) => e.preventDefault(), { passive: false });
+            btn.addEventListener('click', (e: Event) => e.preventDefault());
+          }
+        }
+      });
     });
-    
-    // Start observing the DOM for changes
-    observer.observe(document.body, { childList: true, subtree: true });
+
+    this.observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
   }
 
   checkForQumlPlayer() {
@@ -437,18 +474,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   eventHandler(event) {
-    const events = ["ratechange", "RATE_CHANGE"];
-    if(this.playerType === 'video-player' && events.includes(event?.edata?.type)){
-      const player = (window as any).videojs?.getPlayer?.('vjs_video_3');
-      if (player) {
-        // Disable rate change
-        player.on('ratechange', () => {
-          if (player.playbackRate() !== 1) {
-            player.playbackRate(1);
-          }
-        });
-      }
-    }
     if (event.eid === 'END') {
       const metaDataconfig = event.metaData;
       if (this.userService.loggedIn) {
@@ -668,5 +693,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
     this.unsubscribe.next();
     this.unsubscribe.complete();
+
+    if (this.observer) {
+      this.observer.disconnect();
+    }
   }
 }
