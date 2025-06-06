@@ -5,6 +5,7 @@ import { ActivatedRoute, Router, NavigationExtras, NavigationStart } from '@angu
 import { TocCardType } from '@project-sunbird/common-consumption';
 import { UserService, GeneraliseLabelService, PlayerService } from '@sunbird/core';
 import { AssessmentScoreService, CourseBatchService, CourseConsumptionService, CourseProgressService } from '@sunbird/learn';
+import { ProgressPlayerService } from '../../../../player-helper/service/video-player/progress-player.service';
 import { PublicPlayerService, ComponentCanDeactivate } from '@sunbird/public';
 import { ConfigService, ResourceService, ToasterService, NavigationHelperService,
   ContentUtilsServiceService, ITelemetryShare, LayoutService } from '@sunbird/shared';
@@ -45,6 +46,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     private layoutService: LayoutService,
     public generaliseLabelService: GeneraliseLabelService,
     private CourseProgressService: CourseProgressService,
+    private progressPlayerService: ProgressPlayerService,
     @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService,
     @Inject('SB_NOTIFICATION_SERVICE') private notificationService: NotificationServiceImpl,
     private http: HttpClient
@@ -527,7 +529,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     const playerSummary: Array<any> = _.get(event, 'detail.telemetryData.edata.summary');
     const contentMimeType = _.get(this.previousContent, 'mimeType') ? _.get(this.previousContent, 'mimeType') : _.get(this.activeContent, 'mimeType');
     const contentType = _.get(this.previousContent, 'primaryCategory') ? _.get(this.previousContent, 'primaryCategory') : _.get(this.activeContent, 'primaryCategory');
-    this.courseProgress = this.contentUtilsServiceService.getContentProgress(playerSummary, contentMimeType);
+    this.courseProgress = this.progressPlayerService.getContentProgress(playerSummary, contentMimeType);
     console.log(_.find(playerSummary, ['endpageseen', true]));
     if (_.toLower(contentType) === 'course assessment') {
       this.courseProgress = _.find(playerSummary, ['endpageseen', true]) ||

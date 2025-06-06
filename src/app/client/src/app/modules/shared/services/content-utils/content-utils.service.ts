@@ -3,7 +3,6 @@ import { ISharelink } from './../../interfaces';
 import { ConfigService } from './../config/config.service';
 import { environment } from '@sunbird/environment';
 import * as _ from 'lodash-es';
-import { CsMimeType } from '@project-sunbird/client-services/services/content/interface';
 
 @Injectable()
 export class ContentUtilsServiceService {
@@ -13,9 +12,6 @@ export class ContentUtilsServiceService {
   public baseUrl: string;
 
   public contentShareEvent: EventEmitter<any> =  new EventEmitter<any>();
-
-  private PLAYBACK_MIME_TYPES = [CsMimeType.YOUTUBE, CsMimeType.VIDEO, CsMimeType.WEBM, CsMimeType.PDF, CsMimeType.EPUB];
-  private OTHER_MIME_TYPES = [CsMimeType.H5P, CsMimeType.HTML];
   /**
   *input for Sharelink;
   */
@@ -94,58 +90,5 @@ export class ContentUtilsServiceService {
     nodes = _.slice(nodes, 0, 4).slice(0, -1);
     nodes.forEach((eachnode, index) => objectRollUp['l' + (index + 1)] = eachnode.model.identifier);
     return objectRollUp;
-  }
-
-  getContentProgress(summary: any[], mimeType: CsMimeType): number {
-      const summaryMap = summary.reduce((acc, s) => {
-          Object.keys(s).forEach((k) => {
-              acc[k] = s[k];
-          });
-          return acc;
-      }, {});
-
-      if (!summaryMap.progress) {
-          return 0;
-      }
-
-      if (this.PLAYBACK_MIME_TYPES.indexOf(mimeType) > -1) {
-          return this.calculatePlaybackProgress(
-              summaryMap['progress'] || 0,
-              summaryMap['visitedlength'] || 0,
-              summaryMap['totallength'] || 0,
-              summaryMap['endpageseen'] || false,
-              summaryMap['visitedcontentend'] || false,
-          );
-      } else if (
-          this.OTHER_MIME_TYPES.indexOf(mimeType) > -1
-      ) {
-          return this.absoluteProgress(summaryMap.progress, 0);
-      } else {
-          return this.absoluteProgress(summaryMap.progress, 100);
-      }
-  }
-
-  calculatePlaybackProgress(
-      progress: number,
-      visitedLength: number,
-      totalLength: number,
-      endPageSeen: boolean,
-      visitedContentEnd: boolean,
-  ) {
-      let customProgress;
-      if (endPageSeen || visitedContentEnd || (totalLength && (visitedLength * 100) / totalLength) > 95) {
-          customProgress = 100;
-      } else {
-          customProgress = progress;
-      }
-      return customProgress;
-  }
-
-  absoluteProgress(progress: number, threshold: number): number {
-      if (progress >= threshold) {
-          return 100;
-      }
-
-      return 0;
   }
 }
