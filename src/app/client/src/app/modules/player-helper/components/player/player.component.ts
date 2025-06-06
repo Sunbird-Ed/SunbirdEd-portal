@@ -5,6 +5,7 @@ import * as _ from 'lodash-es';
 import { PlayerConfig } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import { ToasterService, ResourceService, ContentUtilsServiceService } from '@sunbird/shared';
+import { ProgressPlayerService } from '../../service/video-player/progress-player.service';
 const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub'];
 import { Subject } from 'rxjs';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -12,7 +13,6 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
 import { UserService, FormService } from '../../../core/services';
 import { OnDestroy } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import { ContentService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
 
@@ -84,7 +84,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     private deviceDetectorService: DeviceDetectorService, private userService: UserService, public formService: FormService
     , public contentUtilsServiceService: ContentUtilsServiceService, private contentService: ContentService,
     private cdr: ChangeDetectorRef, public playerService: PublicPlayerService, private utilService: UtilService,
-    private el: ElementRef, private renderer: Renderer2 ) {
+    private el: ElementRef, private renderer: Renderer2, private progressPlayerService :ProgressPlayerService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
     this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
@@ -550,7 +550,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     const playerSummary: Array<any> = _.get(event, 'detail.telemetryData.edata.summary');
     if (playerSummary) {
       const contentMimeType = this.playerConfig.metadata.mimeType;
-      contentProgress = CsContentProgressCalculator.calculate(playerSummary, contentMimeType);
+      contentProgress = this.progressPlayerService.getContentProgress(playerSummary, contentMimeType);
     }
     if (event.detail.telemetryData.eid === 'END' && contentProgress === 100) {
       this.contentRatingModal = !this.isFullScreenView;
