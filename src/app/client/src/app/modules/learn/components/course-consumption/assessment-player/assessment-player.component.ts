@@ -527,7 +527,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     const playerSummary: Array<any> = _.get(event, 'detail.telemetryData.edata.summary');
     const contentMimeType = _.get(this.previousContent, 'mimeType') ? _.get(this.previousContent, 'mimeType') : _.get(this.activeContent, 'mimeType');
     const contentType = _.get(this.previousContent, 'primaryCategory') ? _.get(this.previousContent, 'primaryCategory') : _.get(this.activeContent, 'primaryCategory');
-    this.courseProgress = ContentUtilsServiceService.getContentProgress(playerSummary, contentMimeType);
+    this.courseProgress = this.contentUtilsServiceService.getContentProgress(playerSummary, contentMimeType);
     console.log(_.find(playerSummary, ['endpageseen', true]));
     if (_.toLower(contentType) === 'course assessment') {
       this.courseProgress = _.find(playerSummary, ['endpageseen', true]) ||
