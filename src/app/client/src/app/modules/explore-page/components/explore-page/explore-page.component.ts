@@ -42,6 +42,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public isLoading = true;
     public cardData: Array<{}> = [];
     bannerSegment: any;
+    resourceDataSubscription: any;
     displayBanner: boolean;
     bannerList?: any[];
     layoutConfiguration: any;
@@ -218,7 +219,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             }));
     }
 
-    ngOnInit() {
+    ngOnInit() {       
         this.cslFrameworkService?.setTransFormGlobalFilterConfig();
         this.frameworkCategories = this.cslFrameworkService?.getFrameworkCategories();
         this.frameworkCategoriesObject = this.cslFrameworkService?.getFrameworkCategoriesObject();
@@ -610,9 +611,19 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                     // this.pageSections = this.apiContentList.slice(0, 4);
                                     const temp = this.apiContentList.slice(0, 4);
                                     this.pageSections = temp.map(item => {
+                                        item.tempName = item.name
                                         item.name = this.utilService.transformStatic(item.name, item.name, this.resourceService.selectedLang);
                                         return item;
-                                    });                            
+                                    });   
+                                    
+                                    this.resourceDataSubscription = this.resourceService.languageSelected$.subscribe(item1 => {                                       
+                                        if(item1.value){
+                                            this.pageSections = temp.map(item => {                                                                                              
+                                                item.name = this.utilService.transformStatic(item.tempName, item.tempName, this.resourceService.selectedLang);                                                                
+                                                return item;
+                                            });   
+                                        }                                       
+                                    })
                                     this.addHoverData();
                                 }, err => {
                                     this.showLoader = false;
@@ -736,6 +747,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnDestroy() {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
+        if (this.resourceDataSubscription) {
+            this.resourceDataSubscription.unsubscribe();
+        }
     }
 
     private setTelemetryData() {
