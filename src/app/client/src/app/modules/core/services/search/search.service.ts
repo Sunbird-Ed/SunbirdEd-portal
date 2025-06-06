@@ -174,6 +174,16 @@ export class SearchService {
    * @param {SearchParam} requestParam api request data
   */
   compositeSearch(requestParam: SearchParam): Observable<ServerResponse> {
+
+    if(requestParam && requestParam.filters && Array.isArray(requestParam.filters.primaryCategory)) 
+      {
+        const practiceAssess = "Practise Assess";
+        if(!requestParam.filters.primaryCategory.includes(practiceAssess)) 
+        {
+          requestParam.filters.primaryCategory.push(practiceAssess);
+        }
+      }
+
     const option = {
       url: this.config.urlConFig.URLS.COMPOSITE.SEARCH,
       param: { ...requestParam.params },
