@@ -66,7 +66,7 @@
 }
 
 .player-fullscreen {
-    position: fixed;
+    position: absolute !important;
     border:none; 
     margin:0;
     padding:0; 
