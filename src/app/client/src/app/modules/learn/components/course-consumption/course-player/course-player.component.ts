@@ -367,11 +367,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     return this.treeModel.first(node => node.model.identifier === id);
   }
 
-  public navigateToContent(event: any, collectionUnit?: any, id?): void {
+  public navigateToContent(event: any, collectionUnit?: any, id?, isIntroductoryMaterial?: boolean): void {
     this.navigateToContentObject = {
       event: event,
       collectionUnit: collectionUnit,
-      id: id
+      id: id,
+      isIntroductoryMaterial: isIntroductoryMaterial
     };
     if (_.get(event, 'event.isDisabled')) {
       return this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.selfAssessMaxAttempt'));
@@ -393,7 +394,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     /* istanbul ignore else */
     setTimeout(() => {
       if (!this.showLastAttemptsModal && !_.isEmpty(this.navigateToContentObject.event.event)) {
-        this.navigateToPlayerPage(this.navigateToContentObject.collectionUnit, this.navigateToContentObject.event);
+        this.navigateToPlayerPage(this.navigateToContentObject.collectionUnit, this.navigateToContentObject.event, this.navigateToContentObject.isIntroductoryMaterial);
       }
     }, 100);
   }
@@ -500,7 +501,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
   }
 
-  navigateToPlayerPage(collectionUnit: any, event?) {
+  navigateToPlayerPage(collectionUnit: any, event?, isIntroductoryMaterial?: boolean) {
     if ((this.enrolledCourse && this.batchId) || this.hasPreviewPermission) {
       const navigationExtras: NavigationExtras = {
         queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.courseHierarchy.name },
@@ -512,6 +513,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
       if (this.groupId) {
         navigationExtras.queryParams['groupId'] = this.groupId;
+      }
+
+      if (isIntroductoryMaterial) {
+        navigationExtras.queryParams['isIntroductoryMaterial'] = isIntroductoryMaterial;
       }
 
       if (event && !_.isEmpty(event.event)) {
@@ -856,19 +861,19 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       );
   }
 
-  public handleIntroItemClick(event: any, introItem: any): void {
-    if (introItem && introItem.mimeType === 'application/pdf') {
-      const pdfUrl = introItem.previewUrl || introItem.artifactUrl;
-      if (pdfUrl) {
-        window.open(pdfUrl, '_blank');
-        this.logTelemetry('view-pdf-intro-item', introItem);
-      } else {
-        this.toasterService.error(this.resourceService.messages.emsg.m0004); // Or a more specific "PDF URL not found" message
-      }
-    } else {
-      this.navigateToContent(event, introItem, 'child-item');
-    }
-  }
+  // public handleIntroItemClick(event: any, introItem: any): void {
+  //   if (introItem && introItem.mimeType === 'application/pdf') {
+  //     const pdfUrl = introItem.previewUrl || introItem.artifactUrl;
+  //     if (pdfUrl) {
+  //       window.open(pdfUrl, '_blank');
+  //       this.logTelemetry('view-pdf-intro-item', introItem);
+  //     } else {
+  //       this.toasterService.error(this.resourceService.messages.emsg.m0004); // Or a more specific "PDF URL not found" message
+  //     }
+  //   } else {
+  //     this.navigateToContent(event, introItem, 'child-item');
+  //   }
+  // }
 
   markContentVisibility(
     sections = [],
