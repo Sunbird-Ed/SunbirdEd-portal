@@ -21,6 +21,7 @@ export class SlickComponent implements OnInit {
   private scrollObserver: Subscription | null = null;
   dotViewCount: number;
   selectedDot: number = 0;
+  isRtl = true;
 
   constructor() { }
 
@@ -44,6 +45,11 @@ export class SlickComponent implements OnInit {
     };
   }
 
+
+  checkDir(){
+    this.isRtl = typeof document !== 'undefined' ? document.dir =='ltr'? false:true:true;
+  }
+
   ngOnChanges() {
     timer(100).subscribe(() => {
       if (this.horizontalScrollElem) {
@@ -63,10 +69,12 @@ export class SlickComponent implements OnInit {
   showPrev() {
     if (this.horizontalScrollElem) {
       if (this.horizontalScrollElem) {
+        this.checkDir();
         const clientWidth = this.horizontalScrollElem?.nativeElement?.clientWidth;
         this.horizontalScrollElem?.nativeElement?.scrollTo({
-          left:
-            this.horizontalScrollElem?.nativeElement?.scrollLeft - clientWidth
+          left: this.isRtl
+            ? this.horizontalScrollElem.nativeElement.scrollLeft + clientWidth
+            : this.horizontalScrollElem.nativeElement.scrollLeft - clientWidth
         });
       }
     }
@@ -75,10 +83,12 @@ export class SlickComponent implements OnInit {
   showNext() {
     if (this.horizontalScrollElem) {
       if (this.horizontalScrollElem) {
+        this.checkDir();
         const clientWidth = this.horizontalScrollElem?.nativeElement?.clientWidth;
         this.horizontalScrollElem?.nativeElement?.scrollTo({
-          left:
-            this.horizontalScrollElem?.nativeElement?.scrollLeft + clientWidth
+          left: this.isRtl
+              ? this.horizontalScrollElem.nativeElement.scrollLeft - clientWidth
+              : this.horizontalScrollElem.nativeElement.scrollLeft + clientWidth
         });
       }
     }
@@ -94,13 +104,13 @@ export class SlickComponent implements OnInit {
     if (elem.scrollWidth === elem.clientWidth + elem.scrollLeft) {
       if (this.loadStatus === 'hasMore') {
         this.loadNext.emit(elem);
-      } else if ((elem.scrollWidth - (elem.clientWidth + elem.scrollLeft)) < 1) {
+      } else if ((elem.scrollWidth - (elem.clientWidth + elem.scrollLeft)) < 1 || (this.isRtl && (elem.scrollWidth - (elem.clientWidth - elem.scrollLeft))<1)) {
         this.enableNext = false;
       } else {
         this.enableNext = false;
       }
     }
-    if ((elem.scrollWidth - (elem.clientWidth + elem.scrollLeft)) < 1) {
+    if ((elem.scrollWidth - (elem.clientWidth + elem.scrollLeft)) < 1 || (this.isRtl && (elem.scrollWidth - (elem.clientWidth - elem.scrollLeft))<1)) {
       this.enableNext = false;
     }
   }
