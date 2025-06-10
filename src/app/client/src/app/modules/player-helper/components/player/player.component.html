@@ -20,7 +20,7 @@
         name="contentPlayer">
     </iframe>
 </div>
-<div *ngIf="(isMobileOrTab && playerType === 'video-player') || (!isMobileOrTab &&showNewPlayer && !isContentDeleted)" class="w-100 h-100">
+<div *ngIf="(isMobileOrTab && playerType === 'video-player') || (!isMobileOrTab && showNewPlayer && !isContentDeleted)" class="w-100 h-100">
         <div class="mcqViewerIframeShadow" [ngClass]="{'player-fullscreen content-full-video': isFullScreenView}">
         <sunbird-pdf-player *ngIf="playerType === 'pdf-player'" [playerConfig]="playerConfig"
           (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)">
@@ -45,7 +45,7 @@
   </div>
   <div class="fnormal">{{resourceService?.messages?.stmsg?.desktop?.deleteMessage}}</div>
 </div>
-<!-- put playerType for below div to show above player div for all device for maximize and minimize issue suggested by Harish -->
+<!-- put playerType for below div to show above player div for all devices to maximize and minimize issue no-20-21 -->
 <div *ngIf="playerType !== 'video-player' && isMobileOrTab && showNewPlayer" class="w-100 h-100">
   <div data-ratio="16:9" class="player-thumbnail" appTelemetryInteract [telemetryInteractObject]="telemetryObject" [telemetryInteractEdata]="loadPlayerInteractEdata"
   [ngStyle]="{'background': 'url(' + playerOverlayImage + ') center/cover no-repeat '}" *ngIf="showPlayIcon" id="contentPlayer" tabindex="0" (click)="enablePlayer(false)">
