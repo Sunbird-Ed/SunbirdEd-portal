@@ -27,6 +27,7 @@ import { NotificationModule } from '../notification/notification.module';
 import { DiscussionModule } from '../discussion/discussion.module';
 import { PendingchangesGuard } from '@sunbird/public';
 import { GroupsModule } from '../groups';
+import { CertificateDirectivesModule } from 'sb-svg2pdf-v13';
 
 export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
   if (!CsModule.instance.isInitialised) {
@@ -62,7 +63,8 @@ export const csNotificationServiceFactory = (csLibInitializerService: CsLibIniti
     CommonConsumptionModule,
     NotificationModule,
     DiscussionModule,
-    GroupsModule
+    GroupsModule,
+    CertificateDirectivesModule
   ],
   providers: [
     { provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] },

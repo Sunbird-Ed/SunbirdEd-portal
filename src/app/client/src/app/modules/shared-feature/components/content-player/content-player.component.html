@@ -31,11 +31,7 @@
         </div>
       </div>
       <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons ml-auto">
-        <a href="javascript:void(0)" tabindex="0" (click)="onShareLink();sharelinkModal=true;"
-          class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
-          <i class="blue share alternate icon"></i>
-          {{resourceService?.frmelmnts?.lbl?.share}}
-        </a>
+        
 
         <button type="button" *ngIf='!isDesktopApp && permissionService?.permissionAvailable ' appPermission
           [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" tabindex="0" (click)="copyContent(contentData)"

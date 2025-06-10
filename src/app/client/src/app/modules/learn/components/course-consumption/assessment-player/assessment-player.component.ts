@@ -5,17 +5,18 @@ import { ActivatedRoute, Router, NavigationExtras, NavigationStart } from '@angu
 import { TocCardType } from '@project-sunbird/common-consumption';
 import { UserService, GeneraliseLabelService, PlayerService } from '@sunbird/core';
 import { AssessmentScoreService, CourseBatchService, CourseConsumptionService, CourseProgressService } from '@sunbird/learn';
+import { ProgressPlayerService } from '../../../../player-helper/service/video-player/progress-player.service';
 import { PublicPlayerService, ComponentCanDeactivate } from '@sunbird/public';
 import { ConfigService, ResourceService, ToasterService, NavigationHelperService,
   ContentUtilsServiceService, ITelemetryShare, LayoutService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { first, map, takeUntil, tap } from 'rxjs/operators';
-import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import TreeModel from 'tree-model';
 import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 import { result } from 'lodash';
+import { HttpClient } from '@angular/common/http'; // Import HttpClient
 
 const ACCESSEVENT = 'renderer:question:submitscore';
 
@@ -45,8 +46,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     private layoutService: LayoutService,
     public generaliseLabelService: GeneraliseLabelService,
     private CourseProgressService: CourseProgressService,
+    private progressPlayerService: ProgressPlayerService,
     @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService,
-    @Inject('SB_NOTIFICATION_SERVICE') private notificationService: NotificationServiceImpl
+    @Inject('SB_NOTIFICATION_SERVICE') private notificationService: NotificationServiceImpl,
+    private http: HttpClient
   ) {
     this.playerOption = {
       showContentRating: true
@@ -95,6 +98,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   showCourseCompleteMessage = false;
   certificateDescription = {};
   parentCourse;
+  hasIntroductoryMaterial: boolean = false;
   prevModule;
   nextModule;
   totalContents = 0;
@@ -234,13 +238,47 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
               const model = new TreeModel();
               this.treeModel = model.parse(data.courseHierarchy);
               this.parentCourse = data.courseHierarchy;
+
+              // Introductory Material
+              this.hasIntroductoryMaterial = _.has(this.parentCourse, 'introductoryMaterial') && !!this.parentCourse.introductoryMaterial;
+              let collectionIdIsPresentInIntro = false;
+              if (this.hasIntroductoryMaterial && typeof this.parentCourse.introductoryMaterial === 'string') {
+                try {
+                  const introductoryMaterialArray = JSON.parse(this.parentCourse.introductoryMaterial);
+                  if (Array.isArray(introductoryMaterialArray)) {
+                    collectionIdIsPresentInIntro = introductoryMaterialArray.some(item => item.identifier === this.collectionId);
+                  }
+                } catch (e) {
+                  console.error("Error parsing introductoryMaterial JSON", e);
+                }
+              }
               const module = this.courseConsumptionService.setPreviousAndNextModule(this.parentCourse, this.collectionId);
               this.nextModule = _.get(module, 'next');
               this.prevModule = _.get(module, 'prev');
               this.getCourseCompletionStatus();
               this.layoutService.updateSelectedContentType.emit(data.courseHierarchy.contentType);
               if (!this.isParentCourse && data.courseHierarchy.children) {
-                this.courseHierarchy = data.courseHierarchy.children.find(item => item.identifier === this.collectionId);
+
+                if(this.hasIntroductoryMaterial && collectionIdIsPresentInIntro) {
+                  this.http.get(`/api/content/v1/read/${this.collectionId}`)
+                      .pipe(takeUntil(this.unsubscribe))
+                      .subscribe((response: { result: { content: any } }) => {
+                        this.courseHierarchy  = response.result.content
+
+                        if (!isSingleContent && _.get(this.courseHierarchy, 'mimeType') !==
+                            this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+                            isSingleContent = true;
+                        }
+                        this.setActiveContent(selectedContent, isSingleContent);
+                        console.log(response.result.content)
+                      }, error => {
+                        console.error('Error fetching content:', error);
+                        this.toasterService.error('Failed to load content details.');
+                      });
+                }
+                 else {
+                  this.courseHierarchy = data.courseHierarchy.children.find(item => item.identifier === this.collectionId);
+                }
               } else {
                 this.courseHierarchy = data.courseHierarchy;
               }
@@ -491,7 +529,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     const playerSummary: Array<any> = _.get(event, 'detail.telemetryData.edata.summary');
     const contentMimeType = _.get(this.previousContent, 'mimeType') ? _.get(this.previousContent, 'mimeType') : _.get(this.activeContent, 'mimeType');
     const contentType = _.get(this.previousContent, 'primaryCategory') ? _.get(this.previousContent, 'primaryCategory') : _.get(this.activeContent, 'primaryCategory');
-    this.courseProgress = CsContentProgressCalculator.calculate(playerSummary, contentMimeType);
+    this.courseProgress = this.progressPlayerService.getContentProgress(playerSummary, contentMimeType);
     console.log(_.find(playerSummary, ['endpageseen', true]));
     if (_.toLower(contentType) === 'course assessment') {
       this.courseProgress = _.find(playerSummary, ['endpageseen', true]) ||
@@ -569,6 +607,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
         this.logAuditEvent(true);
       }
     }
+    this.markContentVisibility(this.courseHierarchy.children, this.contentStatus, this.consumedContents)
   }
 
   private subscribeToContentProgressEvents() {
@@ -922,5 +961,28 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
         })
       )
   }
+  markContentVisibility(sections = [], contentStatus = [], progress = 0) {
+    if (!sections.length || !contentStatus.length) return;
 
+    const statusMap = _.fromPairs(contentStatus.map(cs => [cs.contentId, cs.status]));
+    let showNext = true;
+
+    _.forEach(sections, (section, i) => {
+      const status = statusMap[section.identifier];
+      let show = false;
+
+      if (progress === 0) {
+        show = i === 0;
+      } else if (status === 1 || status === 2) {
+        show = true;
+        if (status === 1) showNext = false;
+      } else if (status === 0 && showNext) {
+        const index = _.findIndex(contentStatus, { contentId: section.identifier });
+        show = _.every(_.slice(contentStatus, 0, index), { status: 2 });
+        if (show) showNext = false;
+      }
+
+      section.showContent = show;
+    });
+  }
 }

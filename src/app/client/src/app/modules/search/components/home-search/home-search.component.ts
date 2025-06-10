@@ -161,8 +161,10 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         this.fetchContents();
       });
   }
+
   private fetchContents() {
     /* istanbul ignore next */
+
     const selectedMediaType = _.isArray(_.get(this.queryParams, 'mediaType')) ? _.get(this.queryParams, 'mediaType')[0] :
       _.get(this.queryParams, 'mediaType');
     const mimeType = _.find(_.get(this.allTabData, 'search.filters.mimeType'), (o) => {
@@ -177,7 +179,11 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     filters.primaryCategory = filters.primaryCategory || _.get(this.allTabData, 'search.filters.primaryCategory');
     filters.mimeType = filters.mimeType || _.get(mimeType, 'values');
-
+    const userRoles = JSON.parse(localStorage.getItem('userProfile')).userRoles
+    const enrolledcCourseIds = _.map(this.enrolledSection.contents, content => _.get(content, 'metaData.courseId'));
+    filters.identifier = userRoles.length === 1 && userRoles[0].toLowerCase() === 'public'
+      ? (enrolledcCourseIds.length ? enrolledcCourseIds : ['dummy-course-id'])
+      : [];
     const _filters = _.get(this.allTabData, 'search.filters');
     _.forEach(_filters, (el, key) => {
       if (!['primaryCategory', 'mimeType'].includes(key) && !_.has(filters, key)) {
@@ -197,6 +203,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       params: this.configService.appConfig.Course.contentApiQueryParams,
       pageNumber: this.paginationDetails.currentPage
     };
+
     this.searchService.contentSearch(option)
       .pipe(
         mergeMap(data => {

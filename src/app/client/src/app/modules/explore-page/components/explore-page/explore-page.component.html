@@ -5,10 +5,11 @@
     <!-- Filter for web version -->
     <!-- `isFilterEnabled` reference from current page data -->
     <div *ngIf="!isDesktopApp && isFilterEnabled && refreshFilter " [ngClass]="FIRST_PANEL_LAYOUT">
+      <!-- search -->
       <app-search-filter [facets$]="facets$" [layoutConfiguration]="layoutConfiguration" [isOpen]='true'
         *ngIf="initFilter" (filterChange)="getFilters($event)" [defaultTab]="defaultTab"
         [pageData]="getCurrentPageData()" [pageId]="isUserLoggedIn() ? 'resource-page' : 'explore-page'"
-        [defaultFilters]="defaultFilters" [userSelectedPreference]="userSelectedPreference"
+        [defaultFilters]="{ organisation: ['Fmps'] }" [userSelectedPreference]="userSelectedPreference"
         [filterResponseData]="filterResponseData">
       </app-search-filter>
     </div>
@@ -38,12 +39,13 @@
               {{resourceService?.frmelmnts?.lbl?.textbooks}}
             </h4>
           </div>
-          <div class="twelve wide column relative9"
+          <!-- COurses tab My courses -->
+          <!-- <div class="twelve wide column relative9"
             *ngIf="enrolledSection?.contents?.length && isUserLoggedIn() && !_currentPageData?.sections">
             <app-page-section [hideProgress]="true" (visits)="prepareVisits($event)" [section]="enrolledSection"
               (playEvent)="playEnrolledContent($event, 'My courses')" (viewAll)="viewAll($event)"
               [layoutConfiguration]="layoutConfiguration"></app-page-section>
-          </div>
+          </div> -->
 
           <!-- Template for displaying sections based on form configuration -->
           <!-- <div *ngIf="_currentPageData?.sections && _currentPageData?.isEnabled" aria-label="User Preferences">
@@ -172,7 +174,7 @@
         <!-- Template for displaying page sections -->
 
         <div *ngIf="!_currentPageData?.sections">
-          <div *ngFor="let section of pageSections; let last = last" [ngClass]="{'last mb-0':last}">
+          <div *ngFor="let section of pageSections; let last = last" class="'last mb-0':last" [ngClass]="{'last mb-0':last}">
             <sb-library-cards-grid *ngIf="!isDesktopApp" [layoutConfig]="layoutConfiguration"
               [type]="'infinite_card_grid'" [title]="section.name"
               [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3"

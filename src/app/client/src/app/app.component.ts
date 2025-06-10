@@ -476,6 +476,15 @@ export class AppComponent implements OnInit, OnDestroy {
         this.changeDetectorRef.detectChanges();
       });
 
+      setTimeout(() => {
+      // Set initial lang and dir attributes on html tag
+          const portalLanguage = localStorage.getItem('portalLanguage') || 'ar';
+          let dir = 'ltr';
+          if (portalLanguage === 'ar'  || portalLanguage === "\"ar\"") dir = 'rtl';
+          this._document.documentElement.lang = portalLanguage;
+          this._document.documentElement.dir = dir;
+      }, 1000);
+  
     this.changeLanguageAttribute();
     if (this.userService.loggedIn) {
       this.botObject['userId'] = this.userService.userid;
@@ -967,8 +976,8 @@ export class AppComponent implements OnInit, OnDestroy {
         this._document.documentElement.lang = item.value;
         this._document.documentElement.dir = item.dir;
       } else {
-        this._document.documentElement.lang = 'en';
-        this._document.documentElement.dir = 'ltr';
+        this._document.documentElement.lang = 'ar';
+        this._document.documentElement.dir = 'rtl';
       }
     });
   }

@@ -1,0 +1,36 @@
+name: Docker Build and Push
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Run build script
+        run: |
+          chmod +x build.sh
+          ./build.sh ${{ github.ref_name }}  true false
+          echo "Build completed successfully."
+
+      - name: Configure Docker for Google Cloud
+        run: |
+          echo ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }} | base64 --decode > $HOME/gcloud-key.json
+          gcloud auth activate-service-account --key-file=$HOME/gcloud-key.json
+          gcloud auth configure-docker ${{ secrets.REGISTRY_NAME }} 
+
+      - name: Push Docker image
+        run: |
+          docker tag player:${{ github.ref_name }} ${{ secrets.REGISTRY_NAME }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_REPOSITORY }}/player:${{ github.ref_name }}
+          docker push ${{ secrets.REGISTRY_NAME }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_REPOSITORY }}/player:${{ github.ref_name }}

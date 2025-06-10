@@ -734,6 +734,10 @@ html.PlayerMediaQueryClass {
   .sbchapter__item__title {
     opacity: 0.3;
     color: var(--black) !important;
+    cursor: not-allowed !important;
+  }
+  .sbchapter__item {
+    cursor: not-allowed !important;
   }
 }
 
@@ -1468,7 +1472,10 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
 
 [dir="rtl"] {
   .contentViewerIframeShadow {
-    transform: translate(50%, -50%) !important;
+    transform: translate(0%, 0%);
+  }
+  .mcqViewerIframeShadow {
+    transform: translate(50%, -50%) !important
   }
 }
 

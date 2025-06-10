@@ -42,6 +42,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public isLoading = true;
     public cardData: Array<{}> = [];
     bannerSegment: any;
+    resourceDataSubscription: any;
     displayBanner: boolean;
     bannerList?: any[];
     layoutConfiguration: any;
@@ -68,6 +69,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public enrolledSection: any;
     public completedCourseSection: any;
     public selectedCourseBatches: any;
+    public allEnrolledCourses: any
     frameworkCategories;
     frameworkCategoriesObject;
     transformUserPreference;
@@ -217,7 +219,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             }));
     }
 
-    ngOnInit() {
+    ngOnInit() {       
         this.cslFrameworkService?.setTransFormGlobalFilterConfig();
         this.frameworkCategories = this.cslFrameworkService?.getFrameworkCategories();
         this.frameworkCategoriesObject = this.cslFrameworkService?.getFrameworkCategoriesObject();
@@ -313,6 +315,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         }
                         return formatedContent;
                     }));
+                    this.allEnrolledCourses = filteredCourses
                     completedCourseSection.contents = _.compact(_.map(filteredCourses, content => {
                         if (content.status !== 2) {
                             return null;
@@ -502,8 +505,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                     if (_.has(response, 'result.QuestionSet')) {
                                         this.searchResponse = _.merge(this.searchResponse, _.get(response, 'result.QuestionSet'));
                                     }
-                                    const filteredContents = omit(groupBy(this.searchResponse, content => {
-                                        return content[groupByKey] || content[this.frameworkCategoriesList[3]] || 'Others';
+                                    // const filteredContents = omit(groupBy(this.searchResponse, content => {
+                                    //     return content[groupByKey] || content[this.frameworkCategoriesList[3]] || 'My Courses';
+                                    // }), ['undefined']);
+                                    const filteredContents = omit(groupBy(_.filter(this.searchResponse, course => _.includes(_.map(this.allEnrolledCourses, content => _.get(content, 'courseId')), course.identifier)), content => {
+                                        return content[groupByKey] || content[this.frameworkCategoriesList[3]] || 'My courses';
                                     }), ['undefined']);
                                     for (const [key, value] of Object.entries(filteredContents)) {
                                         const isMultipleSubjects = key && key.split(',').length > 1;
@@ -602,7 +608,22 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                     if (this.apiContentList !== undefined && !this.apiContentList.length) {
                                         return;
                                     }
-                                    this.pageSections = this.apiContentList.slice(0, 4);
+                                    // this.pageSections = this.apiContentList.slice(0, 4);
+                                    const temp = this.apiContentList.slice(0, 4);
+                                    this.pageSections = temp.map(item => {
+                                        item.tempName = item.name
+                                        item.name = this.utilService.transformStatic(item.name, item.name, this.resourceService.selectedLang);
+                                        return item;
+                                    });   
+                                    
+                                    this.resourceDataSubscription = this.resourceService.languageSelected$.subscribe(item1 => {                                       
+                                        if(item1.value){
+                                            this.pageSections = temp.map(item => {                                                                                              
+                                                item.name = this.utilService.transformStatic(item.tempName, item.tempName, this.resourceService.selectedLang);                                                                
+                                                return item;
+                                            });   
+                                        }                                       
+                                    })
                                     this.addHoverData();
                                 }, err => {
                                     this.showLoader = false;
@@ -726,6 +747,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnDestroy() {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
+        if (this.resourceDataSubscription) {
+            this.resourceDataSubscription.unsubscribe();
+        }
     }
 
     private setTelemetryData() {

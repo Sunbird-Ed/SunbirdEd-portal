@@ -31,7 +31,7 @@ export class LanguageDropdownComponent implements OnInit {
     let tenantPageLang = localStorage.getItem('portalLanguage') || this._cacheService.get('portalLanguage');
     if (tenantPageLang) {tenantPageLang=tenantPageLang.replaceAll("\"","")};
     if (tenantPageLang == null) {
-      tenantPageLang = 'en';
+      tenantPageLang = 'ar';
     }
     // if website has lang then set the lang in cache service
     if (localStorage.getItem('portalLanguage')) {
@@ -42,7 +42,7 @@ export class LanguageDropdownComponent implements OnInit {
       // If user directly open portal then set lang to storage for website
       localStorage.setItem('portalLanguage', tenantPageLang);
     }
-    this.selectedLanguage = this._cacheService.get('portalLanguage') || 'en';
+    this.selectedLanguage = this._cacheService.get('portalLanguage') || 'ar';
     this.resourceService.getLanguageChange(_.find(this.languageRange, ['value', this.selectedLanguage]));
     this.genericResourceService.getLanguageChange(_.find(this.languageRange, ['value', this.selectedLanguage]));
     window['TagManager']?.SBTagService?.pushTag({portalLanguage: this.selectedLanguage}, 'USERLANG_', true);

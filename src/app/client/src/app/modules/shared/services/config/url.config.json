@@ -118,7 +118,9 @@
       "USER_EXISTS_GET_USER_BY_KEY": "isUserExists/user/v1/get",
       "USER_DECLARATION": "user/v1/declarations",
       "GET_SESSION": "get/user/sessionId",
-      "DELETE": "user/v1/delete"
+      "DELETE": "user/v1/delete",
+      "CREATE_PREFIX": "user/v1/create",
+      "CREATE_SSO":"user/v1/sso/create"
     },
     "CERTIFICATE": {
       "FETCH_CERTIFICATES": "v1/certs/search",

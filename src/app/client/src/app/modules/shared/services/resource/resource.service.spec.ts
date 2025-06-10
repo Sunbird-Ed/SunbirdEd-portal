@@ -85,14 +85,14 @@ describe('ResourceService', () => {
   it('should fetch resource bundle', () => {
     jest.spyOn(resourceService, 'get').mockReturnValue(of({ result: {} } as any));
     jest.spyOn(mockTranslateService, 'use').mockImplementation();
-    resourceService.getResource('en', {
-      value: 'en',
-      label: 'English',
-      dir: 'ltr'
+    resourceService.getResource('ar', {
+      value: 'ar',
+      label: 'Arabic',
+      dir: 'rtl'
     });
 
     expect(resourceService.get).toHaveBeenCalled();
-    expect(mockTranslateService.use).toHaveBeenCalledWith('en');
+    expect(mockTranslateService.use).toHaveBeenCalledWith('ar');
   });
 
   it('should initialize with default language', () => {
@@ -101,11 +101,11 @@ describe('ResourceService', () => {
     jest.spyOn(resourceService, 'getResource').mockImplementation();
     resourceService.initialize();
     expect(mockCacheService.get).toHaveBeenCalledWith('portalLanguage');
-    expect(mockTranslateService.setDefaultLang).toHaveBeenCalledWith('en');
-    expect(resourceService.getResource).toHaveBeenCalledWith('en', {
-      value: 'en',
-      label: 'English',
-      dir: 'ltr'
+    expect(mockTranslateService.setDefaultLang).toHaveBeenCalledWith('ar');
+    expect(resourceService.getResource).toHaveBeenCalledWith('ar', {
+      value: 'ar',
+      label: 'Arabic',
+      dir: 'rtl'
     });
   });
 });
