@@ -20,7 +20,7 @@
         name="contentPlayer">
     </iframe>
 </div>
-<div *ngIf="!isMobileOrTab && showNewPlayer && !isContentDeleted" class="w-100 h-100">
+<div *ngIf="(isMobileOrTab && playerType === 'video-player') || (!isMobileOrTab &&showNewPlayer && !isContentDeleted)" class="w-100 h-100">
         <div class="mcqViewerIframeShadow" [ngClass]="{'player-fullscreen content-full-video': isFullScreenView}">
         <sunbird-pdf-player *ngIf="playerType === 'pdf-player'" [playerConfig]="playerConfig"
           (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)">
@@ -45,26 +45,26 @@
   </div>
   <div class="fnormal">{{resourceService?.messages?.stmsg?.desktop?.deleteMessage}}</div>
 </div>
-
-<div *ngIf="isMobileOrTab && showNewPlayer" class="w-100 h-100">
+<!-- put playerType for below div to show above player div for all device for maximize and minimize issue suggested by Harish -->
+<div *ngIf="playerType !== 'video-player' && isMobileOrTab && showNewPlayer" class="w-100 h-100">
   <div data-ratio="16:9" class="player-thumbnail" appTelemetryInteract [telemetryInteractObject]="telemetryObject" [telemetryInteractEdata]="loadPlayerInteractEdata"
   [ngStyle]="{'background': 'url(' + playerOverlayImage + ') center/cover no-repeat '}" *ngIf="showPlayIcon" id="contentPlayer" tabindex="0" (click)="enablePlayer(false)">
-  <img class="play-icon" src="assets/images/play_circle.svg">
-</div>
+    <img class="play-icon" src="assets/images/play_circle.svg">
+  </div>
 
-<div id="playerFullscreen" *ngIf="!showPlayIcon" class="player-fullscreen" [ngStyle]="{'display': mobileViewDisplay}"> 
-  <!-- <img *ngIf="playerType !== 'quml-player'" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeButtonInteractEdata" (click)="closeFullscreen()" class="close-button" src="assets/images/close-Black.svg" alt=""> -->
-  <sunbird-pdf-player *ngIf="playerType === 'pdf-player'" [playerConfig]="playerConfig"
-    (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></sunbird-pdf-player>
+  <div id="playerFullscreen" *ngIf="!showPlayIcon" class="player-fullscreen" [ngStyle]="{'display': mobileViewDisplay}"> 
+    <!-- <img *ngIf="playerType !== 'quml-player'" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeButtonInteractEdata" (click)="closeFullscreen()" class="close-button" src="assets/images/close-Black.svg" alt=""> -->
+    <sunbird-pdf-player *ngIf="playerType === 'pdf-player'" [playerConfig]="playerConfig"
+      (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></sunbird-pdf-player>
 
   <sunbird-video-player *ngIf="playerType === 'video-player'" [playerConfig]="playerConfig"
-    (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)">
-  </sunbird-video-player>
-  <sunbird-epub-player *ngIf="playerType === 'epub-player'" [playerConfig]="playerConfig" [showFullScreen]="isFullScreenView"
-    (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></sunbird-epub-player>
+      (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)">
+    </sunbird-video-player>
+    <sunbird-epub-player *ngIf="playerType === 'epub-player'" [playerConfig]="playerConfig" [showFullScreen]="isFullScreenView"
+      (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></sunbird-epub-player>
 
-    <quml-main-player *ngIf="playerType === 'quml-player' && showQumlPlayer" [playerConfig]="playerConfig" (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></quml-main-player>
-</div>
+      <quml-main-player *ngIf="playerType === 'quml-player' && showQumlPlayer" [playerConfig]="playerConfig" (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></quml-main-player>
+  </div>
 </div>
 
     <!--Rating popup -->
