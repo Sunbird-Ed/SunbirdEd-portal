@@ -20,7 +20,7 @@
         name="contentPlayer">
     </iframe>
 </div>
-<div *ngIf="(isMobileOrTab && playerType === 'video-player') || (!isMobileOrTab && showNewPlayer && !isContentDeleted)" class="w-100 h-100">
+<div *ngIf="(isMobileOrTab && playerType === 'video-player' && showNewPlayer) || (!isMobileOrTab && showNewPlayer && !isContentDeleted)" class="w-100 h-100">
         <div class="mcqViewerIframeShadow" [ngClass]="{'player-fullscreen content-full-video': isFullScreenView}">
         <sunbird-pdf-player *ngIf="playerType === 'pdf-player'" [playerConfig]="playerConfig"
           (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)">
