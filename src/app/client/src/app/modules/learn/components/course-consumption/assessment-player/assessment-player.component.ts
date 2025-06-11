@@ -99,6 +99,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   certificateDescription = {};
   parentCourse;
   hasIntroductoryMaterial: boolean = false;
+  isIntroductoryMaterial: boolean = false;
   prevModule;
   nextModule;
   totalContents = 0;
@@ -220,9 +221,11 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
         this.courseId = queryParams.courseId;
         this.courseName = queryParams.courseName;
         this.groupId = _.get(queryParams, 'groupId');
+        this.isIntroductoryMaterial = queryParams.isIntroductoryMaterial === true;
         const selectedContent = queryParams.selectedContent;
         let isSingleContent = this.collectionId === selectedContent;
         this.isParentCourse = this.collectionId === this.courseId;
+
         if (this.batchId) {
           this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
           if (this.groupId) {
@@ -231,54 +234,26 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
               type: 'Group'
             });
           }
-
-          this.getCollectionInfo(this.courseId)
+          if (queryParams.isIntroductoryMaterial) {
+            console.warn('Introductory Material is true', this.isIntroductoryMaterial);
+            this.fetchContentHierarchy(selectedContent, isSingleContent);
+          } else {
+            console.warn('getCollectionInfo Material is true');
+            
+            this.getCollectionInfo(this.courseId)
             .pipe(takeUntil(this.unsubscribe))
             .subscribe((data) => {
               const model = new TreeModel();
               this.treeModel = model.parse(data.courseHierarchy);
               this.parentCourse = data.courseHierarchy;
 
-              // Introductory Material
-              this.hasIntroductoryMaterial = _.has(this.parentCourse, 'introductoryMaterial') && !!this.parentCourse.introductoryMaterial;
-              let collectionIdIsPresentInIntro = false;
-              if (this.hasIntroductoryMaterial && typeof this.parentCourse.introductoryMaterial === 'string') {
-                try {
-                  const introductoryMaterialArray = JSON.parse(this.parentCourse.introductoryMaterial);
-                  if (Array.isArray(introductoryMaterialArray)) {
-                    collectionIdIsPresentInIntro = introductoryMaterialArray.some(item => item.identifier === this.collectionId);
-                  }
-                } catch (e) {
-                  console.error("Error parsing introductoryMaterial JSON", e);
-                }
-              }
               const module = this.courseConsumptionService.setPreviousAndNextModule(this.parentCourse, this.collectionId);
               this.nextModule = _.get(module, 'next');
               this.prevModule = _.get(module, 'prev');
               this.getCourseCompletionStatus();
               this.layoutService.updateSelectedContentType.emit(data.courseHierarchy.contentType);
               if (!this.isParentCourse && data.courseHierarchy.children) {
-
-                if(this.hasIntroductoryMaterial && collectionIdIsPresentInIntro) {
-                  this.http.get(`/api/content/v1/read/${this.collectionId}`)
-                      .pipe(takeUntil(this.unsubscribe))
-                      .subscribe((response: { result: { content: any } }) => {
-                        this.courseHierarchy  = response.result.content
-
-                        if (!isSingleContent && _.get(this.courseHierarchy, 'mimeType') !==
-                            this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-                            isSingleContent = true;
-                        }
-                        this.setActiveContent(selectedContent, isSingleContent);
-                        console.log(response.result.content)
-                      }, error => {
-                        console.error('Error fetching content:', error);
-                        this.toasterService.error('Failed to load content details.');
-                      });
-                }
-                 else {
                   this.courseHierarchy = data.courseHierarchy.children.find(item => item.identifier === this.collectionId);
-                }
               } else {
                 this.courseHierarchy = data.courseHierarchy;
               }
@@ -293,7 +268,12 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
               this.toasterService.error(this.resourceService.messages.fmsg.m0051);
               this.goBack();
             });
+          }
+            
         } else {
+          if (queryParams.isIntroductoryMaterial) {
+            this.fetchContentHierarchy(selectedContent, isSingleContent);
+          } else {
           this.telemetryCdata = [{
             id: this.groupId,
             type: 'Group'
@@ -312,7 +292,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
             }, error => {
               this.toasterService.error(this.resourceService.messages.fmsg.m0051);
               this.goBack();
-            });
+            });}
         }
         this.setTelemetryCourseImpression();
       });
@@ -330,6 +310,23 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
         enrolledBatchDetails: results[1],
       };
     }));
+  }
+
+  private fetchContentHierarchy(selectedContent: string, isSingleContent: boolean): void {
+    this.http.get(`/api/content/v1/read/${this.collectionId}`)
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe((response: { result: { content: any } }) => {
+        this.courseHierarchy = response.result.content;
+
+        if (!isSingleContent && _.get(this.courseHierarchy, 'mimeType') !==
+            this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+            isSingleContent = true;
+        }
+        this.setActiveContent(selectedContent, isSingleContent);
+      }, error => {
+        console.error('Error fetching content:', error);
+        this.toasterService.error('Failed to load content details.');
+      });
   }
 
   getContentStateRequest(course: any) {
