@@ -60,42 +60,7 @@
                 width="12px">{{resourceService?.frmelmnts?.lbl?.collapseAll}}</button>
           </div>
           
-          <!-- Introductory Material -->
 
-        <div *ngIf="introductoryMaterialArray && introductoryMaterialArray.length > 0" class="mb-16">
-          <sb-accordion [multi]="false">
-            <sb-accordion-item [expanded]="true"> 
-              <sb-accordion-header class="sb-bg-color-gray-0" tabindex="0">
-                {{ resourceService?.frmelmnts?.lbl?.introductoryMaterial || 'Introductory Material' }}
-              </sb-accordion-header>
-              <sb-accordion-body>
-                <div class="chapter-box">
-                  <div *ngFor="let introItem of detailedIntroductoryMaterialArray; let i = index">
-                    <div class="child-content-padding">
-                      <div *ngIf="introItem;else noContent">
-                      <!-- <sb-toc-child-item
-                            *ngIf="introItem?.contentType !== 'SelfAssess' && introItem?.mimeType !== 'application/vnd.sunbird.questionset'"
-                            [childData]="introItem" class="sb-toc-child-item"
-                            (tocCardClick)="handleIntroItemClick($event, introItem)"
-                            [contentStatus]="contentStatus" [type]="cardType" >
-                      </sb-toc-child-item> -->
-                       <sb-toc-child-item
-                            *ngIf="introItem?.contentType !== 'SelfAssess' && introItem?.mimeType !== 'application/vnd.sunbird.questionset'"
-                            [childData]="introItem" class="sb-toc-child-item"
-                             (tocCardClick)="navigateToContent($event, introItem, 'child-item', true)"
-                            [contentStatus]="contentStatus" [type]="cardType" >
-                      </sb-toc-child-item>
-                      
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </sb-accordion-body>
-            </sb-accordion-item>
-          </sb-accordion>
-        </div>
-
-          <!-- End of Introductory Material -->
 
           <div *ngFor="let item of courseHierarchy?.children; let index = index">
             <sb-accordion [multi]="false">
@@ -160,6 +125,43 @@
               </sb-accordion-item>
             </sb-accordion>
           </div>
+
+                    <!-- Introductory Material -->
+
+        <div *ngIf="introductoryMaterialArray && introductoryMaterialArray.length > 0" class="mb-16">
+          <sb-accordion [multi]="false">
+            <sb-accordion-item [expanded]="true"> 
+              <sb-accordion-header class="sb-bg-color-gray-0" tabindex="0">
+                {{ resourceService?.frmelmnts?.lbl?.introductoryMaterial || 'Introductory Material' }}
+              </sb-accordion-header>
+              <sb-accordion-body>
+                <div class="chapter-box">
+                  <div *ngFor="let introItem of detailedIntroductoryMaterialArray; let i = index">
+                    <div class="child-content-padding">
+                      <div *ngIf="introItem;else noContent">
+                      <!-- <sb-toc-child-item
+                            *ngIf="introItem?.contentType !== 'SelfAssess' && introItem?.mimeType !== 'application/vnd.sunbird.questionset'"
+                            [childData]="introItem" class="sb-toc-child-item"
+                            (tocCardClick)="handleIntroItemClick($event, introItem)"
+                            [contentStatus]="contentStatus" [type]="cardType" >
+                      </sb-toc-child-item> -->
+                       <sb-toc-child-item
+                            *ngIf="introItem?.contentType !== 'SelfAssess' && introItem?.mimeType !== 'application/vnd.sunbird.questionset'"
+                            [childData]="introItem" class="sb-toc-child-item"
+                             (tocCardClick)="navigateToContent($event, introItem, 'child-item', true)"
+                            [contentStatus]="contentStatus" [type]="cardType" >
+                      </sb-toc-child-item>
+                      
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </sb-accordion-body>
+            </sb-accordion-item>
+          </sb-accordion>
+        </div>
+
+          <!-- End of Introductory Material -->
         </div>
 
         <!-- Course details displayed on bottom when course is enrolled -->
