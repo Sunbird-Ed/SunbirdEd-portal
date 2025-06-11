@@ -860,21 +860,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         }
       );
   }
-
-  // public handleIntroItemClick(event: any, introItem: any): void {
-  //   if (introItem && introItem.mimeType === 'application/pdf') {
-  //     const pdfUrl = introItem.previewUrl || introItem.artifactUrl;
-  //     if (pdfUrl) {
-  //       window.open(pdfUrl, '_blank');
-  //       this.logTelemetry('view-pdf-intro-item', introItem);
-  //     } else {
-  //       this.toasterService.error(this.resourceService.messages.emsg.m0004); // Or a more specific "PDF URL not found" message
-  //     }
-  //   } else {
-  //     this.navigateToContent(event, introItem, 'child-item');
-  //   }
-  // }
-
+  
   markContentVisibility(
     sections = [],
     contentStatus = [],
