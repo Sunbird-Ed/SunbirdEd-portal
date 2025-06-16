@@ -30,6 +30,7 @@ export class ProgressPlayerService {
         summaryMap['totallength'] || 0,
         summaryMap['endpageseen'] || false,
         summaryMap['visitedcontentend'] || false,
+        summaryMap['totalseekedlength'] || 0
       );
     } else if (
       this.OTHER_MIME_TYPES.indexOf(mimeType) > -1
@@ -46,9 +47,10 @@ export class ProgressPlayerService {
     totalLength: number,
     endPageSeen: boolean,
     visitedContentEnd: boolean,
+    totalSeekedlength: number
   ) {
     let customProgress;
-    if ((totalLength && (visitedLength * 100) / totalLength) > 99) {
+    if ((totalLength && ((visitedLength + totalSeekedlength) * 100) / totalLength) > 99) {
       customProgress = 100;
     } else {
       customProgress = progress;
