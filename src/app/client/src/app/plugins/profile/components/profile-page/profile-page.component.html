@@ -388,7 +388,7 @@
           </div>
           <div class="ui divider my-5 mobile only"></div>
           <!--contributions computer view starts-->
-          <div class="ui segments" *ngIf="contributions && contributions.length > 0">
+          <div class="ui segments" *ngIf="showComponent && contributions && contributions.length > 0">
             <div class="ui segment computer only">
               <div class="fs-1-7 pl-10 font-w-bold">{{resourceService.frmelmnts.scttl.contributions}}
                 ({{totalContributions}})&#x200E;</div>

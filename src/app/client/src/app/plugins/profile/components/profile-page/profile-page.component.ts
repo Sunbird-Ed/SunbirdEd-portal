@@ -92,6 +92,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     view: this.configService.constants.VIEW.VERTICAL,
     isTitle: false
   };
+  showComponent = true;
+  resourceDataSubscription: Subscription;
 
   constructor(@Inject('CS_COURSE_SERVICE') private courseCService: CsCourseService, private cacheService: CacheService,
     public resourceService: ResourceService, public coursesService: CoursesService,
@@ -160,6 +162,12 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
     this.setInteractEventData();
+    this.resourceDataSubscription = this.resourceService.languageSelected$.subscribe(item => {
+      this.showComponent = false;
+            setTimeout(() => {
+                this.showComponent = true;
+            }, 0);
+    });
   }
 
   initLayout() {
