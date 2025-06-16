@@ -87,9 +87,9 @@ export class LayoutService {
   initiateSwitchLayout() {
     if (this.layoutConfig) {
       this.layoutConfig = null;
-      document.documentElement.setAttribute('layout', 'base');
+      document.documentElement.setAttribute('layout', 'joy');
       this.acessibleLayoutEnabled = false;
-      localStorage.setItem('layoutType', 'default');
+      localStorage.setItem('layoutType', 'joy');
 
     } else {
       this.layoutConfig = this.configService.appConfig.layoutConfiguration;

@@ -1,5 +1,5 @@
 <app-landing-section *ngIf="allTabData" [textToDisplay]="resourceService?.frmelmnts?.tab?.all" [layoutConfiguration]="layoutConfiguration" [svgToDisplay]="allTabData?.theme?.imageName"></app-landing-section>
-<div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg sbt-home-search-component':''">
+<div *ngIf="showComponent" [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg sbt-home-search-component':''">
   <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
       <div *ngIf="layoutConfiguration">

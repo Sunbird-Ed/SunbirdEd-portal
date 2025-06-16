@@ -92,8 +92,8 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
           return {
             facet: f.name,
             type: 'pills',
-            labelText: f.label || f.name,
-            placeholderText: `${this.resourceService.frmelmnts.lbl.Select} ${f.label || f.name}`,
+            labelText: this.resourceService.frmelmnts.lbl[f.name === 'language' ? 'lang' : f.name],
+            placeholderText: `${this.resourceService.frmelmnts.lbl.Select} ${this.resourceService.frmelmnts.lbl[f.name === 'language' ? 'lang' : f.name]}`,
             multiple: true
           };
         }
@@ -101,8 +101,8 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
         return {
           facet: f.name,
           type: 'dropdown',
-          labelText: f.label || f.name,
-          placeholderText: `${this.resourceService.frmelmnts.lbl.Select} ${f.label || f.name}`,
+          labelText: this.resourceService.frmelmnts.lbl[f.name === 'language' ? 'lang' : f.name],
+          placeholderText: `${this.resourceService.frmelmnts.lbl.Select} ${this.resourceService.frmelmnts.lbl[f.name === 'language' ? 'lang' : f.name]}`,
           multiple: true
         };
       });
