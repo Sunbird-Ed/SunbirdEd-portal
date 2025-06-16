@@ -10,26 +10,26 @@ export class LabelMappingService {
     const r = resourceService?.frmelmnts?.lbl || {};
 
     return {
-      "Asset": r.asset || "Asset",
-      "Digital Textbook": r.digitalTextbook || "Digital Textbook",
-      "Explanation Content": r.explanationContent || "Explanation Content",
-      "eTextBook": r.etextbook || "eTextbook",
-      "Textbook Unit": r.textbookUnit || "Textbook Unit",
-      "Textbook": r.textbook || "Textbook",
-      "Certificate Template": r.certificateTemplate || "Certificate Template",
-      "Course": r.course || "Course",
-      "Course Unit": r.courseUnit || "Course Unit",
-      "Content Playlist": r.contentPlaylist || "Content Playlist",
-      "Course Assessment": r.courseAssessment || "Course Assessment",
-      "Practice Assessment": r.practiceAssessment || "Practice Assessment",
-      "Teacher Resource": r.teacherResource || "Teacher Resource",
-      "Learning Resource": r.learningResource || "Learning Resource",
-      "Practice Question Set": r.practiceQuestionSet || "Practice Question Set",
-      "Multiple Choice Question": r.multipleChoiceQuestion || "Multiple Choice Question",
-      "Subjective Question": r.subjectiveQuestion || "Subjective Question",
-      "Question Paper": r.questionPaper || "Question Paper",
-      "Lesson Plan Unit": r.lessonPlanUnit || "Lesson Plan Unit",
-      "Exam Question": r.examQuestion || "Exam Question"
+      "asset": r.asset || "Asset",
+      "digital textbook": r.digitalTextbook || "Digital Textbook",
+      "explanation content": r.explanationContent || "Explanation Content",
+      "etextbook": r.etextbook || "eTextbook",
+      "textbook unit": r.textbookUnit || "Textbook Unit",
+      "textbook": r.textbook || "Textbook",
+      "certificate template": r.certificateTemplate || "Certificate Template",
+      "course": r.course || "Course",
+      "course unit": r.courseUnit || "Course Unit",
+      "content playlist": r.contentPlaylist || "Content Playlist",
+      "course assessment": r.courseAssessment || "Course Assessment",
+      "practice assessment": r.practiceAssessment || "Practice Assessment",
+      "teacher resource": r.teacherResource || "Teacher Resource",
+      "learning resource": r.learningResource || "Learning Resource",
+      "practice question set": r.practiceQuestionSet || "Practice Question Set",
+      "multiple choice question": r.multipleChoiceQuestion || "Multiple Choice Question",
+      "subjective question": r.subjectiveQuestion || "Subjective Question",
+      "question paper": r.questionPaper || "Question Paper",
+      "lesson plan unit": r.lessonPlanUnit || "Lesson Plan Unit",
+      "exam question": r.examQuestion || "Exam Question"
     };
   }
 }

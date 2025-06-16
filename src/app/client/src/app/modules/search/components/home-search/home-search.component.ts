@@ -252,8 +252,8 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
           this.contentList = get(data, 'result.content');
           if (this.contentList) {
             this.contentList.forEach(content => {
-              if (content.primaryCategory) {
-                const categoryKey = content.primaryCategory;
+              if (content?.primaryCategory) {
+                const categoryKey = _.toLower(content.primaryCategory);
                 content.primaryCategory = this.labelMappingService.getLabelMappings(this.resourceService)[categoryKey] || content.primaryCategory;
               }
             });

@@ -89,10 +89,10 @@ export class PageSectionComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     // Iterate through contents and update primaryCategory if present
-    if (this.section && this.section.contents) {
+    if (this.section?.contents) {
       this.section.contents.forEach(content => {
         if (content.primaryCategory) {
-          const categoryKey = content.primaryCategory;
+          const categoryKey = _.toLower(content.primaryCategory);
           content.primaryCategory = this.labelMappingService.getLabelMappings(this.resourceService)[categoryKey] || content.primaryCategory;
         }
       });

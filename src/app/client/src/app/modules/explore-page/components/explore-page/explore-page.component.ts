@@ -620,10 +620,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                     
                                     if (this.pageSections) {
                                         this.pageSections.forEach(section => {
-                                          if (section.contents && Array.isArray(section.contents)) {
+                                          if (section?.contents && Array.isArray(section?.contents)) {
                                             section.contents.forEach(content => {
-                                              if (content.contentType) {
-                                                const categoryKey = content.contentType;
+                                              if (content?.contentType) {
+                                                const categoryKey = _.toLower(content.contentType);
                                                 content.primaryCategory =
                                                   this.labelMappingService.getLabelMappings(this.resourceService)[categoryKey] || content.contentType;
                                               }
