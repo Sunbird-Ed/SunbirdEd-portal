@@ -89,7 +89,7 @@ export class LayoutService {
       this.layoutConfig = null;
       document.documentElement.setAttribute('layout', 'joy');
       this.acessibleLayoutEnabled = false;
-      localStorage.setItem('layoutType', 'joy');
+      localStorage.setItem('layoutType', 'default');
 
     } else {
       this.layoutConfig = this.configService.appConfig.layoutConfiguration;
