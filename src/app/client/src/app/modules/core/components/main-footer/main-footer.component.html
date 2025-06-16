@@ -31,11 +31,11 @@
             <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')" href="/term-of-use.html">
               {{resourceService.frmelmnts?.lnk?.footerTnC}}
             </a>
-            <span>| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
+            <!-- <span>| &copy; {{date | date:'yyyy'}}, {{instance}}</span> -->
           </label>
-          <label class="sb-footer-license">
+          <!-- <label class="sb-footer-license">
            <span><img alt="{{resourceService.frmelmnts?.lbl?.CCbyLicense}}" src="/assets/images/CCby.svg">&nbsp;&nbsp;{{resourceService.frmelmnts?.lbl?.CCbyLicense}}</span>
-          </label>
+          </label> -->
         </div>
       </div>
     </div>
@@ -62,13 +62,12 @@
                 href="/term-of-use.html">{{resourceService.frmelmnts?.lnk?.footerTnC}}</a>
               <a *ngIf="isDesktopApp" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
                 href="{{appBaseUrl}}/term-of-use.html" target="_blank">{{resourceService.frmelmnts?.lnk?.footerTnC}}</a> -->
-              <span [attr.aria-label]="instance" tabindex="0">
-                <!-- | -->
-                &copy; {{date | date:'yyyy'}}, {{instance}}</span>
+              <!-- <span [attr.aria-label]="instance" tabindex="0">
+                &copy; {{date | date:'yyyy'}}, {{instance}}</span> -->
             </label>
-            <label class="d-block text-left fsmall" tabindex="0">
+            <!-- <label class="d-block text-left fsmall" tabindex="0">
               <span>{{resourceService.frmelmnts?.lbl?.CCbyLicense}}&nbsp;&nbsp;<img alt="{{resourceService.frmelmnts?.lbl?.CCbyLicense}}" src="/assets/images/CCby.svg"></span>
-            </label>
+            </label> -->
           </div>
           </div>
           <div class="six wide column p-0 d-flex sbt-footer-download-app">
