@@ -21,7 +21,7 @@ export class LabelMappingService {
       "course unit": r.courseUnit || "Course Unit",
       "content playlist": r.contentPlaylist || "Content Playlist",
       "course assessment": r.courseAssessment || "Course Assessment",
-      "practice assessment": r.practiceAssessment || "Practice Assessment",
+      "practise assess": r.practiseAssessment || "Practise Assessment",
       "teacher resource": r.teacherResource || "Teacher Resource",
       "learning resource": r.learningResource || "Learning Resource",
       "practice question set": r.practiceQuestionSet || "Practice Question Set",
