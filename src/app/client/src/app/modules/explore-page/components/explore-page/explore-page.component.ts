@@ -17,6 +17,7 @@ import { CacheService } from '../../../shared/services/cache-service/cache.servi
 import { ProfileService } from '@sunbird/profile';
 import { SegmentationTagService } from '../../../core/services/segmentation-tag/segmentation-tag.service';
 import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
+import { LabelMappingService } from '../../../shared/services/resource/label-mapping.service';
 
 @Component({
     selector: 'app-explore-page-component',
@@ -103,6 +104,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     refreshFilter: boolean = true;
     public categoryKeys;
     frameworkCategoriesList;
+    showComponent = true;
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     }
@@ -123,7 +125,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    constructor(private searchService: SearchService, private toasterService: ToasterService, public userService: UserService,
+    constructor( private labelMappingService: LabelMappingService,private searchService: SearchService, private toasterService: ToasterService, public userService: UserService,
         public resourceService: ResourceService, private configService: ConfigService, public activatedRoute: ActivatedRoute,
         private router: Router, private orgDetailsService: OrgDetailsService, private publicPlayerService: PublicPlayerService,
         private contentSearchService: ContentSearchService, private navigationhelperService: NavigationHelperService,
@@ -614,7 +616,21 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                         item.tempName = item.name
                                         item.name = this.utilService.transformStatic(item.name, item.name, this.resourceService.selectedLang);
                                         return item;
-                                    });   
+                                    });  
+                                    
+                                    if (this.pageSections) {
+                                        this.pageSections.forEach(section => {
+                                          if (section.contents && Array.isArray(section.contents)) {
+                                            section.contents.forEach(content => {
+                                              if (content.contentType) {
+                                                const categoryKey = content.contentType;
+                                                content.primaryCategory =
+                                                  this.labelMappingService.getLabelMappings(this.resourceService)[categoryKey] || content.contentType;
+                                              }
+                                            });
+                                          }
+                                        });
+                                      }
                                     
                                     this.resourceDataSubscription = this.resourceService.languageSelected$.subscribe(item1 => {                                       
                                         if(item1.value){
@@ -779,6 +795,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             if (_.get(this.pageSections, 'length') && this.isDesktopApp) {
                 this.addHoverData();
             }
+            this.showComponent = false;
+            setTimeout(() => {
+                this.showComponent = true;
+            }, 0);
         });
     }
 

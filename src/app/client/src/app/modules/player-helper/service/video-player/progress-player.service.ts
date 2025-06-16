@@ -48,7 +48,7 @@ export class ProgressPlayerService {
     visitedContentEnd: boolean,
   ) {
     let customProgress;
-    if (endPageSeen || visitedContentEnd || (totalLength && (visitedLength * 100) / totalLength) > 99) {
+    if ((totalLength && (visitedLength * 100) / totalLength) > 99) {
       customProgress = 100;
     } else {
       customProgress = progress;

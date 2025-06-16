@@ -5,6 +5,7 @@ import * as _ from 'lodash-es';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { Subscription } from 'rxjs';
 import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
+import { LabelMappingService } from '../../../shared/services/resource/label-mapping.service';
 /**
  * This display a a section
  */
@@ -46,7 +47,7 @@ export class PageSectionComponent implements OnInit, OnDestroy, OnChanges {
   maxSlide = 0;
   public categoryKeys;
 
-  constructor(public config: ConfigService, public activatedRoute: ActivatedRoute, public resourceService: ResourceService, public cslFrameworkService: CslFrameworkService,
+  constructor(private labelMappingService: LabelMappingService,public config: ConfigService, public activatedRoute: ActivatedRoute, public resourceService: ResourceService, public cslFrameworkService: CslFrameworkService,
     private cdr: ChangeDetectorRef) {
 
     this.pageid = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
@@ -85,6 +86,16 @@ export class PageSectionComponent implements OnInit, OnDestroy, OnChanges {
     } else if (this.contentList.length === 0) {
       const upperLimit = (_.get(this.config, 'appConfig.CoursePageSection.slideConfig.slidesToScroll') || 4) * 2 - 1;
       this.contentList.push(...this.section.contents.slice(0, upperLimit));
+    }
+
+    // Iterate through contents and update primaryCategory if present
+    if (this.section && this.section.contents) {
+      this.section.contents.forEach(content => {
+        if (content.primaryCategory) {
+          const categoryKey = content.primaryCategory;
+          content.primaryCategory = this.labelMappingService.getLabelMappings(this.resourceService)[categoryKey] || content.primaryCategory;
+        }
+      });
     }
   }
   selectedLanguageTranslation(data) {

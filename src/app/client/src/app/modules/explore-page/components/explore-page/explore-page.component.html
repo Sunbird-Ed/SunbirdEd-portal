@@ -1,4 +1,4 @@
-<div
+<div *ngIf="showComponent"
   [ngClass]="[layoutConfiguration ? 'sbt-fluid-content-bg':'', (getSelectedTab() === 'home' || getSelectedTab() === 'explore') ? '': '']">
   <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'"
     [appTelemetryImpression]="telemetryImpression">

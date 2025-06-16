@@ -13,6 +13,7 @@ import { CacheService } from '../../../shared/services/cache-service/cache.servi
 import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
 import {omit, groupBy, get, uniqBy, toLower, find, map as _map, forEach, each} from 'lodash-es';
 import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
+import { LabelMappingService } from '../../../shared/services/resource/label-mapping.service';
 
 @Component({
   templateUrl: './home-search.component.html'
@@ -63,8 +64,9 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   globalFilterCategories;
   frameworkCategoriesList;
   categoryKeys: any[];
+  showComponent = true;
 
-  constructor(public searchService: SearchService, public router: Router,
+  constructor(private labelMappingService: LabelMappingService, public searchService: SearchService, public router: Router,
     public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
     public resourceService: ResourceService, public toasterService: ToasterService, public changeDetectorRef: ChangeDetectorRef,
     public configService: ConfigService, public utilService: UtilService, public coursesService: CoursesService,
@@ -248,6 +250,14 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
           this.contentList = _.concat(get(data, 'result.content'), get(data, 'result.QuestionSet'));
         } else if(get(data, 'result.content')){
           this.contentList = get(data, 'result.content');
+          if (this.contentList) {
+            this.contentList.forEach(content => {
+              if (content.primaryCategory) {
+                const categoryKey = content.primaryCategory;
+                content.primaryCategory = this.labelMappingService.getLabelMappings(this.resourceService)[categoryKey] || content.primaryCategory;
+              }
+            });
+          }
         } else {
           this.contentList = get(data, 'result.QuestionSet');
         }
@@ -475,6 +485,10 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         this.facets = this.searchService.updateFacetsData(this.facets);
       }
+      this.showComponent = false;
+            setTimeout(() => {
+                this.showComponent = true;
+            }, 0);
     });
   }
 
@@ -631,4 +645,3 @@ getInteractEdata(event) {
 }
 
 }
-

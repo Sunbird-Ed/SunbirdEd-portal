@@ -151,12 +151,10 @@ export class AppComponent implements OnInit, OnDestroy {
     private connectionService: ConnectionService, public genericResourceService: GenericResourceService, public popupControlService: PopupControlService, private cslFrameworkService: CslFrameworkService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
-    const layoutType = localStorage.getItem('layoutType') || 'base';
-    if (layoutType === 'base' || layoutType === 'joy') {
+    const layoutType = localStorage.getItem('layoutType') || 'joy';
+    if (layoutType === 'joy') {
       this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
       document.documentElement.setAttribute('layout', 'joy');
-    } else {
-      document.documentElement.setAttribute('layout', 'base');
     }
   }
 
