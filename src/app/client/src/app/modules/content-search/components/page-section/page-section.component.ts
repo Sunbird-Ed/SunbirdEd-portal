@@ -45,6 +45,7 @@ export class PageSectionComponent implements OnInit, OnDestroy, OnChanges {
   contentList = [];
 
   maxSlide = 0;
+  showComponent = true;
   public categoryKeys;
 
   constructor(private labelMappingService: LabelMappingService,public config: ConfigService, public activatedRoute: ActivatedRoute, public resourceService: ResourceService, public cslFrameworkService: CslFrameworkService,
@@ -64,6 +65,10 @@ export class PageSectionComponent implements OnInit, OnDestroy, OnChanges {
       : _.cloneDeep(this.config.appConfig.CoursePageSection.slideConfig);
     this.resourceDataSubscription = this.resourceService.languageSelected$.subscribe(item => {
       this.selectedLanguageTranslation(item.value);
+      this.showComponent = false;
+            setTimeout(() => {
+                this.showComponent = true;
+            }, 0);
     });
     if (this.pageid) {
       this.cardInteractEdata = {
@@ -94,6 +99,10 @@ export class PageSectionComponent implements OnInit, OnDestroy, OnChanges {
         if (content.primaryCategory) {
           const categoryKey = _.toLower(content.primaryCategory);
           content.primaryCategory = this.labelMappingService.getLabelMappings(this.resourceService)[categoryKey] || content.primaryCategory;
+        }
+        if (content?.organisation) {
+          _.set(content, 'labels.publisher', this.resourceService?.frmelmnts?.lbl["publisher"]);
+          _.set(content, 'labels.category', this.resourceService?.frmelmnts?.lbl["category"]);
         }
       });
     }

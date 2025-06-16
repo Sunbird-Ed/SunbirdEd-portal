@@ -627,6 +627,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                                 content.primaryCategory =
                                                   this.labelMappingService.getLabelMappings(this.resourceService)[categoryKey] || content.contentType;
                                               }
+                                              if (content?.organisation) {
+                                                _.set(content, 'labels.publisher', this.resourceService?.frmelmnts?.lbl["publisher"]);
+                                                _.set(content, 'labels.category', this.resourceService?.frmelmnts?.lbl["category"]);
+                                              }
                                             });
                                           }
                                         });

@@ -256,6 +256,10 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
                 const categoryKey = _.toLower(content.primaryCategory);
                 content.primaryCategory = this.labelMappingService.getLabelMappings(this.resourceService)[categoryKey] || content.primaryCategory;
               }
+              if (content?.organisation) {
+                _.set(content, 'labels.publisher', this.resourceService?.frmelmnts?.lbl["publisher"]);
+                _.set(content, 'labels.category', this.resourceService?.frmelmnts?.lbl["category"]);
+              }
             });
           }
         } else {
