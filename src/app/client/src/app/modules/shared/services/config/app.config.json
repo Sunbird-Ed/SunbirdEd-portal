@@ -825,6 +825,8 @@
           }
         ],
         "disablePictureInPictureMode": true,
+        "playsinline": true,
+        "disableRemotePlayback": true,
         "showStartPage": true,
         "host": "",
         "overlay": {
