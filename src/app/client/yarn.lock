@@ -2404,10 +2404,10 @@
   dependencies:
     tslib "^2.0.0"
 
-"@project-sunbird/sunbird-video-player-v9@5.5.4":
-  version "5.5.4"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v9/-/sunbird-video-player-v9-5.5.4.tgz#099e5468abaf63d0ce7e90f0c07c6cf6a8fb83a5"
-  integrity sha512-I42ntew431JFPnoNyNEQr2JWa9c99Wrh7+iCkEl0pmsiSo1YBbzw+246U7oGkFfU3bLWNts2BOrkRmaGrhEuhg==
+"@project-sunbird/sunbird-video-player-v9@5.5.5":
+  version "5.5.5"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v9/-/sunbird-video-player-v9-5.5.5.tgz#57499cbf7eb4edfe5bae0adceb1f18bd84201687"
+  integrity sha512-SrDIWH2eEVYI1QR6GcSr1/C3aEIveN3BRKlUSUC6fYReV2jP6lKZqKOB1TwFNPRbshw+WiYc6NgBtGA8PpVgtA==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "5.1.2"
     tslib "^2.0.0"
