@@ -823,6 +823,7 @@
             ]
           }
         ],
+        "disablePictureInPictureMode": true,
         "showStartPage": true,
         "host": "",
         "overlay": {
