@@ -1,5 +1,26 @@
 .cardSlick {
-  float: left;
-  height: 100%;
-  min-height: 0.0625rem;
+  flex: 1 1 calc(33.333% - 1rem);
+  max-width: calc(33.333% - 1rem);
+  box-sizing: border-box;
+}
+
+.vertical-card-container {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 1rem;
+  justify-content: flex-start;
+}
+
+@media (max-width: 1024px) {
+  .cardSlick {
+    flex: 1 1 calc(50% - 1rem);
+    max-width: calc(50% - 1rem);
+  }
+}
+
+@media (max-width: 600px) {
+  .cardSlick {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
 }
