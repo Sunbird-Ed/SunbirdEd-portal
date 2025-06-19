@@ -233,7 +233,10 @@
               </mat-panel-title>
 
             </mat-expansion-panel-header>
-            <button class="sb-btn sb-btn-outline-primary sb-btn-normal" (click)="downloadCertificate()">
+            <button class="sb-btn sb-btn-outline-primary sb-btn-normal" (click)="downloadCertificate()" [disabled]="isDownloadingCertificate" [attr.aria-busy]="isDownloadingCertificate">
+              <span *ngIf="isDownloadingCertificate" class="loader-span mr-8" aria-live="polite">
+                <i class="fa fa-spinner fa-spin"></i>
+              </span>
               {{resourceService?.frmelmnts?.lbl?.downloadCertificate}}
             </button>
             

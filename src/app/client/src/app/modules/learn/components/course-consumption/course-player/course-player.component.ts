@@ -44,6 +44,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public courseConsent = 'course-consent';
   public courseHierarchy: any;
   public istrustedClickXurl = false;
+  public isDownloadingCertificate = false;
   public telemetryCourseImpression: IImpressionEventInput;
   public telemetryContentImpression: IImpressionEventInput;
   public telemetryCourseEndEvent: IEndEventInput;
@@ -755,6 +756,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.isDownloadingCertificate = true;
     const courseName = _.get(this.matchingCertificate, 'name');
 
     this.CsCourseService.getSignedCourseCertificate(_.get(this.matchingCertificate, 'osid'))
@@ -766,9 +768,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       } else {
         this.toasterService.error(this.resourceService.messages.emsg.m0076);
       }
+      this.isDownloadingCertificate = false;
     }, error => {
       console.error('Error downloading certificate:', error);
       this.toasterService.error(this.resourceService.messages.emsg.m0076);
+      this.isDownloadingCertificate = false;
     });
 
   }

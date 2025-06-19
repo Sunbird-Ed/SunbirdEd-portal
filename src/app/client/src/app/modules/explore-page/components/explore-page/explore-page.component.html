@@ -162,13 +162,20 @@
               </sb-content-section>
             </div>
           </div>
-          <div *ngIf="facetSections.length === 0 && !showLoader && getSelectedTab() === 'home'">
+          <!-- <div *ngIf="facetSections.length === 0 && !showLoader && getSelectedTab() === 'home'">
             <app-no-result-found (exploreMoreContent)="navigateToExploreContent()" [filters]="selectedFilters"
               [title]="noResultMessage?.title" [subTitle]="noResultMessage?.subTitle"
               [buttonText]="noResultMessage?.buttonText"
               [showExploreContentButton]="noResultMessage?.showExploreContentButton"
               [telemetryInteractEdataObject]="exploreMoreButtonEdata"></app-no-result-found>
-          </div>
+          </div> -->
+          <div *ngIf="(facetSections.length === 0 || showLoader) && getSelectedTab() === 'home'">
+            <sb-library-cards-grid [layoutConfig]="layoutConfiguration" *ngFor="let i of numberOfSections"
+            [type]="'infinite_card_grid'" [isLoading]="true" [maxCardCount]="!isUserLoggedIn() ? 4: 3"
+            [categoryKeys]="categoryKeys">
+          </sb-library-cards-grid>
+
+        </div>
 
         </div>
         <!-- Template for displaying page sections -->
