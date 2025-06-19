@@ -194,3 +194,12 @@ xxl calculateRem(88px) 24px 20px;
   background-color: var(--sbt-body-bg) !important;
   border-radius: 20px;
 }
+
+.loader-span {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.fa-spinner {
+  font-size: 14px;
+}
