@@ -132,7 +132,7 @@
           <sb-accordion [multi]="false">
             <sb-accordion-item [expanded]="true"> 
               <sb-accordion-header class="sb-bg-color-gray-0" tabindex="0">
-                {{ resourceService?.frmelmnts?.lbl?.introductoryMaterial || 'Support Material' }}
+                {{ resourceService?.frmelmnts?.lbl?.introductoryMaterial || resourceService?.frmelmnts?.lbl?.supportMaterial || "Support Material" }}
               </sb-accordion-header>
               <sb-accordion-body>
                 <div class="chapter-box">
