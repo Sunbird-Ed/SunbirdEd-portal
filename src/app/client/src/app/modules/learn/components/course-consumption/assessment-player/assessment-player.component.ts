@@ -399,7 +399,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
         const res = this.CourseProgressService.getContentProgressState(req, _res);
         const _contentIndex = _.findIndex(this.contentStatus, {contentId: _.get(this.activeContent, 'identifier')});
         const _resIndex =  _.findIndex(res.content, {contentId: _.get(this.activeContent, 'identifier')});
-        if (ASSESSMENT_CONTENT_TYPES.includes(_.get(this.activeContent, 'contentType')) || _.toLower(_.get(this.activeContent, 'primaryCategory')) === 'practise assess' && this.isRouterExtrasAvailable) {
+        if ((ASSESSMENT_CONTENT_TYPES.includes(_.get(this.activeContent, 'contentType')) || _.toLower(_.get(this.activeContent, 'primaryCategory')) === 'practise assess') && this.isRouterExtrasAvailable) {
           this.contentStatus[_contentIndex]['status'] = _.get(res.content[_resIndex], 'status');
         } else {
           this.contentStatus = res.content || [];
@@ -439,7 +439,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
       contentId: _.cloneDeep(_.get(telObject, 'object.id')) || _.get(this.activeContent, 'identifier'),
       courseId: this.courseId,
       batchId: this.batchId,
-      status: (eid === 'END' && ((!ASSESSMENT_CONTENT_TYPES.includes(_.get(this.getCurrentContent, 'contentType')) || _.toLower(_.get(this.getCurrentContent, 'primaryCategory')) === 'practise assess')) && this.courseProgress === 100
+      status: (eid === 'END' && ((!ASSESSMENT_CONTENT_TYPES.includes(_.get(this.getCurrentContent, 'contentType')) || (_.toLower(_.get(this.getCurrentContent, 'primaryCategory')) === 'practise assess'))) && this.courseProgress === 100
       && !this.isStatusChange) ? 2 : 1,
       progress: (this.courseProgress && !this.isStatusChange) ? this.courseProgress : undefined
     };
