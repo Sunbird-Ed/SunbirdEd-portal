@@ -98,7 +98,7 @@
                         <div *ngFor="let child of item?.children">
                           <!-- toc card for Non Self Assess content -->
                           <sb-toc-child-item
-                            *ngIf="child?.contentType !== 'SelfAssess' && child?.mimeType !== 'application/vnd.sunbird.questionset'"
+                            *ngIf="child?.contentType !== 'SelfAssess' && child?.primaryCategory?.toLowerCase() !== 'practise assess' &&  child?.mimeType !== 'application/vnd.sunbird.questionset'"
                             [childData]="child" class="sb-toc-child-item"
                             (tocCardClick)="(child.hasOwnProperty('showContent') ? child.showContent : true) && navigateToContent($event, item, 'child-item')"
                             [ngClass]="{ 'disabled-toc-card': child.showContent === false}"
