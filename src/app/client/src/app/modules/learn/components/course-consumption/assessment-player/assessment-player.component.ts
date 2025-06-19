@@ -19,6 +19,7 @@ import { result } from 'lodash';
 import { HttpClient } from '@angular/common/http'; // Import HttpClient
 
 const ACCESSEVENT = 'renderer:question:submitscore';
+const ASSESSMENT_CONTENT_TYPES = ['SelfAssess'];
 
 @Component({
   selector: 'app-assessment-player',
@@ -389,7 +390,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   }
 
   private getContentState() {
-    if (this.batchId && (_.get(this.activeContent, 'contentType') === 'SelfAssess' || !this.isRouterExtrasAvailable)) {
+    if (this.batchId && (ASSESSMENT_CONTENT_TYPES.includes(_.get(this.activeContent, 'contentType')) || _.toLower(_.get(this.activeContent, 'primaryCategory')) === 'practise assess' || !this.isRouterExtrasAvailable)) {
       const req: any = this.getContentStateRequest(this.courseHierarchy);
       this.CsCourseService
       .getContentState(req, { apiPath: '/content/course/v1' })
@@ -398,7 +399,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
         const res = this.CourseProgressService.getContentProgressState(req, _res);
         const _contentIndex = _.findIndex(this.contentStatus, {contentId: _.get(this.activeContent, 'identifier')});
         const _resIndex =  _.findIndex(res.content, {contentId: _.get(this.activeContent, 'identifier')});
-        if (_.get(this.activeContent, 'contentType') === 'SelfAssess' && this.isRouterExtrasAvailable) {
+        if (ASSESSMENT_CONTENT_TYPES.includes(_.get(this.activeContent, 'contentType')) || _.toLower(_.get(this.activeContent, 'primaryCategory')) === 'practise assess' && this.isRouterExtrasAvailable) {
           this.contentStatus[_contentIndex]['status'] = _.get(res.content[_resIndex], 'status');
         } else {
           this.contentStatus = res.content || [];
@@ -438,7 +439,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
       contentId: _.cloneDeep(_.get(telObject, 'object.id')) || _.get(this.activeContent, 'identifier'),
       courseId: this.courseId,
       batchId: this.batchId,
-      status: (eid === 'END' && (_.get(this.getCurrentContent, 'contentType') !== 'SelfAssess') && this.courseProgress === 100
+      status: (eid === 'END' && ((!ASSESSMENT_CONTENT_TYPES.includes(_.get(this.getCurrentContent, 'contentType')) || _.toLower(_.get(this.getCurrentContent, 'primaryCategory')) === 'practise assess')) && this.courseProgress === 100
       && !this.isStatusChange) ? 2 : 1,
       progress: (this.courseProgress && !this.isStatusChange) ? this.courseProgress : undefined
     };
@@ -452,7 +453,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     if (!eid) {
       const contentType = this.activeContent.contentType;
       /* istanbul ignore else */
-      if (contentType === 'SelfAssess' && _.get(event, 'data') === ACCESSEVENT) {
+      if ((ASSESSMENT_CONTENT_TYPES.includes(contentType) || _.toLower(contentType) === 'practise assess') && _.get(event, 'data') === ACCESSEVENT) {
         request['status'] = 2;
       }
     }
@@ -527,7 +528,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     const contentMimeType = _.get(this.previousContent, 'mimeType') ? _.get(this.previousContent, 'mimeType') : _.get(this.activeContent, 'mimeType');
     const contentType = _.get(this.previousContent, 'primaryCategory') ? _.get(this.previousContent, 'primaryCategory') : _.get(this.activeContent, 'primaryCategory');
     this.courseProgress = this.progressPlayerService.getContentProgress(playerSummary, contentMimeType);
-    if (_.toLower(contentType) === 'course assessment' || _.toLower(contentType) === 'practise assess') {
+    console.log(_.find(playerSummary, ['endpageseen', true]));
+    if (_.toLower(contentType) === 'course assessment') {
       this.courseProgress = _.find(playerSummary, ['endpageseen', true]) ||
       _.find(playerSummary, ['visitedcontentend', true]) ? this.courseProgress : 0;
     }
@@ -766,7 +768,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
       this.showMaxAttemptsModal = false;
       let isLastAttempt = false;
       const req: any = this.getContentStateRequest(this.parentCourse);
-      if (_.get(this.activeContent, 'contentType') === 'SelfAssess' || !this.isRouterExtrasAvailable) {
+      if (ASSESSMENT_CONTENT_TYPES.includes(_.get(this.activeContent, 'contentType')) || _.toLower(_.get(this.activeContent, 'primaryCategory')) === 'practise assess' || !this.isRouterExtrasAvailable) {
         this.CsCourseService
           .getContentState(req, { apiPath: '/content/course/v1' })
           .pipe(takeUntil(this.unsubscribe))
@@ -779,7 +781,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
                 if (_.get(contentState, 'score.length') >= _.get(this.activeContent, 'maxAttempts')) { maxAttemptsExceeded = true; }
                 if (_.get(this.activeContent, 'maxAttempts') - _.get(contentState, 'score.length') === 1) { isLastAttempt = true; }
                 /* istanbul ignore next*/
-                if (_.get(this.activeContent, 'contentType') === 'SelfAssess') {
+                if (ASSESSMENT_CONTENT_TYPES.includes(_.get(this.activeContent, 'contentType')) || _.toLower(_.get(this.activeContent, 'primaryCategory')) === 'practise assess') {
                   /* istanbul ignore next*/
                   const _contentIndex = _.findIndex(this.contentStatus, {contentId: _.get(this.activeContent, 'identifier')});
                   this.contentStatus[_contentIndex]['bestScore'] = _.get(contentState, 'bestScore');
@@ -842,7 +844,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     this.showMaxAttemptsModal = false;
     let isLastAttempt = false;
     /* istanbul ignore if */
-    if (_.get(this.activeContent, 'contentType') === 'SelfAssess') {
+    if (ASSESSMENT_CONTENT_TYPES.includes(_.get(this.activeContent, 'contentType')) || _.toLower(_.get(this.activeContent, 'primaryCategory')) === 'practise assess') {
       const _contentIndex = _.findIndex(this.contentStatus, {contentId: _.get(this.activeContent, 'identifier')});
       /* istanbul ignore if */
       if (_contentIndex > 0 && _.get(this.contentStatus[_contentIndex], 'score.length') >= _.get(this.activeContent, 'maxAttempts')) { maxAttemptsExceeded = true; }
