@@ -1842,7 +1842,7 @@
                 }
             },
             "smsg": {
-                "certificateDownloadInitiated": "Certificate download initiated",
+                "certificateDownloadInitiated": "Téléchargement du certificat initié",
                 "activityRemove": "Activité supprimée pour le groupe avec succès",
                 "certificateGettingDownloaded": "Le certificat est téléchargé",
                 "dataSettingSubmitted": "Paramètres de partage de profil soumis avec succès",
