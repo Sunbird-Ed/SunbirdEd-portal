@@ -156,6 +156,10 @@
                 "questionPaper": "Question Paper",
                 "lessonPlanUnit": "Lesson Plan Unit",
                 "examQuestion": "Exam Question",
+                "supportMaterial": "Support Material",
+                "fullscreen": "Fullscreen",
+                "Rate": "Rate",
+                "Minimize": "Minimize",
 
                 "page": "Page",
                 "loading": "Loading",
@@ -1838,6 +1842,7 @@
                 }
             },
             "smsg": {
+                "certificateDownloadInitiated": "Certificate download initiated",
                 "activityRemove": "Activity removed for the group successfully",
                 "certificateGettingDownloaded": "The certificate is getting downloaded",
                 "dataSettingSubmitted": "Profile share settings submitted successfully",

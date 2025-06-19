@@ -156,6 +156,10 @@
                 "questionPaper": "Document de questions",
                 "lessonPlanUnit": "Unité du plan de leçon",
                 "examQuestion": "Question de l'examen",
+                "supportMaterial": "Matériel de soutien",
+                "fullscreen": "Plein écran",
+                "rate": "Taux",
+                "minimize": "Minimiser",
 
               "page": "Page",
               "loading": "Chargement",
@@ -1838,6 +1842,7 @@
                 }
             },
             "smsg": {
+                "certificateDownloadInitiated": "Certificate download initiated",
                 "activityRemove": "Activité supprimée pour le groupe avec succès",
                 "certificateGettingDownloaded": "Le certificat est téléchargé",
                 "dataSettingSubmitted": "Paramètres de partage de profil soumis avec succès",

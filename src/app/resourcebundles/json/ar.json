@@ -157,6 +157,10 @@
                 "questionPaper": "ورقة سؤال",
                 "lessonPlanUnit": "وحدة خطة الدرس",
                 "examQuestion": "سؤال الامتحان",
+                "supportMaterial": "دعم المواد",
+                "fullscreen": "شاشة كاملة",
+                "rate": "المعدل",
+                "minimize": "تقليل",
   
                 "page": "صفحة",
                 "loading": "تحميل",
@@ -1838,6 +1842,7 @@
                 }
             },
             "smsg": {
+                "certificateDownloadInitiated": "تحميل الشهادة بدأت",
                 "activityRemove": "تم إزالة النشاط للمجموعة بنجاح",
                 "certificateGettingDownloaded": "يتم تنزيل الشهادة",
                 "dataSettingSubmitted": "تم إرسال إعدادات مشاركة الملف الشخصي بنجاح",
