@@ -393,7 +393,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
     this.addUserDataToContext();
     if (this.isMobileOrTab) {
-      this.isFullScreenView = true;
       if (_.get(this.playerConfig, 'metadata.mimeType') !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
         this.rotatePlayer();
       }
