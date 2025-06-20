@@ -763,7 +763,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribe))
     .subscribe((resp) => {
       if (_.get(resp, 'printUri')) {
-        this.toasterService.success('Certificate download initiated.');
+        this.toasterService.success(this.resourceService.messages.smsg.certificateDownloadInitiated || "Certificate download initiated");
         this.certDownloadAsPdf.download(resp.printUri, null, courseName);
       } else {
         this.toasterService.error(this.resourceService.messages.emsg.m0076);

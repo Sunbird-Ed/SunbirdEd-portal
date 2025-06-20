@@ -70,8 +70,22 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
     });
     this.actionButtons = _.cloneDeep(actionButtons);
     this.actionButtons = this.actionButtons.filter(button => button.name.toLowerCase() !== 'share');
+    
+    // Map labels for actionButtons
+    this.actionButtons = this.actionButtons.map(button => ({
+      ...button,
+      label: this.resourceService?.frmelmnts?.lbl[_.toLower(button.label)] || button.label
+    }));
+
     this.fullScreenActionButtons = this.fullScreenActionButtons.filter(button => button.name.toLowerCase() !== 'share');
     this.fullScreenActionButtons = _.cloneDeep(fullScreenActionButtons);
+    
+    // Map labels for fullScreenActionButtons
+    this.fullScreenActionButtons = this.fullScreenActionButtons.map(button => ({
+      ...button,
+      label: this.resourceService?.frmelmnts?.lbl[_.toLower(button.label)] || button.label
+    }));
+
     _.find(this.actionButtons, (button) => {
       button.disabled = (button.label === 'Fullscreen') ? (isVideoMimetype || this.deviceDetectorService.isMobile() ||
         this.deviceDetectorService.isTablet()) : button.disabled;

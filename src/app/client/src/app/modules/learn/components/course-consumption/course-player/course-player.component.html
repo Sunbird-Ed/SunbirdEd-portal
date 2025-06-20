@@ -98,7 +98,7 @@
                         <div *ngFor="let child of item?.children">
                           <!-- toc card for Non Self Assess content -->
                           <sb-toc-child-item
-                            *ngIf="child?.contentType !== 'SelfAssess' && child?.mimeType !== 'application/vnd.sunbird.questionset'"
+                            *ngIf="child?.contentType !== 'SelfAssess' && child?.primaryCategory?.toLowerCase() !== 'practise assess' &&  child?.mimeType !== 'application/vnd.sunbird.questionset'"
                             [childData]="child" class="sb-toc-child-item"
                             (tocCardClick)="(child.hasOwnProperty('showContent') ? child.showContent : true) && navigateToContent($event, item, 'child-item')"
                             [ngClass]="{ 'disabled-toc-card': child.showContent === false}"
@@ -132,7 +132,7 @@
           <sb-accordion [multi]="false">
             <sb-accordion-item [expanded]="true"> 
               <sb-accordion-header class="sb-bg-color-gray-0" tabindex="0">
-                {{ resourceService?.frmelmnts?.lbl?.introductoryMaterial || 'Support Material' }}
+                {{ resourceService?.frmelmnts?.lbl?.introductoryMaterial || resourceService?.frmelmnts?.lbl?.supportMaterial || "Support Material" }}
               </sb-accordion-header>
               <sb-accordion-body>
                 <div class="chapter-box">
