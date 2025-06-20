@@ -49,8 +49,8 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.startext = _.get(this.resourceService, 'frmelmnts.lbl.defaultstar');
     this.resourceService.languageSelected$.subscribe(item => {
+      this.startext = _.get(this.resourceService, 'frmelmnts.lbl.defaultstar');
       const formReadInputParams = {
         formType: 'contentfeedback',
         contentType: item.value,

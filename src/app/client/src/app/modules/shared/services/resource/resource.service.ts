@@ -1,4 +1,3 @@
-
 import { of as observableOf, throwError as observableThrowError, Observable, BehaviorSubject } from 'rxjs';
 
 import { mergeMap } from 'rxjs/operators';
@@ -97,7 +96,8 @@ export class ResourceService {
         this.frmelmnts = _.merge({}, creationFrmelmnts, consumptionFrmelmnts);
         this.frmelemnts = _.merge({}, creationFrmelemnts, consumptionFrmelemnts);
         this.tbk = tbk; this.tvc = tvc; this.tvk = tvk; this.crs = crs;
-        this.getLanguageChange(range);
+        const currentLangObj = { ...range, value: language, dir: range.dir };
+        this.getLanguageChange(currentLangObj);
       },
       (err: ServerResponse) => {
       }
