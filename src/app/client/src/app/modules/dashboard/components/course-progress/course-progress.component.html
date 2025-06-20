@@ -43,48 +43,6 @@
           (routerData)="assignForumData($event)"> </app-access-discussion>
       </div>
       <!-- NOTE: Using currentBatch data instead of dashboardData, as API got deprecated -->
-      <div class="d-flex flex-dc current-batch-list">
-        <p *ngIf="currentBatch?.lastUpdatedOn" class="d-flex flex-ai-flex-end mr-24 fsmall mt-8 mb-0 update-text">
-          {{resourceService?.frmelmnts?.lbl?.batchReportUpdateNote | interpolate:'{date}': (currentBatch?.lastUpdatedOn
-          | sbDataTable : 'dateTime')}}</p>
-
-        <div class="d-flex flex-dc my-16 sb-course-progress-status" *ngIf="currentBatch">
-          <div class="sb-course-progress-status-label">
-            <span class="course-start-dt course-participants-label">
-              <span *ngIf="currentBatch.startDate">
-                {{resourceService?.frmelmnts?.lbl?.batchstartdate}}
-              </span>
-            </span>
-
-            <span class="course-end-dt course-participants-label">
-              <span>{{resourceService?.frmelmnts?.lbl?.batchenddate}}
-              </span>
-            </span>
-
-            <span *ngIf="currentBatch.participantCount !== null"
-              class="d-flex flex-dc course-participants course-participants-label">
-              <span>{{resourceService?.frmelmnts?.lbl?.totalEnrolments}}</span>
-            </span>
-          </div>
-
-          <div class="sb-course-progress-status-result">
-            <span class="course-start-dt course-participants-label">
-              <span class="font-weight-bold"> {{currentBatch.startDate | dateFormat :'DD/MM/YYYY' }}</span>
-            </span>
-
-            <span class="course-end-dt course-participants-label">
-              <span *ngIf="currentBatch.endDate" class="font-weight-bold">{{currentBatch.endDate | dateFormat
-                :'DD/MM/YYYY'}}</span>
-              <span *ngIf="!currentBatch.endDate">-</span>
-            </span>
-
-            <span *ngIf="currentBatch.participantCount !== null" class="course-participants course-participants-label">
-              <span class="font-weight-bold">{{currentBatch.participantCount}}</span>
-            </span>
-          </div>
-
-        </div>
-      </div>
       <!-- Select Batch image content start-->
       <div class="d-flex flex-jc-center" *ngIf="batchlist && batchlist.length > 1 && showWarningDiv && !showLoader">
         <div class="d-flex flex-dc flex-ai-center pb-24">
