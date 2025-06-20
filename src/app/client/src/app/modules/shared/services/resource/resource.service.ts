@@ -96,7 +96,7 @@ export class ResourceService {
         this.frmelmnts = _.merge({}, creationFrmelmnts, consumptionFrmelmnts);
         this.frmelemnts = _.merge({}, creationFrmelemnts, consumptionFrmelemnts);
         this.tbk = tbk; this.tvc = tvc; this.tvk = tvk; this.crs = crs;
-        const currentLangObj = { ...range, value: language, dir: range.dir };
+        const currentLangObj = { ...range, value: language };
         this.getLanguageChange(currentLangObj);
       },
       (err: ServerResponse) => {
