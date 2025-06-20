@@ -275,7 +275,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   summaryReport(tabNumber) {
     this.setInteractEventDataForTabs('summary-report');
     this.selectedTab = tabNumber;
-    this.getSummaryReports();
+    // this.getSummaryReports();
   }
 
   /**
@@ -615,7 +615,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
    * Load on demand reports
    */
   loadOndemandReports(tabNumber) {
-    this.getSummaryReports();
+    // this.getSummaryReports();
     setTimeout(() => {
       if (this.onDemandReports) {
       this.setInteractEventDataForTabs('on-demand-reports');
