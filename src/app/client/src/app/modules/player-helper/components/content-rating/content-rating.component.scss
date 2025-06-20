@@ -5,6 +5,11 @@
   .sb-rating.ui.star.rating {
     .icon {
       margin-right: calculateRem(4px);
+
+      html[dir="rtl"] & {
+        margin-right: 0;
+        margin-left: calculateRem(4px);
+      }
     }
 
     .active.icon,
@@ -20,9 +25,28 @@
   border-top: calculateRem(1px) solid var(--gray-100);
 
   .sb-content-rating {
-    max-width: calculateRem(360px);
     width: 100%;
   }
+}
+
+.close.icon {
+  right: calculateRem(0px);
+  html[dir="rtl"] & {
+    right: auto;
+    left: calculateRem(4px);
+  }
+}
+
+.sb-rating-modal {
+  .ui.modal.normal {
+    .sb-rating.ui.star.rating {
+      direction: ltr;
+    }
+  }
+}
+
+html[dir="rtl"] .sb-rating-modal .ui.modal.normal .sb-rating.ui.star.rating {
+  direction: rtl;
 }
 
 @include respond-below(sm) {
