@@ -819,7 +819,8 @@
           {
             "template": "assessment",
             "contentType": [
-              "SelfAssess"
+              "SelfAssess",
+              "Resource"
             ]
           }
         ],
