@@ -8,7 +8,7 @@ import { IImpressionEventInput, IInteractEventEdata, TelemetryService } from '@s
 import { ActivatedRoute, Router } from '@angular/router';
 import { CacheService } from '../../../../modules/shared/services/cache-service/cache.service';
 import { takeUntil } from 'rxjs/operators';
-import { CertificateDownloadAsPdfService } from 'sb-svg2pdf-v13';
+import { CertificateDownloadAsPdfService } from "@project-sunbird/sb-svg2pdf";
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 import { FieldConfig, FieldConfigOption } from '@project-sunbird/common-form-elements-full';
 import { CsCertificateService } from '@project-sunbird/client-services/services/certificate/interface';
@@ -323,7 +323,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
           .pipe(takeUntil(this.unsubscribe$))
           .subscribe((resp) => {
             if (_.get(resp, 'printUri')) {
+              console.log('Portal :: CSL : Download certificate CSL API success ', resp);
               this.certDownloadAsPdf.download(resp.printUri, null, courseName);
+              console.log('Portal :: CSL : Post Download certificate CSL API success ', resp);
             } else if (_.get(course, 'certificates.length')) {
               this.downloadPdfCertificate(course.certificates[0]);
             } else {
@@ -358,7 +360,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((resp) => {
         if (_.get(resp, 'printUri')) {
+          console.log('Portal :: CSL : Download certificate CSL API success ', resp);
           this.certDownloadAsPdf.download(resp.printUri, null, courseObj.trainingName);
+          console.log('Portal :: CSL : Post Download certificate CSL API success ', resp);
         } else {
           this.toasterService.error(this.resourceService.messages.emsg.m0076);
         }

@@ -19,7 +19,7 @@ import dayjs from 'dayjs';
 import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 import { HttpClient } from '@angular/common/http'; // Import HttpClient
-import { CertificateDownloadAsPdfService } from 'sb-svg2pdf-v13';
+import { CertificateDownloadAsPdfService } from "@project-sunbird/sb-svg2pdf";
 
 @Component({
   selector: 'app-course-player',
