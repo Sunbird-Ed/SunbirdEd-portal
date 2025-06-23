@@ -1,11 +1,9 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 ::ng-deep {
-
   .sb-rating.ui.star.rating {
     .icon {
       margin-right: calculateRem(4px);
-
     }
 
     .active.icon,
@@ -65,4 +63,31 @@
 .mat-dialog-container[dir="rtl"] .sb-modal,
 .sb-modal[dir="rtl"] {
   direction: rtl;
+}
+
+.content-rating-close {
+  position: absolute !important;
+  color: var(--white);
+  font-size: 0.875rem;
+  padding: 0;
+  margin: 0 1rem 0 1rem !important;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: 0px;
+  border-radius: 50%;
+  box-shadow: var(--sbt-box-shadow-3px);
+  background-color: var(--white);
+  opacity: 1;
+  top: 0.75rem !important;
+  z-index: 1;
+
+  &::before {
+    content: "✕" !important;
+    font-size: 1.125rem !important;
+    color: var(--red) !important;
+  }
 }
