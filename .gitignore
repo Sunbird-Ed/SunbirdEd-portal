@@ -20,6 +20,7 @@ mochawesome-report
 logs
 keys
 .angular
+/src/app/client/yarn.lock
 #DESKTOP APP
 src/desktop/node_modules
 src/desktop/build
