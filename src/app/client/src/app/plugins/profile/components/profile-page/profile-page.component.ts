@@ -358,9 +358,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((resp) => {
         if (_.get(resp, 'printUri')) {
-          console.log('Portal :: CSL : Download certificate CSL API success ', resp);
           this.certDownloadAsPdf.download(resp.printUri, null, courseObj.trainingName);
-          console.log('Portal :: CSL : Post Download certificate CSL API success ', resp);
         } else {
           this.toasterService.error(this.resourceService.messages.emsg.m0076);
         }
