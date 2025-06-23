@@ -23,6 +23,8 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
   public showTextarea = false;
   public showContentRatingModal = true;
   public resourceService: ResourceService;
+  public direction: string = "ltr";
+  public rtlLanguages = ["ar"]
   /**
    * To show toaster(error, success etc) after any API calls
    */
@@ -55,7 +57,8 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
         formType: 'contentfeedback',
         contentType: item.value,
         formAction: 'get'
-      };
+      };      
+      this.direction = (!item.language || this.rtlLanguages.includes(item.language)) ? "ltr" : "rtl";
       this.formService.getFormConfig(formReadInputParams).subscribe(
         (formResponsedata) => {
           this.feedbackObj = formResponsedata[0];

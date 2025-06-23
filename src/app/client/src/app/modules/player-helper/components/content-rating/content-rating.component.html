@@ -5,7 +5,9 @@
       <div class="transition ui dimmer page modals active visible">
         <div class="ui modal transition active visible normal">
           <!--Header-->
-          <i class="close icon" role="img" aria-label="close" tabindex="0" (click)="modal.deny()"></i>
+          <div [attr.dir]="direction">
+            <i class="content-rating-close icon" role="img" aria-label="close" tabindex="0" (click)="modal.deny()"></i>
+          </div>
           <div class="sb-modal-header">
             {{resourceService?.frmelmnts?.lbl?.enjoyedContent}}
           </div>
