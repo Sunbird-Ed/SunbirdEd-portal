@@ -6,7 +6,7 @@ import { of, throwError } from 'rxjs';
 import { TelemetryService } from '@sunbird/telemetry';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CacheService } from '../../../../modules/shared/services/cache-service/cache.service';
-import { CertificateDownloadAsPdfService } from 'sb-svg2pdf-v13';
+import { CertificateDownloadAsPdfService } from "@project-sunbird/sb-svg2pdf";
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 import { CsCertificateService } from '@project-sunbird/client-services/services/certificate/interface';
 import { ProfilePageComponent } from './profile-page.component';
