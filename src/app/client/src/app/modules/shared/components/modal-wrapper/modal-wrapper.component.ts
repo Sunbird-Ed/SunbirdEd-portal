@@ -2,6 +2,7 @@ import { Component, ContentChild, OnInit, Directive, TemplateRef, Input, Output,
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { v4 as UUID } from 'uuid';
 import { Overlay } from '@angular/cdk/overlay';
+import { Direction } from '@angular/cdk/bidi';
 
 
 const modalSizeToMinWidthMapping = {
@@ -48,10 +49,12 @@ export class ModalWrapperComponent implements OnInit, OnDestroy {
 
   private getDialogConfig(): MatDialogConfig {
     const { size: modalSize = 'normal', id = UUID(), data = {}, scrollStrategy = this.overlay.scrollStrategies.reposition(), ...config } = this.config || {};
+    const dir: Direction = (document?.documentElement?.dir as Direction) || 'ltr';
     return {
       id,
       ...this.getDefaultConfig(),
       ...config,
+      direction: dir,
       data: { id, ...data },
       // scrollStrategy
     };
