@@ -49,7 +49,7 @@ export class ModalWrapperComponent implements OnInit, OnDestroy {
 
   private getDialogConfig(): MatDialogConfig {
     const { size: modalSize = 'normal', id = UUID(), data = {}, scrollStrategy = this.overlay.scrollStrategies.reposition(), ...config } = this.config || {};
-    const dir: Direction = (document?.documentElement?.dir as Direction) || 'ltr';
+    const dir: Direction = (document?.documentElement?.dir as Direction);
     return {
       id,
       ...this.getDefaultConfig(),
