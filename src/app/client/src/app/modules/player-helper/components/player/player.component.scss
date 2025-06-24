@@ -66,7 +66,7 @@
 }
 
 .player-fullscreen {
-    position: fixed !important;
+    position: absolute !important;
     border:none; 
     margin:0;
     padding:0; 
@@ -82,7 +82,7 @@
 } 
 
 .mcq-player-fullscreen {
-  position: fixed !important;
+  position: absolute !important;
   border:none; 
   margin:0;
   padding:0; 
