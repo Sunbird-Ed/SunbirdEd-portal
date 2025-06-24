@@ -55,7 +55,7 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
       this.startext = _.get(this.resourceService, 'frmelmnts.lbl.defaultstar');
       const formReadInputParams = {
         formType: 'contentfeedback',
-        contentType: item.language ? item.language : item.value,
+        contentType: item.language ?? item.value,
         formAction: 'get'
       };      
       this.direction = (!item.language || this.rtlLanguages.includes(item.language)) ? "ltr" : "rtl";
