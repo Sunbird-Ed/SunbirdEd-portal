@@ -11,13 +11,15 @@
     </div>
   </div>
 
-  <div class="d-flex flex-w-wrap content-video__player__tools" *ngIf="isFullScreen">
-    <sb-player-actions [actionButtons]="fullScreenActionButtons" (buttonClick)="onActionButtonClick($event, contentData)">
-    </sb-player-actions>
-  </div>
-  <div class="d-flex flex-w-wrap content-video__player__tools" *ngIf="!isFullScreen">
-    <sb-player-actions [actionButtons]="actionButtons" (buttonClick)="onActionButtonClick($event, contentData)">
-    </sb-player-actions>
+  <div *ngIf="!isVideoContent">
+    <div class="d-flex flex-w-wrap content-video__player__tools" *ngIf="isFullScreen">
+      <sb-player-actions [actionButtons]="fullScreenActionButtons" (buttonClick)="onActionButtonClick($event, contentData)">
+      </sb-player-actions>
+    </div>
+    <div class="d-flex flex-w-wrap content-video__player__tools" *ngIf="!isFullScreen">
+      <sb-player-actions [actionButtons]="actionButtons" (buttonClick)="onActionButtonClick($event, contentData)">
+      </sb-player-actions>
+    </div>
   </div>
 </div>
 
