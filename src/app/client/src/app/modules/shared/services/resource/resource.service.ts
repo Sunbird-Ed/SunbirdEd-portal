@@ -97,7 +97,7 @@ export class ResourceService {
         this.frmelmnts = _.merge({}, creationFrmelmnts, consumptionFrmelmnts);
         this.frmelemnts = _.merge({}, creationFrmelemnts, consumptionFrmelemnts);
         this.tbk = tbk; this.tvc = tvc; this.tvk = tvk; this.crs = crs;
-        this.getLanguageChange(range);
+        this.getLanguageChange({ ...range, language });
       },
       (err: ServerResponse) => {
       }
