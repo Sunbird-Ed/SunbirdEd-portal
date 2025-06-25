@@ -35,14 +35,16 @@ export class LanguageDropdownComponent implements OnInit {
     }
     // if website has lang then set the lang in cache service
     if (localStorage.getItem('portalLanguage')) {
-      this._cacheService.set('portalLanguage', tenantPageLang);
-      this.resourceService.initialize();
-      this.genericResourceService.initialize();
+      const portalLanguage = localStorage.getItem('portalLanguage');
+      localStorage.setItem('portalLanguage', tenantPageLang);
+      const languageObj = _.find(this.languageRange, ['value', tenantPageLang]);
+      this.resourceService.getResource(tenantPageLang, languageObj);
+      this.genericResourceService.getResource(tenantPageLang, languageObj);
     } else {
       // If user directly open portal then set lang to storage for website
       localStorage.setItem('portalLanguage', tenantPageLang);
     }
-    this.selectedLanguage = this._cacheService.get('portalLanguage') || 'ar';
+    this.selectedLanguage = localStorage.getItem('portalLanguage') || 'ar';
     this.resourceService.getLanguageChange(_.find(this.languageRange, ['value', this.selectedLanguage]));
     this.genericResourceService.getLanguageChange(_.find(this.languageRange, ['value', this.selectedLanguage]));
     window['TagManager']?.SBTagService?.pushTag({portalLanguage: this.selectedLanguage}, 'USERLANG_', true);
@@ -54,7 +56,6 @@ export class LanguageDropdownComponent implements OnInit {
   }
 
   onLanguageChange(event) {
-    this._cacheService.set('portalLanguage', event);
     localStorage.setItem('portalLanguage', event);
     const language = _.find(this.languageRange, ['value', event]);
     window['TagManager']?.SBTagService?.pushTag({portalLanguage: event}, 'USERLANG_', true);
