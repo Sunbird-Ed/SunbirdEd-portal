@@ -238,7 +238,7 @@ app.get('/endSession', endSession, (req, res) => {
 require('./routes/deviceRoutes.js')(app);
 require('./routes/googleRoutes.js')(app);
 
-app.post('/certificate/download', express.json({limit: '10mb' }), downloadCertificate);
+app.post('/certificate/download',keycloak.protect(), express.json({limit: '10mb' }), downloadCertificate);
 
 app.get('/health', healthService.createAndValidateRequestBody, healthService.checkHealth) // health check api
 
