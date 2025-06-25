@@ -8,16 +8,17 @@ import { IImpressionEventInput, IInteractEventEdata, TelemetryService } from '@s
 import { ActivatedRoute, Router } from '@angular/router';
 import { CacheService } from '../../../../modules/shared/services/cache-service/cache.service';
 import { takeUntil } from 'rxjs/operators';
-import { CertificateDownloadAsPdfService } from "@project-sunbird/sb-svg2pdf";
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 import { FieldConfig, FieldConfigOption } from '@project-sunbird/common-form-elements-full';
 import { CsCertificateService } from '@project-sunbird/client-services/services/certificate/interface';
 import { CslFrameworkService } from '../../../../modules/public/services/csl-framework/csl-framework.service';
+import { CertificateDownloadService } from '../../../../helpers/certificate-download.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   templateUrl: './profile-page.component.html',
   styleUrls: ['./profile-page.component.scss'],
-  providers: [CertificateDownloadAsPdfService]
+  providers: [CertificateDownloadService]
 })
 export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   private static readonly SUPPORTED_PERSONA_LIST_FORM_REQUEST =
@@ -102,7 +103,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     private playerService: PlayerService, private activatedRoute: ActivatedRoute, public orgDetailsService: OrgDetailsService,
     public navigationhelperService: NavigationHelperService, public certRegService: CertRegService,
     private telemetryService: TelemetryService, public layoutService: LayoutService, private formService: FormService,
-    private certDownloadAsPdf: CertificateDownloadAsPdfService, private connectionService: ConnectionService, private cslFrameworkService: CslFrameworkService,
+    private certificateDownloadService: CertificateDownloadService, private http: HttpClient,
+    private connectionService: ConnectionService, private cslFrameworkService: CslFrameworkService,
     @Inject('CS_CERTIFICATE_SERVICE') private CsCertificateService: CsCertificateService) {
     this.getNavParams();
   }
@@ -323,7 +325,21 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
           .pipe(takeUntil(this.unsubscribe$))
           .subscribe((resp) => {
             if (_.get(resp, 'printUri')) {
-              this.certDownloadAsPdf.download(resp.printUri, null, courseName);
+              const printUri = _.get(resp, 'printUri');
+              this.http.post('/certificate/download/', { data: printUri }, { responseType: 'blob' })
+                .subscribe(
+                  (response: Blob) => {
+                    this.certificateDownloadService.triggerBrowserDownload(
+                      response,
+                      courseName ? `${courseName}-certificate.pdf` : 'certificate.pdf',
+                      'application/pdf'
+                    );
+                  },
+                  (error) => {
+                    console.error('Error calling certificate download API:', error);
+                    this.toasterService.error('Failed to download certificate.');
+                  }
+                );
             } else if (_.get(course, 'certificates.length')) {
               this.downloadPdfCertificate(course.certificates[0]);
             } else {
@@ -358,7 +374,21 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((resp) => {
         if (_.get(resp, 'printUri')) {
-          this.certDownloadAsPdf.download(resp.printUri, null, courseObj.trainingName);
+          const printUri = _.get(resp, 'printUri');
+          this.http.post('/certificate/download/', { data: printUri }, { responseType: 'blob' })
+            .subscribe(
+              (response: Blob) => {
+                this.certificateDownloadService.triggerBrowserDownload(
+                  response,
+                  'certificate.pdf',
+                  'application/pdf'
+                );
+              },
+              (error) => {
+                console.error('Error calling certificate download API:', error);
+                this.toasterService.error('Failed to download certificate.');
+              }
+            );
         } else {
           this.toasterService.error(this.resourceService.messages.emsg.m0076);
         }

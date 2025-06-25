@@ -6,6 +6,7 @@ if (process.env.NODE_ENV === 'development') {
 } else {
   console.log("Running in production mode");
 }
+const { downloadCertificate } = require('./controllers/certificateDownloadController');
 
 const { enableLogger } = require('@project-sunbird/logger');
 const envHelper = require('./helpers/environmentVariablesHelper.js');
@@ -236,6 +237,8 @@ app.get('/endSession', endSession, (req, res) => {
 // device routes
 require('./routes/deviceRoutes.js')(app);
 require('./routes/googleRoutes.js')(app);
+
+app.post('/certificate/download', express.json({limit: '10mb' }), downloadCertificate);
 
 app.get('/health', healthService.createAndValidateRequestBody, healthService.checkHealth) // health check api
 
