@@ -777,6 +777,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
               },
               (error) => {
                 console.error('Error calling certificate download API:', error);
+                this.isDownloadingCertificate = false;
                 this.toasterService.error(this.resourceService?.messages?.emsg?.failedToDownloadCertificate || 'Failed to download certificate.');
               },
               () => {
