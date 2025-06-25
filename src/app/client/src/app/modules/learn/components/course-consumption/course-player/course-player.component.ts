@@ -19,13 +19,14 @@ import dayjs from 'dayjs';
 import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 import { HttpClient } from '@angular/common/http'; // Import HttpClient
-import { CertificateDownloadAsPdfService } from "@project-sunbird/sb-svg2pdf";
+import { CertificateDownloadService } from '../../../../../../app/helpers/certificate-download.service';
+
 
 @Component({
   selector: 'app-course-player',
   templateUrl: './course-player.component.html',
   styleUrls: ['course-player.component.scss'],
-  providers: [CertificateDownloadAsPdfService]
+  providers: [CertificateDownloadService]
 })
 export class CoursePlayerComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal;
@@ -127,8 +128,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     private connectionService: ConnectionService,
     @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService,
     @Inject('SB_NOTIFICATION_SERVICE') private notificationService: NotificationServiceImpl,
-    private certDownloadAsPdf: CertificateDownloadAsPdfService,
     private http: HttpClient,
+    private certificateDownloadService: CertificateDownloadService,
   ) {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
@@ -760,20 +761,38 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     const courseName = _.get(this.matchingCertificate, 'name');
 
     this.CsCourseService.getSignedCourseCertificate(_.get(this.matchingCertificate, 'osid'))
-    .pipe(takeUntil(this.unsubscribe))
-    .subscribe((resp) => {
-      if (_.get(resp, 'printUri')) {
-        this.toasterService.success(this.resourceService.messages.smsg.certificateDownloadInitiated || "Certificate download initiated");
-        this.certDownloadAsPdf.download(resp.printUri, null, courseName);
-      } else {
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe((resp) => {
+        if (_.get(resp, 'printUri')) {
+          const printUri = _.get(resp, 'printUri');
+          this.toasterService.success(this.resourceService.messages.smsg.certificateDownloadInitiated || "Certificate download initiated");
+          this.http.post('/certificate/download', { data: printUri }, { responseType: 'blob' })
+            .subscribe(
+              (response: Blob) => {
+                this.certificateDownloadService.triggerBrowserDownload(
+                  response,
+                  courseName ? `${courseName}-certificate.pdf` : 'certificate.pdf',
+                  'application/pdf'
+                );
+              },
+              (error) => {
+                console.error('Error calling certificate download API:', error);
+                this.isDownloadingCertificate = false;
+                this.toasterService.error(this.resourceService?.messages?.emsg?.failedToDownloadCertificate || 'Failed to download certificate.');
+              },
+              () => {
+                this.isDownloadingCertificate = false;
+              }
+            );
+        } else {
+          this.toasterService.error(this.resourceService.messages.emsg.m0076);
+          this.isDownloadingCertificate = false;
+        }
+      }, error => {
+        console.error('Error downloading certificate:', error);
         this.toasterService.error(this.resourceService.messages.emsg.m0076);
-      }
-      this.isDownloadingCertificate = false;
-    }, error => {
-      console.error('Error downloading certificate:', error);
-      this.toasterService.error(this.resourceService.messages.emsg.m0076);
-      this.isDownloadingCertificate = false;
-    });
+        this.isDownloadingCertificate = false;
+      });
 
   }
 

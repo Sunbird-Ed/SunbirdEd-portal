@@ -1708,7 +1708,8 @@
                 "m0021": "Unable to update location. Try again later",
                 "m0022": "Unable to update your preference. Please try again after some time.",
                 "m0023": "Unable to raise a ticket because you're not connected to the internet",
-                "searchinputerror": "Enter a keyword to perform the search"
+                "searchinputerror": "Enter a keyword to perform the search",
+                "failedToDownloadCertificate": "Failed to download certificate"
             },
             "imsg": {
                 "m0082": "Deleting {groupName} will permanently remove the group from the application",
