@@ -766,7 +766,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         if (_.get(resp, 'printUri')) {
           const printUri = _.get(resp, 'printUri');
           this.toasterService.success(this.resourceService.messages.smsg.certificateDownloadInitiated || "Certificate download initiated");
-          this.http.post('/certificate/download/', { data: printUri }, { responseType: 'blob' })
+          this.http.post('/certificate/download', { data: printUri }, { responseType: 'blob' })
             .subscribe(
               (response: Blob) => {
                 this.certificateDownloadService.triggerBrowserDownload(
