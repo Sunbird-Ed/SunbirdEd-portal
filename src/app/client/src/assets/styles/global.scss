@@ -1,7 +1,12 @@
 @use '@angular/material' as mat;
 @use "@project-sunbird/sb-styles/assets/varIndex"as *;
 @use "@project-sunbird/sb-styles/assets/mixins/mixins"as *;
-
+@font-face {
+    font-family: 'Times New Roman' !important;
+    font-style: normal;
+    font-weight: 400;
+    src: local('Times New Roman'), url('./times.woff') format('woff');
+}
 
 @include mat.core();
 
