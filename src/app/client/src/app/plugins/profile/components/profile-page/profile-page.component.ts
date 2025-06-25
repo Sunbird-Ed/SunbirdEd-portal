@@ -305,6 +305,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.toasterService.error(this.resourceService.messages.desktop.emsg.cannotAccessCertificate);
       return;
     }
+    course.isDownloading = true;
     // Check for V2
     if (_.get(course, 'issuedCertificates.length')) {
       this.toasterService.success(_.get(this.resourceService, 'messages.smsg.certificateGettingDownloaded'));
@@ -316,34 +317,39 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
           type: 'rc_certificate_registry',
           templateUrl: _.get(certificateInfo, 'templateUrl'),
           trainingName: courseName
-        }
-        this.downloadOldAndRCCert(courseObj);
+        };
+        this.downloadOldAndRCCert(courseObj, course);
       } else if (_.get(certificateInfo, 'identifier')) {
         this.courseCService.getSignedCourseCertificate(_.get(certificateInfo, 'identifier'))
           .pipe(takeUntil(this.unsubscribe$))
           .subscribe((resp) => {
             if (_.get(resp, 'printUri')) {
               this.certDownloadAsPdf.download(resp.printUri, null, courseName);
+              course.isDownloading = false;
             } else if (_.get(course, 'certificates.length')) {
-              this.downloadPdfCertificate(course.certificates[0]);
+              this.downloadPdfCertificate(course.certificates[0], course);
             } else {
               this.toasterService.error(this.resourceService.messages.emsg.m0076);
+              course.isDownloading = false;
             }
           }, error => {
-            this.downloadPdfCertificate(certificateInfo);
+            this.downloadPdfCertificate(certificateInfo, course);
           });
       } else {
-        this.downloadPdfCertificate(certificateInfo);
+        this.downloadPdfCertificate(certificateInfo, course);
       }
     } else if (_.get(course, 'certificates.length')) { // For V1 - backward compatibility
       this.toasterService.success(_.get(this.resourceService, 'messages.smsg.certificateGettingDownloaded'));
-      this.downloadPdfCertificate(course.certificates[0]);
+      this.downloadPdfCertificate(course.certificates[0], course);
     } else {
       this.toasterService.error(this.resourceService.messages.emsg.m0076);
+      course.isDownloading = false;
     }
   }
 
-  downloadOldAndRCCert(courseObj) {
+  downloadOldAndRCCert(courseObj, courseToUpdate?) {
+    const itemToUpdate = courseToUpdate || courseObj;
+    itemToUpdate.isDownloading = true;
     let requestBody = {
       certificateId: courseObj.id,
       schemaName: 'certificate',
@@ -362,18 +368,22 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         } else {
           this.toasterService.error(this.resourceService.messages.emsg.m0076);
         }
+        itemToUpdate.isDownloading = false;
       }, error => {
         console.log('Portal :: CSL : Download certificate CSL API failed ', error);
+        itemToUpdate.isDownloading = false;
       });
   }
 
-  downloadPdfCertificate(value) {
+  downloadPdfCertificate(value, courseToUpdate?) {
+    const itemToUpdate = courseToUpdate || value;
     if (_.get(value, 'url')) {
       const request = {
         request: {
           pdfUrl: _.get(value, 'url')
         }
       };
+      itemToUpdate.isDownloading = true;
       this.profileService.downloadCertificates(request).subscribe((apiResponse) => {
         const signedPdfUrl = _.get(apiResponse, 'result.signedUrl');
         if (signedPdfUrl) {
@@ -381,11 +391,16 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         } else {
           this.toasterService.error(this.resourceService.messages.emsg.m0076);
         }
+        itemToUpdate.isDownloading = false;
       }, (err) => {
         this.toasterService.error(this.resourceService.messages.emsg.m0076);
+        itemToUpdate.isDownloading = false;
       });
     } else {
       this.toasterService.error(this.resourceService.messages.emsg.m0076);
+      if (itemToUpdate) {
+        itemToUpdate.isDownloading = false;
+      }
     }
   }
 
