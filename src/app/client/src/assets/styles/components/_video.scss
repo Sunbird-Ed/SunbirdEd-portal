@@ -81,7 +81,6 @@
   }
   &.player-fullscreen {
     width: 100%;
-    padding-top: 0;
     height: calc(100vh - 4rem) !important;
     position:fixed !important;
     top:calculateRem(0px);//50px
@@ -92,9 +91,6 @@
     margin:0;
     padding:0; 
     z-index:9999;
-    & > * {
-      position: absolute;
-    }
      iframe, video {
       width: 100%;
       height: calc(100vh - 4rem) !important;
