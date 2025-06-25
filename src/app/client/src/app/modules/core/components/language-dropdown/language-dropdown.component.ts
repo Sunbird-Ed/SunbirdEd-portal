@@ -35,11 +35,11 @@ export class LanguageDropdownComponent implements OnInit {
     }
     // if website has lang then set the lang in cache service
     if (localStorage.getItem('portalLanguage')) {
-      const portalLanguage = localStorage.getItem('portalLanguage')
+      const portalLanguage = localStorage.getItem('portalLanguage');
       localStorage.setItem('portalLanguage', tenantPageLang);
-      const languageObj = _.find(this.languageRange, ['value', portalLanguage]);
-      this.resourceService.getResource(portalLanguage, languageObj);
-      this.genericResourceService.getResource(portalLanguage, languageObj);
+      const languageObj = _.find(this.languageRange, ['value', tenantPageLang]);
+      this.resourceService.getResource(tenantPageLang, languageObj);
+      this.genericResourceService.getResource(tenantPageLang, languageObj);
     } else {
       // If user directly open portal then set lang to storage for website
       localStorage.setItem('portalLanguage', tenantPageLang);
