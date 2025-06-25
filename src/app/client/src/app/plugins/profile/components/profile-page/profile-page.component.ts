@@ -337,7 +337,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
                   },
                   (error) => {
                     console.error('Error calling certificate download API:', error);
-                    this.toasterService.error('Failed to download certificate.');
+                    this.toasterService.error(this.resourceService?.messages?.emsg?.failedToDownloadCertificate || 'Failed to download certificate.');
                   }
                 );
             } else if (_.get(course, 'certificates.length')) {
@@ -386,7 +386,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
               },
               (error) => {
                 console.error('Error calling certificate download API:', error);
-                this.toasterService.error('Failed to download certificate.');
+                this.toasterService.error(this.resourceService?.messages?.emsg?.failedToDownloadCertificate || 'Failed to download certificate.');
               }
             );
         } else {
