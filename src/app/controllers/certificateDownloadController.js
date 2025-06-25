@@ -1,16 +1,19 @@
 const puppeteer = require('puppeteer');
 
-exports.downloadCertificate = async(req, res) => {
-  let data  = req.body.data;
+exports.downloadCertificate = async (req, res) => {
+  let data = req.body.data;
   if (!data) {
     return res.status(400).json({ error: 'Missing SVG content' });
   }
   try {
     // 1. Generate PDF using puppeteer
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/google-chrome', // or '/usr/bin/chromium-browser'
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
     const page = await browser.newPage();
     // 2. Load SVG content inside an HTML wrapper
-    await page.setContent( `
+    await page.setContent(`
     <html>
       <body style="margin:0;">
           ${data}
