@@ -40,6 +40,7 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
   sharelinkModal = false;
   shareLink: string;
   mimeType: string;
+  isVideoContent: boolean;
   subscription;
   isDesktopApp;
   frameworkCategoriesList;
@@ -65,6 +66,7 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
     this.enableDisableactionButtons();
     this.isDesktopApp = this.utilService.isDesktopApp;
     const isVideoMimetype = _.includes(['video/mp4', 'video/webm'], _.get(this.contentData, 'mimeType'));
+    this.isVideoContent = isVideoMimetype
     this.activatedRoute.params.subscribe((params) => {
       this.collectionId = params.collectionId;
     });

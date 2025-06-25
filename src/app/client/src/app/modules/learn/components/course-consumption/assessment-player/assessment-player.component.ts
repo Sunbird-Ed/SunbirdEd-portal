@@ -500,12 +500,12 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
 
   onAssessmentEvents(event) {
     /* istanbul ignore else */
+    this.assessmentEvents.emit(event);
     if (!this.batchId || _.get(this.enrolledBatchInfo, 'status') !== 1) {
       return;
     }
     this.assessmentScoreService.receiveTelemetryEvents(event);
     this.calculateProgress();
-    this.assessmentEvents.emit(event);
   }
   onQuestionScoreReviewEvents(event) {
     this.assessmentScoreService.handleReviewButtonClickEvent();
