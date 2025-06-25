@@ -326,7 +326,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
           .subscribe((resp) => {
             if (_.get(resp, 'printUri')) {
               const printUri = _.get(resp, 'printUri');
-              this.http.post('/certificate/download/', { data: printUri }, { responseType: 'blob' })
+              this.http.post('/certificate/download', { data: printUri }, { responseType: 'blob' })
                 .subscribe(
                   (response: Blob) => {
                     this.certificateDownloadService.triggerBrowserDownload(
@@ -375,7 +375,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe((resp) => {
         if (_.get(resp, 'printUri')) {
           const printUri = _.get(resp, 'printUri');
-          this.http.post('/certificate/download/', { data: printUri }, { responseType: 'blob' })
+          this.http.post('/certificate/download', { data: printUri }, { responseType: 'blob' })
             .subscribe(
               (response: Blob) => {
                 this.certificateDownloadService.triggerBrowserDownload(
