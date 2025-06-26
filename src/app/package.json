@@ -67,7 +67,6 @@
     ]
   },
   "dependencies": {
-    "@napi-rs/svg2pdf": "^0.0.1",
     "@project-sunbird/discussion-service": "0.0.6",
     "@project-sunbird/ext-framework-server": "0.1.28",
     "@project-sunbird/form-service": "0.0.15",
