@@ -1,42 +1,39 @@
-const puppeteer = require('puppeteer');
+const { Resvg } = require('@resvg/resvg-js');
+const PDFDocument = require('pdfkit');
 
-exports.downloadCertificate = async (req, res) => {
-  let data = req.body.data;
-  if (!data) {
-    return res.status(400).json({ error: 'Missing SVG content' });
+exports.downloadCertificate = async(req, res) => {
+  let svgContent = req.body.data;
+  if (!svgContent) {
+    return res.status(400).send('Missing SVG content in data field');
   }
+
+
   try {
-    // 1. Generate PDF using puppeteer
-    const browser = await puppeteer.launch({
-      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/google-chrome', // or '/usr/bin/chromium-browser'
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    // 1. Render SVG to PNG using @resvg/resvg-js
+    const resvg = new Resvg(svgContent, {
+      fitTo: { mode: 'width', value: 1060 },
+      background: 'transparent',
+      font: { loadSystemFonts: true },
+      fitTo: { mode: 'height', value: 750 }
     });
-    const page = await browser.newPage();
-    // 2. Load SVG content inside an HTML wrapper
-    await page.setContent(`
-    <html>
-      <body style="margin:0;">
-          ${data}
-      </body>
-    </html>
-  `, { waitUntil: 'networkidle0' });
-    // 3. Export PDF to buffer
-    const pdfBuffer = await page.pdf({
-      width: '1060px',
-      height: '750px',
-      printBackground: true
-    });
+    const pngBuffer = resvg.render().asPng();
 
-    await browser.close();
-
-    // 4. Send PDF as download
+    // 2. Create PDF and embed PNG using pdfkit
+    // Open image to get its dimensions
+    const image = PDFDocument.prototype.openImage.call(PDFDocument, pngBuffer);
+    const imgWidth = image.width;
+    const imgHeight = image.height;
+    const doc = new PDFDocument({ autoFirstPage: false });
     res.set({
       'Content-Type': 'application/pdf',
-      'Content-Disposition': 'attachment; filename="output.pdf"',
-      'Content-Length': pdfBuffer.length
+      'Content-Disposition': 'attachment; filename="output.pdf"'
     });
+    doc.pipe(res);
 
-    return res.end(pdfBuffer);
+    // Add a page sized to the image
+    doc.addPage({ size: [imgWidth, imgHeight], margin: 0 });
+    doc.image(pngBuffer, 0, 0, { width: imgWidth, height: imgHeight });
+    doc.end();
 
   } catch (err) {
     console.error('Error:', err.message);
