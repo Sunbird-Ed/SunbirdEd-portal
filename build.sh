@@ -61,7 +61,7 @@ build_client(){
 build_server(){
     echo "Building server in background"
     echo "copying requied files to app_dist"
-    cp -R libs helpers proxy resourcebundles package.json framework.config.js sunbird-plugins routes constants controllers server.js ./../../Dockerfile app_dist
+    cp -R libs helpers proxy resourcebundles package.json framework.config.js sunbird-plugins routes constants controllers server.js ./../../Dockerfile ./../../fonts app_dist
     cd app_dist
     echo "starting server yarn install"
     yarn install --ignore-engines --no-progress --production=true
