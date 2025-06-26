@@ -7,7 +7,7 @@ import { Subject, Subscription } from 'rxjs';
 import { IImpressionEventInput, IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CacheService } from '../../../../modules/shared/services/cache-service/cache.service';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 import { FieldConfig, FieldConfigOption } from '@project-sunbird/common-form-elements-full';
 import { CsCertificateService } from '@project-sunbird/client-services/services/certificate/interface';
@@ -307,6 +307,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.toasterService.error(this.resourceService.messages.desktop.emsg.cannotAccessCertificate);
       return;
     }
+    course.isDownloading = true;
     // Check for V2
     if (_.get(course, 'issuedCertificates.length')) {
       this.toasterService.success(_.get(this.resourceService, 'messages.smsg.certificateGettingDownloaded'));
@@ -318,8 +319,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
           type: 'rc_certificate_registry',
           templateUrl: _.get(certificateInfo, 'templateUrl'),
           trainingName: courseName
-        }
-        this.downloadOldAndRCCert(courseObj);
+        };
+        this.downloadOldAndRCCert(courseObj, course);
       } else if (_.get(certificateInfo, 'identifier')) {
         this.courseCService.getSignedCourseCertificate(_.get(certificateInfo, 'identifier'))
           .pipe(takeUntil(this.unsubscribe$))
@@ -340,26 +341,31 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.toasterService.error(this.resourceService?.messages?.emsg?.failedToDownloadCertificate || 'Failed to download certificate.');
                   }
                 );
+              course.isDownloading = false;
             } else if (_.get(course, 'certificates.length')) {
-              this.downloadPdfCertificate(course.certificates[0]);
+              this.downloadPdfCertificate(course.certificates[0], course);
             } else {
               this.toasterService.error(this.resourceService.messages.emsg.m0076);
+              course.isDownloading = false;
             }
           }, error => {
-            this.downloadPdfCertificate(certificateInfo);
+            this.downloadPdfCertificate(certificateInfo, course);
           });
       } else {
-        this.downloadPdfCertificate(certificateInfo);
+        this.downloadPdfCertificate(certificateInfo, course);
       }
     } else if (_.get(course, 'certificates.length')) { // For V1 - backward compatibility
       this.toasterService.success(_.get(this.resourceService, 'messages.smsg.certificateGettingDownloaded'));
-      this.downloadPdfCertificate(course.certificates[0]);
+      this.downloadPdfCertificate(course.certificates[0], course);
     } else {
       this.toasterService.error(this.resourceService.messages.emsg.m0076);
+      course.isDownloading = false;
     }
   }
 
-  downloadOldAndRCCert(courseObj) {
+  downloadOldAndRCCert(courseObj, courseToUpdate?) {
+    const itemToUpdate = courseToUpdate || courseObj;
+    itemToUpdate.isDownloading = true;
     let requestBody = {
       certificateId: courseObj.id,
       schemaName: 'certificate',
@@ -371,7 +377,10 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       apiPathLegacy: '/certreg/v1',
       rcApiPath: '/learner/rc/${schemaName}/v1',
     })
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(takeUntil(this.unsubscribe$),
+            finalize(() => {
+              itemToUpdate.isDownloading = false;
+      }))
       .subscribe((resp) => {
         if (_.get(resp, 'printUri')) {
           const printUri = _.get(resp, 'printUri');
@@ -397,14 +406,22 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
-  downloadPdfCertificate(value) {
+  downloadPdfCertificate(value, courseToUpdate?) {
+    const itemToUpdate = courseToUpdate || value;
     if (_.get(value, 'url')) {
       const request = {
         request: {
           pdfUrl: _.get(value, 'url')
         }
       };
-      this.profileService.downloadCertificates(request).subscribe((apiResponse) => {
+      itemToUpdate.isDownloading = true;
+      this.profileService.downloadCertificates(request)
+      .pipe(
+        finalize(() => {
+          itemToUpdate.isDownloading = false;
+        })
+      )
+      .subscribe((apiResponse) => {
         const signedPdfUrl = _.get(apiResponse, 'result.signedUrl');
         if (signedPdfUrl) {
           window.open(signedPdfUrl, '_blank');
@@ -416,6 +433,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       });
     } else {
       this.toasterService.error(this.resourceService.messages.emsg.m0076);
+      if (itemToUpdate) {
+        itemToUpdate.isDownloading = false;
+      }
     }
   }
 

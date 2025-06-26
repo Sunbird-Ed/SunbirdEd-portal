@@ -449,9 +449,10 @@
                   <button appTelemetryInteract [telemetryInteractEdata]="downloadCertificateEData"
                     [telemetryInteractCdata]="[{id: 'course:download:cert', type: 'Feature'},{id: 'SB-14120', type: 'Task'}]"
                     class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn fnormal"
-                    (click)="downloadCert(data)" tabindex="0">
-                    <i class="download icon"></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
-                </div>
+                    (click)="downloadCert(data)" tabindex="0" [disabled]="data.isDownloading" [attr.aria-busy]="data.isDownloading">
+                    <span *ngIf="data.isDownloading" class="mr-8"><i class="fa fa-spinner fa-spin"></i></span>
+                    <i *ngIf="!data.isDownloading" class="download icon"></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
+                </div> 
                 <div class="list-items__item list-items__bar computer only"
                   *ngIf="!data?.certificates?.length && !data?.issuedCertificates?.length">
                   <span class="bar mr-4"></span>
@@ -540,8 +541,9 @@
                 <div class="list-items__item" *ngIf="data?.id">
                   <button appOnlineOnly appTelemetryInteract [telemetryInteractEdata]="downloadOthersCertificateEData"
                     class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"
-                    (click)="downloadOldAndRCCert(data)" tabindex="0">
-                    <i class="download icon"></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
+                    (click)="downloadOldAndRCCert(data)" tabindex="0" [disabled]="data.isDownloading" [attr.aria-busy]="data.isDownloading">
+                    <span *ngIf="data.isDownloading" class="mr-8"><i class="fa fa-spinner fa-spin"></i></span>
+                    <i *ngIf="!data.isDownloading" class="download icon"></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
                 </div>
                 <div class="list-items__item list-items__bar computer only" *ngIf="!data?.length">
                   <span class="bar"></span>
