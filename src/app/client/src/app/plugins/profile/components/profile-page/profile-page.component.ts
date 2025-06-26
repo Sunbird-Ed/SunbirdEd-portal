@@ -7,7 +7,7 @@ import { Subject, Subscription } from 'rxjs';
 import { IImpressionEventInput, IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CacheService } from '../../../../modules/shared/services/cache-service/cache.service';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 import { FieldConfig, FieldConfigOption } from '@project-sunbird/common-form-elements-full';
 import { CsCertificateService } from '@project-sunbird/client-services/services/certificate/interface';
@@ -377,7 +377,10 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       apiPathLegacy: '/certreg/v1',
       rcApiPath: '/learner/rc/${schemaName}/v1',
     })
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(takeUntil(this.unsubscribe$),
+            finalize(() => {
+              itemToUpdate.isDownloading = false;
+      }))
       .subscribe((resp) => {
         if (_.get(resp, 'printUri')) {
           const printUri = _.get(resp, 'printUri');
@@ -398,10 +401,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         } else {
           this.toasterService.error(this.resourceService.messages.emsg.m0076);
         }
-        itemToUpdate.isDownloading = false;
       }, error => {
         console.log('Portal :: CSL : Download certificate CSL API failed ', error);
-        itemToUpdate.isDownloading = false;
       });
   }
 
@@ -414,17 +415,21 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       };
       itemToUpdate.isDownloading = true;
-      this.profileService.downloadCertificates(request).subscribe((apiResponse) => {
+      this.profileService.downloadCertificates(request)
+      .pipe(
+        finalize(() => {
+          itemToUpdate.isDownloading = false;
+        })
+      )
+      .subscribe((apiResponse) => {
         const signedPdfUrl = _.get(apiResponse, 'result.signedUrl');
         if (signedPdfUrl) {
           window.open(signedPdfUrl, '_blank');
         } else {
           this.toasterService.error(this.resourceService.messages.emsg.m0076);
         }
-        itemToUpdate.isDownloading = false;
       }, (err) => {
         this.toasterService.error(this.resourceService.messages.emsg.m0076);
-        itemToUpdate.isDownloading = false;
       });
     } else {
       this.toasterService.error(this.resourceService.messages.emsg.m0076);
