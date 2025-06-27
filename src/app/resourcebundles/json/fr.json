@@ -160,6 +160,7 @@
                 "fullscreen": "Plein écran",
                 "rate": "Taux",
                 "minimize": "Minimiser",
+                "nonTrackableContent": "Remarque : Pour vous assurer que votre activité de visionnage est correctement suivie, évitez d'utiliser le mode plein écran natif de votre appareil.",
 
               "page": "Page",
               "loading": "Chargement",

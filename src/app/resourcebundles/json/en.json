@@ -160,6 +160,7 @@
                 "fullscreen": "Fullscreen",
                 "Rate": "Rate",
                 "Minimize": "Minimize",
+                "nonTrackableContent": "Note: To ensure your viewing activity is tracked correctly, avoid using your device's native fullscreen mode.",
 
                 "page": "Page",
                 "loading": "Loading",

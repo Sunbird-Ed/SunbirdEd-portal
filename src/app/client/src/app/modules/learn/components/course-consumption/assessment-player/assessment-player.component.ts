@@ -17,6 +17,7 @@ import { NotificationServiceImpl } from '../../../../notification/services/notif
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 import { result } from 'lodash';
 import { HttpClient } from '@angular/common/http'; // Import HttpClient
+import {UAParser} from 'ua-parser-js';
 
 const ACCESSEVENT = 'renderer:question:submitscore';
 const ASSESSMENT_CONTENT_TYPES = ['SelfAssess'];
@@ -120,6 +121,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   isStatusChange = false;
   lastActiveContentBeforeModuleChange;
   contentRatingModal = false;
+  isDesktop: boolean = true;
   @HostListener('window:beforeunload')
   canDeactivate() {
     // returning true will navigate without confirmation
@@ -161,6 +163,11 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   }
 
   ngOnInit() {
+    const parser = new UAParser();
+    const result = parser.getResult();
+    const deviceType = result.device.type;
+
+    this.isDesktop = !deviceType;
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.initLayout();
     this.subscribeToQueryParam();
