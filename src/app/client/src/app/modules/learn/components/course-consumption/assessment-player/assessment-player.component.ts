@@ -16,8 +16,8 @@ import TreeModel from 'tree-model';
 import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 import { HttpClient } from '@angular/common/http'; // Import HttpClient
-import { DeviceDetectorService } from 'ngx-device-detector';
 import { FormService } from '../../../../core/services/form/form.service';
+import { CsMimeType } from '../../../../../../app/modules/shared/interfaces/cs-mime-type';
 
 
 const ACCESSEVENT = 'renderer:question:submitscore';
@@ -53,7 +53,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService,
     @Inject('SB_NOTIFICATION_SERVICE') private notificationService: NotificationServiceImpl,
     private http: HttpClient,
-    private deviceDetectorService: DeviceDetectorService,
     public formService: FormService
   ) {
     this.playerOption = {
@@ -944,24 +943,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
               "seekBar": false
             }
             this.playerConfig.config['playBackSpeeds'] = [1]
-            this.playerType = null;
-            const formReadInputParams = {
-              formType: 'content',
-              formAction: 'play',
-              contentType: 'player'
-            };
-            this.formService.getFormConfig(formReadInputParams).subscribe(
-              (data: any) => {
-                _.forEach(data, (value) => {
-                  if (_.includes(_.get(value, 'mimeType'), _.get(this.playerConfig, 'metadata.mimeType')) && _.get(value, 'version') === 2) {
-                    this.playerType = _.get(value, 'type');
-                  }
-                });
-              },
-              (error) => {
-                console.error('Error fetching form config:', error);
-              }
-            );
+            this.playerType = (config?.metadata?.mimeType === CsMimeType.VIDEO || config?.metadata?.mimeType === CsMimeType.WEBM) ? 'video' : 'content';
             this.showLoader = false;
             this.setTelemetryContentImpression();
           }, (err) => {

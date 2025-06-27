@@ -35,7 +35,7 @@
 <div *ngIf="!showLoader" [appTelemetryImpression]="telemetryPlayerPageImpression" [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''" class="text-left relative9">
   <!-- CC-Player Video -->
   <div class="ui container">
-    <div *ngIf="(isRecommendedBrowser === false && playerType === 'video-player')" class="custom-chip">
+    <div *ngIf="(isRecommendedBrowser === false && playerType === 'video')" class="custom-chip">
       <mat-icon class="chip-icon">warning</mat-icon>
       {{ resourceService?.frmelmnts?.lbl?.nonTrackableContent }}
     </div>
