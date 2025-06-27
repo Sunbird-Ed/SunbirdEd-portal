@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { TelemetryService, IAuditEventInput, IImpressionEventInput } from '@sunbird/telemetry';
-import { Component, OnInit, OnDestroy, ViewChild, Inject, HostListener, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Inject, HostListener, EventEmitter, Output, NgModule } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras, NavigationStart } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption';
 import { UserService, GeneraliseLabelService, PlayerService } from '@sunbird/core';
@@ -18,6 +18,7 @@ import { CsCourseService } from '@project-sunbird/client-services/services/cours
 import { HttpClient } from '@angular/common/http'; // Import HttpClient
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { FormService } from '../../../../core/services/form/form.service';
+
 
 const ACCESSEVENT = 'renderer:question:submitscore';
 const ASSESSMENT_CONTENT_TYPES = ['SelfAssess'];
@@ -123,7 +124,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   isStatusChange = false;
   lastActiveContentBeforeModuleChange;
   contentRatingModal = false;
-  isMobileView: boolean = false;
+  isRecommendedBrowser: boolean = false;
   playerType: string;
   @HostListener('window:beforeunload')
   canDeactivate() {
@@ -165,8 +166,20 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
       this.router.navigate(['/learn/course/play', _.get(collectionUnit, 'identifier')], navigationExtras);
   }
 
+  isChromeOrSafari() {
+    const ua = navigator.userAgent;
+
+    // Check for Chrome (but exclude Edge and Opera)
+    const isChrome = /Chrome/.test(ua) && !/Edg|OPR|Brave/.test(ua);
+
+    // Check for Safari which also has 'Safari' in UA)
+    const isSafari = /Safari/.test(ua);
+
+    return isChrome || isSafari;
+  }
+
   ngOnInit() {
-    this.isMobileView = this.deviceDetectorService.isMobile() || this.deviceDetectorService.isTablet();
+    this.isRecommendedBrowser = this.isChromeOrSafari();
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.initLayout();
     this.subscribeToQueryParam();
