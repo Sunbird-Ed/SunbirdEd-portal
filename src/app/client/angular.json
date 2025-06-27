@@ -46,7 +46,7 @@
               },
               {
                 "glob": "**/*",
-                "input": "node_modules/@project-sunbird/sunbird-video-player-v9/lib/assets/",
+                "input": "node_modules/@project-fmps/sunbird-video-player/lib/assets/",
                 "output": "/assets/"
               },
               {
@@ -80,7 +80,7 @@
               "./node_modules/@project-sunbird/sb-themes/themes/themes-df.scss",
               "./node_modules/@project-sunbird/sb-themes/themes/themes-portal.scss",
               "node_modules/videojs-http-source-selector/dist/videojs-http-source-selector.css",
-              "node_modules/@project-sunbird/sunbird-video-player-v9/lib/assets/videojs.markers.min.css",
+              "node_modules/@project-fmps/sunbird-video-player/lib/assets/videojs.markers.min.css",
               "./node_modules/@project-sunbird/discussions-ui/assets/styles/global.scss"
             ],
             "stylePreprocessorOptions": {
@@ -104,7 +104,7 @@
               "node_modules/videojs-contrib-quality-levels/dist/videojs-contrib-quality-levels.min.js",
               "node_modules/videojs-http-source-selector/dist/videojs-http-source-selector.min.js",
               "node_modules/@project-sunbird/sunbird-file-upload-library/sunbird-file-upload-library.js",
-              "node_modules/@project-sunbird/sunbird-video-player-v9/lib/assets/videojs-markers.js",
+              "node_modules/@project-fmps/sunbird-video-player/lib/assets/videojs-markers.js",
               {
                 "inject": false,
                 "input": "src/assets/libs/semantic-ui/transition.min.js",
