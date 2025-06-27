@@ -9,7 +9,7 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { FaqReportComponent } from './components/faq-report/faq-report.component';
 import { CommonFormElementsModule } from '@project-sunbird/common-form-elements-full';
 import { SuiModalModule } from 'ng2-semantic-ui-v9';
-import { SunbirdVideoPlayerModule } from '@project-sunbird/sunbird-video-player-v9';
+import { SunbirdVideoPlayerModule } from '@project-fmps/sunbird-video-player';
 
 @NgModule({
   imports: [

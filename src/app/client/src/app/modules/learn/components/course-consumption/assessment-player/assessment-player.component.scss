@@ -168,3 +168,16 @@
     }
   }
 }
+
+.custom-chip{
+  font-weight: 500;
+  background-color: #FFD954;
+  color: black;
+  margin-bottom: 0.75rem;
+  padding: 0.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.25rem;
+  padding-left: 0.5rem;
+}

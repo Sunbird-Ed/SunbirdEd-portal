@@ -160,6 +160,7 @@
                 "fullscreen": "Plein écran",
                 "rate": "Taux",
                 "minimize": "Minimiser",
+                "nonTrackableContent": "Votre navigateur n'est pas recommandé. Veuillez utiliser Chrome ou Safari pour une meilleure expérience.",
 
               "page": "Page",
               "loading": "Chargement",

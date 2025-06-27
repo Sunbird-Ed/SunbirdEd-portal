@@ -22,7 +22,7 @@ import { QumlLibraryModule as QsLibModule, QuestionCursor as QsCursor } from '@p
 import { EditorCursor } from '@project-sunbird/sunbird-collection-editor';
 import { EditorCursor as QsEditorCursor } from '@project-sunbird/sunbird-questionset-editor';
 import { SunbirdEpubPlayerModule } from '@project-sunbird/sunbird-epub-player-v9';
-import { SunbirdVideoPlayerModule } from '@project-sunbird/sunbird-video-player-v9';
+import { SunbirdVideoPlayerModule } from '@project-fmps/sunbird-video-player';
 import { CslFrameworkService } from '../public/services/csl-framework/csl-framework.service';
 
 @NgModule({

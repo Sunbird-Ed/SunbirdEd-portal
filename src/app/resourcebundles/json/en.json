@@ -160,6 +160,7 @@
                 "fullscreen": "Fullscreen",
                 "Rate": "Rate",
                 "Minimize": "Minimize",
+                "nonTrackableContent": "Your browser is not recommended. Please use Chrome or Safari for the best experience.",
 
                 "page": "Page",
                 "loading": "Loading",

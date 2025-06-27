@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { TelemetryService, IAuditEventInput, IImpressionEventInput } from '@sunbird/telemetry';
-import { Component, OnInit, OnDestroy, ViewChild, Inject, HostListener, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Inject, HostListener, EventEmitter, Output, NgModule } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras, NavigationStart } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption';
 import { UserService, GeneraliseLabelService, PlayerService } from '@sunbird/core';
@@ -15,8 +15,10 @@ import { first, map, takeUntil, tap } from 'rxjs/operators';
 import TreeModel from 'tree-model';
 import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
-import { result } from 'lodash';
 import { HttpClient } from '@angular/common/http'; // Import HttpClient
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { FormService } from '../../../../core/services/form/form.service';
+
 
 const ACCESSEVENT = 'renderer:question:submitscore';
 const ASSESSMENT_CONTENT_TYPES = ['SelfAssess'];
@@ -50,7 +52,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     private progressPlayerService: ProgressPlayerService,
     @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService,
     @Inject('SB_NOTIFICATION_SERVICE') private notificationService: NotificationServiceImpl,
-    private http: HttpClient
+    private http: HttpClient,
+    private deviceDetectorService: DeviceDetectorService,
+    public formService: FormService
   ) {
     this.playerOption = {
       showContentRating: true
@@ -120,6 +124,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   isStatusChange = false;
   lastActiveContentBeforeModuleChange;
   contentRatingModal = false;
+  isRecommendedBrowser: boolean = false;
+  playerType: string;
   @HostListener('window:beforeunload')
   canDeactivate() {
     // returning true will navigate without confirmation
@@ -160,7 +166,20 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
       this.router.navigate(['/learn/course/play', _.get(collectionUnit, 'identifier')], navigationExtras);
   }
 
+  isChromeOrSafari() {
+    const ua = navigator.userAgent;
+
+    // Check for Chrome (but exclude Edge and Opera)
+    const isChrome = /Chrome/.test(ua) && !/Edg|OPR|Brave/.test(ua);
+
+    // Check for Safari which also has 'Safari' in UA)
+    const isSafari = /Safari/.test(ua);
+
+    return isChrome || isSafari;
+  }
+
   ngOnInit() {
+    this.isRecommendedBrowser = this.isChromeOrSafari();
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.initLayout();
     this.subscribeToQueryParam();
@@ -891,7 +910,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
             this.playerConfig['metadata']['maxAttempt'] = _.get(this.activeContent, 'maxAttempts');
             const _currentAttempt = _.get(this.contentStatus[_contentIndex], 'score.length') || 0;
             this.playerConfig['metadata']['currentAttempt'] = _currentAttempt == undefined ? 0 : _currentAttempt;
-            this.playerConfig['context']['objectRollup'] = this.objectRollUp; 
+            this.playerConfig['context']['objectRollup'] = this.objectRollUp;
             this.playerConfig['config']['sideMenu']['showDownload'] = false
             this.showLoader = false;
           }, (err) => {
@@ -899,38 +918,56 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
             this.showLoader = false;
           });
       } else {
-      this.courseConsumptionService.getConfigByContent(id, options)
-        .pipe(first(), takeUntil(this.unsubscribe))
-        .subscribe(config => {
-          this.showPlayer = true;
-          const objectRollup = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, id);
-          this.objectRollUp = objectRollup ? this.courseConsumptionService.getRollUp(objectRollup) : {};
-          if (config && config.context) {
-            config.context.objectRollup = this.objectRollUp;
-          }
-          this.playerConfig = config;
-          const _contentIndex = _.findIndex(this.contentStatus, { contentId: _.get(config, 'context.contentId') });
-          this.playerConfig['metadata']['maxAttempt'] = _.get(this.activeContent, 'maxAttempts');
-          const _currentAttempt = _contentIndex > 0 ? _.get(this.contentStatus[_contentIndex], 'score.length') : 0;
-          this.playerConfig['metadata']['currentAttempt'] = _currentAttempt == undefined ? 0 : _currentAttempt;
-          this.playerConfig.config.sideMenu = {
-            "enable": false,
-            "showShare": true,
-            "showDownload": false,
-            "showExit": false
-          }
-          this.playerConfig.config['restrictControls'] = {
-            "seekForward": false,
-            "seekBackward": false,
-            "seekBar": false
-          }
-          this.playerConfig.config['playBackSpeeds'] = [1]
-          this.showLoader = false;
-          this.setTelemetryContentImpression();
-        }, (err) => {
-          this.showLoader = false;
-          this.toasterService.error(this.resourceService.messages.stmsg.m0009);
-        });
+        this.courseConsumptionService.getConfigByContent(id, options)
+          .pipe(first(), takeUntil(this.unsubscribe))
+          .subscribe(config => {
+            this.showPlayer = true;
+            const objectRollup = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, id);
+            this.objectRollUp = objectRollup ? this.courseConsumptionService.getRollUp(objectRollup) : {};
+            if (config && config.context) {
+              config.context.objectRollup = this.objectRollUp;
+            }
+            this.playerConfig = config;
+            const _contentIndex = _.findIndex(this.contentStatus, { contentId: _.get(config, 'context.contentId') });
+            this.playerConfig['metadata']['maxAttempt'] = _.get(this.activeContent, 'maxAttempts');
+            const _currentAttempt = _contentIndex > 0 ? _.get(this.contentStatus[_contentIndex], 'score.length') : 0;
+            this.playerConfig['metadata']['currentAttempt'] = _currentAttempt == undefined ? 0 : _currentAttempt;
+            this.playerConfig.config.sideMenu = {
+              "enable": false,
+              "showShare": true,
+              "showDownload": false,
+              "showExit": false
+            }
+            this.playerConfig.config['restrictControls'] = {
+              "seekForward": false,
+              "seekBackward": false,
+              "seekBar": false
+            }
+            this.playerConfig.config['playBackSpeeds'] = [1]
+            this.playerType = null;
+            const formReadInputParams = {
+              formType: 'content',
+              formAction: 'play',
+              contentType: 'player'
+            };
+            this.formService.getFormConfig(formReadInputParams).subscribe(
+              (data: any) => {
+                _.forEach(data, (value) => {
+                  if (_.includes(_.get(value, 'mimeType'), _.get(this.playerConfig, 'metadata.mimeType')) && _.get(value, 'version') === 2) {
+                    this.playerType = _.get(value, 'type');
+                  }
+                });
+              },
+              (error) => {
+                console.error('Error fetching form config:', error);
+              }
+            );
+            this.showLoader = false;
+            this.setTelemetryContentImpression();
+          }, (err) => {
+            this.showLoader = false;
+            this.toasterService.error(this.resourceService.messages.stmsg.m0009);
+          });
       }
     }
   }
