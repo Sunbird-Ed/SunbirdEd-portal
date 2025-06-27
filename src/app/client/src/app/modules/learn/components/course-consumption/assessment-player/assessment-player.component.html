@@ -35,7 +35,7 @@
 <div *ngIf="!showLoader" [appTelemetryImpression]="telemetryPlayerPageImpression" [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''" class="text-left relative9">
   <!-- CC-Player Video -->
   <div class="ui container">
-    <div *ngIf="isDesktop" class="px-10 pb-2">
+    <div *ngIf="isMobileView && playerType === 'video-player'" class="px-10 pb-2">
       {{resourceService?.frmelmnts?.lbl?.nonTrackableContent}}
     </div>
     <div class="cc-player sb-g">
