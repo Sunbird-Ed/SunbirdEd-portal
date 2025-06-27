@@ -29,6 +29,7 @@ html,
 body {
   height: 100%;
   font-size: mat.font-size($custom-typography, body-1);
+  overflow-x: hidden;
 }
 
 body {
