@@ -15,9 +15,8 @@ import { first, map, takeUntil, tap } from 'rxjs/operators';
 import TreeModel from 'tree-model';
 import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
-import { result } from 'lodash';
 import { HttpClient } from '@angular/common/http'; // Import HttpClient
-import {UAParser} from 'ua-parser-js';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 const ACCESSEVENT = 'renderer:question:submitscore';
 const ASSESSMENT_CONTENT_TYPES = ['SelfAssess'];
@@ -51,7 +50,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     private progressPlayerService: ProgressPlayerService,
     @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService,
     @Inject('SB_NOTIFICATION_SERVICE') private notificationService: NotificationServiceImpl,
-    private http: HttpClient
+    private http: HttpClient,
+    private deviceDetectorService: DeviceDetectorService
   ) {
     this.playerOption = {
       showContentRating: true
@@ -163,11 +163,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   }
 
   ngOnInit() {
-    const parser = new UAParser();
-    const result = parser.getResult();
-    const deviceType = result.device.type;
-
-    this.isDesktop = !deviceType;
+    this.isDesktop = this.deviceDetectorService.isMobile() || this.deviceDetectorService.isTablet();
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.initLayout();
     this.subscribeToQueryParam();
