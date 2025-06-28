@@ -7,8 +7,10 @@ import { UserService, GeneraliseLabelService, PlayerService } from '@sunbird/cor
 import { AssessmentScoreService, CourseBatchService, CourseConsumptionService, CourseProgressService } from '@sunbird/learn';
 import { ProgressPlayerService } from '../../../../player-helper/service/video-player/progress-player.service';
 import { PublicPlayerService, ComponentCanDeactivate } from '@sunbird/public';
-import { ConfigService, ResourceService, ToasterService, NavigationHelperService,
-  ContentUtilsServiceService, ITelemetryShare, LayoutService } from '@sunbird/shared';
+import {
+  ConfigService, ResourceService, ToasterService, NavigationHelperService,
+  ContentUtilsServiceService, ITelemetryShare, LayoutService
+} from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { first, map, takeUntil, tap } from 'rxjs/operators';
@@ -18,6 +20,7 @@ import { CsCourseService } from '@project-sunbird/client-services/services/cours
 import { HttpClient } from '@angular/common/http'; // Import HttpClient
 import { FormService } from '../../../../core/services/form/form.service';
 import { CsMimeType } from '../../../../../../app/modules/shared/interfaces/cs-mime-type';
+import Bowser from "bowser";
 
 
 const ACCESSEVENT = 'renderer:question:submitscore';
@@ -135,58 +138,57 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   navigateToPlayerPage(collectionUnit: {}, event?) {
     this.previousContent = null;
     this.lastActiveContentBeforeModuleChange = this.activeContent;
-      const navigationExtras: NavigationExtras = {
-        queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.parentCourse.name },
-        state: { contentStatus: this._routerStateContentStatus }
-      };
+    const navigationExtras: NavigationExtras = {
+      queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.parentCourse.name },
+      state: { contentStatus: this._routerStateContentStatus }
+    };
 
-      if (event && !_.isEmpty(event.event)) {
-        navigationExtras.queryParams.selectedContent = event.data.identifier;
-      } else if (_.get(collectionUnit, 'mimeType') === 'application/vnd.ekstep.content-collection' && _.get(collectionUnit, 'children.length')
-        && _.get(this.contentStatus, 'length')) {
-        const parsedChildren = this.courseConsumptionService.parseChildren(collectionUnit);
-        const collectionChildren = [];
-        this.contentStatus.forEach(item => {
-          if (parsedChildren.find(content => content === item.contentId)) {
-            collectionChildren.push(item);
-          }
-        });
+    if (event && !_.isEmpty(event.event)) {
+      navigationExtras.queryParams.selectedContent = event.data.identifier;
+    } else if (_.get(collectionUnit, 'mimeType') === 'application/vnd.ekstep.content-collection' && _.get(collectionUnit, 'children.length')
+      && _.get(this.contentStatus, 'length')) {
+      const parsedChildren = this.courseConsumptionService.parseChildren(collectionUnit);
+      const collectionChildren = [];
+      this.contentStatus.forEach(item => {
+        if (parsedChildren.find(content => content === item.contentId)) {
+          collectionChildren.push(item);
+        }
+      });
+
+      /* istanbul ignore else */
+      if (collectionChildren.length) {
+        const selectedContent: any = collectionChildren.find(item => item.status !== 2);
 
         /* istanbul ignore else */
-        if (collectionChildren.length) {
-          const selectedContent: any = collectionChildren.find(item => item.status !== 2);
-
-          /* istanbul ignore else */
-          if (selectedContent) {
-            navigationExtras.queryParams.selectedContent = selectedContent.contentId;
-          }
+        if (selectedContent) {
+          navigationExtras.queryParams.selectedContent = selectedContent.contentId;
         }
       }
-      this.router.navigate(['/learn/course/play', _.get(collectionUnit, 'identifier')], navigationExtras);
+    }
+    this.router.navigate(['/learn/course/play', _.get(collectionUnit, 'identifier')], navigationExtras);
   }
 
-  isChromeOrSafari() {
-    const ua = navigator.userAgent;
+  isNotChromeOrSafari() {
+    const browser = Bowser.getParser(window.navigator.userAgent);
+    const name = browser.getBrowserName();
 
-    // Check for Chrome (but exclude Edge and Opera)
-    const isChrome = /Chrome/.test(ua) && !/Edg|OPR|Brave/.test(ua);
-
-    // Check for Safari which also has 'Safari' in UA)
-    const isSafari = /Safari/.test(ua);
-
-    return isChrome || isSafari;
+    if (name !== "Chrome" && name !== "Safari") {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   ngOnInit() {
-    this.isRecommendedBrowser = this.isChromeOrSafari();
+    this.isRecommendedBrowser = !this.isNotChromeOrSafari();
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.initLayout();
     this.subscribeToQueryParam();
     this.subscribeToContentProgressEvents().subscribe(data => { });
     this.navigationHelperService.contentFullScreenEvent.
-    pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
-      this.isFullScreenView = isFullScreen;
-    });
+      pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
+        this.isFullScreenView = isFullScreen;
+      });
     this.noContentMessage = _.get(this.resourceService, 'messages.stmsg.m0121');
     this.getLanguageChangeEvent();
     this.routerEventsChangeHandler().subscribe();
@@ -194,11 +196,11 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().
-    pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig => {
-    if (layoutConfig != null) {
-      this.layoutConfiguration = layoutConfig.layout;
-    }
-   });
+      pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig => {
+        if (layoutConfig != null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+      });
   }
 
   goBack() {
@@ -216,7 +218,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     }
     setTimeout(() => {
       if (this.batchId) {
-        this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId], {queryParams: paramas});
+        this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId], { queryParams: paramas });
       } else {
         this.router.navigate(['/learn/course', this.courseId], { queryParams: paramas });
       }
@@ -258,60 +260,61 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
             this.fetchContentHierarchy(selectedContent, isSingleContent);
           } else {
             console.warn('getCollectionInfo Material is true');
-            
-            this.getCollectionInfo(this.courseId)
-            .pipe(takeUntil(this.unsubscribe))
-            .subscribe((data) => {
-              const model = new TreeModel();
-              this.treeModel = model.parse(data.courseHierarchy);
-              this.parentCourse = data.courseHierarchy;
 
-              const module = this.courseConsumptionService.setPreviousAndNextModule(this.parentCourse, this.collectionId);
-              this.nextModule = _.get(module, 'next');
-              this.prevModule = _.get(module, 'prev');
-              this.getCourseCompletionStatus();
-              this.layoutService.updateSelectedContentType.emit(data.courseHierarchy.contentType);
-              if (!this.isParentCourse && data.courseHierarchy.children) {
+            this.getCollectionInfo(this.courseId)
+              .pipe(takeUntil(this.unsubscribe))
+              .subscribe((data) => {
+                const model = new TreeModel();
+                this.treeModel = model.parse(data.courseHierarchy);
+                this.parentCourse = data.courseHierarchy;
+
+                const module = this.courseConsumptionService.setPreviousAndNextModule(this.parentCourse, this.collectionId);
+                this.nextModule = _.get(module, 'next');
+                this.prevModule = _.get(module, 'prev');
+                this.getCourseCompletionStatus();
+                this.layoutService.updateSelectedContentType.emit(data.courseHierarchy.contentType);
+                if (!this.isParentCourse && data.courseHierarchy.children) {
                   this.courseHierarchy = data.courseHierarchy.children.find(item => item.identifier === this.collectionId);
-              } else {
-                this.courseHierarchy = data.courseHierarchy;
-              }
-              if (!isSingleContent && _.get(this.courseHierarchy, 'mimeType') !==
-              this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-                isSingleContent = true;
-              }
-              this.enrolledBatchInfo = data.enrolledBatchDetails;
-              this.certificateDescription = this.courseBatchService.getcertificateDescription(this.enrolledBatchInfo);
-              this.setActiveContent(selectedContent, isSingleContent);
-            }, error => {
-              this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-              this.goBack();
-            });
+                } else {
+                  this.courseHierarchy = data.courseHierarchy;
+                }
+                if (!isSingleContent && _.get(this.courseHierarchy, 'mimeType') !==
+                  this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+                  isSingleContent = true;
+                }
+                this.enrolledBatchInfo = data.enrolledBatchDetails;
+                this.certificateDescription = this.courseBatchService.getcertificateDescription(this.enrolledBatchInfo);
+                this.setActiveContent(selectedContent, isSingleContent);
+              }, error => {
+                this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+                this.goBack();
+              });
           }
-            
+
         } else {
           if (queryParams.isIntroductoryMaterial) {
             this.fetchContentHierarchy(selectedContent, isSingleContent);
           } else {
-          this.telemetryCdata = [{
-            id: this.groupId,
-            type: 'Group'
-          }];
-          this.publicPlayerService.getCollectionHierarchy(this.collectionId, {})
-            .pipe(takeUntil(this.unsubscribe))
-            .subscribe((data) => {
-              this.courseHierarchy = data.result.content;
-              this.layoutService.updateSelectedContentType.emit(this.courseHierarchy.contentType);
-              if (this.courseHierarchy.mimeType !== 'application/vnd.ekstep.content-collection') {
-                this.activeContent = this.courseHierarchy;
-                this.initPlayer(_.get(this.activeContent, 'identifier'));
-              } else {
-                this.setActiveContent(selectedContent);
-              }
-            }, error => {
-              this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-              this.goBack();
-            });}
+            this.telemetryCdata = [{
+              id: this.groupId,
+              type: 'Group'
+            }];
+            this.publicPlayerService.getCollectionHierarchy(this.collectionId, {})
+              .pipe(takeUntil(this.unsubscribe))
+              .subscribe((data) => {
+                this.courseHierarchy = data.result.content;
+                this.layoutService.updateSelectedContentType.emit(this.courseHierarchy.contentType);
+                if (this.courseHierarchy.mimeType !== 'application/vnd.ekstep.content-collection') {
+                  this.activeContent = this.courseHierarchy;
+                  this.initPlayer(_.get(this.activeContent, 'identifier'));
+                } else {
+                  this.setActiveContent(selectedContent);
+                }
+              }, error => {
+                this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+                this.goBack();
+              });
+          }
         }
         this.setTelemetryCourseImpression();
       });
@@ -338,8 +341,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
         this.courseHierarchy = response.result.content;
 
         if (!isSingleContent && _.get(this.courseHierarchy, 'mimeType') !==
-            this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-            isSingleContent = true;
+          this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+          isSingleContent = true;
         }
         this.setActiveContent(selectedContent, isSingleContent);
       }, error => {
@@ -411,22 +414,22 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     if (this.batchId && (ASSESSMENT_CONTENT_TYPES.includes(_.get(this.activeContent, 'contentType')) || _.toLower(_.get(this.activeContent, 'primaryCategory')) === 'practise assess' || !this.isRouterExtrasAvailable)) {
       const req: any = this.getContentStateRequest(this.courseHierarchy);
       this.CsCourseService
-      .getContentState(req, { apiPath: '/content/course/v1' })
-      .pipe(takeUntil(this.unsubscribe))
-      .subscribe((_res) => {
-        const res = this.CourseProgressService.getContentProgressState(req, _res);
-        const _contentIndex = _.findIndex(this.contentStatus, {contentId: _.get(this.activeContent, 'identifier')});
-        const _resIndex =  _.findIndex(res.content, {contentId: _.get(this.activeContent, 'identifier')});
-        if ((ASSESSMENT_CONTENT_TYPES.includes(_.get(this.activeContent, 'contentType')) || _.toLower(_.get(this.activeContent, 'primaryCategory')) === 'practise assess') && this.isRouterExtrasAvailable) {
-          this.contentStatus[_contentIndex]['status'] = _.get(res.content[_resIndex], 'status');
-        } else {
-          this.contentStatus = res.content || [];
-        }
-        this.highlightContent();
-        this.calculateProgress();
-      }, error => {
-        console.log('Content state read CSL API failed ', error);
-      });
+        .getContentState(req, { apiPath: '/content/course/v1' })
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe((_res) => {
+          const res = this.CourseProgressService.getContentProgressState(req, _res);
+          const _contentIndex = _.findIndex(this.contentStatus, { contentId: _.get(this.activeContent, 'identifier') });
+          const _resIndex = _.findIndex(res.content, { contentId: _.get(this.activeContent, 'identifier') });
+          if ((ASSESSMENT_CONTENT_TYPES.includes(_.get(this.activeContent, 'contentType')) || _.toLower(_.get(this.activeContent, 'primaryCategory')) === 'practise assess') && this.isRouterExtrasAvailable) {
+            this.contentStatus[_contentIndex]['status'] = _.get(res.content[_resIndex], 'status');
+          } else {
+            this.contentStatus = res.content || [];
+          }
+          this.highlightContent();
+          this.calculateProgress();
+        }, error => {
+          console.log('Content state read CSL API failed ', error);
+        });
     } else {
       this.highlightContent();
       this.calculateProgress();
@@ -434,11 +437,11 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   }
 
   public getCurrentContent() {
-   return this.previousContent ? this.previousContent : this.activeContent;
+    return this.previousContent ? this.previousContent : this.activeContent;
   }
   public getActiveContent() {
     return this.previousContent ? this.previousContent : this.activeContent;
-   }
+  }
   public contentProgressEvent(event) {
     /* istanbul ignore else */
     if (!this.batchId || _.get(this.enrolledBatchInfo, 'status') !== 1) {
@@ -458,7 +461,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
       courseId: this.courseId,
       batchId: this.batchId,
       status: (eid === 'END' && ((!ASSESSMENT_CONTENT_TYPES.includes(_.get(this.getCurrentContent, 'contentType')) || (_.toLower(_.get(this.getCurrentContent, 'primaryCategory')) === 'practise assess'))) && this.courseProgress === 100
-      && !this.isStatusChange) ? 2 : 1,
+        && !this.isStatusChange) ? 2 : 1,
       progress: (this.courseProgress && !this.isStatusChange) ? this.courseProgress : undefined
     };
 
@@ -480,13 +483,13 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     if (request.status === 2 && !this.isUnitCompleted) {
       this.logAuditEvent();
     }
-    const currentContent  = this.getActiveContent();
+    const currentContent = this.getActiveContent();
     const summary = _.get(telObject, 'edata.summary');
-      let totallength;
-      summary?.forEach((k) => {
-        if (k['totallength']) {
-          totallength = k['totallength'];
-        }
+    let totallength;
+    summary?.forEach((k) => {
+      if (k['totallength']) {
+        totallength = k['totallength'];
+      }
     });
     if ((_.get(currentContent, 'mimeType') === 'application/pdf') && eid === 'END' && totallength === 1) {
       request['status'] = 2;
@@ -498,10 +501,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
         if (!this.isRouterExtrasAvailable) {
           this.contentStatus = _.cloneDeep(updatedRes.content);
         } else {
-          const _contentIndex = _.findIndex(this.contentStatus, {contentId: request.contentId});
-          const _resIndex =  _.findIndex(updatedRes.content, {contentId: request.contentId});
+          const _contentIndex = _.findIndex(this.contentStatus, { contentId: request.contentId });
+          const _resIndex = _.findIndex(updatedRes.content, { contentId: request.contentId });
           if (_resIndex !== -1) {
-          // Update the available status data object
+            // Update the available status data object
             this._routerStateContentStatus['progress'] = _.get(updatedRes, 'progress');
             this.contentStatus[_contentIndex]['status'] = _.get(updatedRes.content[_resIndex], 'status');
             this._routerStateContentStatus['totalCount'] = _.get(updatedRes, 'totalCount');
@@ -548,14 +551,14 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     this.courseProgress = this.progressPlayerService.getContentProgress(playerSummary, contentMimeType);
     if (_.toLower(contentType) === 'course assessment') {
       this.courseProgress = _.find(playerSummary, ['endpageseen', true]) ||
-      _.find(playerSummary, ['visitedcontentend', true]) ? this.courseProgress : 0;
+        _.find(playerSummary, ['visitedcontentend', true]) ? this.courseProgress : 0;
     }
     return this.courseProgress;
   }
 
   calculateProgress(isLogAuditEvent?: boolean) {
     /* istanbul ignore else */
-    if (this.batchId &&  _.get(this.courseHierarchy, 'children')) {
+    if (this.batchId && _.get(this.courseHierarchy, 'children')) {
       this.consumedContents = 0;
       this.totalContents = 0;
       this.courseHierarchy.children.forEach(unit => {
@@ -642,7 +645,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
       this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
     }
     if (rollup) {
-      rollup = {l1: this.courseId};
+      rollup = { l1: this.courseId };
     }
     const objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, _.get(content, 'identifier'));
     const interactData = {
@@ -699,9 +702,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
         uri: this.router.url,
       },
       object: {
-        id:  this.courseId || _.get(this.courseHierarchy, 'identifier'),
+        id: this.courseId || _.get(this.courseHierarchy, 'identifier'),
         type: _.get(this.courseHierarchy, 'contentType') || 'Course',
-        ver:  `${_.get(this.courseHierarchy, 'pkgVersion')}` || '1.0',
+        ver: `${_.get(this.courseHierarchy, 'pkgVersion')}` || '1.0',
         rollup: { l1: this.courseId }
       }
     };
@@ -800,7 +803,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
                 /* istanbul ignore next*/
                 if (ASSESSMENT_CONTENT_TYPES.includes(_.get(this.activeContent, 'contentType')) || _.toLower(_.get(this.activeContent, 'primaryCategory')) === 'practise assess') {
                   /* istanbul ignore next*/
-                  const _contentIndex = _.findIndex(this.contentStatus, {contentId: _.get(this.activeContent, 'identifier')});
+                  const _contentIndex = _.findIndex(this.contentStatus, { contentId: _.get(this.activeContent, 'identifier') });
                   this.contentStatus[_contentIndex]['bestScore'] = _.get(contentState, 'bestScore');
                   this.contentStatus[_contentIndex]['score'] = _.get(contentState, 'score');
                 }
@@ -862,7 +865,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     let isLastAttempt = false;
     /* istanbul ignore if */
     if (ASSESSMENT_CONTENT_TYPES.includes(_.get(this.activeContent, 'contentType')) || _.toLower(_.get(this.activeContent, 'primaryCategory')) === 'practise assess') {
-      const _contentIndex = _.findIndex(this.contentStatus, {contentId: _.get(this.activeContent, 'identifier')});
+      const _contentIndex = _.findIndex(this.contentStatus, { contentId: _.get(this.activeContent, 'identifier') });
       /* istanbul ignore if */
       if (_contentIndex > 0 && _.get(this.contentStatus[_contentIndex], 'score.length') >= _.get(this.activeContent, 'maxAttempts')) { maxAttemptsExceeded = true; }
       if (_contentIndex > 0 && _.get(this.activeContent, 'maxAttempts') - _.get(this.contentStatus[_contentIndex], 'score.length') === 1) { isLastAttempt = true; }
@@ -896,12 +899,12 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
             if (response && response.context) {
               response.context.objectRollup = this.objectRollUp;
             }
-            const contentDetails = {contentId: id, contentData: response?.questionset || response?.questionSet };
+            const contentDetails = { contentId: id, contentData: response?.questionset || response?.questionSet };
             this.playerConfig = serveiceRef.getConfig(contentDetails);
             this.publicPlayerService.getQuestionSetRead(id).subscribe((data: any) => {
               this.playerConfig['metadata']['instructions'] = _.get(data, 'result.questionset.instructions');
               this.showPlayer = true;
-              
+
             }, (error) => {
               this.showPlayer = true;
             });

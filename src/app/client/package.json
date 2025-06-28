@@ -90,6 +90,7 @@
     "@types/lodash": "4.14.104",
     "angular-datatables": "14.0.2",
     "angular2-uuid": "1.1.1",
+    "bowser": "^2.11.0",
     "chart.js": "2.9.4",
     "common-form-elements-v9": "4.5.0",
     "common-form-elements-web-v9": "4.7.2",
