@@ -466,6 +466,19 @@ export class AppComponent implements OnInit, OnDestroy {
         this.joyThemePopup();
         this.changeDetectorRef.detectChanges();
         this.cslFrameworkService.setTransFormGlobalFilterConfig(channelId);
+        var options = {
+          context: {
+            env: this.activatedRoute.snapshot?.data?.telemetry?.env || "home",
+          },
+          edata: {
+            type: "view",
+            pageid: "home-page",
+            subtype: "login-success",
+            uri: encodeURI(window.location.href),
+            visits: []
+          }
+        }
+        this.telemetryService.impression(options)
       }, error => {
         this.initApp = true;
         this.changeDetectorRef.detectChanges();
