@@ -473,7 +473,7 @@ export class AppComponent implements OnInit, OnDestroy {
           edata: {
             type: "view",
             pageid: "home-page",
-            subtype: "login-success",
+            subtype: "",
             uri: encodeURI(window.location.href),
             visits: []
           }
