@@ -1,6 +1,6 @@
-<div class="sb-pageSection" *ngIf="showComponent && section && section.contents && section.contents.length">
+<div class="sb-pageSection" *ngIf="showComponent && section && section.contents">
     <!--Header-->
-    <div *ngIf="section.name" class="sb-pageSection-header">
+    <div *ngIf="section.name && section.showCompletedHeading" class="sb-pageSection-header">
         <!--Section Title-->
         <h4 class="sb-pageSection-title sb-pageSection-sentenceCase m-0 mr-16"><span class="mr-8">{{sectionName}}</span>
             <!--Count-->
@@ -17,42 +17,55 @@
         </button> -->
         <!--/View all button-->
     </div>
+    <!-- show completed label -->
+    <div *ngIf="section.name && !section.showCompletedHeading" class="sb-pageSection-header">
+        <h4 class="sb-pageSection-title sb-pageSection-sentenceCase m-0 mr-16"><span class="mr-8">{{sectionName}}</span>
+            <span class="sb-pageSection-count sb-label sb-label-xs sb-label-error">{{section.count}}</span>
+        </h4>
+    </div>
     <!--/Header-->
-
+    <div *ngIf="section?.contents?.length === 0 && section.showCompletedHeading">
+        <div class="sb-library-cards relative9">
+            <div class="twelve wide column relative9">
+                <div class="sb-no-courses-message">
+                    {{ resourceService?.frmelmnts?.lbl?.emptyCompletedCourses }}
+                </div>
+            </div>
+        </div>
+    </div>
     <!--Content-->
     <div *ngIf="refresh" class="sb-pageSection-content pt-8">
         <div *ngIf="section.count > 0" class="vertical-card-container">
-                <div *ngFor="let content of section.contents; let i=index" class="mr-16 cardSlick">
-                    <!--Batch Card-->
-                    <app-batch-card appTelemetryInteract [telemetryInteractEdata]="cardInteractEdata"
-                        [telemetryInteractObject]="{id:content.metaData.identifier}"
-                        *ngIf="cardType && cardType === 'batch' else contentcard" [batch]="content"
-                        (clickEvent)="playContent($event)">
-                    </app-batch-card>
-                    <!--/Batch Card-->
-                    <!--Course & Resourse Card-->
-                    <ng-template #contentcard>
-                        <ng-container *ngIf="!layoutConfiguration">
-                            <app-card appContentDirection appTelemetryInteract
-                                [telemetryInteractEdata]="cardInteractEdata"
-                                [telemetryInteractCdata]="telemetryInteractCdata"
-                                [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0', rollup: getObjectRollup(content)}"
-                                (clickEvent)="playContent($event)" [hideProgress]="hideProgress" [data]="content"
-                                class="d-block" [class.last-card]="mr-0">
-                            </app-card>
-                        </ng-container>
-                        <ng-container *ngIf="layoutConfiguration">
-                            <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration"
-                                appTelemetryInteract [telemetryInteractEdata]="cardInteractEdata"
-                                [telemetryInteractCdata]="telemetryInteractCdata"
-                                [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
-                                (cardClick)="playContent($event)" (enterKey)="playContent($event)" [content]="content"
-                                [cardImg]="content?.image || 'assets/images/book.png'"
-                                [categoryKeys]="categoryKeys"></sb-library-card>
-                        </ng-container>
-                    </ng-template>
-                    <!--/Course & Resourse Card-->
-                </div>
+            <div *ngFor="let content of section.contents; let i=index" class="mr-16 cardSlick">
+                <!--Batch Card-->
+                <app-batch-card appTelemetryInteract [telemetryInteractEdata]="cardInteractEdata"
+                    [telemetryInteractObject]="{id:content.metaData.identifier}"
+                    *ngIf="cardType && cardType === 'batch' else contentcard" [batch]="content"
+                    (clickEvent)="playContent($event)">
+                </app-batch-card>
+                <!--/Batch Card-->
+                <!--Course & Resourse Card-->
+                <ng-template #contentcard>
+                    <ng-container *ngIf="!layoutConfiguration">
+                        <app-card appContentDirection appTelemetryInteract [telemetryInteractEdata]="cardInteractEdata"
+                            [telemetryInteractCdata]="telemetryInteractCdata"
+                            [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0', rollup: getObjectRollup(content)}"
+                            (clickEvent)="playContent($event)" [hideProgress]="hideProgress" [data]="content"
+                            class="d-block" [class.last-card]="mr-0">
+                        </app-card>
+                    </ng-container>
+                    <ng-container *ngIf="layoutConfiguration">
+                        <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" appTelemetryInteract
+                            [telemetryInteractEdata]="cardInteractEdata"
+                            [telemetryInteractCdata]="telemetryInteractCdata"
+                            [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
+                            (cardClick)="playContent($event)" (enterKey)="playContent($event)" [content]="content"
+                            [cardImg]="content?.image || 'assets/images/book.png'"
+                            [categoryKeys]="categoryKeys"></sb-library-card>
+                    </ng-container>
+                </ng-template>
+                <!--/Course & Resourse Card-->
+            </div>
         </div>
     </div>
     <!--/Content-->

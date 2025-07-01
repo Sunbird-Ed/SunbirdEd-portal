@@ -339,8 +339,15 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     enrolledSection.count = enrolledSection.contents.length;
                     completedCourseSection.count = completedCourseSection.contents.length;
                     this.enrolledSection = enrolledSection;
-                    this.completedCourseSection = completedCourseSection
-
+                    if(completedCourseSection?.contents.length === 0){
+                        _.set(completedCourseSection, 'showCompletedHeading', true)
+                        this.completedCourseSection = completedCourseSection;
+                    }
+                    else {
+                        _.set(completedCourseSection, 'showCompletedHeading', false)
+                        this.completedCourseSection = completedCourseSection;
+                    }
+                    
                 }));
     }
 

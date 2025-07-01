@@ -157,11 +157,13 @@
                 "questionPaper": "ورقة امتحان",
                 "lessonPlanUnit": "وحدة خطة دراسية",
                 "examQuestion": "سؤال امتحاني",
-                "supportMaterial": "دعم المواد",
+                "supportMaterial": "مواد الدعم",
                 "fullscreen": "شاشة كاملة",
                 "rate": "المعدل",
                 "minimize": "تقليل",
-                "nonTrackableContent": "لا ينصح متصفحك. يرجى استخدام كروم أو سفاري للحصول على أفضل تجربة.",
+                "nonTrackableContent": "المتصفح الذي تستخدمه غير موصى به. يُرجى استخدام متصفح Google Chrome أو Safari للحصول على أفضل تجربة.",
+                "emptyCompletedCourses": "لم تكمل أي دورات حتى الآن.",
+                "emptyEnrolledCourses": "أنت غير مسجل في أي دورات.",
   
                 "page": "صفحة",
                 "loading": "تحميل",
@@ -1710,7 +1712,7 @@
                 "m0022": "غير قادر على تحديث تفضيلاتك. يرجى المحاولة مرة أخرى بعد بعض الوقت.",
                 "m0023": "غير قادر على رفع طلب الدعم لأنك غير متصل بالإنترنت",
                 "searchinputerror": "أدخل كلمة مفتاحية لإجراء البحث",
-                "failedToDownloadCertificate": "فشل في تحميل الشهادة"
+                "failedToDownloadCertificate": "فشل في تحميل الشهادة."
 
             },
             "imsg": {

@@ -161,6 +161,8 @@
                 "Rate": "Rate",
                 "Minimize": "Minimize",
                 "nonTrackableContent": "Your browser is not recommended. Please use Chrome or Safari for the best experience.",
+                "emptyCompletedCourses": "You have not completed any courses yet.",
+                "emptyEnrolledCourses": "You are not enrolled to any courses.",
 
                 "page": "Page",
                 "loading": "Loading",
