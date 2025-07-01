@@ -7,7 +7,7 @@ import { SharedModule } from '@sunbird/shared';
 import {MatStepperModule} from '@angular/material/stepper';
 import {CdkStepperModule} from '@angular/cdk/stepper';
 import {SunbirdPdfPlayerModule} from '@project-sunbird/sunbird-pdf-player-v9';
-import { SunbirdVideoPlayerModule } from '@project-sunbird/sunbird-video-player-v9';
+import { SunbirdVideoPlayerModule } from '@project-fmps/sunbird-video-player';
 
 
 @NgModule({
