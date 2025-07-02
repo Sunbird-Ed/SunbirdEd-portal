@@ -96,7 +96,17 @@
               </div>
               <hr *ngIf="completedCourseSection?.contents?.length" class="section-hr my-32" />
             </div>
-            <!-- Show message if both enrolledSection and completedCourseSection are empty -->
+            <div
+              *ngIf="getSelectedTab() === 'home' && section?.section?.facetKey === 'ContinueLearning' && isUserLoggedIn() && completedCourseSection?.contents?.length"
+              class="sb-library-cards relative9">
+              <div class="twelve wide column relative9">
+                <app-page-section [hideProgress]="true" (visits)="prepareVisits($event)" [section]="completedCourseSection"
+                  (playEvent)="playEnrolledContent($event, 'My courses')" (viewAll)="viewAll($event)"
+                  [layoutConfiguration]="layoutConfiguration">
+                </app-page-section>
+              </div>
+              <hr *ngIf="completedCourseSection?.contents?.length" class="section-hr my-32" />
+            </div>
             <div *ngIf="getSelectedTab() === 'home' && section?.section?.facetKey === 'ContinueLearning' && isUserLoggedIn() && (!enrolledSection?.contents?.length && !completedCourseSection?.contents?.length)">
               <div class="sb-library-cards relative9">
                 <div class="twelve wide column relative9">

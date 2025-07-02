@@ -341,13 +341,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.enrolledSection = enrolledSection;
                     if(completedCourseSection?.contents.length === 0){
                         _.set(completedCourseSection, 'showCompletedHeading', true)
-                        this.completedCourseSection = completedCourseSection;
                     }
                     else {
                         _.set(completedCourseSection, 'showCompletedHeading', false)
-                        this.completedCourseSection = completedCourseSection;
                     }
-                    
+                    this.completedCourseSection = completedCourseSection;
                 }));
     }
 
