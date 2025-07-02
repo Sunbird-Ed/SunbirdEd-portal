@@ -156,11 +156,13 @@
                 "questionPaper": "Sujet d'examens",
                 "lessonPlanUnit": "Unité du plan de leçon",
                 "examQuestion": "Question d'examen",
-                "supportMaterial": "Matériel de soutien",
+                "supportMaterial": "Support de soutien",
                 "fullscreen": "Plein écran",
                 "rate": "Taux",
                 "minimize": "Minimiser",
                 "nonTrackableContent": "Votre navigateur n'est pas recommandé. Veuillez utiliser Chrome ou Safari pour une meilleure expérience.",
+                "emptyCompletedCourses": "Vous n'avez pas encore suivi de cours.",
+                "emptyEnrolledCourses": "Vous n'êtes inscrit à aucun cours.",
 
               "page": "Page",
               "loading": "Chargement",
@@ -1710,7 +1712,7 @@
                 "m0022": "Impossible de mettre à jour vos préférences. Veuillez réessayer après un certain temps.",
                 "m0023": "Impossible de lever un billet parce que vous n'êtes pas connecté à Internet",
                 "searchinputerror":"Entrez un mot-clé pour effectuer la recherche",
-                "failedToDownloadCertificate": "A échoué au certificat de téléchargement"
+                "failedToDownloadCertificate": "Le téléchargement du certificat a échoué"
             },
             "imsg": {
                 "m0082": "La suppression {GroupName} supprimera en permanence le groupe de l'application",
