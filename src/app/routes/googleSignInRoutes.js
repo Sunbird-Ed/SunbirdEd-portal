@@ -196,7 +196,7 @@ const getQueryParams = (queryObj) => {
     .join('&');
 }
 const getErrorMessage = (error, emailId) => {
-  const emailPart = emailId ? ` for "${emailId}"` : '';
+  const emailPart = emailId ? ` with email "${emailId}"` : '';
   if (error === 'USER_NAME_NOT_PRESENT' || _.get(error, 'message') === 'USER_NAME_NOT_PRESENT') {
     return `We couldn't create your FMPS account${emailPart} due to Google security settings. Try checking your account settings or use a different email.`;
   } else if (error === 'GOOGLE_ACCESS_DENIED' || _.get(error, 'message') === 'GOOGLE_ACCESS_DENIED') {
@@ -204,7 +204,7 @@ const getErrorMessage = (error, emailId) => {
   } else if (_.get(error, 'params.err') === 'USER_ACCOUNT_BLOCKED') {
     return `The account${emailPart} is blocked. Please contact your admin to unblock it.`;
   } else {
-    return `We couldn't sign you into FMPS${emailPart}. The email may not be authorized. Try again with a whitelisted email.`;
+    return `We couldn't complete the FMPS login${emailPart}. This email may not be authorized. Try again with a whitelisted email.`;
   }
 };
 const handleCreateUserError = (error) => {
