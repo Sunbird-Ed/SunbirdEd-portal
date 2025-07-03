@@ -132,7 +132,11 @@ module.exports = (app) => {
     } catch (error) {
       if (reqQuery.error_callback) {
         const queryObj = _.pick(reqQuery, ['client_id', 'redirect_uri', 'scope', 'state', 'response_type', 'version']);
-        queryObj.error_message = getErrorMessage(error);
+        let emailId = null;
+        if (googleProfile && googleProfile?.emailId) {
+          emailId = googleProfile.emailId;
+        }
+        queryObj.error_message = getErrorMessage(error, emailId);
         redirectUrl = reqQuery.error_callback + getQueryParams(queryObj);
       }
       console.log({msg:'google sign in failed', error: error, additionalInfo: {errType, googleProfile, isUserExist, newUserDetails, redirectUrl}});
@@ -191,17 +195,18 @@ const getQueryParams = (queryObj) => {
     .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(queryObj[key])}`)
     .join('&');
 }
-const getErrorMessage = (error) => {
+const getErrorMessage = (error, emailId) => {
+  const emailPart = emailId ? ` for "${emailId}"` : '';
   if (error === 'USER_NAME_NOT_PRESENT' || _.get(error, 'message') === 'USER_NAME_NOT_PRESENT') {
-    return 'Your account could not be created on DIKSHA due to your Google Security settings';
-  } else if(error === 'GOOGLE_ACCESS_DENIED' || _.get(error, 'message') === 'GOOGLE_ACCESS_DENIED') {
-    return 'Your account could not be created on DIKSHA due to your Google Security settings';
-  } else if(_.get(error, 'params.err') === 'USER_ACCOUNT_BLOCKED') {
-    return 'User account is blocked. Please contact admin';
+    return `We couldn't create your FMPS account${emailPart} due to Google security settings. Try checking your account settings or use a different email.`;
+  } else if (error === 'GOOGLE_ACCESS_DENIED' || _.get(error, 'message') === 'GOOGLE_ACCESS_DENIED') {
+    return `Access was denied while creating your FMPS account${emailPart}. Try adjusting your Google permissions or use another email.`;
+  } else if (_.get(error, 'params.err') === 'USER_ACCOUNT_BLOCKED') {
+    return `The account${emailPart} is blocked. Please contact your admin to unblock it.`;
   } else {
-    return 'Your account could not be signed into FMPS because your email is not whitelisted. Please try again with an authorized email.';
+    return `We couldn't sign you into FMPS${emailPart}. The email may not be authorized. Try again with a whitelisted email.`;
   }
-}
+};
 const handleCreateUserError = (error) => {
   logger.info({
     msg: 'ERROR_CREATING_USER',
