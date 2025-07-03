@@ -932,6 +932,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     filters: {
       recipient: {
         id: { eq: userId }
+      },
+      training: {
+        batchId: {
+          eq: this.batchId
+        }
       }
     }
   };
