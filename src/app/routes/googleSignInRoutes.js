@@ -204,7 +204,7 @@ const getErrorMessage = (error, emailId) => {
   } else if (_.get(error, 'params.err') === 'USER_ACCOUNT_BLOCKED') {
     return `The account${emailPart} is blocked. Please contact your admin to unblock it.`;
   } else {
-    return `We couldn't complete the FMPS login${emailPart}. This email may not be authorized. Try again with a whitelisted email.`;
+    return `The email address "${emailId}" is not authorized to access the platform. Please contact your supervisor`;
   }
 };
 const handleCreateUserError = (error) => {
