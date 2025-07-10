@@ -1,5 +1,5 @@
 import { CslFrameworkService } from './csl-framework.service';
-import { CsFrameworkService } from '@project-sunbird/client-services/services/framework';
+import { CsFrameworkService } from '@project-fmps/client-services/services/framework';
 import { ChannelService } from '@sunbird/core';
 import { ConfigService } from '../../../shared/services/config/config.service';
 import _ from 'lodash';

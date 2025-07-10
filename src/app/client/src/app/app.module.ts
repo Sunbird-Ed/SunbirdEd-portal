@@ -24,7 +24,7 @@ import { SbSearchFilterModule } from '@project-sunbird/common-form-elements-full
 import { UserOnboardingModule } from '../app/modules/user-onboarding';
 import { MatStepperModule } from '@angular/material/stepper';
 import { CdkStepperModule } from '@angular/cdk/stepper';
-import { CsModule } from '@project-sunbird/client-services';
+import { CsModule } from '@project-fmps/client-services';
 import { CsLibInitializerService } from '../app/service/CsLibInitializer/cs-lib-initializer.service';
 import { TranslateJsonPipe } from '../app/modules/shared/pipes/TranslateJsonPipe/translate-json.pipe';
 import { MatSnackBarModule } from '@angular/material/snack-bar';

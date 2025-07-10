@@ -1,4 +1,4 @@
-import { GroupEntityStatus, GroupMembershipType, GroupMemberRole } from '@project-sunbird/client-services/models/group';
+import { GroupEntityStatus, GroupMembershipType, GroupMemberRole } from '@project-fmps/client-services/models/group';
 import { of } from 'rxjs';
 
 export const impressionObj = {

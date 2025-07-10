@@ -16,7 +16,7 @@ import { combineLatest, Observable, Subject } from 'rxjs';
 import { first, map, takeUntil, tap } from 'rxjs/operators';
 import TreeModel from 'tree-model';
 import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
-import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
+import { CsCourseService } from '@project-fmps/client-services/services/course/interface';
 import { HttpClient } from '@angular/common/http'; // Import HttpClient
 import { FormService } from '../../../../core/services/form/form.service';
 import { CsMimeType } from '../../../../../../app/modules/shared/interfaces/cs-mime-type';

@@ -1,5 +1,5 @@
 import { FieldConfig, FieldConfigOptionsBuilder } from '@project-sunbird/common-form-elements-full';
-import { Location as SbLocation } from '@project-sunbird/client-services/models/location';
+import { Location as SbLocation } from '@project-fmps/client-services/models/location';
 import { UntypedFormControl } from '@angular/forms';
 import { concat, defer, iif, of } from 'rxjs';
 import { distinctUntilChanged, mergeMap, map, catchError } from 'rxjs/operators';

@@ -1,19 +1,19 @@
 import { delay } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { EventEmitter, Injectable } from '@angular/core';
-import { CsModule } from '@project-sunbird/client-services';
+import { CsModule } from '@project-fmps/client-services';
 import { CsGroupAddActivitiesRequest, CsGroupRemoveActivitiesRequest,
 CsGroupSearchCriteria, CsGroupUpdateActivitiesRequest, CsGroupUpdateMembersRequest,
   CsGroupUpdateGroupGuidelinesRequest,
   CsGroupSupportedActivitiesFormField
-} from '@project-sunbird/client-services/services/group/interface';
+} from '@project-fmps/client-services/services/group/interface';
 import { UserService, LearnerService, TncService } from '@sunbird/core';
 import { NavigationHelperService, ResourceService, ConfigService } from '@sunbird/shared';
 import { IImpressionEventInput, TelemetryService, IInteractEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { IGroupCard, IGroupMember, IGroupUpdate, IMember, MY_GROUPS } from '../../interfaces';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
-import { CsGroup, GroupEntityStatus } from '@project-sunbird/client-services/models';
+import { CsGroup, GroupEntityStatus } from '@project-fmps/client-services/models';
 
 @Injectable({
   providedIn: 'root'

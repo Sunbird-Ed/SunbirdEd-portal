@@ -21,7 +21,7 @@ import { AssessmentPlayerComponent } from './components/course-consumption/asses
 import { CourseCompletionComponent } from './components/course-consumption/course-completion/course-completion.component';
 import { CertificateNameUpdatePopupComponent } from './components/course-consumption/certificate-name-update-popup/certificate-name-update-popup.component';
 import { CourseDetailsComponent } from './components/course-consumption/course-details/course-details.component';
-import { CsModule } from '@project-sunbird/client-services';
+import { CsModule } from '@project-fmps/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
 import { NotificationModule } from '../notification/notification.module';
 import { DiscussionModule } from '../discussion/discussion.module';
