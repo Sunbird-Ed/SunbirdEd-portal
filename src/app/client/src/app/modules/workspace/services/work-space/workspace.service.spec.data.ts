@@ -244,7 +244,7 @@ export const mockRes = {
                 'msgid': '5c4030e0-a126-11e8-9da1-75afb267f18b',
                 'status': 'successful',
                 'err': null,
-                'errmsg': null
+                'errmg': null
             },
             'responseCode': 'OK',
             'result': {
