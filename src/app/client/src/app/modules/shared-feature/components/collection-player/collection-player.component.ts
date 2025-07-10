@@ -16,7 +16,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { PopupControlService } from '../../../../service/popup-control.service';
 import { PublicPlayerService } from '@sunbird/public';
 import { TocCardType, PlatformType } from '@project-sunbird/common-consumption';
-import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
+import { CsGroupAddableBloc } from '@project-fmps/client-services/blocs';
 import { ContentManagerService } from '../../../public/module/offline/services';
 import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 

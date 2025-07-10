@@ -11,7 +11,7 @@ import { CertificateConfigurationComponent, CertificateDetailsComponent, CreateT
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { BrowseImagePopupComponent } from './components/browse-image-popup/browse-image-popup.component';
 // import { SvgEditorModule } from 'ng-svg-editor';
-import { CsModule } from '@project-sunbird/client-services';
+import { CsModule } from '@project-fmps/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
 
 export const csCertificateServiceFactory = (csLibInitializerService: CsLibInitializerService) => {

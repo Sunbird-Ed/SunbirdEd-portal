@@ -60,7 +60,7 @@
     "@project-fmps/sunbird-video-player": "1.0.13",
     "@project-sunbird/chatbot-client": "4.0.0",
     "@project-sunbird/ckeditor-build-classic": "4.1.3",
-    "@project-sunbird/client-services": "7.0.2",
+    "@project-fmps/client-services": "1.0.0",
     "@project-sunbird/common-consumption": "7.0.10",
     "@project-sunbird/common-form-elements-full": "6.0.3",
     "@project-sunbird/discussions-ui": " 5.3.0-beta.1",
@@ -234,8 +234,8 @@
       "LazzyLoadScriptService": "<rootDir>/src/app/service/LazzyLoadScript/lazzy-load-script.service.ts",
       "^@sunbird/test-util": "<rootDir>/src/app/testUtil/",
       "^@sunbird/groups": "<rootDir>/src/app/modules/groups",
-      "^@project-sunbird/client-services/services/group/interface": "<rootDir>/node_modules/@project-sunbird/client-services/services/group/interface",
-      "^@project-sunbird/client-services/(.*)$": "<rootDir>/node_modules/@project-sunbird/client-services/$1",
+      "^@project-fmps/client-services/services/group/interface": "<rootDir>/node_modules/@project-fmps/client-services/services/group/interface",
+      "^@project-fmps/client-services/(.*)$": "<rootDir>/node_modules/@project-fmps/client-services/$1",
       "lodash-es": "<rootDir>/node_modules/lodash/"
     },
     "transformIgnorePatterns": [

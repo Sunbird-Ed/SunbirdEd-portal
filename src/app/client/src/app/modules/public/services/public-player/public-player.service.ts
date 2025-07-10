@@ -8,7 +8,7 @@ import {
   ConfigService, ServerResponse, ContentDetails, PlayerConfig, ContentData, NavigationHelperService, ResourceService, UtilService
 } from '@sunbird/shared';
 import * as _ from 'lodash-es';
-import { CsModule } from '@project-sunbird/client-services';
+import { CsModule } from '@project-fmps/client-services';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
 import { CslFrameworkService } from '../csl-framework/csl-framework.service';
 

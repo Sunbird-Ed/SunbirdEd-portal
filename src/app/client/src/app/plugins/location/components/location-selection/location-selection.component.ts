@@ -9,7 +9,7 @@ import { IDeviceProfile } from '../../../../modules/shared-feature/interfaces/de
 import { SbFormLocationSelectionDelegate } from '../delegate/sb-form-location-selection.delegate';
 import { MatDialog } from '@angular/material/dialog';
 import * as _ from 'lodash-es';
-import {Location as SbLocation} from '@project-sunbird/client-services/models/location';
+import {Location as SbLocation} from '@project-fmps/client-services/models/location';
 
 @Component({
   selector: 'app-location-selection',

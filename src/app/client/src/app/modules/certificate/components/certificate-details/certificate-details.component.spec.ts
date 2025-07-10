@@ -1,5 +1,5 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { CsCertificateService } from '@project-sunbird/client-services/services/certificate';
+import { CsCertificateService } from '@project-fmps/client-services/services/certificate';
 import { UserService, CertificateService, TenantService } from'@sunbird/core';
 import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
 import { PublicPlayerService } from '@sunbird/public';

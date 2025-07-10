@@ -8,7 +8,7 @@ import { ConfigService, ResourceService } from '../../../shared';
 import { PublicDataService } from './../public-data/public-data.service';
 import { FormService } from '../../../core';
 import { serviceMockData } from './search.service.spec.data';
-import { CsFrameworkService } from '@project-sunbird/client-services/services/framework';
+import { CsFrameworkService } from '@project-fmps/client-services/services/framework';
 import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 describe('SearchService', () => {

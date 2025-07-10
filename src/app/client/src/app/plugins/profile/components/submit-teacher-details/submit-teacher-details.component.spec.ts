@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CsUserService } from '@project-sunbird/client-services/services/user/interface';
+import { CsUserService } from '@project-fmps/client-services/services/user/interface';
 import { CoreModule, FormService, OtpService, SearchService, TncService, UserService } from '@sunbird/core';
 import { ProfileService } from '@sunbird/profile';
 import {
