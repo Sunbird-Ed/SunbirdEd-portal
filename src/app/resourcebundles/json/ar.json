@@ -2739,7 +2739,25 @@
 
                 "Icon": "أيقونة",
                 "addAnImage": "أضف صورة",
-
+                "sidebarSettings":{
+                    "title": "عنوان مجموعة الأسئلة",
+                    "shuffle_questions": "خلط الأسئلة",
+                    "show_feedback": "إظهار التعليق الفوري",
+                    "btn_edit": "تحرير مجموعة الأسئلة",
+                    "total_items": "العرض",
+                    "max_score": "مجموع العلامات",
+                    "customise": "التخصيص",
+                    "actions": "الإجراءات",
+                    "properties": "العقارات",
+                    "onClick": "على النقر",
+                    "selectAction": "اختر العمل",
+                    "selectTarget": "اختر الهدف",
+                    "addAction": "إضافة",
+                    "action": "العمل",
+                    "traget": "الهدف",
+                    "name": "الاسم",
+                    "value": "القيمة"
+                },
                 "dynamicForm": {
                     "name": "العنوان",
                     "labelNamePlaceHolder": "أدخل العنوان",
