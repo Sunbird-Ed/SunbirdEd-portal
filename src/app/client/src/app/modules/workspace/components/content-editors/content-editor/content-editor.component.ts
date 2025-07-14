@@ -214,7 +214,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
       timeDiff: this.userService.getServerTimeDiff
     };
   }
-  getDocumentDir() {
+  private getDocumentDir(): string {
     return typeof document !== 'undefined' ? document.dir || 'rtl' : 'rtl';
   }
   private setWindowConfig() {
