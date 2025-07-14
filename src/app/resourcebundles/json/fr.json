@@ -2745,7 +2745,7 @@
                     "selectTarget": "sélectionnez cible",
                     "addAction": "Ajouter",
                     "action": "Action",
-                    "traget": "Cible",
+                    "target": "Cible",
                     "name": "Nom",
                     "value": "Valeur"
                 },
