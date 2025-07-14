@@ -11,7 +11,7 @@ import dayjs from 'dayjs';
 import { Subject, combineLatest } from 'rxjs';
 import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
 import { ConfigService } from '@sunbird/shared';
-import { CsModule } from '@project-sunbird/client-services';
+import { CsModule } from '@project-fmps/client-services';
 import { CsLibInitializerService } from '../../../../../service/CsLibInitializer/cs-lib-initializer.service';
 import { DiscussionService } from '../../../../../../app/modules/discussion/services/discussion/discussion.service';
 

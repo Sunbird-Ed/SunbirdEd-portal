@@ -7,7 +7,7 @@ import * as _ from 'lodash-es';
 import dayjs from 'dayjs';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { Subscription} from 'rxjs';
-import { CsCertificateService } from '@project-sunbird/client-services/services/certificate/interface';
+import { CsCertificateService } from '@project-fmps/client-services/services/certificate/interface';
 
 @Component({
   selector: 'app-certificate-details',

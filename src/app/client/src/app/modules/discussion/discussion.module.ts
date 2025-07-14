@@ -8,7 +8,7 @@ import { DiscussionTelemetryService } from '../shared/services/discussion-teleme
 import { NavigationHelperService, SharedModule } from '@sunbird/shared';
 import { AccessDiscussionComponent } from './components/access-discussion/access-discussion.component';
 import { NavigationEnd, Router } from '@angular/router';
-import { CsModule } from '@project-sunbird/client-services';
+import { CsModule } from '@project-fmps/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
 
 @NgModule({

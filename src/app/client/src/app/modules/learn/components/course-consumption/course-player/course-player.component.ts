@@ -17,7 +17,7 @@ import { CourseBatchService, CourseConsumptionService, CourseProgressService } f
 import { ContentUtilsServiceService, ConnectionService } from '@sunbird/shared';
 import dayjs from 'dayjs';
 import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
-import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
+import { CsCourseService } from '@project-fmps/client-services/services/course/interface';
 import { HttpClient } from '@angular/common/http'; // Import HttpClient
 import { CertificateDownloadService } from '../../../../../../app/helpers/certificate-download.service';
 

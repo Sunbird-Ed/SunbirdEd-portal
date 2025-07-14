@@ -4,8 +4,8 @@ import { ResourceService, ToasterService, NavigationHelperService, LayoutService
 import * as _ from 'lodash-es';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ADD_ACTIVITY_TO_GROUP} from '../../../interfaces';
-import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
-import { CsGroupSupportedActivitiesFormField } from '@project-sunbird/client-services/services/group/interface';
+import { CsGroupAddableBloc } from '@project-fmps/client-services/blocs';
+import { CsGroupSupportedActivitiesFormField } from '@project-fmps/client-services/services/group/interface';
 import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';

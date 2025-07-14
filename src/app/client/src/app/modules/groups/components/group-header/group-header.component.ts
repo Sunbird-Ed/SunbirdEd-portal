@@ -1,4 +1,4 @@
-import { GroupEntityStatus } from '@project-sunbird/client-services/models/group';
+import { GroupEntityStatus } from '@project-fmps/client-services/models/group';
 import { actions } from './../../interfaces/group';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, ViewChild, Input, Renderer2, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';

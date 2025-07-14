@@ -1,4 +1,4 @@
-import { Location as SbLocation } from '@project-sunbird/client-services/models/location';
+import { Location as SbLocation } from '@project-fmps/client-services/models/location';
 import { FieldConfig,FieldConfigValidationType,  FieldConfigOption } from '@project-sunbird/common-form-elements-full';
 import { UntypedFormGroup } from '@angular/forms';
 import { delay, distinctUntilChanged, map, mergeMap, take } from 'rxjs/operators';

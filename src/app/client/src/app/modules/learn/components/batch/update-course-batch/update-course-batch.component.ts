@@ -12,7 +12,7 @@ import { IImpressionEventInput, IInteractEventObject, TelemetryService } from '@
 import * as _ from 'lodash-es';
 import dayjs from 'dayjs';
 import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
-import { CsModule } from '@project-sunbird/client-services';
+import { CsModule } from '@project-fmps/client-services';
 import { CsLibInitializerService } from '../../../../../service/CsLibInitializer/cs-lib-initializer.service';
 import { IFetchForumConfig } from '../../../../groups/interfaces';
 import { DiscussionService } from '../../../../../../app/modules/discussion/services/discussion/discussion.service';
