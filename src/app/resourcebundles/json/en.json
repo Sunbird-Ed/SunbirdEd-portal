@@ -2744,7 +2744,7 @@
                     "selectTarget": "select target",
                     "addAction": "Add",
                     "action": "Action",
-                    "traget": "Target",
+                    "target": "Target",
                     "name": "Name",
                     "value": "Value"
                 },
