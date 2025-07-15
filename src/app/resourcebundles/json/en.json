@@ -2892,7 +2892,22 @@
                 "QRcodesDownloaded": "QR codes downloaded",
                 "somethingNotRight": "Something is not right, please try after some time",
                 "contentDownloadStarted": "Content download started",
-                "provideDifferentWeightage": "Each question will carry equal weightage of 1 mark when Shuffle is used. To provide different weightage to individual questions please turn Shuffle off."
+                "provideDifferentWeightage": "Each question will carry equal weightage of 1 mark when Shuffle is used. To provide different weightage to individual questions please turn Shuffle off.",
+                "addSlide": "Add Slide",
+                "addQuestionSet": "Add Question Set",
+                "beginning": "Beginning",
+                "end": "End",
+                "afterCurrent": "After current",
+                "beforeCurrent": "Before current",
+                "copy": "Copy",
+                "paste": "Paste",
+                "arrange": "Arrange",
+                "bringForward": "Bring forward",
+                "bringToFront": "Bring to front",
+                "sendBackward": "Send backward",
+                "sendToBack": "Send to back",
+                "gettingThingsReadyForYou": "Getting things ready for you",
+                "loadingYourLesson": "Loading your lesson"
             },
             "prmpt": {
                 "search": "Search",

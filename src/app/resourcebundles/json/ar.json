@@ -2905,7 +2905,22 @@
                 "QRcodesDownloaded": "رموز QR تحميل",
                 "somethingNotRight": "شيء غير صحيح، يرجى المحاولة بعد بعض الوقت",
                 "contentDownloadStarted": "بدأ تحميل المحتوى",
-                "provideDifferentWeightage": "كل سؤال سوف تحمل وزن متساو من 1 علامة عند استخدام Shuffle. لتوفير وزن مختلف للأسئلة الفردية يرجى إيقاف تشافل."
+                "provideDifferentWeightage": "كل سؤال سوف تحمل وزن متساو من 1 علامة عند استخدام Shuffle. لتوفير وزن مختلف للأسئلة الفردية يرجى إيقاف تشافل.",
+                "addSlide": "إضافة الشريحة",
+                "addQuestionSet": "إضافة مجموعة الأسئلة",
+                "beginning": "بداية",
+                "end": "نهاية",
+                "afterCurrent": "بعد الحالي",
+                "beforeCurrent": "قبل الحالية",
+                "copy": "نسخة",
+                "paste": "لصق",
+                "arrange": "ترتيب",
+                "bringForward": "إحراز تقدم",
+                "bringToFront": "جلب إلى الأمام",
+                "sendBackward": "إرسال إلى الوراء",
+                "sendToBack": "إرسال إلى الوراء",
+                "gettingThingsReadyForYou": "يتم تجهيز الأمور من أجلك",
+                "loadingYourLesson": "جاري تحميل الدرس"
             },
             "prmpt": {
                 "search": "يبحث",

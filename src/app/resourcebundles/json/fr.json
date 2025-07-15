@@ -2894,8 +2894,22 @@
                 "QRcodesDownloaded": "QR codes téléchargés",
                 "somethingNotRight": "Quelque chose ne va pas, s'il te plaît essaye après un certain temps",
                 "contentDownloadStarted": "Le téléchargement de contenu a commencé",
-                "provideDifferentWeightage": "Chaque question portera un poids égal de 1 marque lorsque Shuffle est utilisé. Pour fournir un poids différent aux questions individuelles, veuillez désactiver Shuffle."
-
+                "provideDifferentWeightage": "Chaque question portera un poids égal de 1 marque lorsque Shuffle est utilisé. Pour fournir un poids différent aux questions individuelles, veuillez désactiver Shuffle.",
+                "addSlide": "Ajouter Slide",
+                "addQuestionSet": "Ajouter un jeu de questions",
+                "beginning": "Début",
+                "end": "Fin",
+                "afterCurrent": "Après courant",
+                "beforeCurrent": "Avant courant",
+                "copy": "Copie",
+                "paste": "Coller",
+                "arrange": "Arrangement",
+                "bringForward": "Allez de l'avant",
+                "bringToFront": "Apportez-vous à l'avant",
+                "sendBackward": "Envoyez en arrière",
+                "sendToBack": "Envoyez à la retour",
+                "gettingThingsReadyForYou": "Préparation en cours pour vous",
+                "loadingYourLesson": "Chargement de votre leçon"
             },
             "prmpt": {
                 "search": "Recherche",
