@@ -74,11 +74,11 @@
       "@sunbird/groups": [
         "app/modules/groups"
       ],
-      "@project-sunbird/client-services/services/group/interface": [
-        "../node_modules/@project-sunbird/client-services/services/group/interface"
+      "@project-fmps/client-services/services/group/interface": [
+        "../node_modules/@project-fmps/client-services/services/group/interface"
       ],
-      "^@project-sunbird/client-services/(.*)$": [
-        "../node_modules/@project-sunbird/client-services/$1"
+      "^@project-fmps/client-services/(.*)$": [
+        "../node_modules/@project-fmps/client-services/$1"
       ]
     },
     "types": [

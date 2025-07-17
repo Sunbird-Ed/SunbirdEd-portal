@@ -1,6 +1,6 @@
 import { CsLibInitializerService } from './cs-lib-initializer.service';
 import { UserService } from '@sunbird/core';
-import { CsModule } from '@project-sunbird/client-services';
+import { CsModule } from '@project-fmps/client-services';
 import { of } from 'rxjs';
 
 describe('CsLibInitializerService', () => {

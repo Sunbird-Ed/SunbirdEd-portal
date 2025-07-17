@@ -2,7 +2,7 @@ import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationServiceImpl } from '../../services/notification/notification-service-impl';
 import * as _ from 'lodash-es';
-import { UserFeedStatus } from '@project-sunbird/client-services/models';
+import { UserFeedStatus } from '@project-fmps/client-services/models';
 import { NotificationViewConfig } from '@project-sunbird/common-consumption';
 import { ResourceService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';

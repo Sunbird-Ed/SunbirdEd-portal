@@ -537,7 +537,7 @@
                 <label class="list-items__item mb-0 text-left">{{data.trainingName}}</label>
                 <label class="list-items__item mb-0 text-left">{{data?.issuerName}}</label>
                 <label class="list-items__item list-date"
-                  *ngIf="data.issuedOn">{{data.issuedOn | date :'dd MMMM yyy' }}</label>
+                  *ngIf="data.issuedOn">{{data.issuedOn | date :'MMMM d, y' }}</label>
                 <div class="list-items__item" *ngIf="data?.id">
                   <button appOnlineOnly appTelemetryInteract [telemetryInteractEdata]="downloadOthersCertificateEData"
                     class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"

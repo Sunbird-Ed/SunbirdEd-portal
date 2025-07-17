@@ -6,7 +6,7 @@ import { DiscussionTelemetryService } from '../../../shared/services/discussion-
 import * as _ from 'lodash-es';
 import { UserService } from '../../../core/services';
 import { CsLibInitializerService } from '../../../../service/CsLibInitializer/cs-lib-initializer.service';
-import { CsModule } from '@project-sunbird/client-services';
+import { CsModule } from '@project-fmps/client-services';
 
 @Component({
   selector: 'app-access-discussion',
