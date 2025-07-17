@@ -1,4 +1,4 @@
-import { GroupEntityStatus, CsGroup } from '@project-sunbird/client-services/models/group';
+import { GroupEntityStatus, CsGroup } from '@project-fmps/client-services/models/group';
 import { UserService } from '@sunbird/core';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';

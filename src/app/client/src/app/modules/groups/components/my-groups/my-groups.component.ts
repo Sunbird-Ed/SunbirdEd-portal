@@ -8,7 +8,7 @@ import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil, map } from 'rxjs/operators';
 import { IImpressionEventInput } from '@sunbird/telemetry';
-import { CsGroupSearchCriteria } from '@project-sunbird/client-services/services/group/interface';
+import { CsGroupSearchCriteria } from '@project-fmps/client-services/services/group/interface';
 import { SELECT_CREATE_GROUP, PAGE_LOADED, SELECT_GROUP } from '../../interfaces/telemetryConstants';
 @Component({
   selector: 'app-my-groups',

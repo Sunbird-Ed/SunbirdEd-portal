@@ -11,7 +11,7 @@ import { PublicDataService } from './../public-data/public-data.service';
 import * as _ from 'lodash-es';
 import { FormService } from './../form/form.service';
 import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
-import { CsFrameworkService } from '@project-sunbird/client-services/services/framework';
+import { CsFrameworkService } from '@project-fmps/client-services/services/framework';
 /**
  * Service to search content
  */

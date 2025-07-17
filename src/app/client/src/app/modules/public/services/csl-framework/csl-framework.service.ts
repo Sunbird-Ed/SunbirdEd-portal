@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { CsFrameworkService } from '@project-sunbird/client-services/services/framework';
+import { CsFrameworkService } from '@project-fmps/client-services/services/framework';
 import { ChannelService } from '@sunbird/core';
 import _ from 'lodash';
 import { ConfigService } from '../../../shared/services/config/config.service';

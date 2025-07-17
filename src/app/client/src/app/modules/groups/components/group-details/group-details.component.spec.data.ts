@@ -1,4 +1,4 @@
-import { GroupEntityStatus, GroupMemberRole, GroupMembershipType } from '@project-sunbird/client-services/models';
+import { GroupEntityStatus, GroupMemberRole, GroupMembershipType } from '@project-fmps/client-services/models';
 
 export const GroupDetailsData = {
     groupData : {

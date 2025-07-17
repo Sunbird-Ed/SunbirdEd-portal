@@ -214,6 +214,9 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
       timeDiff: this.userService.getServerTimeDiff
     };
   }
+  private getDocumentDir(): string {
+    return typeof document !== 'undefined' ? document.dir || 'rtl' : 'rtl';
+  }
   private setWindowConfig() {
     window.config = _.cloneDeep(this.configService.editorConfig.CONTENT_EDITOR.WINDOW_CONFIG); // cloneDeep to preserve default config
     window.config.build_number = this.buildNumber;
@@ -224,7 +227,9 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     window.config.videoMaxSize = this.videoMaxSize;
     window.config.cloudStorage.provider = this.cloudProvider;
     window.config.contentFields = this.fwCategoriAsNames.join();
-    window.config.headerConfig = {"managecollaborator":false}
+    window.config.headerConfig = {"managecollaborator":false};
+    window.config.resourceBundles = this.resourceService;
+    window.config.dir = this.getDocumentDir() || 'rtl';
   }
   /**
    * checks the permission using state, status and userId

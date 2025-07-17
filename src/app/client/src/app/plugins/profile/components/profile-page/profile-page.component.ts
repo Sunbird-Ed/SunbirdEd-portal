@@ -8,9 +8,9 @@ import { IImpressionEventInput, IInteractEventEdata, TelemetryService } from '@s
 import { ActivatedRoute, Router } from '@angular/router';
 import { CacheService } from '../../../../modules/shared/services/cache-service/cache.service';
 import { finalize, takeUntil } from 'rxjs/operators';
-import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
+import { CsCourseService } from '@project-fmps/client-services/services/course/interface';
 import { FieldConfig, FieldConfigOption } from '@project-sunbird/common-form-elements-full';
-import { CsCertificateService } from '@project-sunbird/client-services/services/certificate/interface';
+import { CsCertificateService } from '@project-fmps/client-services/services/certificate/interface';
 import { CslFrameworkService } from '../../../../modules/public/services/csl-framework/csl-framework.service';
 import { CertificateDownloadService } from '../../../../helpers/certificate-download.service';
 import { HttpClient } from '@angular/common/http';

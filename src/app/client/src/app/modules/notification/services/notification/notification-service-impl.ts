@@ -7,7 +7,7 @@ import { Subject, BehaviorSubject } from 'rxjs';
 import { UserService } from '../../../core/services/user/user.service';
 import * as _ from 'lodash-es';
 import { GroupNotificationWrapperService } from '../group-notification-wrapper/group-notification-wrapper.service';
-import { CsNotificationService } from '@project-sunbird/client-services/services/notification/interface';
+import { CsNotificationService } from '@project-fmps/client-services/services/notification/interface';
 
 @Injectable({
   providedIn: 'root'

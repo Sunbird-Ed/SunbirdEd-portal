@@ -1,6 +1,6 @@
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
 import { Injectable } from '@angular/core';
-import { CsModule } from '@project-sunbird/client-services';
+import { CsModule } from '@project-fmps/client-services';
 import { FormService } from '@sunbird/core';
 
 @Injectable({
