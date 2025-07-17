@@ -1639,7 +1639,8 @@
                     "ge_goTo": "اذهب إلى",
                     "ge_next": "التالي",
                     "ge_progress": "التقدم",
-                    "ge_clickViewDetails": "اضغط على عرض التفاصيل لعرض تفاصيل السؤال"
+                    "ge_clickViewDetails": "اضغط على عرض التفاصيل لعرض تفاصيل السؤال",
+                    "h5pGuidelinesDoc":"وثيقة إرشادات H5P"
             },
             "alert": {
                 "debugModeEnabledFailed": "غير قادر على تمكين وضع تصحيح الأخطاء",

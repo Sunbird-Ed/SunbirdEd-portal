@@ -237,7 +237,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     window.config.cloudStorage.provider = this.cloudProvider;
     window.config.headerConfig = { "managecollaborator": false }
     window.config.resourceBundles = this.resourceService;
-    window.config.dir = this.getDocumentDir() || 'rtl';
+    window.config.dir = this.getDocumentDir();
   }
   /**
   * Re directed to the workspace on close of modal

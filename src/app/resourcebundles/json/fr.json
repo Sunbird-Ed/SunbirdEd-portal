@@ -1636,7 +1636,8 @@
                 "ge_goTo": "Aller à",
                 "ge_next": "Suivant",
                 "ge_progress": "Progression",
-                "ge_clickViewDetails": "Cliquez sur Voir les détails pour voir les détails de la question"
+                "ge_clickViewDetails": "Cliquez sur Voir les détails pour voir les détails de la question",
+                "h5pGuidelinesDoc":"Document d'orientation H5P"
             },
             "alert": {
                 "debugModeEnabledFailed": "Impossible d'activer le mode de débogage",

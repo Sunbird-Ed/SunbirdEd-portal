@@ -1383,7 +1383,7 @@
                 "ce_enterCodeHere": "Enter code here",
                 "ce_category": "Category",
                 "ce_type": "Type",
-                "ce_additionalCategoryOfTheContent": "Additonal Category of the Content",
+                "ce_additionalCategoryOfTheContent": "Additional Category of the Content",
                 "ce_additionalCategory": "Additional Category",
                 "ce_selectAdditionalCategory": "Select Additional Category",
                 "ce_courseType": "Course Type",
@@ -1636,7 +1636,8 @@
                 "ge_goTo": "Go to",
                 "ge_next": "Next",
                 "ge_progress": "Progress",
-                "ge_clickViewDetails": "Click on View details to view the question details"                
+                "ge_clickViewDetails": "Click on View details to view the question details",
+                "h5pGuidelinesDoc": "H5P Guidelines document"            
             },
             "alert": {
                 "debugModeEnabledFailed": "Unable to enable debug mode",
