@@ -220,6 +220,11 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
       };
     }
   }
+  
+  private getDocumentDir(): string {
+    return typeof document !== 'undefined' ? document.dir || 'rtl' : 'rtl';
+  }
+
   private setWindowConfig() {
     window.config = _.cloneDeep(this.configService.editorConfig.GENERIC_EDITOR.WINDOW_CONFIG); // cloneDeep to preserve default config
     window.config.build_number = this.buildNumber;
@@ -231,6 +236,8 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     window.config.defaultContentFileSize = this.defaultContentFileSize; // making configurable upload limit in workspace for content upload
     window.config.cloudStorage.provider = this.cloudProvider;
     window.config.headerConfig = { "managecollaborator": false }
+    window.config.resourceBundles = this.resourceService;
+    window.config.dir = this.getDocumentDir() || 'rtl';
   }
   /**
   * Re directed to the workspace on close of modal
