@@ -72,9 +72,9 @@
     [class.active]="router.isActive('/workspace/content/limited-publish',false)"  matTooltip="View content shared via link. This is not searchable until published by submitting for review"
     [matTooltipPosition]="'right'">
    {{resourceService?.frmelmnts?.snav?.shareViaLink}}
-  </a>
+  </a> -->
   <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('collaborations-button')"  class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='collaboratingRole' [routerLink]="['collaborating-on',1]"
-  [class.active]="router.isActive('/workspace/content/collaborating-on',false)"  matTooltip="View content you are collaborating on" [matTooltipPosition]="'right'">
- {{resourceService?.frmelmnts?.snav?.Collaboratingon}}
-</a> -->
+    [class.active]="router.isActive('/workspace/content/collaborating-on',false)"  matTooltip="View content you are collaborating on" [matTooltipPosition]="'right'">
+    {{resourceService?.frmelmnts?.snav?.Collaboratingon}}
+  </a> 
 </div>
