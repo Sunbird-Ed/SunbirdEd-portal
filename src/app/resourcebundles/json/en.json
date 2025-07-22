@@ -1650,7 +1650,8 @@
                     "fileSizeErrorMsg": "is too large, maximum file size is",
                     "autoPlay": "Auto Play",
                     "showFullScreen": "Show FullScreen",
-                    "showVideoControls": "Show Video Controls"
+                    "showVideoControls": "Show Video Controls",
+                    "invalidInput": "Invalid input"
             },
             "alert": {
                 "debugModeEnabledFailed": "Unable to enable debug mode",
@@ -3192,7 +3193,7 @@
                 "discardContent": "Discard Content",
                 "retireContent": "Retire Content",
                 "doYouWantToDeleteThisSlide": "Do you want to delete this slide?",
-                "unableToUpdateContentPleaseTryAgainLater": "Unable to update content, please try again!",
+                "unableToUpdateContentPleaseTryAgainLater": "Unable to update content, Please try again!",
                 "failedToSaveQuestion": "Failed to save question...",
                 "failedToCopyQuestion": "Failed to copy question...",
                 "failedToDeleteQuestion": "Failed to delete question...",

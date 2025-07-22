@@ -1653,7 +1653,8 @@
                         "fileSizeErrorMsg": "كبير جداً، الحد الأقصى لحجم الملف هو",
                         "autoPlay": "تشغيل تلقائي",
                         "showFullScreen": "عرض بملء الشاشة",
-                        "showVideoControls": "عرض عناصر التحكم بالفيديو"
+                        "showVideoControls": "عرض عناصر التحكم بالفيديو",
+                        "invalidInput": "إدخال غير صالح"
             },
             "alert": {
                 "debugModeEnabledFailed": "غير قادر على تمكين وضع تصحيح الأخطاء",
