@@ -1650,7 +1650,8 @@
                 "fileSizeErrorMsg": "est trop grand, la taille maximale du fichier est",
                 "autoPlay": "Lecture automatique",
                 "showFullScreen": "Afficher en plein écran",
-                "showVideoControls": "Afficher les commandes vidéo"
+                "showVideoControls": "Afficher les commandes vidéo",
+                "invalidInput": "Entrée invalide"
             },
             "alert": {
                 "debugModeEnabledFailed": "Impossible d'activer le mode de débogage",

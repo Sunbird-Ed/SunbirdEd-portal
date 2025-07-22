@@ -41,7 +41,7 @@
               },
               {
                 "glob": "**/*",
-                "input": "./node_modules/@project-sunbird/sunbird-collection-editor/lib/assets/",
+                "input": "./node_modules/@project-fmps/sunbird-collection-editor/lib/assets/",
                 "output": "/assets/"
               },
               {

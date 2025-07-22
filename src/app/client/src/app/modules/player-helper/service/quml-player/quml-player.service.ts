@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import * as _ from 'lodash-es';
 import { QuestionCursor } from '@project-sunbird/sunbird-quml-player-v9';
-import { EditorCursor } from '@project-sunbird/sunbird-collection-editor';
+import { EditorCursor } from '@project-fmps/sunbird-collection-editor';
 import { CsModule } from '@project-fmps/client-services';
 import { PublicPlayerService } from '@sunbird/public';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';

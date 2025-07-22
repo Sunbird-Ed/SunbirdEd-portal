@@ -58,6 +58,10 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
     this.routeParams = this.activatedRoute.snapshot.params;
     this.userProfile = this.userService.userProfile;
     this.queryParams = this.activatedRoute.snapshot.queryParams;
+    if (this.resourceService && this.resourceService.frmelmnts.lbl) {
+      this.editorConfig.context.resourceBundles = this.resourceService.frmelmnts.lbl;
+    }
+    this.editorConfig.context.language = localStorage.getItem('portalLanguage');
     this.disableBrowserBackButton();
     this.getDetails().pipe(
       first(),
