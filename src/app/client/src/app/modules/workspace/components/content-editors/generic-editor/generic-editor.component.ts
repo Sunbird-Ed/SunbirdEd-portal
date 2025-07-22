@@ -235,7 +235,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     window.config.videoMaxSize = this.videoMaxSize;
     window.config.defaultContentFileSize = this.defaultContentFileSize; // making configurable upload limit in workspace for content upload
     window.config.cloudStorage.provider = this.cloudProvider;
-    window.config.headerConfig = { "managecollaborator": false }
+    window.config.headerConfig = { "managecollaborator": true }
     window.config.resourceBundles = this.resourceService;
     window.config.dir = this.getDocumentDir();
   }
