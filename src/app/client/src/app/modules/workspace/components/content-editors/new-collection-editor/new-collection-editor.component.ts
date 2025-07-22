@@ -343,7 +343,7 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
     this.editorConfig.config.showAddCollaborator = true;
     this.editorConfig.config.publicStorageAccount = this.publicStorageAccount;
     if (this.showQuestionEditor) {
-      this.editorConfig.config.showAddCollaborator = false;
+      this.editorConfig.config.showAddCollaborator = true;
       this.editorConfig.context.framework = this.collectionDetails.framework || this.frameworkService['_channelData'].defaultFramework;
     }
     this.editorConfig.config = _.assign(this.editorConfig.config, this.hierarchyConfig);
