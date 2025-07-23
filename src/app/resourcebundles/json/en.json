@@ -3093,7 +3093,14 @@
                     "action": "Action",
                     "target": "Target",
                     "name": "Name",
-                    "value": "Value"
+                    "value": "Value",
+                    "genieControls": "Show Player Control",
+                    "genieControlsPlaceholder": "Toggle genie controls",
+                    "instructions": "Teacher Instructions",
+                    "instructionsPlaceholder": "Teacher Instructions",
+                    "color": "Background color",
+                    "colorPlaceholder": "Slide Background color",
+                    "savingContentPleaseWait": "Saving content please wait..."
                 },
                 "dynamicForm": {
                     "name": "Title",
@@ -3109,14 +3116,7 @@
                     "level": "Level",
                     "labelLevelPlaceHolder": "Select Level",
                     "max_score": "Maximum Score",
-                    "labelMaxScorePlaceHolder": "Enter Maximum Score",
-                    "genieControls": "Show Player Control",
-                    "genieControlsPlaceholder": "Toggle genie controls",
-                    "instructions": "Teacher Instructions",
-                    "instructionsPlaceholder": "Teacher Instructions",
-                    "color": "Background color",
-                    "colorPlaceholder": "Slide Background color",
-                    "savingContentPleaseWait": "Saving content please wait..."
+                    "labelMaxScorePlaceHolder": "Enter Maximum Score"
                 },
                 "assetBrowser": {
                     "selectImage": "Select Image",
@@ -3261,7 +3261,8 @@
                 "sendBackward": "Send backward",
                 "sendToBack": "Send to back",
                 "gettingThingsReadyForYou": "Getting things ready for you",
-                "loadingYourLesson": "Loading your lesson"
+                "loadingYourLesson": "Loading your lesson",
+                "removeQuestion": "Remove question"
             },
             "prmpt": {
                 "search": "Search",
