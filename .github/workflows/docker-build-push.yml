@@ -5,7 +5,7 @@ on:
     tags:
       - '*'
     branches:
-      - '*'  # Triggers on any commit to any branch
+      - '*'
 
 jobs:
   build:
