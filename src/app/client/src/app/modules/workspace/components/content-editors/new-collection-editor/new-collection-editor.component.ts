@@ -58,15 +58,6 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
     this.routeParams = this.activatedRoute.snapshot.params;
     this.userProfile = this.userService.userProfile;
     this.queryParams = this.activatedRoute.snapshot.queryParams;
-    if (this.resourceService && this.resourceService.frmelmnts.lbl) {
-      if (this.editorConfig) {
-        this.editorConfig.context = {
-            ...this.editorConfig.context,
-            resourceBundles: this.resourceService.frmelmnts.lbl,
-            language: localStorage.getItem('portalLanguage')
-        };
-      }
-    } 
     this.disableBrowserBackButton();
     this.getDetails().pipe(
       first(),
@@ -349,6 +340,13 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
         },
       }
     };
+    if (this.resourceService && this.resourceService.frmelmnts.lbl) {
+        this.editorConfig.context = {
+            ...this.editorConfig.context,
+            resourceBundles: this.resourceService.frmelmnts.lbl,
+            language: localStorage.getItem('portalLanguage')
+        };
+    } 
     this.editorConfig.config.showAddCollaborator = true;
     this.editorConfig.config.publicStorageAccount = this.publicStorageAccount;
     if (this.showQuestionEditor) {
