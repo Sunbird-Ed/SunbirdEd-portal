@@ -346,7 +346,7 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
             resourceBundles: this.resourceService.frmelmnts.lbl,
             language: localStorage.getItem('portalLanguage')
         };
-    } 
+    }
     this.editorConfig.config.showAddCollaborator = true;
     this.editorConfig.config.publicStorageAccount = this.publicStorageAccount;
     if (this.showQuestionEditor) {
