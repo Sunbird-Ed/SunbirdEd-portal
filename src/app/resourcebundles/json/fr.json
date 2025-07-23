@@ -3094,7 +3094,14 @@
                     "action": "Action",
                     "target": "Cible",
                     "name": "Nom",
-                    "value": "Valeur"
+                    "value": "Valeur",
+                    "genieControls": "Afficher le contrôle du joueur",
+                    "genieControlsPlaceholder": "Basculer les contrôles de génie",
+                    "instructions": "Instructions pour les enseignants",
+                    "instructionsPlaceholder": "Instructions pour enseignants",
+                    "color": "Couleur de fond",
+                    "colorPlaceholder": "Coulissez la couleur de fond",
+                    "savingContentPleaseWait": "Sauvegarder du contenu s'il vous plaît attendez..."
                 },
                 "dynamicForm": {
                     "name": "Titre",
@@ -3110,14 +3117,7 @@
                     "level": "Niveau",
                     "labelLevelPlaceHolder": "Sélectionner le niveau",
                     "max_score": "Score maximal",
-                    "labelMaxScorePlaceHolder": "Entrez le score maximum",
-                    "genieControls": "Afficher le contrôle du joueur",
-                    "genieControlsPlaceholder": "Basculer les contrôles de génie",
-                    "instructions": "Instructions pour les enseignants",
-                    "instructionsPlaceholder": "Instructions pour enseignants",
-                    "color": "Couleur de fond",
-                    "colorPlaceholder": "Coulissez la couleur de fond",
-                    "savingContentPleaseWait": "Sauvegarder du contenu s'il vous plaît attendez..."
+                    "labelMaxScorePlaceHolder": "Entrez le score maximum"
                 },
                 "assetBrowser": {
                     "selectImage": "Sélectionner une image",
@@ -3263,7 +3263,8 @@
                 "sendBackward": "Envoyez en arrière",
                 "sendToBack": "Envoyez à la retour",
                 "gettingThingsReadyForYou": "Préparation en cours pour vous",
-                "loadingYourLesson": "Chargement de votre leçon"
+                "loadingYourLesson": "Chargement de votre leçon",
+                "removeQuestion": "Supprimer la question"
             },
             "prmpt": {
                 "search": "Recherche",

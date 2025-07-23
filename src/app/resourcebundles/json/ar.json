@@ -3104,7 +3104,14 @@
                     "action": "العمل",
                     "target": "الهدف",
                     "name": "الاسم",
-                    "value": "القيمة"
+                    "value": "القيمة",
+                    "genieControls": "إظهار التحكم في اللاعب",
+                    "genieControlsPlaceholder": "تبديل ضوابط جيني",
+                    "instructions": "تعليمات المعلم",
+                    "instructionsPlaceholder": "تعليماتحامل الموقع",
+                    "color": "لون الخلفية",
+                    "colorPlaceholder": "الشريحة الخلفية اللون",
+                    "savingContentPleaseWait": "حفظ المحتوى يرجى الانتظار..."
                 },
                 "dynamicForm": {
                     "name": "العنوان",
@@ -3120,14 +3127,7 @@
                     "level": "المستوى",
                     "labelLevelPlaceHolder": "اختر المستوى",
                     "max_score": "الحد الأقصى للنقاط",
-                    "labelMaxScorePlaceHolder": "أدخل الحد الأقصى للنقاط",
-                    "genieControls": "إظهار التحكم في اللاعب",
-                    "genieControlsPlaceholder": "تبديل ضوابط جيني",
-                    "instructions": "تعليمات المعلم",
-                    "instructionsPlaceholder": "تعليماتحامل الموقع",
-                    "color": "لون الخلفية",
-                    "colorPlaceholder": "الشريحة الخلفية اللون",
-                    "savingContentPleaseWait": "حفظ المحتوى يرجى الانتظار..."
+                    "labelMaxScorePlaceHolder": "أدخل الحد الأقصى للنقاط"
                     },
                 "assetBrowser": {
                     "selectImage": "اختر صورة",
@@ -3275,7 +3275,8 @@
                 "sendBackward": "إرسال إلى الوراء",
                 "sendToBack": "إرسال إلى الوراء",
                 "gettingThingsReadyForYou": "يتم تجهيز الأمور من أجلك",
-                "loadingYourLesson": "جاري تحميل الدرس"
+                "loadingYourLesson": "جاري تحميل الدرس",
+                "removeQuestion": "إزالة السؤال"
             },
             "prmpt": {
                 "search": "يبحث",
