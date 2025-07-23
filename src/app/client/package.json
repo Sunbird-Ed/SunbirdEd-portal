@@ -38,6 +38,9 @@
     "npm": ">=8.19.3"
   },
   "private": true,
+  "overrides": {
+    "stylus": "0.0.1-security"
+  },
   "dependencies": {
     "@angular-devkit/build-angular": "14.2.10",
     "@angular/animations": "14.3.0",
