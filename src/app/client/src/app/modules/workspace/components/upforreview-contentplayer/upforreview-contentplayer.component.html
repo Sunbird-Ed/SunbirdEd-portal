@@ -13,7 +13,7 @@
               <h1 class="sb-pageSection-title m-0 mr-8"> {{contentData.name}} </h1>
               <button class="sb-btn sb-btn-normal sb-btn-error ml-auto mouse-pointer" appTelemetryInteract
                 [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeInteractEdata"
-                tabindex="0" (click)="close()"> Close
+                tabindex="0" (click)="close()"> {{resourceService?.frmelmnts?.lbl?.close_btn_label}}
                 <i class="ui remove icon"></i>
               </button>
             </div>

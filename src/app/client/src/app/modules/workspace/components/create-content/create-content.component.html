@@ -29,7 +29,7 @@
         </div>
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.coursedescription}}</p>
       </div>
-      <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('resource')"
+      <!-- <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('resource')"
         appPermission [permission]='lessonRole'>
         <div class="ui link card" routerLink="studymaterial" appTelemetryInteract
           [telemetryInteractEdata]="{id:'createStudyMaterial',type:'click',pageid:'create-study-material'}">
@@ -41,7 +41,7 @@
           </div>
         </div>
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.lessondescription}}</p>
-      </div>
+      </div> -->
       <!-- <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('collection')"
         appPermission [permission]='collectionRole'>
         <div class="ui link card" routerLink="collection" appTelemetryInteract
@@ -56,18 +56,33 @@
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.collectiondescription}}</p>
       </div> -->
       <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('contentupload')"
-      appPermission [permission]='contentUploadRole'>
-      <div class="ui link card" routerLink="../edit/generic/" appTelemetryInteract
-        [telemetryInteractEdata]="{id:'uploadContent',type:'click',pageid:'upload-content'}">
-        <div class="content">
-          <div class="textcontent">
-            <i class='my-icon upload icon'></i>
-            <span class="my-text">{{resourceService?.frmelmnts?.lbl?.contentupload}}</span>
+        appPermission [permission]='contentUploadRole'>
+        <div class="ui link card" routerLink="../edit/generic/" appTelemetryInteract
+          [telemetryInteractEdata]="{id:'uploadContent',type:'click',pageid:'upload-content'}">
+          <div class="content">
+            <div class="textcontent">
+              <i class='my-icon upload icon'></i>
+              <span class="my-text">{{resourceService?.frmelmnts?.lbl?.contentupload}}</span>
+            </div>
           </div>
         </div>
+        <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.contentuploaddescription}}</p>
       </div>
-      <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.contentuploaddescription}}</p>
-    </div>
+      <!-- Assessment -->
+      <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('assessment')"
+        appPermission [permission]='assessmentRole'>
+        <div class="ui link card" routerLink="assessment" appTelemetryInteract
+          [telemetryInteractEdata]="{id:'createAssessment',type:'click',pageid:'create-assessment'}"
+          [telemetryInteractCdata]="[{ id: 'user:workspace:assessment:create', type: 'Feature' }, { id: 'SB-17206', type: 'Task' }]">
+          <div class="content">
+            <div class="textcontent">
+              <img src="./assets/images/checklist.png" width="30" class="ml-8" />
+              <span class="my-text ml-12">{{resourceService?.frmelmnts?.lbl?.assessment}}</span>
+            </div>
+          </div>
+        </div>
+        <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.assessmentdescription}}</p>
+      </div>
     </div>
   </div>
   <div class="twelve wide column ">
@@ -100,22 +115,7 @@
         </div>
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.contentuploaddescription}}</p>
       </div> -->
-      <!-- Assessment -->
-      <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('assessment')"
-        appPermission [permission]='assessmentRole'>
-        <div class="ui link card" routerLink="assessment" appTelemetryInteract
-          [telemetryInteractEdata]="{id:'createAssessment',type:'click',pageid:'create-assessment'}"
-          [telemetryInteractCdata]="[{ id: 'user:workspace:assessment:create', type: 'Feature' }, { id: 'SB-17206', type: 'Task' }]">
-          <div class="content">
-            <div class="textcontent">
-              <img src="./assets/images/checklist.png" width="36" class="ml-8" />
-              <span class="my-text ml-12">{{resourceService?.frmelmnts?.lbl?.assessment}}</span>
-            </div>
-          </div>
-        </div>
-        <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.assessmentdescription}}</p>
-      </div>
-            <!-- Practice Assessment -->
+      <!-- Practice Assessment -->
       <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('assessment')"
         appPermission [permission]='assessmentRole'>
         <div class="ui link card" routerLink="practice_assessment" appTelemetryInteract
