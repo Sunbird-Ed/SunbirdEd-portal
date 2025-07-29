@@ -692,7 +692,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
    * restrictedRoutes[] => routes where do not require language change dropdown
    */
   showLanguageDropdown() {
-    const restrictedRoutes = ['workspace', 'manage'];
+    const restrictedRoutes = ['manage'];
     let showLanguageChangeDropdown = true;
     for (const route of restrictedRoutes) {
       if (this.router.isActive(route, false)) {

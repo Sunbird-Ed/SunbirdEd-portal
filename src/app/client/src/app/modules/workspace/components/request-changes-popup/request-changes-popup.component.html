@@ -19,10 +19,10 @@
     <!--Content-->
     <div class="sb-modal-content">
         <div *ngIf="rejectCheckListData">
-            <div class="ui small header">
+            <!-- <div class="ui small header">
                 <h4>{{rejectCheckListData.title}}</h4>
-            </div>
-            <div class="ui three column grid">
+            </div> -->
+            <!-- <div class="ui three column grid">
                 <div class="column" *ngFor="let list of rejectCheckListData.contents">
                     <h5 class="ui tiny header">{{list.name}}</h5>
                     <div class="ui list" *ngFor="let item of list.checkList">
@@ -34,7 +34,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <h5>
                 <div class="ui checkbox checklist" *ngIf="rejectCheckListData.otherReason">
                     <input type="checkbox" class="listItem" tabindex="0" (click)="createCheckedArray('Others')">
@@ -66,9 +66,11 @@
     <div class="sb-modal-actions">
         <button 
             class="sb-btn sb-btn-normal sb-btn-primary" 
+            [ngClass]="{'sb-btn-disabled': isDisabled}"
             type="button" 
             [disabled]="isDisabled" 
-            tabindex="0" (click)="submitRequestChanges()"
+            tabindex="0" 
+            (click)="!isDisabled && submitRequestChanges()"
         >
             {{resourceService.frmelmnts.btn.checkListRequestChanges}}
         </button>

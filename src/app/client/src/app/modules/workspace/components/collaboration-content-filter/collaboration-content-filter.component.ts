@@ -1,8 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ResourceService, ConfigService } from '@sunbird/shared';
+import { ResourceService, ConfigService, UtilService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
-import { Subject, of} from 'rxjs';
+import { Subject, of, Subscription} from 'rxjs';
 import { debounceTime, distinctUntilChanged, delay, flatMap } from 'rxjs/operators';
 import { IInteractEventEdata, IInteractEventInput, IInteractEventObject, IProducerData, TelemetryService } from '@sunbird/telemetry';
 @Component({
@@ -10,8 +10,9 @@ import { IInteractEventEdata, IInteractEventInput, IInteractEventObject, IProduc
   templateUrl: './collaboration-content-filter.component.html',
   styleUrls: ['./collaboration-content-filter.component.scss']
 })
-export class CollaborationContentFilterComponent implements OnInit {
+export class CollaborationContentFilterComponent implements OnInit, OnDestroy {
   modelChanged: Subject<string> = new Subject<string>();
+  private languageSubscription: Subscription;
   /**
    * To navigate to other pages
    */
@@ -29,6 +30,10 @@ export class CollaborationContentFilterComponent implements OnInit {
    * SortingOptions
   */
   sortingOptions: Array<string>;
+  /**
+   * reference of UtilService.
+   */
+  public utilService: UtilService;
   /**
     * To show / hide sortIcon
    */
@@ -85,7 +90,7 @@ export class CollaborationContentFilterComponent implements OnInit {
  */
   constructor(resourceService: ResourceService, config: ConfigService,
     activatedRoute: ActivatedRoute,
-    route: Router, telemetryService: TelemetryService) {
+    route: Router, telemetryService: TelemetryService, utilService: UtilService) {
     this.telemetryService = telemetryService;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -94,11 +99,24 @@ export class CollaborationContentFilterComponent implements OnInit {
     this.position = 'bottom right';
     this.route.onSameUrlNavigation = 'reload';
     this.label = this.config.dropDownConfig.FILTER.WORKSPACE.label;
-    this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.collaboratingOnSortingOptions;
+    this.utilService = utilService;
+    this.updateSortingOptions();
+  }
+
+  private updateSortingOptions() {
+    const language = localStorage.getItem('portalLanguage') || 'ar';
+    this.sortingOptions = this.utilService.updateDataWithI18n(this.config.dropDownConfig.FILTER.RESOURCES.collaboratingOnSortingOptions, language);
   }
 
   ngOnInit() {
     this.filterType = this.config.appConfig.collaboration.filterType;
+    
+    this.languageSubscription = this.resourceService.languageSelected$.subscribe((language) => {
+      if (language) {
+        this.updateSortingOptions();
+      }
+    });
+    
     this.activatedRoute.queryParams
       .subscribe(params => {
         this.queryParams = { ...params };
@@ -157,6 +175,12 @@ export class CollaborationContentFilterComponent implements OnInit {
         edata: searchInteractEdata
       };
       this.telemetryService.interact(this.appTelemetryInteractData);
+  }
+
+  ngOnDestroy() {
+    if (this.languageSubscription) {
+      this.languageSubscription.unsubscribe();
+    }
   }
 
   applySorting(sortByOption) {

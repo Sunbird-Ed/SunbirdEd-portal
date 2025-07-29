@@ -255,53 +255,106 @@
             "sortingOptions": [
                 {
                     "field": "lastUpdatedOn",
-                    "name": "Modified On"
+                    "name": "Modified On",
+                    "namei18n": {
+                        "en": "Modified On",
+                        "ar": "تاريخ التعديل",
+                        "fr": "Modifié le"
+                    }
                 },
                 {
                     "field": "createdOn",
-                    "name": "Created On"
+                    "name": "Created On",
+                    "namei18n": {
+                        "en": "Created On",
+                        "ar": "تاريخ الإنشاء",
+                        "fr": "Créé le"
+                    }
                 }
             ],
             "upForReviewSortingOptions": [
                 {
                     "field": "lastUpdatedOn",
-                    "name": "Updated On"
+                    "name": "Updated On",
+                    "namei18n": {
+                        "en": "Updated On",
+                        "ar": "تاريخ التحديث",
+                        "fr": "Mis à jour le"
+                    }
                 },
                 {
                     "field": "createdOn",
-                    "name": "Created On"
+                    "name": "Created On",
+                    "namei18n": {
+                        "en": "Created On",
+                        "ar": "تاريخ الإنشاء",
+                        "fr": "Créé le"
+                    }
                 },
                 {
                     "field": "name",
-                    "name": "Name A-Z"
+                    "name": "Name A-Z",
+                    "namei18n": {
+                        "en": "Name A-Z",
+                        "ar": "الاسم من الألف إلى الياء",
+                        "fr": "Nom de A à Z"
+                    }
                 }
             ],
             "collaboratingOnSortingOptions": [
                 {
                     "field": "contentType",
-                    "name": "Content Type"
-
+                    "name": "Content Type",
+                    "namei18n": {
+                        "en": "Content Type",
+                        "ar": "نوع المحتوى",
+                        "fr": "Type de contenu"
+                    }
                 },
                 {
                     "field": "createdOn",
-                    "name": "Created On"
+                    "name": "Created On",
+                    "namei18n": {
+                        "en": "Created On",
+                        "ar": "تاريخ الإنشاء",
+                        "fr": "Créé le"
+                    }
                 },
                 {
                     "field": "creator",
-                    "name": "Creator"
+                    "name": "Creator",
+                    "namei18n": {
+                        "en": "Creator",
+                        "ar": "المنشئ",
+                        "fr": "Créateur"
+                    }
                 },
                 {
                     "field": "lastUpdatedOn",
-                    "name": "Last Updated"
+                    "name": "Last Updated",
+                    "namei18n": {
+                        "en": "Last Updated",
+                        "ar": "آخر تحديث",
+                        "fr": "Dernière mise à jour"
+                    }
                 },
                 {
                     "field": "name",
-                    "name": "Name A-Z"
+                    "name": "Name A-Z",
+                    "namei18n": {
+                        "en": "Name A-Z",
+                        "ar": "الاسم من الألف إلى الياء",
+                        "fr": "Nom de A à Z"
+                    }
                 },
                 {
                     "field": "status",
-                    "name": "Status"
-
+                    "name": "Status",
+                    "namei18n": {
+                        "en": "Status",
+                        "ar": "الحالة",
+                        "fr": "Statut"
+                    }
                 }
             ]
         },

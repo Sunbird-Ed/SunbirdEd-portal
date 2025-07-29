@@ -1659,7 +1659,17 @@
                     "add_btn_lbl": "Add",
                     "collaboratorsNotFound": "No collaborators found for this content",
                     "remove_btn_lbl": "Remove",
-                    "collaboratorsUpdatedSuccessfully": "Collaborators updated successfully"
+                    "collaboratorsUpdatedSuccessfully": "Collaborators updated successfully",
+                    "create_resource": "Create resource",
+                    "view_all_textbooks": "View all textbooks",
+                    "view_all_content": "View all content",
+                    "view_drafts": "View drafts",
+                    "view_submitted_for_review": "View submitted for review",
+                    "view_published": "View published",
+                    "view_uploads": "View uploads",
+                    "content_awaiting_review": "Content awaiting review",
+                    "manage_course_batches": "Manage course batches",
+                    "view_collaborations": "View content you are collaborating on"
             },
             "alert": {
                 "debugModeEnabledFailed": "Unable to enable debug mode",

@@ -3,9 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { ContentService, UserService } from '@sunbird/core';
 import { ResourceService, ConfigService, ToasterService, ServerResponse,
-  RouterNavigationService, NavigationHelperService } from '@sunbird/shared';
+  RouterNavigationService, NavigationHelperService, UtilService } from '@sunbird/shared';
 import { WorkSpaceService, ReviewCommentsService } from './../../services';
-
 /**
  * This component displays the checklist for publish content for reviewer and
  * calls the Publish API to publish the content
@@ -59,6 +58,10 @@ export class PublishedPopupComponent implements OnInit {
    */
   private toasterService: ToasterService;
   /**
+     * reference of UtilService.
+     */
+  public utilService: UtilService;
+  /**
    * To navigate back to parent component
    */
   public routerNavigationService: RouterNavigationService;
@@ -109,7 +112,7 @@ export class PublishedPopupComponent implements OnInit {
     contentService: ContentService,
     userService: UserService,
     public navigationHelperService: NavigationHelperService,
-    public workSpaceService: WorkSpaceService, public reviewCommentsService: ReviewCommentsService) {
+    public workSpaceService: WorkSpaceService, public reviewCommentsService: ReviewCommentsService, utilService: UtilService) {
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
@@ -118,6 +121,7 @@ export class PublishedPopupComponent implements OnInit {
     this.routerNavigationService = routerNavigationService;
     this.contentService = contentService;
     this.userService = userService;
+    this.utilService = utilService;
     this.checkListData = this.configService.appConfig.CHECK_LIST_CONFIG;
   }
 
@@ -218,6 +222,8 @@ export class PublishedPopupComponent implements OnInit {
           this.showModal = true;
           this.showloader = false;
           this.publishCheckListData = data.result.form.data.fields[0];
+          const language = localStorage.getItem('portalLanguage') || 'ar';
+          this.publishCheckListData = this.utilService.updateDataWithI18n(this.publishCheckListData, language);
         } else {
           this.showModal = true;
           this.showloader = false;

@@ -1,7 +1,7 @@
-import { Subject, of} from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { Subject, of, Subscription} from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ResourceService, ConfigService } from '@sunbird/shared';
+import { ResourceService, ConfigService, UtilService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { debounceTime, distinctUntilChanged, delay, flatMap } from 'rxjs/operators';
 import { IInteractEventEdata } from '@sunbird/telemetry';
@@ -10,8 +10,9 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
   templateUrl: './up-for-review-filter.component.html',
   styleUrls: ['./up-for-review-filter.component.scss']
 })
-export class UpforReviewFilterComponent implements OnInit {
+export class UpforReviewFilterComponent implements OnInit, OnDestroy {
   modelChanged: Subject<string> = new Subject<string>();
+  private languageSubscription: Subscription;
   /**
    * To navigate to other pages
    */
@@ -29,6 +30,10 @@ export class UpforReviewFilterComponent implements OnInit {
    * upForReviewSortingOptions
   */
   sortingOptions: Array<string>;
+  /**
+   * reference of UtilService.
+   */
+  public utilService: UtilService;
   /**
     * To show / hide sortIcon
    */
@@ -73,7 +78,7 @@ export class UpforReviewFilterComponent implements OnInit {
  */
   constructor(resourceService: ResourceService, config: ConfigService,
     activatedRoute: ActivatedRoute,
-    route: Router) {
+    route: Router, utilService: UtilService) {
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
@@ -81,12 +86,25 @@ export class UpforReviewFilterComponent implements OnInit {
     this.position = 'bottom right';
     this.route.onSameUrlNavigation = 'reload';
     this.label = this.config.dropDownConfig.FILTER.WORKSPACE.label;
-    this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.upForReviewSortingOptions;
+    this.utilService = utilService;
+    this.updateSortingOptions();
+  }
+
+  private updateSortingOptions() {
+    const language = localStorage.getItem('portalLanguage') || 'ar';
+    this.sortingOptions = this.utilService.updateDataWithI18n(this.config.dropDownConfig.FILTER.RESOURCES.upForReviewSortingOptions, language);
   }
 
   ngOnInit() {
     this.filterType = this.config.appConfig.upForReview.filterType;
     this.redirectUrl = this.config.appConfig.upForReview.inPageredirectUrl;
+    
+    this.languageSubscription = this.resourceService.languageSelected$.subscribe((language) => {
+      if (language) {
+        this.updateSortingOptions();
+      }
+    });
+    
     this.activatedRoute.queryParams
       .subscribe(params => {
         this.queryParams = { ...params };
@@ -123,6 +141,12 @@ export class UpforReviewFilterComponent implements OnInit {
   keyup(event) {
     this.query = event;
     this.modelChanged.next(this.query);
+  }
+
+  ngOnDestroy() {
+    if (this.languageSubscription) {
+      this.languageSubscription.unsubscribe();
+    }
   }
 
   applySorting(sortByOption) {

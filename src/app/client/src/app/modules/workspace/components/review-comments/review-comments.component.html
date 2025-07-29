@@ -1,25 +1,25 @@
 <div *ngIf="playerLoaded" class="review-comments-box br-4 bs-2 p-8">
   <div class="ui small comments scrolling p-5" *ngIf="sortedComments[stageId] && sortedComments[stageId].length else emptyComments" >
-    <div class="comment" *ngFor="let commentList of sortedComments[stageId]">
-      <span class="avatar">
-        <img *ngIf="commentList.userInfo.logo" src="{{commentList.userInfo.logo | cdnprefixurl}}">
-        <i *ngIf="!commentList.userInfo.logo" class="icon sb-icon-reviewer" aria-hidden="true"></i>
-      </span>
-      <div class="content pr-8">
+    <div class="comment comment-container" *ngFor="let commentList of sortedComments[stageId]">
+      <div class="comment-content pr-8">
           <div class="d-flex flex-jc-space-between mb-5">
             <span class="sb-color-primary">{{commentList.userInfo.name}}</span>
             <span class="date ui metadata">{{commentList.createdOn | date: 'MMM d'}}</span>
           </div>
-          <div class="text">
+          <div class="text comment-text">
             {{commentList.body}}
           </div>
       </div>
+      <span class="avatar comment-avatar">
+        <img *ngIf="commentList.userInfo.logo" src="{{commentList.userInfo.logo | cdnprefixurl}}">
+        <i *ngIf="!commentList.userInfo.logo" class="comment-user-icon fa fa-user" aria-hidden="true"></i>
+      </span>
     </div>
   </div>
   <ng-template #emptyComments>
     <div tabindex="0" (click)="focusOnInput()" class="ui comments scrolling">
       <div class="placeholder">
-          <i class="sb-icon-comment"></i>
+          <i class="fa fa-comment"></i>
           <span class="">{{resourceService.frmelmnts.lbl.emptycomments}}</span>
       </div>
     </div>
@@ -31,7 +31,7 @@
     </div>
     <div [ngClass]="{ 'disabled' : disableTextArea }" class="ui icon input width-100">
       <textarea [attr.disabled]="disableTextArea ? true : null" #commentInput maxlength="250" autocomplete="off" class="width-100 br-4 reply-box form-control"[formControl]="comments"></textarea>
-      <i id="submit-review-comments" (click)="addReviewComments()" class="opacity-1 mr-5 right sb-icon-send icon link" aria-hidden="true" tabindex="0"
+      <i id="submit-review-comments" (click)="addReviewComments()" class="opacity-1 mr-5 right fa fa-paper-plane icon link" aria-hidden="true" tabindex="0"
       appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="submitCommentsInteractEdata"></i>
     </div>
   </div>
