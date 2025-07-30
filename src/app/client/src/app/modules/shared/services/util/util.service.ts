@@ -499,6 +499,35 @@ export class UtilService {
     return _transpose.transform(value, defaultValue, selectedLang, startsWith = '{', endsWith = '}');
   }
 
+  updateDataWithI18n(checkListData: any, language: string = 'ar'): any {
+    if (!checkListData || typeof checkListData !== 'object') {
+      return checkListData;
+    }
+
+    if (Array.isArray(checkListData)) {
+        return checkListData.map(item => this.updateDataWithI18n(item, language));
+    }
+    const updatedData = _.cloneDeep(checkListData);
+
+    Object.keys(updatedData).forEach(key => {
+      const i18nKey = key + 'i18n';
+      
+      if (updatedData.hasOwnProperty(i18nKey)) {
+        const i18nValue = updatedData[i18nKey];
+        
+        if (i18nValue && typeof i18nValue === 'object' && !Array.isArray(i18nValue)) {
+          const translatedValue = i18nValue[language] || i18nValue['en'] || updatedData[key];
+          
+          if (translatedValue && typeof translatedValue === 'string') {
+            updatedData[key] = translatedValue;
+          }
+        }
+      }
+    });
+
+    return updatedData;
+  }
+
   private translationMap: Record<string, Record<string, string>> = {
     en: {
       organisation: 'organisation',

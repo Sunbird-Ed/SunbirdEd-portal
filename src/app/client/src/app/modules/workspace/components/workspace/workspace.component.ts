@@ -6,7 +6,8 @@ import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-workspace',
-  templateUrl: './workspace.component.html'
+  templateUrl: './workspace.component.html',
+  styleUrls: ['./workspace.component.scss'] 
 })
 export class WorkspaceComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();

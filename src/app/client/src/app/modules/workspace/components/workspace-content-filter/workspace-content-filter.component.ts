@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ResourceService, ConfigService, NavigationHelperService } from '@sunbird/shared';
+import { ResourceService, ConfigService, NavigationHelperService, UtilService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
-import { Subject, of} from 'rxjs';
+import { Subject, of, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, delay, flatMap } from 'rxjs/operators';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 
@@ -11,7 +11,8 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
   templateUrl: './workspace-content-filter.component.html',
   styleUrls: ['./workspace-content-filter.component.scss']
 })
-export class WorkspaceContentFilterComponent implements OnInit {
+export class WorkspaceContentFilterComponent implements OnInit, OnDestroy {
+  private languageSubscription: Subscription;
   modelChanged: Subject<string> = new Subject<string>();
   /**
    * To navigate to other pages
@@ -30,6 +31,10 @@ export class WorkspaceContentFilterComponent implements OnInit {
    * SortingOptions
   */
   sortingOptions: Array<string>;
+  /**
+ * reference of UtilService.
+ */
+  public utilService: UtilService;
   /**
     * To show / hide sortIcon
    */
@@ -76,7 +81,7 @@ export class WorkspaceContentFilterComponent implements OnInit {
   constructor(resourceService: ResourceService, config: ConfigService,
     activatedRoute: ActivatedRoute,
     public navigationHelperService: NavigationHelperService,
-    route: Router) {
+    route: Router, utilService: UtilService) {
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
@@ -84,11 +89,22 @@ export class WorkspaceContentFilterComponent implements OnInit {
     this.position = 'bottom right';
     this.route.onSameUrlNavigation = 'reload';
     this.label = this.config.dropDownConfig.FILTER.WORKSPACE.label;
-    this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
+    this.utilService = utilService;
+    this.updateSortingOptions();
+  }
+
+  private updateSortingOptions() {
+    const language = localStorage.getItem('portalLanguage') || this.config.constants.DEFAULT_LANGUAGE;
+    this.sortingOptions = this.utilService.updateDataWithI18n(this.config.dropDownConfig.FILTER.RESOURCES.collaboratingOnSortingOptions, language);
   }
 
   ngOnInit() {
     this.setFilterTypeAndRedirectURL();
+    this.languageSubscription = this.resourceService.languageSelected$.subscribe((language) => {
+      if (language) {
+        this.updateSortingOptions();
+      }
+    });
     this.activatedRoute.queryParams
       .subscribe(params => {
         this.queryParams = { ...params };
@@ -100,19 +116,25 @@ export class WorkspaceContentFilterComponent implements OnInit {
           }
         });
       });
-      this.modelChanged.pipe(debounceTime(1000),
+    this.modelChanged.pipe(debounceTime(1000),
       distinctUntilChanged(),
       flatMap(search => of(search).pipe(delay(500)))
-      ).
+    ).
       subscribe(query => {
         this.query = query;
         this.handleSearch();
       });
-      this.filterIntractEdata = {
-        id: 'filter',
-        type: 'click',
-        pageid: 'all-my-content-page'
-      };
+    this.filterIntractEdata = {
+      id: 'filter',
+      type: 'click',
+      pageid: 'all-my-content-page'
+    };
+  }
+
+  ngOnDestroy() {
+    if (this.languageSubscription) {
+      this.languageSubscription.unsubscribe();
+    }
   }
 
   setFilterTypeAndRedirectURL() {
@@ -138,7 +160,7 @@ export class WorkspaceContentFilterComponent implements OnInit {
     } else {
       delete this.queryParams['query'];
     }
-    this.route.navigate([this.redirectUrl], { queryParams: this.queryParams});
+    this.route.navigate([this.redirectUrl], { queryParams: this.queryParams });
   }
   keyup(event) {
     this.query = event;
@@ -148,14 +170,14 @@ export class WorkspaceContentFilterComponent implements OnInit {
   applySorting(sortByOption) {
     this.sortIcon = !this.sortIcon;
     this.queryParams['sortType'] = this.sortIcon ? 'desc' : 'asc';
-     this.queryParams['sort_by'] = sortByOption;
-    this.route.navigate([this.redirectUrl], { queryParams: this.queryParams});
+    this.queryParams['sort_by'] = sortByOption;
+    this.route.navigate([this.redirectUrl], { queryParams: this.queryParams });
   }
   removeFilterSelection(filterType, value) {
     const itemIndex = this.queryParams[filterType].indexOf(value);
     if (itemIndex !== -1) {
       this.queryParams[filterType].splice(itemIndex, 1);
     }
-    this.route.navigate([this.redirectUrl], { queryParams: this.queryParams});
+    this.route.navigate([this.redirectUrl], { queryParams: this.queryParams });
   }
 }

@@ -1660,7 +1660,17 @@
                 "collaboratorsNotFound": "لم يتم العثور على متعاونين لهذا المحتوى",
                 "remove_btn_lbl": "إزالة",
                 "collaboratorsUpdatedSuccessfully": "تم تحديث المتعاونين بنجاح",
-                "Rate": "قيّم"
+                "Rate": "قيّم",
+                "create_resource": "إنشاء مورد",
+                "view_all_textbooks": "عرض جميع الكتب المدرسية",
+                "view_all_content": "عرض جميع المحتويات",
+                "view_drafts": "عرض المسودات",
+                "view_submitted_for_review": "عرض المقدم للمراجعة",
+                "view_published": "عرض المنشور",
+                "view_uploads": "عرض التحميلات",
+                "content_awaiting_review": "المحتوى في انتظار المراجعة",
+                "manage_course_batches": "إدارة دفعات الدورات",
+                "view_collaborations": "عرض المحتوى الذي تتعاون عليه"
             },
             "alert": {
                 "debugModeEnabledFailed": "غير قادر على تمكين وضع تصحيح الأخطاء",

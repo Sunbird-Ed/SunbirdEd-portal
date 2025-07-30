@@ -1658,7 +1658,17 @@
                 "collaboratorsNotFound": "Aucun collaborateur trouvé pour ce contenu",
                 "remove_btn_lbl": "Supprimer",
                 "collaboratorsUpdatedSuccessfully": "Collaborateurs mis à jour avec succès",
-                "Rate": "Évaluer"
+                "Rate": "Évaluer",
+                "create_resource": "Créer une ressource",
+                "view_all_textbooks": "Voir tous les manuels",
+                "view_all_content": "Voir tout le contenu",
+                "view_drafts": "Voir les brouillons",
+                "view_submitted_for_review": "Voir les soumissions pour révision",
+                "view_published": "Voir les publications",
+                "view_uploads": "Voir les téléchargements",
+                "content_awaiting_review": "Contenu en attente de révision",
+                "manage_course_batches": "Gérer les lots de cours",
+                "view_collaborations": "Voir le contenu sur lequel vous collaborez"
             },
             "alert": {
                 "debugModeEnabledFailed": "Impossible d'activer le mode de débogage",
