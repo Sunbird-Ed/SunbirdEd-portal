@@ -64,8 +64,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     private _facets$ = new Subject();
     public showBatchInfo = false;
     public enrolledCourses: Array<any>;
+    public completeCourses: Array<any>;
     public enrolledSection: any;
+    public completedCourseSection: any;
     public selectedCourseBatches: any;
+    public allEnrolledCourses: any
     frameworkCategories;
     frameworkCategoriesObject;
     transformUserPreference;
@@ -262,45 +265,99 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public fetchEnrolledCoursesSection() {
+        console.log("inside fetchEnrolledCoursesSection");
         return this.coursesService.enrolledCourseData$
             .pipe(
                 tap(({ enrolledCourses, err }) => {
                     this.enrolledCourses = this.enrolledSection = [];
+                    this.completeCourses = this.completedCourseSection = [];                   
                     const sortingField = (get(this.getCurrentPageData(), 'sortingField')) ?
                         (get(this.getCurrentPageData(), 'sortingField')) : 'enrolledDate';
                     const sortingOrder = (get(this.getCurrentPageData(), 'sortingOrder')) ?
                         (get(this.getCurrentPageData(), 'sortingOrder')) : 'desc';
+                                         
                     const enrolledSection = {
                         name: this.getSectionName(get(this.activatedRoute, 'snapshot.queryParams.selectedTab')),
                         length: 0,
                         count: 0,
                         contents: []
                     };
+                    
+                    const completedCourseSection = {
+                        name: this.getSectionName(get(this.activatedRoute, 'snapshot.queryParams.selectedTab')), // Fixed: use selectedTab
+                        length: 0,
+                        count: 0,
+                        contents: []
+                    };
+                    
                     const { contentType: pageContentType = null, search: { filters: { primaryCategory: pagePrimaryCategories = [] } } } = this.getCurrentPageData();
-                    if (err) { return enrolledSection; }
+                    
+                    if (err) { 
+                        return enrolledSection; 
+                    }
+                    
                     const enrolledContentPredicate = course => {
                         const { primaryCategory = null, contentType = null } = _.get(course, 'content') || {};
                         return pagePrimaryCategories.some(category =>
-                            (_.toLower(category) === _.toLower(primaryCategory)) || (_.toLower(category) === _.toLower(contentType))) ||
+                            (_.toLower(category) === _.toLower(primaryCategory)) || 
+                            (_.toLower(category) === _.toLower(contentType))) ||
                             (_.toLower(contentType) === _.toLower(pageContentType));
                     };
+                    
                     let filteredCourses = _.filter(enrolledCourses || [], enrolledContentPredicate);
                     filteredCourses = _.orderBy(filteredCourses, [sortingField], [sortingOrder]);
                     this.enrolledCourses = _.orderBy(filteredCourses, [sortingField], [sortingOrder]);
+                    
                     const { constantData, metaData, dynamicFields } = _.get(this.configService, 'appConfig.CoursePageSection.enrolledCourses');
-                    enrolledSection.contents = _.map(filteredCourses, content => {
+                    
+                
+                    enrolledSection.contents = _.compact(_.map(filteredCourses, content => {
+                        if (content.status === 2) {
+                            return null; 
+                        }
+                        
                         const formatedContent = this.utilService.processContent(content, constantData, dynamicFields, metaData);
+                        formatedContent.organisation = content.content.organisation;
+                        delete formatedContent.category;
                         formatedContent.metaData.mimeType = 'application/vnd.ekstep.content-collection';
                         formatedContent.metaData.contentType = _.get(content, 'content.primaryCategory') || _.get(content, 'content.contentType');
+                        
                         const trackableObj = _.get(content, 'content.trackable');
                         if (trackableObj) {
                             formatedContent.metaData.trackable = trackableObj;
                         }
+                        
                         return formatedContent;
-                    });
+                    }));
+                    
+                    this.allEnrolledCourses = filteredCourses;
+                 
+                    completedCourseSection.contents = _.compact(_.map(filteredCourses, content => {
+                        if (content.status !== 2) {
+                            return null; 
+                        }
+                        
+                        const formatedContent = this.utilService.processContent(content, constantData, dynamicFields, metaData);
+                        formatedContent.metaData.mimeType = 'application/vnd.ekstep.content-collection';
+                        formatedContent.metaData.contentType = _.get(content, 'content.primaryCategory') || _.get(content, 'content.contentType');
+                        formatedContent.organisation = content.content.organisation;
+                        delete formatedContent.category;
+                        
+                        const trackableObj = _.get(content, 'content.trackable');
+                        if (trackableObj) {
+                            formatedContent.metaData.trackable = trackableObj;
+                        }
+                        
+                        return formatedContent;
+                    }));
                     enrolledSection.count = enrolledSection.contents.length;
+                    completedCourseSection.count = completedCourseSection.contents.length;
+                    completedCourseSection.name= this.resourceService.frmelmnts.lbl.completedCourses;
+                    
                     this.enrolledSection = enrolledSection;
-                }));
+                    this.completedCourseSection = completedCourseSection;
+                })
+            );
     }
 
     initLayout() {
