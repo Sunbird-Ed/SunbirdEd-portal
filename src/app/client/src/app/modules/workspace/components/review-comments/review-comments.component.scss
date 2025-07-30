@@ -83,13 +83,11 @@ textarea:focus+i.icon.fa.fa-paper-plane {
     text-align: justify;
 }
 
-// RTL/LTR support for comment layout
 .comment-container {
     display: flex;
     align-items: flex-start;
     gap: calculateRem(10px);
     
-    // LTR: avatar on left, content on right (default)
     flex-direction: row;
     
     .comment-content {

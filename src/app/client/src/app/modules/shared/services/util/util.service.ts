@@ -499,12 +499,6 @@ export class UtilService {
     return _transpose.transform(value, defaultValue, selectedLang, startsWith = '{', endsWith = '}');
   }
 
-  /**
-   * Updates checkListData with internationalized values based on the provided language
-   * @param {any} checkListData - The data object containing reject checklist information
-   * @param {string} language - The target language code (e.g., 'en', 'ar', 'fr')
-   * @returns {any} - Updated data object with internationalized values or original data if no updates needed
-   */
   updateDataWithI18n(checkListData: any, language: string = 'ar'): any {
     if (!checkListData || typeof checkListData !== 'object') {
       return checkListData;
