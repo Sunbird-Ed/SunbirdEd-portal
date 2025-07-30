@@ -371,7 +371,7 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
   }
 
   private getEditorMode() {
-    const contentStatus = this.collectionDetails.status.toLowerCase();
+    const contentStatus = (this.routeParams?.contentStatus || this.collectionDetails.status).toLowerCase();
     if (contentStatus === 'draft' || contentStatus === 'live' || contentStatus === 'flagdraft'
         || contentStatus === 'unlisted') {
       return 'edit';
