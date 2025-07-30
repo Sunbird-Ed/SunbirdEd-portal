@@ -200,7 +200,7 @@ export class RequestChangesPopupComponent implements OnInit, OnDestroy {
         if (data.result.form) {
           this.showModal = true;
           this.showloader = false;
-          const language = localStorage.getItem('portalLanguage') || 'ar';
+          const language = localStorage.getItem('portalLanguage')  || this.configService.constants.DEFAULT_LANGUAGE;
           this.rejectCheckListData = data.result.form.data.fields[0];
           this.rejectCheckListData = this.utilService.updateDataWithI18n(this.rejectCheckListData, language);
           if (!_.get(data.result.form, 'data.fields[0].checklist') || !_.get(data.result.form, 'data.fields[0].otherReason') ) {

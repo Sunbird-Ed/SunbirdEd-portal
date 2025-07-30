@@ -222,7 +222,7 @@ export class PublishedPopupComponent implements OnInit {
           this.showModal = true;
           this.showloader = false;
           this.publishCheckListData = data.result.form.data.fields[0];
-          const language = localStorage.getItem('portalLanguage') || 'ar';
+          const language = localStorage.getItem('portalLanguage') || this.configService.constants.DEFAULT_LANGUAGE;
           this.publishCheckListData = this.utilService.updateDataWithI18n(this.publishCheckListData, language);
         } else {
           this.showModal = true;

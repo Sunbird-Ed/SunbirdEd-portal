@@ -104,7 +104,7 @@ export class CollaborationContentFilterComponent implements OnInit, OnDestroy {
   }
 
   private updateSortingOptions() {
-    const language = localStorage.getItem('portalLanguage') || 'ar';
+    const language = localStorage.getItem('portalLanguage') || this.config.constants.DEFAULT_LANGUAGE;
     this.sortingOptions = this.utilService.updateDataWithI18n(this.config.dropDownConfig.FILTER.RESOURCES.collaboratingOnSortingOptions, language);
   }
 
