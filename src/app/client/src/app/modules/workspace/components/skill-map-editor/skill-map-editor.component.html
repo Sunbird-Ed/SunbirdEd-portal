@@ -20,10 +20,10 @@
                 </div>
             </div>
             <div class="d-flex flex-ai-center">
-                <!-- <button class="sb-btn sb-btn-normal sb-btn-outline-primary mr-10" (click)="previewSkillMap()">
+                <button class="sb-btn sb-btn-normal sb-btn-outline-primary mr-10" (click)="previewSkillMap()">
                     <i class="icon eye" aria-hidden="true"></i>
-                    Preview
-                </button> -->
+                    Submit for Review
+                </button>
                 <button class="sb-btn sb-btn-normal sb-btn-outline-primary mr-10" 
                         [disabled]="!canSaveAsDraft"
                         [ngClass]="{'sb-disabled': !canSaveAsDraft}"
@@ -83,6 +83,9 @@
                                     <mat-error *ngIf="codeFormControl.hasError('duplicateCode') && !codeFormControl.hasError('required') && !codeFormControl.hasError('invalidCode') && (codeFormControl.touched || showValidationErrors)">{{resourceService?.frmelmnts?.lbl?.codeNotUnique}}</mat-error>
                                 </mat-form-field>
                             </div>
+
+                            <!-- Divider Line -->
+                            <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 20px 0;">
                             
                             <!-- Description in next row (50% width) -->
                             <div style="display: flex; margin-bottom: 16px;">
@@ -98,6 +101,48 @@
                                     <mat-error *ngIf="descriptionFormControl.hasError('maxlength') && (descriptionFormControl.touched || showValidationErrors)">{{resourceService?.frmelmnts?.lbl?.descriptionTooLong}}</mat-error>
                                 </mat-form-field>
                             </div>
+
+                            <!-- Divider Line -->
+                            <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 20px 0;">
+
+                            <!-- Enrolment Type Dropdown -->
+                            <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                                <mat-form-field appearance="outline" style="flex: 0 0 50%;">
+                                    <mat-label style="color: black;">{{resourceService?.frmelmnts?.lbl?.enrolmentType || 'Enrolment Type'}}</mat-label>
+                                    <mat-select [formControl]="enrolmentTypeFormControl" 
+                                               style="font-family: 'Times New Roman', sans-serif !important;">
+                                        <mat-option value="byUser">{{resourceService?.frmelmnts?.lbl?.byUser || 'By User'}}</mat-option>
+                                        <mat-option value="byAdmin">{{resourceService?.frmelmnts?.lbl?.byAdmin || 'By Admin'}}</mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="enrolmentTypeFormControl.hasError('required') && (enrolmentTypeFormControl.touched || showValidationErrors)">{{resourceService?.frmelmnts?.lbl?.enrolmentTypeRequired || 'Enrolment type is required'}}</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Divider Line -->
+                            <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 20px 0;">
+
+                            <!-- Time Limit Radio Buttons -->
+                            <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                                <div style="flex: 0 0 50%;">
+                                    <label style="color: black; font-weight: 500; margin-bottom: 8px; display: block;">{{resourceService?.frmelmnts?.lbl?.timeLimit || 'Time Limit'}}</label>
+                                    <mat-radio-group [formControl]="timeLimitFormControl" 
+                                                    style="display: flex; gap: 16px;">
+                                        <mat-radio-button value="yes" style="margin-right: 16px;">
+                                            {{resourceService?.frmelmnts?.lbl?.yes || 'Yes'}}
+                                        </mat-radio-button>
+                                        <mat-radio-button value="no">
+                                            {{resourceService?.frmelmnts?.lbl?.no || 'No'}}
+                                        </mat-radio-button>
+                                    </mat-radio-group>
+                                    <div *ngIf="timeLimitFormControl.hasError('required') && (timeLimitFormControl.touched || showValidationErrors)" 
+                                         style="color: #f44336; font-size: 12px; margin-top: 4px;">
+                                        {{resourceService?.frmelmnts?.lbl?.timeLimitRequired || 'Time limit selection is required'}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Divider Line -->
+                            <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 20px 0;">
                         </form>
                     </div>
                 </div>

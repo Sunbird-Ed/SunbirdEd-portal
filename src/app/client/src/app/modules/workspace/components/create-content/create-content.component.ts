@@ -2,10 +2,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ResourceService, ConfigService, NavigationHelperService, ToasterService } from '@sunbird/shared';
-import { FrameworkService, PermissionService, UserService } from '@sunbird/core';
+import { FrameworkService, PermissionService, UserService, ContentService } from '@sunbird/core';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { WorkSpaceService } from './../../services';
-import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui-v9';
 import * as _ from 'lodash-es';
 // import { categoriesConfig } from '../../newConfig';
 @Component({
@@ -13,9 +12,7 @@ import * as _ from 'lodash-es';
   templateUrl: './create-content.component.html'
 })
 export class CreateContentComponent implements OnInit, AfterViewInit {
-
-  @ViewChild('createFrameworkModal')
-  public createFrameworkModal: ModalTemplate<{ data: string }, string, string>;
+  @ViewChild('frameworkModal') frameworkModal: any;
 
   /*
  roles allowed to create textBookRole
@@ -78,6 +75,7 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
   public frameworkForm: FormGroup;
   public isCreating = false;
   public submitted = false;
+  public showCreateFrameworkModal = false;
   /**
   * Constructor to create injected service(s) object
   *
@@ -99,8 +97,8 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
     private activatedRoute: ActivatedRoute, public userService: UserService,
     public navigationhelperService: NavigationHelperService,
     public workSpaceService: WorkSpaceService, private router: Router,
-    private formBuilder: FormBuilder, public modalService: SuiModalService,
-    private toasterService: ToasterService) {
+    private formBuilder: FormBuilder, private toasterService: ToasterService,
+    private contentService: ContentService) {
     this.resourceService = resourceService;
     this.frameworkService = frameworkService;
     this.permissionService = permissionService;
@@ -109,7 +107,7 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
     // Initialize framework form
     this.frameworkForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(120)]],
-      code: ['', [Validators.required, Validators.pattern(/^[A-Za-z0-9_]+$/), Validators.maxLength(50)]],
+      code: ['', [Validators.pattern(/^[A-Za-z0-9_]+$/), Validators.maxLength(50)]],
       description: ['', [Validators.maxLength(256)]]
     });
   }
@@ -159,6 +157,21 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
   }
 
   /**
+   * Getter for name field validation
+   */
+  get nameField() {
+    return this.frameworkForm.get('name');
+  }
+
+  /**
+   * Check if name field has validation errors
+   */
+  get hasNameError() {
+    const nameControl = this.frameworkForm.get('name');
+    return nameControl && nameControl.invalid && (nameControl.touched || this.submitted);
+  }
+
+  /**
    * Open the Create Framework modal
    */
   openCreateFrameworkModal() {
@@ -166,18 +179,17 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
     this.frameworkForm.reset();
     this.submitted = false;
     this.isCreating = false;
+    this.showCreateFrameworkModal = true;
+  }
 
-    const config = new TemplateModalConfig<{ data: string }, string, string>(this.createFrameworkModal);
-    config.mustScroll = true;
-    config.isClosable = true;
-    config.size = 'small';
-    config.isInverted = false;
-
-    this.modalService.open(config).onApprove(() => {
-      // Handle approval if needed
-    }).onDeny(() => {
-      // Handle denial/cancel
-    });
+  /**
+   * Close the Create Framework modal
+   */
+  closeCreateFrameworkModal() {
+    this.showCreateFrameworkModal = false;
+    this.frameworkForm.reset();
+    this.submitted = false;
+    this.isCreating = false;
   }
 
   /**
@@ -186,11 +198,11 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
   createFramework(modal: any) {
     this.submitted = true;
     
-    if (this.frameworkForm.invalid) {
-      // Mark all fields as touched to show validation errors
-      Object.keys(this.frameworkForm.controls).forEach(key => {
-        this.frameworkForm.get(key)?.markAsTouched();
-      });
+    // Only validate name field
+    const nameControl = this.frameworkForm.get('name');
+    if (!nameControl || nameControl.invalid) {
+      // Mark name field as touched to show validation error
+      nameControl?.markAsTouched();
       return;
     }
 
@@ -198,13 +210,68 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
 
     // Get form values
     const frameworkData = this.frameworkForm.value;
+    
+    // Prepare API request
+    const requestBody = {
+      request: {
+        framework: {
+          name: frameworkData.name,
+          description: frameworkData.description || "Enter your description",
+          type: "SkillMap",
+          code: this.generateFrameworkCode(frameworkData.name),
+          channels: [
+            {
+              identifier: this.userService?.channel
+            }
+          ],
+          systemDefault: "Yes"
+        }
+      }
+    };
 
-    // Simulate API call delay
+    // Make API call to create framework (using dummy response for now)
+    const option = {
+      url: '/api/framework/v1/create',
+      data: requestBody
+    };
+
+    // For now, simulate API response with dummy data
+    // this.contentService.post(option).subscribe(
+    // Dummy response simulation
     setTimeout(() => {
+      const dummyResponse = {
+        id: "api.framework.create",
+        ver: "1.0",
+        ts: new Date().toISOString(),
+        params: {
+          resmsgid: "023848b0-6d36-11f0-adfb-bf1585e44d30",
+          msgid: "01961540-6d36-11f0-a8cb-63f26e4e8579",
+          status: "successful",
+          err: null,
+          errmsg: null
+        },
+        responseCode: "OK",
+        result: {
+          node_id: requestBody.request.framework.code,
+          versionKey: Date.now().toString()
+        }
+      };
+
+      // Handle success response
       this.isCreating = false;
       
-      // Close modal
-      modal.approve('created');
+      // Close modal using multiple approaches
+      if (modal && modal.deny) {
+        modal.deny();
+      }
+      
+      // Also use the ViewChild reference as backup
+      if (this.frameworkModal && this.frameworkModal.deny) {
+        this.frameworkModal.deny();
+      }
+      
+      // Set the boolean flag as final backup
+      this.showCreateFrameworkModal = false;
       
       // Show success message
       this.toasterService.success(
@@ -215,10 +282,22 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
       this.router.navigate(['/workspace/content/skillmap/edit/new'], {
         queryParams: {
           frameworkName: frameworkData.name,
-          frameworkCode: frameworkData.code,
-          frameworkDescription: frameworkData.description
+          frameworkCode: requestBody.request.framework.code,
+          frameworkDescription: requestBody.request.framework.description,
+          frameworkId: dummyResponse.result?.node_id
         }
       });
-    }, 1000); // 1 second delay to show loader
+    }, 1000); // 1 second delay to simulate API call
+  }
+
+  /**
+   * Generate framework code from name
+   */
+  private generateFrameworkCode(name: string): string {
+    // Remove special characters and spaces, convert to uppercase
+    const code = name.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase();
+    // Add timestamp to ensure uniqueness
+    const timestamp = Date.now().toString().slice(-4);
+    return `${code}_${timestamp}`;
   }
 }

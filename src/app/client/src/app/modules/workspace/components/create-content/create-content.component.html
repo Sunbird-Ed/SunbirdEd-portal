@@ -219,83 +219,81 @@
 </div>
 
 <!-- Create Framework Modal -->
-<ng-template let-context let-modal="modal" #createFrameworkModal>
-  <div class="sb-modal sb-course-modal">
-    <div class="ui modal visible active normal">
-      <i class="icon close" (click)="modal.deny('close')" tabindex="0"></i>
-      
-      <!--Header-->
-      <div class="sb-modal-header">
-        {{resourceService?.frmelmnts?.lbl?.createFramework || 'Create Framework'}}
-      </div>
-      <!--/Header-->
-      
-      <!--Content-->
-      <div class="sb-modal-content o-y-visible">
-        <form class="ui form" [formGroup]="frameworkForm" (ngSubmit)="createFramework(modal)">
-          <!-- Framework Name -->
-          <div class="field required">
-            <label>{{resourceService?.frmelmnts?.lbl?.name || 'Name'}} <span class="sb-color-error">*</span></label>
-            <input type="text" 
-                   formControlName="name" 
-                   placeholder="{{resourceService?.frmelmnts?.lbl?.enterFrameworkName || 'Enter framework name'}}"
-                   maxlength="120"
-                   class="sb-form-control">
-            <div *ngIf="frameworkForm.get('name')?.invalid && (frameworkForm.get('name')?.touched || submitted)" 
-                 class="sb-color-error fs-0-85 mt-8">
-              {{resourceService?.frmelmnts?.lbl?.nameIsRequired || 'Name is required'}}
-            </div>
-          </div>
+<sui-modal *ngIf="showCreateFrameworkModal" [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'normal'"
+  class="sb-modal sb-course-modal" (dismissed)="closeCreateFrameworkModal();" #frameworkModal>
 
-          <!-- Framework Code -->
-          <div class="field required mt-16">
-            <label>{{resourceService?.frmelmnts?.lbl?.code || 'Code'}} <span class="sb-color-error">*</span></label>
-            <input type="text" 
-                   formControlName="code" 
-                   placeholder="{{resourceService?.frmelmnts?.lbl?.enterFrameworkCode || 'Enter framework code'}}"
-                   maxlength="50"
-                   class="sb-form-control">
-            <div *ngIf="frameworkForm.get('code')?.invalid && (frameworkForm.get('code')?.touched || submitted)" 
-                 class="sb-color-error fs-0-85 mt-8">
-              <span *ngIf="frameworkForm.get('code')?.errors?.['required']">
-                {{resourceService?.frmelmnts?.lbl?.codeIsRequired || 'Code is required'}}
-              </span>
-              <span *ngIf="frameworkForm.get('code')?.errors?.['pattern']">
-                {{resourceService?.frmelmnts?.lbl?.invalidCodeFormat || 'Code should contain only letters, numbers, and underscores'}}
-              </span>
-            </div>
-          </div>
+  <i class="icon close" (click)="frameworkModal.deny('denied')" tabindex="0"></i>
 
-          <!-- Framework Description -->
-          <div class="field mt-16">
-            <label>{{resourceService?.frmelmnts?.lbl?.description || 'Description'}}</label>
-            <textarea formControlName="description" 
-                      rows="3" 
-                      placeholder="{{resourceService?.frmelmnts?.lbl?.enterFrameworkDescription || 'Enter framework description'}}"
-                      maxlength="256"
-                      class="sb-form-control"></textarea>
-          </div>
-        </form>
-      </div>
-      <!--/Content-->
-      
-      <!--Actions-->
-      <div class="sb-modal-actions">
-        <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" (click)="modal.deny('cancel')">
-          {{resourceService?.frmelmnts?.btn?.cancel || 'Cancel'}}
-        </button>
-        <button type="button" 
-                class="sb-btn sb-btn-normal sb-btn-primary" 
-                [disabled]="frameworkForm.invalid || isCreating"
-                [ngClass]="{'loading': isCreating}"
-                (click)="createFramework(modal)"
-                tabindex="0">
-          {{isCreating ? (resourceService?.frmelmnts?.lbl?.creating || 'Creating...') : (resourceService?.frmelmnts?.btn?.create || 'Create')}}
-        </button>
-      </div>
-      <!--/Actions-->
-    </div>
+  <!--Header-->
+  <div class="sb-modal-header">
+    {{resourceService?.frmelmnts?.lbl?.createFramework || 'Create Framework'}}
   </div>
-</ng-template>
+  <!--/Header-->
+
+  <!--Content-->
+  <div class="sb-modal-content o-y-visible">
+    <form class="ui form" [formGroup]="frameworkForm" (ngSubmit)="createFramework(frameworkModal)">
+      <!-- Framework Name -->
+      <div class="field required">
+        <label>{{resourceService?.frmelmnts?.lbl?.name || 'Name'}}</label>
+        <input type="text" 
+               formControlName="name" 
+               placeholder="{{resourceService?.frmelmnts?.lbl?.enterFrameworkName || 'Enter framework name'}}"
+               maxlength="120"
+               class="sb-form-control">
+        <div *ngIf="hasNameError" 
+             class="sb-color-error fs-0-85 mt-8">
+          {{resourceService?.frmelmnts?.lbl?.nameIsRequired || 'Name is required'}}
+        </div>
+      </div>
+
+      <!-- Framework Code -->
+      <!-- <div class="field required mt-16">
+        <label>{{resourceService?.frmelmnts?.lbl?.code || 'Code'}} <span class="sb-color-error">*</span></label>
+        <input type="text" 
+               formControlName="code" 
+               placeholder="{{resourceService?.frmelmnts?.lbl?.enterFrameworkCode || 'Enter framework code'}}"
+               maxlength="50"
+               class="sb-form-control">
+        <div *ngIf="frameworkForm.get('code')?.invalid && (frameworkForm.get('code')?.touched || submitted)" 
+             class="sb-color-error fs-0-85 mt-8">
+          <span *ngIf="frameworkForm.get('code')?.errors?.['required']">
+            {{resourceService?.frmelmnts?.lbl?.codeIsRequired || 'Code is required'}}
+          </span>
+          <span *ngIf="frameworkForm.get('code')?.errors?.['pattern']">
+            {{resourceService?.frmelmnts?.lbl?.invalidCodeFormat || 'Code should contain only letters, numbers, and underscores'}}
+          </span>
+        </div>
+      </div> -->
+
+      <!-- Framework Description -->
+      <div class="field mt-16">
+        <label>{{resourceService?.frmelmnts?.lbl?.description || 'Description'}}</label>
+        <textarea formControlName="description" 
+                  rows="3" 
+                  placeholder="{{resourceService?.frmelmnts?.lbl?.enterFrameworkDescription || 'Enter framework description'}}"
+                  maxlength="256"
+                  class="sb-form-control"></textarea>
+      </div>
+    </form>
+  </div>
+  <!--/Content-->
+
+  <!--Actions-->
+  <div class="sb-modal-actions">
+    <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" (click)="closeCreateFrameworkModal()">
+      {{resourceService?.frmelmnts?.btn?.cancel || 'Cancel'}}
+    </button>
+    <button type="button" 
+            class="sb-btn sb-btn-normal sb-btn-primary" 
+            [disabled]="isCreating"
+            [ngClass]="{'loading': isCreating}"
+            (click)="createFramework(frameworkModal)"
+            tabindex="0">
+      {{isCreating ? (resourceService?.frmelmnts?.lbl?.creating || 'Creating...') : (resourceService?.frmelmnts?.btn?.create || 'Create')}}
+    </button>
+  </div>
+  <!--/Actions-->
+</sui-modal>
 
 <router-outlet></router-outlet>

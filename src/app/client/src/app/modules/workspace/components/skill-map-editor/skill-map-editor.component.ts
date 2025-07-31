@@ -75,6 +75,8 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     this.uniqueCodeValidator.bind(this)
   ]);
   public descriptionFormControl = new FormControl('', [Validators.maxLength(256)]);
+  public enrolmentTypeFormControl = new FormControl('byUser', [Validators.required]);
+  public timeLimitFormControl = new FormControl('no', [Validators.required]);
 
   // Custom validators
   private codeValidator(control: FormControl): { [key: string]: any } | null {
