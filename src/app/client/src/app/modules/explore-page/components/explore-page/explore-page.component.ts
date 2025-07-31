@@ -265,7 +265,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public fetchEnrolledCoursesSection() {
-        console.log("inside fetchEnrolledCoursesSection");
         return this.coursesService.enrolledCourseData$
             .pipe(
                 tap(({ enrolledCourses, err }) => {
@@ -275,7 +274,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         (get(this.getCurrentPageData(), 'sortingField')) : 'enrolledDate';
                     const sortingOrder = (get(this.getCurrentPageData(), 'sortingOrder')) ?
                         (get(this.getCurrentPageData(), 'sortingOrder')) : 'desc';
-                                         
+
                     const enrolledSection = {
                         name: this.getSectionName(get(this.activatedRoute, 'snapshot.queryParams.selectedTab')),
                         length: 0,
@@ -284,7 +283,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     };
                     
                     const completedCourseSection = {
-                        name: this.getSectionName(get(this.activatedRoute, 'snapshot.queryParams.selectedTab')), // Fixed: use selectedTab
+                        name: this.getSectionName(get(this.activatedRoute, 'snapshot.queryParams.selectedTab')), 
                         length: 0,
                         count: 0,
                         contents: []
@@ -306,7 +305,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     
                     let filteredCourses = _.filter(enrolledCourses || [], enrolledContentPredicate);
                     filteredCourses = _.orderBy(filteredCourses, [sortingField], [sortingOrder]);
-                    this.enrolledCourses = _.orderBy(filteredCourses, [sortingField], [sortingOrder]);
+                    this.enrolledCourses = filteredCourses
                     
                     const { constantData, metaData, dynamicFields } = _.get(this.configService, 'appConfig.CoursePageSection.enrolledCourses');
                     
@@ -352,7 +351,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     }));
                     enrolledSection.count = enrolledSection.contents.length;
                     completedCourseSection.count = completedCourseSection.contents.length;
-                    completedCourseSection.name= this.resourceService.frmelmnts.lbl.completedCourses;
+                    completedCourseSection.name = this.resourceService.frmelmnts.lbl.completedCourses;
                     
                     this.enrolledSection = enrolledSection;
                     this.completedCourseSection = completedCourseSection;
