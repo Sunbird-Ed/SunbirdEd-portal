@@ -1,0 +1,110 @@
+<div class="skill-map-editor" *ngIf="!isLoading">
+    <!-- Blue Header -->
+    <div class="sb-bg-color-primary">
+        <div class="ui container py-15">
+            <div class="d-flex flex-ai-center sb-color-white">
+                <button style="margin: 0 1rem;" class="sb-btn sb-btn-primary sb-btn-xs back-btn px-0 hover-none fs-0-92 font-weight-bold"
+                    (click)="goBack()" aria-label="back">
+                    <i class="arrow left icon" aria-hidden="true"></i> {{resourceService?.frmelmnts?.btn?.back}}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Header -->
+    <div class="sb-bg-lightBlue bb-1">
+        <div class="d-flex flex-jc-space-between flex-ai-center py-20 ui container">
+            <div>
+                <div class="practical-header__title font-weight-bold pl-20 fs-0-92" tabindex="0">
+                    {{ skillMapName }}
+                </div>
+            </div>
+            <div class="d-flex flex-ai-center">
+                <!-- <button class="sb-btn sb-btn-normal sb-btn-outline-primary mr-10" (click)="previewSkillMap()">
+                    <i class="icon eye" aria-hidden="true"></i>
+                    Preview
+                </button> -->
+                <button class="sb-btn sb-btn-normal sb-btn-outline-primary mr-10" 
+                        [disabled]="!canSaveAsDraft"
+                        [ngClass]="{'sb-disabled': !canSaveAsDraft}"
+                        (click)="saveDraft()">
+                    <i class="icon save" aria-hidden="true"></i>
+                    {{resourceService?.frmelmnts?.lbl?.saveAsDraftBtn}}
+                </button>
+                <!-- <button class="sb-btn sb-btn-normal sb-btn-primary mr-10" (click)="publishSkillMap()">
+                    <i class="icon upload" aria-hidden="true"></i>
+                    Publish
+                </button> -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area with Collection Editor Layout -->
+    <div class="h-100vh sb-bg-white">
+        <div class="ui">
+            <div class="ui twelve column grid m-0">
+                <!-- Tree Navigation Panel -->
+                <div class="three wide column p-0 overflow-y mb-10 h-100vh mt-10">
+                    <div class="skill-map-tree-container sb-collectionTree-fancyTree sb-collectionTree-fancyTreelist sb-questionset-scroll">
+                        <!-- Dynamic Skill Map Tree Component -->
+                        <app-skill-map-tree 
+                            [skillMapData]="skillMapData"
+                            [labelConfig]="labelConfig"
+                            (treeEventEmitter)="onTreeEvent($event)">
+                        </app-skill-map-tree>
+                    </div>
+                </div>
+
+                <!-- Right Form Panel (similar to meta-form) -->
+                <div class="eight wide column bg-white pl-40 mb-10 w-73">
+                    <!-- Meta Form for Node Details - Always Visible -->
+                    <div class="skill-map-meta-form">       
+                        <!-- Angular Material Form -->
+                        <form class="skill-map-form" style="font-family: 'Times New Roman', sans-serif !important;">
+                            <!-- Name and Code in same row (50% each) -->
+                            <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                                <mat-form-field appearance="outline" style="flex: 1;">
+                                    <mat-label style="color: black;">{{resourceService?.frmelmnts?.lbl?.skillMapName}}</mat-label>
+                                    <input matInput 
+                                           [formControl]="nameFormControl"
+                                           placeholder="{{resourceService?.frmelmnts?.lbl?.enterNodeName}}"
+                                           style="font-family: 'Times New Roman', sans-serif !important;">
+                                    <mat-error *ngIf="nameFormControl.hasError('required') && (nameFormControl.touched || showValidationErrors)">{{resourceService?.frmelmnts?.lbl?.nameIsRequired}}</mat-error>
+                                </mat-form-field>
+                                
+                                <mat-form-field appearance="fill" style="flex: 1;">
+                                    <mat-label style="color: black;">{{resourceService?.frmelmnts?.lbl?.skillMapCode}}</mat-label>
+                                    <input matInput 
+                                           [formControl]="codeFormControl"
+                                           placeholder="{{resourceService?.frmelmnts?.lbl?.enterUniqueCode}}"
+                                           style="font-family: 'Times New Roman', sans-serif !important;">
+                                    <mat-error *ngIf="codeFormControl.hasError('required') && (codeFormControl.touched || showValidationErrors)">{{resourceService?.frmelmnts?.lbl?.codeIsRequired}}</mat-error>
+                                    <mat-error *ngIf="codeFormControl.hasError('invalidCode') && !codeFormControl.hasError('required') && (codeFormControl.touched || showValidationErrors)">{{resourceService?.frmelmnts?.lbl?.codeInvalidFormat}}</mat-error>
+                                    <mat-error *ngIf="codeFormControl.hasError('duplicateCode') && !codeFormControl.hasError('required') && !codeFormControl.hasError('invalidCode') && (codeFormControl.touched || showValidationErrors)">{{resourceService?.frmelmnts?.lbl?.codeNotUnique}}</mat-error>
+                                </mat-form-field>
+                            </div>
+                            
+                            <!-- Description in next row (50% width) -->
+                            <div style="display: flex; margin-bottom: 16px;">
+                                <mat-form-field appearance="outline" style="flex: 0 0 50%;">
+                                    <mat-label style="color: black;">{{resourceService?.frmelmnts?.lbl?.skillMapDescription}}</mat-label>
+                                    <textarea matInput 
+                                              [formControl]="descriptionFormControl"
+                                              placeholder="{{resourceService?.frmelmnts?.lbl?.enterDescriptionSkillMap}}"
+                                              rows="4"
+                                              maxlength="256"
+                                              style="font-family: 'Times New Roman', sans-serif !important;"></textarea>
+                                    <mat-hint>{{ descriptionFormControl.value?.length || 0 }}/256</mat-hint>
+                                    <mat-error *ngIf="descriptionFormControl.hasError('maxlength') && (descriptionFormControl.touched || showValidationErrors)">{{resourceService?.frmelmnts?.lbl?.descriptionTooLong}}</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Loading State -->
+<div class="ui active centered inline loader" *ngIf="isLoading"></div>

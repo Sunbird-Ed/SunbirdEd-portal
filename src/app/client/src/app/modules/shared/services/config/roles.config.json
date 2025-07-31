@@ -30,7 +30,9 @@
        "assessmentRole": ["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW"],
        "allContentRole": ["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
        "collaboratingRole": ["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
-       "alltextbookRole": ["ORG_ADMIN"]
+       "alltextbookRole": ["ORG_ADMIN"],
+       "skillmapRole": ["CONTENT_CREATOR"],
+       "skillmapReviewerRole": ["CONTENT_REVIEWER"]
     },
     "organizationRole":{
 
@@ -60,7 +62,9 @@
        "reportViewerRole": ["REPORT_VIEWER", "REPORT_ADMIN"],
        "alltextbookRole": ["ORG_ADMIN"],
        "uciAdmin": ["ORG_ADMIN"],
-       "programDashboardRole":["PROGRAM_MANAGER","PROGRAM_DESIGNER"]
+       "programDashboardRole":["PROGRAM_MANAGER","PROGRAM_DESIGNER"],
+       "skillmapRole": ["CONTENT_CREATOR"],
+       "skillmapReviewerRole": ["CONTENT_REVIEWER"]
     }
     ,"WORKSPACEAUTHGARDROLES":[
     {
@@ -109,6 +113,14 @@
     {
         "roles":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
         "roleName":"collaboratingRole","url":"workspace/content/collaborating-on","tab":"Collaborating On"
+    },
+    {
+        "roles":["CONTENT_CREATOR"],
+        "roleName":"skillmapRole","url":"workspace/content/skillmap","tab":"Skill Map"
+    },
+    {
+        "roles":["CONTENT_REVIEWER"],
+        "roleName":"skillmapReviewerRole","url":"workspace/content/skillmap-reviewer","tab":"Skill Map Reviewer"
     }
    ]
 

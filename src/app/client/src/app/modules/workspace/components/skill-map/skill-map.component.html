@@ -1,0 +1,136 @@
+<app-workspace-content-filter ></app-workspace-content-filter>
+
+<div class="twelve wide column mt-20" *ngIf="showLoader ">
+    <app-loader [data]="loaderMessage"></app-loader>
+  </div>
+  <div *ngIf="noResult && !showLoader">
+    <app-no-result [data]="noResultMessage"></app-no-result>
+  </div>
+  
+  <table class="ui upForReviewTable table" *ngIf="skillMapContent.length > 0 && !showLoader && !noResult ">
+    <thead>
+      <tr>
+        <th class="six wide UpReviewTableHeader">
+          {{ isSkillMapReviewer ? (resourceService?.frmelmnts?.lbl?.contentLabel || 'Skill Map') : (resourceService?.frmelmnts?.lbl?.skills || 'Skills') }}
+        </th>
+        <th class="four wide UpReviewTableHeader">
+          {{ isSkillMapReviewer ? (resourceService?.frmelmnts?.lbl?.author || 'Author') : (resourceService?.frmelmnts?.lbl?.lastupdatedCaps || 'Last Updated') }}
+        </th>
+        <th class="two wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.status || 'Status'}}
+        </th>
+        <th class="two wide UpReviewTableHeader" *ngIf="!isSkillMapReviewer">
+        </th>
+        <th class="two wide UpReviewTableHeader" *ngIf="!isSkillMapReviewer">
+        </th>
+      </tr>
+    </thead>
+    <tbody [appTelemetryImpression]="telemetryImpression" [throttle]="[1000]" [trigger]="skillMapContent">
+      <tr class="UpForReviewListHover cursor-pointer" *ngFor="let content of skillMapContent let i = index;" [id]="i" [data]="content"
+        appTelemetryInteract [telemetryInteractObject]="{id:content.identifier,type:content.objectType,ver:'1.0'}"
+        [telemetryInteractEdata]="{id:'skillmapframework',type:'click',pageid:'SkillMap'}">
+        <td tabindex="0" (click)="contentClick(content)">
+          <h5 class="ui image header">
+            <img src="{{'assets/images/default.png' | cdnprefixurl}}" class="ui tiny image UpReviewTinyImage">
+            <div class="content " style="padding:0 0.75rem !important;">
+              <div class="UpReviewHeader">{{content.name | slice:0:30}}
+                <i *ngIf="content.name.length > 30">...</i>
+              </div>
+              <div class="UpReviewSubHeader" *ngIf="isSkillMapReviewer">{{content.contentType || 'Skill Map'}}</div>
+            </div>
+          </h5>
+        </td>
+        <td>
+          <h5 class="ui image header">
+            <div class="content">
+              <!-- Show author for reviewers, last updated for creators -->
+              <div class="UpReviewHeader" *ngIf="isSkillMapReviewer">{{content.creator || content.createdBy}}</div>
+              <div class="UpReviewSubHeader" *ngIf="isSkillMapReviewer">{{resourceService?.frmelmnts?.lbl?.pendingSince || 'Pending since'}}: {{content.lastUpdatedOn | fromNow }}</div>
+              <div class="UpReviewSubHeader" *ngIf="!isSkillMapReviewer">{{content.lastUpdatedOn | fromNow }}</div>
+            </div>
+          </h5>
+        </td>
+        <td class="UpForReviewStatusOrange">{{content.status}}</td>
+        <td *ngIf="!isSkillMapReviewer">
+          <!-- Show view icon only for Live and Review skill maps -->
+          <i *ngIf="content.status === 'Live' || content.status === 'Review'" 
+             appTelemetryInteract 
+             [telemetryInteractObject]="{id:content.identifier,type:content.objectType,ver:'1.0'}"
+             [telemetryInteractEdata]="{id:'viewSkillMap',type:'click',pageid:'SkillMap'}"  
+             class="eye large icon" 
+             tabindex="0" 
+             (click)="contentClick(content); $event.stopPropagation()"
+             matTooltip="{{ resourceService?.frmelmnts?.lbl?.view }}" 
+             [matTooltipPosition]="'left'">
+          </i>
+          <!-- Show delete icon only for Draft status skill maps -->
+          <i *ngIf="content.status === 'Draft'" 
+             appTelemetryInteract 
+             [telemetryInteractObject]="{id:content.identifier,type:content.objectType,ver:'1.0'}"
+             [telemetryInteractEdata]="{id:'deleteSkillMap',type:'click',pageid:'SkillMap'}"  
+             class="trash large icon" 
+             tabindex="0" 
+             (click)="deleteConfirmModal(content.identifier, content.objectType); $event.stopPropagation()"
+             matTooltip="{{ resourceService?.frmelmnts?.lbl?.delete }}" 
+             [matTooltipPosition]="'left'">
+          </i>
+        </td>
+        <td *ngIf="!isSkillMapReviewer">
+          <!-- Frameworks don't have lock functionality, so we can remove this -->
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="ui grid">
+    <div class="two wide column"></div>
+    <div class="ten wide column">
+      <div class="pb-10" *ngIf="skillMapContent && totalCount > config.appConfig.WORKSPACE.PAGE_LIMIT && !showLoader && !showError && !noResult">
+        <div class="ui pagination menu mt-10 right-floated p-0 " *ngIf="pager.pages.length ">
+          <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0" (click)="navigateToPage(1) ">{{ resourceService?.frmelmnts?.lbl?.first}}</a>
+          <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0" (click)="navigateToPage(pager.currentPage - 1)">{{ resourceService?.frmelmnts?.lbl?.previous}}</a>
+          <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" tabindex="0" (click)="navigateToPage(page)" class="item">{{page}}</a>
+          <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.currentPage + 1)" class="item">{{ resourceService?.frmelmnts?.lbl?.next}}</a>
+          <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.totalPages)" class="item ">{{ resourceService?.frmelmnts?.lbl?.last}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <ng-template let-context let-modal="modal" #modalTemplate>
+    <div class="sb-modal sb-error">
+      <div class="ui modal visible active small">
+          <i class="icon close" (click)="modal.deny('denied')" tabindex="0"></i>
+         <!--Header-->
+          <div class="sb-modal-header">
+            {{resourceService?.frmelmnts?.lbl?.deletecontent}}
+          </div>
+        <!--/Header-->
+  
+        <!--Content-->
+        <div class="sb-modal-content">
+          <p>{{resourceService?.frmelmnts?.lbl?.deleteconfirm}}</p>
+        </div>
+        <!--/Content-->
+    
+        <!--Actions-->
+        <div class="sb-modal-actions flex-jc-space-between">
+          <div>
+            <button
+            class="sb-btn sb-btn-normal sb-btn-outline-error mr-10"
+            tabindex="0" (click)="modal.deny('denied')"
+          >
+            {{resourceService?.frmelmnts?.btn?.no}}
+          </button>
+              <button
+                class="sb-btn sb-btn-normal sb-btn-error"
+                tabindex="0" (click)="checkLinkedCollections(modal)"
+                autofocus
+              >
+                {{resourceService?.frmelmnts?.btn?.yes}}
+              </button>
+        </div>
+        </div>
+        <!--/Actions-->
+
+      </div>
+    </div>
+  </ng-template>

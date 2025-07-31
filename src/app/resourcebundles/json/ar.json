@@ -136,8 +136,6 @@
                 "score": "نتيجة",
                 "time": "وقت",
                 "loadingYourContent": "تحميل المحتوى الخاص بك",
-
-                
                 "asset": "مورد رقمي",
                 "digitalTextbook": "كتاب دراسي رقمي",
                 "explanationContent": "محتوى توضيحي",
@@ -164,7 +162,6 @@
                 "nonTrackableContent": "المتصفح الذي تستخدمه غير موصى به. يُرجى استخدام متصفح Google Chrome أو Safari للحصول على أفضل تجربة.",
                 "emptyCompletedCourses": "لم تكمل أي دورات حتى الآن.",
                 "emptyEnrolledCourses": "أنت غير مسجل في أي دورات.",
-  
                 "page": "صفحة",
                 "loading": "تحميل",
                 "youJustCompleted": "لقد أكملت للتو",
@@ -409,8 +406,8 @@
                 "courseLastUpdatedOn": "آخر مرة تم تحديثها على",
                 "courseProgress": "التقدم بالطبع",
                 "certificateOfCompletion": "شهادة إتمام الدورة",
-                "downloadCertificate":"تحميل الشهادة",
-                "expiryDate":"تاريخ انهاء الدورة",
+                "downloadCertificate": "تحميل الشهادة",
+                "expiryDate": "تاريخ انهاء الدورة",
                 "courseRelevantFor": "الدورة ذات صلة بـ:",
                 "courseSuccessMessage": "لقد أكملت الدورة بنجاح",
                 "courseSuccessNotificationMessage": "سيتم إخطارك حول شهادة الدورة التدريبية على تفاصيل الاتصال المسجلة في غضون 7 أيام",
@@ -877,7 +874,7 @@
                 "school": "مدرسة",
                 "schoolId": "معرف المدرسة",
                 "schoolName": "اسم المدرسة أو  المؤسسة",
-		"schoolTeacherId": "معرّف المعلم في المدرسة أو المؤسسة",
+                "schoolTeacherId": "معرّف المعلم في المدرسة أو المؤسسة",
                 "schoolUdiseId": "معرّف الولاية أو المجلس أو المؤسسة",
                 "search": "يبحث",
                 "searchForContent": "أدخل رمز الاستجابة السريعة",
@@ -1169,7 +1166,7 @@
                 "evidence_content_policy_label": "{instance} سياسة المحتوى",
                 "updateProfileTitle": "تحديث الملف الشخصي",
                 "updateProfileContent": "يرجى تحديث ملف التعريف الخاص بك",
-                "home":"الصفحة الرئيسية",
+                "home": "الصفحة الرئيسية",
                 "yourPreferences": "تفضيلاتك",
                 "changePreferences": "تغيير التفضيل",
                 "browseBy": "تصفح حسب",
@@ -1335,7 +1332,7 @@
                 "condition5": "تقارير الاستخدام: ستحتفظ تقارير الاستخدام ببيانات الموقع التي تعلن عنها.",
                 "condition6": "تأكد من قيامك بنسخة احتياطية من أي بيانات مهمة ونظرت في العواقب قبل تأكيد حذف الحساب وتنزيل شهاداتك.",
                 "verification": "تَحَقّق",
-                "tryAgain":"حاول مرة أخرى",
+                "tryAgain": "حاول مرة أخرى",
                 "back": "رجوع",
                 "submitReview": "إرسال المراجعة",
                 "cancel": "إلغاء",
@@ -1429,7 +1426,7 @@
                 "reviewComments": "مراجعة التعليقات",
                 "comments": "تعليقات",
                 "close_btn_label": "إغلاق",
-                "next_btn_label":"التالي",
+                "next_btn_label": "التالي",
                 "whereDoYouWantToAddThisContent": "أين تريد إضافة هذا المحتوى؟",
                 "alreadyPresentInThisFolder": "موجود بالفعل في هذا المجلد",
                 "addContent": "إضافة محتوى",
@@ -1531,138 +1528,182 @@
                 "rejectingFailed": "فشل الرفض. يرجى المحاولة مرة أخرى...",
                 "publishingFailed": "فشل النشر. يرجى المحاولة مرة أخرى...",
                 "searchConfigNotFound": "تكوين فلاتر البحث غير متوفر. يرجى الاتصال بمسؤول النظام للدعم",
-                    "ge_uploadContent": "رفع المحتوى",
-                    "ge_contentType": "نوع المحتوى",
-                    "selectOne": "اختر واحد",
-                    "ge_practiceQuestionSet": "مجموعة أسئلة تدريبية",
-                    "ge_examQuestion": "سؤال امتحان",
-                    "url": "رابط",
-                    "fileAcceptedNote": "الملفات المقبولة - pdf، mp4، webm، epub، youtube، h5p وملف مضغوط html zip",
-                    "maxFileSize": "الحد الأقصى لحجم الملف",
-                    "h5pNote": "يرجى ملاحظة أن ملفات H5P ستستغرق وقتًا أطول للتحميل. إذا لم تتمكن من رؤية المعاينة بعد تحميل الملف، يرجى تحديث المحرر بعد دقيقة",
-                    "h5pDocReference": "يرجى الرجوع إلى هذا المستند للحصول على تفاصيل أنواع محتوى H5P المدعومة:",
-                    "creativeCommonsNote": "بتحميل المحتوى، فإنك تؤكد أنك تنشره بموجب رخصة المشاع الإبداعي المتوافقة مع رخصة حقوق النشر للعمل الأصلي وتُعطي الائتمان المناسب للمؤلف الأصلي للمحتوى",
-                    "closeEditor": "إغلاق المحرر",
-                    "reviewPdfNote": "يرجى مراجعة جميع صفحات هذا الملف PDF. إذا لم يتم عرض الملف بشكل صحيح، فقد يكون السبب أحد المشاكل التالية:",
-                    "pdfFontIssue": "استخدام خطوط غير مضمنة مع ملف PDF",
-                    "pdfCorruptionIssue": "تم تحميل ملف تالف",
-                    "justCompleted": "لقد أنهيت للتو",
-                    "ge_time": "الوقت",
-                    "untitledContent": "محتوى بدون عنوان",
-                    "resume": "استئناف",
-                    "ge_refresh": "تحديث",
-                    "editDetails": "تعديل التفاصيل",
-                    "ge_viewDetails": "عرض التفاصيل",
-                    "lastSaved": "آخر حفظ",
-                    "uploadFailure": "غير قادر على رفع المحتوى!",
-                    "uploadSuccess": "تم رفع المحتوى بنجاح!",
-                    "downloadForMobile": "قم بالتنزيل لتجربته على جهاز محمول",
-                    "limitedSharing": "مشاركة محدودة",
-                    "saveContent": "حفظ المحتوى",
-                    "ge_reviewComments": "مراجعة التعليقات",
-                    "rejectContent": "رفض المحتوى",
-                    "requestChanges": "طلب تغييرات",
-                    "publishContent": "نشر المحتوى",
-                    "settings": "الإعدادات",
-                    "showOverlay": "إظهار التراكب",
-                    "showPageNumber": "إظهار رقم الصفحة",
-                    "showSearchBar": "إظهار شريط البحث",
-                    "orientation": "الاتجاه",
-                    "portrait": "وضع عمودي",
-                    "landscape": "وضع أفقي",
-                    "briefDescription": "وصف موجز عن المحتوى",
-                    "enterBriefDescription": "وصف موجز",
-                    "enterTitle": "أدخل عنوان المحتوى",
-                    "titleOfContent": "عنوان المحتوى",
-                    "appIcon": "أيقونة التطبيق",
-                    "icon": "أيقونة",
-                    "provideRequiredDetails": "يرجى تقديم جميع التفاصيل المطلوبة",
-                    "pleaseSelect": "يرجى الاختيار",
-                    "noResultsFound": "لم يتم العثور على نتائج",
-                    "lockedDueToInactivity": "مغلق بسبب عدم النشاط، اضغط استئناف لمتابعة التحرير. الإغلاق سيؤدي لفقدان التغييرات غير المحفوظة",
-                    "errorOccurred": "حدث خطأ. حاول مرة أخرى لاحقًا",
-                    "ge_inactive": "كنت غير نشط",
-                    "someoneIsWorking": "هناك شخص يعمل حاليًا على",
-                    "tryAgainLater": "حاول مرة أخرى لاحقًا",
-                    "reopenToResume": "أغلق وأعد فتح المحتوى لمتابعة التحرير",
-                    "contentSaved": "تم حفظ المحتوى",
-                    "downloadFailure": "غير قادر على تنزيل المحتوى، يرجى المحاولة لاحقًا",
-                    "addImage": "أضف صورة",
-                    "savingContent": "جاري حفظ المحتوى، يرجى الانتظار",
-                    "loadingEditor": "جاري تحميل المحرر...",
-                    "helpUnavailable": "المساعدة غير متوفرة",
-                    "ok": "حسنًا",
-                    "selectAsset": "اختيار الأصل",
-                    "confirmation": "تأكيد",
-                    "processingFiles": "معالجة الملفات المُسقطة...",
-                    "retry": "إعادة المحاولة",
-                    "dragDrop": "اسحب",
-                    "dropHere": "إفلات",
-                    "yourFiles": "ملفاتك هنا، أو",
-                    "ge_browse": "تصفح",
-                    "dontCloseWindow": "يرجى عدم إغلاق هذه النافذة حتى اكتمال التحميل",
-                    "ge_uploading": "جاري التحميل..",
-                    "collaborators": "المتعاونون",
-                    "viewAllResults": "عرض جميع النتائج",
-                    "addCollaborators": "إضافة متعاونين",
-                    "manageCollaborators": "إدارة المتعاونين",
-                    "ge_loading": "جاري التحميل",
-                    "outOf": "من بين",
-                    "add": "إضافة",
-                    "noUsersFound": "لم يتم العثور على مستخدمين",
-                    "searchSuggestion": "لم تجد ما تبحث عنه؟ حاول البحث عن شيء أكثر تحديدًا",
-                    "collaboratorsExist": "يوجد متعاونون",
-                    "collaboratorExist": "متعاون موجود",
-                    "remove": "إزالة",
-                    "noCollaborators": "لم يتم العثور على متعاونين لهذا المحتوى",
-                    "ge_done": "تم",
-                    "previewFromStart": "معاينة من البداية",
-                    "discard": "تجاهل",
-                    "accept": "قبول",
-                    "retireContent": "سحب المحتوى",
-                    "discardContent": "تجاهل المحتوى",
-                    "downloadTocMetadata": "تنزيل بيانات وصف المحتوى",
-                    "updateTocMetadata": "تحديث بيانات وصف المحتوى",
-                    "ge_qrCodes": "رموز QR",
-                    "ge_downloading": "جاري التنزيل",
-                    "seeMore": "شاهد المزيد",
-                    "sendingEmail": "إرسال البريد الإلكتروني عند الجاهزية",
-                    "numberTooSmall": "يجب أن يكون الرقم على الأقل 2",
-                    "ge_numberTooLarge": "هذا الرقم كبير جدًا للطلب",
-                    "numberShouldBeGreater": "يجب أن يكون الرقم أكبر من",
-                    "qrCodeMissing": "رمز QR مفقود",
-                    "submitWithoutQrCode": "هل أنت متأكد من أنك تريد الإرسال للمراجعة بدون رمز QR؟",
-                    "noTextbookQr": "لم تقم بإضافة أي رمز QR على مستوى الكتاب المدرسي",
-                    "addQrCode": "أضف رمز QR",
-                    "continueAnyway": "استمر على أي حال",
-                    "users": "المستخدمون",
-                    "ge_justCompleted": "لقد أكملت للتو",
-                    "ge_score": "النتيجة",
-                    "ge_goTo": "اذهب إلى",
-                    "ge_next": "التالي",
-                    "ge_progress": "التقدم",
-                    "ge_clickViewDetails": "اضغط على عرض التفاصيل لعرض تفاصيل السؤال",
-                    "h5pGuidelinesDoc":"وثيقة إرشادات H5P",
-                    "urlRequiredMsg": "الرابط أو الملف مطلوب للتحميل",
-                        "invalidContentTypeMsg": "نوع المحتوى غير صالح (الأنواع المدعومة: pdf, epub, h5p, mp4, youtube, html-zip, webm, whitelisted-domain)",
-                        "invalidYoutubeMsg": "يرجى تقديم رابط يوتيوب صالح",
-                        "unableToCreateContentMsg": "غير قادر على إنشاء المحتوى!",
-                        "unableToCreateLockMsg": "غير قادر على إنشاء قفل!",
-                        "unableToUploadContentMsg": "غير قادر على تحميل المحتوى!",
-                        "errorWhileUploadingMsg": "خطأ أثناء التحميل!",
-                        "contentUploadedSuccessMsg": "تم تحميل المحتوى بنجاح!",
-                        "fileSizeErrorMsg": "كبير جداً، الحد الأقصى لحجم الملف هو",
-                        "autoPlay": "تشغيل تلقائي",
-                        "showFullScreen": "عرض بملء الشاشة",
-                        "showVideoControls": "عرض عناصر التحكم بالفيديو",
-                        "invalidInput": "إدخال غير صالح",
-                        "search_btn_lbl": "بحث",
-                        "resultNotFound": "لا توجد نتائج",
-                        "userNotFound": "لا يوجد مستخدمون",
-                        "add_btn_lbl": "إضافة",
-                        "collaboratorsNotFound": "لم يتم العثور على متعاونين لهذا المحتوى",
-                        "remove_btn_lbl": "إزالة",
-                        "collaboratorsUpdatedSuccessfully": "تم تحديث المتعاونين بنجاح"
+                "ge_uploadContent": "رفع المحتوى",
+                "ge_contentType": "نوع المحتوى",
+                "selectOne": "اختر واحد",
+                "ge_practiceQuestionSet": "مجموعة أسئلة تدريبية",
+                "ge_examQuestion": "سؤال امتحان",
+                "url": "رابط",
+                "fileAcceptedNote": "الملفات المقبولة - pdf، mp4، webm، epub، youtube، h5p وملف مضغوط html zip",
+                "maxFileSize": "الحد الأقصى لحجم الملف",
+                "h5pNote": "يرجى ملاحظة أن ملفات H5P ستستغرق وقتًا أطول للتحميل. إذا لم تتمكن من رؤية المعاينة بعد تحميل الملف، يرجى تحديث المحرر بعد دقيقة",
+                "h5pDocReference": "يرجى الرجوع إلى هذا المستند للحصول على تفاصيل أنواع محتوى H5P المدعومة:",
+                "creativeCommonsNote": "بتحميل المحتوى، فإنك تؤكد أنك تنشره بموجب رخصة المشاع الإبداعي المتوافقة مع رخصة حقوق النشر للعمل الأصلي وتُعطي الائتمان المناسب للمؤلف الأصلي للمحتوى",
+                "closeEditor": "إغلاق المحرر",
+                "reviewPdfNote": "يرجى مراجعة جميع صفحات هذا الملف PDF. إذا لم يتم عرض الملف بشكل صحيح، فقد يكون السبب أحد المشاكل التالية:",
+                "pdfFontIssue": "استخدام خطوط غير مضمنة مع ملف PDF",
+                "pdfCorruptionIssue": "تم تحميل ملف تالف",
+                "justCompleted": "لقد أنهيت للتو",
+                "ge_time": "الوقت",
+                "untitledContent": "محتوى بدون عنوان",
+                "resume": "استئناف",
+                "ge_refresh": "تحديث",
+                "editDetails": "تعديل التفاصيل",
+                "ge_viewDetails": "عرض التفاصيل",
+                "lastSaved": "آخر حفظ",
+                "uploadFailure": "غير قادر على رفع المحتوى!",
+                "uploadSuccess": "تم رفع المحتوى بنجاح!",
+                "downloadForMobile": "قم بالتنزيل لتجربته على جهاز محمول",
+                "limitedSharing": "مشاركة محدودة",
+                "saveContent": "حفظ المحتوى",
+                "ge_reviewComments": "مراجعة التعليقات",
+                "rejectContent": "رفض المحتوى",
+                "requestChanges": "طلب تغييرات",
+                "publishContent": "نشر المحتوى",
+                "settings": "الإعدادات",
+                "showOverlay": "إظهار التراكب",
+                "showPageNumber": "إظهار رقم الصفحة",
+                "showSearchBar": "إظهار شريط البحث",
+                "orientation": "الاتجاه",
+                "portrait": "وضع عمودي",
+                "landscape": "وضع أفقي",
+                "briefDescription": "وصف موجز عن المحتوى",
+                "enterBriefDescription": "وصف موجز",
+                "enterTitle": "أدخل عنوان المحتوى",
+                "titleOfContent": "عنوان المحتوى",
+                "appIcon": "أيقونة التطبيق",
+                "icon": "أيقونة",
+                "provideRequiredDetails": "يرجى تقديم جميع التفاصيل المطلوبة",
+                "pleaseSelect": "يرجى الاختيار",
+                "noResultsFound": "لم يتم العثور على نتائج",
+                "lockedDueToInactivity": "مغلق بسبب عدم النشاط، اضغط استئناف لمتابعة التحرير. الإغلاق سيؤدي لفقدان التغييرات غير المحفوظة",
+                "errorOccurred": "حدث خطأ. حاول مرة أخرى لاحقًا",
+                "ge_inactive": "كنت غير نشط",
+                "someoneIsWorking": "هناك شخص يعمل حاليًا على",
+                "tryAgainLater": "حاول مرة أخرى لاحقًا",
+                "reopenToResume": "أغلق وأعد فتح المحتوى لمتابعة التحرير",
+                "contentSaved": "تم حفظ المحتوى",
+                "downloadFailure": "غير قادر على تنزيل المحتوى، يرجى المحاولة لاحقًا",
+                "addImage": "أضف صورة",
+                "savingContent": "جاري حفظ المحتوى، يرجى الانتظار",
+                "loadingEditor": "جاري تحميل المحرر...",
+                "helpUnavailable": "المساعدة غير متوفرة",
+                "ok": "حسنًا",
+                "selectAsset": "اختيار الأصل",
+                "confirmation": "تأكيد",
+                "processingFiles": "معالجة الملفات المُسقطة...",
+                "retry": "إعادة المحاولة",
+                "dragDrop": "اسحب",
+                "dropHere": "إفلات",
+                "yourFiles": "ملفاتك هنا، أو",
+                "ge_browse": "تصفح",
+                "dontCloseWindow": "يرجى عدم إغلاق هذه النافذة حتى اكتمال التحميل",
+                "ge_uploading": "جاري التحميل..",
+                "collaborators": "المتعاونون",
+                "viewAllResults": "عرض جميع النتائج",
+                "addCollaborators": "إضافة متعاونين",
+                "manageCollaborators": "إدارة المتعاونين",
+                "ge_loading": "جاري التحميل",
+                "outOf": "من بين",
+                "add": "إضافة",
+                "noUsersFound": "لم يتم العثور على مستخدمين",
+                "searchSuggestion": "لم تجد ما تبحث عنه؟ حاول البحث عن شيء أكثر تحديدًا",
+                "collaboratorsExist": "يوجد متعاونون",
+                "collaboratorExist": "متعاون موجود",
+                "remove": "إزالة",
+                "noCollaborators": "لم يتم العثور على متعاونين لهذا المحتوى",
+                "ge_done": "تم",
+                "previewFromStart": "معاينة من البداية",
+                "discard": "تجاهل",
+                "accept": "قبول",
+                "retireContent": "سحب المحتوى",
+                "discardContent": "تجاهل المحتوى",
+                "downloadTocMetadata": "تنزيل بيانات وصف المحتوى",
+                "updateTocMetadata": "تحديث بيانات وصف المحتوى",
+                "ge_qrCodes": "رموز QR",
+                "ge_downloading": "جاري التنزيل",
+                "seeMore": "شاهد المزيد",
+                "sendingEmail": "إرسال البريد الإلكتروني عند الجاهزية",
+                "numberTooSmall": "يجب أن يكون الرقم على الأقل 2",
+                "ge_numberTooLarge": "هذا الرقم كبير جدًا للطلب",
+                "numberShouldBeGreater": "يجب أن يكون الرقم أكبر من",
+                "qrCodeMissing": "رمز QR مفقود",
+                "submitWithoutQrCode": "هل أنت متأكد من أنك تريد الإرسال للمراجعة بدون رمز QR؟",
+                "noTextbookQr": "لم تقم بإضافة أي رمز QR على مستوى الكتاب المدرسي",
+                "addQrCode": "أضف رمز QR",
+                "continueAnyway": "استمر على أي حال",
+                "users": "المستخدمون",
+                "ge_justCompleted": "لقد أكملت للتو",
+                "ge_score": "النتيجة",
+                "ge_goTo": "اذهب إلى",
+                "ge_next": "التالي",
+                "ge_progress": "التقدم",
+                "ge_clickViewDetails": "اضغط على عرض التفاصيل لعرض تفاصيل السؤال",
+                "h5pGuidelinesDoc": "وثيقة إرشادات H5P",
+                "urlRequiredMsg": "الرابط أو الملف مطلوب للتحميل",
+                "invalidContentTypeMsg": "نوع المحتوى غير صالح (الأنواع المدعومة: pdf, epub, h5p, mp4, youtube, html-zip, webm, whitelisted-domain)",
+                "invalidYoutubeMsg": "يرجى تقديم رابط يوتيوب صالح",
+                "unableToCreateContentMsg": "غير قادر على إنشاء المحتوى!",
+                "unableToCreateLockMsg": "غير قادر على إنشاء قفل!",
+                "unableToUploadContentMsg": "غير قادر على تحميل المحتوى!",
+                "errorWhileUploadingMsg": "خطأ أثناء التحميل!",
+                "contentUploadedSuccessMsg": "تم تحميل المحتوى بنجاح!",
+                "fileSizeErrorMsg": "كبير جداً، الحد الأقصى لحجم الملف هو",
+                "autoPlay": "تشغيل تلقائي",
+                "showFullScreen": "عرض بملء الشاشة",
+                "showVideoControls": "عرض عناصر التحكم بالفيديو",
+                "invalidInput": "إدخال غير صالح",
+                "search_btn_lbl": "بحث",
+                "resultNotFound": "لا توجد نتائج",
+                "userNotFound": "لا يوجد مستخدمون",
+                "add_btn_lbl": "إضافة",
+                "collaboratorsNotFound": "لم يتم العثور على متعاونين لهذا المحتوى",
+                "remove_btn_lbl": "إزالة",
+                "collaboratorsUpdatedSuccessfully": "تم تحديث المتعاونين بنجاح",
+                "skills": "المهارات",
+                "lastupdatedCaps": "آخر تحديث",
+                "scanningLinkedContent": "فحص المحتوى المرتبط",
+                "linkedContentErrorMessage": "هذا المحتوى مرتبط بالمجموعات. لا يمكن تنفيذ عملية الحذف.",
+                "deletecontent": "حذف المحتوى",
+                "deleteconfirm": "هل أنت متأكد أنك تريد حذف هذا المحتوى؟",
+                "skillMapName": "الاسم",
+                "skillMapCode": "الكود",
+                "skillMapDescription": "الوصف",
+                "enterNodeName": "أدخل اسم العقدة",
+                "enterUniqueCode": "أدخل كودًا فريدًا (أحرف وأرقام و _ و - فقط)",
+                "enterDescriptionSkillMap": "أدخل الوصف (اختياري، حد أقصى 256 حرف)",
+                "nameIsRequired": "الاسم مطلوب",
+                "codeIsRequired": "الكود مطلوب",
+                "codeInvalidFormat": "يمكن أن يحتوي الكود على أحرف وأرقام وشرطة سفلية (_) وشرطة (-) فقط",
+                "codeNotUnique": "يجب أن يكون الكود فريدًا",
+                "descriptionTooLong": "لا يمكن أن يتجاوز الوصف 256 حرفًا",
+                "saveAsDraftBtn": "حفظ كمسودة",
+                "skillMapSavedDraft": "تم حفظ خريطة المهارات الخاصة بك بنجاح كمسودة.",
+                "cannotDeleteRootNode": "لا يمكن حذف العقدة الجذرية",
+                "skillMapEditor": "محرر خريطة المهارات",
+                "saveChanges": "حفظ التغييرات",
+                "deleteNode": "حذف العقدة",
+                "addChildMenu": "إضافة طفل",
+                "addSiblingMenu": "إضافة شقيق",
+                "deleteMenu": "حذف",
+                "invalidInputDetected": "تم اكتشاف إدخال غير صالح. يرجى المراجعة",
+                "fillRequiredFields": "يرجى ملء جميع الحقول المطلوبة",
+                "failedToSaveSkillMap": "فشل في حفظ خريطة المهارات، يرجى المحاولة مرة أخرى لاحقًا.",
+                "skillMapDesc": "إنشاء مسارات تعلم المهارات وخرائط الكفاءة",
+                "view_skill_map": "عرض خريطة المهارات",
+                "view_skill_map_review" : "عرض خريطة المهارات للمراجعة",
+                "skillMapReview": "مراجعة خريطة المهارات",
+                "skillMap": "خريطة المهارات",
+                "create_resource": "إنشاء مورد",
+                "view_all_textbooks": "عرض جميع الكتب المدرسية",
+                "view_all_content": "عرض جميع المحتويات",
+                "view_drafts": "عرض المسودات",
+                "view_submitted_for_review": "عرض المقدم للمراجعة",
+                "view_published": "عرض المنشور",
+                "view_uploads": "عرض التحميلات",
+                "content_awaiting_review": "المحتوى في انتظار المراجعة",
+                "manage_course_batches": "إدارة دفعات الدورات",
+                "view_collaborations": "عرض المحتوى الذي تتعاون عليه"
             },
             "alert": {
                 "debugModeEnabledFailed": "غير قادر على تمكين وضع تصحيح الأخطاء",
@@ -2041,7 +2082,6 @@
                 "m0023": "غير قادر على رفع طلب الدعم لأنك غير متصل بالإنترنت",
                 "searchinputerror": "أدخل كلمة مفتاحية لإجراء البحث",
                 "failedToDownloadCertificate": "فشل في تحميل الشهادة."
-
             },
             "imsg": {
                 "m0082": "سيقوم حذف {groupname} بإزالة المجموعة بشكل دائم من التطبيق",
@@ -2345,8 +2385,8 @@
                         "courseLastUpdatedOn": "آخر مرة تم تحديثها على",
                         "courseProgress": "التقدم بالطبع",
                         "certificateOfCompletion": "شهادة إتمام الدورة",
-                        "downloadCertificate":"تحميل الشهادة",
-                        "expiryDate":"تاريخ انهاء الدورة",
+                        "downloadCertificate": "تحميل الشهادة",
+                        "expiryDate": "تاريخ انهاء الدورة",
                         "courseRelevantFor": "الدورة ذات صلة بـ:",
                         "courseSuccessMessage": "لقد أكملت الدورة بنجاح",
                         "courseSuccessNotificationMessage": "سيتم إخطارك حول شهادة الدورة التدريبية على تفاصيل الاتصال المسجلة في غضون 7 أيام",
@@ -2436,13 +2476,13 @@
                         "noBookfoundButtonText": "رؤية المزيد",
                         "noBookfoundSubTitle": "لوحتك لم تضيف المحتوى بعد. اضغط على الزر لرؤية المزيد من المحتوى على {instance}",
                         "noBookfoundTitle": "يتم حالياً إضافة المحتوى من قبل اللوحة",
-                        "noTaskfoundSubTitle": "لم تقم لوحتك بإضافة أي مهمة بعد. اضغط على الزر لاستكشاف المزيد من المهام على {instance}",    
+                        "noTaskfoundSubTitle": "لم تقم لوحتك بإضافة أي مهمة بعد. اضغط على الزر لاستكشاف المزيد من المهام على {instance}",
                         "noTaskfoundTitle": "يتم حالياً إضافة المهام من قبل اللوحة",
                         "seemore": "عرض المزيد",
                         "task": "مهمة",
-						"task_title": "قائمة المهام",
+                        "task_title": "قائمة المهام",
                         "tasks": "المهام",
-						"textbooks": "الكتب المدرسية"
+                        "textbooks": "الكتب المدرسية"
                     }
                 },
                 "messages": {
@@ -2504,7 +2544,7 @@
                         "mytrainings": "مهاماتي",
                         "nextModule": "المهمة التالية",
                         "oneCourse": "دورة",
-						"prevModule": "الوحدة السابقة",
+                        "prevModule": "الوحدة السابقة",
                         "returnToCourses": "الرجوع إلى الدورات",
                         "sectionTitle": "الدورات",
                         "selectChapter": "حدد الوحدة",
@@ -2514,129 +2554,129 @@
                     "tab": {
                         "courses": "الدورات"
                     }
-                },		
-				"messages": {
-					"dashboard": {
-						"emsg": {
-						  "m002": "لم ينضم المستخدم إلى أي دفعة لهذه الدورة التدريبية"
-						}
-					},
-					"emsg": {
-						"m0002": "هذه الدورة التدريبية لم تعد متاحة",
-						"m0003": "هذه الدورة التدريبية لا تحتوي حاليًا على دفعة مفتوحة"
-					},
-					"fmsg": {
-						"dataSettingNotSubmitted": "تعذّر تحديث إعدادات مشاركة الملف الشخصي. يرجى المحاولة مرة أخرى لاحقًا",
-						"m0001": "عذرًا! لم نتمكن من جلب معلومات الدورة التدريبية التي التحقت بها. حاول مرة أخرى لاحقًا",
-						"m0002": "عذرًا! لم نتمكن من العثور على دورات تدريبية أخرى مخصصة لك. حاول مرة أخرى لاحقًا",
-						"m0086": "هذا المحتوى غير متاح حاليًا"
-					},
-					"imsg": {
-						"m0001": "تم الإبلاغ عن هذا المحتوى كمحتوى غير مناسب. وهو الآن قيد المراجعة",
-						"m0026": "مرحبًا، هذا المحتوى غير متاح حاليًا وقد يكون قيد التعديل"
-					},
-					"stmsg": {
-					    "m0125": "ابدأ بإنشاء أو تحميل المحتوى. لا توجد حاليًا أي مسودات محفوظة"
+                },
+                "messages": {
+                    "dashboard": {
+                        "emsg": {
+                            "m002": "لم ينضم المستخدم إلى أي دفعة لهذه الدورة التدريبية"
+                        }
+                    },
+                    "emsg": {
+                        "m0002": "هذه الدورة التدريبية لم تعد متاحة",
+                        "m0003": "هذه الدورة التدريبية لا تحتوي حاليًا على دفعة مفتوحة"
+                    },
+                    "fmsg": {
+                        "dataSettingNotSubmitted": "تعذّر تحديث إعدادات مشاركة الملف الشخصي. يرجى المحاولة مرة أخرى لاحقًا",
+                        "m0001": "عذرًا! لم نتمكن من جلب معلومات الدورة التدريبية التي التحقت بها. حاول مرة أخرى لاحقًا",
+                        "m0002": "عذرًا! لم نتمكن من العثور على دورات تدريبية أخرى مخصصة لك. حاول مرة أخرى لاحقًا",
+                        "m0086": "هذا المحتوى غير متاح حاليًا"
+                    },
+                    "imsg": {
+                        "m0001": "تم الإبلاغ عن هذا المحتوى كمحتوى غير مناسب. وهو الآن قيد المراجعة",
+                        "m0026": "مرحبًا، هذا المحتوى غير متاح حاليًا وقد يكون قيد التعديل"
+                    },
+                    "stmsg": {
+                        "m0125": "ابدأ بإنشاء أو تحميل المحتوى. لا توجد حاليًا أي مسودات محفوظة"
                     }
                 }
             }
-        },			
-		"frmelemnts": {
-			"bltpt": {
-				"earncert": "يتم إصدار الشهادات لمستخدمي {state} فقط",
-				"earnmcert": "سيتم إصدار الشهادة إذا حصلت على نسبة تقييم تساوي أو تتجاوز {percent}٪"
-			},
-			"btn": {
-				"dscfrmdisablediscussion": "تعطيل المنتديات",
-				"dscfrmenablediscussion": "تمكين المنتديات"
-			},
-			"cert": {
-				"btn": {
-					"browse": "استعراض",
-					"createtemp": "إنشاء قالب",
-					"refresh": "تحديث المعاينة"
-				},
-				"inlntxt": {
-					"certtitle": "هذا هو النص الذي سيتم طباعته كعنوان رئيسي على الشهادة، يظهر باللون الأزرق",
-					"confrmtion": "أُقرّ بأن جميع عناصر هذه الشهادة المقدمة من قبلي صحيحة ومُعتمدة من قبل الجهات الموقعة وأصحاب الشعارات",
-					"signdet": "سيتم طباعة المسمى الوظيفي أسفل التوقيع الرسمي",
-					"slecttemp": "معاينة واختيار قالب شهادة من القوالب المتوفرة، أو إنشاء قالب جديد",
-					"statedet": "اسم الجهة (مثل: حكومة الولاية أو الجهة المعنية) سيُطبع فوق عنوان الشهادة"
-				},
-				"lbl": {
-					"addcert": "إضافة شهادة",
-					"certprew": "معاينة قالب الشهادة",
-					"certtitle": "عنوان الشهادة",
-					"confcert": "إعداد الشهادة",
-					"createtemp": "إنشاء قالب الشهادة",
-					"layout": "اختر التخطيط",
-					"sign": "التوقيع الأول",
-					"sign2": "التوقيع الثاني",
-					"signatory": "الموقّع المعتمد",
-					"signdesig": "المسمى الوظيفي للتوقيع 1",
-					"signdesig2": "المسمى الوظيفي للتوقيع 2",
-					"statedet": "تفاصيل الجهة أو الدولة",
-					"statelogo": "شعار الجهة 1",
-					"statelogo2": "شعار الجهة 2"
-				},
-				"prmttxt": {
-					"certtitle": "أدخل عنوان الشهادة هنا",
-					"refreshtxt": "اختر تخطيطًا ثم انقر على <b>تحديث</b> لمعاينة قالب الشهادة",
-					"statedet": "أدخل اسم الجهة أو المؤسسة أو البرنامج"
+        },
+        "frmelemnts": {
+            "bltpt": {
+                "earncert": "يتم إصدار الشهادات لمستخدمي {state} فقط",
+                "earnmcert": "سيتم إصدار الشهادة إذا حصلت على نسبة تقييم تساوي أو تتجاوز {percent}٪"
+            },
+            "btn": {
+                "dscfrmdisablediscussion": "تعطيل المنتديات",
+                "dscfrmenablediscussion": "تمكين المنتديات"
+            },
+            "cert": {
+                "btn": {
+                    "browse": "استعراض",
+                    "createtemp": "إنشاء قالب",
+                    "refresh": "تحديث المعاينة"
+                },
+                "inlntxt": {
+                    "certtitle": "هذا هو النص الذي سيتم طباعته كعنوان رئيسي على الشهادة، يظهر باللون الأزرق",
+                    "confrmtion": "أُقرّ بأن جميع عناصر هذه الشهادة المقدمة من قبلي صحيحة ومُعتمدة من قبل الجهات الموقعة وأصحاب الشعارات",
+                    "signdet": "سيتم طباعة المسمى الوظيفي أسفل التوقيع الرسمي",
+                    "slecttemp": "معاينة واختيار قالب شهادة من القوالب المتوفرة، أو إنشاء قالب جديد",
+                    "statedet": "اسم الجهة (مثل: حكومة الولاية أو الجهة المعنية) سيُطبع فوق عنوان الشهادة"
+                },
+                "lbl": {
+                    "addcert": "إضافة شهادة",
+                    "certprew": "معاينة قالب الشهادة",
+                    "certtitle": "عنوان الشهادة",
+                    "confcert": "إعداد الشهادة",
+                    "createtemp": "إنشاء قالب الشهادة",
+                    "layout": "اختر التخطيط",
+                    "sign": "التوقيع الأول",
+                    "sign2": "التوقيع الثاني",
+                    "signatory": "الموقّع المعتمد",
+                    "signdesig": "المسمى الوظيفي للتوقيع 1",
+                    "signdesig2": "المسمى الوظيفي للتوقيع 2",
+                    "statedet": "تفاصيل الجهة أو الدولة",
+                    "statelogo": "شعار الجهة 1",
+                    "statelogo2": "شعار الجهة 2"
+                },
+                "prmttxt": {
+                    "certtitle": "أدخل عنوان الشهادة هنا",
+                    "refreshtxt": "اختر تخطيطًا ثم انقر على <b>تحديث</b> لمعاينة قالب الشهادة",
+                    "statedet": "أدخل اسم الجهة أو المؤسسة أو البرنامج"
                 }
             },
-			"imsg": {
+            "imsg": {
                 "admintnc": "استخدم البيانات التي تم تنزيلها وفقًا لسياسة {instance}",
                 "dscfrmmndtry": "السؤال إلزامي",
                 "dscfrmmndtrydesc": "الوصف إلزامي، ويجب ألا يقل عن 8 أحرف",
                 "desktop": {
                     "m003": "في انتظار الاتصال بالإنترنت لبدء التنزيل"
                 }
-			},
-			"lbl": {
-				"accessibility": "وصول قارئ الشاشة",
-				"accessibilitymode": "التبديل إلى الوضع المظلم",
-				"accessibilitynormalmode": "التبديل إلى وضع الضوء",
-				"accessibilitytext": "خريطة الموقع",
-				"accessibilitytextsize": "زيادة حجم الخط",
-				"accessibilitytskip": "تخطي إلى المحتوى الرئيسي",
-				"dscfrmbstpst": "أفضل المشاركات",
-				"dscfrmcommnets": "التعليقات",
-				"dscfrmdisablepopuphdr": "هل ترغب في تعطيل منتدى المناقشة؟",
-				"dscfrmdwnvte": "تصويت سلبي",
-				"dscfrmelbrt": "اشرح سؤالك أو فكرتك بشكل واضح",
-				"dscfrmgendisc": "المناقشات العامة",
-				"dscfrmposts": "المشاركات",
-				"dscfrmrcntpsts": "أحدث المشاركات",
-				"dscfrmsvdpst": "المشاركات المحفوظة",
-				"dscfrmtags": "الوسوم",
-				"dscfrmupvte": "تصويت إيجابي",
-				"dscfrmvotes": "عدد الأصوات",
-				"newCourse": "دورات جديدة",
-				"profiledetails": "تفضيل المحتوى"
-			},
-			"prmpt": {
-			    "dscfrmaddtag": "أضف وسمًا واضغط على Enter",
-			    "dscfrmelbrt": "اكتب هنا..."
-			},
-			"puphdr": {
-			    "adminguideline": "إرشادات المسؤول"
-			},
-			"scttl": {
-			    "certques": "معايير إصدار الشهادة"
-			}	
-		},
-		"frmlemnts": {
-			"intxt": {
-				"selstatetenant": "اختر الدولة أو الجهة المنظمة"
-			}
-		},
-		"orgname": "اسم المؤسسة",
-		"participants": "المشاركون",
-		"resourceService": {
-			"frmelmnts": {
-				"lbl": {
-				    "userId": "معرّف المستخدم"	
+            },
+            "lbl": {
+                "accessibility": "وصول قارئ الشاشة",
+                "accessibilitymode": "التبديل إلى الوضع المظلم",
+                "accessibilitynormalmode": "التبديل إلى وضع الضوء",
+                "accessibilitytext": "خريطة الموقع",
+                "accessibilitytextsize": "زيادة حجم الخط",
+                "accessibilitytskip": "تخطي إلى المحتوى الرئيسي",
+                "dscfrmbstpst": "أفضل المشاركات",
+                "dscfrmcommnets": "التعليقات",
+                "dscfrmdisablepopuphdr": "هل ترغب في تعطيل منتدى المناقشة؟",
+                "dscfrmdwnvte": "تصويت سلبي",
+                "dscfrmelbrt": "اشرح سؤالك أو فكرتك بشكل واضح",
+                "dscfrmgendisc": "المناقشات العامة",
+                "dscfrmposts": "المشاركات",
+                "dscfrmrcntpsts": "أحدث المشاركات",
+                "dscfrmsvdpst": "المشاركات المحفوظة",
+                "dscfrmtags": "الوسوم",
+                "dscfrmupvte": "تصويت إيجابي",
+                "dscfrmvotes": "عدد الأصوات",
+                "newCourse": "دورات جديدة",
+                "profiledetails": "تفضيل المحتوى"
+            },
+            "prmpt": {
+                "dscfrmaddtag": "أضف وسمًا واضغط على Enter",
+                "dscfrmelbrt": "اكتب هنا..."
+            },
+            "puphdr": {
+                "adminguideline": "إرشادات المسؤول"
+            },
+            "scttl": {
+                "certques": "معايير إصدار الشهادة"
+            }
+        },
+        "frmlemnts": {
+            "intxt": {
+                "selstatetenant": "اختر الدولة أو الجهة المنظمة"
+            }
+        },
+        "orgname": "اسم المؤسسة",
+        "participants": "المشاركون",
+        "resourceService": {
+            "frmelmnts": {
+                "lbl": {
+                    "userId": "معرّف المستخدم"
                 }
             }
         },
@@ -2971,8 +3011,6 @@
                 "linkedContentErrorMessage": "لا يمكن حذف هذا المحتوى عند استخدامه في ما يلي",
                 "additionalCategory": "فئة إضافية",
                 "discussionForum": "منتدى النقاش",
-
-
                 "questionSet": "مجموعة الأسئلة",
                 "pickQuestions": "اختيار الأسئلة",
                 "configurations": "الإعدادات",
@@ -2999,8 +3037,6 @@
                 "addMoreQuestions": "أضف المزيد من الأسئلة",
                 "next": "التالي",
                 "tryAgain": "حاول مرة أخرى",
-
-
                 "chooseTemplate": "اختر قالب",
                 "questionConfiguration": "إعدادات السؤال",
                 "questionDetails": "تفاصيل السؤال",
@@ -3023,16 +3059,12 @@
                 "markAsRight": "حدد كإجابة صحيحة",
                 "previewMessage": "يرجى معاينة المحتوى قبل الحفظ.",
                 "refresh": "تحديث",
-
-
                 "tryAfterSometime": "حدث خطأ. حاول مرة أخرى لاحقًا",
                 "youHaveBeenInactive": "كنت غير نشط",
                 "someoneWorking": "شخص ما يعمل على هذا المحتوى حاليًا",
                 "tryAgainLater": "حاول مرة أخرى لاحقًا",
                 "closeAndReopenContent": "أغلق المحتوى وأعد فتحه لاستئناف التحرير",
                 "inactivityMessage": " تم القفل بسبب عدم النشاط، انقر على استئناف لمتابعة التحرير. الإغلاق سيؤدي إلى فقدان التغييرات غير المحفوظة.",
-
-
                 "publish": "نشر",
                 "discard": "تجاهل",
                 "accept": "قبول",
@@ -3063,7 +3095,6 @@
                 "deleteAnswer": "حذف الإجابة",
                 "formulaLimitMsg": "عاين السؤال وقم بتقسيم المعادلات الطويلة لضمان عرضها بشكل صحيح.",
                 "layoutChangeMsg": "يرجى معاينة السؤال قبل الحفظ. قد لا يتناسب السؤال بالكامل مع التخطيط المحدد.",
-
                 "Icon": "أيقونة",
                 "addAnImage": "أضف صورة",
                 "collaborators": "المتعاونون",
@@ -3087,7 +3118,7 @@
                 "unableToUpdateCollaborators": "تعذر تحديث المتعاون",
                 "collaboratorsUpdated": "تم تحديث المتعاونين بنجاح",
                 "viewCollaborators": "عرض المتعاون",
-                "sidebarSettings":{
+                "sidebarSettings": {
                     "title": "عنوان مجموعة الأسئلة",
                     "shuffle_questions": "خلط الأسئلة",
                     "show_feedback": "إظهار التعليق الفوري",
@@ -3128,7 +3159,7 @@
                     "labelLevelPlaceHolder": "اختر المستوى",
                     "max_score": "الحد الأقصى للنقاط",
                     "labelMaxScorePlaceHolder": "أدخل الحد الأقصى للنقاط"
-                    },
+                },
                 "assetBrowser": {
                     "selectImage": "اختر صورة",
                     "selectAudio": "اختر ملفًا صوتيًا",
@@ -3206,7 +3237,6 @@
                     "errorInUploading": "خطأ في التحميل ",
                     "pleaseTryAgain": "الرجاء المحاولة مرة أخرى!"
                 },
-
                 "contentSaved": "تم حفظ المحتوى!",
                 "failedToSaveContent": "فشل في حفظ المحتوى",
                 "savingContentPleaseWait": "حفظ المحتوى، يرجى الانتظار...",
@@ -3221,7 +3251,6 @@
                 "qrCodesUpdatingFailed": "فشل تحديث رمز(رموز) الاستجابة السريعة!",
                 "contentRetiredSuccessfully": "المحتوى المتقاعد بنجاح!",
                 "contentLimitedSharedSuccessfully": "المحتوى محدود مشترك بنجاح!",
-
                 "sendingForReviewFailed": "فشل الإرسال للمراجعة، يرجى المحاولة لاحقاً...",
                 "unableToPublishContent": "غير قادر على نشر المحتوى، حاول مرة أخرى!",
                 "unableToRejectContent": "غير قادر على رفض المحتوى، حاول مرة أخرى!",

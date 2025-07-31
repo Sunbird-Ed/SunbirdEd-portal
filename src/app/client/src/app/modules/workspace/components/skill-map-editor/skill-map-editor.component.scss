@@ -1,0 +1,873 @@
+// Skill Map Editor Styles (matching collection editor design)
+
+.skill-map-editor {
+    height: 100vh; // Set fixed height
+    overflow: hidden; // Prevent any overflow on main container
+    
+    .sb-disabled {
+        background: var(--gray-0);
+        border: .0625rem solid var(--gray-0);
+        opacity: .45;
+        pointer-events: none;
+    }
+
+    .hover-none {
+        &:hover {
+            background: none !important;
+        }
+    }
+
+    .sb-bg-lightBlue {
+        background: var(--primary-0) !important;
+    }
+
+    .bb-1 {
+        border-bottom: 1px solid #d8d8d8;
+    }
+
+    .eight.bg-white {
+        border-left: solid 1px var(--gray-100);
+        html[dir="rtl"] & {
+            border-right: solid 1px var(--gray-100);
+            border-left: none;
+        }
+    }
+
+    // Angular Material Form Styling
+    .skill-map-meta-form {
+        padding: 20px;
+
+        .skill-map-form {
+            font-family: 'Times New Roman', sans-serif !important;
+            
+            mat-form-field {
+                font-family: 'Times New Roman', sans-serif !important;
+                
+                // Remove red outline on focus/typing
+                .mat-form-field-outline-thick {
+                    color: rgba(0, 0, 0, 0.12) !important;
+                }
+                
+                // Enhanced error styling for better visibility
+                &.mat-form-field-invalid {
+                    .mat-form-field-outline-thick {
+                        color: #f44336 !important;
+                    }
+                }
+                
+                mat-error {
+                    font-size: 12px;
+                    color: #f44336;
+                    margin-top: 4px;
+                }
+                
+                .mat-form-field-outline-start,
+                .mat-form-field-outline-gap,
+                .mat-form-field-outline-end {
+                    border-color: rgba(0, 0, 0, 0.12) !important;
+                }
+                
+                // Ensure labels are black and positioned outside
+                mat-label {
+                    font-family: 'Times New Roman', sans-serif !important;
+                    color: black !important;
+                }
+                
+                // Remove red border from inputs when focused or invalid
+                input, textarea {
+                    font-family: 'Times New Roman', sans-serif !important;
+                    border: none !important;
+                    outline: none !important;
+                    
+                    &:focus {
+                        border: none !important;
+                        outline: none !important;
+                        box-shadow: none !important;
+                    }
+                    
+                    &.ng-invalid {
+                        border: none !important;
+                        outline: none !important;
+                        box-shadow: none !important;
+                    }
+                }
+                
+                // Error and hint styling
+                mat-error, mat-hint {
+                    font-family: 'Times New Roman', sans-serif !important;
+                }
+                
+                // Override Angular Material's focus color
+                &.mat-focused {
+                    .mat-form-field-outline-thick {
+                        color: rgba(0, 0, 0, 0.87) !important;
+                    }
+                }
+                
+                // Override error state outline
+                &.mat-form-field-invalid {
+                    .mat-form-field-outline-thick {
+                        color: rgba(0, 0, 0, 0.12) !important;
+                    }
+                }
+                
+                // Additional override for any red coloring
+                .mat-form-field-outline {
+                    color: rgba(0, 0, 0, 0.12) !important;
+                }
+                
+                // Remove red from input field itself
+                .mat-input-element {
+                    caret-color: black !important;
+                    
+                    &:focus {
+                        caret-color: black !important;
+                    }
+                }
+                
+                // Override any mat-input-error class
+                .mat-input-error {
+                    border-color: rgba(0, 0, 0, 0.12) !important;
+                    box-shadow: none !important;
+                }
+                
+                // Specific styling for filled appearance
+                &.mat-form-field-appearance-fill {
+                    .mat-form-field-underline {
+                        background-color: rgba(0, 0, 0, 0.12) !important;
+                    }
+                    
+                    &.mat-focused .mat-form-field-underline {
+                        background-color: rgba(0, 0, 0, 0.87) !important;
+                    }
+                    
+                    &.mat-form-field-invalid .mat-form-field-underline {
+                        background-color: rgba(0, 0, 0, 0.12) !important;
+                    }
+                }
+            }
+        }
+
+        .full-width {
+            width: 100%;
+        }
+
+        .half-width {
+            width: calc(50% - 5px);
+        }
+
+        .two-column-fields {
+            display: flex;
+            gap: 10px;
+        }
+
+        .mb-16 {
+            margin-bottom: 16px;
+        }
+
+        .mr-10 {
+            margin-right: 10px;
+        }
+
+        .mt-20 {
+            margin-top: 20px;
+        }
+
+        mat-form-field {
+            display: block;
+            
+            .mat-form-field-wrapper {
+                padding-bottom: 1.25em;
+            }
+        }
+
+        .form-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-top: 16px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .required {
+            color: #f44336;
+        }
+    }
+
+    // Semantic UI Dropdown styles (matching collection editor)
+    .ui.dropdown {
+        &.sb-dotted-dropdown {
+            .menu {
+                min-width: 150px;
+
+                .item {
+                    padding: 8px 12px;
+                    font-size: 13px;
+
+                    &:hover {
+                        background: #f8f9fa;
+                    }
+
+                    i {
+                        margin-right: 8px;
+                    }
+                }
+
+                .divider {
+                    margin: 4px 0;
+                }
+            }
+        }
+
+        &.profile-dropdown {
+            .menu {
+                .item {
+                    &.fs-0-785 {
+                        font-size: 0.785rem;
+                    }
+
+                    &.bg-none {
+                        background: none;
+                        border: none;
+                        text-align: left;
+                        width: 100%;
+
+                        &:hover {
+                            background: #f8f9fa;
+                        }
+                    }
+
+                    .text {
+                        &.label-disable {
+                            color: #999;
+                        }
+                    }
+
+                    .icon {
+                        &.sb-disable-icon {
+                            color: #ccc;
+                        }
+
+                        &.sb-color-primary {
+                            color: var(--primary-400);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Tree structure styles (matching fancy-tree)
+    // Tree structure styles (matching fancy-tree)
+    .skill-map-tree-container {
+        height: calc(100vh - 140px); // Adjust to account for headers
+        overflow-y: auto;
+        position: relative;
+        padding-bottom: 80px; // Add padding for fixed buttons
+
+        .skill-tree-scroll-area {
+            padding: 10px;
+        }
+
+        .tree-node {
+            margin-bottom: 5px;
+
+            &.selected {
+                .node-content {
+                    background-color: #f0f8ff;
+                    border-left: 3px solid var(--primary-400);
+                }
+            }
+
+            .node-content {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 8px 12px;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+
+                &:hover {
+                    background-color: #f5f5f5;
+                }
+
+                .node-header {
+                    display: flex;
+                    align-items: center;
+                    flex: 1;
+
+                    .toggle-icon,
+                    .toggle-placeholder {
+                        width: 20px;
+                        height: 20px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-right: 5px;
+                        cursor: pointer;
+
+                        i {
+                            font-size: 12px;
+                            color: #666;
+                        }
+                    }
+
+                    .node-icon {
+                        margin-right: 8px;
+                        color: var(--primary-400);
+
+                        &.sb-fancyTree-icon {
+                            font-size: 14px;
+                        }
+                    }
+
+                    .node-name {
+                        font-size: 14px;
+                        color: #333;
+                        font-weight: 500;
+                    }
+                }
+
+                .sb-dotted-dropdown {
+                    opacity: 0;
+                    transition: opacity 0.2s ease;
+
+                    .icon.ellipsis.vertical {
+                        cursor: pointer;
+                        padding: 4px;
+                        border-radius: 3px;
+
+                        &:hover {
+                            background-color: #e0e0e0;
+                        }
+
+                        &.sb-color-black {
+                            color: #333;
+                        }
+                    }
+                }
+
+                &:hover .sb-dotted-dropdown {
+                    opacity: 1;
+                }
+            }
+
+            .child-nodes {
+                margin-left: 15px;
+                border-left: 1px dashed #ddd;
+                padding-left: 10px;
+            }
+
+            &.root-node {
+                .node-content {
+                    font-weight: 600;
+                    background-color: #f8f9fa;
+                    border: 1px solid #e9ecef;
+                }
+            }
+        }
+
+        // Validation error styles for tree nodes
+        .ui-fancytree-container {
+            .fancytree-node.sb-editableNode.sb-fancyTreeNodeError {
+                .fancytree-title {
+                    color: #f44336 !important;
+                    font-weight: bold;
+                    background-color: rgba(244, 67, 54, 0.1);
+                    padding: 2px 4px;
+                    border-radius: 3px;
+                }
+            }
+
+            // Additional styling for validation error nodes
+            .validation-error {
+                .fancytree-title {
+                    color: #f44336 !important;
+                    background-color: rgba(244, 67, 54, 0.05);
+                    border-left: 3px solid #f44336;
+                    padding-left: 6px;
+                }
+            }
+        }
+    }
+
+    // Action buttons at bottom (matching fancy-tree)
+    .sb-fixed-with-whitebg {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        border-top: 1px solid #e9ecef;
+        padding: 15px 20px;
+        z-index: 1000;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+
+        .sb-btn-cover {
+            margin-right: 10px;
+
+            .sb-btn {
+                min-width: 120px;
+
+                &.sb-btn-radius {
+                    border-radius: 4px;
+                }
+
+                &.b-none {
+                    border: 1px solid var(--primary-400);
+                }
+
+                &.sb-disabled {
+                    background: var(--gray-0);
+                    border: .0625rem solid var(--gray-0);
+                    opacity: .45;
+                    pointer-events: none;
+                }
+
+                &.sb-btn-outline-primary {
+                    background: white;
+                    color: var(--primary-400);
+                    border: 1px solid var(--primary-400);
+
+                    &:hover:not(.sb-disabled) {
+                        background: var(--primary-400);
+                        color: white;
+                    }
+                }
+            }
+        }
+    }
+
+    // Form styles (matching meta-form)
+    .skill-map-meta-form {
+        padding: 20px;
+
+        // Angular Material Form Styles
+        .skill-map-form {
+            font-family: 'Times New Roman', sans-serif !important;
+
+            .full-width {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            // Form row layout for 50% width fields
+            .form-row {
+                display: flex;
+                gap: 16px;
+                align-items: flex-start;
+                /* Ensure items start from the top */
+                margin-bottom: 10px;
+
+                .half-width {
+                    width: 50%;
+                    flex: 0 0 50%;
+                    /* Don't grow, don't shrink, stay at 50% */
+                    max-width: 50%;
+                }
+            }
+
+            // Special styling for single element rows (like code field)
+            .form-row:last-of-type {
+                .half-width {
+                    flex: 0 0 50%;
+                    max-width: 50%;
+                }
+            }
+
+            // Responsive layout for smaller screens
+            @media (max-width: 768px) {
+                .form-row {
+                    flex-direction: column;
+
+                    .half-width {
+                        width: 100%;
+                    }
+                }
+            }
+
+            .form-actions {
+                margin-top: 30px;
+                padding-top: 20px;
+                border-top: 1px solid #e9ecef;
+
+                .ml-10 {
+                    margin-left: 10px;
+                }
+
+                button {
+                    min-width: 120px;
+                }
+            }
+
+            // Custom Material Form Field styling
+            mat-form-field {
+                font-family: 'Times New Roman', sans-serif !important;
+
+                &.full-width {
+                    width: 100%;
+                }
+
+                &.half-width {
+                    width: 100%;
+                }
+
+                // Apply font to all text elements
+                .mat-form-field-label,
+                .mat-form-field-hint,
+                .mat-form-field-error,
+                input,
+                textarea {
+                    font-family: 'Times New Roman', sans-serif !important;
+                }
+
+                // Fix textarea alignment by reducing padding
+                &.mat-form-field-appearance-standard {
+                    .mat-form-field-infix {
+                        padding: 0.5em 0 !important;
+                    }
+
+                    textarea {
+                        margin-top: 0 !important;
+                        padding-top: 0 !important;
+                        line-height: 1.4 !important;
+                    }
+                }
+
+                /* --- START OF ADDED/MODIFIED CSS FOR ALIGNMENT --- */
+
+                /* This is the key change for Description alignment */
+                /* Target specifically the Description's mat-form-field if needed,
+           but applying to 'standard' appearance generally is usually fine for textareas */
+                &.mat-form-field-appearance-standard.half-width {
+                    .mat-form-field-wrapper {
+                        /* Adjust this value based on visual inspection.
+                   It compensates for the different vertical padding/margins between outlined and standard inputs. */
+                        margin-top: -0.75em !important;
+                        /* Move the whole field up */
+                    }
+
+                    .mat-form-field-subscript-wrapper {
+                        /* If moving the wrapper up causes hint/error text to overlap, adjust its top margin */
+                        margin-top: 0.5em !important;
+                        /* Example adjustment, fine-tune as needed */
+                    }
+                }
+
+                /* --- END OF ADDED/MODIFIED CSS FOR ALIGNMENT --- */
+
+                // Ensure outline fields have consistent height
+                &.mat-form-field-appearance-outline {
+                    .mat-form-field-infix {
+                        padding: 1em 0 1em 0 !important;
+                    }
+
+                    // Align outline field with standard field height
+                    .mat-form-field-wrapper {
+                        padding-bottom: 1.25em;
+                    }
+                }
+
+                // Fix fill appearance for code field
+                &.mat-form-field-appearance-fill {
+                    .mat-form-field-infix {
+                        padding: 0.75em 0 0.75em 0 !important;
+                    }
+
+                    // Align fill field with other field heights
+                    .mat-form-field-wrapper {
+                        padding-bottom: 1.25em;
+                    }
+                }
+
+                // Outline appearance customization
+                &.mat-form-field-appearance-outline {
+                    .mat-form-field-outline {
+                        color: #ddd;
+                    }
+
+                    &.mat-focused .mat-form-field-outline-thick {
+                        color: var(--primary-400);
+                    }
+                }
+
+                // Fill appearance customization
+                &.mat-form-field-appearance-fill {
+                    .mat-form-field-fill {
+                        background-color: #f8f9fa;
+                    }
+
+                    &.mat-focused .mat-form-field-fill {
+                        background-color: #e9ecef;
+                    }
+                }
+
+                // Error styling
+                &.mat-form-field-invalid {
+                    .mat-form-field-outline {
+                        color: #e74c3c;
+                    }
+                }
+
+                // Hint and error text
+                .mat-form-field-subscript-wrapper {
+                    font-size: 12px;
+                }
+            }
+
+            // Material Icon sizing
+            mat-icon {
+                &.large-icon {
+                    font-size: 48px;
+                    width: 48px;
+                    height: 48px;
+                    color: #adb5bd;
+                }
+            }
+        }
+
+        // No selection state styling
+        .no-selection-state {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            mat-card {
+                max-width: 400px;
+
+                mat-card-content {
+                    padding: 40px;
+
+                    h3 {
+                        margin: 16px 0 8px;
+                        color: #6c757d;
+                    }
+
+                    p {
+                        color: #6c757d;
+                        margin: 0;
+                    }
+                }
+            }
+        }
+
+        padding: 20px;
+
+        .form-header {
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 15px;
+
+            .ui.header {
+                color: #333;
+
+                .sub.header {
+                    color: #666;
+                    font-weight: normal;
+                }
+            }
+        }
+
+        .ui.form {
+            .field {
+                margin-bottom: 20px;
+
+                label {
+                    font-weight: 600;
+                    font-size: 12px;
+                    color: #121213e0;
+                    margin-bottom: 0.5rem;
+
+                    .required {
+                        color: #e74c3c;
+                    }
+                }
+
+                input,
+                textarea {
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                    padding: 10px 12px;
+                    font-size: 14px;
+
+                    &:focus {
+                        border-color: var(--primary-400);
+                        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+                    }
+
+                    &.error {
+                        border-color: #e74c3c;
+                    }
+                }
+
+                .ui.pointing.red.basic.label {
+                    margin-top: 5px;
+                    font-size: 12px;
+                }
+            }
+
+            .two.fields {
+                display: flex;
+                gap: 20px;
+
+                .field {
+                    flex: 1;
+                }
+            }
+        }
+
+        .form-actions {
+            border-top: 1px solid #e9ecef;
+            padding-top: 20px;
+
+            .sb-btn {
+                margin-right: 10px;
+
+                &.sb-btn-primary {
+                    background: var(--primary-400);
+                    color: white;
+                    border: 1px solid var(--primary-400);
+
+                    &:hover {
+                        background: var(--primary-500);
+                        border: 1px solid var(--primary-500);
+                    }
+                }
+
+                &.sb-btn-outline-primary {
+                    background: white;
+                    color: var(--primary-400);
+                    border: 1px solid var(--primary-400);
+
+                    &:hover {
+                        background: var(--primary-400);
+                        color: white;
+                    }
+                }
+            }
+        }
+    }
+
+    // No selection state
+    .no-selection-state {
+        padding: 40px 20px;
+        text-align: center;
+
+        .ui.placeholder.segment {
+            border: 2px dashed #ddd;
+            background: #fafafa;
+
+            .ui.icon.header {
+                color: #999;
+
+                i {
+                    color: #ccc;
+                }
+            }
+
+            p {
+                color: #666;
+            }
+        }
+    }
+
+    // Folder menu styles (matching collection editor)
+    .sb-folder-menu {
+        background: #f8f9fa;
+        border-bottom: 1px solid #e9ecef;
+        font-weight: 600;
+        color: #333;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .profile-avtar {
+            .profile-dropdown {
+                .icon.ellipsis.vertical {
+                    cursor: pointer;
+                    padding: 8px;
+                    border-radius: 4px;
+
+                    &:hover {
+                        background-color: #e9ecef;
+                    }
+
+                    &.h-1 {
+                        height: 1rem;
+                    }
+                }
+            }
+        }
+    }
+
+    // Grid and layout adjustments
+    .ui.twelve.column.grid {
+        height: calc(100vh - 120px); // Subtract approximate header heights to prevent overflow
+
+        .column {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+
+        .three.wide.column {
+            position: relative;
+
+            &.mt-50 {
+                margin-top: 50px;
+            }
+        }
+
+        .eight.wide.column {
+            overflow-y: hidden; // Remove scroll from form area since it only has 3 inputs
+
+            &.w-73 {
+                width: 73% !important;
+            }
+
+            &.pl-40 {
+                padding-left: 40px !important;
+            }
+
+            &.mb-10 {
+                margin-bottom: 10px;
+            }
+        }
+    }
+
+    // Global helper classes matching collection editor
+    .p-50 {
+        padding: 50px;
+    }
+
+    .overflow-y {
+        overflow-y: auto;
+    }
+
+    .mb-40 {
+        margin-bottom: 40px;
+    }
+
+    .h-100vh {
+        height: calc(100vh - 120px); // Subtract header heights to prevent page overflow
+    }
+
+    .sb-questionset-scroll {
+        max-height: calc(100vh - 200px);
+        overflow-y: hidden;
+    }
+
+    // Responsive adjustments
+    @media (max-width: 768px) {
+        .ui.twelve.column.grid {
+            .three.wide.column {
+                width: 100% !important;
+                max-height: 300px;
+            }
+
+            .eight.wide.column {
+                width: 100% !important;
+            }
+        }
+    }
+}

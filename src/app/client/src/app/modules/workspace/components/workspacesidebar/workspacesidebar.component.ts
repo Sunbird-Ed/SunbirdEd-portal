@@ -90,6 +90,14 @@ export class WorkspacesidebarComponent implements OnInit {
   * roles for which admin to be shown
   */
  alltextbookRole: Array<string>;
+ /**
+  * roles for which skillmap to be shown
+  */
+ skillmapRole: Array<string>;
+ /**
+  * roles for which skillmap reviewer to be shown
+  */
+ skillmapReviewerRole: Array<string>;
    /**
    * reference of Router.
    */
@@ -126,6 +134,8 @@ export class WorkspacesidebarComponent implements OnInit {
     this.allContentRole = this.config.rolesConfig.workSpaceRole.allContentRole;
     this.flagReviewer = this.config.rolesConfig.workSpaceRole.flagReviewer;
     this.collaboratingRole = this.config.rolesConfig.workSpaceRole.collaboratingRole;
+    this.skillmapRole = this.config.rolesConfig.workSpaceRole.skillmapRole;
+    this.skillmapReviewerRole = this.config.rolesConfig.workSpaceRole.skillmapReviewerRole;
   }
 
   setInteractData(id) {

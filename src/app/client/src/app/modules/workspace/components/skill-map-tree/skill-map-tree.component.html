@@ -1,0 +1,20 @@
+<div #skillMapTree class="skill-map-fancytree"></div>
+
+<div class="sb-fixed-with-whitebg pr-20 d-flex flex-jc-space-between" *ngIf="config && config.mode === 'edit'">
+  <div class="d-flex action-buttons" style="padding: 0 30px;gap:10px">
+    <div class="sb-btn-cover">
+      <button [ngClass]="visibility?.addSibling ? '' : 'sb-disabled'" (click)="onAddSibling()"
+        class="sb-btn sb-btn-outline-primary sb-btn-normal sb-btn-radius p-0 b-none">
+        <i aria-hidden="true" class="icon plus"></i>
+        {{ labelConfig?.addSibling }}
+      </button>
+    </div>
+    <div class="sb-btn-cover">
+      <button [ngClass]="visibility?.addChild ? '' : 'sb-disabled'" (click)="onAddChild()"
+        class="sb-btn sb-btn-outline-primary sb-btn-normal sb-btn-radius b-none p-0">
+        <i class="icon plus"></i>
+        {{ labelConfig?.addChild }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,93 @@
+@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+
+.sb-gray-loader{
+       &:after{
+        content: '';
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        border: 0.125rem solid;
+        border-color: var(--gray-100) var(--gray-100) transparent;
+        -webkit-animation: loader 0.5s infinite;
+        animation: loader 0.5s infinite;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+       }
+}
+
+.sb-table-blue-strip{
+        background: none;
+        border: none;
+        border-bottom: solid calculateRem(1px) var(--primary-400);
+        th{
+                background: none;
+                color: var(--primary-400);
+                border-bottom: solid calculateRem(1px)  var(--primary-400);    
+        }
+        tbody{
+                tr:nth-child(odd){
+                        background:  var(--primary-100);
+                }
+                tr:nth-child(even){
+                        background:var(--white);
+                }
+                tr{
+                        td:first-child{
+                           border-left: solid calculateRem(1px)  var(--primary-400);     
+                        }
+                        td:last-child{
+                                border-right:  solid calculateRem(1px) var(--primary-400);     
+                        }
+                }
+        }
+}
+
+.bt-0{
+        border-top: none;
+}
+
+// Skill map specific styles can be added here
+.skill-map-container {
+  .skill-map-header {
+    color: var(--primary-400);
+    font-weight: bold;
+  }
+  
+  .skill-indicator {
+    border-left: 3px solid var(--secondary-400);
+    padding-left: calculateRem(8px);
+    
+    // RTL support
+    html[dir="rtl"] & {
+      border-left: none;
+      border-right: 3px solid var(--secondary-400);
+      padding-left: 0;
+      padding-right: calculateRem(8px);
+    }
+  }
+}
+
+// RTL support for skill map table and pagination
+html[dir="rtl"] {
+  .upForReviewTable {
+    th, td {
+      text-align: right;
+      
+      &:first-child {
+        text-align: right;
+      }
+      
+      &:last-child {
+        text-align: left;
+      }
+    }
+  }
+  
+  .ui.pagination.menu {
+    .item {
+      direction: rtl;
+    }
+  }
+}
