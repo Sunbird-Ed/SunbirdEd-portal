@@ -41,11 +41,6 @@
                     "id": "org.ekstep.lessonbrowser",
                     "ver": "1.5",
                     "type": "plugin"
-                },
-                {
-                    "id": "org.ekstep.observable-select",
-                    "ver": "1.0",
-                    "type": "plugin"
                 }
             ],
             "localDispatcherEndpoint": "/collection-editor/telemetry",
@@ -1184,11 +1179,6 @@
                     "id": "org.ekstep.reviewercomments",
                     "ver": "1.0",
                     "type": "plugin"
-                },
-                {
-                    "id": "org.ekstep.observable-select",
-                    "ver": "1.0",
-                    "type": "plugin"
                 }
             ],
             "dispatcher": "local",
@@ -1245,11 +1235,6 @@
                 {
                     "id": "org.ekstep.metadata",
                     "ver": "1.5",
-                    "type": "plugin"
-                },
-                {
-                    "id": "org.ekstep.observable-select",
-                    "ver": "1.0",
                     "type": "plugin"
                 }
             ],
