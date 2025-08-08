@@ -2,7 +2,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ResourceService, ConfigService, NavigationHelperService, ToasterService } from '@sunbird/shared';
-import { FrameworkService, PermissionService, UserService, ContentService } from '@sunbird/core';
+import { FrameworkService, PermissionService, UserService, ContentService, PublicDataService } from '@sunbird/core';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { WorkSpaceService } from './../../services';
 import * as _ from 'lodash-es';
@@ -98,7 +98,7 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
     public navigationhelperService: NavigationHelperService,
     public workSpaceService: WorkSpaceService, private router: Router,
     private formBuilder: FormBuilder, private toasterService: ToasterService,
-    private contentService: ContentService) {
+    private contentService: ContentService, private publicDataService: PublicDataService) {
     this.resourceService = resourceService;
     this.frameworkService = frameworkService;
     this.permissionService = permissionService;
@@ -229,75 +229,140 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
       }
     };
 
-    // Make API call to create framework (using dummy response for now)
+    // Make API call to create framework using PublicDataService with /api prefix (like framework read APIs)
     const option = {
-      url: '/api/framework/v1/create',
-      data: requestBody
+      url: 'framework/v1/create',
+      data: requestBody,
+      header: {
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhcGlfYWRtaW4ifQ.-qfZEwBAoHFhxNqhGq7Vy_SNVcwB1AtMX8xbiVHF5FQ"
+      }
     };
 
-    // For now, simulate API response with dummy data
-    // this.contentService.post(option).subscribe(
-    // Dummy response simulation
-    setTimeout(() => {
-      const dummyResponse = {
-        id: "api.framework.create",
-        ver: "1.0",
-        ts: new Date().toISOString(),
-        params: {
-          resmsgid: "023848b0-6d36-11f0-adfb-bf1585e44d30",
-          msgid: "01961540-6d36-11f0-a8cb-63f26e4e8579",
-          status: "successful",
-          err: null,
-          errmsg: null
-        },
-        responseCode: "OK",
-        result: {
-          node_id: requestBody.request.framework.code,
-          versionKey: Date.now().toString()
-        }
-      };
+    console.log('Creating framework with API call:', option);
 
-      // Handle success response
-      this.isCreating = false;
-      
-      // Close modal using multiple approaches
-      if (modal && modal.deny) {
-        modal.deny();
-      }
-      
-      // Also use the ViewChild reference as backup
-      if (this.frameworkModal && this.frameworkModal.deny) {
-        this.frameworkModal.deny();
-      }
-      
-      // Set the boolean flag as final backup
-      this.showCreateFrameworkModal = false;
-      
-      // Show success message
-      this.toasterService.success(
-        this.resourceService?.frmelmnts?.smsg?.frameworkCreated || 'Framework created successfully!'
-      );
-
-      // Navigate to skill map editor with framework data
-      this.router.navigate(['/workspace/content/skillmap/edit/new'], {
-        queryParams: {
-          frameworkName: frameworkData.name,
-          frameworkCode: requestBody.request.framework.code,
-          frameworkDescription: requestBody.request.framework.description,
-          frameworkId: dummyResponse.result?.node_id
+    this.publicDataService.post(option).subscribe(
+      (response: any) => {
+        console.log('Framework creation response:', response);
+        
+        if (response && response.result && response.result.node_id) {
+          // After framework creation, create the required categories
+          this.createFrameworkCategories(response.result.node_id, frameworkData, requestBody, modal);
+        } else {
+          this.isCreating = false;
+          this.toasterService.error('Failed to create framework. Invalid response from server.');
         }
-      });
-    }, 1000); // 1 second delay to simulate API call
+      },
+      (error: any) => {
+        console.error('Error creating framework:', error);
+        this.isCreating = false;
+        this.toasterService.error(
+          this.resourceService?.frmelmnts?.emsg?.frameworkCreationFailed || 
+          'Failed to create framework. Please try again.'
+        );
+      }
+    );
   }
 
   /**
    * Generate framework code from name
    */
   private generateFrameworkCode(name: string): string {
-    // Remove special characters and spaces, convert to uppercase
-    const code = name.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase();
-    // Add timestamp to ensure uniqueness
-    const timestamp = Date.now().toString().slice(-4);
-    return `${code}_${timestamp}`;
+    // Convert to lowercase, replace spaces and special characters with underscores
+    const code = name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
+    return code;
+  }
+
+  /**
+   * Create framework categories after framework creation
+   */
+  private createFrameworkCategories(nodeId: string, frameworkData: any, requestBody: any, modal: any) {
+    const categories = [
+      { name: "Domain", code: "domain" },
+      { name: "Skill", code: "skill" },
+      { name: "Sub Skill", code: "subSkill" },
+      { name: "Observable Element", code: "observableElement" }
+    ];
+
+    // Create all categories sequentially
+    this.createCategoriesSequentially(nodeId, categories, 0, frameworkData, requestBody, modal);
+  }
+
+  /**
+   * Create categories sequentially (one after another)
+   */
+  private createCategoriesSequentially(nodeId: string, categories: any[], index: number, frameworkData: any, requestBody: any, modal: any) {
+    if (index >= categories.length) {
+      // All categories created successfully, now navigate to editor
+      this.handleFrameworkCreationSuccess(frameworkData, requestBody, modal, nodeId);
+      return;
+    }
+
+    const category = categories[index];
+    const categoryOption = {
+      url: `framework/v1/category/create?framework=${nodeId}`,
+      data: {
+        request: {
+          category: {
+            name: category.name,
+            code: category.code
+          }
+        }
+      }
+    };
+
+    console.log(`Creating category ${category.name} with API call:`, categoryOption);
+
+    this.publicDataService.post(categoryOption).subscribe(
+      (response: any) => {
+        console.log(`Category ${category.name} created successfully:`, response);
+        
+        // Create next category
+        this.createCategoriesSequentially(nodeId, categories, index + 1, frameworkData, requestBody, modal);
+      },
+      (error: any) => {
+        console.error(`Error creating category ${category.name}:`, error);
+        this.isCreating = false;
+        this.toasterService.error(
+          `Failed to create category: ${category.name}. Please try again.`
+        );
+      }
+    );
+  }
+
+  /**
+   * Handle framework creation success and navigate to editor
+   */
+  private handleFrameworkCreationSuccess(frameworkData: any, requestBody: any, modal: any, nodeId: string) {
+    // Handle success response
+    this.isCreating = false;
+    
+    // Close modal using multiple approaches
+    if (modal && modal.deny) {
+      modal.deny();
+    }
+    
+    // Also use the ViewChild reference as backup
+    if (this.frameworkModal && this.frameworkModal.deny) {
+      this.frameworkModal.deny();
+    }
+    
+    // Set the boolean flag as final backup
+    this.showCreateFrameworkModal = false;
+    
+    // Show success message
+    this.toasterService.success(
+      this.resourceService?.frmelmnts?.smsg?.frameworkCreated || 'Framework created successfully!'
+    );
+
+    // Navigate to skill map editor with framework data
+    this.router.navigate(['/workspace/content/skillmap/edit/new'], {
+      queryParams: {
+        frameworkName: frameworkData.name,
+        frameworkCode: requestBody.request.framework.code,
+        frameworkDescription: requestBody.request.framework.description,
+        frameworkId: nodeId
+      }
+    });
   }
 }

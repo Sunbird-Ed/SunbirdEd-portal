@@ -167,11 +167,14 @@ export class WorkSpaceService {
    * skillMapEditor
    * Navigate to skill map editor
    * @param {Object}  content - content
-   * @param {string}  state - Present state
+   * @param {string}  state - Present state (edit, view, review)
   */
   openSkillMapEditor(content, state) {
     const contentId = content ? content.identifier : 'new';
-    this.route.navigate(['/workspace/content/skillmap/edit', contentId]);
+    // Add mode as query parameter to distinguish between edit, view, and review modes
+    this.route.navigate(['/workspace/content/skillmap/edit', contentId], {
+      queryParams: { mode: state }
+    });
   }
 
   getDataForCard(data, staticData, dynamicFields, metaData) {

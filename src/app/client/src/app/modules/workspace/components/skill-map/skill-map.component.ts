@@ -291,7 +291,7 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
       filters: {
         status: statusFilter,
         objectType: 'Framework',
-        type: 'K-12'
+        type: 'SkillMap',
       },
       limit: limit,
       offset: (pageNumber - 1) * limit,
@@ -426,10 +426,10 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
       return;
     }
     
-    // For skill map creators, only show view option if status is 'Live' or 'Review'
+    // For skill map creators, open skill map editor in view mode for Live or Review status
     const status = content.status || (content.metaData && content.metaData.status);
     if (status === 'Live' || status === 'Review') {
-      this.workSpaceService.navigateToContent(content, this.state);
+      this.workSpaceService.openSkillMapEditor(content, 'view');
     } else {
       // Show appropriate message for frameworks that cannot be viewed
       this.toasterService.warning(this.resourceService.messages.imsg.m0027 || 'This skill map cannot be viewed in current status');
@@ -442,10 +442,33 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
    */
   editSkillMap(content: ISkillMapContent): void {
     const status = content.status || (content.metaData && content.metaData.status);
-    if (status === 'Live' || status === 'Review') {
-      this.workSpaceService.openSkillMapEditor(content, this.state);
+    if (status === 'Draft') {
+      // Draft status - open in edit mode
+      this.workSpaceService.openSkillMapEditor(content, 'edit');
+    } else if (status === 'Live' || status === 'Review') {
+      // Live or Review status - open in view mode
+      this.workSpaceService.openSkillMapEditor(content, 'view');
     } else {
       this.toasterService.warning(this.resourceService.messages.imsg.m0027 || 'This skill map cannot be edited in current status');
+    }
+  }
+
+  /**
+   * View skill map in read-only mode - for Live and Review status frameworks
+   * @param {ISkillMapContent} content - skill map content
+   */
+  onView(content: ISkillMapContent): void {
+    const status = content.status || (content.metaData && content.metaData.status);
+    
+    // Only allow viewing for Live and Review status
+    if (status === 'Live' || status === 'Review') {
+      console.log('Opening skill map in view mode:', content);
+      this.workSpaceService.openSkillMapEditor(content, 'view');
+    } else {
+      this.toasterService.warning(
+        this.resourceService.messages.imsg.m0027 || 
+        'This skill map cannot be viewed in current status'
+      );
     }
   }
 

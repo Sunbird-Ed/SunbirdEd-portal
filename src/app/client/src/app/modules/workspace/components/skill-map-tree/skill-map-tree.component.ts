@@ -30,13 +30,12 @@ export class SkillMapTreeComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('skillMapTree') public tree: ElementRef;
   @Input() public skillMapData: any;
   @Input() public labelConfig: any = {};
-  @Output() public treeEventEmitter: EventEmitter<any> = new EventEmitter();
-  
-  public config: any = {
+  @Input() public config: any = {
     mode: 'edit',
-    maxDepth: 7, // Increased to 7 levels for more flexibility
+    maxDepth: 4, // Maximum depth for skill map tree structure
     objectType: 'SkillMap'
   };
+  @Output() public treeEventEmitter: EventEmitter<any> = new EventEmitter();
   public visibility: any = {};
   public rootNode: SkillMapTreeNode[] = [];
   public unsubscribe$ = new Subject<void>();
@@ -74,16 +73,19 @@ export class SkillMapTreeComponent implements OnInit, AfterViewInit, OnDestroy {
     // Use consistent ID for root node
     const rootId = data.id || 'root';
     
+    // Use "Untitled" as fallback for root node title
+    const rootTitle = data.name || this.resourceService?.frmelmnts?.lbl?.untitled || 'Untitled';
+    
     this.rootNode = [{
       id: rootId,
-      title: data.name || 'Skill Map Root',
-      tooltip: data.name || 'Skill Map Root',
+      title: rootTitle,
+      tooltip: rootTitle,
       folder: true,
       children: treeData,
       root: true,
       icon: false, // Remove icon
       metadata: {
-        name: data.name || 'Skill Map Root', // Ensure we always have a name
+        name: rootTitle, // Ensure we always have a name
         code: data.code || '',
         description: data.description || '',
         level: 0,

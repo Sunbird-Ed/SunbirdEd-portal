@@ -389,6 +389,38 @@
                     padding-left: 6px;
                 }
             }
+
+            // Highlight node styles for Send for Review validation errors
+            .highlightNode {
+                color: #f44336 !important;
+                background-color: rgba(244, 67, 54, 0.15) !important;
+                font-weight: bold !important;
+                border: 1px solid #f44336 !important;
+                border-radius: 3px !important;
+                padding: 2px 4px !important;
+                
+                // Make the highlight more prominent
+                box-shadow: 0 0 5px rgba(244, 67, 54, 0.3) !important;
+                
+                // Ensure the highlight is visible in both light and dark themes
+                &::before {
+                    content: '⚠ ';
+                    color: #f44336;
+                    font-weight: bold;
+                }
+            }
+
+            // Apply highlighting to the entire node span
+            .fancytree-title.highlightNode,
+            .fancytree-node .highlightNode {
+                color: #f44336 !important;
+                background-color: rgba(244, 67, 54, 0.15) !important;
+                font-weight: bold !important;
+                border: 1px solid #f44336 !important;
+                border-radius: 3px !important;
+                padding: 2px 4px !important;
+                box-shadow: 0 0 5px rgba(244, 67, 54, 0.3) !important;
+            }
         }
     }
 
