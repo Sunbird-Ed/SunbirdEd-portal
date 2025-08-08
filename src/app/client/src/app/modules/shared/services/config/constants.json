@@ -19,5 +19,6 @@
     "HORIZONTAL": "horizontal",
     "VERTICAL": "vertical"
   },
-  "DEFAULT_THEME": "joy"
+  "DEFAULT_THEME": "joy",
+  "DEFAULT_LANGUAGE": "ar"
 }

@@ -653,11 +653,17 @@ li.subStr::after {
   color: rgba(var(--rc-rgba-black), 0.95);
   text-transform: uppercase;
   font-weight: bold;
+  [dir="rtl"] & {
+     background: linear-gradient(90deg, rgba(var(--rc-rgba-d0d0d0), 0) 0%, var(--white) 100%);
+  }
 }
 .publicmenusection.ui.secondary.menu a.item:hover {
   background: linear-gradient(270deg, rgba(var(--rc-rgba-d0d0d0), 0) 0%, var(--white) 100%);
   border-radius: 0;
   color: rgba(var(--rc-rgba-black), 0.95);
+  [dir="rtl"] & {
+     background: linear-gradient(90deg, rgba(var(--rc-rgba-d0d0d0), 0) 0%, var(--white) 100%);
+  }
 }
 .workspacesegment {
   margin-top: 0px;

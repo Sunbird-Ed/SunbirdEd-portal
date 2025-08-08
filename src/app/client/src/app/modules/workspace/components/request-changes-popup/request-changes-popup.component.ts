@@ -4,7 +4,7 @@ import * as _ from 'lodash-es';
 import { ContentService, FormService } from '@sunbird/core';
 import {
   ResourceService, ConfigService, ToasterService, ServerResponse, RouterNavigationService,
-  NavigationHelperService
+  NavigationHelperService, UtilService
 } from '@sunbird/shared';
 import { WorkSpaceService } from './../../services';
 import { takeUntil } from 'rxjs/operators';
@@ -65,6 +65,10 @@ export class RequestChangesPopupComponent implements OnInit, OnDestroy {
    */
   public contentService: ContentService;
   /**
+   * reference of UtilService.
+   */
+  public utilService: UtilService;
+  /**
    * Checklist config
    */
   checkListData: any;
@@ -92,6 +96,7 @@ export class RequestChangesPopupComponent implements OnInit, OnDestroy {
    * @param {ConfigService} config Reference of ConfigService
    * @param {ContentService} contentService Reference of contentService
    * @param {FormService} formService Reference of FormService
+   * @param {UtilService} utilService Reference of UtilService
 	 */
   constructor(route: Router,
     activatedRoute: ActivatedRoute,
@@ -102,7 +107,8 @@ export class RequestChangesPopupComponent implements OnInit, OnDestroy {
     contentService: ContentService,
     public formService: FormService,
     public navigationHelperService: NavigationHelperService,
-    public workSpaceService: WorkSpaceService) {
+    public workSpaceService: WorkSpaceService,
+    utilService: UtilService) {
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
@@ -110,6 +116,7 @@ export class RequestChangesPopupComponent implements OnInit, OnDestroy {
     this.configService = configService;
     this.routerNavigationService = routerNavigationService;
     this.contentService = contentService;
+    this.utilService = utilService;
     this.checkListData = this.configService.appConfig.CHECK_LIST_CONFIG;
   }
 
@@ -193,7 +200,9 @@ export class RequestChangesPopupComponent implements OnInit, OnDestroy {
         if (data.result.form) {
           this.showModal = true;
           this.showloader = false;
+          const language = localStorage.getItem('portalLanguage')  || this.configService.constants.DEFAULT_LANGUAGE;
           this.rejectCheckListData = data.result.form.data.fields[0];
+          this.rejectCheckListData = this.utilService.updateDataWithI18n(this.rejectCheckListData, language);
           if (!_.get(data.result.form, 'data.fields[0].checklist') || !_.get(data.result.form, 'data.fields[0].otherReason') ) {
             this.showDefaultConfig = true;
           }

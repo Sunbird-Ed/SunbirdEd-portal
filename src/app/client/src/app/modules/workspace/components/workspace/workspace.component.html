@@ -4,7 +4,7 @@
 <div class="ui container" *ngIf="false">
   <div class="ui stackable grid mt-30">
     <div class="three wide column pt-0">
-      <app-workspacesidebar style="text-align: justify;"></app-workspacesidebar>
+      <app-workspacesidebar class="workspace-sidebar"></app-workspacesidebar>
     </div>
     <div class="nine wide column workspacesegment" >
       <router-outlet></router-outlet>
@@ -17,7 +17,7 @@
   <div class="sbt-fluid-content-bg">
     <div class="sb-g" [ngClass]="layoutConfiguration ? 'sbt-container sbt-page-content relative9' : 'stackable mt-30 mg-pad'">
       <div class="relative9" [ngClass]="FIRST_TO_PANEL_LAYOUT">
-        <app-workspacesidebar style="text-align: justify;" ></app-workspacesidebar>
+        <app-workspacesidebar class="workspace-sidebar"></app-workspacesidebar>
       </div>
       <div [ngClass]="SECOND_TO_PANEL_LAYOUT" class="w-100">
         <div [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'workspacesegment'">

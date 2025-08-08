@@ -8,7 +8,8 @@ import { WorkSpaceService } from './../../services';
  */
 @Component({
   selector: 'app-workspacesidebar',
-  templateUrl: './workspacesidebar.component.html'
+  templateUrl: './workspacesidebar.component.html',
+  styleUrls: ['./workspacesidebar.component.scss']
 })
 export class WorkspacesidebarComponent implements OnInit {
 

@@ -1,2 +1,6 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @use 'components/metadata' as *;
+
+.content-details{
+    text-align: justify;
+}
