@@ -444,8 +444,14 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private getDeleteAccountButtonVisibility() {
+    const enableDeleteAccountUrl = _.get(this.configService, 'urlConFig.URLS.SYSTEM_SETTING.ENABLE_DELETE_ACCOUNT');
+    if (!enableDeleteAccountUrl) {
+      this.showDeleteAccountButton = false;
+      return;
+    }
+    
     const systemSetting = {
-      url: this.configService.urlConFig.URLS.SYSTEM_SETTING.ENABLE_DELETE_ACCOUNT,
+      url: enableDeleteAccountUrl,
     };
     this.orgDetailsService.learnerService.get(systemSetting).subscribe(response => {
       if (_.get(response, 'result.response.value') === 'true') {
