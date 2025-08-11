@@ -144,7 +144,8 @@
       "TNC_LIST": "data/v1/system/settings/list",
       "ORG_ADMIN_URL": "data/v1/system/settings/get/orgAdminTnc",
       "GROUPS_TNC": "data/v1/system/settings/get/groupsTnc",
-      "REPORT_VIEWER_TNC": "data/v1/system/settings/get/reportViewerTnc"
+      "REPORT_VIEWER_TNC": "data/v1/system/settings/get/reportViewerTnc",
+      "ENABLE_DELETE_ACCOUNT": "data/v1/system/settings/get/enableDeleteAccount"
     },
     "COURSE_FRAMEWORK": {
       "COURSE_FRAMEWORKID": "data/v1/system/settings/get/courseFrameworkId"

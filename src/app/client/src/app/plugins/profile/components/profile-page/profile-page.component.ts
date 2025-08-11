@@ -36,6 +36,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   showMoreTrainings = true;
   showMoreCertificates = true;
   isCustodianOrgUser = true; // set to true to avoid showing icon before api return value
+  showDeleteAccountButton = false; // new property to control delete button visibility
   showMoreRolesLimit = this.configService.appConfig.PROFILE.defaultShowMoreLimit;
   courseLimit = this.configService.appConfig.PROFILE.defaultViewMoreLimit;
   otherCertificateLimit = this.configService.appConfig.PROFILE.defaultViewMoreLimit;
@@ -128,6 +129,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.initLayout();
     this.instance = _.upperFirst(_.toLower(this.resourceService.instance || 'SUNBIRD'));
     this.getCustodianOrgUser();
+    this.getDeleteAccountButtonVisibility();
     this.userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
       /* istanbul ignore else */
       this.showFullScreenLoader = false;
@@ -438,6 +440,21 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       } else {
         this.isCustodianOrgUser = false;
       }
+    });
+  }
+
+  private getDeleteAccountButtonVisibility() {
+    const systemSetting = {
+      url: this.configService.urlConFig.URLS.SYSTEM_SETTING.ENABLE_DELETE_ACCOUNT,
+    };
+    this.orgDetailsService.learnerService.get(systemSetting).subscribe(response => {
+      if (_.get(response, 'result.response.value') === 'true') {
+        this.showDeleteAccountButton = true;
+      } else {
+        this.showDeleteAccountButton = false;
+      }
+    }, error => {
+      this.showDeleteAccountButton = false;
     });
   }
 
