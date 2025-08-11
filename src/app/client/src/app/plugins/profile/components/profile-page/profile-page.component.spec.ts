@@ -1,5 +1,5 @@
 import { ProfileService } from '../../services';
-import { CertRegService, CoursesService, OrgDetailsService, PlayerService, SearchService, UserService, FormService } from '@sunbird/core';
+import { CertRegService, CoursesService, OrgDetailsService, PlayerService, SearchService, UserService, FormService, LearnerService } from '@sunbird/core';
 import { ConfigService, LayoutService, NavigationHelperService, ResourceService, ToasterService, UtilService, ConnectionService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { of, throwError } from 'rxjs';
@@ -117,11 +117,16 @@ describe("ProfilePageComponent", () => {
             }
         } as any,
     };
+    const mockLearnerService: Partial<LearnerService> = {
+        get: jest.fn(),
+        post: jest.fn(),
+        put: jest.fn(),
+        delete: jest.fn(),
+        patch: jest.fn()
+    };
     const mockOrgDetailsService: Partial<OrgDetailsService> = {
         getCustodianOrgDetails: jest.fn(),
-        learnerService: {
-            get: jest.fn()
-        }
+        learnerService: mockLearnerService as LearnerService
     };
     const mockNavigationHelperService: Partial<NavigationHelperService> = {
         goBack: jest.fn()
@@ -305,7 +310,7 @@ describe("ProfilePageComponent", () => {
             profilePageComponent.isDesktopApp = true;
             mockUserService._userData$ = jest.fn(() => of({ err: null, userProfile: Response.userData })) as any;
             mockOrgDetailsService.getCustodianOrgDetails = jest.fn().mockReturnValue(of({ result: { response: { value: '0126684405' } } })) as any;
-            mockOrgDetailsService.learnerService.get = jest.fn().mockReturnValue(of({ result: { response: { value: 'true' } } })) as any;
+            mockLearnerService.get = jest.fn().mockReturnValue(of({ result: { response: { value: 'true' } } })) as any;
             mockFormService.getFormConfig = jest.fn(() => of([{ code: 'teacher' }, { code: 'persona', children: { teacher: [{ code: 'subPersona', templateOptions: { multiple: 'true', options: [{ value: 'sampleType', lablel: 'samplelabel' }] } }] } }])) as any;
             mockLayoutService.switchableLayout = jest.fn(() => of([{ isConnected: true }]));
             mockCoursesService._enrolledCourseData$ = jest.fn(() => of({ err: null, enrolledCourses: Response.courseSuccess.result.courses })) as any;
@@ -344,7 +349,7 @@ describe("ProfilePageComponent", () => {
             mockFormService.getFormConfig = jest.fn(() => of([{ code: 'teacher' }, { code: 'persona', children: { teacher: [{ code: 'subPersona', templateOptions: { multiple: 'true', options: [{ value: 'sampleType', lablel: 'samplelabel' }] } }] } }])) as any;
             mockCoursesService._enrolledCourseData$ = jest.fn(() => of({ err: null, enrolledCourses: Response.courseSuccess.result.courses })) as any;
             mockOrgDetailsService.getCustodianOrgDetails = jest.fn().mockReturnValue(of({ result: { response: { value: '0126684405' } } })) as any;
-            mockOrgDetailsService.learnerService.get = jest.fn().mockReturnValue(of({ result: { response: { value: 'true' } } })) as any;
+            mockLearnerService.get = jest.fn().mockReturnValue(of({ result: { response: { value: 'true' } } })) as any;
             mockLayoutService.switchableLayout = jest.fn(() => of([{ isConnected: true }]));
             jest.spyOn(profilePageComponent, 'getOtherCertificates').mockImplementation(() => {
                 return {}
@@ -366,7 +371,7 @@ describe("ProfilePageComponent", () => {
             mockUserService._userData$ = jest.fn(() => of({ err: null, userProfile: Response.userData })) as any;
             mockConnectionService.monitor = jest.fn(() => of(true));
             mockOrgDetailsService.getCustodianOrgDetails = jest.fn().mockReturnValue(of({ result: { response: { value: '0126684405' } } })) as any;
-            mockOrgDetailsService.learnerService.get = jest.fn().mockReturnValue(of({ result: { response: { value: 'true' } } })) as any;
+            mockLearnerService.get = jest.fn().mockReturnValue(of({ result: { response: { value: 'true' } } })) as any;
             mockLayoutService.switchableLayout = jest.fn(() => of([{ isConnected: true }]));
             mockFormService.getFormConfig = jest.fn(() => of([{ code: 'teacher' }, { code: 'persona', children: { teacher: [{ code: 'subPersona', templateOptions: { multiple: 'true', options: [{ value: 'sampleType', lablel: 'samplelabel' }] } }] } }])) as any;
             mockCoursesService._enrolledCourseData$ = jest.fn(() => of({ err: null, enrolledCourses: Response.courseSuccess.result.courses })) as any;
@@ -391,7 +396,7 @@ describe("ProfilePageComponent", () => {
             mockProfileService.getPersonaTenantForm = jest.fn().mockReturnValue(of(Response.personaTenantValues)) as any;
             mockProfileService.getSelfDeclarationForm = jest.fn().mockReturnValue(of(Response.declarationFormValues)) as any;
             mockOrgDetailsService.getCustodianOrgDetails = jest.fn().mockReturnValue(of({ result: { response: { value: '0126684405' } } })) as any;
-            mockOrgDetailsService.learnerService.get = jest.fn().mockReturnValue(of({ result: { response: { value: 'true' } } })) as any;
+            mockLearnerService.get = jest.fn().mockReturnValue(of({ result: { response: { value: 'true' } } })) as any;
             mockLayoutService.switchableLayout = jest.fn(() => of([{ isConnected: true }]));
             mockFormService.getFormConfig = jest.fn(() => of([{ code: 'teacher' }, { code: 'persona', children: { teacher: [{ code: 'subPersona', templateOptions: { multiple: 'true', options: [{ value: 'sampleType', lablel: 'samplelabel' }] } }] } }])) as any;
             profilePageComponent.getSelfDeclaredDetails();
@@ -412,7 +417,7 @@ describe("ProfilePageComponent", () => {
             mockUserService._userData$ = jest.fn(() => of({ err: null, userProfile: Response.userData })) as any;
             mockLayoutService.switchableLayout = jest.fn(() => of([{ isConnected: true }]));
             mockOrgDetailsService.getCustodianOrgDetails = jest.fn().mockReturnValue(of({ result: { response: { value: '0126684405' } } })) as any;
-            mockOrgDetailsService.learnerService.get = jest.fn().mockReturnValue(of({ result: { response: { value: 'true' } } })) as any;
+            mockLearnerService.get = jest.fn().mockReturnValue(of({ result: { response: { value: 'true' } } })) as any;
             mockConnectionService.monitor = jest.fn(() => of(true));
             jest.spyOn(profilePageComponent, 'getSelfDeclaredDetails').mockImplementation();
             mockCoursesService._enrolledCourseData$ = jest.fn(() => of({ err: null, enrolledCourses: Response.courseSuccess.result.courses })) as any;
@@ -431,7 +436,7 @@ describe("ProfilePageComponent", () => {
     describe('getDeleteAccountButtonVisibility', () => {
         it('should show delete account button when system setting is true', () => {
             //arrange
-            mockOrgDetailsService.learnerService.get = jest.fn().mockReturnValue(of({ result: { response: { value: 'true' } } })) as any;
+            mockLearnerService.get = jest.fn().mockReturnValue(of({ result: { response: { value: 'true' } } })) as any;
             //act
             profilePageComponent['getDeleteAccountButtonVisibility']();
             //assert
@@ -440,7 +445,7 @@ describe("ProfilePageComponent", () => {
 
         it('should hide delete account button when system setting is false', () => {
             //arrange
-            mockOrgDetailsService.learnerService.get = jest.fn().mockReturnValue(of({ result: { response: { value: 'false' } } })) as any;
+            mockLearnerService.get = jest.fn().mockReturnValue(of({ result: { response: { value: 'false' } } })) as any;
             //act
             profilePageComponent['getDeleteAccountButtonVisibility']();
             //assert
@@ -449,7 +454,7 @@ describe("ProfilePageComponent", () => {
 
         it('should hide delete account button on error', () => {
             //arrange
-            mockOrgDetailsService.learnerService.get = jest.fn().mockReturnValue(throwError({})) as any;
+            mockLearnerService.get = jest.fn().mockReturnValue(throwError({})) as any;
             //act
             profilePageComponent['getDeleteAccountButtonVisibility']();
             //assert
