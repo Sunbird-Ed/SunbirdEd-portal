@@ -2,7 +2,7 @@ import { combineLatest as observableCombineLatest } from 'rxjs';
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
-import { SearchService, UserService, ISort, FrameworkService } from '@sunbird/core';
+import { SearchService, UserService, ISort, FrameworkService, ContentService } from '@sunbird/core';
 import { PermissionService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService, IPagination,
@@ -202,6 +202,7 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
     public workSpaceService: WorkSpaceService,
     public frameworkService: FrameworkService,
     public permissionService: PermissionService,
+    private contentService: ContentService,
     paginationService: PaginationService,
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
@@ -401,17 +402,39 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
   }
 
   private deleteContent(contentId: string) {
-    // Delete skill map (framework) for Draft status
-    const request = {
-      contentIds: [contentId.toString()]
+    // Delete skill map (framework) using the framework retire API
+    const option = {
+      url: `/api/framework/v3/retire/${contentId}`,
+      data: {}
     };
-    this.workSpaceService.deleteContent(request).subscribe(
+    
+    this.contentService.delete(option).subscribe(
       (data: ServerResponse) => {
-        this.toasterService.success(this.resourceService.messages.smsg.m0006);
-        this.fetchSkillMapContent(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber, { queryParams: this.queryParams });
+        // Handle successful deletion
+        if (data.responseCode === 'OK') {
+          this.toasterService.success(
+            this.resourceService.messages.smsg.m0006 || 'Content deleted successfully'
+          );
+          // Refresh the skill map list
+          this.fetchSkillMapContent(
+            this.config.appConfig.WORKSPACE.PAGE_LIMIT, 
+            this.pageNumber, 
+            { queryParams: this.queryParams }
+          );
+        } else {
+          // API returned success but with non-OK response code
+          this.toasterService.error(
+            data.params?.errmsg || 
+            this.resourceService.messages.fmsg.m0051 || 
+            'Failed to delete content'
+          );
+        }
       },
       (err: ServerResponse) => {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0051); // Something went wrong, try again later
+        // Handle different error scenarios
+        let errorMessage = this.resourceService.messages.fmsg.m0051 || 'Something went wrong, try again later';
+        this.toasterService.error(errorMessage);
+        console.error('Skill map deletion error:', err);
       }
     );
   }
@@ -424,6 +447,14 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
     if (this.isSkillMapReviewer) {
       this.workSpaceService.openSkillMapEditor(content, 'review');
       return;
+    }
+
+    if (this.isSkillMapCreator) {
+      // For skill map creators, open skill map editor in edit mode for Draft status
+      if (content.status === 'Draft') {
+        this.workSpaceService.openSkillMapEditor(content, 'edit');
+        return;
+      }
     }
     
     // For skill map creators, open skill map editor in view mode for Live or Review status
@@ -464,7 +495,11 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
     if (status === 'Live' || status === 'Review') {
       console.log('Opening skill map in view mode:', content);
       this.workSpaceService.openSkillMapEditor(content, 'view');
-    } else {
+    } 
+    else if(status === 'Draft') {
+      this.workSpaceService.openSkillMapEditor(content, 'edit');
+    }
+    else {
       this.toasterService.warning(
         this.resourceService.messages.imsg.m0027 || 
         'This skill map cannot be viewed in current status'

@@ -68,9 +68,9 @@ export class FrameworkService {
     };
     return this.publicDataService.get(channelOptions);
   }
-  public getFrameworkCategories(frameworkId: string) { // used in workspace, course
+  public getFrameworkCategories(frameworkId: string, mode?: string) { // used in workspace, course
     const frameworkOptions = {
-      url: this.configService.urlConFig.URLS.FRAMEWORK.READ + '/' + frameworkId
+      url: this.configService.urlConFig.URLS.FRAMEWORK.READ + '/' + frameworkId + (mode ? "?mode=" + mode : ''),
     };
     return this.publicDataService.get(frameworkOptions);
   }
