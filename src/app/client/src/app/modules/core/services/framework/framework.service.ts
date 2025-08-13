@@ -126,4 +126,20 @@ export class FrameworkService {
   return (await this.formService.getFormConfig(formRequest).toPromise() as any);
 }
 
+/**
+ * Retire a framework
+ * @param {string} frameworkId - The ID of the framework to retire
+ * @returns Observable<ServerResponse>
+ */
+public retireFramework(frameworkId: string): Observable<ServerResponse> {
+  const retireOptions = {
+    url: `framework/v3/retire/${frameworkId}`,
+    header: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    }
+  };
+  return this.publicDataService.delete(retireOptions);
+}
+
 }
