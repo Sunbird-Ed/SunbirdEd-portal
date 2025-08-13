@@ -171,6 +171,13 @@ export class WorkSpaceService {
   */
   openSkillMapEditor(content, state) {
     const contentId = content ? content.identifier : 'new';
+    if(state === 'review') {
+      // Navigate to skill map review page
+      this.route.navigate(['/workspace/content/skillmap-review/edit', contentId], {
+      queryParams: { mode: state }
+    });
+    return
+    }
     // Add mode as query parameter to distinguish between edit, view, and review modes
     this.route.navigate(['/workspace/content/skillmap/edit', contentId], {
       queryParams: { mode: state }
