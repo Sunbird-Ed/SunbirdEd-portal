@@ -80,29 +80,31 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   public descriptionFormControl = new FormControl('', [Validators.maxLength(256)]);
   public enrolmentTypeFormControl = new FormControl('byUser', [Validators.required]);
   public timeLimitFormControl = new FormControl('no', [Validators.required]);
-  
+
   // Mode-related properties
   public mode: string = 'edit'; // Can be 'edit', 'view', or 'review'
   public isViewMode: boolean = false;
   public isReviewMode: boolean = false;
   public isEditMode: boolean = true;
-  
+
   // User role properties
   public isSkillMapCreator: boolean = false;
   public isSkillMapReviewer: boolean = false;
-  
+
   // Edit Framework Modal properties
   public showEditFrameworkModal: boolean = false;
   public isUpdatingFramework: boolean = false;
+  public isSavingDraft: boolean = false;
+  public isSendingForReview: boolean = false;
   public editFrameworkForm: any = {
     name: '',
     description: ''
   };
   public editFormSubmitted: boolean = false;
-  
+
   // Store framework ID for API calls
   private frameworkId: string = '';
-  
+
   // Store created node IDs for API associations
   private createdNodeIds: Map<string, string> = new Map(); // Map of local node ID to API node ID
   private termCreationQueue: any[] = []; // Queue for term creation API calls
@@ -256,7 +258,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     return this.selectedNodeData?.children?.length || 0;
   }
 
-    // Get the skill map name for the header - use framework name or fallback
+  // Get the skill map name for the header - use framework name or fallback
   get skillMapName(): string {
     if (this.frameworkName && this.frameworkName.trim()) {
       return this.frameworkName;
@@ -366,7 +368,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     private frameworkService: FrameworkService,
     private contentService: ContentService,
     private publicDataService: PublicDataService
-  ) { 
+  ) {
     // Determine user role for skill maps
     this.isSkillMapCreator = this.permissionService.checkRolesPermissions(['CONTENT_CREATOR']);
     this.isSkillMapReviewer = this.permissionService.checkRolesPermissions(['CONTENT_REVIEWER']);
@@ -572,16 +574,16 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     this.isLoading = false;
   }
 
-  private createNewSkillMapWithFramework(frameworkData: {name: string, code: string, description: string}): void {
+  private createNewSkillMapWithFramework(frameworkData: { name: string, code: string, description: string }): void {
     // Store framework name for header display
     this.frameworkName = frameworkData.name;
-    
+
     // Framework ID should already be set from query params or can use the framework code
     if (!this.frameworkId && frameworkData.code) {
       this.frameworkId = frameworkData.code;
       console.log('Framework ID set from framework data:', this.frameworkId);
     }
-    
+
     // Create default structure with framework data for metadata, but root node should be "Untitled"
     this.skillMapData = {
       id: 'new-skillmap',
@@ -613,11 +615,11 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   private loadSkillMapData(): void {
     if (this.contentId && this.contentId !== 'new') {
       this.isLoading = true;
-      
+
       // Store framework ID for API calls
       this.frameworkId = this.contentId;
       console.log('Framework ID set from contentId:', this.frameworkId);
-      
+
       // API call to fetch framework data
       this.fetchFrameworkData(this.contentId)
         .then((frameworkData) => {
@@ -649,7 +651,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    */
   private fetchFrameworkData(frameworkId: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.frameworkService.getFrameworkCategories(frameworkId,"edit").subscribe(
+      this.frameworkService.getFrameworkCategories(frameworkId, "edit").subscribe(
         (response: any) => {
           if (response && response.responseCode === 'OK' && response.result && response.result.framework) {
             resolve(response.result.framework);
@@ -672,17 +674,17 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   private processFrameworkApiResponse(frameworkData: any): void {
     try {
       console.log('Processing framework API response:', frameworkData);
-      
+
       // Store framework name for header
       this.frameworkName = frameworkData.name || 'Skill Map';
       console.log('Framework name set to:', this.frameworkName);
-      
+
       // Store framework ID for API calls
       if (frameworkData.identifier) {
         this.frameworkId = frameworkData.identifier;
         console.log('Framework ID updated from API response:', this.frameworkId);
       }
-      
+
       // Log framework structure for debugging
       if (frameworkData.categories) {
         console.log('Framework categories:', frameworkData.categories);
@@ -704,10 +706,10 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
           }
         });
       }
-      
+
       // Process categories and terms to build tree structure
       const rootNode = this.buildTreeFromCategories(frameworkData.categories || []);
-      
+
       // Create skill map data structure
       // Note: The rootNode is now the domain term, not a framework-level root
       this.skillMapData = {
@@ -740,7 +742,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    */
   private buildTreeFromCategories(categories: any[]): SkillMapNode {
     console.log('Building tree from categories:', categories);
-    
+
     // If no categories, return empty root with "Untitled" (for new skill maps)
     if (!categories || categories.length === 0) {
       console.log('No categories found, returning empty root');
@@ -762,14 +764,14 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     for (const category of categories) {
       if (category.terms && category.terms.length > 0) {
         termsByCategory.set(category.code, category.terms);
-        
+
         for (const term of category.terms) {
           // Store term with its category info
           allTerms.set(term.identifier, {
             ...term,
             categoryCode: category.code
           });
-          
+
           // Create node for this term
           const node: SkillMapNode = {
             id: term.identifier,
@@ -788,7 +790,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     // Find the domain term that should be the root for existing frameworks
     const domainTerms = termsByCategory.get('domain') || [];
     console.log('Domain terms found:', domainTerms);
-    
+
     if (domainTerms.length === 0) {
       console.log('No domain terms found, using framework as root');
       return {
@@ -803,7 +805,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     // Use the first domain term as the root node (for existing frameworks)
     const domainTerm = domainTerms[0];
     const rootNode = nodeMap.get(domainTerm.identifier);
-    
+
     if (!rootNode) {
       console.error('Could not find domain node for root');
       return {
@@ -828,8 +830,8 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    * Recursively build children from associations
    */
   private buildChildrenFromAssociations(
-    parentNode: SkillMapNode, 
-    nodeMap: Map<string, SkillMapNode>, 
+    parentNode: SkillMapNode,
+    nodeMap: Map<string, SkillMapNode>,
     allTerms: Map<string, any>
   ): void {
     const parentTerm = allTerms.get(parentNode.id);
@@ -842,13 +844,13 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     for (const association of parentTerm.associations) {
       const childNode = nodeMap.get(association.identifier);
       const childTerm = allTerms.get(association.identifier);
-      
+
       if (childNode && childTerm) {
         // Avoid circular references
         if (!this.isAncestorOf(childNode, parentNode)) {
           parentNode.children.push(childNode);
           console.log(`Added child "${childNode.name}" to parent "${parentNode.name}"`);
-          
+
           // Recursively build children for this child
           this.buildChildrenFromAssociations(childNode, nodeMap, allTerms);
         }
@@ -861,7 +863,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    */
   private isAncestorOf(potentialAncestor: SkillMapNode, node: SkillMapNode): boolean {
     if (potentialAncestor.id === node.id) return true;
-    
+
     for (const child of node.children) {
       if (this.isAncestorOf(potentialAncestor, child)) {
         return true;
@@ -1113,8 +1115,11 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     return isValid;
   }
 
-  public saveDraft(): void {
+  public saveDraft(isReview?: boolean): void {
     console.log('Save as draft clicked - starting validation...');
+
+    // Set loading state
+    this.isSavingDraft = true;
 
     // Get and log the tree data first
     this.getAndLogTreeData();
@@ -1137,9 +1142,12 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         });
 
         if (validationResult.hasErrors) {
+          // Reset loading state on validation error
+          this.isSavingDraft = false;
+
           // Expand all tree nodes so user can see which nodes have validation errors
           this.skillMapTreeComponent.expandAllNodes();
-          
+
           // Determine the type of validation errors and show appropriate message
           const errorMessage = this.getValidationErrorMessage(validationResult.errorNodes);
 
@@ -1151,13 +1159,21 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
           // Reset validation flag since everything is valid
           this.showValidationErrors = false;
           console.log('All validations passed, saving skill map as draft');
-          
+
           // Create terms and associations via API
           console.log('About to call createTermsAndAssociations...');
           this.createTermsAndAssociations().catch(error => {
             console.error('Error in createTermsAndAssociations:', error);
+            // Reset loading state on error
+            this.isSavingDraft = false;
           });
         }
+        if (isReview) {
+          this.makeReviewApiCall(this.frameworkId);
+        }
+      } else {
+        // Reset loading state if tree component not available
+        this.isSavingDraft = false;
       }
     }, 100);
   }
@@ -1172,20 +1188,20 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         if (tree) {
           // Get the complete tree data including all nodes and their metadata
           const completeTreeData = this.extractCompleteTreeData(tree);
-          
+
           console.log('=== COMPLETE TREE DATA ===');
           console.log(JSON.stringify(completeTreeData, null, 2));
-          
+
           // Also log a flattened version for easier reading
           const flattenedData = this.flattenTreeData(completeTreeData);
           console.log('=== FLATTENED TREE DATA ===');
           console.log(flattenedData);
-          
+
           // Log basic tree statistics
           console.log('=== TREE STATISTICS ===');
           console.log('Total nodes:', this.countNodes(completeTreeData));
           console.log('Max depth:', this.getMaxDepth(completeTreeData));
-          
+
           return completeTreeData;
         }
       }
@@ -1239,7 +1255,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    */
   private flattenTreeData(treeData: any): any[] {
     const flattened = [];
-    
+
     const flatten = (nodes: any[], parentPath = '') => {
       nodes.forEach((node, index) => {
         const currentPath = parentPath ? `${parentPath}.${index}` : `${index}`;
@@ -1252,17 +1268,17 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
           hasChildren: node.hasChildren,
           childrenCount: node.children ? node.children.length : 0
         });
-        
+
         if (node.children && node.children.length > 0) {
           flatten(node.children, currentPath);
         }
       });
     };
-    
+
     if (treeData.rootNodes) {
       flatten(treeData.rootNodes);
     }
-    
+
     return flattened;
   }
 
@@ -1271,7 +1287,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    */
   private countNodes(treeData: any): number {
     let count = 0;
-    
+
     const countRecursive = (nodes: any[]) => {
       nodes.forEach(node => {
         count++;
@@ -1280,11 +1296,11 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         }
       });
     };
-    
+
     if (treeData.rootNodes) {
       countRecursive(treeData.rootNodes);
     }
-    
+
     return count;
   }
 
@@ -1293,7 +1309,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    */
   private getMaxDepth(treeData: any): number {
     let maxDepth = 0;
-    
+
     const getDepth = (nodes: any[], currentDepth = 1) => {
       nodes.forEach(node => {
         maxDepth = Math.max(maxDepth, currentDepth);
@@ -1302,11 +1318,11 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         }
       });
     };
-    
+
     if (treeData.rootNodes) {
       getDepth(treeData.rootNodes);
     }
-    
+
     return maxDepth;
   }
 
@@ -1363,10 +1379,10 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       // For active node, trigger validation on the actual form controls
       this.nameFormControl.markAsTouched();
       this.nameFormControl.updateValueAndValidity();
-      
+
       this.codeFormControl.markAsTouched();
       this.codeFormControl.updateValueAndValidity();
-      
+
       this.descriptionFormControl.markAsTouched();
       this.descriptionFormControl.updateValueAndValidity();
     } else {
@@ -1450,7 +1466,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
 
     // Step 1: Perform all basic input validations (same as Save as Draft)
     const basicValidationResult = this.performBasicValidations();
-    
+
     if (!basicValidationResult.isValid) {
       this.toasterService.error(basicValidationResult.errorMessage);
       return;
@@ -1458,7 +1474,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
 
     // Step 2: Perform depth-specific validations for Send for Review
     const depthValidationResult = this.performDepthValidations();
-    
+
     if (!depthValidationResult.isValid) {
       this.toasterService.error(depthValidationResult.errorMessage);
       return;
@@ -1495,7 +1511,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     if (validationResult.hasErrors) {
       // Expand all nodes to show validation errors
       this.skillMapTreeComponent.expandAllNodes();
-      
+
       return {
         isValid: false,
         errorMessage: this.getValidationErrorMessage(validationResult.errorNodes),
@@ -1530,10 +1546,10 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       missingChildrenResult.invalidNodes.forEach(nodeId => {
         this.skillMapTreeComponent.highlightNode(nodeId, 'add');
       });
-      
+
       // Expand all nodes to show the issues
       this.skillMapTreeComponent.expandAllNodes();
-      
+
       return {
         isValid: false,
         errorMessage: 'Some nodes are missing required children. Each node must have at least one child until the maximum depth is reached.',
@@ -1569,7 +1585,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       return { isValid: false, incompleteNodes: [] };
     }
     const hasCompletePath = this.checkPathToDepth(actualRootNode, 1, maxDepth);
-    
+
     if (!hasCompletePath) {
       const incompleteNodes = this.findIncompletePathNodes(actualRootNode, 1, maxDepth);
       return { isValid: false, incompleteNodes };
@@ -1630,7 +1646,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   private validateNodesHaveChildren(maxDepth: number): { isValid: boolean, invalidNodes: string[] } {
     const invalidNodes: string[] = [];
     const rootNode = this.skillMapTreeComponent.getRootNode();
-    
+
     if (!rootNode || !rootNode.children || rootNode.children.length === 0) {
       return { isValid: false, invalidNodes: [] };
     }
@@ -1668,75 +1684,84 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   /**
    * Send framework for review via API call
    */
-  private sendForReview(): void {
-    // Get framework ID from query parameters (set during framework creation)
-    this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe$)).subscribe(queryParams => {
-      const frameworkId = queryParams['frameworkId'] || 'dummy_framework_id';
-      
-      // Prepare API request
-      const requestBody = {
-        request: {
-          framework: {
-            // Add any additional framework data needed for review
-            status: 'Review'
-          }
-        }
-      };
+  public sendForReview(): void {
+    console.log('Sending framework for review...');
 
-      // Make API call (currently dummy implementation)
-      this.makeReviewApiCall(frameworkId, requestBody);
-    });
+    this.isSendingForReview = true;
+
+    if (!this.frameworkId) {
+      console.error('Framework ID not found');
+      this.toasterService.error('Framework ID not found. Cannot send for review.');
+      this.isSendingForReview = false;
+      return;
+    }
+
+    // Make the API call to send for review
+    this.makeReviewApiCall(this.frameworkId);
   }
 
   /**
    * Make the actual API call to send for review
    */
-  private makeReviewApiCall(frameworkId: string, requestBody: any): void {
-    // TODO: Replace with actual API call when implemented
-    // const option = {
-    //   url: `framework/v1/review/${frameworkId}`,
-    //   data: requestBody
-    // };
-    // this.publicDataService.post(option).subscribe(
-
-    // Dummy response simulation for now
-    setTimeout(() => {
-      const dummyResponse = {
-        id: "api.v3.review",
-        ver: "1.0",
-        ts: new Date().toISOString(),
-        params: {
-          resmsgid: "fd605000-6dd3-11f0-b6b7-1303880447cd",
-          msgid: "12a14544-a7e2-4e76-8bac-1495a4ef54ac",
-          status: "successful",
-          err: null,
-          errmsg: null
-        },
-        responseCode: "OK",
-        result: {
-          versionKey: Date.now().toString()
-        }
-      };
-
-      // Handle success response
-      this.toasterService.success(
-        this.resourceService?.frmelmnts?.smsg?.sentForReview || 'Sent for review successfully!'
-      );
-
-      // Optionally update the skill map status
-      if (this.skillMapData) {
-        this.skillMapData.status = 'Review';
-        this.updateLastModified();
+  public makeReviewApiCall(frameworkId: string): void {
+    const requestBody = {
+      request: {
+        frameworkId: frameworkId
       }
+    };
 
-      console.log('Framework sent for review:', dummyResponse);
-    }, 1000); // 1 second delay to simulate API call
+    console.log('Making review API call with payload:', requestBody);
+    this.saveDraft(true)
+    const option = {
+      url: `framework/v3/review/${frameworkId}`,
+      data: requestBody
+    };
+
+    this.publicDataService.postWithHeaders(option).subscribe({
+      next: (response) => {
+        console.log('Review API call successful:', response);
+        this.isSendingForReview = false;
+
+        if (response?.result) {
+          this.toasterService.success(this.resourceService.messages.smsg.sentForReview || 'Framework sent for review successfully');
+
+          // Update the skill map status
+          if (this.skillMapData) {
+            this.skillMapData.status = 'Review';
+            this.updateLastModified();
+          }
+
+          // Refresh the component data to get the latest status
+          this.loadSkillMapData();
+        } else {
+          console.error('Review API call returned unexpected response:', response);
+          this.toasterService.error(this.resourceService.messages.emsg.sentForReview || 'Failed to send framework for review');
+        }
+      },
+      error: (error) => {
+        console.error('Review API call failed:', error);
+        this.isSendingForReview = false;
+
+        let errorMessage = this.resourceService.messages.emsg.m0005 || 'Failed to send framework for review';
+
+        // Handle specific error cases
+        if (error?.error?.params?.err === 'FRAMEWORK_NOT_FOUND') {
+          errorMessage = 'Framework not found';
+        } else if (error?.error?.params?.err === 'INVALID_FRAMEWORK_STATUS') {
+          errorMessage = 'Framework status is not valid for review';
+        } else if (error?.error?.params?.errmsg) {
+          errorMessage = error.error.params.errmsg;
+        }
+
+        this.toasterService.error(errorMessage);
+      }
+    });
   }
 
   public publishSkillMap(): void {
     console.log('Publish functionality will be implemented');
   }
-  
+
   public rejectSkillMap(): void {
     console.log('Reject functionality will be implemented');
   }
@@ -1751,7 +1776,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   public openEditFrameworkModal(): void {
     // Get framework identifier
     const frameworkId = this.getFrameworkIdentifier();
-    
+
     if (!frameworkId) {
       this.toasterService.error('Framework ID not found. Cannot edit framework.');
       return;
@@ -1778,13 +1803,13 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    */
   private fetchFrameworkDataForEdit(frameworkId: string): void {
     const apiUrl = `framework/v1/read/${frameworkId}`;
-    
+
     console.log('Fetching framework data for ID:', frameworkId);
-    
+
     this.publicDataService.get({ url: apiUrl }).subscribe(
       (response: any) => {
         console.log('Framework data response:', response);
-        
+
         if (response && response.result && response.result.framework) {
           const framework = response.result.framework;
           this.editFrameworkForm = {
@@ -1800,7 +1825,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       (error: any) => {
         console.error('Error fetching framework data:', error);
         this.toasterService.error(
-          this.resourceService?.frmelmnts?.emsg?.frameworkFetchFailed || 
+          this.resourceService?.frmelmnts?.emsg?.frameworkFetchFailed ||
           'Failed to fetch framework data. Please try again.'
         );
       }
@@ -1836,7 +1861,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    */
   public updateFramework(): void {
     this.editFormSubmitted = true;
-    
+
     // Validate form
     if (!this.editFrameworkForm.name || !this.editFrameworkForm.name.trim()) {
       return;
@@ -1846,7 +1871,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
 
     // Get framework identifier
     const frameworkId = this.getFrameworkIdentifier();
-    
+
     if (!frameworkId) {
       this.isUpdatingFramework = false;
       this.toasterService.error('Framework ID not found. Cannot update framework.');
@@ -1865,13 +1890,13 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     };
 
     const apiUrl = `framework/v1/update/${frameworkId}`;
-    
+
     console.log('Updating framework with API call:', { url: apiUrl, data: requestBody });
 
     this.publicDataService.patch({ url: apiUrl, data: requestBody }).subscribe(
       (response: any) => {
         console.log('Framework update response:', response);
-        
+
         if (response && response.responseCode === 'OK') {
           // Update local data
           this.frameworkName = this.editFrameworkForm.name.trim();
@@ -1879,11 +1904,11 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
             this.skillMapData.name = this.editFrameworkForm.name.trim();
             this.skillMapData.description = this.editFrameworkForm.description || '';
           }
-          
+
           // Close modal and show success message
           this.closeEditFrameworkModal();
           this.toasterService.success(
-            this.resourceService?.frmelmnts?.smsg?.frameworkUpdated || 
+            this.resourceService?.frmelmnts?.smsg?.frameworkUpdated ||
             'Framework updated successfully!'
           );
         } else {
@@ -1895,7 +1920,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         console.error('Error updating framework:', error);
         this.isUpdatingFramework = false;
         this.toasterService.error(
-          this.resourceService?.frmelmnts?.emsg?.frameworkUpdateFailed || 
+          this.resourceService?.frmelmnts?.emsg?.frameworkUpdateFailed ||
           'Failed to update framework. Please try again.'
         );
       }
@@ -1987,16 +2012,16 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    * Main method to create terms and associations via API calls
    */
   private async createTermsAndAssociations(): Promise<void> {
-    
+
     try {
       console.log('=== STARTING TERM CREATION AND ASSOCIATION PROCESS ===');
       console.log('Starting term creation and association process...');
-      
-      
+
+
       // Get framework identifier
       const frameworkIdentifier = this.getFrameworkIdentifier();
       console.log('Framework identifier retrieved:', frameworkIdentifier);
-      
+
       if (!frameworkIdentifier) {
         console.warn('Framework identifier not found. Saving locally only.');
         this.saveLocalDraftOnly();
@@ -2021,31 +2046,37 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
 
       // Step 2: Create associations between parent and child terms
       console.log('=== STEP 2: Creating associations ===');
-      
+
       // Validate that all nodes have been created before creating associations
       const missingNodeIds = this.validateAllNodesCreated(treeStructure);
       if (missingNodeIds.length > 0) {
         throw new Error(`Cannot create associations: Missing API node IDs for: ${missingNodeIds.join(', ')}`);
       }
-      
+
       await this.createAssociations(treeStructure, frameworkIdentifier);
 
       // Step 3: Update local storage and UI
       console.log('=== STEP 3: Finalizing ===');
       this.updateLastModified();
       console.log('Skill map saved as draft with API integration');
-      
+
       // Log the final mapping for debugging
       console.log('Final node ID mappings:', Array.from(this.createdNodeIds.entries()));
 
+      // Reset loading state on success
+      this.isSavingDraft = false;
+
       this.toasterService.success(
-        this.resourceService?.frmelmnts?.lbl?.skillMapSavedDraft || 
+        this.resourceService?.frmelmnts?.lbl?.skillMapSavedDraft ||
         'Your skill map has been successfully saved as draft.'
       );
 
     } catch (error) {
       console.error('Error in createTermsAndAssociations:', error);
-      
+
+      // Reset loading state on error
+      this.isSavingDraft = false;
+
       // Show appropriate error message
       let errorMessage = 'Failed to save skill map. Please try again.';
       if (error.message) {
@@ -2059,9 +2090,9 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
           errorMessage = 'Network error. Please check your connection.';
         }
       }
-      
+
       this.toasterService.error(errorMessage);
-      
+
       // Offer fallback to local save
       console.log('Attempting fallback to local save...');
       this.saveLocalDraftOnly();
@@ -2073,12 +2104,12 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    */
   private getFrameworkIdentifier(): string {
     // Try to get from URL parameters first
-    const frameworkId = this.activatedRoute.snapshot.queryParams['frameworkId'] || 
-                       this.activatedRoute.snapshot.params['frameworkId'] ||
-                       this.frameworkId ||
-                       this.skillMapData?.framework ||
-                       this.skillMapData?.id;
-    
+    const frameworkId = this.activatedRoute.snapshot.queryParams['frameworkId'] ||
+      this.activatedRoute.snapshot.params['frameworkId'] ||
+      this.frameworkId ||
+      this.skillMapData?.framework ||
+      this.skillMapData?.id;
+
     console.log('Framework identifier found:', frameworkId);
     return frameworkId;
   }
@@ -2098,11 +2129,11 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
 
     // The actual skill map root node (not the FancyTree container)
     const actualRootNode = rootNode.children[0];
-    
+
     // Build tree with level and category information
     const treeWithCategories = this.buildNodeWithCategory(actualRootNode, 1);
     console.log('Built tree structure:', treeWithCategories);
-    
+
     return treeWithCategories;
   }
 
@@ -2112,7 +2143,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   private buildNodeWithCategory(node: any, level: number): any {
     // Determine category based on level
     const category = this.getCategoryByLevel(level);
-    
+
     const nodeData = {
       id: node.key || node.data?.id || node.id,
       name: node.data?.metadata?.name || node.title || '',
@@ -2154,7 +2185,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    */
   private async createTermsSequentially(treeStructure: any, frameworkIdentifier: string): Promise<void> {
     console.log('Creating terms sequentially...');
-    
+
     // Create a queue of all nodes organized by level
     const nodesByLevel: Map<number, any[]> = new Map();
     this.organizeNodesByLevel(treeStructure, nodesByLevel);
@@ -2167,19 +2198,19 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
 
     // Process each level sequentially
     const levels = Array.from(nodesByLevel.keys()).sort((a, b) => a - b);
-    
+
     for (const level of levels) {
       const nodesAtLevel = nodesByLevel.get(level) || [];
       console.log(`Processing level ${level} with ${nodesAtLevel.length} nodes`);
-      
+
       // Create all terms at this level with retry logic
-      const termCreationPromises = nodesAtLevel.map(node => 
+      const termCreationPromises = nodesAtLevel.map(node =>
         this.createSingleTermWithRetry(node, frameworkIdentifier, 3) // 3 retries
       );
-      
+
       try {
         await Promise.all(termCreationPromises);
-        console.log(`Completed level ${level} - Created terms for:`, 
+        console.log(`Completed level ${level} - Created terms for:`,
           nodesAtLevel.map(n => ({ name: n.name, apiId: this.createdNodeIds.get(n.id) }))
         );
       } catch (error) {
@@ -2187,7 +2218,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         throw new Error(`Failed to create terms at level ${level}: ${error.message}`);
       }
     }
-    
+
     console.log('All terms created successfully. Total terms:', this.createdNodeIds.size);
   }
 
@@ -2196,7 +2227,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    */
   private async createSingleTermWithRetry(node: any, frameworkIdentifier: string, maxRetries: number): Promise<void> {
     let lastError: Error;
-    
+
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
         await this.createSingleTerm(node, frameworkIdentifier);
@@ -2204,7 +2235,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       } catch (error) {
         lastError = error;
         console.warn(`Attempt ${attempt}/${maxRetries} failed for term "${node.name}":`, error.message);
-        
+
         if (attempt < maxRetries) {
           // Wait before retrying (exponential backoff)
           const delay = Math.pow(2, attempt - 1) * 1000; // 1s, 2s, 4s...
@@ -2213,7 +2244,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         }
       }
     }
-    
+
     // All retries failed
     throw new Error(`Failed to create term "${node.name}" after ${maxRetries} attempts: ${lastError.message}`);
   }
@@ -2223,12 +2254,12 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    */
   private organizeNodesByLevel(node: any, nodesByLevel: Map<number, any[]>): void {
     const level = node.level;
-    
+
     if (!nodesByLevel.has(level)) {
       nodesByLevel.set(level, []);
     }
     nodesByLevel.get(level)!.push(node);
-    
+
     // Recursively process children
     for (const child of node.children) {
       this.organizeNodesByLevel(child, nodesByLevel);
@@ -2241,7 +2272,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   private async createSingleTerm(node: any, frameworkIdentifier: string): Promise<void> {
     try {
       console.log(`Creating term for node: ${node.name} (${node.category})`);
-      
+
       const requestBody = {
         request: {
           term: {
@@ -2255,58 +2286,58 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       // Try to create the term first
       const createApiUrl = `framework/v1/term/create?framework=${frameworkIdentifier}&category=${node.category}`;
       console.log(`Attempting to create term with URL: ${createApiUrl}`);
-      
+
       try {
         const response = await this.makeApiCall('POST', createApiUrl, requestBody);
-        
+
         // Validate response structure
         if (!response) {
           throw new Error('No response received from create API');
         }
-        
+
         if (response.responseCode !== 'OK') {
           throw new Error(`Create API returned error: ${response.responseCode} - ${response.params?.errmsg || 'Unknown error'}`);
         }
-        
+
         if (!response.result || !response.result.node_id) {
           throw new Error('Invalid create API response: missing node_id in result');
         }
-        
+
         // Extract node ID from create response
         const nodeIdArray = response.result.node_id;
         if (!Array.isArray(nodeIdArray) || nodeIdArray.length === 0) {
           throw new Error('Invalid create API response: node_id should be a non-empty array');
         }
-        
+
         const apiNodeId = nodeIdArray[0]; // Take first element
         this.createdNodeIds.set(node.id, apiNodeId);
-        
+
         console.log(`Term created successfully: ${node.name} -> ${apiNodeId}`);
-        
+
       } catch (createError) {
         console.warn(`Create API failed for ${node.name}, trying update API...`);
-        
+
         // Try the update API as fallback
         const updateApiUrl = `framework/v1/term/update/${requestBody?.request?.term?.code}?framework=${frameworkIdentifier}&category=${node.category}`;
-        
+
         const updateResponse = await this.makeApiCall('PATCH', updateApiUrl, requestBody);
-        
+
         if (updateResponse.responseCode !== 'OK') {
           throw new Error(`Update API returned error: ${updateResponse.responseCode} - ${updateResponse.params?.errmsg || 'Unknown error'}`);
         }
-        
-        const termIdentifier = updateResponse.result?.node_id || 
-                             updateResponse.result?.identifier || 
-                             updateResponse.result?.versionKey ||
-                             node.code;
-        
+
+        const termIdentifier = updateResponse.result?.node_id ||
+          updateResponse.result?.identifier ||
+          updateResponse.result?.versionKey ||
+          node.code;
+
         this.createdNodeIds.set(node.id, termIdentifier);
         console.log(`Term updated successfully via fallback: ${node.name} -> ${termIdentifier}`);
       }
-      
+
     } catch (error) {
       console.error(`Error in createSingleTerm for ${node.name}:`, error);
-      
+
       // Add more context to the error
       const enhancedError = new Error(`Failed to create term "${node.name}" (${node.category}): ${error.message}`);
       enhancedError.stack = error.stack;
@@ -2319,12 +2350,12 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    */
   private validateAllNodesCreated(node: any): string[] {
     const missingNodes: string[] = [];
-    
+
     // Check current node
     if (!this.createdNodeIds.has(node.id)) {
       missingNodes.push(node.name || node.id);
     }
-    
+
     // Recursively check children
     if (node.children && node.children.length > 0) {
       for (const child of node.children) {
@@ -2332,7 +2363,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         missingNodes.push(...childMissingNodes);
       }
     }
-    
+
     return missingNodes;
   }
 
@@ -2342,12 +2373,12 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   private async createAssociations(treeStructure: any, frameworkIdentifier: string): Promise<void> {
     console.log('=== STARTING ASSOCIATION CREATION ===');
     console.log('Creating associations...');
-    
+
     // Collect all association updates needed
     const associationUpdates: any[] = [];
     console.log('Collecting association updates...');
     this.collectAssociationUpdates(treeStructure, associationUpdates);
-    
+
     console.log(`Found ${associationUpdates.length} association updates to process`);
     console.log('Association updates to process:', associationUpdates.map(update => ({
       parentName: update.parentName,
@@ -2357,12 +2388,12 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       childrenApiIds: update.associations.map(a => a.identifier),
       childrenDetails: update.childrenDetails
     })));
-    
+
     if (associationUpdates.length === 0) {
       console.log('No associations to create - tree might be flat or have no children');
       return;
     }
-    
+
     // Validate that all associations have valid identifiers
     console.log('Validating association identifiers...');
     for (const update of associationUpdates) {
@@ -2378,14 +2409,14 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         }
       }
     }
-    
+
     // Process all association updates with retry logic
     console.log('Starting to process association updates...');
     for (let i = 0; i < associationUpdates.length; i++) {
       const update = associationUpdates[i];
       console.log(`Processing association ${i + 1}/${associationUpdates.length} for ${update.parentName}`);
       console.log('About to call updateTermAssociationsWithRetry...');
-      
+
       try {
         await this.updateTermAssociationsWithRetry(update, frameworkIdentifier, 3); // 3 retries
         console.log(`Successfully processed association for ${update.parentName}`);
@@ -2394,7 +2425,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         throw new Error(`Failed to update associations for "${update.parentName}": ${error.message}`);
       }
     }
-    
+
     console.log('All associations created successfully');
   }
 
@@ -2403,7 +2434,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    */
   private async updateTermAssociationsWithRetry(update: any, frameworkIdentifier: string, maxRetries: number): Promise<void> {
     let lastError: Error;
-    
+
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
         await this.updateTermAssociations(update, frameworkIdentifier);
@@ -2411,7 +2442,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       } catch (error) {
         lastError = error;
         console.warn(`Attempt ${attempt}/${maxRetries} failed for associations update "${update.parentName}":`, error.message);
-        
+
         if (attempt < maxRetries) {
           // Wait before retrying (exponential backoff)
           const delay = Math.pow(2, attempt - 1) * 1000; // 1s, 2s, 4s...
@@ -2420,7 +2451,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         }
       }
     }
-    
+
     // All retries failed
     throw new Error(`Failed to update associations for "${update.parentName}" after ${maxRetries} attempts: ${lastError.message}`);
   }
@@ -2432,14 +2463,14 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     // If this node has children, create association update for it
     if (node.children && node.children.length > 0) {
       const parentApiNodeId = this.createdNodeIds.get(node.id);
-      
+
       if (parentApiNodeId) {
         // Get child associations - MUST use the child's API node ID, not metadata.id
         const childAssociations = [];
-        
+
         for (const child of node.children) {
           const childApiNodeId = this.createdNodeIds.get(child.id);
-          
+
           console.log(`Child mapping for ${child.name}:`, {
             childTreeNodeId: child.id,
             childMetadataId: child.metadata?.id,
@@ -2447,7 +2478,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
             parentTreeNodeId: node.id,
             parentApiNodeId: parentApiNodeId
           });
-          
+
           if (childApiNodeId) {
             // Use the child's API node ID that was returned from term creation
             childAssociations.push({ identifier: childApiNodeId });
@@ -2457,7 +2488,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
             throw new Error(`Cannot create associations: Missing API node ID for child "${child.name}"`);
           }
         }
-        
+
         if (childAssociations.length > 0) {
           updates.push({
             parentNodeId: parentApiNodeId,
@@ -2474,7 +2505,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
               category: this.getCategoryByLevel(child.level)
             }))
           });
-          
+
           console.log(`Association update prepared for ${node.name}:`, {
             parentName: node.name,
             parentApiNodeId,
@@ -2486,13 +2517,13 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       } else {
         console.warn(`No API node ID found for parent node: ${node.name} (${node.id})`);
       }
-      
+
       // Recursively collect from children
       for (const child of node.children) {
         this.collectAssociationUpdates(child, updates);
       }
     }
-    
+
     return updates;
   }
 
@@ -2504,7 +2535,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       console.log(`=== UPDATING ASSOCIATIONS FOR ${update.parentName} ===`);
       console.log(`Updating associations for ${update.parentName} (${update.parentNodeId})`);
       console.log(`Adding ${update.associations.length} child associations:`, update.associations.map(a => a.identifier));
-      
+
       const requestBody = {
         request: {
           term: {
@@ -2519,30 +2550,30 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       const apiUrl = `framework/v1/term/update/${update?.code}?framework=${frameworkIdentifier}&category=${update.parentCategory}`;
       console.log('API URL:', apiUrl);
       console.log('About to make API call...');
-      
+
       const response = await this.makeApiCall('PATCH', apiUrl, requestBody);
-      
+
       console.log('API call completed, validating response...');
-      
+
       // Validate response structure
       if (!response) {
         throw new Error('No response received from API');
       }
-      
+
       if (response.responseCode !== 'OK') {
         throw new Error(`API returned error: ${response.responseCode} - ${response.params?.errmsg || 'Unknown error'}`);
       }
-      
+
       console.log(`Associations updated successfully for ${update.parentName}`);
-      
+
       // Log the version key if available for debugging
       if (response.result && response.result.versionKey) {
         console.log(`New version key: ${response.result.versionKey}`);
       }
-      
+
     } catch (error) {
       console.error(`Error updating associations for ${update.parentName}:`, error);
-      
+
       // Add more context to the error
       const enhancedError = new Error(`Failed to update associations for "${update.parentName}" (${update.parentCategory}): ${error.message}`);
       enhancedError.stack = error.stack;
@@ -2558,20 +2589,16 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       console.log(`=== MAKING API CALL ===`);
       console.log(`Making actual API call: ${method} ${url}`);
       console.log('Request data:', data);
-      
+
       const option = {
         url: url,
-        data: data,
-        header: {
-          'Content-Type': 'application/json',
-          'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhcGlfYWRtaW4ifQ.-qfZEwBAoHFhxNqhGq7Vy_SNVcwB1AtMX8xbiVHF5FQ"
-        }
+        data: data
       };
-      
+
       console.log('Request options:', option);
-      
+
       let response: any;
-      
+
       console.log(`Executing ${method} request...`);
       if (method === 'POST') {
         response = await this.publicDataService.post(option).toPromise();
@@ -2582,16 +2609,16 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       } else {
         throw new Error(`Unsupported HTTP method: ${method}`);
       }
-      
+
       console.log(`API response received for ${method} ${url}:`, response);
       return response;
-      
+
     } catch (error) {
       console.error(`API call failed: ${method} ${url}`, error);
-      
+
       // Re-throw with more context and preserve the original error properties
       const enhancedError: any = new Error(`API call failed with ${method} ${url}: ${error.message || 'Unknown error'}`);
-      
+
       // Preserve important error properties
       if (error.status) {
         enhancedError.status = error.status;
@@ -2602,7 +2629,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       if (error.params) {
         enhancedError.params = error.params;
       }
-      
+
       throw enhancedError;
     }
   }
@@ -2634,18 +2661,25 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   private saveLocalDraftOnly(): void {
     try {
       console.log('Saving draft locally without API integration');
-      
+
       this.updateLastModified();
       console.log('Skill map saved as draft (local only)');
+
+      // Reset loading state
+      this.isSavingDraft = false;
 
       // Show success toaster with local save indication
       this.toasterService.success(
         'Your skill map has been saved locally as draft. ' +
         (this.resourceService?.frmelmnts?.lbl?.skillMapSavedDraft || '')
       );
-      
+
     } catch (error) {
       console.error('Error in saveLocalDraftOnly:', error);
+
+      // Reset loading state on error
+      this.isSavingDraft = false;
+
       this.toasterService.error('Failed to save skill map locally. Please try again.');
     }
   }

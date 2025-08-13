@@ -29,13 +29,20 @@
             <div class="d-flex flex-ai-center">
                 <!-- Edit Mode Buttons -->
                 <button *ngIf="isEditMode" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-10"
-                    [disabled]="!canSaveAsDraft" [ngClass]="{'sb-disabled': !canSaveAsDraft}" (click)="saveDraft()">
-                    <i class="icon save" aria-hidden="true"></i>
-                    {{resourceService?.frmelmnts?.lbl?.saveAsDraftBtn}}
+                    [disabled]="!canSaveAsDraft || isSavingDraft" 
+                    [ngClass]="{'sb-disabled': !canSaveAsDraft || isSavingDraft}" 
+                    (click)="saveDraft()">
+                    <i *ngIf="!isSavingDraft" class="icon save" aria-hidden="true"></i>
+                    <i *ngIf="isSavingDraft" class="icon spinner loading" aria-hidden="true"></i>
+                    <span *ngIf="!isSavingDraft">{{resourceService?.frmelmnts?.lbl?.saveAsDraftBtn}}</span>
+                    <span *ngIf="isSavingDraft">Saving...</span>
                 </button>
                 <button *ngIf="isEditMode" class="sb-btn sb-btn-normal sb-btn-primary mr-10"
-                    (click)="previewSkillMap()">
-                    Send for Review
+                    (click)="sendForReview()" [disabled]="isSendingForReview">
+                    <i *ngIf="!isSendingForReview" class="icon share alternate" aria-hidden="true"></i>
+                    <i *ngIf="isSendingForReview" class="icon spinner loading" aria-hidden="true"></i>
+                    <span *ngIf="!isSendingForReview">Send for Review</span>
+                    <span *ngIf="isSendingForReview">Saving & Sending...</span>
                 </button>
 
                 <!-- Review Mode Buttons (for reviewers) -->

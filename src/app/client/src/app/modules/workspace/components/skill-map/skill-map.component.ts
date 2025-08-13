@@ -219,6 +219,9 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
     this.loaderMessage = {
       'loaderMessage': this.resourceService.messages.stmsg.m0110,
     };
+    this.noResultMessage = {
+      'messageText': 'messages.stmsg.m0008'
+    };
     this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
     
     // Determine user role for skill maps
@@ -403,12 +406,9 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
 
   private deleteContent(contentId: string) {
     // Delete skill map (framework) using the framework retire API
-    const option = {
-      url: `/api/framework/v3/retire/${contentId}`,
-      data: {}
-    };
+
     
-    this.contentService.delete(option).subscribe(
+    this.frameworkService.retireFramework(contentId).subscribe(
       (data: ServerResponse) => {
         // Handle successful deletion
         if (data.responseCode === 'OK') {
@@ -443,8 +443,19 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
   * This method calls the workspace content search or handles skill map actions
   */
   contentClick(content: ISkillMapContent): void {
+    console.log('=== CONTENT CLICK DEBUG ===');
+    console.log('Content:', content);
+    console.log('User roles:', {
+      isSkillMapReviewer: this.isSkillMapReviewer,
+      isSkillMapCreator: this.isSkillMapCreator,
+      allRoles: this.permissionService.permissionAvailable
+    });
+    console.log('Content status:', content.status);
+    console.log('Content metaData status:', content.metaData?.status);
+    
     // For skill map reviewers, open skill map editor in review mode
     if (this.isSkillMapReviewer) {
+      console.log('Opening skill map in REVIEW mode for reviewer');
       this.workSpaceService.openSkillMapEditor(content, 'review');
       return;
     }
@@ -452,6 +463,7 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
     if (this.isSkillMapCreator) {
       // For skill map creators, open skill map editor in edit mode for Draft status
       if (content.status === 'Draft') {
+        console.log('Opening skill map in EDIT mode for creator (Draft status)');
         this.workSpaceService.openSkillMapEditor(content, 'edit');
         return;
       }
@@ -459,10 +471,14 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
     
     // For skill map creators, open skill map editor in view mode for Live or Review status
     const status = content.status || (content.metaData && content.metaData.status);
+    console.log('Final status check:', status);
+    
     if (status === 'Live' || status === 'Review') {
+      console.log('Opening skill map in VIEW mode for status:', status);
       this.workSpaceService.openSkillMapEditor(content, 'view');
     } else {
       // Show appropriate message for frameworks that cannot be viewed
+      console.log('Cannot view skill map with status:', status);
       this.toasterService.warning(this.resourceService.messages.imsg.m0027 || 'This skill map cannot be viewed in current status');
     }
   }

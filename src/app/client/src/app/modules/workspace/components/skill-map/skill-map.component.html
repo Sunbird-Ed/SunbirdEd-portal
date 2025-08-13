@@ -3,7 +3,7 @@
 <div class="twelve wide column mt-20" *ngIf="showLoader ">
     <app-loader [data]="loaderMessage"></app-loader>
   </div>
-  <div *ngIf="noResult && !showLoader">
+  <div *ngIf="(noResult || skillMapContent?.length === 0) && !showLoader">
     <app-no-result [data]="noResultMessage"></app-no-result>
   </div>
   
@@ -83,7 +83,7 @@
   <div class="ui grid">
     <div class="two wide column"></div>
     <div class="ten wide column">
-      <div class="pb-10" *ngIf="skillMapContent && totalCount > config.appConfig.WORKSPACE.PAGE_LIMIT && !showLoader && !showError && !noResult">
+      <div class="pb-10" *ngIf="skillMapContent && skillMapContent.length > 0 && totalCount > config.appConfig.WORKSPACE.PAGE_LIMIT && !showLoader && !showError && !noResult">
         <div class="ui pagination menu mt-10 right-floated p-0 " *ngIf="pager.pages.length ">
           <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0" (click)="navigateToPage(1) ">{{ resourceService?.frmelmnts?.lbl?.first}}</a>
           <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0" (click)="navigateToPage(pager.currentPage - 1)">{{ resourceService?.frmelmnts?.lbl?.previous}}</a>
