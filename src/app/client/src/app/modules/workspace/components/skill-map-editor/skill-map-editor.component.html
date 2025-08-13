@@ -34,27 +34,33 @@
                     (click)="saveDraft()">
                     <i *ngIf="!isSavingDraft" class="icon save" aria-hidden="true"></i>
                     <i *ngIf="isSavingDraft" class="icon spinner loading" aria-hidden="true"></i>
-                    <span *ngIf="!isSavingDraft">{{resourceService?.frmelmnts?.lbl?.saveAsDraftBtn}}</span>
-                    <span *ngIf="isSavingDraft">Saving...</span>
+                    <span *ngIf="!isSavingDraft">{{resourceService?.frmelmnts?.lbl?.saveAsDraft || 'Save as Draft'}}</span>
+                    <span *ngIf="isSavingDraft">{{resourceService?.frmelmnts?.lbl?.saving || 'Saving...'}}</span>
                 </button>
                 <button *ngIf="isEditMode" class="sb-btn sb-btn-normal sb-btn-primary mr-10"
                     (click)="sendForReview()" [disabled]="isSendingForReview">
                     <i *ngIf="!isSendingForReview" class="icon share alternate" aria-hidden="true"></i>
                     <i *ngIf="isSendingForReview" class="icon spinner loading" aria-hidden="true"></i>
-                    <span *ngIf="!isSendingForReview">Send for Review</span>
-                    <span *ngIf="isSendingForReview">Saving & Sending...</span>
+                    <span *ngIf="!isSendingForReview">{{resourceService?.frmelmnts?.lbl?.sendForReview || 'Send for Review'}}</span>
+                    <span *ngIf="isSendingForReview">{{resourceService?.frmelmnts?.lbl?.savingAndSending || 'Saving & Sending...'}}</span>
                 </button>
 
                 <!-- Review Mode Buttons (for reviewers) -->
                 <button *ngIf="isReviewMode && isSkillMapReviewer" class="sb-btn sb-btn-normal sb-btn-success mr-10"
-                    (click)="publishSkillMap()">
-                    <i class="icon checkmark" aria-hidden="true"></i>
-                    Publish
+                    (click)="publishSkillMap()" [disabled]="isPublishing">
+                    <i *ngIf="!isPublishing" class="icon checkmark" aria-hidden="true"></i>
+                    <i *ngIf="isPublishing" class="icon spinner loading" aria-hidden="true"></i>
+                    <span *ngIf="!isPublishing">{{resourceService?.frmelmnts?.lbl?.publish || 'Publish'}}</span>
+                    <span *ngIf="isPublishing">{{resourceService?.frmelmnts?.lbl?.publishing || 'Publishing...'}}</span>
                 </button>
                 <button *ngIf="isReviewMode && isSkillMapReviewer"
-                    class="sb-btn sb-btn-normal sb-btn-outline-danger mr-10" (click)="rejectSkillMap()">
-                    <i class="icon times" aria-hidden="true"></i>
-                    Reject
+                    class="sb-btn sb-btn-normal sb-btn-outline-danger mr-10" 
+                    (click)="rejectSkillMap()" 
+                    [disabled]="isRejecting">
+                    <i *ngIf="!isRejecting" class="icon times" aria-hidden="true"></i>
+                    <i *ngIf="isRejecting" class="icon spinner loading" aria-hidden="true"></i>
+                    <span *ngIf="!isRejecting">{{resourceService?.frmelmnts?.lbl?.reject || 'Reject'}}</span>
+                    <span *ngIf="isRejecting">{{resourceService?.frmelmnts?.lbl?.rejecting || 'Rejecting...'}}</span>
                 </button>
 
                 <!-- View Mode: No action buttons shown -->
@@ -89,30 +95,140 @@
                             <!-- Name and Code in same row (50% each) -->
                             <div style="display: flex; gap: 16px; margin-bottom: 16px;">
                                 <mat-form-field appearance="outline" style="flex: 1;">
-                                    <mat-label
-                                        style="color: black;">{{resourceService?.frmelmnts?.lbl?.skillMapName}}</mat-label>
+                                    <mat-label>{{resourceService?.frmelmnts?.lbl?.skillMapName || 'Skill Map Name'}}</mat-label>
                                     <input matInput [formControl]="nameFormControl"
                                         [readonly]="isViewMode || isReviewMode"
-                                        placeholder="{{resourceService?.frmelmnts?.lbl?.enterNodeName}}"
+                                        placeholder="{{resourceService?.frmelmnts?.lbl?.enterNodeName || 'Enter node name'}}"
                                         style="font-family: 'Times New Roman', sans-serif !important;">
                                     <mat-error
-                                        *ngIf="nameFormControl.hasError('required') && (nameFormControl.touched || showValidationErrors)">{{resourceService?.frmelmnts?.lbl?.nameIsRequired}}</mat-error>
+                                        *ngIf="nameFormControl.hasError('required') && (nameFormControl.touched || showValidationErrors)">{{resourceService?.frmelmnts?.lbl?.nameIsRequired || 'Name is required'}}</mat-error>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="fill" style="flex: 1;">
-                                    <mat-label
-                                        style="color: black;">{{resourceService?.frmelmnts?.lbl?.skillMapCode}}</mat-label>
+                                    <mat-label>{{resourceService?.frmelmnts?.lbl?.skillMapCode || 'Skill Map Code'}}</mat-label>
                                     <input matInput [formControl]="codeFormControl"
                                         [readonly]="isViewMode || isReviewMode"
-                                        placeholder="{{resourceService?.frmelmnts?.lbl?.enterUniqueCode}}"
+                                        placeholder="{{resourceService?.frmelmnts?.lbl?.enterUniqueCode || 'Enter unique code'}}"
                                         style="font-family: 'Times New Roman', sans-serif !important;">
+                                    <mat-icon matSuffix *ngIf="codeFormControl.pending" class="spinner-icon">
+                                        hourglass_empty
+                                    </mat-icon>
                                     <mat-error
-                                        *ngIf="codeFormControl.hasError('required') && (codeFormControl.touched || showValidationErrors)">{{resourceService?.frmelmnts?.lbl?.codeIsRequired}}</mat-error>
+                                        *ngIf="codeFormControl.hasError('required') && (codeFormControl.touched || showValidationErrors)">{{resourceService?.frmelmnts?.lbl?.codeIsRequired || 'Code is required'}}</mat-error>
                                     <mat-error
-                                        *ngIf="codeFormControl.hasError('invalidCode') && !codeFormControl.hasError('required') && (codeFormControl.touched || showValidationErrors)">{{resourceService?.frmelmnts?.lbl?.codeInvalidFormat}}</mat-error>
+                                        *ngIf="codeFormControl.hasError('invalidCode') && !codeFormControl.hasError('required') && (codeFormControl.touched || showValidationErrors)">{{resourceService?.frmelmnts?.lbl?.codeInvalidFormat || 'Code format is invalid'}}</mat-error>
                                     <mat-error
-                                        *ngIf="codeFormControl.hasError('duplicateCode') && !codeFormControl.hasError('required') && !codeFormControl.hasError('invalidCode') && (codeFormControl.touched || showValidationErrors)">{{resourceService?.frmelmnts?.lbl?.codeNotUnique}}</mat-error>
+                                        *ngIf="codeFormControl.hasError('duplicateCode') && !codeFormControl.hasError('required') && !codeFormControl.hasError('invalidCode') && (codeFormControl.touched || showValidationErrors)">{{resourceService?.frmelmnts?.lbl?.codeNotUnique || 'Code must be unique'}}</mat-error>
+                                    <mat-error
+                                        *ngIf="codeFormControl.hasError('codeExists') && !codeFormControl.hasError('required') && !codeFormControl.hasError('invalidCode') && !codeFormControl.hasError('duplicateCode') && (codeFormControl.touched || showValidationErrors)">{{resourceService?.frmelmnts?.lbl?.codeAlreadyExists || 'Code already exists'}}</mat-error>
                                 </mat-form-field>
+                            </div>
+
+                            <!-- Observable Element Specific Fields -->
+                            <div *ngIf="isObservableElement" style="margin-top: 24px;">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                    <!-- Column 1: Behavioral Indicators -->
+                                    <div style="margin-bottom: 16px;">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>{{resourceService?.frmelmnts?.lbl?.behavioralIndicators || 'Behavioral Indicators'}}</mat-label>
+                                            <input matInput [formControl]="behavioralIndicatorsInputControl"
+                                                [readonly]="isViewMode || isReviewMode"
+                                                placeholder="{{resourceService?.frmelmnts?.lbl?.enterBehavioralIndicator || 'Enter behavioral indicator'}}"
+                                                (keydown.enter)="addBehavioralIndicator(); $event.preventDefault()"
+                                                style="font-family: 'Times New Roman', sans-serif !important;">
+                                            <button mat-icon-button matSuffix
+                                                [disabled]="isViewMode || isReviewMode || !behavioralIndicatorsInputControl.value?.trim()"
+                                                (click)="addBehavioralIndicator()"
+                                                type="button"
+                                                aria-label="{{resourceService?.frmelmnts?.lbl?.addBehavioralIndicator || 'Add behavioral indicator'}}">
+                                                <mat-icon>add</mat-icon>
+                                            </button>
+                                        </mat-form-field>
+                                        <div *ngIf="behavioralIndicators.length > 0" style="margin-top: 8px;">
+                                            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                                <div *ngFor="let indicator of behavioralIndicators; let i = index" 
+                                                     class="chip-container"
+                                                     style="display: inline-flex; align-items: center; background-color: #e0e0e0; border-radius: 16px; padding: 4px 8px; font-size: 14px;">
+                                                    <span style="margin-right: 4px;">{{indicator}}</span>
+                                                    <button *ngIf="!isViewMode && !isReviewMode"
+                                                            (click)="removeBehavioralIndicator(i)"
+                                                            style="background: none; border: none; cursor: pointer; padding: 2px; border-radius: 50%; display: flex; align-items: center; justify-content: center;"
+                                                            aria-label="{{resourceService?.frmelmnts?.lbl?.removeIndicator || 'Remove indicator'}}">
+                                                        <mat-icon style="font-size: 16px; width: 16px; height: 16px;">close</mat-icon>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Column 2: Measurable Outcomes -->
+                                    <div style="margin-bottom: 16px;">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>{{resourceService?.frmelmnts?.lbl?.measurableOutcomes || 'Measurable Outcomes'}}</mat-label>
+                                            <input matInput [formControl]="measurableOutcomesInputControl"
+                                                [readonly]="isViewMode || isReviewMode"
+                                                placeholder="{{resourceService?.frmelmnts?.lbl?.enterMeasurableOutcome || 'Enter measurable outcome'}}"
+                                                (keydown.enter)="addMeasurableOutcome(); $event.preventDefault()"
+                                                style="font-family: 'Times New Roman', sans-serif !important;">
+                                            <button mat-icon-button matSuffix
+                                                [disabled]="isViewMode || isReviewMode || !measurableOutcomesInputControl.value?.trim()"
+                                                (click)="addMeasurableOutcome()"
+                                                type="button"
+                                                aria-label="{{resourceService?.frmelmnts?.lbl?.addMeasurableOutcome || 'Add measurable outcome'}}">
+                                                <mat-icon>add</mat-icon>
+                                            </button>
+                                        </mat-form-field>
+                                        <div *ngIf="measurableOutcomes.length > 0" style="margin-top: 8px;">
+                                            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                                <div *ngFor="let outcome of measurableOutcomes; let i = index" 
+                                                     class="chip-container"
+                                                     style="display: inline-flex; align-items: center; background-color: #e0e0e0; border-radius: 16px; padding: 4px 8px; font-size: 14px;">
+                                                    <span style="margin-right: 4px;">{{outcome}}</span>
+                                                    <button *ngIf="!isViewMode && !isReviewMode"
+                                                            (click)="removeMeasurableOutcome(i)"
+                                                            style="background: none; border: none; cursor: pointer; padding: 2px; border-radius: 50%; display: flex; align-items: center; justify-content: center;"
+                                                            aria-label="{{resourceService?.frmelmnts?.lbl?.removeOutcome || 'Remove outcome'}}">
+                                                        <mat-icon style="font-size: 16px; width: 16px; height: 16px;">close</mat-icon>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Assessment Criteria (Full Width) -->
+                                <div style="margin-bottom: 16px;">
+                                    <mat-form-field appearance="outline" style="width: 100%;">
+                                        <mat-label>{{resourceService?.frmelmnts?.lbl?.assessmentCriteria || "Assessment Criteria" }}</mat-label>
+                                        <input matInput [formControl]="assessmentCriteriaInputControl"
+                                            [readonly]="isViewMode || isReviewMode"
+                                            placeholder="{{resourceService?.frmelmnts?.lbl?.enterAssessmentCriteria || 'Enter assessment criteria'}}"
+                                            (keydown.enter)="addAssessmentCriteria(); $event.preventDefault()"
+                                            style="font-family: 'Times New Roman', sans-serif !important;">
+                                        <button mat-icon-button matSuffix
+                                            [disabled]="isViewMode || isReviewMode || !assessmentCriteriaInputControl.value?.trim()"
+                                            (click)="addAssessmentCriteria()"
+                                            type="button"
+                                            aria-label="{{resourceService?.frmelmnts?.lbl?.addAssessmentCriteria || 'Add assessment criteria'}}">
+                                            <mat-icon>add</mat-icon>
+                                        </button>
+                                    </mat-form-field>
+                                    <div *ngIf="assessmentCriteria.length > 0" style="margin-top: 8px;">
+                                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                            <div *ngFor="let criteria of assessmentCriteria; let i = index" 
+                                                 class="chip-container"
+                                                 style="display: inline-flex; align-items: center; background-color: #e0e0e0; border-radius: 16px; padding: 4px 8px; font-size: 14px;">
+                                                <span style="margin-right: 4px;">{{criteria}}</span>
+                                                <button *ngIf="!isViewMode && !isReviewMode"
+                                                        (click)="removeAssessmentCriteria(i)"
+                                                        style="background: none; border: none; cursor: pointer; padding: 2px; border-radius: 50%; display: flex; align-items: center; justify-content: center;"
+                                                        aria-label="{{resourceService?.frmelmnts?.lbl?.removeCriteria || 'Remove criteria'}}">
+                                                    <mat-icon style="font-size: 16px; width: 16px; height: 16px;">close</mat-icon>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -156,6 +272,28 @@
             (click)="updateFramework()">
             <i *ngIf="isUpdatingFramework" class="icon notched circle loading" aria-hidden="true"></i>
             {{resourceService?.frmelmnts?.btn?.update || 'Update'}}
+        </button>
+    </div>
+</sui-modal>
+
+<!-- Reject Confirmation Modal -->
+<sui-modal *ngIf="showRejectModal" [mustScroll]="true" [isClosable]="false" class="sb-modal sb-error" size="small"
+    #rejectModal>
+    <div class="sb-modal-header">
+        {{resourceService?.frmelmnts?.lbl?.rejectFramework || 'Reject Framework'}}
+    </div>
+    <div class="sb-modal-content">
+        <p>{{resourceService?.frmelmnts?.lbl?.rejectConfirmation || 'Are you sure you want to reject?'}}</p>
+    </div>
+    <div class="sb-modal-actions">
+        <button type="button" class="sb-btn sb-btn-normal sb-btn-error"
+            [disabled]="isRejecting"
+            (click)="confirmReject()">
+            <span *ngIf="!isRejecting">{{resourceService?.frmelmnts?.btn?.reject || 'Reject'}}</span>
+            <span *ngIf="isRejecting">{{resourceService?.frmelmnts?.btn?.rejecting || 'Rejecting...'}}</span>
+        </button>
+        <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-10" (click)="closeRejectModal()">
+            {{resourceService?.frmelmnts?.btn?.cancel || 'Cancel'}}
         </button>
     </div>
 </sui-modal>

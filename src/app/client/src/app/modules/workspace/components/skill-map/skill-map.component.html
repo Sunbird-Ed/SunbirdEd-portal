@@ -11,10 +11,10 @@
     <thead>
       <tr>
         <th class="six wide UpReviewTableHeader">
-          {{ isSkillMapReviewer ? (resourceService?.frmelmnts?.lbl?.contentLabel || 'Skill Map') : (resourceService?.frmelmnts?.lbl?.skills || 'Skills') }}
+          {{ isSkillMapReviewer ? (resourceService?.frmelmnts?.lbl?.skillMap || 'Skill Map') : (resourceService?.frmelmnts?.lbl?.skills || 'Skills') }}
         </th>
         <th class="four wide UpReviewTableHeader">
-          {{ isSkillMapReviewer ? (resourceService?.frmelmnts?.lbl?.author || 'Author') : (resourceService?.frmelmnts?.lbl?.lastupdatedCaps || 'Last Updated') }}
+          {{ isSkillMapReviewer ? (resourceService?.frmelmnts?.lbl?.author || 'Author') : (resourceService?.frmelmnts?.lbl?.lastUpdated || 'Last Updated') }}
         </th>
         <th class="two wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.status || 'Status'}}
         </th>
@@ -35,7 +35,7 @@
               <div class="UpReviewHeader">{{content.name | slice:0:30}}
                 <i *ngIf="content.name.length > 30">...</i>
               </div>
-              <div class="UpReviewSubHeader" *ngIf="isSkillMapReviewer">{{content.contentType || 'Skill Map'}}</div>
+              <div class="UpReviewSubHeader" *ngIf="isSkillMapReviewer">{{resourceService?.frmelmnts?.lbl?.skillMapType || 'Skill Map'}}</div>
             </div>
           </h5>
         </td>
@@ -85,52 +85,34 @@
     <div class="ten wide column">
       <div class="pb-10" *ngIf="skillMapContent && skillMapContent.length > 0 && totalCount > config.appConfig.WORKSPACE.PAGE_LIMIT && !showLoader && !showError && !noResult">
         <div class="ui pagination menu mt-10 right-floated p-0 " *ngIf="pager.pages.length ">
-          <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0" (click)="navigateToPage(1) ">{{ resourceService?.frmelmnts?.lbl?.first}}</a>
-          <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0" (click)="navigateToPage(pager.currentPage - 1)">{{ resourceService?.frmelmnts?.lbl?.previous}}</a>
+          <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0" (click)="navigateToPage(1) ">{{ resourceService?.frmelmnts?.lbl?.first || 'First'}}</a>
+          <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0" (click)="navigateToPage(pager.currentPage - 1)">{{ resourceService?.frmelmnts?.lbl?.previous || 'Previous'}}</a>
           <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" tabindex="0" (click)="navigateToPage(page)" class="item">{{page}}</a>
-          <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.currentPage + 1)" class="item">{{ resourceService?.frmelmnts?.lbl?.next}}</a>
-          <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.totalPages)" class="item ">{{ resourceService?.frmelmnts?.lbl?.last}}</a>
+          <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.currentPage + 1)" class="item">{{ resourceService?.frmelmnts?.lbl?.next || 'Next'}}</a>
+          <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.totalPages)" class="item ">{{ resourceService?.frmelmnts?.lbl?.last || 'Last'}}</a>
         </div>
       </div>
     </div>
   </div>
   
-  <ng-template let-context let-modal="modal" #modalTemplate>
-    <div class="sb-modal sb-error">
-      <div class="ui modal visible active small">
-          <i class="icon close" (click)="modal.deny('denied')" tabindex="0"></i>
-         <!--Header-->
-          <div class="sb-modal-header">
-            {{resourceService?.frmelmnts?.lbl?.deletecontent}}
-          </div>
-        <!--/Header-->
-  
-        <!--Content-->
-        <div class="sb-modal-content">
-          <p>{{resourceService?.frmelmnts?.lbl?.deleteconfirm}}</p>
-        </div>
-        <!--/Content-->
-    
-        <!--Actions-->
-        <div class="sb-modal-actions flex-jc-space-between">
-          <div>
-            <button
-            class="sb-btn sb-btn-normal sb-btn-outline-error mr-10"
-            tabindex="0" (click)="modal.deny('denied')"
-          >
-            {{resourceService?.frmelmnts?.btn?.no}}
-          </button>
-              <button
-                class="sb-btn sb-btn-normal sb-btn-error"
-                tabindex="0" (click)="checkLinkedCollections(modal)"
-                autofocus
-              >
-                {{resourceService?.frmelmnts?.btn?.yes}}
-              </button>
-        </div>
-        </div>
-        <!--/Actions-->
-
+  <!-- Delete Confirmation Modal -->
+  <sui-modal *ngIf="showDeleteModal" [mustScroll]="true" [isClosable]="false" class="sb-modal sb-error" size="small"
+      #deleteModal>
+      <div class="sb-modal-header">
+          {{resourceService?.frmelmnts?.lbl?.deleteContent || 'Delete Content'}}
       </div>
-    </div>
-  </ng-template>
+      <div class="sb-modal-content">
+          <p>{{resourceService?.frmelmnts?.lbl?.deleteConfirmation || 'Are you sure you want to delete this content?'}}</p>
+      </div>
+      <div class="sb-modal-actions">
+          <button type="button" class="sb-btn sb-btn-normal sb-btn-error"
+              [disabled]="isDeleting"
+              (click)="confirmDelete()">
+              <span *ngIf="!isDeleting">{{resourceService?.frmelmnts?.btn?.yes || 'Yes'}}</span>
+              <span *ngIf="isDeleting">{{resourceService?.frmelmnts?.btn?.deleting || 'Deleting...'}}</span>
+          </button>
+          <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-10" (click)="closeDeleteModal()">
+              {{resourceService?.frmelmnts?.btn?.no || 'No'}}
+          </button>
+      </div>
+  </sui-modal>

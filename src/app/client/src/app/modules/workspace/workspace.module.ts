@@ -30,6 +30,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
 import { QuestionsetEditorLibraryModule } from '@project-sunbird/sunbird-questionset-editor';
 @NgModule({
   imports: [
@@ -50,6 +51,7 @@ import { QuestionsetEditorLibraryModule } from '@project-sunbird/sunbird-questio
     MatButtonModule,
     MatIconModule,
     MatCardModule,
+    MatChipsModule,
     QuestionsetEditorLibraryModule
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent, DateFilterXtimeAgoPipe,

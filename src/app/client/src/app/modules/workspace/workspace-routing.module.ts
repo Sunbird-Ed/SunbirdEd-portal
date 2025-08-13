@@ -310,18 +310,18 @@ const routes: Routes = [
       telemetry: {
         env: telemetryEnv, pageid: 'workspace-content-skillmap-editor', uri: 'workspace/content/skillmap/edit',
         type: 'edit', mode: 'create', object: { type: objectType, ver: '1.0' }
-      }, roles: 'skillmapReviewerRole',
+      }, roles: 'skillmapRole',
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '/workspace/content/skillmap/1' }, { label: 'Skill Map Editor', url: '' }],
       hideHeaderNFooter: true
     }
   },
   {
-    path: 'content/skillmap/edit/:contentId', component: SkillMapEditorComponent, canActivate: [AuthGuard],
+    path: 'content/skillmap-review/edit/:contentId', component: SkillMapEditorComponent, canActivate: [AuthGuard],
     data: {
       telemetry: {
         env: telemetryEnv, pageid: 'workspace-content-skillmap-editor', uri: 'workspace/content/skillmap/edit',
         type: 'edit', mode: 'create', object: { type: objectType, ver: '1.0' }
-      }, roles: 'skillmapRole',
+      }, roles: 'skillmapReviewerRole',
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '/workspace/content/skillmap/1' }, { label: 'Skill Map Editor', url: '' }],
       hideHeaderNFooter: true
     }

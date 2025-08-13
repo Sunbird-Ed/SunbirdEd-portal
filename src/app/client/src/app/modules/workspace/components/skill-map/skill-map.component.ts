@@ -1,5 +1,5 @@
 import { combineLatest as observableCombineLatest } from 'rxjs';
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService, ISort, FrameworkService, ContentService } from '@sunbird/core';
@@ -12,7 +12,6 @@ import { WorkSpaceService } from '../../services';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { debounceTime, map } from 'rxjs/operators';
-import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui-v9';
 
 /**
  * Interface for skill map content extending IContents with status property
@@ -44,8 +43,6 @@ interface ISkillMapContent extends IContents {
 
 export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewInit {
 
-  @ViewChild('modalTemplate')
-  public modalTemplate: ModalTemplate<{ data: string }, string, string>;
   /**
      * state for content editor
     */
@@ -145,8 +142,8 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
   */
   sort: { [key: string]: string };
   /**
-	 * inviewLogs
-	*/
+   * inviewLogs
+  */
   inviewLogs = [];
   /**
 * value typed
@@ -163,8 +160,8 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
   */
   private toasterService: ToasterService;
   /**
-	 * telemetryImpression
-	*/
+   * telemetryImpression
+  */
   telemetryImpression: IImpressionEventInput;
   /**
   * To call resource service which helps to use language constant
@@ -180,6 +177,16 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
   * To store deleting content type
   */
   private contentMimeType: string;
+
+  /**
+   * To show/hide delete confirmation modal
+   */
+  public showDeleteModal: boolean = false;
+
+  /**
+   * To show loading state during deletion
+   */
+  public isDeleting: boolean = false;
 
   /**
    * To check user role for skill maps
@@ -207,7 +214,7 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
-    config: ConfigService, public modalService: SuiModalService) {
+    config: ConfigService) {
     super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
@@ -223,7 +230,7 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
       'messageText': 'messages.stmsg.m0008'
     };
     this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
-    
+
     // Determine user role for skill maps
     this.isSkillMapCreator = this.permissionService.checkRolesPermissions(['CONTENT_CREATOR']);
     this.isSkillMapReviewer = this.permissionService.checkRolesPermissions(['CONTENT_REVIEWER']);
@@ -233,13 +240,13 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
     // Determine the current route to know if we're in reviewer mode
     const currentUrl = this.route.url;
     const isReviewerRoute = currentUrl.includes('skillmap-reviewer');
-    
+
     // Override role-based behavior if we're on the reviewer route
     if (isReviewerRoute) {
       this.isSkillMapReviewer = true;
       this.isSkillMapCreator = false;
     }
-    
+
     // For skill maps (frameworks), we don't need question set functionality
     this.filterType = this.config.appConfig.skillmap?.filterType || this.config.appConfig.allmycontent.filterType;
     this.redirectUrl = this.config.appConfig.skillmap?.inPageredirectUrl || this.config.appConfig.allmycontent.inPageredirectUrl;
@@ -248,7 +255,7 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
       this.activatedRoute.queryParams).pipe(
         debounceTime(10),
         map(([params, queryParams]) => ({ params, queryParams })
-      ))
+        ))
       .subscribe(bothParams => {
         if (bothParams.params.pageNumber) {
           this.pageNumber = Number(bothParams.params.pageNumber);
@@ -269,7 +276,7 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
     this.skillMapContent = [];
     this.totalCount = 0;
     this.noResult = false;
-    
+
     if (bothParams.queryParams.sort_by) {
       const sort_by = bothParams.queryParams.sort_by;
       const sortType = bothParams.queryParams.sortType;
@@ -279,7 +286,7 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
     } else {
       this.sort = { lastPublishedOn: 'desc' };
     }
-    
+
     // API call for skill maps (frameworks)
     // Filter status based on user role
     let statusFilter: string[] = [];
@@ -290,7 +297,7 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
     } else {
       statusFilter = ['Draft', 'Review', 'Live']; // Default fallback
     }
-    
+
     const searchParams = {
       filters: {
         status: statusFilter,
@@ -302,13 +309,13 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
       query: _.toString(bothParams.queryParams.query),
       sort_by: this.sort
     };
-    
+
     this.loaderMessage = {
-      'loaderMessage': this.isSkillMapReviewer 
+      'loaderMessage': this.isSkillMapReviewer
         ? (this.resourceService.messages.stmsg.m0035 || 'Fetching skill maps for review...')
         : this.resourceService.messages.stmsg.m0021,
     };
-    
+
     this.searchService.compositeSearch(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.count && data.result.Framework && data.result.Framework.length > 0) {
@@ -323,7 +330,7 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
           this.noResult = true;
           this.showLoader = false;
           this.noResultMessage = {
-            'message': this.isSkillMapReviewer 
+            'message': this.isSkillMapReviewer
               ? (this.resourceService.messages.stmsg.m0035 || 'No skill maps found for review')
               : 'No skill maps found',
             'messageText': this.isSkillMapReviewer
@@ -379,18 +386,23 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
     // Only allow deletion for Draft status skill maps
     this.currentContentId = contentIds;
     this.contentMimeType = mimeType;
-    const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
-    config.isClosable = false;
-    config.size = 'small';
-    config.transitionDuration = 0;
-    config.mustScroll = true;
-    this.modalService
-      .open(config);
-    setTimeout(() => {
-      let element = document.getElementsByTagName('sui-modal');
-      if(element && element.length > 0)
-        element[0].className = 'sb-modal';
-    }, 10);
+    this.showDeleteModal = true;
+  }
+
+  /**
+   * Close delete confirmation modal
+   */
+  public closeDeleteModal() {
+    this.showDeleteModal = false;
+    this.isDeleting = false;
+  }
+
+  /**
+   * Confirm deletion action
+   */
+  public confirmDelete() {
+    this.deleteContent(this.currentContentId);
+    this.closeDeleteModal();
   }
 
   /**
@@ -406,31 +418,36 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
 
   private deleteContent(contentId: string) {
     // Delete skill map (framework) using the framework retire API
+    this.isDeleting = true;
 
-    
+
     this.frameworkService.retireFramework(contentId).subscribe(
       (data: ServerResponse) => {
+        this.isDeleting = false;
         // Handle successful deletion
         if (data.responseCode === 'OK') {
           this.toasterService.success(
             this.resourceService.messages.smsg.m0006 || 'Content deleted successfully'
           );
           // Refresh the skill map list
-          this.fetchSkillMapContent(
-            this.config.appConfig.WORKSPACE.PAGE_LIMIT, 
-            this.pageNumber, 
-            { queryParams: this.queryParams }
-          );
+          setTimeout(() => {
+            this.fetchSkillMapContent(
+              this.config.appConfig.WORKSPACE.PAGE_LIMIT,
+              this.pageNumber,
+              { queryParams: this.queryParams }
+            );
+          }, 1000);
         } else {
           // API returned success but with non-OK response code
           this.toasterService.error(
-            data.params?.errmsg || 
-            this.resourceService.messages.fmsg.m0051 || 
+            data.params?.errmsg ||
+            this.resourceService.messages.fmsg.m0051 ||
             'Failed to delete content'
           );
         }
       },
       (err: ServerResponse) => {
+        this.isDeleting = false;
         // Handle different error scenarios
         let errorMessage = this.resourceService.messages.fmsg.m0051 || 'Something went wrong, try again later';
         this.toasterService.error(errorMessage);
@@ -452,7 +469,7 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
     });
     console.log('Content status:', content.status);
     console.log('Content metaData status:', content.metaData?.status);
-    
+
     // For skill map reviewers, open skill map editor in review mode
     if (this.isSkillMapReviewer) {
       console.log('Opening skill map in REVIEW mode for reviewer');
@@ -468,11 +485,11 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
         return;
       }
     }
-    
+
     // For skill map creators, open skill map editor in view mode for Live or Review status
     const status = content.status || (content.metaData && content.metaData.status);
     console.log('Final status check:', status);
-    
+
     if (status === 'Live' || status === 'Review') {
       console.log('Opening skill map in VIEW mode for status:', status);
       this.workSpaceService.openSkillMapEditor(content, 'view');
@@ -506,18 +523,18 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
    */
   onView(content: ISkillMapContent): void {
     const status = content.status || (content.metaData && content.metaData.status);
-    
+
     // Only allow viewing for Live and Review status
     if (status === 'Live' || status === 'Review') {
       console.log('Opening skill map in view mode:', content);
       this.workSpaceService.openSkillMapEditor(content, 'view');
-    } 
-    else if(status === 'Draft') {
+    }
+    else if (status === 'Draft') {
       this.workSpaceService.openSkillMapEditor(content, 'edit');
     }
     else {
       this.toasterService.warning(
-        this.resourceService.messages.imsg.m0027 || 
+        this.resourceService.messages.imsg.m0027 ||
         'This skill map cannot be viewed in current status'
       );
     }
@@ -532,17 +549,17 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
       return;
     }
     this.pageNumber = page;
-    
+
     // Determine the route based on current URL
     const currentUrl = this.route.url;
     const routePath = currentUrl.includes('skillmap-reviewer') ? 'skillmap-reviewer' : 'skillmap';
-    
+
     this.route.navigate(['workspace/content/' + routePath, this.pageNumber], {
       queryParams: this.queryParams
     });
   }
 
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
