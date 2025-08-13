@@ -142,4 +142,22 @@ public retireFramework(frameworkId: string): Observable<ServerResponse> {
   return this.publicDataService.delete(retireOptions);
 }
 
+/**
+ * Retire a term within a framework
+ * @param {object} requestData - The data containing category, code, and framework
+ * @returns Observable<ServerResponse>
+ */
+public retireTerm(requestData: any): Observable<ServerResponse> {
+  const { category, code, framework } = requestData;
+  
+  const retireOptions = {
+    url: `framework/v3/term/retire/${code}?framework=${framework}&category=${category}`,
+    header: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    }
+  };
+  return this.publicDataService.delete(retireOptions);
+}
+
 }

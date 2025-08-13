@@ -77,7 +77,13 @@
                 <!-- Tree Navigation Panel -->
                 <div class="three wide column p-0 overflow-y mb-10 h-100vh mt-10">
                     <div
-                        class="skill-map-tree-container sb-collectionTree-fancyTree sb-collectionTree-fancyTreelist sb-questionset-scroll">
+                        class="skill-map-tree-container sb-collectionTree-fancyTree sb-collectionTree-fancyTreelist sb-questionset-scroll position-relative">
+                        <!-- Delete Term Loading Overlay -->
+                        <div *ngIf="isDeletingTerm" class="tree-loading-overlay d-flex flex-ai-center flex-jc-center">
+                            <div class="ui active inline loader"></div>
+                            <span class="ml-10">{{resourceService?.frmelmnts?.lbl?.deleting || 'Deleting...'}}</span>
+                        </div>
+                        
                         <!-- Dynamic Skill Map Tree Component -->
                         <app-skill-map-tree [skillMapData]="skillMapData" [labelConfig]="labelConfig"
                             [config]="{ mode: mode, maxDepth: 4, objectType: 'SkillMap' }"
@@ -139,8 +145,7 @@
                                             <button mat-icon-button matSuffix
                                                 [disabled]="isViewMode || isReviewMode || !behavioralIndicatorsInputControl.value?.trim()"
                                                 (click)="addBehavioralIndicator()"
-                                                type="button"
-                                                aria-label="{{resourceService?.frmelmnts?.lbl?.addBehavioralIndicator || 'Add behavioral indicator'}}">
+                                                type="button">
                                                 <mat-icon>add</mat-icon>
                                             </button>
                                         </mat-form-field>
@@ -152,8 +157,7 @@
                                                     <span style="margin-right: 4px;">{{indicator}}</span>
                                                     <button *ngIf="!isViewMode && !isReviewMode"
                                                             (click)="removeBehavioralIndicator(i)"
-                                                            style="background: none; border: none; cursor: pointer; padding: 2px; border-radius: 50%; display: flex; align-items: center; justify-content: center;"
-                                                            aria-label="{{resourceService?.frmelmnts?.lbl?.removeIndicator || 'Remove indicator'}}">
+                                                            style="background: none; border: none; cursor: pointer; padding: 2px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
                                                         <mat-icon style="font-size: 16px; width: 16px; height: 16px;">close</mat-icon>
                                                     </button>
                                                 </div>
@@ -173,8 +177,7 @@
                                             <button mat-icon-button matSuffix
                                                 [disabled]="isViewMode || isReviewMode || !measurableOutcomesInputControl.value?.trim()"
                                                 (click)="addMeasurableOutcome()"
-                                                type="button"
-                                                aria-label="{{resourceService?.frmelmnts?.lbl?.addMeasurableOutcome || 'Add measurable outcome'}}">
+                                                type="button">
                                                 <mat-icon>add</mat-icon>
                                             </button>
                                         </mat-form-field>
@@ -186,8 +189,7 @@
                                                     <span style="margin-right: 4px;">{{outcome}}</span>
                                                     <button *ngIf="!isViewMode && !isReviewMode"
                                                             (click)="removeMeasurableOutcome(i)"
-                                                            style="background: none; border: none; cursor: pointer; padding: 2px; border-radius: 50%; display: flex; align-items: center; justify-content: center;"
-                                                            aria-label="{{resourceService?.frmelmnts?.lbl?.removeOutcome || 'Remove outcome'}}">
+                                                            style="background: none; border: none; cursor: pointer; padding: 2px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
                                                         <mat-icon style="font-size: 16px; width: 16px; height: 16px;">close</mat-icon>
                                                     </button>
                                                 </div>
@@ -208,8 +210,7 @@
                                         <button mat-icon-button matSuffix
                                             [disabled]="isViewMode || isReviewMode || !assessmentCriteriaInputControl.value?.trim()"
                                             (click)="addAssessmentCriteria()"
-                                            type="button"
-                                            aria-label="{{resourceService?.frmelmnts?.lbl?.addAssessmentCriteria || 'Add assessment criteria'}}">
+                                            type="button">
                                             <mat-icon>add</mat-icon>
                                         </button>
                                     </mat-form-field>
@@ -221,8 +222,7 @@
                                                 <span style="margin-right: 4px;">{{criteria}}</span>
                                                 <button *ngIf="!isViewMode && !isReviewMode"
                                                         (click)="removeAssessmentCriteria(i)"
-                                                        style="background: none; border: none; cursor: pointer; padding: 2px; border-radius: 50%; display: flex; align-items: center; justify-content: center;"
-                                                        aria-label="{{resourceService?.frmelmnts?.lbl?.removeCriteria || 'Remove criteria'}}">
+                                                        style="background: none; border: none; cursor: pointer; padding: 2px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
                                                     <mat-icon style="font-size: 16px; width: 16px; height: 16px;">close</mat-icon>
                                                 </button>
                                             </div>

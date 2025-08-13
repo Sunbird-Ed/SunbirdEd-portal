@@ -902,4 +902,18 @@
             }
         }
     }
+
+    // Tree loading overlay styles
+    .tree-loading-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.9);
+        z-index: 1000;
+        color: var(--primary-400);
+        font-weight: 500;
+        border-radius: 4px;
+    }
 }

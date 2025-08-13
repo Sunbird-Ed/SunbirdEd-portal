@@ -108,6 +108,8 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   public isSendingForReview: boolean = false;
   public isPublishing: boolean = false;
   public isRejecting: boolean = false;
+  public isDeletingTerm: boolean = false;
+  
   public editFrameworkForm: any = {
     name: '',
     description: ''
@@ -837,24 +839,29 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     // First pass: collect all terms and organize by category
     for (const category of categories) {
       if (category.terms && category.terms.length > 0) {
-        termsByCategory.set(category.code, category.terms);
+        // Filter out retired terms
+        const activeTerms = category.terms.filter(term => term.status !== 'Retired');
+        
+        if (activeTerms.length > 0) {
+          termsByCategory.set(category.code, activeTerms);
 
-        for (const term of category.terms) {
-          // Store term with its category info
-          allTerms.set(term.identifier, {
-            ...term,
-            categoryCode: category.code
-          });
+          for (const term of activeTerms) {
+            // Store term with its category info
+            allTerms.set(term.identifier, {
+              ...term,
+              categoryCode: category.code
+            });
 
-          // Create node for this term
-          const node: SkillMapNode = {
-            id: term.identifier,
-            name: term.name,
-            code: term.code,
-            description: term.description || '',
-            children: []
-          };
-          nodeMap.set(term.identifier, node);
+            // Create node for this term
+            const node: SkillMapNode = {
+              id: term.identifier,
+              name: term.name,
+              code: term.code,
+              description: term.description || '',
+              children: []
+            };
+            nodeMap.set(term.identifier, node);
+          }
         }
       }
     }
@@ -985,7 +992,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   }
 
   // Tree event handler - main interaction with tree component
-  public onTreeEvent(event: any): void {
+  public onTreeEvent(event: any): void {    
     switch (event.type) {
       case 'nodeSelect':
       case 'nodeActivate':
@@ -1080,7 +1087,12 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       case 'nodeAdded':
         this.handleNodeAdded(event);
         break;
+      case 'deleteRequest':
+        // Handle delete request from tree component
+        this.deleteNode(event.data);
+        break;
       case 'nodeDelete':
+        // Handle actual node deletion (after API call)
         this.handleNodeDelete(event);
         break;
     }
@@ -1102,10 +1114,31 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
 
   public deleteNode(node: any): void {
     if (node && node.getLevel() > 0) {
-      // Directly delete the node without confirmation
-      this.onTreeEvent({
-        type: 'nodeDelete',
-        data: node
+      // Show loading state
+      this.isDeletingTerm = true;
+      
+      // Call retire API before removing from tree
+      this.retireTermFromAPI(node).then(() => {
+        
+        // After successful API call, call the tree component's deleteNode method
+        if (this.skillMapTreeComponent) {
+          this.skillMapTreeComponent.deleteNode(node);
+        }
+        
+        // Refresh the tree data from server to hide retired terms
+        this.refreshTreeData().then(() => {
+          this.isDeletingTerm = false;
+          this.toasterService.success(this.resourceService.messages.smsg.m0019);
+        }).catch(error => {
+          console.error('Error refreshing tree data:', error);
+          this.isDeletingTerm = false;
+          // Still show success since the term was retired
+          this.toasterService.success(this.resourceService.messages.smsg.m0019);
+        });
+      }).catch(error => {
+        console.error('Error retiring term:', error);
+        this.isDeletingTerm = false;
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
       });
     }
   }
@@ -1524,26 +1557,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   }
 
   public previewSkillMap(): void {
-    // Sync current form values to active node before validation
-    this.syncFormToActiveNode();
-
-    // Step 1: Perform all basic input validations (same as Save as Draft)
-    const basicValidationResult = this.performBasicValidations();
-
-    if (!basicValidationResult.isValid) {
-      this.toasterService.error(basicValidationResult.errorMessage);
-      return;
-    }
-
-    // Step 2: Perform depth-specific validations for Send for Review
-    const depthValidationResult = this.performDepthValidations();
-
-    if (!depthValidationResult.isValid) {
-      this.toasterService.error(depthValidationResult.errorMessage);
-      return;
-    }
-
-    // Step 3: All validations passed - make API call to send for review
+    // Send for review - all validations are now handled in sendForReview() method
     this.sendForReview();
   }
 
@@ -1597,7 +1611,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     if (!hasCompletePathResult.isValid) {
       return {
         isValid: false,
-        errorMessage: `At least one complete path to maximum depth (${maxDepth} levels) is required.`,
+        errorMessage: `Some nodes are missing required children. Each node must have at least one child until the maximum depth is reached.`,
         errorNodes: hasCompletePathResult.incompleteNodes
       };
     }
@@ -1748,7 +1762,26 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    * Send framework for review via API call
    */
   public sendForReview(): void {
-    // Check for code validation errors first
+    // Sync current form values to active node before validation
+    this.syncFormToActiveNode();
+
+    // Step 1: Perform all basic input validations (same as Save as Draft)
+    const basicValidationResult = this.performBasicValidations();
+
+    if (!basicValidationResult.isValid) {
+      this.toasterService.error(basicValidationResult.errorMessage);
+      return;
+    }
+
+    // Step 2: Perform depth-specific validations for Send for Review
+    const depthValidationResult = this.performDepthValidations();
+
+    if (!depthValidationResult.isValid) {
+      this.toasterService.error(depthValidationResult.errorMessage);
+      return;
+    }
+
+    // Step 3: Check for async code validation errors
     if (this.codeFormControl.pending) {
       this.toasterService.warning(this.resourceService?.frmelmnts?.msg?.codeValidationInProgress || 'Code validation in progress. Please wait.');
       return;
@@ -1768,7 +1801,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Make the API call to send for review
+    // Step 4: All validations passed - make the API call to send for review
     this.makeReviewApiCall(this.frameworkId);
   }
 
@@ -2421,6 +2454,58 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     }
 
     return nodeData;
+  }
+
+  /**
+   * Refresh tree data from server (used after delete operations)
+   */
+  private refreshTreeData(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.loadSkillMapData();
+      // Give a small delay for the data to load
+      setTimeout(() => {
+        resolve();
+      }, 500);
+    });
+  }
+
+  /**
+   * Retire a term using the delete term API
+   */
+  private retireTermFromAPI(node: any): Promise<any> {
+    const termData = node.data;
+    if (!termData || !termData.metadata) {
+      console.error('Invalid term data:', termData);
+      return Promise.reject('Invalid term data');
+    }
+
+    const category = this.getCategoryByLevel(node.getLevel());
+    const termCode = termData.metadata.code;
+    const frameworkIdentifier = this.frameworkId;
+
+    console.log('Retiring term:', { category, termCode, frameworkIdentifier });
+
+    if (!category || !termCode || !frameworkIdentifier) {
+      console.error('Missing required parameters:', { category, termCode, frameworkIdentifier });
+      return Promise.reject('Missing required parameters for term deletion');
+    }
+
+    // Prepare API request data
+    const requestData = {
+      category: category,
+      code: termCode,
+      framework: frameworkIdentifier
+    };
+
+    // Call the framework service to retire the term
+    return this.frameworkService.retireTerm(requestData).toPromise().then(response => {
+      console.log('Term retired successfully:', response);
+      if (response && response.responseCode === 'OK') {
+        return response;
+      } else {
+        throw new Error('Failed to retire term: ' + (response?.params?.errmsg || 'Unknown error'));
+      }
+    });
   }
 
   /**

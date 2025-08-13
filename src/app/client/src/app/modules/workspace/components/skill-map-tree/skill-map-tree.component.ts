@@ -399,8 +399,12 @@ export class SkillMapTreeComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
     
-    // Directly delete the node without confirmation
-    this.deleteNode(node);
+    // Emit delete request event instead of directly deleting
+    // This allows parent component to handle API call first
+    this.treeEventEmitter.emit({
+      type: 'deleteRequest',
+      data: node
+    });
   }
 
   // Handle drag and drop operations (like collection editor)

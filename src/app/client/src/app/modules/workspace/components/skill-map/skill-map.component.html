@@ -35,7 +35,7 @@
               <div class="UpReviewHeader">{{content.name | slice:0:30}}
                 <i *ngIf="content.name.length > 30">...</i>
               </div>
-              <div class="UpReviewSubHeader" *ngIf="isSkillMapReviewer">{{resourceService?.frmelmnts?.lbl?.skillMapType || 'Skill Map'}}</div>
+              <div class="UpReviewSubHeader" *ngIf="isSkillMapReviewer">{{resourceService?.frmelmnts?.lbl?.skillMap || 'Skill Map'}}</div>
             </div>
           </h5>
         </td>
@@ -99,7 +99,7 @@
   <sui-modal *ngIf="showDeleteModal" [mustScroll]="true" [isClosable]="false" class="sb-modal sb-error" size="small"
       #deleteModal>
       <div class="sb-modal-header">
-          {{resourceService?.frmelmnts?.lbl?.deleteContent || 'Delete Content'}}
+          {{resourceService?.frmelmnts?.lbl?.deleteContentHeading || 'Delete Content'}}
       </div>
       <div class="sb-modal-content">
           <p>{{resourceService?.frmelmnts?.lbl?.deleteConfirmation || 'Are you sure you want to delete this content?'}}</p>
