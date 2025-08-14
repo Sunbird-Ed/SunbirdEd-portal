@@ -289,7 +289,7 @@
         <button type="button" class="sb-btn sb-btn-normal sb-btn-error"
             [disabled]="isRejecting"
             (click)="confirmReject()">
-            <span *ngIf="!isRejecting">{{resourceService?.frmelmnts?.btn?.reject || 'Reject'}}</span>
+            <span *ngIf="!isRejecting">{{resourceService?.frmelmnts?.lbl?.reject || 'Reject'}}</span>
             <span *ngIf="isRejecting">{{resourceService?.frmelmnts?.btn?.rejecting || 'Rejecting...'}}</span>
         </button>
         <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-10" (click)="closeRejectModal()">

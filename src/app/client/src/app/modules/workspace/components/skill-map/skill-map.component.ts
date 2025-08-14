@@ -312,7 +312,7 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
 
     this.loaderMessage = {
       'loaderMessage': this.isSkillMapReviewer
-        ? (this.resourceService.messages.stmsg.m0035 || 'Fetching skill maps for review...')
+        ? (this.resourceService.messages.stmsg.fetchingSkillmapsForReview || 'Fetching skill maps for review...')
         : this.resourceService.messages.stmsg.m0021,
     };
 
@@ -441,7 +441,7 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
           // API returned success but with non-OK response code
           this.toasterService.error(
             data.params?.errmsg ||
-            this.resourceService.messages.fmsg.m0051 ||
+            this.resourceService.messages.fmsg.failedToDeleteContent ||
             'Failed to delete content'
           );
         }
@@ -496,7 +496,7 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
     } else {
       // Show appropriate message for frameworks that cannot be viewed
       console.log('Cannot view skill map with status:', status);
-      this.toasterService.warning(this.resourceService.messages.imsg.m0027 || 'This skill map cannot be viewed in current status');
+      this.toasterService.warning(this.resourceService.messages.imsg.canNotReviewSkillmap || 'This skill map cannot be viewed in current status');
     }
   }
 
@@ -513,7 +513,7 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
       // Live or Review status - open in view mode
       this.workSpaceService.openSkillMapEditor(content, 'view');
     } else {
-      this.toasterService.warning(this.resourceService.messages.imsg.m0027 || 'This skill map cannot be edited in current status');
+      this.toasterService.warning(this.resourceService.messages.imsg.canNotEditSkillmap || 'This skill map cannot be edited in current status');
     }
   }
 
@@ -534,7 +534,7 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
     }
     else {
       this.toasterService.warning(
-        this.resourceService.messages.imsg.m0027 ||
+        this.resourceService.messages.imsg.canNotViewSkillmap ||
         'This skill map cannot be viewed in current status'
       );
     }

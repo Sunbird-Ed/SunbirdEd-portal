@@ -81,12 +81,12 @@
     [class.active]="router.isActive('/workspace/content/skillmap',false)" 
     appPermission [permission]='skillmapRole' class="item" [routerLink]="['skillmap',1]"
     matTooltip="{{resourceService?.frmelmnts?.lbl?.view_skill_map || 'View Skill Map' }}" [matTooltipPosition]="'right'">
-    {{ 'Skill Domain' }}
+    {{ resourceService?.frmelmnts?.lbl?.skillDomains || 'Skill Domains' }}
   </a> 
   <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('skillmap-reviewer-button')" *ngIf='permissionService.permissionAvailable' 
     [class.active]="router.isActive('/workspace/content/skillmap-reviewer',false)" 
     appPermission [permission]='skillmapReviewerRole' class="item" [routerLink]="['skillmap-reviewer',1]"
     matTooltip="{{resourceService?.frmelmnts?.lbl?.view_skill_map_review || 'View Skill Map Review' }}" [matTooltipPosition]="'right'">
-    {{ 'Skill Domain Review' }}
+    {{ resourceService?.frmelmnts?.lbl?.skillDomains || 'Skill Domains' }}
   </a>
 </div>

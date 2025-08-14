@@ -1128,17 +1128,14 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         // Refresh the tree data from server to hide retired terms
         this.refreshTreeData().then(() => {
           this.isDeletingTerm = false;
-          this.toasterService.success(this.resourceService.messages.smsg.m0019);
         }).catch(error => {
           console.error('Error refreshing tree data:', error);
           this.isDeletingTerm = false;
-          // Still show success since the term was retired
-          this.toasterService.success(this.resourceService.messages.smsg.m0019);
         });
       }).catch(error => {
         console.error('Error retiring term:', error);
         this.isDeletingTerm = false;
-        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        this.toasterService.error(this.resourceService.messages.emsg.failedToDeleteTerm || 'Failed to delete. Please try again.');
       });
     }
   }
@@ -1237,12 +1234,12 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   public saveDraft(isReview?: boolean): void {
     // Check for code validation errors first
     if (this.codeFormControl.pending) {
-      this.toasterService.warning(this.resourceService?.frmelmnts?.msg?.codeValidationInProgress || 'Code validation in progress. Please wait.');
+      this.toasterService.warning(this.resourceService?.frmelmnts?.lbl?.codeValidationInProgress || 'Code validation in progress. Please wait.');
       return;
     }
     
     if (this.codeFormControl.hasError('codeExists')) {
-      this.toasterService.error(this.resourceService?.frmelmnts?.msg?.codeAlreadyExists || 'Code already exists. Please use a different code.');
+      this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.codeAlreadyExists || 'Code already exists. Please use a different code.');
       return;
     }
 
@@ -1611,7 +1608,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     if (!hasCompletePathResult.isValid) {
       return {
         isValid: false,
-        errorMessage: `Some nodes are missing required children. Each node must have at least one child until the maximum depth is reached.`,
+        errorMessage: this.resourceService?.frmelmnts?.lbl?.someNodesMissingChildren ||  `Some nodes are missing required children. Each node must have at least one child until the maximum depth is reached.`,
         errorNodes: hasCompletePathResult.incompleteNodes
       };
     }
@@ -1629,7 +1626,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
 
       return {
         isValid: false,
-        errorMessage: 'Some nodes are missing required children. Each node must have at least one child until the maximum depth is reached.',
+        errorMessage: this.resourceService?.frmelmnts?.lbl?.someNodesMissingChildren ||  'Some nodes are missing required children. Each node must have at least one child until the maximum depth is reached.',
         errorNodes: missingChildrenResult.invalidNodes
       };
     }
@@ -1781,14 +1778,14 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Step 3: Check for async code validation errors
-    if (this.codeFormControl.pending) {
-      this.toasterService.warning(this.resourceService?.frmelmnts?.msg?.codeValidationInProgress || 'Code validation in progress. Please wait.');
-      return;
-    }
+    // // Step 3: Check for async code validation errors
+    // if (this.codeFormControl.pending) {
+    //   this.toasterService.warning(this.resourceService?.frmelmnts?.lbl?.codeValidationInProgress || 'Code validation in progress. Please wait.');
+    //   return;
+    // }
     
     if (this.codeFormControl.hasError('codeExists')) {
-      this.toasterService.error(this.resourceService?.frmelmnts?.msg?.codeAlreadyExists || 'Code already exists. Please use a different code.');
+      this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.codeAlreadyExists || 'Code already exists. Please use a different code.');
       return;
     }
 
@@ -1796,7 +1793,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
 
     if (!this.frameworkId) {
       console.error('Framework ID not found');
-      this.toasterService.error('Framework ID not found. Cannot send for review.');
+      this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.frameworkIdNotFound || 'Framework ID not found. Cannot send for review.');
       this.isSendingForReview = false;
       return;
     }
@@ -1825,7 +1822,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         this.isSendingForReview = false;
 
         if (response?.result) {
-          this.toasterService.success(this.resourceService.messages.smsg.sentForReview || 'Framework sent for review successfully');
+          this.toasterService.success(this.resourceService?.frmelmnts?.lbl?.frameworkSentForReview || 'Framework sent for review successfully');
 
           // Update the skill map status
           if (this.skillMapData) {
@@ -1837,24 +1834,13 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
           this.loadSkillMapData();
         } else {
           console.error('Review API call returned unexpected response:', response);
-          this.toasterService.error(this.resourceService.messages.emsg.sentForReview || 'Failed to send framework for review');
+          this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.failedToSendFrameworkForReview || 'Failed to send framework for review');
         }
       },
       error: (error) => {
         console.error('Review API call failed:', error);
         this.isSendingForReview = false;
-
-        let errorMessage = this.resourceService.messages.emsg.m0005 || 'Failed to send framework for review';
-
-        // Handle specific error cases
-        if (error?.error?.params?.err === 'FRAMEWORK_NOT_FOUND') {
-          errorMessage = 'Framework not found';
-        } else if (error?.error?.params?.err === 'INVALID_FRAMEWORK_STATUS') {
-          errorMessage = 'Framework status is not valid for review';
-        } else if (error?.error?.params?.errmsg) {
-          errorMessage = error.error.params.errmsg;
-        }
-
+        let errorMessage = this.resourceService?.frmelmnts?.lbl?.failedToSendFrameworkForReview || 'Failed to send framework for review';
         this.toasterService.error(errorMessage);
       }
     });
@@ -1862,7 +1848,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
 
   public publishSkillMap(): void {
     if (!this.isSkillMapReviewer) {
-      this.toasterService.warning('Only reviewers can publish skill maps');
+      this.toasterService.warning(this.resourceService?.frmelmnts?.lbl?.onlyReviewersCanPublish || 'Only reviewers can publish skill maps');
       return;
     }
     this.isPublishing = true;
@@ -1872,7 +1858,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     
     if (!frameworkIdentifier) {
       console.error('Framework ID not found for publishing');
-      this.toasterService.error('Framework ID not found. Cannot publish framework.');
+      this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.frameworkIdNotFound || 'Framework ID not found. Cannot publish framework.');
       this.isPublishing = false;
       return;
     }
@@ -1886,7 +1872,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   private makePublishApiCall(frameworkId: string): void {
     if (!frameworkId) {
       console.error('Framework ID is required for publishing but not provided');
-      this.toasterService.error('Framework ID is required for publishing');
+      this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.frameworkIdNotFound || 'Framework ID is required for publishing');
       this.isPublishing = false;
       return;
     }
@@ -1897,8 +1883,8 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     this.publicDataService.postWithHeaders(publishRequest).subscribe({
       next: (response: any) => {
         if (response && response.responseCode === 'OK') {
-          this.toasterService.success('Framework published successfully');
-          
+          this.toasterService.success(this.resourceService?.frmelmnts?.lbl?.frameworkPublishedSuccessfully || 'Framework published successfully');
+
           // Update local status if available
           if (this.skillMapData) {
             this.skillMapData.status = 'Live';
@@ -1910,23 +1896,14 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
           }, 2000);
         } else {
           console.error('Invalid publish response:', response);
-          this.toasterService.error('Failed to publish framework: Invalid response from server');
+          this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.failedToPublishFramework || 'Failed to publish framework');
         }
         
         this.isPublishing = false;
       },
       error: (error: any) => {
         console.error('Error publishing framework:', error);
-        
-        let errorMessage = 'Failed to publish framework';
-        if (error?.error?.params?.errmsg) {
-          errorMessage += ': ' + error.error.params.errmsg;
-        } else if (error?.message) {
-          errorMessage += ': ' + error.message;
-        } else {
-          errorMessage += ': Unknown error';
-        }
-        
+        let errorMessage = this.resourceService?.frmelmnts?.lbl?.failedToPublishFramework || 'Failed to publish framework';
         this.toasterService.error(errorMessage);
         this.isPublishing = false;
       }
@@ -1935,7 +1912,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
 
   public rejectSkillMap(): void {
     if (!this.isSkillMapReviewer) {
-      this.toasterService.warning('Only reviewers can reject skill maps');
+      this.toasterService.warning(this.resourceService?.frmelmnts?.lbl?.onlyReviewersCanReject || 'Only reviewers can reject skill maps');
       return;
     }
 
@@ -1961,7 +1938,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     const frameworkIdentifier = this.getFrameworkIdentifier();
     if (!frameworkIdentifier) {
       console.error('Framework ID not found for rejection');
-      this.toasterService.error('Framework ID not found. Cannot reject framework.');
+      this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.frameworkIdNotFound || 'Framework ID not found');
       this.isRejecting = false;
       return;
     }
@@ -1975,7 +1952,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   private makeRejectApiCall(frameworkId: string): void {
     if (!frameworkId) {
       console.error('Framework ID is required for rejection but not provided');
-      this.toasterService.error('Framework ID is required for rejection');
+      this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.frameworkIdNotFound || 'Framework ID is required for rejection');
       this.isRejecting = false;
       return;
     }
@@ -1993,7 +1970,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       next: (response: any) => {
         if (response && response.responseCode === 'OK') {
           this.toasterService.success(
-            this.resourceService?.frmelmnts?.smsg?.frameworkRejected || 'Framework rejected successfully'
+            this.resourceService?.frmelmnts?.lbl?.frameworkRejected || 'Framework rejected successfully'
           );
           
           // Update local status if available
@@ -2007,21 +1984,15 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
           }, 2000);
         } else {
           console.error('Invalid reject response:', response);
-          this.toasterService.error('Failed to reject framework: Invalid response from server');
+          this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.failedToRejectFramework || 'Failed to reject framework');
         }
         
         this.isRejecting = false;
       },
       error: (error: any) => {
         console.error('Error rejecting framework:', error);
-        
-        let errorMessage = this.resourceService?.frmelmnts?.emsg?.failedToReject || 'Failed to reject framework';
-        if (error?.error?.params?.errmsg) {
-          errorMessage += ': ' + error.error.params.errmsg;
-        } else if (error?.message) {
-          errorMessage += ': ' + error.message;
-        }
-        
+
+        let errorMessage = this.resourceService?.frmelmnts?.lbl?.failedToRejectFramework || 'Failed to reject framework';
         this.toasterService.error(errorMessage);
         this.isRejecting = false;
       }
@@ -2040,7 +2011,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     const frameworkId = this.getFrameworkIdentifier();
 
     if (!frameworkId) {
-      this.toasterService.error('Framework ID not found. Cannot edit framework.');
+      this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.frameworkIdNotFound || 'Framework ID not found. Cannot edit framework.');
       return;
     }
 
@@ -2077,13 +2048,13 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
           this.resetEditFormValidation();
           this.showEditFrameworkModal = true;
         } else {
-          this.toasterService.error('Failed to fetch framework data. Invalid response structure.');
+          this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.failedToFetchFrameworkData || 'Failed to fetch framework data.');
         }
       },
       (error: any) => {
         console.error('Error fetching framework data:', error);
         this.toasterService.error(
-          this.resourceService?.frmelmnts?.emsg?.frameworkFetchFailed ||
+          this.resourceService?.frmelmnts?.lbl?.failedToFetchFrameworkData ||
           'Failed to fetch framework data. Please try again.'
         );
       }
@@ -2132,7 +2103,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
 
     if (!frameworkId) {
       this.isUpdatingFramework = false;
-      this.toasterService.error('Framework ID not found. Cannot update framework.');
+      this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.frameworkIdNotFound || 'Framework ID not found. Cannot update framework.');
       return;
     }
 
@@ -2163,19 +2134,19 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
           // Close modal and show success message
           this.closeEditFrameworkModal();
           this.toasterService.success(
-            this.resourceService?.frmelmnts?.smsg?.frameworkUpdated ||
+            this.resourceService?.frmelmnts?.lbl?.frameworkUpdated ||
             'Framework updated successfully!'
           );
         } else {
           this.isUpdatingFramework = false;
-          this.toasterService.error('Failed to update framework. Invalid response from server.');
+          this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.failedToUpdateFramework || 'Failed to update framework. Invalid response from server.');
         }
       },
       (error: any) => {
         console.error('Error updating framework:', error);
         this.isUpdatingFramework = false;
         this.toasterService.error(
-          this.resourceService?.frmelmnts?.emsg?.frameworkUpdateFailed ||
+          this.resourceService?.frmelmnts?.lbl?.failedToUpdateFramework ||
           'Failed to update framework. Please try again.'
         );
       }
@@ -2373,19 +2344,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       this.isSavingDraft = false;
 
       // Show appropriate error message
-      let errorMessage = 'Failed to save skill map. Please try again.';
-      if (error.message) {
-        if (error.message.includes('status 401')) {
-          errorMessage = 'Authentication failed. Please log in again.';
-        } else if (error.message.includes('status 403')) {
-          errorMessage = 'You do not have permission to create terms.';
-        } else if (error.message.includes('status 500')) {
-          errorMessage = 'Server error occurred. Please try again later.';
-        } else if (error.message.includes('Network error')) {
-          errorMessage = 'Network error. Please check your connection.';
-        }
-      }
-
+      let errorMessage = this.resourceService?.frmelmnts?.lbl?.failedToSaveSkillMap || 'Failed to save. Please try again.';
       this.toasterService.error(errorMessage);
       this.saveLocalDraftOnly();
     }
