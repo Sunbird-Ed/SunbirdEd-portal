@@ -612,8 +612,6 @@ export class SkillMapTreeComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
       
-      console.log('Validation complete. Error nodes:', errorNodes);
-      
     } catch (error) {
       console.error('Error during validation:', error);
     }
@@ -835,7 +833,6 @@ export class SkillMapTreeComponent implements OnInit, AfterViewInit, OnDestroy {
             node.setExpanded(true);
           }
         });
-        console.log('All tree nodes expanded');
       }
     } catch (error) {
       console.warn('Error expanding all nodes:', error);
@@ -853,7 +850,6 @@ export class SkillMapTreeComponent implements OnInit, AfterViewInit, OnDestroy {
             node.setExpanded(false);
           }
         });
-        console.log('All tree nodes collapsed (except root)');
       }
     } catch (error) {
       console.warn('Error collapsing all nodes:', error);

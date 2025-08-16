@@ -822,12 +822,6 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
             this.behavioralIndicators = this.selectedNodeData.data.metadata.behavioralIndicators || [];
             this.measurableOutcomes = this.selectedNodeData.data.metadata.measurableOutcomes || [];
             this.assessmentCriteria = this.selectedNodeData.data.metadata.assessmentCriteria || [];
-            
-            console.log('Loaded observable data:', {
-              behavioralIndicators: this.behavioralIndicators.length,
-              measurableOutcomes: this.measurableOutcomes.length,
-              assessmentCriteria: this.assessmentCriteria.length
-            });
           }
           
           // Only reset input controls if they are empty
@@ -1917,7 +1911,6 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       this.behavioralIndicators.push(value);
       this.behavioralIndicatorsInputControl.setValue('', { emitEvent: false });
       this.updateObservableElementDataSilently();
-      console.log('Added behavioral indicator:', value, 'Total:', this.behavioralIndicators.length);
     }
   }
 
@@ -1932,7 +1925,6 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       this.measurableOutcomes.push(value);
       this.measurableOutcomesInputControl.setValue('', { emitEvent: false });
       this.updateObservableElementDataSilently();
-      console.log('Added measurable outcome:', value, 'Total:', this.measurableOutcomes.length);
     }
   }
 
@@ -1947,7 +1939,6 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       this.assessmentCriteria.push(value);
       this.assessmentCriteriaInputControl.setValue('', { emitEvent: false });
       this.updateObservableElementDataSilently();
-      console.log('Added assessment criteria:', value, 'Total:', this.assessmentCriteria.length);
     }
   }
 

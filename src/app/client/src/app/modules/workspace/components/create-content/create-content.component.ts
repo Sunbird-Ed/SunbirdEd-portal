@@ -232,19 +232,11 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
     // Make API call to create framework using PublicDataService with /api prefix (like framework read APIs)
     const option = {
       url: 'framework/v1/create',
-      data: requestBody,
-      header: {
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhcGlfYWRtaW4ifQ.-qfZEwBAoHFhxNqhGq7Vy_SNVcwB1AtMX8xbiVHF5FQ"
-      }
+      data: requestBody
     };
-
-    console.log('Creating framework with API call:', option);
 
     this.publicDataService.post(option).subscribe(
       (response: any) => {
-        console.log('Framework creation response:', response);
-        
         if (response && response.result && response.result.node_id) {
           // After framework creation, create the required categories
           this.createFrameworkCategories(response.result.node_id, frameworkData, requestBody, modal);
@@ -311,12 +303,8 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
       }
     };
 
-    console.log(`Creating category ${category.name} with API call:`, categoryOption);
-
     this.publicDataService.post(categoryOption).subscribe(
-      (response: any) => {
-        console.log(`Category ${category.name} created successfully:`, response);
-        
+      (response: any) => {  
         // Create next category
         this.createCategoriesSequentially(nodeId, categories, index + 1, frameworkData, requestBody, modal);
       },

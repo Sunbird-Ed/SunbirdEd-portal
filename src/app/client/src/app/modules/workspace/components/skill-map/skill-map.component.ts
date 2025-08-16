@@ -230,24 +230,17 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
       'messageText': 'messages.stmsg.m0008'
     };
     this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
-
-    // Determine user role for skill maps
     this.isSkillMapCreator = this.permissionService.checkRolesPermissions(['SKILLMAP_CREATOR']);
     this.isSkillMapReviewer = this.permissionService.checkRolesPermissions(['SKILLMAP_REVIEWER']);
   }
 
   ngOnInit() {
-    // Determine the current route to know if we're in reviewer mode
     const currentUrl = this.route.url;
     const isReviewerRoute = currentUrl.includes('skillmap-reviewer');
-
-    // Override role-based behavior if we're on the reviewer route
     if (isReviewerRoute) {
       this.isSkillMapReviewer = true;
       this.isSkillMapCreator = false;
     }
-
-    // For skill maps (frameworks), we don't need question set functionality
     this.filterType = this.config.appConfig.skillmap?.filterType || this.config.appConfig.allmycontent.filterType;
     this.redirectUrl = this.config.appConfig.skillmap?.inPageredirectUrl || this.config.appConfig.allmycontent.inPageredirectUrl;
     observableCombineLatest(
@@ -287,8 +280,6 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
       this.sort = { lastPublishedOn: 'desc' };
     }
 
-    // API call for skill maps (frameworks)
-    // Filter status based on user role
     let statusFilter: string[] = [];
     if (this.isSkillMapCreator) {
       statusFilter = ['Draft', 'Review', 'Live']; // Creators see all statuses
@@ -319,7 +310,6 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
     this.searchService.compositeSearch(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.count && data.result.Framework && data.result.Framework.length > 0) {
-          // Process framework data to match the expected format
           this.skillMapContent = this.processFrameworkData(data.result.Framework);
           this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, pageNumber, limit);
@@ -367,7 +357,6 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
       contentType: 'Skill Map',
       primaryCategory: 'Skill Map',
       mimeType: 'application/vnd.skill-map+json',
-      // Add any other fields needed for display
       metaData: {
         identifier: framework.identifier,
         name: framework.name,
@@ -383,7 +372,6 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
   }
 
   public deleteConfirmModal(contentIds, mimeType) {
-    // Only allow deletion for Draft status skill maps
     this.currentContentId = contentIds;
     this.contentMimeType = mimeType;
     this.showDeleteModal = true;
@@ -417,10 +405,7 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
   }
 
   private deleteContent(contentId: string) {
-    // Delete skill map (framework) using the framework retire API
     this.isDeleting = true;
-
-
     this.frameworkService.retireFramework(contentId).subscribe(
       (data: ServerResponse) => {
         this.isDeleting = false;
@@ -460,42 +445,22 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
   * This method calls the workspace content search or handles skill map actions
   */
   contentClick(content: ISkillMapContent): void {
-    console.log('=== CONTENT CLICK DEBUG ===');
-    console.log('Content:', content);
-    console.log('User roles:', {
-      isSkillMapReviewer: this.isSkillMapReviewer,
-      isSkillMapCreator: this.isSkillMapCreator,
-      allRoles: this.permissionService.permissionAvailable
-    });
-    console.log('Content status:', content.status);
-    console.log('Content metaData status:', content.metaData?.status);
-
-    // For skill map reviewers, open skill map editor in review mode
     if (this.isSkillMapReviewer) {
-      console.log('Opening skill map in REVIEW mode for reviewer');
       this.workSpaceService.openSkillMapEditor(content, 'review');
       return;
     }
 
     if (this.isSkillMapCreator) {
-      // For skill map creators, open skill map editor in edit mode for Draft status
       if (content.status === 'Draft') {
-        console.log('Opening skill map in EDIT mode for creator (Draft status)');
         this.workSpaceService.openSkillMapEditor(content, 'edit');
         return;
       }
     }
-
-    // For skill map creators, open skill map editor in view mode for Live or Review status
     const status = content.status || (content.metaData && content.metaData.status);
-    console.log('Final status check:', status);
 
     if (status === 'Live' || status === 'Review') {
-      console.log('Opening skill map in VIEW mode for status:', status);
       this.workSpaceService.openSkillMapEditor(content, 'view');
     } else {
-      // Show appropriate message for frameworks that cannot be viewed
-      console.log('Cannot view skill map with status:', status);
       this.toasterService.warning(this.resourceService.messages.imsg.canNotReviewSkillmap || 'This skill map cannot be viewed in current status');
     }
   }
@@ -507,10 +472,8 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
   editSkillMap(content: ISkillMapContent): void {
     const status = content.status || (content.metaData && content.metaData.status);
     if (status === 'Draft') {
-      // Draft status - open in edit mode
       this.workSpaceService.openSkillMapEditor(content, 'edit');
     } else if (status === 'Live' || status === 'Review') {
-      // Live or Review status - open in view mode
       this.workSpaceService.openSkillMapEditor(content, 'view');
     } else {
       this.toasterService.warning(this.resourceService.messages.imsg.canNotEditSkillmap || 'This skill map cannot be edited in current status');
@@ -526,7 +489,6 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
 
     // Only allow viewing for Live and Review status
     if (status === 'Live' || status === 'Review') {
-      console.log('Opening skill map in view mode:', content);
       this.workSpaceService.openSkillMapEditor(content, 'view');
     }
     else if (status === 'Draft') {
