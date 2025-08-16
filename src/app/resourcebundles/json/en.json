@@ -118,6 +118,8 @@
                 "copyId": "Copy ID"
             },
             "lbl": {
+                "creating": "Creating...",
+                "failedToLoadContent": "Failed to load content.",
                 "frameworkRejected": "Framework rejected successfully.",
                 "failedToUpdateFramework": "Failed to update framework.",
                 "frameworkUpdated": "Framework updated successfully.",
@@ -200,7 +202,7 @@
                 "page": "Page",
                 "loading": "Loading",
                 "youJustCompleted": "You just completed",
-                "reply": "Reply",
+                "reply": "Replay",
                 "exit": "Exit",
                 "upNext": "Up Next",
                 "download": "Download",

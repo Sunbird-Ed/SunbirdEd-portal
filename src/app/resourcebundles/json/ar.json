@@ -165,7 +165,7 @@
                 "page": "صفحة",
                 "loading": "جاري التحميل",
                 "youJustCompleted": "لقد أنهيت للتو",
-                "reply": "الرد",
+                "reply": "إعادة",
                 "exit": "خروج.",
                 "upNext": "التالي",
                 "download": "تحميل",
@@ -1739,7 +1739,9 @@
                 "enterAssessmentCriteria": "أدخل معايير التقييم",
                 "skillDomains": "مجالات المهارات",
                 "frameworkRejected": "تم رفض الإطار العام بنجاح.",
-                "someNodesMissingChildren": "بعض العقد مفقودة الأطفال. يرجى التأكد من أن كل عقدة لها أطفال قبل الحفظ."
+                "someNodesMissingChildren": "بعض العقد مفقودة الأطفال. يرجى التأكد من أن كل عقدة لها أطفال قبل الحفظ.",
+                "failedToLoadContent": "فشل في تحميل المحتوى.",
+                "creating": "جارٍ الإنشاء..."
             },
             "alert": {
                 "debugModeEnabledFailed": "غير قادر على تمكين وضع تصحيح الأخطاء",

@@ -232,8 +232,8 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
     this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
 
     // Determine user role for skill maps
-    this.isSkillMapCreator = this.permissionService.checkRolesPermissions(['CONTENT_CREATOR']);
-    this.isSkillMapReviewer = this.permissionService.checkRolesPermissions(['CONTENT_REVIEWER']);
+    this.isSkillMapCreator = this.permissionService.checkRolesPermissions(['SKILLMAP_CREATOR']);
+    this.isSkillMapReviewer = this.permissionService.checkRolesPermissions(['SKILLMAP_REVIEWER']);
   }
 
   ngOnInit() {

@@ -165,7 +165,7 @@
                 "page": "Page",
                 "loading": "Chargement",
                 "youJustCompleted": "Vous venez de terminer",
-                "reply": "Répondre",
+                "reply": "Replay",
                 "exit": "Quitter",
                 "upNext": "à suivre",
                 "download": "Télécharger",
@@ -1737,7 +1737,9 @@
                 "enterAssessmentCriteria": "Entrez les critères d'évaluation",
                 "skillDomains": "Domaines de compétences",
                 "frameworkRejected": "Cadre rejeté avec succès",
-                "someNodesMissingChildren": "Certains nœuds manquent d'enfants"
+                "someNodesMissingChildren": "Certains nœuds manquent d'enfants",
+                "failedToLoadContent": "Échec du chargement du contenu",
+                "creating": "Création..."
             },
             "alert": {
                 "debugModeEnabledFailed": "Impossible d'activer le mode de débogage",

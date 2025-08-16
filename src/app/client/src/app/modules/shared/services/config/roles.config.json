@@ -1,6 +1,6 @@
 {
     "headerDropdownRoles":{
-        "workSpaceRole" : ["CONTENT_CREATOR" , "CONTENT_CREATION" , "CONTENT_REVIEWER" , "CONTENT_REVIEW" , "FLAG_REVIEWER" , "COURSE_MENTOR" ,"BOOK_REVIEWER", "BOOK_CREATOR"],
+        "workSpaceRole" : ["SKILLMAP_CREATOR","SKILLMAP_REVIEWER","CONTENT_CREATOR" , "CONTENT_CREATION" , "CONTENT_REVIEWER" , "CONTENT_REVIEW" , "FLAG_REVIEWER" , "COURSE_MENTOR" ,"BOOK_REVIEWER", "BOOK_CREATOR"],
         "adminDashboard" : ["ORG_ADMIN","SYSTEM_ADMINISTRATION","REPORT_VIEWER", "REPORT_ADMIN"],
         "announcementRole" : ["ANNOUNCEMENT_SENDER"],
         "myActivityRole" : ["CONTENT_CREATOR"],
@@ -10,7 +10,7 @@
     },
 
     "workSpaceRole":{
-       "createRole": ["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
+       "createRole": ["SKILLMAP_CREATOR","CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
        "trainingRole": ["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW"],
        "draftRole": ["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
        "inreviewRole":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
@@ -31,8 +31,8 @@
        "allContentRole": ["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
        "collaboratingRole": ["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
        "alltextbookRole": ["ORG_ADMIN"],
-       "skillmapRole": ["CONTENT_CREATOR"],
-       "skillmapReviewerRole": ["CONTENT_REVIEWER"]
+       "skillmapRole": ["SKILLMAP_CREATOR"],
+       "skillmapReviewerRole": ["SKILLMAP_REVIEWER"]
     },
     "organizationRole":{
 
@@ -42,8 +42,8 @@
     },
      "ROLES":{
        "announcement": ["ANNOUNCEMENT_SENDER"],
-       "workspace":["CONTENT_CREATOR" , "CONTENT_CREATION" , "CONTENT_REVIEWER" , "CONTENT_REVIEW" , "FLAG_REVIEWER" , "COURSE_MENTOR" ,"BOOK_REVIEWER","BOOK_CREATOR"],
-       "createRole": ["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
+       "workspace":["SKILLMAP_CREATOR","SKILLMAP_REVIEWER","CONTENT_CREATOR" , "CONTENT_CREATION" , "CONTENT_REVIEWER" , "CONTENT_REVIEW" , "FLAG_REVIEWER" , "COURSE_MENTOR" ,"BOOK_REVIEWER","BOOK_CREATOR"],
+       "createRole": ["SKILLMAP_CREATOR","SKILLMAP_REVIEWER","CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
        "draftRole": ["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
        "inreviewRole":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
        "publishedRole":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
@@ -63,12 +63,12 @@
        "alltextbookRole": ["ORG_ADMIN"],
        "uciAdmin": ["ORG_ADMIN"],
        "programDashboardRole":["PROGRAM_MANAGER","PROGRAM_DESIGNER"],
-       "skillmapRole": ["CONTENT_CREATOR"],
-       "skillmapReviewerRole": ["CONTENT_REVIEWER"]
+       "skillmapRole": ["SKILLMAP_CREATOR"],
+       "skillmapReviewerRole": ["SKILLMAP_REVIEWER"]
     }
     ,"WORKSPACEAUTHGARDROLES":[
     {
-        "roles":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
+        "roles":["SKILLMAP_CREATOR","SKILLMAP_REVIEWER","CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
         "roleName":"createRole","url":"workspace/content/create","tab":"CREATE"
     },
     {
@@ -115,12 +115,12 @@
         "roleName":"collaboratingRole","url":"workspace/content/collaborating-on","tab":"Collaborating On"
     },
     {
-        "roles":["CONTENT_CREATOR"],
-        "roleName":"skillmapRole","url":"workspace/content/skillmap","tab":"Skill Map"
+        "roles":["SKILLMAP_CREATOR"],
+        "roleName":"skillmapRole","url":"workspace/content/skillmap/1","tab":"Skill Map"
     },
     {
-        "roles":["CONTENT_REVIEWER"],
-        "roleName":"skillmapReviewerRole","url":"workspace/content/skillmap-reviewer","tab":"Skill Map Reviewer"
+        "roles":["SKILLMAP_REVIEWER"],
+        "roleName":"skillmapReviewerRole","url":"workspace/content/skillmap-reviewer/1","tab":"Skill Map Reviewer"
     }
    ]
 
