@@ -67,6 +67,7 @@ export class WorkspaceContentFilterComponent implements OnInit, OnDestroy {
   public redirectUrl: string;
   queryParams: any;
   filterIntractEdata: IInteractEventEdata;
+  pageId: string;
 
   /**
    * Constructor to create injected service(s) object
@@ -124,10 +125,27 @@ export class WorkspaceContentFilterComponent implements OnInit, OnDestroy {
         this.query = query;
         this.handleSearch();
       });
+    this.setTelemetryPageId();
+  }
+
+  setTelemetryPageId() {
+    let pageId = 'all-my-content-page'; // default
+
+    if (_.includes(this.route.url, 'published')) {
+      pageId = 'published-page';
+    } else if (_.includes(this.route.url, 'draft')) {
+      pageId = 'draft-page';
+    } else if (_.includes(this.route.url, 'alltextbooks')) {
+      pageId = 'all-textbooks-page';
+    } else if (_.includes(this.route.url, 'skillmap')) {
+      pageId = 'skill-map-page';
+    }
+
+    this.pageId = pageId;
     this.filterIntractEdata = {
       id: 'filter',
       type: 'click',
-      pageid: 'all-my-content-page'
+      pageid: pageId
     };
   }
 
@@ -148,6 +166,12 @@ export class WorkspaceContentFilterComponent implements OnInit, OnDestroy {
     } else if (_.includes(this.route.url, 'alltextbooks')) {
       this.filterType = this.config.appConfig.alltextbooks.filterType;
       this.redirectUrl = this.config.appConfig.alltextbooks.inPageredirectUrl;
+    } else if (_.includes(this.route.url, 'skillmap-reviewer')) {
+      this.filterType = this.config.appConfig.skillmap?.filterType || this.config.appConfig.allmycontent.filterType;
+      this.redirectUrl = this.config.appConfig.skillmap?.inPageredirectUrl || this.config.appConfig.allmycontent.inPageredirectUrl;
+    } else if (_.includes(this.route.url, 'skillmap')) {
+      this.filterType = this.config.appConfig.skillmap?.filterType || this.config.appConfig.allmycontent.filterType;
+      this.redirectUrl = this.config.appConfig.skillmap?.inPageredirectUrl || this.config.appConfig.allmycontent.inPageredirectUrl;
     } else {
       this.filterType = this.config.appConfig.allmycontent.filterType;
       this.redirectUrl = this.config.appConfig.allmycontent.inPageredirectUrl;

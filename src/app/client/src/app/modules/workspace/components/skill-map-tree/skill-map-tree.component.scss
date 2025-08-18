@@ -1,0 +1,835 @@
+// Skill Map Tree Component Styles (matching collection editor fancy tree exactly)
+
+.skill-map-fancytree {
+  height: calc(100vh - 250px);
+  overflow-y: auto;
+  padding: 10px;
+  width: 100%;
+  margin: 0 !important;
+
+  // CRITICAL: Remove all ::before pseudo-elements from FancyTree that add unwanted lines
+  .ui-fancytree {
+    &::before {
+      display: none !important;
+      content: none !important;
+      background: none !important;
+    }
+  }
+  
+  // Additional global ::before removal for any FancyTree elements
+  ul.fancytree-container,
+  .fancytree-container,
+  .ui-fancytree,
+  .ui-fancytree ul,
+  .ui-fancytree li,
+  .fancytree-node,
+  .fancytree-title {
+    &::before, &::after {
+      display: none !important;
+      content: none !important;
+      background: none !important;
+      border: none !important;
+    }
+  }
+
+  // Override FancyTree li margin to remove bottom spacing
+  .ui-fancytree li {
+    margin: 0 0 0.1rem 0 !important;
+    text-align: justify;
+  }
+
+  // CRITICAL: Override FancyTree padding and margin from collection-tree global styles
+  // This overrides: padding: $sb-fancyTree-padding (which is 1rem 0 0 0)
+  // and margin: $sb-fancyTree-margin-ltr (which is 0 0 0 0.625rem)
+  .ui-fancytree,
+  .ui-fancytree ul {
+    padding: 0 0 0 0 !important;
+    margin: 0 0 0 0 !important;
+  }
+
+  // Collection editor exact CSS structure
+  .sb-collectionTree-fancyTreelist {
+    ul {
+      padding: 0 !important;
+    }
+    
+    .ui-fancytree {
+      // margin-bottom: 1rem !important;
+      &:before {
+        background: none !important;
+      }
+
+      ul {
+        &::before {
+          background: none !important;
+        }
+      }
+
+      .fancytree-folder {
+        .fancytree-title {
+          color: var(--primary-color) !important;
+          font-size: 0.9286rem !important;
+          font-weight: 700 !important;
+          padding-left: 5px;
+          width: inherit !important;
+        }
+        
+        // Error highlighting for validation errors (like collection editor)
+        .fancytree-title.highlightNode {
+          color: red !important;
+          &::before {
+            color: red !important;
+          }
+        }
+        
+        // Also handle highlightNode class directly on elements (like collection editor)
+        .highlightNode {
+          color: red !important;
+          
+          &::before {
+            color: red !important;
+          }
+        }
+        
+        // Additional error highlighting support
+        .error-highlight {
+          .fancytree-title {
+            color: red !important;
+          }
+          
+          .highlightNode {
+            color: red !important;
+          }
+        }
+      }
+
+      li {
+        padding: 0;
+        margin: 0 0 1px 0;
+
+        .fancytree {
+          &-ico-c{
+            padding-left: 5px !important;
+          }
+          
+          &-expanded {
+            padding: 15px 33px;
+            border: 1px solid transparent;
+            background-color: #fff;
+          }
+          &-active {
+            border: 1px solid #d0e0f3;
+            background-color: var(--primary-0);
+            padding: 15px 33px;
+            border-top: none;
+          }
+        }
+
+        // ROOT NODE FULL WIDTH - Override padding for root node
+        &:first-child {
+          .fancytree-expanded,
+          .fancytree-active {
+            padding: 15px 0px !important; // Remove left padding for root node
+            margin-left: 0 !important;
+          }
+        }
+
+        &:last-child {
+          &:after {
+            display: none;
+          }
+        }
+
+        ul {
+          padding-top: 1px;
+
+          li {
+            list-style-type: none;
+            
+            .fancytree-node {
+              padding: 6px 6px 8px 5px;
+              margin-left: 45px;
+              border: 1px solid transparent;
+
+              &.fancytree-active,
+              &.fancytree-focused,
+              &:hover {
+                border: 1px solid #d0e0f3;
+                background-color: var(--primary-0);
+                border-right: 0;
+              }
+            }
+            
+            // RTL SUPPORT - Proper indentation for child nodes in RTL
+            [dir="rtl"] & {
+              .fancytree-node {
+                margin-left: 0;
+                margin-right: 45px;
+                
+                &.fancytree-active,
+                &.fancytree-focused,
+                &:hover {
+                  border-left: 0;
+                  border-right: 1px solid #d0e0f3;
+                }
+              }
+            }
+          }
+        }
+
+        &::before {
+          background: none !important;
+        }
+
+        .sb-fancyTree-icon {
+          color: var(--gray-300) !important;
+        }
+
+        .fancytree-custom-icon {
+          &::before {
+            color: var(--primary-color) !important;
+            margin-left: 5px;
+          }
+        }
+        
+        // General error highlighting support (collection editor style)
+        .highlightNode {
+          color: red !important;
+        }
+      }
+
+      .fa-caret-down {
+        margin-top: 6px;
+        display: block;
+        width: 10px;
+        padding-left: 2px;
+      }
+
+      .fa-caret-right {
+        margin-top: 6px;
+        display: block;
+        width: 10px;
+        padding-left: 6px;
+      }
+      
+      padding-right: 0.785rem;
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+  }
+
+  // Root node connector line removal - force hide all connectors for root
+  ul.fancytree-container {
+    // Root container should not have connectors
+    &::before, &::after {
+      display: none !important;
+      content: none !important;
+      background: none !important;
+    }
+    
+    // First li (root node) should not have connectors
+    > li:first-child {
+      &::before, &::after {
+        display: none !important;
+        content: none !important;
+        background: none !important;
+      }
+      
+      // Root node span should not have connectors
+      > span.fancytree-node {
+        &::before, &::after {
+          display: none !important;
+          content: none !important;
+          background: none !important;
+        }
+      }
+      
+      // Hide root expander connectors
+      .fancytree-expander {
+        &::before, &::after {
+          display: none !important;
+          content: none !important;
+          background: none !important;
+        }
+      }
+    }
+  }
+
+  // Collection editor specific overrides  
+  ul.fancytree-container {
+    font-size: inherit !important;
+    font-family: inherit !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+  
+  ul.fancytree-connectors.fancytree-container li {
+    background-image: none !important;
+  }
+  
+  span.fancytree-node {
+    width: inherit !important;
+  }
+  
+  span.fancytree-active span.fancytree-title, span.fancytree-selected span.fancytree-title {
+    background: none !important;
+  }
+  
+  // Collection editor ul > li > span:first-child padding override
+  ul > li > span:first-child {
+    padding: 15px 33px;
+  }
+  
+  // ROOT NODE FULL WIDTH - Remove left padding for root node only
+  ul.fancytree-container > li:first-child > span:first-child {
+    padding: 1px 0px !important; // Remove left padding for root node
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+  
+  // RTL SUPPORT - Root node full width for RTL
+  [dir="rtl"] & {
+    ul.fancytree-container > li:first-child > span:first-child {
+      padding: 1px 0px !important; // Remove right padding for root node in RTL
+      margin-right: 0 !important;
+      margin-left: 0 !important;
+      width: 100% !important;
+    }
+  }
+  
+  // Collection editor nested ul padding override
+  ul.fancytree-container > li > ul {
+    padding-left: 0px !important;
+    
+    // RTL SUPPORT - Proper nested padding for RTL
+    [dir="rtl"] & {
+      padding-left: 0px !important;
+      padding-right: 0px !important;
+    }
+  }
+  
+  // Title and node styling
+  .fancytree-title {
+    color: #333;
+    font-size: 0.9286rem !important;
+    font-weight: 700 !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    border-radius: 0;
+    border: none;
+    background-color: white !important; // Default white background for all nodes
+    transition: none !important;
+    display: block !important;
+    box-sizing: border-box;
+    min-height: 30px;
+    line-height: 30px;
+    padding: 0 3px !important; // Keep normal padding for all titles
+    width: 100% !important; // Full width for proper display
+    margin: 0 !important;
+    
+    // Error highlighting for validation errors
+    &.highlightNode {
+      color: red !important;
+      font-weight: bold !important;
+    }
+  }
+
+  .fancytree-node {
+    position: relative;
+    padding: 0 !important;
+    margin: 0 !important;
+    
+    .fancytree-expander {
+      color: #666;
+      margin: 0;
+    }
+
+    .fancytree-icon {
+      color: var(--primary-400);
+      margin: 0;
+      vertical-align: middle;
+      font-size: 20px;
+
+      &.sb-fancyTree-icon {
+        font-size: 20px;
+      }
+    }
+
+    // Root node specific styling
+    &:first-child {
+      .fancytree-title {
+        font-size: 0.9286rem !important;
+        font-weight: 700 !important;
+        background-color: white !important; // Keep root node white by default
+        border: 1px solid #dee2e6 !important;
+        border-radius: 4px !important;
+        min-height: 50px !important;
+        line-height: 50px !important;
+      }
+    }
+
+    // SELECTED NODE STYLING - Only show background color on active/selected node
+    &.fancytree-active {
+      .fancytree-title {
+        background-color: #f0f8ff !important; // Light blue background for selected node
+        border-left: 3px solid var(--primary-400) !important;
+        color: var(--primary-400) !important;
+        font-weight: bold !important;
+        
+        // RTL SUPPORT - Border on right side for RTL
+        [dir="rtl"] & {
+          border-left: none !important;
+          border-right: 3px solid var(--primary-400) !important;
+        }
+        
+        // ERROR STATE OVERRIDE for selected nodes - text red but keep background
+        &.highlightNode {
+          color: red !important;
+          font-weight: bold !important;
+          background-color: #f0f8ff !important; // Keep blue background
+        }
+      }
+    }
+    
+    // Ensure all other nodes remain white
+    &:not(.fancytree-active) {
+      .fancytree-title {
+        background-color: white !important;
+      }
+    }
+
+    &:hover {
+      .fancytree-title {
+        background-color: #f5f5f5 !important; // Light grey on hover only
+        cursor: pointer;
+      }
+      
+      // Override hover for active nodes to maintain selection color
+      &.fancytree-active .fancytree-title {
+        background-color: #f0f8ff !important; // Keep selection color on hover
+      }
+      
+      // Show context menu on hover
+      .context-menu {
+        opacity: 1;
+      }
+    }
+  }
+  
+  // Context menu styles - enhanced to match collection editor exactly
+  .context-menu {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+    opacity: 0; // Hidden by default
+    transition: opacity 0.2s ease;
+    
+    // RTL SUPPORT - Position context menu on left side for RTL
+    [dir="rtl"] & {
+      right: auto;
+      left: 8px;
+    }
+    
+    &.ui.dropdown {
+      &.sb-dotted-dropdown {
+        position: absolute !important;
+        right: 6px;
+        
+        // RTL SUPPORT - Position dropdown on left side for RTL
+        [dir="rtl"] & {
+          right: auto;
+          left: 6px;
+        }
+        
+        .menu {
+          min-width: 150px;
+          right: 0 !important;
+          left: inherit !important;
+          
+          // RTL SUPPORT - Menu positioning for RTL
+          [dir="rtl"] & {
+            right: inherit !important;
+            left: 0 !important;
+          }
+          
+          .item {
+            padding: 8px 12px;
+            font-size: 13px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+
+            &:last-child {
+              border-bottom: none;
+            }
+
+            &:hover {
+              background-color: #f8f9fa;
+            }
+            
+            &[data-action="delete"] {
+              color: #d32f2f;
+              
+              &:hover {
+                background-color: #ffebee;
+              }
+            }
+            
+            i {
+              margin-right: 6px;
+              width: 14px;
+              text-align: center;
+            }
+          }
+        }
+      }
+    }
+    
+    .context-menu-trigger {
+      cursor: pointer;
+      padding: 8px 12px; // Increased padding to show all 3 dots properly
+      border-radius: 3px;
+      min-width: 24px; // Ensure enough width
+      min-height: 24px; // Ensure enough height
+      display: inline-block;
+      text-align: center;
+      line-height: 1; // Proper line height
+      
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+      
+      i {
+        font-size: 14px;
+        color: #333;
+        line-height: 1;
+        display: block;
+        
+        &.ellipsis.vertical {
+          &.sb-color-black {
+            color: #333;
+          }
+        }
+      }
+    }
+    
+    .context-menu-dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      min-width: 120px;
+      z-index: 1001;
+      
+      // RTL SUPPORT - Position dropdown on left side for RTL
+      [dir="rtl"] & {
+        right: auto;
+        left: 0;
+      }
+      
+      &.hidden {
+        display: none;
+      }
+      
+      &.visible {
+        display: block;
+      }
+      
+      .menu-item {
+        padding: 8px 10px;
+        cursor: pointer;
+        border-bottom: 1px solid #f0f0f0;
+        display: flex;
+        align-items: center;
+        font-size: 13px;
+        
+        &:last-child {
+          border-bottom: none;
+        }
+        
+        &:hover {
+          background-color: #f8f9fa;
+        }
+        
+        &[data-action="delete"] {
+          color: #d32f2f;
+          
+          &:hover {
+            background-color: #ffebee;
+          }
+        }
+        
+        i {
+          margin-right: 6px;
+          width: 14px;
+          text-align: center;
+        }
+      }
+    }
+  }
+  
+  // Hide tree connector lines specifically for root node (collection editor style)
+  .ui-fancytree {
+    // Global connector line removal
+    &::before, &::after {
+      display: none !important;
+      content: none !important;
+      background: none !important;
+    }
+    
+    ul {
+      &::before, &::after {
+        display: none !important;
+        content: none !important;
+        background: none !important;
+      }
+    }
+    
+    li {
+      &::before, &::after {
+        display: none !important;
+        content: none !important;
+        background: none !important;
+      }
+    }
+    
+    // Ensure root container has no connectors
+    &.fancytree-container {
+      &::before, &::after {
+        display: none !important;
+        content: none !important;
+        background: none !important;
+      }
+    }
+  }
+}
+
+// Global override to prevent FancyTree CSS from affecting other elements
+// This ensures that any .ui-fancytree:before elements are completely disabled
+:host {
+  .ui-fancytree {
+    &::before, &::after {
+      display: none !important;
+      content: none !important;
+      background: none !important;
+      border: none !important;
+      position: static !important;
+    }
+  }
+}
+
+// Global highlighting CSS for validation errors (collection editor style)
+::ng-deep .highlightNode {
+  color: red !important;
+}
+
+::ng-deep .fancytree-title.highlightNode {
+  color: red !important;
+}
+
+// Additional error highlighting overrides
+::ng-deep .error-highlight .fancytree-title {
+  color: red !important;
+}
+
+::ng-deep .skill-map-fancytree .highlightNode {
+  color: red !important;
+}
+
+::ng-deep .skill-map-fancytree .error-highlight .fancytree-title {
+  color: red !important;
+}
+
+// CRITICAL: Error highlighting for selected/active nodes - ensure red text shows
+::ng-deep .skill-map-fancytree .fancytree-active .fancytree-title.highlightNode {
+  color: red !important;
+  font-weight: bold !important;
+}
+
+::ng-deep .skill-map-fancytree .fancytree-focused .fancytree-title.highlightNode {
+  color: red !important;
+  font-weight: bold !important;
+}
+
+::ng-deep .skill-map-fancytree .fancytree-selected .fancytree-title.highlightNode {
+  color: red !important;
+  font-weight: bold !important;
+}
+
+// Action buttons matching collection editor
+.sb-fixed-with-whitebg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top: 1px solid #e9ecef;
+  padding: 15px 20px;
+  z-index: 10;
+
+  .sb-btn-cover {
+    margin-right: 10px;
+
+    .sb-btn {
+      min-width: 120px;
+
+      &.sb-btn-radius {
+        border-radius: 4px;
+      }
+
+      &.b-none {
+        border: 1px solid var(--primary-400);
+      }
+
+      &.sb-disabled {
+        background: var(--gray-0);
+        border: .0625rem solid var(--gray-0);
+        opacity: .45;
+        pointer-events: none;
+      }
+
+      &.sb-btn-outline-primary {
+        background: white;
+        color: var(--primary-400);
+        border: 1px solid var(--primary-400);
+
+        &:hover:not(.sb-disabled) {
+          background: var(--primary-400);
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+.skill-map-fancytree {
+  .ui-fancytree {
+    // ROOT NODE ONLY - Full width for root node only
+    > li:first-child {
+      > span.fancytree-node {
+        padding-left: 0 !important;
+        margin-left: 0 !important;
+        width: 100% !important;
+        
+        .fancytree-title {
+          padding-left: 10px !important; // Add some inner padding for text
+          width: calc(100% - 10px) !important;
+        }
+      }
+      
+      // RTL SUPPORT - Root node full width for RTL
+      [dir="rtl"] & {
+        > span.fancytree-node {
+          padding-right: 0 !important;
+          margin-right: 0 !important;
+          padding-left: 0 !important;
+          margin-left: 0 !important;
+          
+          .fancytree-title {
+            padding-right: 10px !important;
+            padding-left: 0 !important;
+            width: calc(100% - 10px) !important;
+          }
+        }
+      }
+    }
+    
+    // CHILD NODES - Preserve normal indentation for child nodes
+    > li:first-child ul li {
+      > span.fancytree-node {
+        padding-left: inherit !important; // Restore normal padding for child nodes
+        margin-left: inherit !important; // Restore normal margin for child nodes
+        width: auto !important; // Restore normal width for child nodes
+        
+        .fancytree-title {
+          padding-left: inherit !important; // Restore normal padding for child titles
+          width: 100% !important; // Give child titles full width within their container
+        }
+      }
+      
+      // RTL SUPPORT - Child nodes normal indentation for RTL
+      [dir="rtl"] & {
+        > span.fancytree-node {
+          padding-right: inherit !important;
+          margin-right: inherit !important;
+          padding-left: inherit !important; // Keep normal inheritance for RTL
+          
+          .fancytree-title {
+            padding-right: inherit !important;
+            width: 100% !important; // Give child titles full width in RTL too
+          }
+        }
+      }
+    }
+  }
+}
+
+// 2. Selected node background and unselected white background overrides
+.skill-map-fancytree {
+  .fancytree-node {
+    .fancytree-title {
+      background-color: white !important; // Force white for all
+    }
+    
+    &.fancytree-active .fancytree-title {
+      background-color: #e3f2fd !important; // Light blue for selected only
+      border-left: 3px solid #2196f3 !important;
+      
+      // RTL SUPPORT - Border on right side for RTL
+      [dir="rtl"] & {
+        border-left: none !important;
+        border-right: 3px solid #2196f3 !important;
+      }
+      
+      // ERROR STATE OVERRIDE for selected nodes - ensure red text shows
+      &.highlightNode {
+        color: red !important;
+        font-weight: bold !important;
+        background-color: #e3f2fd !important; // Keep blue background, red text
+      }
+    }
+    
+    &.fancytree-focused .fancytree-title {
+      background-color: #e3f2fd !important; // Light blue for focused only
+      
+      // ERROR STATE OVERRIDE for focused nodes - ensure red text shows
+      &.highlightNode {
+        color: red !important;
+        font-weight: bold !important;
+        background-color: #e3f2fd !important; // Keep blue background, red text
+      }
+    }
+  }
+  
+  // Override any existing background styles from fancytree
+  span.fancytree-active span.fancytree-title,
+  span.fancytree-selected span.fancytree-title,
+  span.fancytree-focused span.fancytree-title {
+    background-color: #e3f2fd !important;
+  }
+  
+  // ERROR STATE OVERRIDES - ensure red text shows even on selected nodes
+  span.fancytree-active span.fancytree-title.highlightNode,
+  span.fancytree-selected span.fancytree-title.highlightNode,
+  span.fancytree-focused span.fancytree-title.highlightNode {
+    color: red !important;
+    font-weight: bold !important;
+    background-color: #e3f2fd !important; // Keep blue background, red text
+  }
+  
+  // Ensure all other spans remain white
+  span.fancytree-node:not(.fancytree-active):not(.fancytree-selected):not(.fancytree-focused) {
+    .fancytree-title {
+      background-color: #fff !important;
+      border: none !important;
+    }
+  }
+}

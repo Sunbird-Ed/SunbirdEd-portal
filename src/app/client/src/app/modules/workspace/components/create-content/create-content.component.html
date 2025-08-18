@@ -130,6 +130,21 @@
         </div>
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.practicedescription}}</p>
       </div>
+      
+      <!-- Skill Domain -->
+      <div class="three wide column" *ngIf="permissionService.permissionAvailable"
+        appPermission [permission]='skillmapRole'>
+        <div class="ui link card" (click)="openCreateFrameworkModal()" appTelemetryInteract
+          [telemetryInteractEdata]="{id:'createSkillMap',type:'click',pageid:'create-skillmap'}">
+          <div class="content">
+            <div class="textcontent">
+              <i class='my-icon sitemap icon'></i>
+              <span class="my-text">{{resourceService?.frmelmnts?.lbl?.skillMap || 'Skill Domain'}}</span>
+            </div>
+          </div>
+        </div>
+        <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.skillMapDesc || 'Create skill learning paths'}}</p>
+      </div>
     </div>
   </div>
   <!-- <div class="twelve wide column ">
@@ -202,4 +217,64 @@
     </div>
   </div>
 </div>
+
+<!-- Create Framework Modal -->
+<sui-modal *ngIf="showCreateFrameworkModal" [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'normal'"
+  class="sb-modal sb-course-modal" (dismissed)="closeCreateFrameworkModal();" #frameworkModal>
+
+  <i class="icon close" (click)="frameworkModal.deny('denied')" tabindex="0"></i>
+
+  <!--Header-->
+  <div class="sb-modal-header">
+    {{resourceService?.frmelmnts?.lbl?.createSkillDomain || 'Create Skill Domain'}}
+  </div>
+  <!--/Header-->
+
+  <!--Content-->
+  <div class="sb-modal-content o-y-visible">
+    <form class="ui form" [formGroup]="frameworkForm" (ngSubmit)="createFramework(frameworkModal)">
+      <!-- Framework Name -->
+      <div class="field required">
+        <label>{{resourceService?.frmelmnts?.lbl?.name || 'Name'}}</label>
+        <input type="text" 
+               formControlName="name" 
+               placeholder="{{resourceService?.frmelmnts?.lbl?.enterSkillDomainName || 'Enter skill domain name'}}"
+               maxlength="120"
+               class="sb-form-control">
+        <div *ngIf="hasNameError" 
+             class="sb-color-error fs-0-85 mt-8">
+          {{resourceService?.frmelmnts?.lbl?.nameIsRequired || 'Name is required'}}
+        </div>
+      </div>
+
+      <!-- Framework Description -->
+      <div class="field mt-16">
+        <label>{{resourceService?.frmelmnts?.lbl?.description || 'Description'}}</label>
+        <textarea formControlName="description" 
+                  rows="3" 
+                  placeholder="{{resourceService?.frmelmnts?.lbl?.enterSkillDomainDescription || 'Enter skill domain description'}}"
+                  maxlength="256"
+                  class="sb-form-control"></textarea>
+      </div>
+    </form>
+  </div>
+  <!--/Content-->
+
+  <!--Actions-->
+  <div class="sb-modal-actions">
+    <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" (click)="closeCreateFrameworkModal()">
+      {{resourceService?.frmelmnts?.btn?.cancel || 'Cancel'}}
+    </button>
+    <button type="button" 
+            class="sb-btn sb-btn-normal sb-btn-primary" 
+            [disabled]="isCreating"
+            [ngClass]="{'loading': isCreating}"
+            (click)="createFramework(frameworkModal)"
+            tabindex="0">
+      {{isCreating ? (resourceService?.frmelmnts?.lbl?.creating || 'Creating...') : (resourceService?.frmelmnts?.btn?.create || 'Create')}}
+    </button>
+  </div>
+  <!--/Actions-->
+</sui-modal>
+
 <router-outlet></router-outlet>

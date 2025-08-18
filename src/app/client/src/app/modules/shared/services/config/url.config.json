@@ -248,7 +248,8 @@
       "READ": "channel/v1/read"
     },
     "FRAMEWORK": {
-      "READ": "framework/v1/read"
+      "READ": "framework/v3/read",
+      "PUBLISH": "framework/v1/publish"
     },
     "dataDrivenForms": {
       "READ": "data/v1/form/read"

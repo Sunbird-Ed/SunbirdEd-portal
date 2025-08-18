@@ -68,9 +68,9 @@ export class FrameworkService {
     };
     return this.publicDataService.get(channelOptions);
   }
-  public getFrameworkCategories(frameworkId: string) { // used in workspace, course
+  public getFrameworkCategories(frameworkId: string, mode?: string) { // used in workspace, course
     const frameworkOptions = {
-      url: this.configService.urlConFig.URLS.FRAMEWORK.READ + '/' + frameworkId
+      url: this.configService.urlConFig.URLS.FRAMEWORK.READ + '/' + frameworkId + (mode ? "?mode=" + mode : ''),
     };
     return this.publicDataService.get(frameworkOptions);
   }
@@ -124,6 +124,40 @@ export class FrameworkService {
     formAction: 'get'
   };
   return (await this.formService.getFormConfig(formRequest).toPromise() as any);
+}
+
+/**
+ * Retire a framework
+ * @param {string} frameworkId - The ID of the framework to retire
+ * @returns Observable<ServerResponse>
+ */
+public retireFramework(frameworkId: string): Observable<ServerResponse> {
+  const retireOptions = {
+    url: `framework/v3/retire/${frameworkId}`,
+    header: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    }
+  };
+  return this.publicDataService.delete(retireOptions);
+}
+
+/**
+ * Retire a term within a framework
+ * @param {object} requestData - The data containing category, code, and framework
+ * @returns Observable<ServerResponse>
+ */
+public retireTerm(requestData: any): Observable<ServerResponse> {
+  const { category, code, framework } = requestData;
+  
+  const retireOptions = {
+    url: `framework/v3/term/retire/${code}?framework=${framework}&category=${category}`,
+    header: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    }
+  };
+  return this.publicDataService.delete(retireOptions);
 }
 
 }

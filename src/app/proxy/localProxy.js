@@ -25,7 +25,7 @@ var contentServiceApi = {
   'content/v1/flag/accept': 'v1/content/flag/accept',
   'content/v1/flag/reject': 'v1/content/flag/reject',
   'channel/v1/read': 'v1/channel/read',
-  'framework/v1/read': 'v1/framework/read'
+  'framework/v3/read': 'v1/framework/read'
 }
 
 /**

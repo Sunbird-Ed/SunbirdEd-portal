@@ -16,7 +16,7 @@ import {
   UpforreviewContentplayerComponent, FlagConentplayerComponent, ReviewsubmissionsContentplayerComponent,
   PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
   AllContentComponent, FlagReviewerComponent, CollaboratingOnComponent,
-  CollaborationContentFilterComponent, WorkspaceContentFilterComponent, AllTextbooksComponent, NewCollectionEditorComponent
+  CollaborationContentFilterComponent, WorkspaceContentFilterComponent, AllTextbooksComponent, NewCollectionEditorComponent, SkillMapComponent, SkillMapEditorComponent, SkillMapTreeComponent
 } from './components';
 import { DateFilterXtimeAgoPipe } from './pipes';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -25,6 +25,12 @@ import { PlayerHelperModule } from '@sunbird/player-helper';
 import { ContentSearchModule } from '@sunbird/content-search';
 import { CollectionEditorLibraryModule } from '@project-fmps/sunbird-collection-editor'; //commented for infinite-scroll
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
 import { QuestionsetEditorLibraryModule } from '@project-sunbird/sunbird-questionset-editor';
 @NgModule({
   imports: [
@@ -40,6 +46,12 @@ import { QuestionsetEditorLibraryModule } from '@project-sunbird/sunbird-questio
     ContentSearchModule,
     CollectionEditorLibraryModule, //commented for infinte-scroll
     MatTooltipModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatCardModule,
+    MatChipsModule,
     QuestionsetEditorLibraryModule
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent, DateFilterXtimeAgoPipe,
@@ -62,7 +74,10 @@ import { QuestionsetEditorLibraryModule } from '@project-sunbird/sunbird-questio
     ReviewCommentsComponent,
     CollaborationContentFilterComponent,
     WorkspaceContentFilterComponent,
-    NewCollectionEditorComponent
+    NewCollectionEditorComponent,
+    SkillMapComponent,
+    SkillMapEditorComponent,
+    SkillMapTreeComponent
   ],
   providers: [WorkSpaceService, EditorService, BatchService, ReviewCommentsService, DateFilterXtimeAgoPipe]
 })

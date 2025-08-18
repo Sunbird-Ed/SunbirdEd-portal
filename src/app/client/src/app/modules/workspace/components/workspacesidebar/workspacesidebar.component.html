@@ -76,5 +76,17 @@
   <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('collaborations-button')"  class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='collaboratingRole' [routerLink]="['collaborating-on',1]"
     [class.active]="router.isActive('/workspace/content/collaborating-on',false)"  matTooltip="{{ resourceService?.frmelmnts?.lbl?.view_collaborations }}" [matTooltipPosition]="'right'">
     {{resourceService?.frmelmnts?.snav?.Collaboratingon}}
-</a>
+  </a>
+  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('skillmap-button')" *ngIf='permissionService.permissionAvailable' 
+    [class.active]="router.isActive('/workspace/content/skillmap',false)" 
+    appPermission [permission]='skillmapRole' class="item" [routerLink]="['skillmap',1]"
+    matTooltip="{{resourceService?.frmelmnts?.lbl?.view_skill_map || 'View Skill Domain' }}" [matTooltipPosition]="'right'">
+    {{ resourceService?.frmelmnts?.lbl?.skillDomains || 'Skill Domains' }}
+  </a> 
+  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('skillmap-reviewer-button')" *ngIf='permissionService.permissionAvailable' 
+    [class.active]="router.isActive('/workspace/content/skillmap-reviewer',false)" 
+    appPermission [permission]='skillmapReviewerRole' class="item" [routerLink]="['skillmap-reviewer',1]"
+    matTooltip="{{resourceService?.frmelmnts?.lbl?.view_skill_map_review || 'View Skill Domain Review' }}" [matTooltipPosition]="'right'">
+    {{ resourceService?.frmelmnts?.lbl?.skillDomains || 'Skill Domains' }}
+  </a>
 </div>

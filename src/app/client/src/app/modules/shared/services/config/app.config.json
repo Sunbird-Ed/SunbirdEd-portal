@@ -1319,6 +1319,11 @@
     "inPageredirectUrl": "workspace/content/allcontent/1",
     "searchPageredirectUrl": "workspace/content/allcontent/1"
   },
+  "skillmap": {
+    "filterType": "skillmap",
+    "inPageredirectUrl": "workspace/content/skillmap/1",
+    "searchPageredirectUrl": "workspace/content/skillmap/1"
+  },
   "alltextbooks": {
     "filterType": "alltextbooks",
     "inPageredirectUrl": "workspace/content/alltextbooks/1",
