@@ -145,7 +145,8 @@
       "ORG_ADMIN_URL": "data/v1/system/settings/get/orgAdminTnc",
       "GROUPS_TNC": "data/v1/system/settings/get/groupsTnc",
       "REPORT_VIEWER_TNC": "data/v1/system/settings/get/reportViewerTnc",
-      "ENABLE_DELETE_ACCOUNT": "data/v1/system/settings/get/enableDeleteAccount"
+      "ENABLE_DELETE_ACCOUNT": "data/v1/system/settings/get/enableDeleteAccount",
+      "VERIFY_OTP_ON_DELETE": "data/v1/system/settings/get/verifyOtpOnDelete"
     },
     "COURSE_FRAMEWORK": {
       "COURSE_FRAMEWORKID": "data/v1/system/settings/get/courseFrameworkId"
