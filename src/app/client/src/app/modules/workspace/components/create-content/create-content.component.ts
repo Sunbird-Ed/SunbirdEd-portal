@@ -107,7 +107,6 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
     // Initialize framework form
     this.frameworkForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(120)]],
-      code: ['', [Validators.pattern(/^[A-Za-z0-9_]+$/), Validators.maxLength(50)]],
       description: ['', [Validators.maxLength(256)]]
     });
   }
@@ -242,15 +241,16 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
           this.createFrameworkCategories(response.result.node_id, frameworkData, requestBody, modal);
         } else {
           this.isCreating = false;
-          this.toasterService.error('Failed to create framework. Invalid response from server.');
+          this.toasterService.error(this.resourceService?.frmelmnts?.emsg?.skillDomainCreationFailed || 
+          'Failed to create skill Domain. Please try again.');
         }
       },
       (error: any) => {
         console.error('Error creating framework:', error);
         this.isCreating = false;
         this.toasterService.error(
-          this.resourceService?.frmelmnts?.emsg?.frameworkCreationFailed || 
-          'Failed to create framework. Please try again.'
+          this.resourceService?.frmelmnts?.emsg?.skillDomainCreationFailed || 
+          'Failed to create skill Domain. Please try again.'
         );
       }
     );

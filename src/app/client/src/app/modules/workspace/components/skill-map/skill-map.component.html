@@ -11,7 +11,7 @@
     <thead>
       <tr>
         <th class="six wide UpReviewTableHeader">
-          {{ isSkillMapReviewer ? (resourceService?.frmelmnts?.lbl?.skillMap || 'Skill Map') : (resourceService?.frmelmnts?.lbl?.skills || 'Skills') }}
+          {{ isSkillMapReviewer ? (resourceService?.frmelmnts?.lbl?.skillMap || 'Skill Domain') : (resourceService?.frmelmnts?.lbl?.skills || 'Skills') }}
         </th>
         <th class="four wide UpReviewTableHeader">
           {{ isSkillMapReviewer ? (resourceService?.frmelmnts?.lbl?.author || 'Author') : (resourceService?.frmelmnts?.lbl?.lastUpdated || 'Last Updated') }}
@@ -35,7 +35,7 @@
               <div class="UpReviewHeader">{{content.name | slice:0:30}}
                 <i *ngIf="content.name.length > 30">...</i>
               </div>
-              <div class="UpReviewSubHeader" *ngIf="isSkillMapReviewer">{{resourceService?.frmelmnts?.lbl?.skillMap || 'Skill Map'}}</div>
+              <div class="UpReviewSubHeader" *ngIf="isSkillMapReviewer">{{resourceService?.frmelmnts?.lbl?.skillMap || 'Skill Domain'}}</div>
             </div>
           </h5>
         </td>

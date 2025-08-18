@@ -116,11 +116,11 @@
     },
     {
         "roles":["SKILLMAP_CREATOR"],
-        "roleName":"skillmapRole","url":"workspace/content/skillmap/1","tab":"Skill Map"
+        "roleName":"skillmapRole","url":"workspace/content/skillmap/1","tab":"Skill Domain"
     },
     {
         "roles":["SKILLMAP_REVIEWER"],
-        "roleName":"skillmapReviewerRole","url":"workspace/content/skillmap-reviewer/1","tab":"Skill Map Reviewer"
+        "roleName":"skillmapReviewerRole","url":"workspace/content/skillmap-reviewer/1","tab":"Skill Domain Reviewer"
     }
    ]
 

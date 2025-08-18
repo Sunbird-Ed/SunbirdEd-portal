@@ -101,7 +101,7 @@
                             <!-- Name and Code in same row (50% each) -->
                             <div style="display: flex; gap: 16px; margin-bottom: 16px;">
                                 <mat-form-field appearance="outline" style="flex: 1;">
-                                    <mat-label>{{resourceService?.frmelmnts?.lbl?.skillMapName || 'Skill Map Name'}}</mat-label>
+                                    <mat-label>{{resourceService?.frmelmnts?.lbl?.skillMapName || 'Skill Domain Name'}}</mat-label>
                                     <input matInput [formControl]="nameFormControl"
                                         [readonly]="isViewMode || isReviewMode"
                                         placeholder="{{resourceService?.frmelmnts?.lbl?.enterNodeName || 'Enter node name'}}"
@@ -111,7 +111,7 @@
                                 </mat-form-field>
 
                                 <mat-form-field appearance="fill" style="flex: 1;">
-                                    <mat-label>{{resourceService?.frmelmnts?.lbl?.skillMapCode || 'Skill Map Code'}}</mat-label>
+                                    <mat-label>{{resourceService?.frmelmnts?.lbl?.skillMapCode || 'Skill Domain Code'}}</mat-label>
                                     <input matInput [formControl]="codeFormControl"
                                         [readonly]="isViewMode || isReviewMode"
                                         placeholder="{{resourceService?.frmelmnts?.lbl?.enterUniqueCode || 'Enter unique code'}}"

@@ -311,7 +311,7 @@ const routes: Routes = [
         env: telemetryEnv, pageid: 'workspace-content-skillmap-editor', uri: 'workspace/content/skillmap/edit',
         type: 'edit', mode: 'create', object: { type: objectType, ver: '1.0' }
       }, roles: 'skillmapRole',
-      breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '/workspace/content/skillmap/1' }, { label: 'Skill Map Editor', url: '' }],
+      breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '/workspace/content/skillmap/1' }, { label: 'Skill Domain Editor', url: '' }],
       hideHeaderNFooter: true
     }
   },
@@ -322,7 +322,7 @@ const routes: Routes = [
         env: telemetryEnv, pageid: 'workspace-content-skillmap-editor', uri: 'workspace/content/skillmap/edit',
         type: 'edit', mode: 'create', object: { type: objectType, ver: '1.0' }
       }, roles: 'skillmapReviewerRole',
-      breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '/workspace/content/skillmap/1' }, { label: 'Skill Map Editor', url: '' }],
+      breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '/workspace/content/skillmap/1' }, { label: 'Skill Domain Editor', url: '' }],
       hideHeaderNFooter: true
     }
   },

@@ -461,7 +461,7 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
     if (status === 'Live' || status === 'Review') {
       this.workSpaceService.openSkillMapEditor(content, 'view');
     } else {
-      this.toasterService.warning(this.resourceService.messages.imsg.canNotReviewSkillmap || 'This skill map cannot be viewed in current status');
+      this.toasterService.warning(this.resourceService.messages.imsg.canNotReviewSkillmap || 'This skill Domain cannot be viewed in current status');
     }
   }
 
@@ -476,7 +476,7 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
     } else if (status === 'Live' || status === 'Review') {
       this.workSpaceService.openSkillMapEditor(content, 'view');
     } else {
-      this.toasterService.warning(this.resourceService.messages.imsg.canNotEditSkillmap || 'This skill map cannot be edited in current status');
+      this.toasterService.warning(this.resourceService.messages.imsg.canNotEditSkillmap || 'This skill Domain cannot be edited in current status');
     }
   }
 
@@ -497,7 +497,7 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
     else {
       this.toasterService.warning(
         this.resourceService.messages.imsg.canNotViewSkillmap ||
-        'This skill map cannot be viewed in current status'
+        'This skill domain cannot be viewed in current status'
       );
     }
   }

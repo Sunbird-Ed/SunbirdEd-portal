@@ -131,7 +131,7 @@
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.practicedescription}}</p>
       </div>
       
-      <!-- Skill Map -->
+      <!-- Skill Domain -->
       <div class="three wide column" *ngIf="permissionService.permissionAvailable"
         appPermission [permission]='skillmapRole'>
         <div class="ui link card" (click)="openCreateFrameworkModal()" appTelemetryInteract
@@ -139,11 +139,11 @@
           <div class="content">
             <div class="textcontent">
               <i class='my-icon sitemap icon'></i>
-              <span class="my-text">{{resourceService?.frmelmnts?.lbl?.skillMap || 'Skill Map'}}</span>
+              <span class="my-text">{{resourceService?.frmelmnts?.lbl?.skillMap || 'Skill Domain'}}</span>
             </div>
           </div>
         </div>
-        <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.skillMapDesc || 'Create skill learning paths and competency maps'}}</p>
+        <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.skillMapDesc || 'Create skill learning paths'}}</p>
       </div>
     </div>
   </div>
@@ -226,7 +226,7 @@
 
   <!--Header-->
   <div class="sb-modal-header">
-    {{resourceService?.frmelmnts?.lbl?.createFramework || 'Create Framework'}}
+    {{resourceService?.frmelmnts?.lbl?.createSkillDomain || 'Create Skill Domain'}}
   </div>
   <!--/Header-->
 
@@ -238,7 +238,7 @@
         <label>{{resourceService?.frmelmnts?.lbl?.name || 'Name'}}</label>
         <input type="text" 
                formControlName="name" 
-               placeholder="{{resourceService?.frmelmnts?.lbl?.enterFrameworkName || 'Enter framework name'}}"
+               placeholder="{{resourceService?.frmelmnts?.lbl?.enterSkillDomainName || 'Enter skill domain name'}}"
                maxlength="120"
                class="sb-form-control">
         <div *ngIf="hasNameError" 
@@ -247,31 +247,12 @@
         </div>
       </div>
 
-      <!-- Framework Code -->
-      <!-- <div class="field required mt-16">
-        <label>{{resourceService?.frmelmnts?.lbl?.code || 'Code'}} <span class="sb-color-error">*</span></label>
-        <input type="text" 
-               formControlName="code" 
-               placeholder="{{resourceService?.frmelmnts?.lbl?.enterFrameworkCode || 'Enter framework code'}}"
-               maxlength="50"
-               class="sb-form-control">
-        <div *ngIf="frameworkForm.get('code')?.invalid && (frameworkForm.get('code')?.touched || submitted)" 
-             class="sb-color-error fs-0-85 mt-8">
-          <span *ngIf="frameworkForm.get('code')?.errors?.['required']">
-            {{resourceService?.frmelmnts?.lbl?.codeIsRequired || 'Code is required'}}
-          </span>
-          <span *ngIf="frameworkForm.get('code')?.errors?.['pattern']">
-            {{resourceService?.frmelmnts?.lbl?.invalidCodeFormat || 'Code should contain only letters, numbers, and underscores'}}
-          </span>
-        </div>
-      </div> -->
-
       <!-- Framework Description -->
       <div class="field mt-16">
         <label>{{resourceService?.frmelmnts?.lbl?.description || 'Description'}}</label>
         <textarea formControlName="description" 
                   rows="3" 
-                  placeholder="{{resourceService?.frmelmnts?.lbl?.enterFrameworkDescription || 'Enter framework description'}}"
+                  placeholder="{{resourceService?.frmelmnts?.lbl?.enterSkillDomainDescription || 'Enter skill domain description'}}"
                   maxlength="256"
                   class="sb-form-control"></textarea>
       </div>
