@@ -43,7 +43,9 @@ describe('DeleteUserComponent', () => {
         }
     };
     const toasterService: Partial<ToasterService> = {
-        warning: jest.fn()
+        warning: jest.fn(),
+        error: jest.fn(),
+        success: jest.fn()
     };
     const router: Partial<Router> = {
         url: 'test'
@@ -63,6 +65,7 @@ describe('DeleteUserComponent', () => {
         userid: 'sample-uid',
         appId: 'sample-id',
         getServerTimeDiff: '',
+        deleteUser: jest.fn().mockReturnValue(of({ result: { response: 'SUCCESS' } }))
     };
     const activatedRoute: Partial<ActivatedRoute> = {
         queryParams: of({
@@ -105,8 +108,26 @@ describe('DeleteUserComponent', () => {
     };
     const orgDetailsService: Partial<OrgDetailsService> = {
         learnerService: {
-            get: jest.fn().mockReturnValue(of({ result: { response: { value: 'false' } } }))
-        }
+            get: jest.fn().mockReturnValue(of({ result: { response: { value: 'false' } } })),
+            post: jest.fn(),
+            patch: jest.fn(),
+            delete: jest.fn(),
+            baseUrl: '',
+            config: {},
+            http: {} as any,
+            rootOrgId: '',
+            userid: '',
+            appId: '',
+            setBaseUrl: jest.fn(),
+            getUserId: jest.fn(),
+            getServerTimeDiff: '',
+            learnerServiceLocalBaseUrl: '',
+            learnerServiceCloudBaseUrl: '',
+            learnerServiceBaseUrl: '',
+            publicServiceBaseUrl: '',
+            formServiceBaseUrl: '',
+            getHeader: jest.fn()
+        } as any
     };
     const cacheService: Partial<CacheService> = {
         removeAll: jest.fn()
