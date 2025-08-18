@@ -6,7 +6,7 @@ import { takeUntil, map, catchError, switchMap, debounceTime } from 'rxjs/operat
 import * as _ from 'lodash-es';
 import { SkillMapTreeComponent } from '../skill-map-tree/skill-map-tree.component';
 import { ToasterService, ResourceService } from '@sunbird/shared';
-import { ContentService, PermissionService, FrameworkService, PublicDataService } from '@sunbird/core';
+import { ContentService, PermissionService, FrameworkService, PublicDataService, UserService } from '@sunbird/core';
 
 export interface SkillMapNode {
   id: string;
@@ -320,7 +320,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     if (this.skillMapData?.rootNode?.name) {
       return this.skillMapData.rootNode.name;
     }
-    return this.resourceService?.frmelmnts?.lbl?.skillMapEditor || 'Skill Map Editor';
+    return this.resourceService?.frmelmnts?.lbl?.skillMapEditor || 'Skill Domain Editor';
   }
 
   // Save as Draft button should only be disabled based on mode, not validation errors
@@ -349,6 +349,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   }
 
   constructor(
+    public userService: UserService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private cdr: ChangeDetectorRef,
@@ -501,12 +502,12 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   private createNewSkillMap(): void {
     this.frameworkName = '';
     this.skillMapData = {
-      id: 'new-skillmap',
-      name: 'New Skill Map', // Default metadata name
-      description: 'A new skill map',
-      code: 'NEW_SKILLMAP', // Default metadata code
+      id: 'new-skilldomain',
+      name: 'New Skill Domain', // Default metadata name
+      description: 'A new skill domain',
+      code: 'NEW_SKILL_DOMAIN', // Default metadata code
       status: 'Draft',
-      framework: 'NCF',
+      framework: 'FMPS',
       rootNode: {
         id: 'root',
         name: this.resourceService?.frmelmnts?.lbl?.untitled || 'Untitled', // Always "Untitled" for new skill maps
@@ -514,7 +515,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         code: '', // Empty code for user to fill
         children: []
       },
-      createdBy: 'current-user',
+      createdBy: this.userService.userProfile.id,
       createdOn: new Date().toISOString(),
       lastModifiedOn: new Date().toISOString(),
       version: '1.0'
@@ -530,12 +531,12 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       this.frameworkId = frameworkData.code;
     }
     this.skillMapData = {
-      id: 'new-skillmap',
+      id: 'new-skilldomain',
       name: frameworkData.name, // Framework name for metadata
       description: frameworkData.description,
       code: frameworkData.code, // Framework code for metadata
       status: 'Draft',
-      framework: 'NCF',
+      framework: 'FMPS',
       rootNode: {
         id: 'root',
         name: this.resourceService?.frmelmnts?.lbl?.untitled || 'Untitled', // Always "Untitled" for new skill maps
@@ -543,7 +544,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         code: '', // Empty code for user to fill
         children: []
       },
-      createdBy: 'current-user',
+      createdBy: this.userService.userProfile.id,
       createdOn: new Date().toISOString(),
       lastModifiedOn: new Date().toISOString(),
       version: '1.0'
@@ -565,12 +566,12 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
           if (frameworkData) {
             this.processFrameworkApiResponse(frameworkData);
           } else {
-            this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.failedToLoadContent || 'Failed to load skill map data');
+            this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.failedToLoadContent || 'Failed to load skill domain data');
             this.goBack();
           }
         })
         .catch((error) => {
-          this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.failedToLoadContent || 'Failed to load skill map data');
+          this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.failedToLoadContent || 'Failed to load skill domain data');
           this.goBack();
         })
         .finally(() => {
@@ -607,7 +608,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   private processFrameworkApiResponse(frameworkData: any): void {
     try {
       // Store framework name for header
-      this.frameworkName = frameworkData.name || 'Skill Map';
+      this.frameworkName = frameworkData.name || 'Skill Domain';
 
       // Store framework ID for API calls
       if (frameworkData.identifier) {
@@ -637,7 +638,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       this.extractAllCodes(this.skillMapData.rootNode);
 
     } catch (error) {
-      this.toasterService.error('Error processing skill map data');
+      this.toasterService.error('Error processing skill domain data');
     }
   }
 
@@ -1130,82 +1131,6 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     };
   }
 
-  /**
-   * Flatten tree data for easier reading
-   */
-  private flattenTreeData(treeData: any): any[] {
-    const flattened = [];
-
-    const flatten = (nodes: any[], parentPath = '') => {
-      nodes.forEach((node, index) => {
-        const currentPath = parentPath ? `${parentPath}.${index}` : `${index}`;
-        flattened.push({
-          path: currentPath,
-          id: node.id,
-          title: node.title,
-          level: node.level,
-          metadata: node.metadata,
-          hasChildren: node.hasChildren,
-          childrenCount: node.children ? node.children.length : 0
-        });
-
-        if (node.children && node.children.length > 0) {
-          flatten(node.children, currentPath);
-        }
-      });
-    };
-
-    if (treeData.rootNodes) {
-      flatten(treeData.rootNodes);
-    }
-
-    return flattened;
-  }
-
-  /**
-   * Count total nodes in tree
-   */
-  private countNodes(treeData: any): number {
-    let count = 0;
-
-    const countRecursive = (nodes: any[]) => {
-      nodes.forEach(node => {
-        count++;
-        if (node.children && node.children.length > 0) {
-          countRecursive(node.children);
-        }
-      });
-    };
-
-    if (treeData.rootNodes) {
-      countRecursive(treeData.rootNodes);
-    }
-
-    return count;
-  }
-
-  /**
-   * Get maximum depth of tree
-   */
-  private getMaxDepth(treeData: any): number {
-    let maxDepth = 0;
-
-    const getDepth = (nodes: any[], currentDepth = 1) => {
-      nodes.forEach(node => {
-        maxDepth = Math.max(maxDepth, currentDepth);
-        if (node.children && node.children.length > 0) {
-          getDepth(node.children, currentDepth + 1);
-        }
-      });
-    };
-
-    if (treeData.rootNodes) {
-      getDepth(treeData.rootNodes);
-    }
-
-    return maxDepth;
-  }
-
   // Helper method to sync current form values to active node metadata
   private syncFormToActiveNode(): void {
     if (this.selectedNodeData?.data?.metadata) {
@@ -1602,7 +1527,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
 
   public publishSkillMap(): void {
     if (!this.isSkillMapReviewer) {
-      this.toasterService.warning(this.resourceService?.frmelmnts?.lbl?.onlyReviewersCanPublish || 'Only reviewers can publish skill maps');
+      this.toasterService.warning(this.resourceService?.frmelmnts?.lbl?.onlyReviewersCanPublish || 'Only reviewers can publish skill domains');
       return;
     }
     this.isPublishing = true;
@@ -1660,7 +1585,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
 
   public rejectSkillMap(): void {
     if (!this.isSkillMapReviewer) {
-      this.toasterService.warning(this.resourceService?.frmelmnts?.lbl?.onlyReviewersCanReject || 'Only reviewers can reject skill maps');
+      this.toasterService.warning(this.resourceService?.frmelmnts?.lbl?.onlyReviewersCanReject || 'Only reviewers can reject skill domains');
       return;
     }
     this.showRejectModal = true;
@@ -1969,7 +1894,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     } else if (errorDetails.hasMissingFields) {
       return this.resourceService?.frmelmnts?.lbl?.fillRequiredFields || 'Please fill all the required fields';
     } else {
-      return this.resourceService?.frmelmnts?.lbl?.failedToSaveSkillMap || 'Failed to save skill map, Please try again later.';
+      return this.resourceService?.frmelmnts?.lbl?.failedToSaveSkillMap || 'Failed to save skill domain, Please try again later.';
     }
   }
 
@@ -2045,7 +1970,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
 
       this.toasterService.success(
         this.resourceService?.frmelmnts?.lbl?.skillMapSavedDraft ||
-        'Your skill map has been successfully saved as draft.'
+        'Your skill domain has been successfully saved as draft.'
       );
 
     } catch (error) {
@@ -2535,13 +2460,12 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       this.updateLastModified();
       this.isSavingDraft = false;
       this.toasterService.success(
-        'Your skill map has been saved locally as draft. ' +
         (this.resourceService?.frmelmnts?.lbl?.skillMapSavedDraft || '')
       );
 
     } catch (error) {
       this.isSavingDraft = false;
-      this.toasterService.error('Failed to save skill map locally. Please try again.');
+      this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.skillMapSavedDraftFailed || 'Failed to save skill domain locally. Please try again.');
     }
   }
 }
