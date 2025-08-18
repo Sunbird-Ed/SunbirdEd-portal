@@ -68,7 +68,7 @@ export class FormService {
         const key = btoa(formKey);
         if (this.cacheService.getWithExpiry(key)) {
           const cachedData = this.cacheService.getWithExpiry(key);
-          if (cachedData !== null && cachedData !== false) {
+          if (cachedData !== null) {
             return of(cachedData);
           } else {
             if (formInputParams.framework) {
