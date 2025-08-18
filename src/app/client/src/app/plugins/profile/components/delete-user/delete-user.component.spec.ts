@@ -6,14 +6,15 @@
 */
 
 import { Component, EventEmitter, OnInit, Output, ViewChildren } from '@angular/core';
-import { ResourceService, ToasterService, NavigationHelperService, LayoutService, IUserData } from '@sunbird/shared';
+import { ResourceService, ToasterService, NavigationHelperService, LayoutService, IUserData, ConfigService, CacheService } from '@sunbird/shared';
 import { _ } from 'lodash-es';
 import { takeUntil } from 'rxjs/operators';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { UserService } from '@sunbird/core';
+import { UserService, OrgDetailsService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, of } from 'rxjs';
+import { Subject, of, throwError } from 'rxjs';
 import { DeleteUserComponent } from './delete-user.component'
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 describe('DeleteUserComponent', () => {
     let component: DeleteUserComponent;
@@ -90,7 +91,28 @@ describe('DeleteUserComponent', () => {
     };
     const layoutService: Partial<LayoutService> = {
         initlayoutConfig: jest.fn(),
-        redoLayoutCSS: jest.fn()
+        redoLayoutCSS: jest.fn(),
+        switchableLayout: jest.fn(() => of({ layout: 'abcd' }))
+    };
+    const configService: Partial<ConfigService> = {
+        urlConFig: {
+            URLS: {
+                SYSTEM_SETTING: {
+                    VERIFY_OTP_ON_DELETE: 'data/v1/system/settings/get/verifyOtpOnDelete'
+                }
+            }
+        }
+    };
+    const orgDetailsService: Partial<OrgDetailsService> = {
+        learnerService: {
+            get: jest.fn().mockReturnValue(of({ result: { response: { value: 'false' } } }))
+        }
+    };
+    const cacheService: Partial<CacheService> = {
+        removeAll: jest.fn()
+    };
+    const deviceDetectorService: Partial<DeviceDetectorService> = {
+        isMobile: jest.fn().mockReturnValue(false)
     };
 
     beforeAll(() => {
@@ -99,9 +121,13 @@ describe('DeleteUserComponent', () => {
             toasterService as ToasterService,
             router as Router,
             userService as UserService,
+            configService as ConfigService,
+            orgDetailsService as OrgDetailsService,
             activatedRoute as ActivatedRoute,
             navigationhelperService as NavigationHelperService,
-            layoutService as LayoutService
+            layoutService as LayoutService,
+            cacheService as CacheService,
+            deviceDetectorService as DeviceDetectorService
         )
     });
 
@@ -134,8 +160,10 @@ describe('DeleteUserComponent', () => {
         expect(component).toBeTruthy();
         expect(toasterService.warning).toBeCalledWith(resourceService.messages.imsg.m0092);
     });
-    it('should create a instance of component and call the onSubmitForm method with enableSubmitBtn true', () => {
+    it('should create a instance of component and call the onSubmitForm method with enableSubmitBtn true and skipOtpVerification true', () => {
         component.enableSubmitBtn = true;
+        component.skipOtpVerification = true;
+        jest.spyOn(component, 'verificationSuccess');
         component.inputFields = [
             {
                 nativeElement: {
@@ -145,7 +173,22 @@ describe('DeleteUserComponent', () => {
         ]
         component.onSubmitForm();
         expect(component).toBeTruthy();
-        expect(component.showContactPopup).toBeTruthy();
+        expect(component.verificationSuccess).toHaveBeenCalled();
+    });
+    it('should create a instance of component and call the verificationSuccess method', () => {
+        userService.deleteUser = jest.fn().mockReturnValue(of({ result: { response: 'SUCCESS' } }));
+        jest.spyOn(component.cacheService, 'removeAll');
+        component.verificationSuccess();
+        expect(component.cacheService.removeAll).toHaveBeenCalled();
+    });
+    it('should create a instance of component and call the verificationSuccess method with error', () => {
+        userService.deleteUser = jest.fn().mockReturnValue(throwError({ error: 'error occurred' }));
+        component.verificationSuccess();
+        expect(toasterService.error).toHaveBeenCalled();
+    });
+    it('should create a instance of component and call the checkOtpVerificationSetting method', () => {
+        component['checkOtpVerificationSetting']();
+        expect(component.skipOtpVerification).toBe(true);
     });
     it('should create a instance of component and call the validateModal method with inputFields', () => {
         component.conditions.length = 1;
