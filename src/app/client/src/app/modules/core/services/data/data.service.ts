@@ -134,6 +134,20 @@ export class DataService {
       }));
   }
 
+  contentPost(requestParam: RequestParam): Observable<ServerResponse> {
+    const httpOptions: HttpOptions = {
+      headers: requestParam.header ? this.getHeader(requestParam.header) : this.getHeader(),
+      params: requestParam.param
+    };
+    return this.http.post("/content/" + requestParam.url, requestParam.data, httpOptions).pipe(
+      mergeMap((data: ServerResponse) => {
+        if (data.responseCode !== 'OK') {
+          return observableThrowError(data);
+        }
+        return observableOf(data);
+      }));
+  }
+
   /**
    * for making patch api calls
    *

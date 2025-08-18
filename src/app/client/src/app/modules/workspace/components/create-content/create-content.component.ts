@@ -234,7 +234,7 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
       data: requestBody
     };
 
-    this.publicDataService.post(option).subscribe(
+    this.publicDataService.contentPost(option).subscribe(
       (response: any) => {
         if (response && response.result && response.result.node_id) {
           // After framework creation, create the required categories
