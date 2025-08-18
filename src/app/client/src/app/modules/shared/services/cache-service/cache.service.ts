@@ -53,7 +53,8 @@ export class CacheService {
     public getWithExpiry(key: string) {
         try {
             const value = ls.get(key) as string;
-            return value ? JSON.parse(value) : null;
+            const value = ls.get(key);
+            return value ? value : null;
         } catch (e) {
             return false;
         }
