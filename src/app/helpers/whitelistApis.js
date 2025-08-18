@@ -25,7 +25,9 @@ const ROLE = {
   ALL: 'ALL',  // Use when user does not have PUBLIC role (Case: User bulk upload),
   ANONYMOUS: 'ANONYMOUS',
   PROGRAM_MANAGER: "PROGRAM_MANAGER",
-  PROGRAM_DESIGNER: "PROGRAM_DESIGNER"
+  PROGRAM_DESIGNER: "PROGRAM_DESIGNER",
+  SKILLMAP_CREATOR: "SKILLMAP_CREATOR",
+  SKILLMAP_REVIEWER: "SKILLMAP_REVIEWER"
 };
 
 const API_LIST = {
@@ -266,7 +268,8 @@ const API_LIST = {
         ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER,
         ROLE.COURSE_CREATOR,
         ROLE.BOOK_CREATOR, ROLE.BOOK_REVIEWER,
-        ROLE.FLAG_REVIEWER, ROLE.ORG_ADMIN
+        ROLE.FLAG_REVIEWER, ROLE.ORG_ADMIN,
+        ROLE.SKILLMAP_CREATOR, ROLE.SKILLMAP_REVIEWER
       ]
     },
 
@@ -1175,7 +1178,80 @@ const API_LIST = {
         ROLE.COURSE_CREATOR,
         ROLE.BOOK_CREATOR,
         ROLE.CONTENT_REVIEWER,
-        ROLE.BOOK_REVIEWER
+        ROLE.BOOK_REVIEWER,
+        ROLE.SKILLMAP_CREATOR,
+        ROLE.SKILLMAP_REVIEWER
+      ]
+    },
+
+    // Framework v1 service for skill map editor
+    '/content/framework/v1/create': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.SKILLMAP_CREATOR
+      ]
+    },
+    '/content/framework/v1/term/create': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.SKILLMAP_CREATOR
+      ]
+    },
+    '/content/framework/v1/term/update/:termCode': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.SKILLMAP_CREATOR
+      ]
+    },
+    '/content/framework/v1/update/:frameworkId': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.SKILLMAP_CREATOR
+      ]
+    },
+    '/content/framework/v1/publish/:frameworkId': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.SKILLMAP_REVIEWER
+      ]
+    },
+
+    // Framework v3 review/reject service for skill map editor
+    '/content/framework/v3/review/:frameworkId': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.SKILLMAP_REVIEWER
+      ]
+    },
+    '/content/framework/v3/reject/:frameworkId': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.SKILLMAP_REVIEWER
+      ]
+    },
+    '/content/framework/v3/term/retire/:termId': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.SKILLMAP_CREATOR
+      ]
+    },
+    '/content/framework/v3/retire/:frameworkId': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.SKILLMAP_CREATOR
+      ]
+    },
+    '/content/framework/v3/review/:frameworkId': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.SKILLMAP_CREATOR
+      ]
+    },
+    '/content/framework/v3/read': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.SKILLMAP_CREATOR,
+        ROLE.SKILLMAP_REVIEWER,
       ]
     },
 
