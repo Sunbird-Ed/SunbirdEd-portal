@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { UserService } from './../user/user.service';
 import { ConfigService } from '../../../shared/services/config/config.service';
 import { BrowserCacheTtlService } from '../../../shared/services/browser-cache-ttl/browser-cache-ttl.service';
-import {  ServerResponse } from '../../../shared/interfaces/serverResponse';
+import { ServerResponse } from '../../../shared/interfaces/serverResponse';
 import { Observable, of } from 'rxjs';
 import { PublicDataService } from './../public-data/public-data.service';
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
@@ -55,8 +55,8 @@ export class FormService {
               type: formInputParams.formType,
               action: formInputParams.formAction,
               subType: this.configService.appConfig.formApiTypes[formInputParams.contentType]
-              ? this.configService.appConfig.formApiTypes[formInputParams.contentType]
-              : formInputParams.contentType,
+                ? this.configService.appConfig.formApiTypes[formInputParams.contentType]
+                : formInputParams.contentType,
               rootOrgId: hashTagId || rootOrgId || '*',
               component: _.get(formInputParams, 'component'),
               framework: formInputParams.framework || localStorage.getItem('selectedFramework') || '*'
@@ -65,22 +65,22 @@ export class FormService {
         };
         const formKey = `${channelOptions.data.request.type}${channelOptions.data.request.action}
         ${channelOptions.data.request.subType}${channelOptions.data.request.rootOrgId}${formInputParams.framework}`;
-         const key = btoa(formKey);
+        const key = btoa(formKey);
         if (this.cacheService.getWithExpiry(key)) {
-          const data = this.cacheService.getWithExpiry(key);
-        const cachedData = this.cacheService.getWithExpiry(key);
-        if (cachedData !== null && cachedData !== false) {
-          return of(cachedData);
-        } else {
-          if (formInputParams.framework) {
-            channelOptions.data.request.framework = formInputParams.framework;
+          const cachedData = this.cacheService.getWithExpiry(key);
+          if (cachedData !== null && cachedData !== false) {
+            return of(cachedData);
+          } else {
+            if (formInputParams.framework) {
+              channelOptions.data.request.framework = formInputParams.framework;
+            }
+            return this.publicDataService.post(channelOptions).pipe(map(
+              (formConfig: ServerResponse) => {
+                const result = _.get(formConfig.result.form, responseKey)
+                this.setForm(formKey, result);
+                return result;
+              }));
           }
-          return this.publicDataService.post(channelOptions).pipe(map(
-            (formConfig: ServerResponse) => {
-              const result = _.get(formConfig.result.form, responseKey)
-              this.setForm(formKey, result);
-              return result;
-            }));
         }
       })
     )
@@ -91,7 +91,7 @@ export class FormService {
     } else {
       if (this.userService.slug) {
         return this.orgDetailsService.getOrgDetails(this.userService.slug).pipe(
-          map((orgDetails : any) => {
+          map((orgDetails: any) => {
             return orgDetails?.hashTagId || '*'
           }))
       } else {
@@ -103,8 +103,8 @@ export class FormService {
     }
   }
   setForm(formKey, formData) {
-     const key = btoa(formKey);
-     this.cacheService.setWithExpiry(key, formData,
+    const key = btoa(formKey);
+    this.cacheService.setWithExpiry(key, formData,
       this.browserCacheTtlService.browserCacheTtl);
   }
 }
