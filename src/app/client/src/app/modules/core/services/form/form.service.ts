@@ -66,8 +66,8 @@ export class FormService {
         const formKey = `${channelOptions.data.request.type}${channelOptions.data.request.action}
         ${channelOptions.data.request.subType}${channelOptions.data.request.rootOrgId}${formInputParams.framework}`;
          const key = btoa(formKey);
-        if (this.cacheService.get(key)) {
-          const data = this.cacheService.get(key);
+        if (this.cacheService.getWithExpiry(key)) {
+          const data = this.cacheService.getWithExpiry(key);
           return of(data);
         } else {
           if (formInputParams.framework) {
@@ -102,7 +102,7 @@ export class FormService {
   }
   setForm(formKey, formData) {
      const key = btoa(formKey);
-     this.cacheService.set(key, formData,
-      {maxAge: this.browserCacheTtlService.browserCacheTtl});
+     this.cacheService.setWithExpiry(key, formData,
+      this.browserCacheTtlService.browserCacheTtl);
   }
 }
