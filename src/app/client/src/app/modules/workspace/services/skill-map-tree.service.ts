@@ -46,12 +46,12 @@ export class SkillMapTreeService {
    * Code validator for form controls
    */
   codeValidator(control: FormControl): { [key: string]: any } | null {
-    const value = control.value;
+    const value = control?.value;
     if (!value) return null;
 
     const validCodePattern = /^[a-zA-Z0-9_-]+$/;
     if (!validCodePattern.test(value)) {
-      return { 'invalidCode': { value: control.value } };
+      return { 'invalidCode': { value: control?.value } };
     }
     return null;
   }
@@ -79,29 +79,29 @@ export class SkillMapTreeService {
 
     // First pass: collect all terms and organize by category
     for (const category of categories) {
-      if (category.terms && category.terms.length > 0) {
+      if (category?.terms && category.terms.length > 0) {
         // Filter out retired terms
-        const activeTerms = category.terms.filter(term => term.status !== 'Retired');
+        const activeTerms = category.terms.filter(term => term?.status !== 'Retired');
         
         if (activeTerms.length > 0) {
-          termsByCategory.set(category.code, activeTerms);
+          termsByCategory.set(category?.code, activeTerms);
 
           for (const term of activeTerms) {
             // Store term with its category info
-            allTerms.set(term.identifier, {
+            allTerms.set(term?.identifier, {
               ...term,
-              categoryCode: category.code
+              categoryCode: category?.code
             });
 
             // Create node for this term
             const node: SkillMapNode = {
-              id: term.identifier,
-              name: term.name,
-              code: term.code,
-              description: term.description || '',
+              id: term?.identifier,
+              name: term?.name,
+              code: term?.code,
+              description: term?.description || '',
               children: []
             };
-            nodeMap.set(term.identifier, node);
+            nodeMap.set(term?.identifier, node);
           }
         }
       }
@@ -120,7 +120,7 @@ export class SkillMapTreeService {
 
     // Use the first domain term as the root node (for existing frameworks)
     const domainTerm = domainTerms[0];
-    const rootNode = nodeMap.get(domainTerm.identifier);
+    const rootNode = nodeMap.get(domainTerm?.identifier);
 
     if (!rootNode) {
       console.error('Could not find domain node for root');
@@ -144,13 +144,13 @@ export class SkillMapTreeService {
     nodeMap: Map<string, SkillMapNode>,
     allTerms: Map<string, any>
   ): void {
-    const parentTerm = allTerms.get(parentNode.id);
-    if (!parentTerm || !parentTerm.associations) {
+    const parentTerm = allTerms.get(parentNode?.id);
+    if (!parentTerm || !parentTerm?.associations) {
       return;
     }
     for (const association of parentTerm.associations) {
-      const childNode = nodeMap.get(association.identifier);
-      const childTerm = allTerms.get(association.identifier);
+      const childNode = nodeMap.get(association?.identifier);
+      const childTerm = allTerms.get(association?.identifier);
 
       if (childNode && childTerm) {
         if (!this.isAncestorOf(childNode, parentNode)) {
@@ -165,9 +165,9 @@ export class SkillMapTreeService {
    * Check if a node is an ancestor of another node to prevent circular references
    */
   isAncestorOf(potentialAncestor: SkillMapNode, node: SkillMapNode): boolean {
-    if (potentialAncestor.id === node.id) return true;
+    if (potentialAncestor?.id === node?.id) return true;
 
-    for (const child of node.children) {
+    for (const child of node?.children) {
       if (this.isAncestorOf(potentialAncestor, child)) {
         return true;
       }
@@ -197,13 +197,13 @@ export class SkillMapTreeService {
    */
   handleNodeAdded(event: any): any {
     // Set the newly added node data
-    const selectedNodeData = event.data;
+    const selectedNodeData = event?.data;
 
     // Ensure the new node has proper metadata structure
-    if (!selectedNodeData.data) {
+    if (!selectedNodeData?.data) {
       selectedNodeData.data = { metadata: { name: 'Untitled', code: '', description: '' } };
     }
-    if (!selectedNodeData.data.metadata) {
+    if (!selectedNodeData?.data?.metadata) {
       selectedNodeData.data.metadata = { name: 'Untitled', code: '', description: '' };
     }
 
@@ -215,7 +215,7 @@ export class SkillMapTreeService {
    */
   handleNodeDelete(event: any, selectedNodeData: any): any {
     // Check if the deleted node is currently selected
-    if (selectedNodeData && selectedNodeData.data.id === event.data.data.id) {
+    if (selectedNodeData && selectedNodeData?.data?.id === event?.data?.data?.id) {
       return null; // Clear selection
     }
     return selectedNodeData; // Keep current selection
@@ -230,27 +230,27 @@ export class SkillMapTreeService {
 
     // Validation 1: Check if at least one complete path to maxDepth exists
     const hasCompletePathResult = this.validateCompletePathToMaxDepth(maxDepth, skillMapTreeComponent);
-    if (!hasCompletePathResult.isValid) {
+    if (!hasCompletePathResult?.isValid) {
       return {
         isValid: false,
         errorMessage: resourceService?.frmelmnts?.lbl?.someNodesMissingChildren ||  `Some nodes are missing required children. Each node must have at least one child until the maximum depth is reached.`,
-        errorNodes: hasCompletePathResult.incompleteNodes
+        errorNodes: hasCompletePathResult?.incompleteNodes
       };
     }
 
     // Validation 2: Each non-leaf node should have children (except nodes at maxDepth)
     const missingChildrenResult = this.validateNodesHaveChildren(maxDepth, skillMapTreeComponent);
-    if (!missingChildrenResult.isValid) {
-      missingChildrenResult.invalidNodes.forEach(nodeId => {
-        skillMapTreeComponent.highlightNode(nodeId, 'add');
+    if (!missingChildrenResult?.isValid) {
+      missingChildrenResult?.invalidNodes?.forEach(nodeId => {
+        skillMapTreeComponent?.highlightNode(nodeId, 'add');
       });
 
-      skillMapTreeComponent.expandAllNodes();
+      skillMapTreeComponent?.expandAllNodes();
 
       return {
         isValid: false,
         errorMessage: resourceService?.frmelmnts?.lbl?.someNodesMissingChildren ||  'Some nodes are missing required children. Each node must have at least one child until the maximum depth is reached.',
-        errorNodes: missingChildrenResult.invalidNodes
+        errorNodes: missingChildrenResult?.invalidNodes
       };
     }
 
@@ -271,8 +271,8 @@ export class SkillMapTreeService {
     if (!skillMapTreeComponent) {
       return { isValid: false, incompleteNodes: [] };
     }
-    const rootNode = skillMapTreeComponent.getRootNode();
-    if (!rootNode || !rootNode.children || rootNode.children.length === 0) {
+    const rootNode = skillMapTreeComponent?.getRootNode();
+    if (!rootNode || !rootNode?.children || rootNode.children.length === 0) {
       return { isValid: false, incompleteNodes: [] };
     }
 
@@ -298,7 +298,7 @@ export class SkillMapTreeService {
       return true;
     }
 
-    if (!node.children || node.children.length === 0) {
+    if (!node?.children || node.children.length === 0) {
       return false;
     }
 
@@ -317,11 +317,11 @@ export class SkillMapTreeService {
   private findIncompletePathNodes(node: any, currentDepth: number, maxDepth: number): string[] {
     const incompleteNodes: string[] = [];
 
-    if (currentDepth < maxDepth && (!node.children || node.children.length === 0)) {
-      incompleteNodes.push(node.key || node.data?.id || node.id);
+    if (currentDepth < maxDepth && (!node?.children || node.children.length === 0)) {
+      incompleteNodes.push(node?.key || node?.data?.id || node?.id);
     }
 
-    if (node.children && node.children.length > 0) {
+    if (node?.children && node.children.length > 0) {
       for (const child of node.children) {
         const childIncompleteNodes = this.findIncompletePathNodes(child, currentDepth + 1, maxDepth);
         incompleteNodes.push(...childIncompleteNodes);
@@ -336,9 +336,9 @@ export class SkillMapTreeService {
    */
   private validateNodesHaveChildren(maxDepth: number, skillMapTreeComponent: any): { isValid: boolean, invalidNodes: string[] } {
     const invalidNodes: string[] = [];
-    const rootNode = skillMapTreeComponent.getRootNode();
+    const rootNode = skillMapTreeComponent?.getRootNode();
 
-    if (!rootNode || !rootNode.children || rootNode.children.length === 0) {
+    if (!rootNode || !rootNode?.children || rootNode.children.length === 0) {
       return { isValid: false, invalidNodes: [] };
     }
 
@@ -358,11 +358,11 @@ export class SkillMapTreeService {
     if (currentDepth >= maxDepth) {
       return;
     }
-    if (!node.children || node.children.length === 0) {
-      invalidNodes.push(node.key || node.data?.id || node.id);
+    if (!node?.children || node.children.length === 0) {
+      invalidNodes.push(node?.key || node?.data?.id || node?.id);
       return;
     }
-    for (const child of node.children) {
+    for (const child of node?.children) {
       this.checkNodeChildren(child, currentDepth + 1, maxDepth, invalidNodes);
     }
   }
@@ -373,27 +373,27 @@ export class SkillMapTreeService {
   saveNodeChanges(selectedNodeData: any, skillMapData: any, skillMapTreeComponent: any, allCodes: string[]): { isValid: boolean, formErrors: any } {
     let formErrors = { name: '', code: '', description: '' };
     
-    if (selectedNodeData && selectedNodeData.data && selectedNodeData.data.metadata) {
+    if (selectedNodeData && selectedNodeData?.data && selectedNodeData.data.metadata) {
       const metadata = selectedNodeData.data.metadata;
       const validationResult = this.validateNodeData(metadata, allCodes);
       
-      if (validationResult.isValid) {
+      if (validationResult?.isValid) {
         // Only update skillMapData.rootNode.name if this is the actual root node
-        if (selectedNodeData.data.root === true) {
+        if (selectedNodeData?.data?.root === true) {
           if (skillMapData?.rootNode) {
-            skillMapData.rootNode.name = metadata.name || 'Untitled';
+            skillMapData.rootNode.name = metadata?.name || 'Untitled';
           }
         }
 
         // Update the tree node title using the more reliable method
         if (skillMapTreeComponent) {
-          skillMapTreeComponent.updateActiveNodeTitle(metadata.name || '');
+          skillMapTreeComponent?.updateActiveNodeTitle(metadata?.name || '');
         }
 
         this.updateLastModified(skillMapData);
         return { isValid: true, formErrors };
       } else {
-        return { isValid: false, formErrors: validationResult.formErrors };
+        return { isValid: false, formErrors: validationResult?.formErrors };
       }
     }
     
@@ -407,15 +407,15 @@ export class SkillMapTreeService {
     let isValid = true;
     let formErrors = { name: '', code: '', description: '' };
 
-    if (!metadata.name || metadata.name.trim().length === 0) {
+    if (!metadata?.name || metadata.name.trim().length === 0) {
       formErrors.name = 'Name is required';
       isValid = false;
     }
 
-    if (!metadata.code || metadata.code.trim().length === 0) {
+    if (!metadata?.code || metadata.code.trim().length === 0) {
       formErrors.code = 'Code is required';
       isValid = false;
-    } else if (allCodes.filter(code => code === metadata.code).length > 1) {
+    } else if (allCodes?.filter(code => code === metadata.code).length > 1) {
       formErrors.code = 'Code must be unique';
       isValid = false;
     }
@@ -441,7 +441,7 @@ export class SkillMapTreeService {
       if (componentInstance) {
         componentInstance.isSavingDraft = false;
       }
-      toasterService.success(
+      toasterService?.success(
         (resourceService?.frmelmnts?.lbl?.skillMapSavedDraft || '')
       );
 
@@ -449,7 +449,7 @@ export class SkillMapTreeService {
       if (componentInstance) {
         componentInstance.isSavingDraft = false;
       }
-      toasterService.error(resourceService?.frmelmnts?.lbl?.skillMapSavedDraftFailed || 'Failed to save skill domain locally. Please try again.');
+      toasterService?.error(resourceService?.frmelmnts?.lbl?.skillMapSavedDraftFailed || 'Failed to save skill domain locally. Please try again.');
     }
   }
 
@@ -457,21 +457,21 @@ export class SkillMapTreeService {
    * Unique code validator for form controls
    */
   uniqueCodeValidator(control: any, skillMapTreeComponent: any, selectedNodeData: any): { [key: string]: any } | null {
-    const value = control.value;
-    if (!value || !value.trim()) return null;
+    const value = control?.value;
+    if (!value || !value?.trim()) return null;
     if (!skillMapTreeComponent) return null;
-    const activeNode = skillMapTreeComponent.getActiveNode();
-    const currentNodeId = activeNode ? (activeNode.key || activeNode.data.id) : selectedNodeData?.data?.id;
+    const activeNode = skillMapTreeComponent?.getActiveNode();
+    const currentNodeId = activeNode ? (activeNode?.key || activeNode?.data?.id) : selectedNodeData?.data?.id;
     let codeCount = 0;
-    const rootNode = skillMapTreeComponent.getRootNode();
-    if (rootNode && rootNode.children && rootNode.children.length > 0) {
+    const rootNode = skillMapTreeComponent?.getRootNode();
+    if (rootNode && rootNode?.children && rootNode.children.length > 0) {
       const actualRootNode = rootNode.children[0];
       if (actualRootNode) {
         codeCount = this.countCodeOccurrences(actualRootNode, value.trim(), currentNodeId);
       }
     }
     if (codeCount > 0) {
-      return { 'duplicateCode': { value: control.value } };
+      return { 'duplicateCode': { value: control?.value } };
     }
 
     return null;
@@ -482,16 +482,16 @@ export class SkillMapTreeService {
    */
   countCodeOccurrences(treeNode: any, targetCode: string, excludeNodeId?: string): number {
     let count = 0;
-    if (treeNode.data && treeNode.data.metadata && treeNode.data.metadata.code) {
+    if (treeNode?.data && treeNode.data.metadata && treeNode.data.metadata.code) {
       const nodeCode = treeNode.data.metadata.code.trim();
       if (nodeCode === targetCode.trim()) {
-        const currentNodeId = treeNode.key || treeNode.data.id;
+        const currentNodeId = treeNode?.key || treeNode?.data?.id;
         if (!excludeNodeId || currentNodeId !== excludeNodeId) {
           count++;
         }
       }
     }
-    if (treeNode.children && treeNode.children.length > 0) {
+    if (treeNode?.children && treeNode.children.length > 0) {
       for (const child of treeNode.children) {
         count += this.countCodeOccurrences(child, targetCode, excludeNodeId);
       }
@@ -576,19 +576,25 @@ export class SkillMapTreeService {
       // Only reload arrays if we're not currently updating observable data
       if (!isUpdatingObservableData) {
         const metadata = selectedNodeData?.data?.metadata;
-        context.behavioralIndicators.length = 0;
-        context.behavioralIndicators.push(...(metadata?.behavioralIndicators || []));
-        context.measurableOutcomes.length = 0;
-        context.measurableOutcomes.push(...(metadata?.measurableOutcomes || []));
-        context.assessmentCriteria.length = 0;
-        context.assessmentCriteria.push(...(metadata?.assessmentCriteria || []));
+        if (context?.behavioralIndicators) {
+          context.behavioralIndicators.length = 0;
+          context.behavioralIndicators.push(...(metadata?.behavioralIndicators || []));
+        }
+        if (context?.measurableOutcomes) {
+          context.measurableOutcomes.length = 0;
+          context.measurableOutcomes.push(...(metadata?.measurableOutcomes || []));
+        }
+        if (context?.assessmentCriteria) {
+          context.assessmentCriteria.length = 0;
+          context.assessmentCriteria.push(...(metadata?.assessmentCriteria || []));
+        }
       }
       
       // Only reset input controls if they are empty
-      context.resetEmptyObservableInputControls();
+      context?.resetEmptyObservableInputControls();
     } else {
       // Clear arrays if not observableElement
-      context.clearObservableElementData();
+      context?.clearObservableElementData();
     }
   }
 
@@ -622,9 +628,9 @@ export class SkillMapTreeService {
     measurableOutcomesInputControl: any,
     assessmentCriteriaInputControl: any
   ): void {
-    behavioralIndicators.length = 0;
-    measurableOutcomes.length = 0;
-    assessmentCriteria.length = 0;
+    if (behavioralIndicators) behavioralIndicators.length = 0;
+    if (measurableOutcomes) measurableOutcomes.length = 0;
+    if (assessmentCriteria) assessmentCriteria.length = 0;
     behavioralIndicatorsInputControl?.setValue('', { emitEvent: false });
     measurableOutcomesInputControl?.setValue('', { emitEvent: false });
     assessmentCriteriaInputControl?.setValue('', { emitEvent: false });
@@ -669,24 +675,24 @@ export class SkillMapTreeService {
       };
       let response: any;
       if (method === 'POST') {
-        response = await publicDataService.post(option).toPromise();
+        response = await publicDataService?.post(option)?.toPromise();
       } else if (method === 'PUT') {
-        response = await publicDataService.put(option).toPromise();
+        response = await publicDataService?.put(option)?.toPromise();
       } else if (method === 'PATCH') {
-        response = await publicDataService.patch(option).toPromise();
+        response = await publicDataService?.patch(option)?.toPromise();
       } else {
         throw new Error(`Unsupported HTTP method: ${method}`);
       }
       return response;
     } catch (error) {
-      const enhancedError: any = new Error(`API call failed with ${method} ${url}: ${error.message || 'Unknown error'}`);
-      if (error.status) {
+      const enhancedError: any = new Error(`API call failed with ${method} ${url}: ${error?.message || 'Unknown error'}`);
+      if (error?.status) {
         enhancedError.status = error.status;
       }
-      if (error.responseCode) {
+      if (error?.responseCode) {
         enhancedError.responseCode = error.responseCode;
       }
-      if (error.params) {
+      if (error?.params) {
         enhancedError.params = error.params;
       }
 
@@ -698,11 +704,11 @@ export class SkillMapTreeService {
    * Get validation error message based on error analysis
    */
   getValidationErrorMessage(errorNodes: string[], resourceService: any): string {
-    const errorCount = errorNodes.length;
+    const errorCount = errorNodes?.length;
     const errorDetails = this.analyzeValidationErrors(errorNodes, resourceService);
-    if (errorDetails.hasFormErrors) {
+    if (errorDetails?.hasFormErrors) {
       return resourceService?.frmelmnts?.lbl?.invalidInputDetected || 'Invalid input detected. Please review';
-    } else if (errorDetails.hasMissingFields) {
+    } else if (errorDetails?.hasMissingFields) {
       return resourceService?.frmelmnts?.lbl?.fillRequiredFields || 'Please fill all the required fields';
     } else {
       return resourceService?.frmelmnts?.lbl?.failedToSaveSkillMap || 'Failed to save skill domain, Please try again later.';
@@ -730,18 +736,18 @@ export class SkillMapTreeService {
     }
 
     for (const nodeId of errorNodes) {
-      const node = context.skillMapTreeComponent.getNodeById(nodeId);
-      if (!node || !node.data || !node.data.metadata) continue;
+      const node = context?.skillMapTreeComponent?.getNodeById(nodeId);
+      if (!node || !node?.data || !node.data.metadata) continue;
       const metadata = node.data.metadata;
-      const activeNode = context.skillMapTreeComponent.getActiveNode();
-      const isActiveNode = activeNode && activeNode.key === nodeId;
+      const activeNode = context?.skillMapTreeComponent?.getActiveNode();
+      const isActiveNode = activeNode && activeNode?.key === nodeId;
 
-      let nodeName = metadata.name;
-      let nodeCode = metadata.code;
+      let nodeName = metadata?.name;
+      let nodeCode = metadata?.code;
 
-      if (isActiveNode && context.nameFormControl && context.codeFormControl) {
-        nodeName = context.nameFormControl.value || '';
-        nodeCode = context.codeFormControl.value || '';
+      if (isActiveNode && context?.nameFormControl && context?.codeFormControl) {
+        nodeName = context?.nameFormControl?.value || '';
+        nodeCode = context?.codeFormControl?.value || '';
       }
       const hasValidName = nodeName && typeof nodeName === 'string' && nodeName.trim().length > 0;
       const hasValidCode = nodeCode && typeof nodeCode === 'string' && nodeCode.trim().length > 0;
@@ -750,14 +756,14 @@ export class SkillMapTreeService {
         hasMissingFields = true;
       }
 
-      if (hasValidCode && context.skillMapTreeComponent) {
+      if (hasValidCode && context?.skillMapTreeComponent) {
         const trimmedCode = nodeCode.trim();
-        const codeCount = this.countCodeOccurrences(context.skillMapTreeComponent.getRootNode().children[0], trimmedCode, nodeId);
+        const codeCount = this.countCodeOccurrences(context?.skillMapTreeComponent?.getRootNode()?.children?.[0], trimmedCode, nodeId);
         if (codeCount > 0) {
           hasFormErrors = true;
         }
-        if (isActiveNode && context.codeFormControl?.errors) {
-          if (context.codeFormControl.errors['invalidCode'] || context.codeFormControl.errors['duplicateCode']) {
+        if (isActiveNode && context?.codeFormControl?.errors) {
+          if (context?.codeFormControl?.errors?.['invalidCode'] || context?.codeFormControl?.errors?.['duplicateCode']) {
             hasFormErrors = true;
           }
         }
@@ -779,16 +785,16 @@ export class SkillMapTreeService {
   ): void {
     if (selectedNodeData?.data?.metadata) {
       // Update the metadata with current form values
-      selectedNodeData.data.metadata.name = nameFormControl.value || '';
-      selectedNodeData.data.metadata.code = codeFormControl.value || '';
-      selectedNodeData.data.metadata.description = descriptionFormControl.value || '';
+      selectedNodeData.data.metadata.name = nameFormControl?.value || '';
+      selectedNodeData.data.metadata.code = codeFormControl?.value || '';
+      selectedNodeData.data.metadata.description = descriptionFormControl?.value || '';
 
       // Also update the tree node's data directly
       const activeNode = skillMapTreeComponent?.getActiveNode();
-      if (activeNode && activeNode.data && activeNode.data.metadata) {
-        activeNode.data.metadata.name = nameFormControl.value || '';
-        activeNode.data.metadata.code = codeFormControl.value || '';
-        activeNode.data.metadata.description = descriptionFormControl.value || '';
+      if (activeNode && activeNode?.data && activeNode.data.metadata) {
+        activeNode.data.metadata.name = nameFormControl?.value || '';
+        activeNode.data.metadata.code = codeFormControl?.value || '';
+        activeNode.data.metadata.description = descriptionFormControl?.value || '';
       }
     }
   }
@@ -798,7 +804,7 @@ export class SkillMapTreeService {
    */
   generateFrameworkCode(name: string): string {
     // Convert to lowercase, replace spaces and special characters with underscores
-    const code = name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
+    const code = name?.toLowerCase()?.replace(/[^a-z0-9]+/g, '_')?.replace(/^_+|_+$/g, '');
     return code;
   }
 
@@ -810,11 +816,11 @@ export class SkillMapTreeService {
     behavioralIndicators: string[],
     updateCallback: () => void
   ): void {
-    const value = inputControl.value?.trim();
-    if (value && !behavioralIndicators.includes(value)) {
-      behavioralIndicators.push(value);
-      inputControl.setValue('', { emitEvent: false });
-      updateCallback();
+    const value = inputControl?.value?.trim();
+    if (value && !behavioralIndicators?.includes(value)) {
+      behavioralIndicators?.push(value);
+      inputControl?.setValue('', { emitEvent: false });
+      updateCallback?.();
     }
   }
 
@@ -826,8 +832,10 @@ export class SkillMapTreeService {
     behavioralIndicators: string[],
     updateCallback: () => void
   ): void {
-    behavioralIndicators.splice(index, 1);
-    updateCallback();
+    if (index >= 0 && index < behavioralIndicators?.length) {
+      behavioralIndicators?.splice(index, 1);
+      updateCallback?.();
+    }
   }
 
   /**
@@ -838,11 +846,11 @@ export class SkillMapTreeService {
     measurableOutcomes: string[],
     updateCallback: () => void
   ): void {
-    const value = inputControl.value?.trim();
-    if (value && !measurableOutcomes.includes(value)) {
-      measurableOutcomes.push(value);
-      inputControl.setValue('', { emitEvent: false });
-      updateCallback();
+    const value = inputControl?.value?.trim();
+    if (value && !measurableOutcomes?.includes(value)) {
+      measurableOutcomes?.push(value);
+      inputControl?.setValue('', { emitEvent: false });
+      updateCallback?.();
     }
   }
 
@@ -854,8 +862,10 @@ export class SkillMapTreeService {
     measurableOutcomes: string[],
     updateCallback: () => void
   ): void {
-    measurableOutcomes.splice(index, 1);
-    updateCallback();
+    if (index >= 0 && index < measurableOutcomes?.length) {
+      measurableOutcomes?.splice(index, 1);
+      updateCallback?.();
+    }
   }
 
   /**
@@ -866,11 +876,11 @@ export class SkillMapTreeService {
     assessmentCriteria: string[],
     updateCallback: () => void
   ): void {
-    const value = inputControl.value?.trim();
-    if (value && !assessmentCriteria.includes(value)) {
-      assessmentCriteria.push(value);
-      inputControl.setValue('', { emitEvent: false });
-      updateCallback();
+    const value = inputControl?.value?.trim();
+    if (value && !assessmentCriteria?.includes(value)) {
+      assessmentCriteria?.push(value);
+      inputControl?.setValue('', { emitEvent: false });
+      updateCallback?.();
     }
   }
 
@@ -882,8 +892,10 @@ export class SkillMapTreeService {
     assessmentCriteria: string[],
     updateCallback: () => void
   ): void {
-    assessmentCriteria.splice(index, 1);
-    updateCallback();
+    if (index >= 0 && index < assessmentCriteria?.length) {
+      assessmentCriteria?.splice(index, 1);
+      updateCallback?.();
+    }
   }
 
   /**
@@ -897,15 +909,15 @@ export class SkillMapTreeService {
     skillMapData: any,
     setUpdatingFlag: (value: boolean) => void
   ): void {
-    if (selectedNodeData && selectedNodeData.data && selectedNodeData.data.metadata) {
-      setUpdatingFlag(true);
+    if (selectedNodeData?.data?.metadata) {
+      setUpdatingFlag?.(true);
       
-      selectedNodeData.data.metadata.behavioralIndicators = [...behavioralIndicators];
-      selectedNodeData.data.metadata.measurableOutcomes = [...measurableOutcomes];
-      selectedNodeData.data.metadata.assessmentCriteria = [...assessmentCriteria];
-      this.updateLastModified(skillMapData);
+      selectedNodeData.data.metadata.behavioralIndicators = [...(behavioralIndicators || [])];
+      selectedNodeData.data.metadata.measurableOutcomes = [...(measurableOutcomes || [])];
+      selectedNodeData.data.metadata.assessmentCriteria = [...(assessmentCriteria || [])];
+      this.updateLastModified?.(skillMapData);
       setTimeout(() => {
-        setUpdatingFlag(false);
+        setUpdatingFlag?.(false);
       }, 100);
     }
   }
