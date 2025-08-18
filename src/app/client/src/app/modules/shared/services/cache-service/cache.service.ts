@@ -56,7 +56,7 @@ export class CacheService {
             const value = ls.get(key);
             return value ? value : null;
         } catch (e) {
-            return false;
+            return null;
         }
     }
 
