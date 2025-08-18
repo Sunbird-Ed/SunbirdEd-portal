@@ -4,20 +4,9 @@ import { takeUntil } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { v4 as uuidv4 } from 'uuid';
 import { ResourceService } from '@sunbird/shared';
-import { SkillMapNode } from '../skill-map-editor/skill-map-editor.component';
+import { SkillMapNode, SkillMapTreeNode } from '../../services/skill-map-tree.service';
 
 declare var $: any;
-
-export interface SkillMapTreeNode {
-  id: string;
-  title: string;
-  tooltip: string;
-  folder: boolean;
-  children: SkillMapTreeNode[];
-  root: boolean;
-  icon: string | boolean;
-  metadata: any;
-}
 
 @Component({
   selector: 'app-skill-map-tree',

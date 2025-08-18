@@ -118,6 +118,10 @@
                 "copyId": "معرف النسخ"
             },
             "lbl": {
+                "createSkillDomain": "إنشاء مجال المهارات",
+                "enterSkillDomainName": "أدخل اسم مجال المهارات",
+                "enterSkillDomainDescription": "أدخل وصف مجال المهارات",
+                "skillMapSavedDraftFailed": "فشل حفظ مجال المهارات كمسودة.",
                 "submitToContinue": "أرسل للمتابعة.",
                 "totalQuestions": "إجمالي الأسئلة:",
                 "questionsAnswered": "الأسئلة المُجابة:",
@@ -3393,6 +3397,10 @@
         },
         "messages": {
             "stmsg": {
+                "fetchingSkillmapsForReview": "جاري جلب مجالات المهارات للمراجعة ...",
+                "noSkillmapsFoundForReview": "لا توجد مجالات مهارات للمراجعة",
+                "pleaseSubmitSkillmapForReview": "يرجى تقديم مجال المهارات للمراجعة",
+                "skillDomainCreationFailed": "فشل إنشاء مجال المهارات، يرجى المحاولة مرة أخرى لاحقًا",
                 "m0008": "لا توجد نتائج",
                 "m0009": "تعذر التشغيل، حاول مرة أخرى أو قم بالإغلاق.",
                 "m0011": "نحن نجلب مسودة المحتوى ...",

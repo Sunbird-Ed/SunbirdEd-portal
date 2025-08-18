@@ -118,6 +118,10 @@
                 "copyId": "Copier ID"
             },
             "lbl": {
+                "createSkillDomain": "Créer un domaine de compétences",
+                "enterSkillDomainName": "Entrez le nom du domaine de compétences",
+                "enterSkillDomainDescription": "Entrez la description du domaine de compétences",
+                "skillMapSavedDraftFailed": "Échec de l'enregistrement du domaine de compétences en tant que brouillon.",
                 "submitToContinue": "Soumettre pour continuer.",
                 "totalQuestions": "Nombre total de questions :",
                 "questionsAnswered": "Questions répondues :",
@@ -3391,6 +3395,10 @@
         },
         "messages": {
             "stmsg": {
+                "fetchingSkillmapsForReview": "Recherche des domaines de compétence pour révision...",
+                "noSkillmapsFoundForReview": "Aucun domaine de compétence trouvé pour la révision",
+                "pleaseSubmitSkillmapForReview": "Veuillez soumettre le domaine de compétence pour révision",
+                "skillDomainCreationFailed": "La création du domaine de compétence a échoué, veuillez réessayer plus tard",
                 "m0008": "sans résults",
                 "m0009": "Incapable de jouer, veuillez réessayer ou fermer.",
                 "m0011": "Nous allons chercher du contenu de brouillon ...",

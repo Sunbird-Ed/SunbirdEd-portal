@@ -7,28 +7,7 @@ import * as _ from 'lodash-es';
 import { SkillMapTreeComponent } from '../skill-map-tree/skill-map-tree.component';
 import { ToasterService, ResourceService } from '@sunbird/shared';
 import { ContentService, PermissionService, FrameworkService, PublicDataService, UserService } from '@sunbird/core';
-
-export interface SkillMapNode {
-  id: string;
-  name: string;
-  code: string;
-  description?: string;
-  children: SkillMapNode[];
-}
-
-export interface SkillMapData {
-  id: string;
-  name: string;
-  description: string;
-  code: string;
-  status: string;
-  framework: string;
-  rootNode: SkillMapNode;
-  createdBy: string;
-  createdOn: string;
-  lastModifiedOn: string;
-  version: string;
-}
+import { SkillMapTreeService, SkillMapNode, SkillMapData } from '../../services/skill-map-tree.service';
 
 @Component({
   selector: 'app-skill-map-editor',
@@ -76,7 +55,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   public codeFormControl = new FormControl('', {
     validators: [
       Validators.required,
-      this.codeValidator.bind(this),
+      this.skillMapTreeService.codeValidator.bind(this.skillMapTreeService),
       this.uniqueCodeValidator.bind(this)
     ],
     asyncValidators: [this.codeExistsValidator()]
@@ -129,56 +108,8 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   private associationUpdateQueue: any[] = []; // Queue for association update API calls
 
   // Custom validators
-  private codeValidator(control: FormControl): { [key: string]: any } | null {
-    const value = control.value;
-    if (!value) return null;
-
-    const validCodePattern = /^[a-zA-Z0-9_-]+$/;
-    if (!validCodePattern.test(value)) {
-      return { 'invalidCode': { value: control.value } };
-    }
-    return null;
-  }
-
   private uniqueCodeValidator(control: FormControl): { [key: string]: any } | null {
-    const value = control.value;
-    if (!value || !value.trim()) return null;
-    if (!this.skillMapTreeComponent) return null;
-    const activeNode = this.skillMapTreeComponent.getActiveNode();
-    const currentNodeId = activeNode ? (activeNode.key || activeNode.data.id) : this.selectedNodeData?.data?.id;
-    let codeCount = 0;
-    const rootNode = this.skillMapTreeComponent.getRootNode();
-    if (rootNode && rootNode.children && rootNode.children.length > 0) {
-      const actualRootNode = rootNode.children[0];
-      if (actualRootNode) {
-        codeCount = this.countCodeOccurrences(actualRootNode, value.trim(), currentNodeId);
-      }
-    }
-    if (codeCount > 0) {
-      return { 'duplicateCode': { value: control.value } };
-    }
-
-    return null;
-  }
-
-  private countCodeOccurrences(treeNode: any, targetCode: string, excludeNodeId?: string): number {
-    let count = 0;
-    if (treeNode.data && treeNode.data.metadata && treeNode.data.metadata.code) {
-      const nodeCode = treeNode.data.metadata.code.trim();
-      if (nodeCode === targetCode.trim()) {
-        const currentNodeId = treeNode.key || treeNode.data.id;
-        if (!excludeNodeId || currentNodeId !== excludeNodeId) {
-          count++;
-        }
-      }
-    }
-    if (treeNode.children && treeNode.children.length > 0) {
-      for (const child of treeNode.children) {
-        count += this.countCodeOccurrences(child, targetCode, excludeNodeId);
-      }
-    }
-
-    return count;
+    return this.skillMapTreeService.uniqueCodeValidator(control, this.skillMapTreeComponent, this.selectedNodeData);
   }
 
   // Async validator to check code existence via API
@@ -214,7 +145,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
 
     return this.contentService.post(option).pipe(
       switchMap((response: any) => {
-        if (response && response.result && response.result.Term && response.result.Term.length > 0) {
+        if (response?.result?.Term?.length > 0) {
           return this.checkCodeInCurrentFramework(code).pipe(
             map((existsInFramework: boolean) => {
               return !existsInFramework; // Return true to show error only if not in current framework
@@ -224,7 +155,6 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         return of(false); // Code doesn't exist in search, so no error
       }),
       catchError((error) => {
-        console.warn('Error checking code existence:', error);
         return of(false); // Return false on error to not block form
       })
     );
@@ -233,19 +163,18 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   // Method to check if code exists in current framework
   private checkCodeInCurrentFramework(code: string): Observable<boolean> {
     if (!this.frameworkId) {
-      console.warn('Framework ID not available for code validation');
       return of(false);
     }
 
     return this.frameworkService.getFrameworkCategories(this.frameworkId, "edit").pipe(
       map((response: any) => {
-        if (response && response.responseCode === 'OK' && response.result && response.result.framework) {
+        if (response?.responseCode === 'OK' && response?.result?.framework) {
           const framework = response.result.framework;
-          if (framework.categories && framework.categories.length > 0) {
+          if (framework?.categories?.length > 0) {
             for (const category of framework.categories) {
-              if (category.terms && category.terms.length > 0) {
+              if (category?.terms?.length > 0) {
                 for (const term of category.terms) {
-                  if (term.code === code) {
+                  if (term?.code === code) {
                     return true; // Code found in current framework
                   }
                 }
@@ -256,7 +185,6 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         return false; // Code not found in current framework
       }),
       catchError((error) => {
-        console.warn('Error checking code in current framework:', error);
         return of(false); // Return false on error
       })
     );
@@ -270,7 +198,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     this.nameFormControl.setValue(value);
     if (this.selectedNodeData?.data?.metadata) {
       this.selectedNodeData.data.metadata.name = value;
-      if (this.selectedNodeData.data.root === true) {
+      if (this.selectedNodeData?.data?.root === true) {
         if (this.skillMapData?.rootNode) {
           this.skillMapData.rootNode.name = value || this.resourceService?.frmelmnts?.lbl?.untitled || 'Untitled';
         }
@@ -313,7 +241,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
 
   // Get the skill map name for the header - use framework name or fallback
   get skillMapName(): string {
-    if (this.frameworkName && this.frameworkName.trim()) {
+    if (this.frameworkName?.trim()) {
       return this.frameworkName;
     }
     // If no framework name, use the root node name (which is now the domain term)
@@ -330,12 +258,12 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
 
   // Edit Framework Modal validation getter
   get hasEditNameError(): boolean {
-    return this.editFormSubmitted && (!this.editFrameworkForm.name || !this.editFrameworkForm.name.trim());
+    return this.editFormSubmitted && (!this.editFrameworkForm?.name || !this.editFrameworkForm.name.trim());
   }
 
   // Check if current selected node is an observableElement (end node)
   get isObservableElement(): boolean {
-    if (!this.selectedNodeData || !this.selectedNodeData.getLevel) {
+    if (!this.selectedNodeData?.getLevel) {
       return false;
     }
     // ObservableElement is at level 4 (domain=1, skill=2, subskill=3, observableElement=4)
@@ -358,7 +286,8 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     private permissionService: PermissionService,
     private frameworkService: FrameworkService,
     private contentService: ContentService,
-    private publicDataService: PublicDataService
+    private publicDataService: PublicDataService,
+    private skillMapTreeService: SkillMapTreeService
   ) {
     this.isSkillMapCreator = this.permissionService.checkRolesPermissions(['SKILLMAP_CREATOR']);
     this.isSkillMapReviewer = this.permissionService.checkRolesPermissions(['SKILLMAP_REVIEWER']);
@@ -405,7 +334,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     this.nameFormControl.valueChanges.subscribe(value => {
       if (this.selectedNodeData?.data?.metadata) {
         this.selectedNodeData.data.metadata.name = value || '';
-        if (this.selectedNodeData.data.root === true) {
+        if (this.selectedNodeData?.data?.root === true) {
           if (this.skillMapData?.rootNode) {
             this.skillMapData.rootNode.name = value || this.resourceService?.frmelmnts?.lbl?.untitled || 'Untitled';
           }
@@ -420,7 +349,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     this.codeFormControl.valueChanges.subscribe(value => {
       if (this.selectedNodeData?.data?.metadata) {
         this.selectedNodeData.data.metadata.code = value || '';
-        if (this.selectedNodeData.data.root === true && this.skillMapData?.rootNode) {
+        if (this.selectedNodeData?.data?.root === true && this.skillMapData?.rootNode) {
           this.skillMapData.rootNode.code = value || '';
         }
         setTimeout(() => {
@@ -433,7 +362,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     this.descriptionFormControl.valueChanges.subscribe(value => {
       if (this.selectedNodeData?.data?.metadata) {
         this.selectedNodeData.data.metadata.description = value || '';
-        if (this.selectedNodeData.data.root === true && this.skillMapData?.rootNode) {
+        if (this.selectedNodeData?.data?.root === true && this.skillMapData?.rootNode) {
           this.skillMapData.rootNode.description = value || '';
         }
         this.cdr.detectChanges();
@@ -470,12 +399,12 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
 
   // New method to handle metadata updates from meta-form component
   public onMetadataUpdate(event: any): void {
-    if (event.action === 'save') {
+    if (event?.action === 'save') {
       this.saveNodeChanges();
-    } else if (event.field && event.value !== undefined) {
+    } else if (event?.field && event?.value !== undefined) {
       if (this.selectedNodeData?.data?.metadata) {
         this.selectedNodeData.data.metadata[event.field] = event.value;
-        if (event.field === 'name' && this.selectedNodeData.data.root === true) {
+        if (event.field === 'name' && this.selectedNodeData?.data?.root === true) {
           if (this.skillMapData?.rootNode) {
             this.skillMapData.rootNode.name = event.value || this.resourceService?.frmelmnts?.lbl?.untitled || 'Untitled';
           }
@@ -589,7 +518,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     return new Promise((resolve, reject) => {
       this.frameworkService.getFrameworkCategories(frameworkId, "edit").subscribe(
         (response: any) => {
-          if (response && response.responseCode === 'OK' && response.result && response.result.framework) {
+          if (response?.responseCode === 'OK' && response?.result?.framework) {
             resolve(response.result.framework);
           } else {
             reject(new Error('Invalid API response'));
@@ -608,262 +537,63 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   private processFrameworkApiResponse(frameworkData: any): void {
     try {
       // Store framework name for header
-      this.frameworkName = frameworkData.name || 'Skill Domain';
+      this.frameworkName = frameworkData?.name || 'Skill Domain';
 
       // Store framework ID for API calls
-      if (frameworkData.identifier) {
+      if (frameworkData?.identifier) {
         this.frameworkId = frameworkData.identifier;
       }
 
       // Process categories and terms to build tree structure
-      const rootNode = this.buildTreeFromCategories(frameworkData.categories || []);
+      const rootNode = this.skillMapTreeService.buildTreeFromCategories(frameworkData?.categories || [], this.resourceService);
 
       // Create skill map data structure
       // Note: The rootNode is now the domain term, not a framework-level root
       this.skillMapData = {
-        id: frameworkData.identifier || frameworkData.code || '',
-        name: frameworkData.name || '',
-        description: frameworkData.description || '',
-        code: frameworkData.code || '',
-        status: frameworkData.status || 'Draft',
-        framework: frameworkData.identifier || '',
+        id: frameworkData?.identifier || frameworkData?.code || '',
+        name: frameworkData?.name || '',
+        description: frameworkData?.description || '',
+        code: frameworkData?.code || '',
+        status: frameworkData?.status || 'Draft',
+        framework: frameworkData?.identifier || '',
         rootNode: rootNode,
-        createdBy: frameworkData.createdBy || '',
-        createdOn: frameworkData.createdOn || new Date().toISOString(),
-        lastModifiedOn: frameworkData.lastUpdatedOn || new Date().toISOString(),
-        version: frameworkData.versionKey || '1.0'
+        createdBy: frameworkData?.createdBy || '',
+        createdOn: frameworkData?.createdOn || new Date().toISOString(),
+        lastModifiedOn: frameworkData?.lastUpdatedOn || new Date().toISOString(),
+        version: frameworkData?.versionKey || '1.0'
       };
 
       // Extract all codes for validation
-      this.extractAllCodes(this.skillMapData.rootNode);
+      this.extractAllCodes(this.skillMapData?.rootNode);
 
     } catch (error) {
       this.toasterService.error('Error processing skill domain data');
     }
   }
 
-  /**
-   * Build tree structure from framework categories
-   * This is used when loading existing frameworks from API
-   */
-  private buildTreeFromCategories(categories: any[]): SkillMapNode {
-    // If no categories, return empty root with "Untitled" (for new skill maps)
-    if (!categories || categories.length === 0) {
-      return {
-        id: 'root',
-        name: this.resourceService?.frmelmnts?.lbl?.untitled || 'Untitled',
-        code: '',
-        description: '',
-        children: []
-      };
-    }
-
-    // Create maps to organize terms
-    const nodeMap = new Map<string, SkillMapNode>();
-    const termsByCategory = new Map<string, any[]>();
-    const allTerms = new Map<string, any>();
-
-    // First pass: collect all terms and organize by category
-    for (const category of categories) {
-      if (category.terms && category.terms.length > 0) {
-        // Filter out retired terms
-        const activeTerms = category.terms.filter(term => term.status !== 'Retired');
-        
-        if (activeTerms.length > 0) {
-          termsByCategory.set(category.code, activeTerms);
-
-          for (const term of activeTerms) {
-            // Store term with its category info
-            allTerms.set(term.identifier, {
-              ...term,
-              categoryCode: category.code
-            });
-
-            // Create node for this term
-            const node: SkillMapNode = {
-              id: term.identifier,
-              name: term.name,
-              code: term.code,
-              description: term.description || '',
-              children: []
-            };
-            nodeMap.set(term.identifier, node);
-          }
-        }
-      }
-    }
-    // Find the domain term that should be the root for existing frameworks
-    const domainTerms = termsByCategory.get('domain') || [];
-    if (domainTerms.length === 0) {
-      return {
-        id: 'root',
-        name: this.resourceService?.frmelmnts?.lbl?.untitled || 'Untitled',
-        code: '',
-        description: '',
-        children: []
-      };
-    }
-
-    // Use the first domain term as the root node (for existing frameworks)
-    const domainTerm = domainTerms[0];
-    const rootNode = nodeMap.get(domainTerm.identifier);
-
-    if (!rootNode) {
-      console.error('Could not find domain node for root');
-      return {
-        id: 'root',
-        name: this.resourceService?.frmelmnts?.lbl?.untitled || 'Untitled',
-        code: '',
-        description: '',
-        children: []
-      };
-    }
-    this.buildChildrenFromAssociations(rootNode, nodeMap, allTerms);
-    return rootNode;
-  }
-
-  /**
-   * Recursively build children from associations
-   */
-  private buildChildrenFromAssociations(
-    parentNode: SkillMapNode,
-    nodeMap: Map<string, SkillMapNode>,
-    allTerms: Map<string, any>
-  ): void {
-    const parentTerm = allTerms.get(parentNode.id);
-    if (!parentTerm || !parentTerm.associations) {
-      return;
-    }
-    for (const association of parentTerm.associations) {
-      const childNode = nodeMap.get(association.identifier);
-      const childTerm = allTerms.get(association.identifier);
-
-      if (childNode && childTerm) {
-        if (!this.isAncestorOf(childNode, parentNode)) {
-          parentNode.children.push(childNode);
-          this.buildChildrenFromAssociations(childNode, nodeMap, allTerms);
-        }
-      }
-    }
-  }
-
-  /**
-   * Check if a node is an ancestor of another node to prevent circular references
-   */
-  private isAncestorOf(potentialAncestor: SkillMapNode, node: SkillMapNode): boolean {
-    if (potentialAncestor.id === node.id) return true;
-
-    for (const child of node.children) {
-      if (this.isAncestorOf(potentialAncestor, child)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   private extractAllCodes(node: SkillMapNode): void {
     // Only add non-empty codes to the array
-    if (node.code && node.code.trim().length > 0) {
+    if (node?.code && node.code.trim().length > 0) {
       this.allCodes.push(node.code);
     }
-    if (node.children) {
+    if (node?.children) {
       node.children.forEach(child => this.extractAllCodes(child));
     }
   }
 
   // Tree event handler - main interaction with tree component
   public onTreeEvent(event: any): void {    
-    switch (event.type) {
+    switch (event?.type) {
       case 'nodeSelect':
       case 'nodeActivate':
-        this.selectedNodeData = event.data || this.getDefaultNodeData();
-
-        // DON'T overwrite existing metadata - just ensure structure exists
-        if (!this.selectedNodeData.data) {
-          this.selectedNodeData.data = { metadata: { name: '', code: '', description: '' } };
-        }
-        if (!this.selectedNodeData.data.metadata) {
-          this.selectedNodeData.data.metadata = { name: '', code: '', description: '' };
-        }
-
-        // Only initialize missing fields, don't overwrite existing ones
-        if (this.selectedNodeData.data.metadata.name === undefined) {
-          this.selectedNodeData.data.metadata.name = '';
-        }
-        if (this.selectedNodeData.data.metadata.code === undefined) {
-          this.selectedNodeData.data.metadata.code = '';
-        }
-        if (this.selectedNodeData.data.metadata.description === undefined) {
-          this.selectedNodeData.data.metadata.description = '';
-        }
-
-        // ONLY for the actual root node, sync with skillMapData.rootNode if needed
-        if (this.selectedNodeData.data.root === true && this.skillMapData?.rootNode) {
-          // Only sync if the tree node data is empty/undefined
-          if (!this.selectedNodeData.data.metadata.name) {
-            this.selectedNodeData.data.metadata.name = this.skillMapData.rootNode.name || '';
-          }
-          if (!this.selectedNodeData.data.metadata.code) {
-            this.selectedNodeData.data.metadata.code = this.skillMapData.rootNode.code || '';
-          }
-          if (!this.selectedNodeData.data.metadata.description) {
-            this.selectedNodeData.data.metadata.description = this.skillMapData.rootNode.description || '';
-          }
-        }
-
-        // Sync form controls with the existing node data (don't modify the node data)
-        this.nameFormControl.setValue(this.selectedNodeData.data.metadata.name || '', { emitEvent: false });
-        this.codeFormControl.setValue(this.selectedNodeData.data.metadata.code || '', { emitEvent: false });
-        this.descriptionFormControl.setValue(this.selectedNodeData.data.metadata.description || '', { emitEvent: false });
-
-        // Load observableElement specific data if this is level 4 node
-        if (this.isObservableElement) {
-          // Only reload arrays if we're not currently updating observable data
-          if (!this.isUpdatingObservableData) {
-            this.behavioralIndicators = this.selectedNodeData.data.metadata.behavioralIndicators || [];
-            this.measurableOutcomes = this.selectedNodeData.data.metadata.measurableOutcomes || [];
-            this.assessmentCriteria = this.selectedNodeData.data.metadata.assessmentCriteria || [];
-          }
-          
-          // Only reset input controls if they are empty
-          if (!this.behavioralIndicatorsInputControl.value) {
-            this.behavioralIndicatorsInputControl.setValue('', { emitEvent: false });
-          }
-          if (!this.measurableOutcomesInputControl.value) {
-            this.measurableOutcomesInputControl.setValue('', { emitEvent: false });
-          }
-          if (!this.assessmentCriteriaInputControl.value) {
-            this.assessmentCriteriaInputControl.setValue('', { emitEvent: false });
-          }
-        } else {
-          // Clear arrays if not observableElement
-          this.behavioralIndicators = [];
-          this.measurableOutcomes = [];
-          this.assessmentCriteria = [];
-          this.behavioralIndicatorsInputControl.setValue('', { emitEvent: false });
-          this.measurableOutcomesInputControl.setValue('', { emitEvent: false });
-          this.assessmentCriteriaInputControl.setValue('', { emitEvent: false });
-        }
-
-        // Reset touched state for form controls unless global validation is triggered
-        if (!this.showValidationErrors) {
-          this.nameFormControl.markAsUntouched();
-          this.codeFormControl.markAsUntouched();
-          this.descriptionFormControl.markAsUntouched();
-        }
-
-        // Trigger validation updates for unique code checking with a small delay
-        setTimeout(() => {
-          this.refreshCodeValidation();
-          this.cdr.detectChanges();
-        }, 100);
+        this.handleNodeSelection(event);
         break;
       case 'nodeAdded':
         this.handleNodeAdded(event);
         break;
       case 'deleteRequest':
         // Handle delete request from tree component
-        this.deleteNode(event.data);
+        this.deleteNode(event?.data);
         break;
       case 'nodeDelete':
         // Handle actual node deletion (after API call)
@@ -872,22 +602,68 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getDefaultNodeData(): any {
-    return {
-      data: {
-        metadata: {
-          name: '',
-          code: '',
-          description: ''
-        }
-      },
-      getLevel: () => 0,
-      children: []
-    };
+  /**
+   * Handle node selection/activation events
+   */
+  private handleNodeSelection(event: any): void {
+    this.selectedNodeData = event?.data || this.skillMapTreeService.getDefaultNodeData();
+
+    // Ensure metadata structure exists safely
+    this.skillMapTreeService.ensureNodeMetadataStructure(this.selectedNodeData);
+    
+    // Sync root node data if needed
+    this.skillMapTreeService.syncRootNodeData(this.selectedNodeData, this.skillMapData);
+    
+    // Update form controls with node data
+    this.skillMapTreeService.updateFormControlsFromNodeData(
+      this.selectedNodeData, 
+      this.nameFormControl, 
+      this.codeFormControl, 
+      this.descriptionFormControl
+    );
+    
+    // Handle observable element specific data
+    this.skillMapTreeService.handleObservableElementData(
+      this.isObservableElement,
+      this.isUpdatingObservableData,
+      this.selectedNodeData,
+      {
+        behavioralIndicators: this.behavioralIndicators,
+        measurableOutcomes: this.measurableOutcomes,
+        assessmentCriteria: this.assessmentCriteria,
+        resetEmptyObservableInputControls: () => this.skillMapTreeService.resetEmptyObservableInputControls(
+          this.behavioralIndicatorsInputControl,
+          this.measurableOutcomesInputControl,
+          this.assessmentCriteriaInputControl
+        ),
+        clearObservableElementData: () => this.skillMapTreeService.clearObservableElementData(
+          this.behavioralIndicators,
+          this.measurableOutcomes,
+          this.assessmentCriteria,
+          this.behavioralIndicatorsInputControl,
+          this.measurableOutcomesInputControl,
+          this.assessmentCriteriaInputControl
+        )
+      }
+    );
+    
+    // Reset form validation state
+    this.skillMapTreeService.resetFormValidationState(
+      this.showValidationErrors,
+      this.nameFormControl,
+      this.codeFormControl,
+      this.descriptionFormControl
+    );
+    
+    // Trigger validation updates with delay
+    this.skillMapTreeService.scheduleValidationUpdate(
+      () => this.refreshCodeValidation(),
+      this.cdr
+    );
   }
 
   public deleteNode(node: any): void {
-    if (node && node.getLevel() > 0) {
+    if (node && node?.getLevel() > 0) {
       // Show loading state
       this.isDeletingTerm = true;
       
@@ -903,13 +679,11 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         this.refreshTreeData().then(() => {
           this.isDeletingTerm = false;
         }).catch(error => {
-          console.error('Error refreshing tree data:', error);
           this.isDeletingTerm = false;
         });
       }).catch(error => {
-        console.error('Error retiring term:', error);
         this.isDeletingTerm = false;
-        this.toasterService.error(this.resourceService.messages.emsg.failedToDeleteTerm || 'Failed to delete. Please try again.');
+        this.toasterService.error(this.resourceService?.messages?.emsg?.failedToDeleteTerm || 'Failed to delete. Please try again.');
       });
     }
   }
@@ -917,21 +691,13 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   private handleNodeAdded(event: any): void {
     this.updateSkillMapFromTree();
 
-    // Set the newly added node as selected
-    this.selectedNodeData = event.data;
-
-    // Ensure the new node has proper metadata structure
-    if (!this.selectedNodeData.data) {
-      this.selectedNodeData.data = { metadata: { name: 'Untitled', code: '', description: '' } };
-    }
-    if (!this.selectedNodeData.data.metadata) {
-      this.selectedNodeData.data.metadata = { name: 'Untitled', code: '', description: '' };
-    }
+    // Use service to handle the core node data preparation
+    this.selectedNodeData = this.skillMapTreeService.handleNodeAdded(event);
 
     // Sync form controls with the new node's initial data
-    this.nameFormControl.setValue(this.selectedNodeData.data.metadata.name || 'Untitled', { emitEvent: false });
-    this.codeFormControl.setValue(this.selectedNodeData.data.metadata.code || '', { emitEvent: false });
-    this.descriptionFormControl.setValue(this.selectedNodeData.data.metadata.description || '', { emitEvent: false });
+    this.nameFormControl.setValue(this.selectedNodeData?.data?.metadata?.name || 'Untitled', { emitEvent: false });
+    this.codeFormControl.setValue(this.selectedNodeData?.data?.metadata?.code || '', { emitEvent: false });
+    this.descriptionFormControl.setValue(this.selectedNodeData?.data?.metadata?.description || '', { emitEvent: false });
 
     // Trigger validation updates for unique code checking with a small delay
     setTimeout(() => {
@@ -942,9 +708,10 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
 
   private handleNodeDelete(event: any): void {
     this.updateSkillMapFromTree();
-    if (this.selectedNodeData && this.selectedNodeData.data.id === event.data.data.id) {
-      this.selectedNodeData = null;
-    }
+    
+    // Use service to handle the core node selection logic
+    this.selectedNodeData = this.skillMapTreeService.handleNodeDelete(event, this.selectedNodeData);
+    
     // Trigger change detection to update Save as Draft button state
     this.cdr.detectChanges();
   }
@@ -955,7 +722,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     if (this.skillMapData?.rootNode) {
       this.extractAllCodes(this.skillMapData.rootNode);
     }
-    this.updateLastModified();
+    this.skillMapTreeService.updateLastModified(this.skillMapData);
     // Trigger change detection for Save as Draft validation
     this.cdr.detectChanges();
   }
@@ -965,54 +732,20 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   }
 
   public saveNodeChanges(): void {
-    if (this.selectedNodeData && this.selectedNodeData.data && this.selectedNodeData.data.metadata) {
-      const metadata = this.selectedNodeData.data.metadata;
-      if (this.validateNodeData(metadata)) {
-        // Only update skillMapData.rootNode.name if this is the actual root node
-        if (this.selectedNodeData.data.root === true) {
-          if (this.skillMapData?.rootNode) {
-            this.skillMapData.rootNode.name = metadata.name || 'Untitled';
-          }
-        }
-
-        // Update the tree node title using the more reliable method
-        if (this.skillMapTreeComponent) {
-          this.skillMapTreeComponent.updateActiveNodeTitle(metadata.name || '');
-        }
-
-        this.updateLastModified();
-      }
+    const result = this.skillMapTreeService.saveNodeChanges(
+      this.selectedNodeData, 
+      this.skillMapData, 
+      this.skillMapTreeComponent, 
+      this.allCodes
+    );
+    
+    if (!result.isValid) {
+      this.formErrors = result.formErrors;
     }
-  }
-
-  private validateNodeData(metadata: any): boolean {
-    let isValid = true;
-    this.formErrors = { name: '', code: '', description: '' };
-
-    if (!metadata.name || metadata.name.trim().length === 0) {
-      this.formErrors.name = 'Name is required';
-      isValid = false;
-    }
-
-    if (!metadata.code || metadata.code.trim().length === 0) {
-      this.formErrors.code = 'Code is required';
-      isValid = false;
-    } else if (this.allCodes.filter(code => code === metadata.code).length > 1) {
-      this.formErrors.code = 'Code must be unique';
-      isValid = false;
-    }
-
-    return isValid;
   }
 
   public saveDraft(isReview?: boolean): void {
-    // Check for code validation errors first
-    if (this.codeFormControl.pending) {
-      this.toasterService.warning(this.resourceService?.frmelmnts?.lbl?.codeValidationInProgress || 'Code validation in progress. Please wait.');
-      return;
-    }
-    
-    if (this.codeFormControl.hasError('codeExists')) {
+    if (this.codeFormControl?.hasError('codeExists')) {
       this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.codeAlreadyExists || 'Code already exists. Please use a different code.');
       return;
     }
@@ -1020,14 +753,17 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     // Set loading state
     this.isSavingDraft = true;
 
-    // Get and log the tree data first
-    this.getAndLogTreeData();
-
     // Set flag to show validation errors even without user interaction
     this.showValidationErrors = true;
 
     // First, ensure current form values are synced to the active node's metadata
-    this.syncFormToActiveNode();
+    this.skillMapTreeService.syncFormToActiveNode(
+      this.selectedNodeData,
+      this.nameFormControl,
+      this.codeFormControl,
+      this.descriptionFormControl,
+      this.skillMapTreeComponent
+    );
 
     // Trigger form validation for all nodes to show mat-error messages
     this.triggerValidationForAllNodes();
@@ -1036,29 +772,28 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       // Validate all nodes and highlight those with errors - ONLY when saving
       if (this.skillMapTreeComponent) {
-        const validationResult = this.skillMapTreeComponent.validateAndHighlightNodes((nodeId: string) => {
+        const validationResult = this.skillMapTreeComponent?.validateAndHighlightNodes((nodeId: string) => {
           return this.validateNodeById(nodeId);
         });
 
-        if (validationResult.hasErrors) {
+        if (validationResult?.hasErrors) {
           // Reset loading state on validation error
           this.isSavingDraft = false;
 
           // Expand all tree nodes so user can see which nodes have validation errors
-          this.skillMapTreeComponent.expandAllNodes();
+          this.skillMapTreeComponent?.expandAllNodes();
 
           // Determine the type of validation errors and show appropriate message
-          const errorMessage = this.getValidationErrorMessage(validationResult.errorNodes);
+          const errorMessage = this.skillMapTreeService.getValidationErrorMessage(validationResult?.errorNodes, this.resourceService);
 
           this.toasterService.error(errorMessage);
           return; // Don't save if there are validation errors
         } else {
           // All validations passed, clear any highlights and save
-          this.skillMapTreeComponent.clearAllHighlights();
+          this.skillMapTreeComponent?.clearAllHighlights();
           // Reset validation flag since everything is valid
           this.showValidationErrors = false;
           this.createTermsAndAssociations().catch(error => {
-            console.error('Error in createTermsAndAssociations:', error);
             // Reset loading state on error
             this.isSavingDraft = false;
           });
@@ -1073,92 +808,18 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     }, 100);
   }
 
-  /**
-   * Method to get and log the complete tree data
-   */
-  private getAndLogTreeData(): void {
-    try {
-      if (this.skillMapTreeComponent) {
-        const tree = this.skillMapTreeComponent.getTree();
-        if (tree) {
-          // Get the complete tree data including all nodes and their metadata
-          const completeTreeData = this.extractCompleteTreeData(tree);;
-          return completeTreeData;
-        }
-      }
-      console.warn('Tree component or tree not available for data extraction');
-    } catch (error) {
-      console.error('Error getting tree data:', error);
-    }
-  }
 
-  /**
-   * Extract complete tree data from FancyTree
-   */
-  private extractCompleteTreeData(tree: any): any {
-    const extractNodeData = (node: any) => {
-      const nodeData = {
-        id: node.key || node.data?.metadata?.identifier,
-        title: node.title,
-        expanded: node.isExpanded(),
-        selected: node.isSelected(),
-        active: node.isActive(),
-        hasChildren: node.hasChildren(),
-        level: node.getLevel(),
-        metadata: node.data?.metadata || {},
-        children: []
-      };
-
-      // Recursively extract child data
-      if (node.hasChildren() && node.children) {
-        nodeData.children = node.children.map(child => extractNodeData(child));
-      }
-
-      return nodeData;
-    };
-
-    // Start from root and extract all data
-    const rootChildren = tree.getRootNode().children || [];
-    return {
-      framework: {
-        name: this.skillMapData?.name || this.frameworkName,
-        code: this.skillMapData?.code,
-        description: this.skillMapData?.description,
-        status: this.skillMapData?.status
-      },
-      rootNodes: rootChildren.map(node => extractNodeData(node)),
-      extractedAt: new Date().toISOString()
-    };
-  }
-
-  // Helper method to sync current form values to active node metadata
-  private syncFormToActiveNode(): void {
-    if (this.selectedNodeData?.data?.metadata) {
-      // Update the metadata with current form values
-      this.selectedNodeData.data.metadata.name = this.nameFormControl.value || '';
-      this.selectedNodeData.data.metadata.code = this.codeFormControl.value || '';
-      this.selectedNodeData.data.metadata.description = this.descriptionFormControl.value || '';
-
-      // Also update the tree node's data directly
-      const activeNode = this.skillMapTreeComponent?.getActiveNode();
-      if (activeNode && activeNode.data && activeNode.data.metadata) {
-        activeNode.data.metadata.name = this.nameFormControl.value || '';
-        activeNode.data.metadata.code = this.codeFormControl.value || '';
-        activeNode.data.metadata.description = this.descriptionFormControl.value || '';
-      }
-    }
-  }
 
   // Method to trigger validation for all nodes and show mat-error messages
   private triggerValidationForAllNodes(): void {
     if (!this.skillMapTreeComponent) return;
 
     try {
-      const tree = this.skillMapTreeComponent.getTree();
+      const tree = this.skillMapTreeComponent?.getTree();
       if (tree) {
         // Visit all nodes in the tree
         tree.visit((node) => {
-          if (node.data && node.data.metadata) {
+          if (node?.data && node.data.metadata) {
             // For each node, create temporary form controls to trigger validation
             this.validateNodeFormControls(node);
           }
@@ -1171,40 +832,40 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
 
   // Method to validate form controls for a specific node
   private validateNodeFormControls(node: any): void {
-    if (!node.data || !node.data.metadata) return;
+    if (!node?.data || !node.data.metadata) return;
 
     const metadata = node.data.metadata;
     const nodeId = node.key;
 
     // Check if this is the currently active node
     const activeNode = this.skillMapTreeComponent?.getActiveNode();
-    const isActiveNode = activeNode && activeNode.key === nodeId;
+    const isActiveNode = activeNode && activeNode?.key === nodeId;
 
     if (isActiveNode) {
       // For active node, trigger validation on the actual form controls
-      this.nameFormControl.markAsTouched();
-      this.nameFormControl.updateValueAndValidity();
+      this.nameFormControl?.markAsTouched();
+      this.nameFormControl?.updateValueAndValidity();
 
-      this.codeFormControl.markAsTouched();
-      this.codeFormControl.updateValueAndValidity();
+      this.codeFormControl?.markAsTouched();
+      this.codeFormControl?.updateValueAndValidity();
 
-      this.descriptionFormControl.markAsTouched();
-      this.descriptionFormControl.updateValueAndValidity();
+      this.descriptionFormControl?.markAsTouched();
+      this.descriptionFormControl?.updateValueAndValidity();
     } else {
       // For non-active nodes, we'll set validation errors directly in the node metadata
       // This will be used by the highlighting system to show which nodes have errors
-      if (!metadata.name || metadata.name.trim().length === 0) {
+      if (!metadata?.name || metadata.name.trim().length === 0) {
         metadata._hasNameError = true;
       } else {
         metadata._hasNameError = false;
       }
 
-      if (!metadata.code || metadata.code.trim().length === 0) {
+      if (!metadata?.code || metadata.code.trim().length === 0) {
         metadata._hasCodeError = true;
       } else {
         // Check for duplicate codes
         const trimmedCode = metadata.code.trim();
-        const codeCount = this.countCodeOccurrences(this.skillMapTreeComponent.getRootNode().children[0], trimmedCode, nodeId);
+        const codeCount = this.skillMapTreeService.countCodeOccurrences(this.skillMapTreeComponent?.getRootNode()?.children?.[0], trimmedCode, nodeId);
         metadata._hasCodeError = codeCount > 0;
       }
     }
@@ -1214,23 +875,23 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   private validateNodeById(nodeId: string): boolean {
     if (!this.skillMapTreeComponent) return false;
 
-    const node = this.skillMapTreeComponent.getNodeById(nodeId);
-    if (!node || !node.data || !node.data.metadata) return false;
+    const node = this.skillMapTreeComponent?.getNodeById(nodeId);
+    if (!node || !node?.data || !node.data.metadata) return false;
 
     const metadata = node.data.metadata;
 
     // Get node values directly from metadata (not from form controls to avoid interference)
-    let nodeName = metadata.name;
-    let nodeCode = metadata.code;
+    let nodeName = metadata?.name;
+    let nodeCode = metadata?.code;
 
     // Check if this is the currently active node and get real-time values
-    const activeNode = this.skillMapTreeComponent.getActiveNode();
-    const isActiveNode = activeNode && activeNode.key === nodeId;
+    const activeNode = this.skillMapTreeComponent?.getActiveNode();
+    const isActiveNode = activeNode && activeNode?.key === nodeId;
 
     if (isActiveNode) {
       // For active node, get values from form controls (real-time values)
-      nodeName = this.nameFormControl.value || '';
-      nodeCode = this.codeFormControl.value || '';
+      nodeName = this.nameFormControl?.value || '';
+      nodeCode = this.codeFormControl?.value || '';
     }
 
     // Check if required fields are present (empty string, null, or undefined)
@@ -1244,7 +905,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
 
     // Check for duplicate codes (use trimmed code for comparison)
     const trimmedCode = nodeCode.trim();
-    const codeCount = this.countCodeOccurrences(this.skillMapTreeComponent.getRootNode().children[0], trimmedCode, nodeId);
+    const codeCount = this.skillMapTreeService.countCodeOccurrences(this.skillMapTreeComponent?.getRootNode()?.children?.[0], trimmedCode, nodeId);
     if (codeCount > 0) {
       return false; // Duplicate code found
     }
@@ -1262,7 +923,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   private performBasicValidations(): { isValid: boolean, errorMessage: string, errorNodes: string[] } {
     // Clear all existing highlights first
     if (this.skillMapTreeComponent) {
-      this.skillMapTreeComponent.clearAllHighlights();
+      this.skillMapTreeComponent?.clearAllHighlights();
     }
 
     // Force trigger validation for all nodes to show mat-error messages
@@ -1276,18 +937,18 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       };
     }
     // Validate all nodes using tree component
-    const validationResult = this.skillMapTreeComponent.validateAndHighlightNodes((nodeId: string) => {
+    const validationResult = this.skillMapTreeComponent?.validateAndHighlightNodes((nodeId: string) => {
       return this.validateNodeById(nodeId);
     });
 
-    if (validationResult.hasErrors) {
+    if (validationResult?.hasErrors) {
       // Expand all nodes to show validation errors
-      this.skillMapTreeComponent.expandAllNodes();
+      this.skillMapTreeComponent?.expandAllNodes();
 
       return {
         isValid: false,
-        errorMessage: this.getValidationErrorMessage(validationResult.errorNodes),
-        errorNodes: validationResult.errorNodes
+        errorMessage: this.skillMapTreeService.getValidationErrorMessage(validationResult?.errorNodes, this.resourceService),
+        errorNodes: validationResult?.errorNodes
       };
     }
 
@@ -1298,146 +959,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    * Perform depth-specific validations for Send for Review
    */
   private performDepthValidations(): { isValid: boolean, errorMessage: string, errorNodes: string[] } {
-    const maxDepth = this.getMaxDepthFromConfig();
-    const invalidNodes: string[] = [];
-
-    // Validation 1: Check if at least one complete path to maxDepth exists
-    const hasCompletePathResult = this.validateCompletePathToMaxDepth(maxDepth);
-    if (!hasCompletePathResult.isValid) {
-      return {
-        isValid: false,
-        errorMessage: this.resourceService?.frmelmnts?.lbl?.someNodesMissingChildren ||  `Some nodes are missing required children. Each node must have at least one child until the maximum depth is reached.`,
-        errorNodes: hasCompletePathResult.incompleteNodes
-      };
-    }
-
-    // Validation 2: Each non-leaf node should have children (except nodes at maxDepth)
-    const missingChildrenResult = this.validateNodesHaveChildren(maxDepth);
-    if (!missingChildrenResult.isValid) {
-      missingChildrenResult.invalidNodes.forEach(nodeId => {
-        this.skillMapTreeComponent.highlightNode(nodeId, 'add');
-      });
-
-      this.skillMapTreeComponent.expandAllNodes();
-
-      return {
-        isValid: false,
-        errorMessage: this.resourceService?.frmelmnts?.lbl?.someNodesMissingChildren ||  'Some nodes are missing required children. Each node must have at least one child until the maximum depth is reached.',
-        errorNodes: missingChildrenResult.invalidNodes
-      };
-    }
-
-    return { isValid: true, errorMessage: '', errorNodes: [] };
-  }
-
-  /**
-   * Get maxDepth from tree component configuration
-   */
-  private getMaxDepthFromConfig(): number {
-    return this.skillMapTreeComponent?.config?.maxDepth || 4;
-  }
-
-  /**
-   * Validate that at least one complete path to maxDepth exists
-   */
-  private validateCompletePathToMaxDepth(maxDepth: number): { isValid: boolean, incompleteNodes: string[] } {
-    if (!this.skillMapTreeComponent) {
-      return { isValid: false, incompleteNodes: [] };
-    }
-    const rootNode = this.skillMapTreeComponent.getRootNode();
-    if (!rootNode || !rootNode.children || rootNode.children.length === 0) {
-      return { isValid: false, incompleteNodes: [] };
-    }
-
-    const actualRootNode = rootNode.children[0]; 
-    if (!actualRootNode) {
-      return { isValid: false, incompleteNodes: [] };
-    }
-    const hasCompletePath = this.checkPathToDepth(actualRootNode, 1, maxDepth);
-
-    if (!hasCompletePath) {
-      const incompleteNodes = this.findIncompletePathNodes(actualRootNode, 1, maxDepth);
-      return { isValid: false, incompleteNodes };
-    }
-
-    return { isValid: true, incompleteNodes: [] };
-  }
-
-  /**
-   * Recursively check if any path reaches the required depth
-   */
-  private checkPathToDepth(node: any, currentDepth: number, maxDepth: number): boolean {
-    if (currentDepth === maxDepth) {
-      return true;
-    }
-
-    if (!node.children || node.children.length === 0) {
-      return false;
-    }
-
-    for (const child of node.children) {
-      if (this.checkPathToDepth(child, currentDepth + 1, maxDepth)) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  /**
-   * Find nodes that are part of incomplete paths
-   */
-  private findIncompletePathNodes(node: any, currentDepth: number, maxDepth: number): string[] {
-    const incompleteNodes: string[] = [];
-
-    if (currentDepth < maxDepth && (!node.children || node.children.length === 0)) {
-      incompleteNodes.push(node.key || node.data?.id || node.id);
-    }
-
-    if (node.children && node.children.length > 0) {
-      for (const child of node.children) {
-        const childIncompleteNodes = this.findIncompletePathNodes(child, currentDepth + 1, maxDepth);
-        incompleteNodes.push(...childIncompleteNodes);
-      }
-    }
-
-    return incompleteNodes;
-  }
-
-  /**
-   * Validate that each non-leaf node has children (except at maxDepth)
-   */
-  private validateNodesHaveChildren(maxDepth: number): { isValid: boolean, invalidNodes: string[] } {
-    const invalidNodes: string[] = [];
-    const rootNode = this.skillMapTreeComponent.getRootNode();
-
-    if (!rootNode || !rootNode.children || rootNode.children.length === 0) {
-      return { isValid: false, invalidNodes: [] };
-    }
-
-    const actualRootNode = rootNode.children[0];
-    this.checkNodeChildren(actualRootNode, 1, maxDepth, invalidNodes);
-
-    return {
-      isValid: invalidNodes.length === 0,
-      invalidNodes
-    };
-  }
-
-  /**
-   * Recursively check if nodes have required children
-   */
-  private checkNodeChildren(node: any, currentDepth: number, maxDepth: number, invalidNodes: string[]): void {
-    if (currentDepth >= maxDepth) {
-      return;
-    }
-    if (!node.children || node.children.length === 0) {
-      invalidNodes.push(node.key || node.data?.id || node.id);
-      return;
-    }
-    for (const child of node.children) {
-      this.checkNodeChildren(child, currentDepth + 1, maxDepth, invalidNodes);
-    }
+    return this.skillMapTreeService.performDepthValidations(this.skillMapTreeComponent, this.resourceService);
   }
 
   /**
@@ -1445,31 +967,31 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    */
   public sendForReview(): void {
     // Sync current form values to active node before validation
-    this.syncFormToActiveNode();
+    this.skillMapTreeService.syncFormToActiveNode(
+      this.selectedNodeData,
+      this.nameFormControl,
+      this.codeFormControl,
+      this.descriptionFormControl,
+      this.skillMapTreeComponent
+    );
 
     // Step 1: Perform all basic input validations (same as Save as Draft)
     const basicValidationResult = this.performBasicValidations();
 
-    if (!basicValidationResult.isValid) {
-      this.toasterService.error(basicValidationResult.errorMessage);
+    if (!basicValidationResult?.isValid) {
+      this.toasterService.error(basicValidationResult?.errorMessage);
       return;
     }
 
     // Step 2: Perform depth-specific validations for Send for Review
     const depthValidationResult = this.performDepthValidations();
 
-    if (!depthValidationResult.isValid) {
-      this.toasterService.error(depthValidationResult.errorMessage);
+    if (!depthValidationResult?.isValid) {
+      this.toasterService.error(depthValidationResult?.errorMessage);
       return;
     }
-
-    // // Step 3: Check for async code validation errors
-    // if (this.codeFormControl.pending) {
-    //   this.toasterService.warning(this.resourceService?.frmelmnts?.lbl?.codeValidationInProgress || 'Code validation in progress. Please wait.');
-    //   return;
-    // }
     
-    if (this.codeFormControl.hasError('codeExists')) {
+    if (this.codeFormControl?.hasError('codeExists')) {
       this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.codeAlreadyExists || 'Code already exists. Please use a different code.');
       return;
     }
@@ -1477,7 +999,6 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     this.isSendingForReview = true;
 
     if (!this.frameworkId) {
-      console.error('Framework ID not found');
       this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.frameworkIdNotFound || 'Framework ID not found. Cannot send for review.');
       this.isSendingForReview = false;
       return;
@@ -1508,16 +1029,14 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
           this.toasterService.success(this.resourceService?.frmelmnts?.lbl?.frameworkSentForReview || 'Framework sent for review successfully');
           if (this.skillMapData) {
             this.skillMapData.status = 'Review';
-            this.updateLastModified();
+            this.skillMapTreeService.updateLastModified(this.skillMapData);
           }
           this.loadSkillMapData();
         } else {
-          console.error('Review API call returned unexpected response:', response);
           this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.failedToSendFrameworkForReview || 'Failed to send framework for review');
         }
       },
       error: (error) => {
-        console.error('Review API call failed:', error);
         this.isSendingForReview = false;
         let errorMessage = this.resourceService?.frmelmnts?.lbl?.failedToSendFrameworkForReview || 'Failed to send framework for review';
         this.toasterService.error(errorMessage);
@@ -1534,7 +1053,6 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     const frameworkIdentifier = this.getFrameworkIdentifier();
     
     if (!frameworkIdentifier) {
-      console.error('Framework ID not found for publishing');
       this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.frameworkIdNotFound || 'Framework ID not found. Cannot publish framework.');
       this.isPublishing = false;
       return;
@@ -1548,7 +1066,6 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    */
   private makePublishApiCall(frameworkId: string): void {
     if (!frameworkId) {
-      console.error('Framework ID is required for publishing but not provided');
       this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.frameworkIdNotFound || 'Framework ID is required for publishing');
       this.isPublishing = false;
       return;
@@ -1559,7 +1076,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     };
     this.publicDataService.postWithHeaders(publishRequest).subscribe({
       next: (response: any) => {
-        if (response && response.responseCode === 'OK') {
+        if (response && response?.responseCode === 'OK') {
           this.toasterService.success(this.resourceService?.frmelmnts?.lbl?.frameworkPublishedSuccessfully || 'Framework published successfully');
           if (this.skillMapData) {
             this.skillMapData.status = 'Live';
@@ -1568,14 +1085,12 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
             this.router.navigate(['/workspace/content/skillmap-reviewer/1']);
           }, 2000);
         } else {
-          console.error('Invalid publish response:', response);
           this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.failedToPublishFramework || 'Failed to publish framework');
         }
         
         this.isPublishing = false;
       },
       error: (error: any) => {
-        console.error('Error publishing framework:', error);
         let errorMessage = this.resourceService?.frmelmnts?.lbl?.failedToPublishFramework || 'Failed to publish framework';
         this.toasterService.error(errorMessage);
         this.isPublishing = false;
@@ -1608,7 +1123,6 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     
     const frameworkIdentifier = this.getFrameworkIdentifier();
     if (!frameworkIdentifier) {
-      console.error('Framework ID not found for rejection');
       this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.frameworkIdNotFound || 'Framework ID not found');
       this.isRejecting = false;
       return;
@@ -1622,7 +1136,6 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    */
   private makeRejectApiCall(frameworkId: string): void {
     if (!frameworkId) {
-      console.error('Framework ID is required for rejection but not provided');
       this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.frameworkIdNotFound || 'Framework ID is required for rejection');
       this.isRejecting = false;
       return;
@@ -1639,7 +1152,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
 
     this.publicDataService.postWithHeaders(rejectRequest).subscribe({
       next: (response: any) => {
-        if (response && response.responseCode === 'OK') {
+        if (response && response?.responseCode === 'OK') {
           this.toasterService.success(
             this.resourceService?.frmelmnts?.lbl?.frameworkRejected || 'Framework rejected successfully'
           );
@@ -1654,15 +1167,12 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
             this.router.navigate(['/workspace/content/skillmap-reviewer/1']);
           }, 2000);
         } else {
-          console.error('Invalid reject response:', response);
           this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.failedToRejectFramework || 'Failed to reject framework');
         }
         
         this.isRejecting = false;
       },
       error: (error: any) => {
-        console.error('Error rejecting framework:', error);
-
         let errorMessage = this.resourceService?.frmelmnts?.lbl?.failedToRejectFramework || 'Failed to reject framework';
         this.toasterService.error(errorMessage);
         this.isRejecting = false;
@@ -1691,11 +1201,11 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     }
 
     // Check if we already have framework data from query params or need to fetch
-    const queryParams = this.activatedRoute.snapshot.queryParams;
-    if (queryParams['frameworkName'] && queryParams['frameworkDescription']) {
+    const queryParams = this.activatedRoute?.snapshot?.queryParams;
+    if (queryParams?.['frameworkName'] && queryParams?.['frameworkDescription']) {
       this.editFrameworkForm = {
-        name: queryParams['frameworkName'] || '',
-        description: queryParams['frameworkDescription'] || ''
+        name: queryParams?.['frameworkName'] || '',
+        description: queryParams?.['frameworkDescription'] || ''
       };
       this.resetEditFormValidation();
       this.showEditFrameworkModal = true;
@@ -1712,11 +1222,11 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     this.publicDataService.get({ url: apiUrl }).subscribe(
       (response: any) => {
 
-        if (response && response.result && response.result.framework) {
+        if (response && response?.result && response.result.framework) {
           const framework = response.result.framework;
           this.editFrameworkForm = {
-            name: framework.name || '',
-            description: framework.description || ''
+            name: framework?.name || '',
+            description: framework?.description || ''
           };
           this.resetEditFormValidation();
           this.showEditFrameworkModal = true;
@@ -1725,7 +1235,6 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         }
       },
       (error: any) => {
-        console.error('Error fetching framework data:', error);
         this.toasterService.error(
           this.resourceService?.frmelmnts?.lbl?.failedToFetchFrameworkData ||
           'Failed to fetch framework data. Please try again.'
@@ -1763,7 +1272,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    */
   public updateFramework(): void {
     this.editFormSubmitted = true;
-    if (!this.editFrameworkForm.name || !this.editFrameworkForm.name.trim()) {
+    if (!this.editFrameworkForm?.name || !this.editFrameworkForm.name.trim()) {
       return;
     }
     this.isUpdatingFramework = true;
@@ -1778,8 +1287,8 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       request: {
         framework: {
           name: this.editFrameworkForm.name.trim(),
-          description: this.editFrameworkForm.description || '',
-          code: this.generateFrameworkCode(this.editFrameworkForm.name.trim())
+          description: this.editFrameworkForm?.description || '',
+          code: this.skillMapTreeService.generateFrameworkCode(this.editFrameworkForm.name.trim())
         }
       }
     };
@@ -1789,11 +1298,11 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     this.publicDataService.patch({ url: apiUrl, data: requestBody }).subscribe(
       (response: any) => {
 
-        if (response && response.responseCode === 'OK') {
-          this.frameworkName = this.editFrameworkForm.name.trim();
+        if (response && response?.responseCode === 'OK') {
+          this.frameworkName = this.editFrameworkForm?.name?.trim();
           if (this.skillMapData) {
-            this.skillMapData.name = this.editFrameworkForm.name.trim();
-            this.skillMapData.description = this.editFrameworkForm.description || '';
+            this.skillMapData.name = this.editFrameworkForm?.name?.trim();
+            this.skillMapData.description = this.editFrameworkForm?.description || '';
           }
           this.closeEditFrameworkModal();
           this.toasterService.success(
@@ -1806,7 +1315,6 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         }
       },
       (error: any) => {
-        console.error('Error updating framework:', error);
         this.isUpdatingFramework = false;
         this.toasterService.error(
           this.resourceService?.frmelmnts?.lbl?.failedToUpdateFramework ||
@@ -1816,129 +1324,63 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     );
   }
 
-  /**
-   * Generate framework code from name
-   */
-  private generateFrameworkCode(name: string): string {
-    // Convert to lowercase, replace spaces and special characters with underscores
-    const code = name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
-    return code;
-  }
-
-  private updateLastModified(): void {
-    this.skillMapData.lastModifiedOn = new Date().toISOString();
-  }
-
-
   public addBehavioralIndicator(): void {
-    const value = this.behavioralIndicatorsInputControl.value?.trim();
-    if (value && !this.behavioralIndicators.includes(value)) {
-      this.behavioralIndicators.push(value);
-      this.behavioralIndicatorsInputControl.setValue('', { emitEvent: false });
-      this.updateObservableElementDataSilently();
-    }
+    this.skillMapTreeService.addBehavioralIndicator(
+      this.behavioralIndicatorsInputControl,
+      this.behavioralIndicators,
+      () => this.updateObservableElementDataSilently()
+    );
   }
 
   public removeBehavioralIndicator(index: number): void {
-    this.behavioralIndicators.splice(index, 1);
-    this.updateObservableElementDataSilently();
+    this.skillMapTreeService.removeBehavioralIndicator(
+      index,
+      this.behavioralIndicators,
+      () => this.updateObservableElementDataSilently()
+    );
   }
 
   public addMeasurableOutcome(): void {
-    const value = this.measurableOutcomesInputControl.value?.trim();
-    if (value && !this.measurableOutcomes.includes(value)) {
-      this.measurableOutcomes.push(value);
-      this.measurableOutcomesInputControl.setValue('', { emitEvent: false });
-      this.updateObservableElementDataSilently();
-    }
+    this.skillMapTreeService.addMeasurableOutcome(
+      this.measurableOutcomesInputControl,
+      this.measurableOutcomes,
+      () => this.updateObservableElementDataSilently()
+    );
   }
 
   public removeMeasurableOutcome(index: number): void {
-    this.measurableOutcomes.splice(index, 1);
-    this.updateObservableElementDataSilently();
+    this.skillMapTreeService.removeMeasurableOutcome(
+      index,
+      this.measurableOutcomes,
+      () => this.updateObservableElementDataSilently()
+    );
   }
 
   public addAssessmentCriteria(): void {
-    const value = this.assessmentCriteriaInputControl.value?.trim();
-    if (value && !this.assessmentCriteria.includes(value)) {
-      this.assessmentCriteria.push(value);
-      this.assessmentCriteriaInputControl.setValue('', { emitEvent: false });
-      this.updateObservableElementDataSilently();
-    }
+    this.skillMapTreeService.addAssessmentCriteria(
+      this.assessmentCriteriaInputControl,
+      this.assessmentCriteria,
+      () => this.updateObservableElementDataSilently()
+    );
   }
 
   public removeAssessmentCriteria(index: number): void {
-    this.assessmentCriteria.splice(index, 1);
-    this.updateObservableElementDataSilently();
+    this.skillMapTreeService.removeAssessmentCriteria(
+      index,
+      this.assessmentCriteria,
+      () => this.updateObservableElementDataSilently()
+    );
   }
 
   private updateObservableElementDataSilently(): void {
-    if (this.selectedNodeData && this.selectedNodeData.data && this.selectedNodeData.data.metadata) {
-      this.isUpdatingObservableData = true;
-      
-      this.selectedNodeData.data.metadata.behavioralIndicators = [...this.behavioralIndicators];
-      this.selectedNodeData.data.metadata.measurableOutcomes = [...this.measurableOutcomes];
-      this.selectedNodeData.data.metadata.assessmentCriteria = [...this.assessmentCriteria];
-      this.updateLastModified();
-      setTimeout(() => {
-        this.isUpdatingObservableData = false;
-      }, 100);
-    }
-  }
-
-  private getValidationErrorMessage(errorNodes: string[]): string {
-    const errorCount = errorNodes.length;
-    const errorDetails = this.analyzeValidationErrors(errorNodes);
-    if (errorDetails.hasFormErrors) {
-      return this.resourceService?.frmelmnts?.lbl?.invalidInputDetected || 'Invalid input detected. Please review';
-    } else if (errorDetails.hasMissingFields) {
-      return this.resourceService?.frmelmnts?.lbl?.fillRequiredFields || 'Please fill all the required fields';
-    } else {
-      return this.resourceService?.frmelmnts?.lbl?.failedToSaveSkillMap || 'Failed to save skill domain, Please try again later.';
-    }
-  }
-
-  // Analyze what types of validation errors exist
-  private analyzeValidationErrors(errorNodes: string[]): { hasFormErrors: boolean, hasMissingFields: boolean } {
-    let hasFormErrors = false;
-    let hasMissingFields = false;
-
-    for (const nodeId of errorNodes) {
-      const node = this.skillMapTreeComponent.getNodeById(nodeId);
-      if (!node || !node.data || !node.data.metadata) continue;
-      const metadata = node.data.metadata;
-      const activeNode = this.skillMapTreeComponent.getActiveNode();
-      const isActiveNode = activeNode && activeNode.key === nodeId;
-
-      let nodeName = metadata.name;
-      let nodeCode = metadata.code;
-
-      if (isActiveNode) {
-        nodeName = this.nameFormControl.value || '';
-        nodeCode = this.codeFormControl.value || '';
-      }
-      const hasValidName = nodeName && typeof nodeName === 'string' && nodeName.trim().length > 0;
-      const hasValidCode = nodeCode && typeof nodeCode === 'string' && nodeCode.trim().length > 0;
-
-      if (!hasValidName || !hasValidCode) {
-        hasMissingFields = true;
-      }
-
-      if (hasValidCode) {
-        const trimmedCode = nodeCode.trim();
-        const codeCount = this.countCodeOccurrences(this.skillMapTreeComponent.getRootNode().children[0], trimmedCode, nodeId);
-        if (codeCount > 0) {
-          hasFormErrors = true;
-        }
-        if (isActiveNode && this.codeFormControl.errors) {
-          if (this.codeFormControl.errors['invalidCode'] || this.codeFormControl.errors['duplicateCode']) {
-            hasFormErrors = true;
-          }
-        }
-      }
-    }
-
-    return { hasFormErrors, hasMissingFields };
+    this.skillMapTreeService.updateObservableElementDataSilently(
+      this.selectedNodeData,
+      this.behavioralIndicators,
+      this.measurableOutcomes,
+      this.assessmentCriteria,
+      this.skillMapData,
+      (value: boolean) => this.isUpdatingObservableData = value
+    );
   }
 
   /**
@@ -1965,7 +1407,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
 
       await this.createAssociations(treeStructure, frameworkIdentifier);
 
-      this.updateLastModified();
+      this.skillMapTreeService.updateLastModified(this.skillMapData);
       this.isSavingDraft = false;
 
       this.toasterService.success(
@@ -1974,7 +1416,6 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       );
 
     } catch (error) {
-      console.error('Error in createTermsAndAssociations:', error);
       this.isSavingDraft = false;
       let errorMessage = this.resourceService?.frmelmnts?.lbl?.failedToSaveSkillMap || 'Failed to save. Please try again.';
       this.toasterService.error(errorMessage);
@@ -1986,8 +1427,8 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    * Get framework identifier from various sources
    */
   private getFrameworkIdentifier(): string {
-    const frameworkId = this.activatedRoute.snapshot.queryParams['frameworkId'] ||
-      this.activatedRoute.snapshot.params['frameworkId'] ||
+    const frameworkId = this.activatedRoute?.snapshot?.queryParams?.['frameworkId'] ||
+      this.activatedRoute?.snapshot?.params?.['frameworkId'] ||
       this.frameworkId ||
       this.skillMapData?.framework ||
       this.skillMapData?.id;
@@ -2002,8 +1443,8 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       throw new Error('Tree component not available');
     }
 
-    const rootNode = this.skillMapTreeComponent.getRootNode();
-    if (!rootNode || !rootNode.children || rootNode.children.length === 0) {
+    const rootNode = this.skillMapTreeComponent?.getRootNode();
+    if (!rootNode || !rootNode?.children || rootNode.children.length === 0) {
       throw new Error('No tree data available');
     }
 
@@ -2020,17 +1461,17 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     const category = this.getCategoryByLevel(level);
 
     const nodeData = {
-      id: node.key || node.data?.id || node.id,
-      name: node.data?.metadata?.name || node.title || '',
-      code: node.data?.metadata?.code || '',
-      description: node.data?.metadata?.description || '',
+      id: node?.key || node?.data?.id || node?.id,
+      name: node?.data?.metadata?.name || node?.title || '',
+      code: node?.data?.metadata?.code || '',
+      description: node?.data?.metadata?.description || '',
       level: level,
       category: category,
       children: [],
       originalNode: node,
-      metadata: node.data?.metadata || {} 
+      metadata: node?.data?.metadata || {} 
     };
-    if (node.children && node.children.length > 0) {
+    if (node?.children && node.children.length > 0) {
       for (const child of node.children) {
         const childData = this.buildNodeWithCategory(child, level + 1);
         nodeData.children.push(childData);
@@ -2056,18 +1497,16 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    * Retire a term using the delete term API
    */
   private retireTermFromAPI(node: any): Promise<any> {
-    const termData = node.data;
-    if (!termData || !termData.metadata) {
-      console.error('Invalid term data:', termData);
+    const termData = node?.data;
+    if (!termData || !termData?.metadata) {
       return Promise.reject('Invalid term data');
     }
 
-    const category = this.getCategoryByLevel(node.getLevel());
-    const termCode = termData.metadata.code;
+    const category = this.getCategoryByLevel(node?.getLevel());
+    const termCode = termData?.metadata?.code;
     const frameworkIdentifier = this.frameworkId;
 
     if (!category || !termCode || !frameworkIdentifier) {
-      console.error('Missing required parameters:', { category, termCode, frameworkIdentifier });
       return Promise.reject('Missing required parameters for term deletion');
     }
     const requestData = {
@@ -2076,7 +1515,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       framework: frameworkIdentifier
     };
     return this.frameworkService.retireTerm(requestData).toPromise().then(response => {
-      if (response && response.responseCode === 'OK') {
+      if (response && response?.responseCode === 'OK') {
         return response;
       } else {
         throw new Error('Failed to retire term: ' + (response?.params?.errmsg || 'Unknown error'));
@@ -2114,7 +1553,6 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       try {
         await Promise.all(termCreationPromises);
       } catch (error) {
-        console.error(`Failed to create terms at level ${level}:`, error);
         throw new Error(`Failed to create terms at level ${level}: ${error.message}`);
       }
     }
@@ -2133,28 +1571,26 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         return; // Success, exit retry loop
       } catch (error) {
         lastError = error;
-        console.warn(`Attempt ${attempt}/${maxRetries} failed for term "${node.name}":`, error.message);
-
         if (attempt < maxRetries) {
           const delay = Math.pow(2, attempt - 1) * 1000;
           await new Promise(resolve => setTimeout(resolve, delay));
         }
       }
     }
-    throw new Error(`Failed to create term "${node.name}" after ${maxRetries} attempts: ${lastError.message}`);
+    throw new Error(`Failed to create term "${node?.name}" after ${maxRetries} attempts: ${lastError?.message}`);
   }
 
   /**
    * Organize nodes by their level in the tree
    */
   private organizeNodesByLevel(node: any, nodesByLevel: Map<number, any[]>): void {
-    const level = node.level;
+    const level = node?.level;
 
     if (!nodesByLevel.has(level)) {
       nodesByLevel.set(level, []);
     }
     nodesByLevel.get(level)!.push(node);
-    for (const child of node.children) {
+    for (const child of node?.children) {
       this.organizeNodesByLevel(child, nodesByLevel);
     }
   }
@@ -2166,15 +1602,15 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     try {
 
       const termData: any = {
-        name: node.name,
-        code: node.code,
-        description: node.description || ''
+        name: node?.name,
+        code: node?.code,
+        description: node?.description || ''
       };
 
-      if (node.category === 'observableElement' || node.level === 4) {
-        termData.behavioralIndicators = node.metadata?.behavioralIndicators || [];
-        termData.measurableOutcomes = node.metadata?.measurableOutcomes || [];
-        termData.assessmentCriteria = node.metadata?.assessmentCriteria || [];
+      if (node?.category === 'observableElement' || node?.level === 4) {
+        termData.behavioralIndicators = node?.metadata?.behavioralIndicators || [];
+        termData.measurableOutcomes = node?.metadata?.measurableOutcomes || [];
+        termData.assessmentCriteria = node?.metadata?.assessmentCriteria || [];
       }
 
       const requestBody = {
@@ -2182,19 +1618,19 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
           term: termData
         }
       };
-      const createApiUrl = `framework/v1/term/create?framework=${frameworkIdentifier}&category=${node.category}`;
+      const createApiUrl = `framework/v1/term/create?framework=${frameworkIdentifier}&category=${node?.category}`;
 
       try {
-        const response = await this.makeApiCall('POST', createApiUrl, requestBody);
+        const response = await this.skillMapTreeService.makeApiCall('POST', createApiUrl, requestBody, this.publicDataService);
         if (!response) {
           throw new Error('No response received from create API');
         }
 
-        if (response.responseCode !== 'OK') {
-          throw new Error(`Create API returned error: ${response.responseCode} - ${response.params?.errmsg || 'Unknown error'}`);
+        if (response?.responseCode !== 'OK') {
+          throw new Error(`Create API returned error: ${response?.responseCode} - ${response?.params?.errmsg || 'Unknown error'}`);
         }
 
-        if (!response.result || !response.result.node_id) {
+        if (!response?.result || !response.result.node_id) {
           throw new Error('Invalid create API response: missing node_id in result');
         }
         const nodeIdArray = response.result.node_id;
@@ -2203,29 +1639,28 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         }
 
         const apiNodeId = nodeIdArray[0]; // Take first element
-        this.createdNodeIds.set(node.id, apiNodeId);
+        this.createdNodeIds.set(node?.id, apiNodeId);
 
       } catch (createError) {
-        const updateApiUrl = `framework/v1/term/update/${requestBody?.request?.term?.code}?framework=${frameworkIdentifier}&category=${node.category}`;
+        const updateApiUrl = `framework/v1/term/update/${requestBody?.request?.term?.code}?framework=${frameworkIdentifier}&category=${node?.category}`;
 
-        const updateResponse = await this.makeApiCall('PATCH', updateApiUrl, requestBody);
+        const updateResponse = await this.skillMapTreeService.makeApiCall('PATCH', updateApiUrl, requestBody, this.publicDataService);
 
-        if (updateResponse.responseCode !== 'OK') {
-          throw new Error(`Update API returned error: ${updateResponse.responseCode} - ${updateResponse.params?.errmsg || 'Unknown error'}`);
+        if (updateResponse?.responseCode !== 'OK') {
+          throw new Error(`Update API returned error: ${updateResponse?.responseCode} - ${updateResponse?.params?.errmsg || 'Unknown error'}`);
         }
 
-        const termIdentifier = updateResponse.result?.node_id ||
-          updateResponse.result?.identifier ||
-          updateResponse.result?.versionKey ||
-          node.code;
+        const termIdentifier = updateResponse?.result?.node_id ||
+          updateResponse?.result?.identifier ||
+          updateResponse?.result?.versionKey ||
+          node?.code;
 
-        this.createdNodeIds.set(node.id, termIdentifier);
+        this.createdNodeIds.set(node?.id, termIdentifier);
       }
 
     } catch (error) {
-      console.error(`Error in createSingleTerm for ${node.name}:`, error);
-      const enhancedError = new Error(`Failed to create term "${node.name}" (${node.category}): ${error.message}`);
-      enhancedError.stack = error.stack;
+      const enhancedError = new Error(`Failed to create term "${node?.name}" (${node?.category}): ${error?.message}`);
+      enhancedError.stack = error?.stack;
       throw enhancedError;
     }
   }
@@ -2235,10 +1670,10 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    */
   private validateAllNodesCreated(node: any): string[] {
     const missingNodes: string[] = [];
-    if (!this.createdNodeIds.has(node.id)) {
-      missingNodes.push(node.name || node.id);
+    if (!this.createdNodeIds.has(node?.id)) {
+      missingNodes.push(node?.name || node?.id);
     }
-    if (node.children && node.children.length > 0) {
+    if (node?.children && node.children.length > 0) {
       for (const child of node.children) {
         const childMissingNodes = this.validateAllNodesCreated(child);
         missingNodes.push(...childMissingNodes);
@@ -2260,14 +1695,8 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     }
     for (const update of associationUpdates) {
       for (const association of update.associations) {
-        if (!association.identifier || association.identifier === update.parentNodeId) {
-          console.error('Invalid association detected:', {
-            parentName: update.parentName,
-            parentApiId: update.parentNodeId,
-            associationId: association.identifier,
-            childrenDetails: update.childrenDetails
-          });
-          throw new Error(`Invalid association: Child identifier "${association.identifier}" cannot be same as parent "${update.parentNodeId}" for parent "${update.parentName}"`);
+        if (!association?.identifier || association.identifier === update?.parentNodeId) {
+          throw new Error(`Invalid association: Child identifier "${association?.identifier}" cannot be same as parent "${update?.parentNodeId}" for parent "${update?.parentName}"`);
         }
       }
     }
@@ -2277,8 +1706,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       try {
         await this.updateTermAssociationsWithRetry(update, frameworkIdentifier, 3); // 3 retries
       } catch (error) {
-        console.error(`Failed to update associations for ${update.parentName}:`, error);
-        throw new Error(`Failed to update associations for "${update.parentName}": ${error.message}`);
+        throw new Error(`Failed to update associations for "${update?.parentName}": ${error?.message}`);
       }
     }
   }
@@ -2295,60 +1723,57 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         return; // Success, exit retry loop
       } catch (error) {
         lastError = error;
-        console.warn(`Attempt ${attempt}/${maxRetries} failed for associations update "${update.parentName}":`, error.message);
-
         if (attempt < maxRetries) {
           const delay = Math.pow(2, attempt - 1) * 1000;
           await new Promise(resolve => setTimeout(resolve, delay));
         }
       }
     }
-    throw new Error(`Failed to update associations for "${update.parentName}" after ${maxRetries} attempts: ${lastError.message}`);
+    throw new Error(`Failed to update associations for "${update?.parentName}" after ${maxRetries} attempts: ${lastError?.message}`);
   }
 
   /**
    * Recursively collect all association updates needed
    */
   private collectAssociationUpdates(node: any, updates: any[] = []): any[] {
-    if (node.children && node.children.length > 0) {
-      const parentApiNodeId = this.createdNodeIds.get(node.id);
+    if (node?.children && node.children.length > 0) {
+      const parentApiNodeId = this.createdNodeIds.get(node?.id);
 
       if (parentApiNodeId) {
         const childAssociations = [];
 
-        for (const child of node.children) {
-          const childApiNodeId = this.createdNodeIds.get(child.id);
+        for (const child of node?.children) {
+          const childApiNodeId = this.createdNodeIds.get(child?.id);
           if (childApiNodeId) {
             childAssociations.push({ identifier: childApiNodeId });
           } else {
-            console.error(`Missing API node ID for child: ${child.name} (${child.id})`);
-            throw new Error(`Cannot create associations: Missing API node ID for child "${child.name}"`);
+            throw new Error(`Cannot create associations: Missing API node ID for child "${child?.name}"`);
           }
         }
 
         if (childAssociations.length > 0) {
           updates.push({
             parentNodeId: parentApiNodeId,
-            parentCategory: node.category,
-            parentMetadataId: node.metadata?.id,
+            parentCategory: node?.category,
+            parentMetadataId: node?.metadata?.id,
             associations: childAssociations,
-            parentName: node.name,
-            code: node.code,
-            level: node.level,
-            metadata: node.metadata, // Include full metadata for observable element fields
+            parentName: node?.name,
+            code: node?.code,
+            level: node?.level,
+            metadata: node?.metadata, // Include full metadata for observable element fields
             childrenDetails: node.children.map(child => ({
-              name: child.name,
-              treeNodeId: child.id,
-              metadataId: child.metadata?.id,
-              apiNodeId: this.createdNodeIds.get(child.id),
-              category: this.getCategoryByLevel(child.level)
+              name: child?.name,
+              treeNodeId: child?.id,
+              metadataId: child?.metadata?.id,
+              apiNodeId: this.createdNodeIds.get(child?.id),
+              category: this.getCategoryByLevel(child?.level)
             }))
           });
         }
       } else {
-        console.warn(`No API node ID found for parent node: ${node.name} (${node.id})`);
+        console.warn(`No API node ID found for parent node: ${node?.name} (${node?.id})`);
       }
-      for (const child of node.children) {
+      for (const child of node?.children) {
         this.collectAssociationUpdates(child, updates);
       }
     }
@@ -2364,10 +1789,10 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       const termData: any = {
         associations: update.associations
       };
-      if (update.parentCategory === 'observableElement' || update.level === 4) {
-        termData.behavioralIndicators = update.metadata?.behavioralIndicators || [];
-        termData.measurableOutcomes = update.metadata?.measurableOutcomes || [];
-        termData.assessmentCriteria = update.metadata?.assessmentCriteria || [];
+      if (update?.parentCategory === 'observableElement' || update?.level === 4) {
+        termData.behavioralIndicators = update?.metadata?.behavioralIndicators || [];
+        termData.measurableOutcomes = update?.metadata?.measurableOutcomes || [];
+        termData.assessmentCriteria = update?.metadata?.assessmentCriteria || [];
       }
 
       const requestBody = {
@@ -2375,58 +1800,20 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
           term: termData
         }
       };
-      const apiUrl = `framework/v1/term/update/${update?.code}?framework=${frameworkIdentifier}&category=${update.parentCategory}`;
+      const apiUrl = `framework/v1/term/update/${update?.code}?framework=${frameworkIdentifier}&category=${update?.parentCategory}`;
 
-      const response = await this.makeApiCall('PATCH', apiUrl, requestBody);
+      const response = await this.skillMapTreeService.makeApiCall('PATCH', apiUrl, requestBody, this.publicDataService);
       if (!response) {
         throw new Error('No response received from API');
       }
 
-      if (response.responseCode !== 'OK') {
-        throw new Error(`API returned error: ${response.responseCode} - ${response.params?.errmsg || 'Unknown error'}`);
+      if (response?.responseCode !== 'OK') {
+        throw new Error(`API returned error: ${response?.responseCode} - ${response?.params?.errmsg || 'Unknown error'}`);
       }
 
     } catch (error) {
-      console.error(`Error updating associations for ${update.parentName}:`, error);
-      const enhancedError = new Error(`Failed to update associations for "${update.parentName}" (${update.parentCategory}): ${error.message}`);
-      enhancedError.stack = error.stack;
-      throw enhancedError;
-    }
-  }
-
-  /**
-   * Make API call with proper error handling
-   */
-  private async makeApiCall(method: string, url: string, data?: any): Promise<any> {
-    try {
-      const option = {
-        url: url,
-        data: data
-      };
-      let response: any;
-      if (method === 'POST') {
-        response = await this.publicDataService.post(option).toPromise();
-      } else if (method === 'PUT') {
-        response = await this.publicDataService.put(option).toPromise();
-      } else if (method === 'PATCH') {
-        response = await this.publicDataService.patch(option).toPromise();
-      } else {
-        throw new Error(`Unsupported HTTP method: ${method}`);
-      }
-      return response;
-    } catch (error) {
-      console.error(`API call failed: ${method} ${url}`, error);
-      const enhancedError: any = new Error(`API call failed with ${method} ${url}: ${error.message || 'Unknown error'}`);
-      if (error.status) {
-        enhancedError.status = error.status;
-      }
-      if (error.responseCode) {
-        enhancedError.responseCode = error.responseCode;
-      }
-      if (error.params) {
-        enhancedError.params = error.params;
-      }
-
+      const enhancedError = new Error(`Failed to update associations for "${update?.parentName}" (${update?.parentCategory}): ${error?.message}`);
+      enhancedError.stack = error?.stack;
       throw enhancedError;
     }
   }
@@ -2446,26 +1833,14 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Check if API integration is enabled and framework ID is available
-   */
-  private isApiIntegrationEnabled(): boolean {
-    return !!this.getFrameworkIdentifier();
-  }
-
-  /**
    * Save draft locally without API integration (fallback method)
    */
   private saveLocalDraftOnly(): void {
-    try {
-      this.updateLastModified();
-      this.isSavingDraft = false;
-      this.toasterService.success(
-        (this.resourceService?.frmelmnts?.lbl?.skillMapSavedDraft || '')
-      );
-
-    } catch (error) {
-      this.isSavingDraft = false;
-      this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.skillMapSavedDraftFailed || 'Failed to save skill domain locally. Please try again.');
-    }
+    this.skillMapTreeService.saveLocalDraftOnly(
+      this.skillMapData, 
+      this.toasterService, 
+      this.resourceService, 
+      this
+    );
   }
 }
