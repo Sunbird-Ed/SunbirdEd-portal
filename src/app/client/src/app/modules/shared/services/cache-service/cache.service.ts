@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
+import ls from 'localstorage-ttl';
 
 @Injectable()
 export class CacheService {
+
+    constructor() { }
 
     public get(key?: string) {
         try {
@@ -36,6 +39,24 @@ export class CacheService {
 
     public exists(key?: string) {
         return !!this.get(key);
+    }
+
+    public setWithExpiry(key: string, value: any, ttlInSec: number = 10 * 60) {
+        try {
+            ls.set(key, value, ttlInSec * 1000);
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    public getWithExpiry(key: string) {
+        try {
+            const value = ls.get(key);
+            return value ? value : null;
+        } catch (e) {
+            return null;
+        }
     }
 
 }
