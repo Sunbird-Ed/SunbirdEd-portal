@@ -9,6 +9,7 @@ import { environment } from '@sunbird/environment';
 import { EditorService, WorkSpaceService } from '../../../services';
 import { tap, delay, map, first, mergeMap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
+import { SearchService } from '@sunbird/core';
 jQuery.fn.iziModal = iziModal;
 
 /**
@@ -34,6 +35,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   public videoMaxSize: any;
   public defaultContentFileSize: any;
   public isLargeFileUpload = false;
+  public searchService: SearchService;
   genericEditorURL: string = (<HTMLInputElement>document.getElementById('genericEditorURL')) ?
   (<HTMLInputElement>document.getElementById('genericEditorURL')).value : '';
   cloudProvider: string = (<HTMLInputElement>document.getElementById('cloudProvider')) ?
@@ -225,6 +227,24 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     return typeof document !== 'undefined' ? document.dir || 'rtl' : 'rtl';
   }
 
+  getObservableElements() {
+    const searchParams = {
+      filters: {
+        status: ['Live'],
+        objectType: "Term",
+      },
+      fields: ["name","code","category"],
+      sort_by: { lastPublishedOn: 'desc' }
+    };
+    this.searchService.compositeSearch(searchParams).subscribe((data: ServerResponse) => {
+      if (data?.result) {
+        window.config.observableElements = data.result || [];
+      } else {
+        window.config.observableElements = [];
+      }
+    });
+  }
+
   private setWindowConfig() {
     window.config = _.cloneDeep(this.configService.editorConfig.GENERIC_EDITOR.WINDOW_CONFIG); // cloneDeep to preserve default config
     window.config.build_number = this.buildNumber;
@@ -235,9 +255,9 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     window.config.videoMaxSize = this.videoMaxSize;
     window.config.defaultContentFileSize = this.defaultContentFileSize; // making configurable upload limit in workspace for content upload
     window.config.cloudStorage.provider = this.cloudProvider;
-    window.config.headerConfig = { "managecollaborator": true }
-    window.config.resourceBundles = this.resourceService;
     window.config.dir = this.getDocumentDir();
+    window.config.observableElements = [];
+    this.getObservableElements();
   }
   /**
   * Re directed to the workspace on close of modal

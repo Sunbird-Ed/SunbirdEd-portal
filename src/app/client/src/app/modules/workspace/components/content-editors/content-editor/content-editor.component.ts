@@ -12,6 +12,7 @@ import { combineLatest, of, throwError } from 'rxjs';
 import { map, mergeMap, tap, delay, first } from 'rxjs/operators';
 import { CslFrameworkService } from '../../../../public/services/csl-framework/csl-framework.service';
 jQuery.fn.iziModal = iziModal;
+import { SearchService } from '@sunbird/core';
 
 /**
  * Component Launches the Content Editor in a IFrame Modal
@@ -35,6 +36,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   public queryParams: object;
   public videoMaxSize: any;
   public fwCategoriAsNames: any;
+  public searchService: SearchService;
   contentEditorURL: string = (<HTMLInputElement>document.getElementById('contentEditorURL')) ?
     (<HTMLInputElement>document.getElementById('contentEditorURL')).value : '';
   cloudProvider: string = (<HTMLInputElement>document.getElementById('cloudProvider')) ?
@@ -217,6 +219,23 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   private getDocumentDir(): string {
     return typeof document !== 'undefined' ? document.dir || 'rtl' : 'rtl';
   }
+  getObservableElements() {
+    const searchParams = {
+      filters: {
+        status: ['Live'],
+        objectType: "Term",
+      },
+      fields: ["name","code","category"],
+      sort_by: { lastPublishedOn: 'desc' }
+    };
+    this.searchService.compositeSearch(searchParams).subscribe((data: ServerResponse) => {
+      if (data?.result) {
+        window.config.observableElements = data.result || [];
+      } else {
+        window.config.observableElements = [];
+      }
+    });
+  }
   private setWindowConfig() {
     window.config = _.cloneDeep(this.configService.editorConfig.CONTENT_EDITOR.WINDOW_CONFIG); // cloneDeep to preserve default config
     window.config.build_number = this.buildNumber;
@@ -230,6 +249,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     window.config.headerConfig = {"managecollaborator":true};
     window.config.resourceBundles = this.resourceService;
     window.config.dir = this.getDocumentDir() || 'rtl';
+    this.getObservableElements();
   }
   /**
    * checks the permission using state, status and userId
