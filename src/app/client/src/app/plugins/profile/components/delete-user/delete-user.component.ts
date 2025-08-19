@@ -143,8 +143,7 @@ export class DeleteUserComponent implements OnInit {
    * Direct delete without OTP verification
    */
   verificationSuccess() {
-    this.userService.deleteUser().subscribe(
-      (data: any) => {
+    this.userService.deleteUser().subscribe(data => {
         if(_.get(data, 'result.response') === 'SUCCESS'){
           this.toasterService.success("Your account is deleted successfully");
           if(this.deviceDetectorService.isMobile() && this.deepLink !== ''){
