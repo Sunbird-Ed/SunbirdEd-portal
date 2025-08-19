@@ -66,7 +66,6 @@ export class FormService {
         const formKey = `${channelOptions.data.request.type}${channelOptions.data.request.action}
         ${channelOptions.data.request.subType}${channelOptions.data.request.rootOrgId}${formInputParams.framework}`;
         const key = btoa(formKey);
-        if (this.cacheService.getWithExpiry(key)) {
           const cachedData = this.cacheService.getWithExpiry(key);
           if (cachedData !== null) {
             return of(cachedData);
@@ -81,7 +80,6 @@ export class FormService {
                 return result;
               }));
           }
-        }
       })
     )
   }
