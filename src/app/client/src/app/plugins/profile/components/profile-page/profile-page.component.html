@@ -244,7 +244,7 @@
       </div>
       <section class="d-flex flex-ai-center flex-dc content-preference">
         <!-- Delete Account computer view starts-->
-        <div class="ui container">
+        <div class="ui container" *ngIf="showDeleteAccountButton">
           <div class="d-flex flex-jc-center flex-ai-center flex-dc">
             <div class="max-w-400 computer only">
               <div class="mb-15 d-flex flex-jc-center">
@@ -260,7 +260,7 @@
         <!-- Delete Account computer view ends-->
   
         <!-- Delete Account mobile view starts-->
-        <div class="max-w-300 mobile only">
+        <div class="max-w-300 mobile only" *ngIf="showDeleteAccountButton">
           <div class="mb-15 d-flex flex-ai-center flex-dc">
             <!-- <span class="fmedium font-w-bold text-center">Delete Account</span> -->
           </div>
