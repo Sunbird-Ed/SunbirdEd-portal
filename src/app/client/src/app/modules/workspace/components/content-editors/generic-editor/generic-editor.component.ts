@@ -237,6 +237,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     window.config.defaultContentFileSize = this.defaultContentFileSize; // making configurable upload limit in workspace for content upload
     window.config.cloudStorage.provider = this.cloudProvider;
     window.config.dir = this.getDocumentDir();
+    window.config.resourceBundles = this.resourceService;
     window.config.observableElements = [];
     this.searchService.getObservableElements();
   }
