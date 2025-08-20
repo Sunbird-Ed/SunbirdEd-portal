@@ -565,4 +565,27 @@ export class SearchService {
     };
     return this.learnerService.post(option);
   }
+
+  getObservableElements() {
+    try {
+      const searchParams = {
+        filters: {
+          status: ['Live'],
+          category: "observableElement",
+        }
+      };
+      this.compositeSearch(searchParams).subscribe({
+        next: (data: ServerResponse) => {
+          if (data?.result) {
+            window.config.observableElements = data.result || [];
+          } else {
+            window.config.observableElements = [];
+          }
+        }
+      });
+    } catch (error) {
+      console.error('Error in getObservableElements method:', error);
+      window.config.observableElements = [];
+    }
+  }
 }

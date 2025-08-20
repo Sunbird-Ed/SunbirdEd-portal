@@ -9,6 +9,7 @@ import { environment } from '@sunbird/environment';
 import { EditorService, WorkSpaceService } from '../../../services';
 import { tap, delay, map, first, mergeMap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
+import { SearchService } from '@sunbird/core';
 jQuery.fn.iziModal = iziModal;
 
 /**
@@ -39,7 +40,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   cloudProvider: string = (<HTMLInputElement>document.getElementById('cloudProvider')) ?
   (<HTMLInputElement>document.getElementById('cloudProvider')).value : '';
 
-  constructor(private userService: UserService, public _zone: NgZone, private activatedRoute: ActivatedRoute,
+  constructor(  public searchService: SearchService,private userService: UserService, public _zone: NgZone, private activatedRoute: ActivatedRoute,
     private tenantService: TenantService, private telemetryService: TelemetryService, private router: Router,
     private navigationHelperService: NavigationHelperService, public workspaceService: WorkSpaceService,
     private configService: ConfigService, private editorService: EditorService, private toasterService: ToasterService,
@@ -235,9 +236,9 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     window.config.videoMaxSize = this.videoMaxSize;
     window.config.defaultContentFileSize = this.defaultContentFileSize; // making configurable upload limit in workspace for content upload
     window.config.cloudStorage.provider = this.cloudProvider;
-    window.config.headerConfig = { "managecollaborator": true }
-    window.config.resourceBundles = this.resourceService;
     window.config.dir = this.getDocumentDir();
+    window.config.observableElements = [];
+    this.searchService.getObservableElements();
   }
   /**
   * Re directed to the workspace on close of modal

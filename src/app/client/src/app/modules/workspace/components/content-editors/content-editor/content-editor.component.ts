@@ -12,6 +12,7 @@ import { combineLatest, of, throwError } from 'rxjs';
 import { map, mergeMap, tap, delay, first } from 'rxjs/operators';
 import { CslFrameworkService } from '../../../../public/services/csl-framework/csl-framework.service';
 jQuery.fn.iziModal = iziModal;
+import { SearchService } from '@sunbird/core';
 
 /**
  * Component Launches the Content Editor in a IFrame Modal
@@ -44,7 +45,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   /**
   * Default method of class ContentEditorComponent
   */
-  constructor(private resourceService: ResourceService, private toasterService: ToasterService,
+  constructor(public searchService: SearchService, private resourceService: ResourceService, private toasterService: ToasterService,
     private editorService: EditorService, private activatedRoute: ActivatedRoute, private configService: ConfigService,
     private userService: UserService, private _zone: NgZone, private renderer: Renderer2,
     private tenantService: TenantService, private telemetryService: TelemetryService, private router: Router,
@@ -217,6 +218,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   private getDocumentDir(): string {
     return typeof document !== 'undefined' ? document.dir || 'rtl' : 'rtl';
   }
+  
   private setWindowConfig() {
     window.config = _.cloneDeep(this.configService.editorConfig.CONTENT_EDITOR.WINDOW_CONFIG); // cloneDeep to preserve default config
     window.config.build_number = this.buildNumber;
@@ -230,6 +232,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     window.config.headerConfig = {"managecollaborator":true};
     window.config.resourceBundles = this.resourceService;
     window.config.dir = this.getDocumentDir() || 'rtl';
+    this.searchService.getObservableElements();
   }
   /**
    * checks the permission using state, status and userId
