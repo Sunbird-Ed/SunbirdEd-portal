@@ -35,13 +35,12 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   public videoMaxSize: any;
   public defaultContentFileSize: any;
   public isLargeFileUpload = false;
-  public searchService: SearchService;
   genericEditorURL: string = (<HTMLInputElement>document.getElementById('genericEditorURL')) ?
   (<HTMLInputElement>document.getElementById('genericEditorURL')).value : '';
   cloudProvider: string = (<HTMLInputElement>document.getElementById('cloudProvider')) ?
   (<HTMLInputElement>document.getElementById('cloudProvider')).value : '';
 
-  constructor(private userService: UserService, public _zone: NgZone, private activatedRoute: ActivatedRoute,
+  constructor(  public searchService: SearchService,private userService: UserService, public _zone: NgZone, private activatedRoute: ActivatedRoute,
     private tenantService: TenantService, private telemetryService: TelemetryService, private router: Router,
     private navigationHelperService: NavigationHelperService, public workspaceService: WorkSpaceService,
     private configService: ConfigService, private editorService: EditorService, private toasterService: ToasterService,
@@ -227,24 +226,6 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     return typeof document !== 'undefined' ? document.dir || 'rtl' : 'rtl';
   }
 
-  getObservableElements() {
-    const searchParams = {
-      filters: {
-        status: ['Live'],
-        objectType: "Term",
-      },
-      fields: ["name","code","category"],
-      sort_by: { lastPublishedOn: 'desc' }
-    };
-    this.searchService.compositeSearch(searchParams).subscribe((data: ServerResponse) => {
-      if (data?.result) {
-        window.config.observableElements = data.result || [];
-      } else {
-        window.config.observableElements = [];
-      }
-    });
-  }
-
   private setWindowConfig() {
     window.config = _.cloneDeep(this.configService.editorConfig.GENERIC_EDITOR.WINDOW_CONFIG); // cloneDeep to preserve default config
     window.config.build_number = this.buildNumber;
@@ -257,7 +238,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     window.config.cloudStorage.provider = this.cloudProvider;
     window.config.dir = this.getDocumentDir();
     window.config.observableElements = [];
-    this.getObservableElements();
+    this.searchService.getObservableElements();
   }
   /**
   * Re directed to the workspace on close of modal
