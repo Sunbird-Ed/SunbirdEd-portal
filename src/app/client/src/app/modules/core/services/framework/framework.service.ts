@@ -10,6 +10,7 @@ import { skipWhile, mergeMap, map } from 'rxjs/operators';
 import { PublicDataService } from './../public-data/public-data.service';
 import * as _ from 'lodash-es';
 import { FormService } from '../form/form.service';
+import { ContentService } from '@sunbird/core';
 const frameWorkPrefix = 'framework_';
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,7 @@ export class FrameworkService {
     private userService: UserService, private configService: ConfigService,
     public toasterService: ToasterService, public resourceService: ResourceService,
     private publicDataService: PublicDataService, public learnerService: LearnerService,
-    public formService: FormService
+    public formService: FormService, private contentService: ContentService
   ) { }
 
   public initialize(framework?: string, hashTagId?: string) {
@@ -139,7 +140,7 @@ public retireFramework(frameworkId: string): Observable<ServerResponse> {
       'Accept': 'application/json'
     }
   };
-  return this.publicDataService.delete(retireOptions);
+  return this.contentService.delete(retireOptions);
 }
 
 /**
@@ -157,7 +158,7 @@ public retireTerm(requestData: any): Observable<ServerResponse> {
       'Accept': 'application/json'
     }
   };
-  return this.publicDataService.delete(retireOptions);
+  return this.contentService.delete(retireOptions);
 }
 
 }
