@@ -303,7 +303,7 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
       }
     };
 
-    this.publicDataService.post(categoryOption).subscribe(
+    this.contentService.post(categoryOption).subscribe(
       (response: any) => {  
         // Create next category
         this.createCategoriesSequentially(nodeId, categories, index + 1, frameworkData, requestBody, modal);

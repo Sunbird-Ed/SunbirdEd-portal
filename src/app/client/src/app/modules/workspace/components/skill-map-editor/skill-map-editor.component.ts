@@ -1021,7 +1021,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       data: requestBody
     };
 
-    this.publicDataService.postWithHeaders(option).subscribe({
+    this.contentService.postWithHeaders(option).subscribe({
       next: (response) => {
         this.isSendingForReview = false;
 
@@ -1074,7 +1074,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       url: `framework/v1/publish/${frameworkId}`,
       data: {}
     };
-    this.publicDataService.postWithHeaders(publishRequest).subscribe({
+    this.contentService.postWithHeaders(publishRequest).subscribe({
       next: (response: any) => {
         if (response && response?.responseCode === 'OK') {
           this.toasterService.success(this.resourceService?.frmelmnts?.lbl?.frameworkPublishedSuccessfully || 'Framework published successfully');
@@ -1150,7 +1150,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       }
     };
 
-    this.publicDataService.postWithHeaders(rejectRequest).subscribe({
+    this.contentService.postWithHeaders(rejectRequest).subscribe({
       next: (response: any) => {
         if (response && response?.responseCode === 'OK') {
           this.toasterService.success(
@@ -1219,7 +1219,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    */
   private fetchFrameworkDataForEdit(frameworkId: string): void {
     const apiUrl = `framework/v3/read/${frameworkId}`;
-    this.publicDataService.get({ url: apiUrl }).subscribe(
+    this.contentService.get({ url: apiUrl }).subscribe(
       (response: any) => {
 
         if (response && response?.result && response.result.framework) {
@@ -1295,7 +1295,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
 
     const apiUrl = `framework/v1/update/${frameworkId}`;
 
-    this.publicDataService.patch({ url: apiUrl, data: requestBody }).subscribe(
+    this.contentService.patch({ url: apiUrl, data: requestBody }).subscribe(
       (response: any) => {
 
         if (response && response?.responseCode === 'OK') {
@@ -1621,7 +1621,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       const createApiUrl = `framework/v1/term/create?framework=${frameworkIdentifier}&category=${node?.category}`;
 
       try {
-        const response = await this.skillMapTreeService.makeApiCall('POST', createApiUrl, requestBody, this.publicDataService);
+        const response = await this.skillMapTreeService.makeApiCall('POST', createApiUrl, requestBody, this.contentService);
         if (!response) {
           throw new Error('No response received from create API');
         }
@@ -1644,7 +1644,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       } catch (createError) {
         const updateApiUrl = `framework/v1/term/update/${requestBody?.request?.term?.code}?framework=${frameworkIdentifier}&category=${node?.category}`;
 
-        const updateResponse = await this.skillMapTreeService.makeApiCall('PATCH', updateApiUrl, requestBody, this.publicDataService);
+        const updateResponse = await this.skillMapTreeService.makeApiCall('PATCH', updateApiUrl, requestBody, this.contentService);
 
         if (updateResponse?.responseCode !== 'OK') {
           throw new Error(`Update API returned error: ${updateResponse?.responseCode} - ${updateResponse?.params?.errmsg || 'Unknown error'}`);
@@ -1802,7 +1802,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       };
       const apiUrl = `framework/v1/term/update/${update?.code}?framework=${frameworkIdentifier}&category=${update?.parentCategory}`;
 
-      const response = await this.skillMapTreeService.makeApiCall('PATCH', apiUrl, requestBody, this.publicDataService);
+      const response = await this.skillMapTreeService.makeApiCall('PATCH', apiUrl, requestBody, this.contentService);
       if (!response) {
         throw new Error('No response received from API');
       }
