@@ -137,6 +137,7 @@ export class WorkspacesidebarComponent implements OnInit {
     this.collaboratingRole = this.config.rolesConfig.workSpaceRole.collaboratingRole;
     this.skillmapRole = this.config.rolesConfig.workSpaceRole.skillmapRole;
     this.skillmapReviewerRole = this.config.rolesConfig.workSpaceRole.skillmapReviewerRole;
+    this.trainingRole = this.config.rolesConfig.workSpaceRole.trainingRole;
   }
 
   setInteractData(id) {

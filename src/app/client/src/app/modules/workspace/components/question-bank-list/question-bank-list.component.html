@@ -1,0 +1,164 @@
+<div class="ui container">
+  <div class="ui grid stackable">
+    <div class="sixteen wide column">
+      <div class="question-bank-list" [appTelemetryImpression]="telemetryImpression">
+        
+        <!-- Loader -->
+        <div class="twelve wide column mt-20" *ngIf="showPageLoader">
+          <app-loader [data]="loaderMessage"></app-loader>
+        </div>
+
+        <!-- No Results -->
+        <div *ngIf="(noResult || questionBanks?.length === 0) && !showPageLoader">
+          <app-no-result [data]="noResultMessage"></app-no-result>
+        </div>
+
+        <!-- Question Banks Table -->
+        <table class="ui upForReviewTable table" *ngIf="questionBanks.length > 0 && !showPageLoader && !noResult">
+          <thead>
+            <tr>
+              <th class="six wide UpReviewTableHeader">
+                {{ resourceService?.frmelmnts?.lbl?.questionBanks || 'Question Banks' }}
+              </th>
+              <th class="four wide UpReviewTableHeader">
+                {{ resourceService?.frmelmnts?.lbl?.lastUpdated || 'Last Updated' }}
+              </th>
+              <th class="two wide UpReviewTableHeader">
+                {{ resourceService?.frmelmnts?.lbl?.status || 'Status' }}
+              </th>
+              <th class="two wide UpReviewTableHeader"></th>
+              <th class="two wide UpReviewTableHeader"></th>
+            </tr>
+          </thead>
+          <tbody [appTelemetryImpression]="telemetryImpression" [throttle]="[1000]" [trigger]="questionBanks">
+            <tr class="UpForReviewListHover cursor-pointer" *ngFor="let questionBank of questionBanks let i = index;" 
+                [id]="i" [data]="questionBank"
+                appTelemetryInteract [telemetryInteractObject]="{id:questionBank.identifier,type:questionBank.objectType,ver:'1.0'}"
+                [telemetryInteractEdata]="{id:'questionbank',type:'click',pageid:'question-banks'}">
+              
+              <td tabindex="0" (click)="contentClick(questionBank)">
+                <h5 class="ui image header">
+                  <img src="{{'assets/images/default.png' | cdnprefixurl}}" class="ui tiny image UpReviewTinyImage">
+                  <div class="content" style="padding:0 0.75rem !important;">
+                    <div class="UpReviewHeader">
+                      {{questionBank.name | slice:0:30}}
+                      <i *ngIf="questionBank.name.length > 30">...</i>
+                    </div>
+                    <div class="UpReviewSubHeader">
+                      {{questionBank?.contentType || 'QuestionSet'}}
+                    </div>
+                    <div class="UpReviewSubHeader" *ngIf="questionBank?.description">
+                      {{questionBank?.description | slice:0:50}}
+                      <span *ngIf="questionBank?.description?.length > 50">...</span>
+                    </div>
+                  </div>
+                </h5>
+              </td>
+              
+              <td>
+                <h5 class="ui image header">
+                  <div class="content">
+                    <div class="UpReviewSubHeader" *ngIf="questionBank?.lastUpdatedOn">
+                      {{questionBank?.lastUpdatedOn | fromNow}}
+                    </div>
+                  </div>
+                </h5>
+              </td>
+              
+              <td class="UpForReviewStatusOrange">
+                {{questionBank.status}}
+              </td>
+              
+              <td>
+                <!-- Show view icon for Live, Review, and Published status question banks -->
+                <i *ngIf="questionBank.status === 'Live' || questionBank.status === 'Review' || questionBank.status === 'Published'" 
+                   appTelemetryInteract 
+                   [telemetryInteractObject]="{id:questionBank.identifier,type:questionBank.objectType,ver:'1.0'}"
+                   [telemetryInteractEdata]="{id:'viewQuestionBank',type:'click',pageid:'question-banks'}"  
+                   class="eye large icon" 
+                   tabindex="0" 
+                   (click)="contentClick(questionBank); $event.stopPropagation()"
+                   matTooltip="{{ resourceService?.frmelmnts?.btn?.view || 'View' }}" 
+                   [matTooltipPosition]="'left'">
+                </i>
+                <!-- Show edit icon for Draft status question banks -->
+                <i *ngIf="questionBank.status === 'Draft'" 
+                   appTelemetryInteract 
+                   [telemetryInteractObject]="{id:questionBank.identifier,type:questionBank.objectType,ver:'1.0'}"
+                   [telemetryInteractEdata]="{id:'editQuestionBank',type:'click',pageid:'question-banks'}"  
+                   class="edit large icon" 
+                   tabindex="0" 
+                   (click)="contentClick(questionBank); $event.stopPropagation()"
+                   matTooltip="{{ resourceService?.frmelmnts?.btn?.edit || 'Edit' }}" 
+                   [matTooltipPosition]="'left'">
+                </i>
+              </td>
+              
+              <td>
+                <!-- Show delete icon only for Draft status question banks -->
+                <i *ngIf="questionBank.status === 'Draft'" 
+                   appTelemetryInteract 
+                   [telemetryInteractObject]="{id:questionBank.identifier,type:questionBank.objectType,ver:'1.0'}"
+                   [telemetryInteractEdata]="{id:'deleteQuestionBank',type:'click',pageid:'question-banks'}"  
+                   class="trash large icon" 
+                   tabindex="0" 
+                   (click)="deleteConfirmModal(questionBank.identifier, questionBank.objectType); $event.stopPropagation()"
+                   matTooltip="{{ resourceService?.frmelmnts?.btn?.delete || 'Delete' }}" 
+                   [matTooltipPosition]="'left'">
+                </i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <div class="ui grid">
+          <div class="two wide column"></div>
+          <div class="ten wide column">
+            <div class="pb-10" *ngIf="questionBanks && questionBanks.length > 0 && totalCount > config.appConfig.WORKSPACE.PAGE_LIMIT && !showPageLoader && !noResult">
+              <div class="ui pagination menu mt-10 right-floated p-0" *ngIf="paginationDetails.pages.length">
+                <a [ngClass]="{disabled:paginationDetails.currentPage===1}" class="item" tabindex="0" (click)="navigateToPage(1)">
+                  {{ resourceService?.frmelmnts?.lbl?.first || 'First'}}
+                </a>
+                <a [ngClass]="{disabled:paginationDetails.currentPage===1}" class="item" tabindex="0" (click)="navigateToPage(paginationDetails.currentPage - 1)">
+                  {{ resourceService?.frmelmnts?.lbl?.previous || 'Previous'}}
+                </a>
+                <a *ngFor="let page of paginationDetails.pages" [ngClass]="{active:paginationDetails.currentPage===page}" tabindex="0" (click)="navigateToPage(page)" class="item">
+                  {{page}}
+                </a>
+                <a [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}" tabindex="0" (click)="navigateToPage(paginationDetails.currentPage + 1)" class="item">
+                  {{ resourceService?.frmelmnts?.lbl?.next || 'Next'}}
+                </a>
+                <a [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}" tabindex="0" (click)="navigateToPage(paginationDetails.totalPages)" class="item">
+                  {{ resourceService?.frmelmnts?.lbl?.last || 'Last'}}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<sui-modal *ngIf="showDeleteModal" [mustScroll]="true" [isClosable]="false" class="sb-modal sb-error" size="small" #deleteModal>
+  <div class="sb-modal-header">
+    {{resourceService?.frmelmnts?.lbl?.deleteContentHeading || 'Delete Content'}}
+  </div>
+  <div class="sb-modal-content">
+    <p>{{resourceService?.frmelmnts?.lbl?.deleteConfirmation || 'Are you sure you want to delete this question bank?'}}</p>
+  </div>
+  <div class="sb-modal-actions">
+    <button type="button" class="sb-btn sb-btn-normal sb-btn-error" [disabled]="isDeleting" (click)="confirmDelete()">
+      <span *ngIf="!isDeleting">{{resourceService?.frmelmnts?.btn?.yes || 'Yes'}}</span>
+      <span *ngIf="isDeleting">{{resourceService?.frmelmnts?.btn?.deleting || 'Deleting...'}}</span>
+    </button>
+    <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-10" (click)="closeDeleteModal()">
+      {{resourceService?.frmelmnts?.btn?.no || 'No'}}
+    </button>
+  </div>
+</sui-modal>
+
+<!-- Main Loader -->
+<app-loader *ngIf="showLoader"></app-loader>

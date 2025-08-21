@@ -32,3 +32,4 @@ export * from './content-editors/new-collection-editor/new-collection-editor.com
 export * from './skill-map/skill-map.component';
 export * from './skill-map-editor/skill-map-editor.component';
 export * from './skill-map-tree/skill-map-tree.component';
+export * from './question-bank-list/question-bank-list.component';
