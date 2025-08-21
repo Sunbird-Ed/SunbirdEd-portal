@@ -1215,14 +1215,14 @@ const API_LIST = {
         ROLE.SKILLMAP_REVIEWER
       ]
     },
-
-    // Framework v3 review/reject service for skill map editor
-    '/content/framework/v3/review/:frameworkId': {
+    'content/framework/v1/category/create': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
-        ROLE.SKILLMAP_REVIEWER
+        ROLE.SKILLMAP_CREATOR
       ]
     },
+
+    // Framework v3 review/reject service for skill map editor
     '/content/framework/v3/reject/:frameworkId': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
@@ -2155,6 +2155,16 @@ const API_LIST = {
     '/assessment/programs/mlcore/v1/join/:id',
     '/assessment/users/mlcore/v1/solutions/:id',
     '/learner/user/v1/delete',
+    '/content/framework/v1/create',
+    '/content/framework/v1/term/create',
+    '/content/framework/v1/term/update/:termCode',
+    '/content/framework/v1/update/:frameworkId',
+    '/content/framework/v1/publish/:frameworkId',
+    '/content/framework/v1/category/create',
+    '/content/framework/v3/review/:frameworkId',
+    '/content/framework/v3/reject/:frameworkId',
+    '/content/framework/v3/term/retire/:termId',
+    '/content/framework/v3/retire/:frameworkId',
   ]
 };
 module.exports = API_LIST;
