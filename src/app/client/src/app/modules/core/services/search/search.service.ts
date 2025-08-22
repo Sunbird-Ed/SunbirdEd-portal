@@ -566,7 +566,7 @@ export class SearchService {
     return this.learnerService.post(option);
   }
 
-  getObservableElements() {
+  getObservableElements(editorType?:string) {
     try {
       const searchParams = {
         filters: {
@@ -576,6 +576,9 @@ export class SearchService {
       };
       this.compositeSearch(searchParams).subscribe({
         next: (data: ServerResponse) => {
+          if(editorType === 'collectionEditor'){
+            return data.result || [];
+          }
           if (data?.result) {
             window.config.observableElements = data.result || [];
           } else {

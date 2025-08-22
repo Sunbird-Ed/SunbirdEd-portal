@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UserService, PublicDataService, ContentService, FrameworkService } from '@sunbird/core';
+import { UserService, PublicDataService, ContentService, FrameworkService, SearchService } from '@sunbird/core';
 import { TelemetryService, IInteractEventEdata } from '@sunbird/telemetry';
 import { ConfigService, NavigationHelperService, ToasterService, ResourceService, LayoutService, ServerResponse} from '@sunbird/shared';
 import { EditorService, WorkSpaceService } from './../../../services';
@@ -31,7 +31,7 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
   public publicStorageAccount: any;
   public sunbirdQuestionSetChildrenLimit: any;
   public sunbirdCollectionChildrenLimit: any;
-  constructor(private userService: UserService, public layoutService: LayoutService,
+  constructor(public searchService: SearchService,private userService: UserService, public layoutService: LayoutService,
     private telemetryService: TelemetryService, private publicDataService: PublicDataService,
     private config: ConfigService, private contentService: ContentService, private router: Router,
     public editorService: EditorService, public workSpaceService: WorkSpaceService,
@@ -344,6 +344,7 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
         this.editorConfig.context = {
             ...this.editorConfig.context,
             resourceBundles: this.resourceService.frmelmnts.lbl,
+            observableElements: this.searchService.getObservableElements('collectionEditor'),
             language: localStorage.getItem('portalLanguage')
         };
     }

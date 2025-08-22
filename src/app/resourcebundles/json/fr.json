@@ -118,6 +118,12 @@
                 "copyId": "Copier ID"
             },
             "lbl": {
+                "noOptionsFound": "Aucune option trouvée",
+                "selectedElements": "Éléments sélectionnés",
+                "observableElements": "Éléments observables",
+                "noObservableElementsSelected": "Aucun élément observable sélectionné",
+                "selectObservableElements": "Sélectionner des éléments observables",
+                "close": "Fermer",
                 "createSkillDomain": "Créer un domaine de compétences",
                 "enterSkillDomainName": "Entrez le nom du domaine de compétences",
                 "enterSkillDomainDescription": "Entrez la description du domaine de compétences",
