@@ -1215,7 +1215,7 @@ const API_LIST = {
         ROLE.SKILLMAP_REVIEWER
       ]
     },
-    'content/framework/v1/category/create': {
+    '/content/framework/v1/category/create': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.SKILLMAP_CREATOR
