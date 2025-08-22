@@ -577,7 +577,7 @@ export class SearchService {
     return this.compositeSearch(searchParams).pipe(
       map((data: ServerResponse) => {
         if (data?.result) {
-          return data.result;
+          return data.result || [];
         } 
         else{
           return []
