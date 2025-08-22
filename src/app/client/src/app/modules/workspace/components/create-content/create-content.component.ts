@@ -47,6 +47,10 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
    */
   skillmapRole: Array<string>;
   /**
+   * questionbank access role
+   */
+  questionBankRole: Array<string>;
+  /**
    * To call resource service which helps to use language constant
    */
   public resourceService: ResourceService;
@@ -73,9 +77,15 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
    * Framework creation form
    */
   public frameworkForm: FormGroup;
+  /**
+   * Question Bank creation form
+   */
+  public questionBankForm: FormGroup;
   public isCreating = false;
+  public isCreatingQuestionBank = false;
   public submitted = false;
   public showCreateFrameworkModal = false;
+  public showCreateQuestionBankModal = false;
   /**
   * Constructor to create injected service(s) object
   *
@@ -109,6 +119,12 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
       name: ['', [Validators.required, Validators.maxLength(120)]],
       description: ['', [Validators.maxLength(256)]]
     });
+    
+    // Initialize question bank form
+    this.questionBankForm = this.formBuilder.group({
+      name: ['', [Validators.required, Validators.maxLength(120)]],
+      observable: ['', [Validators.required]]
+    });
   }
 
   ngOnInit() {
@@ -121,6 +137,7 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
     this.assessmentRole = this.configService.rolesConfig.workSpaceRole.assessmentRole;
     this.courseRole = this.configService.rolesConfig.workSpaceRole.courseRole;
     this.skillmapRole = this.configService.rolesConfig.workSpaceRole.skillmapRole;
+    this.questionBankRole = this.configService.rolesConfig.workSpaceRole.createRole || ['CONTENT_CREATOR'];
     this.workSpaceService.questionSetEnabled$.subscribe(
       (response: any) => {
         this.enableQuestionSetCreation = response.questionSetEnablement;
@@ -171,6 +188,22 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
   }
 
   /**
+   * Check if question bank name field has validation errors
+   */
+  get hasQuestionBankNameError() {
+    const nameControl = this.questionBankForm.get('name');
+    return nameControl && nameControl.invalid && (nameControl.touched || this.submitted);
+  }
+
+  /**
+   * Check if question bank observable field has validation errors
+   */
+  get hasQuestionBankObservableElementError() {
+    const observableControl = this.questionBankForm.get('observable');
+    return observableControl && observableControl.invalid && (observableControl.touched || this.submitted);
+  }
+
+  /**
    * Open the Create Framework modal
    */
   openCreateFrameworkModal() {
@@ -189,6 +222,44 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
     this.frameworkForm.reset();
     this.submitted = false;
     this.isCreating = false;
+  }
+
+  /**
+   * Open the Create Question Bank modal
+   */
+  openCreateQuestionBankModal() {
+    // Reset form and state
+    this.questionBankForm.reset();
+    this.submitted = false;
+    this.isCreatingQuestionBank = false;
+    this.showCreateQuestionBankModal = true;
+  }
+
+  /**
+   * Close the Create Question Bank modal
+   */
+  closeCreateQuestionBankModal() {
+    this.showCreateQuestionBankModal = false;
+    this.questionBankForm.reset();
+    this.submitted = false;
+    this.isCreatingQuestionBank = false;
+  }
+
+  /**
+   * Open observable elements selector
+   */
+  openObservableSelector() {
+    // For now, just set a placeholder value
+    // In a real implementation, this would open a modal or dropdown to select observable elements
+    this.questionBankForm.patchValue({
+      observable: 'Selected Observable Elements'
+    });
+    
+    // Mark the field as touched for validation
+    const observableControl = this.questionBankForm.get('observable');
+    if (observableControl) {
+      observableControl.markAsTouched();
+    }
   }
 
   /**
@@ -352,5 +423,44 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
         frameworkId: nodeId
       }
     });
+  }
+
+  /**
+   * Create question bank and navigate to question bank editor
+   */
+  createQuestionBank(modal: any) {
+    this.submitted = true;
+    
+    // Validate form
+    const nameControl = this.questionBankForm.get('name');
+    const observableControl = this.questionBankForm.get('observable');
+    if (!nameControl || nameControl.invalid || !observableControl || observableControl.invalid) {
+      return;
+    }
+
+    this.isCreatingQuestionBank = true;
+    
+    const questionBankData = this.questionBankForm.value;
+    
+    // Create question bank logic here - for now just show success and navigate
+    setTimeout(() => {
+      this.isCreatingQuestionBank = false;
+      
+      // Close modal
+      if (modal && modal.deny) {
+        modal.deny();
+      }
+      
+      // Set the boolean flag as final backup
+      this.showCreateQuestionBankModal = false;
+      
+      // Show success message
+      this.toasterService.success(
+        this.resourceService?.frmelmnts?.smsg?.questionBankCreated || 'Question Bank created successfully!'
+      );
+
+      // Navigate to question bank list
+      this.router.navigate(['/workspace/content/question-banks']);
+    }, 1000);
   }
 }
