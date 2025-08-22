@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService, PublicDataService, ContentService, FrameworkService, SearchService } from '@sunbird/core';
 import { TelemetryService, IInteractEventEdata } from '@sunbird/telemetry';
-import { ConfigService, NavigationHelperService, ToasterService, ResourceService, LayoutService, ServerResponse} from '@sunbird/shared';
+import { ConfigService, NavigationHelperService, ToasterService, ResourceService, LayoutService, ServerResponse } from '@sunbird/shared';
 import { EditorService, WorkSpaceService } from './../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -31,7 +31,7 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
   public publicStorageAccount: any;
   public sunbirdQuestionSetChildrenLimit: any;
   public sunbirdCollectionChildrenLimit: any;
-  constructor(public searchService: SearchService,private userService: UserService, public layoutService: LayoutService,
+  constructor(public searchService: SearchService, private userService: UserService, public layoutService: LayoutService,
     private telemetryService: TelemetryService, private publicDataService: PublicDataService,
     private config: ConfigService, private contentService: ContentService, private router: Router,
     public editorService: EditorService, public workSpaceService: WorkSpaceService,
@@ -46,11 +46,11 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
     this.layoutType = localStorage.getItem('layoutType') || 'joy';
     this.baseUrl = (<HTMLInputElement>document.getElementById('baseUrl'))
       ? (<HTMLInputElement>document.getElementById('baseUrl')).value : document.location.origin;
-      this.publicStorageAccount = (<HTMLInputElement>document.getElementById('publicStorageAccount'))
+    this.publicStorageAccount = (<HTMLInputElement>document.getElementById('publicStorageAccount'))
       ? (<HTMLInputElement>document.getElementById('publicStorageAccount')).value : undefined;
-      this.sunbirdQuestionSetChildrenLimit = (<HTMLInputElement>document.getElementById('sunbirdQuestionSetChildrenLimit')) ?
+    this.sunbirdQuestionSetChildrenLimit = (<HTMLInputElement>document.getElementById('sunbirdQuestionSetChildrenLimit')) ?
       (<HTMLInputElement>document.getElementById('sunbirdQuestionSetChildrenLimit')).value : 500;
-      this.sunbirdCollectionChildrenLimit = (<HTMLInputElement>document.getElementById('sunbirdCollectionChildrenLimit')) ?
+    this.sunbirdCollectionChildrenLimit = (<HTMLInputElement>document.getElementById('sunbirdCollectionChildrenLimit')) ?
       (<HTMLInputElement>document.getElementById('sunbirdCollectionChildrenLimit')).value : 1200;
   }
 
@@ -69,7 +69,7 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
         this.getFrameWorkDetails();
         this.loadScripts();
       },
-      (error) => {
+        (error) => {
           if (error === 'NO_PERMISSION') {
             this.redirectToWorkSpace();
             this.toasterService.error(this.resourceService.messages.emsg.m0013);
@@ -80,7 +80,7 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
             this.redirectToWorkSpace();
             this.toasterService.error(this.resourceService.messages.emsg.m0004);
           }
-      });
+        });
   }
 
   switchLayout() {
@@ -99,24 +99,24 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
     options.params.mode = 'edit';
     if (this.routeParams.type && this.routeParams.type === 'QuestionSet') {
       return this.workSpaceService.getQuestion(this.routeParams.contentId, options).
-      pipe(mergeMap((data) => {
-        this.collectionDetails = data.result.questionset;
-        if (this.validateRequest()) {
-          return of(data);
-        } else {
-          return throwError('NO_PERMISSION');
-        }
-      }));
+        pipe(mergeMap((data) => {
+          this.collectionDetails = data.result.questionset;
+          if (this.validateRequest()) {
+            return of(data);
+          } else {
+            return throwError('NO_PERMISSION');
+          }
+        }));
     } else {
       return this.editorService.getContent(this.routeParams.contentId, options).
-      pipe(mergeMap((data) => {
-        this.collectionDetails = data.result.content;
-        if (this.validateRequest()) {
-          return of(data);
-        } else {
-          return throwError('NO_PERMISSION');
-        }
-      }));
+        pipe(mergeMap((data) => {
+          this.collectionDetails = data.result.content;
+          if (this.validateRequest()) {
+            return of(data);
+          } else {
+            return throwError('NO_PERMISSION');
+          }
+        }));
     }
   }
 
@@ -124,21 +124,21 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
     const lockInfo = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     const allowedEditState = ['draft', 'allcontent', 'collaborating-on', 'uploaded', 'alltextbooks'].includes(this.routeParams.state);
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
-    if (_.isEmpty(lockInfo) && allowedEditState && ( allowedEditStatus || this.userService.userProfile.rootOrgAdmin )) {
+    if (_.isEmpty(lockInfo) && allowedEditState && (allowedEditStatus || this.userService.userProfile.rootOrgAdmin)) {
       return combineLatest(
         this.getCollectionDetails(),
         this.editorService.getOwnershipType(),
         this.lockContent(),
-      ).pipe(map(data => ({ collectionInfo: data[0], ownershipType: data[1]})));
+      ).pipe(map(data => ({ collectionInfo: data[0], ownershipType: data[1] })));
     } else {
       return combineLatest(
         this.getCollectionDetails(),
         this.editorService.getOwnershipType(),
-      ).pipe(map(data => ({ collectionInfo: data[0], ownershipType: data[1]})));
+      ).pipe(map(data => ({ collectionInfo: data[0], ownershipType: data[1] })));
     }
   }
 
-  lockContent () {
+  lockContent() {
     const contentInfo = {
       contentType: this.routeParams.type,
       framework: this.routeParams.framework,
@@ -146,21 +146,21 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
       mimeType: this.routeParams.type && this.routeParams.type === 'QuestionSet' ? 'application/vnd.sunbird.questionset' : 'application/vnd.ekstep.content-collection'
     };
     const input = {
-      resourceId : contentInfo.identifier,
-      resourceType : 'Content',
-      resourceInfo : JSON.stringify(contentInfo),
-      creatorInfo : JSON.stringify({'name': this.userService.userProfile.firstName, 'id': this.userService.userProfile.id}),
-      createdBy : this.userService.userProfile.id,
+      resourceId: contentInfo.identifier,
+      resourceType: 'Content',
+      resourceInfo: JSON.stringify(contentInfo),
+      creatorInfo: JSON.stringify({ 'name': this.userService.userProfile.firstName, 'id': this.userService.userProfile.id }),
+      createdBy: this.userService.userProfile.id,
       isRootOrgAdmin: this.userService.userProfile.rootOrgAdmin
     };
     return this.workSpaceService.lockContent(input).pipe(tap((data) => {
       this.queryParams = data.result;
-      this.router.navigate([], {relativeTo: this.activatedRoute, queryParams: data.result});
+      this.router.navigate([], { relativeTo: this.activatedRoute, queryParams: data.result });
     }));
   }
 
-  retireLock () {
-    const inputData = {'resourceId': this.routeParams.contentId, 'resourceType': 'Content'};
+  retireLock() {
+    const inputData = { 'resourceId': this.routeParams.contentId, 'resourceType': 'Content' };
     this.workSpaceService.retireLock(inputData).subscribe(
       (data: ServerResponse) => {
         this.redirectToWorkSpace();
@@ -174,11 +174,11 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
   /**
    *Validate the request
    */
-   public validateRequest() {
+  public validateRequest() {
     const validStatus = _.indexOf(this.config.editorConfig.COLLECTION_EDITOR.collectionStatus, this.collectionDetails.status) > -1;
     const validState = _.indexOf(this.config.editorConfig.COLLECTION_EDITOR.collectionState, this.routeParams.state) > -1;
     if ((this.collectionDetails.mimeType === this.config.editorConfig.COLLECTION_EDITOR.mimeCollection
-    || this.collectionDetails.mimeType === this.config.editorConfig.QUESTIONSET_EDITOR.mimeCollection) && validStatus) {
+      || this.collectionDetails.mimeType === this.config.editorConfig.QUESTIONSET_EDITOR.mimeCollection) && validStatus) {
       if (validState && this.collectionDetails.createdBy !== this.userService.userid) {
         return true; // we need to remove this case or validState should be changed
       } else if (validState && _.includes(this.collectionDetails.collaborators, this.userService.userid)) {
@@ -196,35 +196,35 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
   getFrameWorkDetails() {
     const objectType = this.collectionDetails.mimeType === 'application/vnd.sunbird.questionset' ? 'QuestionSet' : 'Collection';
     this.workSpaceService.getCategoryDefinition(objectType, this.collectionDetails.primaryCategory, this.userService.channel)
-    .subscribe(data => {
-      // tslint:disable-next-line:max-line-length
-      if (_.get(data, 'result.objectCategoryDefinition.objectMetadata.config')) {
-        this.hierarchyConfig = _.get(data, 'result.objectCategoryDefinition.objectMetadata.config.sourcingSettings.collection');
-        if (!_.isEmpty(this.hierarchyConfig.children)) {
-          this.hierarchyConfig.children = this.getPrimaryCategoryData(this.hierarchyConfig.children);
+      .subscribe(data => {
+        // tslint:disable-next-line:max-line-length
+        if (_.get(data, 'result.objectCategoryDefinition.objectMetadata.config')) {
+          this.hierarchyConfig = _.get(data, 'result.objectCategoryDefinition.objectMetadata.config.sourcingSettings.collection');
+          if (!_.isEmpty(this.hierarchyConfig.children)) {
+            this.hierarchyConfig.children = this.getPrimaryCategoryData(this.hierarchyConfig.children);
+          }
+          if (!_.isEmpty(this.hierarchyConfig.hierarchy)) {
+            _.forEach(this.hierarchyConfig.hierarchy, (hierarchyValue) => {
+              if (_.get(hierarchyValue, 'children')) {
+                hierarchyValue['children'] = this.getPrimaryCategoryData(_.get(hierarchyValue, 'children'));
+              }
+            });
+          }
         }
-        if (!_.isEmpty(this.hierarchyConfig.hierarchy)) {
-          _.forEach(this.hierarchyConfig.hierarchy, (hierarchyValue) => {
-            if (_.get(hierarchyValue, 'children')) {
-              hierarchyValue['children'] = this.getPrimaryCategoryData(_.get(hierarchyValue, 'children'));
-            }
-          });
+        if (!this.showQuestionEditor) {
+          this.setEditorConfig();
+          this.editorConfig.context['framework'] = _.get(this.collectionDetails, 'framework');
+          if (_.get(this.collectionDetails, 'primaryCategory') && _.get(this.collectionDetails, 'primaryCategory') !== 'Curriculum Course') {
+            this.editorConfig.context['targetFWIds'] = _.get(this.collectionDetails, 'targetFWIds');
+          }
+          this.showLoader = false;
+        } else {
+          this.setEditorConfig();
+          this.showLoader = false;
         }
-      }
-      if (!this.showQuestionEditor) {
-        this.setEditorConfig();
-        this.editorConfig.context['framework'] = _.get(this.collectionDetails, 'framework');
-        if (_.get(this.collectionDetails, 'primaryCategory') && _.get(this.collectionDetails, 'primaryCategory') !== 'Curriculum Course') {
-          this.editorConfig.context['targetFWIds'] = _.get(this.collectionDetails, 'targetFWIds');
-        }
-        this.showLoader = false;
-      } else {
-        this.setEditorConfig();
-        this.showLoader = false;
-      }
-    }, err => {
-      this.toasterService.error(this.resourceService.messages.emsg.m0015);
-    });
+      }, err => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0015);
+      });
   }
 
   getPrimaryCategoryData(childrenData) {
@@ -233,7 +233,7 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
         switch (key) {
           case 'Question':
             childrenData[key] = this.frameworkService['_channelData'].questionPrimaryCategories
-            || this.config.appConfig.WORKSPACE.questionPrimaryCategories;
+              || this.config.appConfig.WORKSPACE.questionPrimaryCategories;
             break;
           case 'Content':
             childrenData[key] = this.frameworkService['_channelData'].contentPrimaryCategories || [];
@@ -265,12 +265,12 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  redirectToWorkSpace () {
+  redirectToWorkSpace() {
     if (this.routeParams.state === 'collaborating-on') {
       this.navigationHelperService.navigateToWorkSpace('/workspace/content/collaborating-on/1');
-    } else if ( this.routeParams.state === 'upForReview') {
+    } else if (this.routeParams.state === 'upForReview') {
       this.navigationHelperService.navigateToWorkSpace('/workspace/content/upForReview/1');
-    } else if ( this.routeParams.state === 'allcontent') {
+    } else if (this.routeParams.state === 'allcontent') {
       this.navigationHelperService.navigateToWorkSpace('/workspace/content/allcontent/1');
     } else {
       this.navigationHelperService.navigateToWorkSpace('/workspace/content/draft/1');
@@ -288,7 +288,7 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
   setEditorConfig() {
     // tslint:disable-next-line:max-line-length
     const additionalCategories = _.merge(this.frameworkService['_channelData'].contentAdditionalCategories, this.frameworkService['_channelData'].collectionAdditionalCategories) || this.config.appConfig.WORKSPACE.primaryCategory;
-    const cloudProvider = (<HTMLInputElement>document.getElementById('cloudProvider')).value ? (<HTMLInputElement>document.getElementById('cloudProvider')).value : '' ;
+    const cloudProvider = (<HTMLInputElement>document.getElementById('cloudProvider')).value ? (<HTMLInputElement>document.getElementById('cloudProvider')).value : '';
     this.editorConfig = {
       context: {
         identifier: this.routeParams.contentId,
@@ -318,15 +318,15 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
           id: this.userService.userid,
           orgIds: this.userProfile.organisationIds,
           organisations: this.userService.orgIdNameMap,
-          fullName : !_.isEmpty(this.userProfile.lastName) ? this.userProfile.firstName + ' ' + this.userProfile.lastName :
-          this.userProfile.firstName,
+          fullName: !_.isEmpty(this.userProfile.lastName) ? this.userProfile.firstName + ' ' + this.userProfile.lastName :
+            this.userProfile.firstName,
           firstName: this.userProfile.firstName,
-          lastName : !_.isEmpty(this.userProfile.lastName) ? this.userProfile.lastName : '',
+          lastName: !_.isEmpty(this.userProfile.lastName) ? this.userProfile.lastName : '',
           isRootOrgAdmin: this.userService.userProfile.rootOrgAdmin
         },
         channelData: this.frameworkService['_channelData'],
-        cloudStorageUrls : this.userService.cloudStorageUrls,
-        cloudStorage:{ provider: cloudProvider}
+        cloudStorageUrls: this.userService.cloudStorageUrls,
+        cloudStorage: { provider: cloudProvider }
       },
       config: {
         primaryCategory: this.collectionDetails.primaryCategory,
@@ -341,12 +341,14 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
       }
     };
     if (this.resourceService && this.resourceService.frmelmnts.lbl) {
-        this.editorConfig.context = {
-            ...this.editorConfig.context,
-            resourceBundles: this.resourceService.frmelmnts.lbl,
-            observableElements: this.searchService.getObservableElements('collectionEditor'),
-            language: localStorage.getItem('portalLanguage')
-        };
+      this.editorConfig.context = {
+        ...this.editorConfig.context,
+        resourceBundles: this.resourceService.frmelmnts.lbl,
+        observableElements: this.searchService.getObservableElements().subscribe(result => {
+          return result || [];
+        }),
+        language: localStorage.getItem('portalLanguage')
+      };
     }
     this.editorConfig.config.showAddCollaborator = true;
     this.editorConfig.config.publicStorageAccount = this.publicStorageAccount;
@@ -372,9 +374,9 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
   }
 
   private getEditorMode() {
-    const contentStatus =((this.routeParams?.contentStatus || this.collectionDetails.status) ?? '').toLowerCase();
+    const contentStatus = ((this.routeParams?.contentStatus || this.collectionDetails.status) ?? '').toLowerCase();
     if (contentStatus === 'draft' || contentStatus === 'live' || contentStatus === 'flagdraft'
-        || contentStatus === 'unlisted') {
+      || contentStatus === 'unlisted') {
       return 'edit';
     }
 

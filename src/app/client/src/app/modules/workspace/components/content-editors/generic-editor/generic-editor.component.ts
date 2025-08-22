@@ -240,7 +240,9 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     window.config.headerConfig = { "managecollaborator": true }
     window.config.resourceBundles = this.resourceService;
     window.config.observableElements = [];
-    this.searchService.getObservableElements();
+    this.searchService.getObservableElements().subscribe(result => {
+      window.config.observableElements = result || [];
+    });
   }
   /**
   * Re directed to the workspace on close of modal

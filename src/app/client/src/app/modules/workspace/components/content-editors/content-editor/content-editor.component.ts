@@ -229,10 +229,12 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     window.config.videoMaxSize = this.videoMaxSize;
     window.config.cloudStorage.provider = this.cloudProvider;
     window.config.contentFields = this.fwCategoriAsNames.join();
-    window.config.headerConfig = {"managecollaborator":true};
+    window.config.headerConfig = { "managecollaborator": true };
     window.config.resourceBundles = this.resourceService;
     window.config.dir = this.getDocumentDir() || 'rtl';
-    this.searchService.getObservableElements();
+    this.searchService.getObservableElements().subscribe(result => {
+      window.config.observableElements = result || [];
+    });
   }
   /**
    * checks the permission using state, status and userId
