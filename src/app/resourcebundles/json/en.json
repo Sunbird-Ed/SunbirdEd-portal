@@ -118,6 +118,12 @@
                 "copyId": "Copy ID"
             },
             "lbl": {
+                "noOptionsFound": "No options found",
+                "selectedElements": "Selected Elements",
+                "observableElements": "Observable Elements",
+                "noObservableElementsSelected": "No observable elements selected",
+                "selectObservableElements": "Select observable elements",
+                "close": "Close",
                 "createSkillDomain": "Create Skill Domain",
                 "enterSkillDomainName": "Enter skill domain name",
                 "enterSkillDomainDescription": "Enter skill domain description",
