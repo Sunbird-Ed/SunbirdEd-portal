@@ -31,6 +31,7 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
   public publicStorageAccount: any;
   public sunbirdQuestionSetChildrenLimit: any;
   public sunbirdCollectionChildrenLimit: any;
+  public observableElements: any;
   constructor(public searchService: SearchService, private userService: UserService, public layoutService: LayoutService,
     private telemetryService: TelemetryService, private publicDataService: PublicDataService,
     private config: ConfigService, private contentService: ContentService, private router: Router,
@@ -55,6 +56,9 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.searchService.getObservableElements().subscribe(result => {
+      this.observableElements = result || {};
+    });
     this.routeParams = this.activatedRoute.snapshot.params;
     this.userProfile = this.userService.userProfile;
     this.queryParams = this.activatedRoute.snapshot.queryParams;
@@ -344,9 +348,7 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
       this.editorConfig.context = {
         ...this.editorConfig.context,
         resourceBundles: this.resourceService.frmelmnts.lbl,
-        observableElements: this.searchService.getObservableElements().subscribe(result => {
-          return result || [];
-        }),
+        observableElements: this.observableElements || {},
         language: localStorage.getItem('portalLanguage')
       };
     }
