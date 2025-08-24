@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular
 import { UntypedFormGroup } from '@angular/forms';
 import {
   ResourceService, ConfigService, ToasterService, ServerResponse, Framework,
-  ILoaderMessage, NavigationHelperService , BrowserCacheTtlService
+  ILoaderMessage, NavigationHelperService , BrowserCacheTtlService, UtilService
 } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EditorService } from './../../services';
@@ -140,7 +140,8 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     public browserCacheTtlService: BrowserCacheTtlService,
     public telemetryService: TelemetryService,
     public publicDataService: PublicDataService,
-    public contentService: ContentService
+    public contentService: ContentService,
+    private utilService: UtilService
   ) {
     super(searchService, workSpaceService, userService);
     this.activatedRoute = activatedRoute;
@@ -233,7 +234,8 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
             };
             this.formService.getFormConfig(formServiceInputParams).subscribe(
               (data: ServerResponse) => {
-                this.formFieldProperties = data;
+                const language = localStorage.getItem('portalLanguage');
+                this.formFieldProperties = this.utilService.updateDataWithI18n(data, language);
                 this.getFormConfig();
               },
               (err: ServerResponse) => {
