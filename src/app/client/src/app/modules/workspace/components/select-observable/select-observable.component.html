@@ -22,14 +22,14 @@
     <!-- No options message section -->
     <div class="section no-options-section" *ngIf="filteredOptions.length === 0 && searchTerm">
       <div class="no-options times-new-roman-font">
-        No options found
+        {{noOptionsFoundText || 'No options found'}}
       </div>
     </div>
   </div>
    <div class="select-observable selected-div" tabindex="0">
     <!-- Selected chips section -->
     <div class="section selected-section" *ngIf="selected.length">
-      <span class="selected-elements-header times-new-roman-font">Selected Elements</span>
+      <span class="selected-elements-header times-new-roman-font">{{selectedElementsText || 'Selected Elements'}}</span>
       <div class="selected-chips selected-chips-scrollable">
         <span class="chip selected times-new-roman-font" *ngFor="let opt of selected">
           {{opt.name}} ({{opt.code}})

@@ -127,6 +127,14 @@
                 "createSkillDomain": "إنشاء مجال المهارات",
                 "enterSkillDomainName": "أدخل اسم مجال المهارات",
                 "enterSkillDomainDescription": "أدخل وصف مجال المهارات",
+                "questionBankDesc": "إنشاء بنك أسئلة لإنشاء الأسئلة بكميات كبيرة",
+                "createQuestionBank": "إنشاء بنك الأسئلة",
+                "enterQuestionBankName": "أدخل اسم بنك الأسئلة",
+                "observableElementsIsRequired": "العناصر القابلة للملاحظة مطلوبة",
+                "searchSelectElements": "البحث وتحديد العناصر...",
+                "searchOptions": "خيارات البحث...",
+                "skillMap": "مجال المهارات",
+                "confirm": "تأكيد",
                 "skillMapSavedDraftFailed": "فشل حفظ مجال المهارات كمسودة.",
                 "submitToContinue": "أرسل للمتابعة.",
                 "totalQuestions": "إجمالي الأسئلة:",
@@ -1703,7 +1711,6 @@
                 "view_skill_map": "عرض خريطة المهارات",
                 "view_skill_map_review" : "عرض خريطة المهارات للمراجعة",
                 "skillMapReview": "مراجعة خريطة المهارات",
-                "skillMap": "خريطة المهارات",
                 "Rate": "قيّم",
                 "create_resource": "إنشاء مورد",
                 "view_all_textbooks": "عرض جميع الكتب المدرسية",
@@ -1867,6 +1874,9 @@
             },
             "emsg": {
                 "online": "انتقل إلى الإنترنت لتحميل النص",
+                "observableElementsLoadFailed": "فشل في تحميل العناصر القابلة للملاحظة. يرجى المحاولة مرة أخرى.",
+                "skillDomainCreationFailed": "فشل في إنشاء مجال المهارات. يرجى المحاولة مرة أخرى.",
+                "questionBankCreationFailed": "فشل في إنشاء بنك الأسئلة. يرجى المحاولة مرة أخرى.",
                 "desktop": {
                     "importValidZipFile": "هذا ملف بيانات غير ساري"
                 }
@@ -2277,6 +2287,8 @@
                 "grpdeletesuccess": "تم حذف المجموعة بنجاح",
                 "leaveGroup": "لم تعد جزءًا من هذه المجموعة",
                 "joinedProgramSuccessfully": "لقد انضمت بنجاح إلى هذا البرنامج",
+                "frameworkCreated": "تم إنشاء الإطار بنجاح!",
+                "questionBankCreated": "تم إنشاء بنك الأسئلة بنجاح!",
                 "m0009": "ملاحظة تم إنشاؤها بنجاح ...",
                 "m001": "تم تمكين منتدى المناقشة بنجاح",
                 "m0013": "ملاحظة تم تحديثها بنجاح ...",

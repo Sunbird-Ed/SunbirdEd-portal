@@ -127,6 +127,14 @@
                 "createSkillDomain": "Créer un domaine de compétences",
                 "enterSkillDomainName": "Entrez le nom du domaine de compétences",
                 "enterSkillDomainDescription": "Entrez la description du domaine de compétences",
+                "questionBankDesc": "Créer une banque de questions pour la création de questions en vrac",
+                "createQuestionBank": "Créer une banque de questions",
+                "enterQuestionBankName": "Entrez le nom de la banque de questions",
+                "observableElementsIsRequired": "Les éléments observables sont requis",
+                "searchSelectElements": "Rechercher et sélectionner des éléments...",
+                "searchOptions": "Options de recherche...",
+                "skillMap": "Domaine de compétences",
+                "confirm": "Confirmer",
                 "skillMapSavedDraftFailed": "Échec de l'enregistrement du domaine de compétences en tant que brouillon.",
                 "submitToContinue": "Soumettre pour continuer.",
                 "totalQuestions": "Nombre total de questions :",
@@ -1701,7 +1709,6 @@
                 "skillMapDesc": "Créer des parcours d'apprentissage et des cartes de compétences",
                 "view_skill_map": "Voir la carte de compétences",
                 "view_skill_map_review": "Voir la carte de compétences pour révision",
-                "skillMap": "Carte des compétences",
                 "Rate": "Évaluer",
                 "create_resource": "Créer une ressource",
                 "view_all_textbooks": "Voir tous les manuels",
@@ -1866,6 +1873,9 @@
             },
             "emsg": {
                 "online": "Allez en ligne pour télécharger la transcription",
+                "observableElementsLoadFailed": "Échec du chargement des éléments observables. Veuillez réessayer.",
+                "skillDomainCreationFailed": "Échec de la création du domaine de compétences. Veuillez réessayer.",
+                "questionBankCreationFailed": "Échec de la création de la banque de questions. Veuillez réessayer.",
                 "desktop": {
                     "importValidZipFile": "Ceci est un fichier de télémétrie non valide"
                 }
@@ -2276,6 +2286,8 @@
                 "grpdeletesuccess": "Groupe supprimé avec succès",
                 "leaveGroup": "Vous ne faites plus partie de ce groupe",
                 "joinedProgramSuccessfully": "Vous avez réussi à rejoindre ce programme",
+                "frameworkCreated": "Framework créé avec succès!",
+                "questionBankCreated": "Banque de questions créée avec succès!",
                 "m0009": "Remarque créée avec succès ...",
                 "m001": "Le forum de discussion a permis avec succès",
                 "m0013": "Remarque mise à jour avec succès ...",

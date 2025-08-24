@@ -128,6 +128,13 @@
                 "enterSkillDomainName": "Enter skill domain name",
                 "enterSkillDomainDescription": "Enter skill domain description",
                 "creating": "Creating...",
+                "questionBankDesc": "Create question bank for bulk questions creation",
+                "createQuestionBank": "Create Question Bank",
+                "enterQuestionBankName": "Enter question bank name",
+                "observableElementsIsRequired": "Observable Element is required",
+                "searchSelectElements": "Search and select elements...",
+                "searchOptions": "Search options...",
+                "skillMap": "Skill Domain",
                 "failedToLoadContent": "Failed to load content.",
                 "frameworkRejected": "Framework rejected successfully.",
                 "failedToUpdateFramework": "Failed to update framework.",
@@ -1612,6 +1619,7 @@
                 "orientation": "Orientation",
                 "portrait": "Portrait",
                 "landscape": "Landscape",
+                "confirm": "Confirm",
                 "briefDescription": "Brief description about the Content",
                 "enterBriefDescription": "Brief description",
                 "enterTitle": "Enter Title For Content",
@@ -1717,7 +1725,6 @@
                 "skillMapDesc": "Create skill learning paths",
                 "view_skill_map": "View Skill Domain",
                 "view_skill_map_review": "View Skill Domain Review",
-                "skillMap": "Skill Domain",
                 "skillMapReview": "Skill Domain Review",
                 "urlRequiredMsg": "URL or File is required to upload",
                     "invalidContentTypeMsg": "Invalid content type (supported type: pdf, epub, h5p, mp4, youtube, html-zip, webm, whitelisted-domain)",
@@ -1865,6 +1872,9 @@
             },
             "emsg": {
                 "online": "Go online to download the transcript",
+                "observableElementsLoadFailed": "Failed to load observable elements. Please try again.",
+                "skillDomainCreationFailed": "Failed to create skill Domain. Please try again.",
+                "questionBankCreationFailed": "Failed to create question bank. Please try again.",
                 "desktop": {
                     "importValidZipFile": "This is an invalid telemetry file"
                 }
@@ -2276,6 +2286,8 @@
                 "grpdeletesuccess": "Group deleted successfully",
                 "leaveGroup": "You are no longer part of this group",
                 "joinedProgramSuccessfully": "You have successfully joined this program",
+                "frameworkCreated": "Framework created successfully!",
+                "questionBankCreated": "Question Bank created successfully!",
                 "m0009": "Note created successfully...",
                 "m001": "Discussion forum enabled successfully",
                 "m0013": "Note updated successfully...",

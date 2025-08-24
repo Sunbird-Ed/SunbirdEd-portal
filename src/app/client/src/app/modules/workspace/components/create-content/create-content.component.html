@@ -280,8 +280,8 @@
     </button>
     <button type="button" class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="isCreating"
       [ngClass]="{'loading': isCreating}" (click)="createFramework(frameworkModal)" tabindex="0">
-      {{isCreating ? (resourceService?.frmelmnts?.lbl?.creating || 'Creating...') :
-      (resourceService?.frmelmnts?.btn?.create || 'Create')}}
+      {{isCreating ? resourceService?.frmelmnts?.lbl?.creating :
+      resourceService?.frmelmnts?.btn?.create}}
     </button>
   </div>
   <!--/Actions-->
@@ -304,12 +304,12 @@
     <form class="ui form" [formGroup]="questionBankForm" (ngSubmit)="createQuestionBank(questionBankModal)">
       <!-- Question Bank Name -->
       <div class="field required">
-        <label>{{resourceService?.frmelmnts?.lbl?.name || 'Name'}}</label>
+        <label>{{resourceService?.frmelmnts?.lbl?.name}}</label>
         <input type="text" formControlName="name"
-          placeholder="{{resourceService?.frmelmnts?.lbl?.enterQuestionBankName || 'Enter question bank name'}}"
+          placeholder="{{resourceService?.frmelmnts?.lbl?.enterQuestionBankName}}"
           maxlength="120" class="sb-form-control">
         <div *ngIf="hasQuestionBankNameError" class="sb-color-error fs-0-85 mt-8">
-          {{resourceService?.frmelmnts?.lbl?.nameIsRequired || 'Name is required'}}
+          {{resourceService?.frmelmnts?.lbl?.nameIsRequired}}
         </div>
       </div>
 
@@ -322,8 +322,8 @@
             readonly class="sb-form-control">
           <button type="button" class="ui button primary" (click)="openObservableSelector()"
             [disabled]="isLoadingObservableElements" [ngClass]="{'loading': isLoadingObservableElements}" tabindex="0">
-            {{isLoadingObservableElements ? (resourceService?.frmelmnts?.lbl?.loading || 'Loading...') :
-            (resourceService?.frmelmnts?.btn?.select || 'Select')}}
+            {{isLoadingObservableElements ? resourceService?.frmelmnts?.lbl?.loading :
+            resourceService?.frmelmnts?.lbl?.select}}
           </button>
         </div>
         <div *ngIf="hasQuestionBankObservableElementError" class="sb-color-error fs-0-85 mt-8">
@@ -338,12 +338,12 @@
   <div class="sb-modal-actions">
     <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8"
       (click)="closeCreateQuestionBankModal()">
-      {{resourceService?.frmelmnts?.btn?.cancel || 'Cancel'}}
+      {{resourceService?.frmelmnts?.lbl?.cancel}}
     </button>
     <button type="button" class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="isCreatingQuestionBank"
       [ngClass]="{'loading': isCreatingQuestionBank}" (click)="createQuestionBank(questionBankModal)" tabindex="0">
-      {{isCreatingQuestionBank ? (resourceService?.frmelmnts?.lbl?.creating || 'Creating...') :
-      (resourceService?.frmelmnts?.btn?.create || 'Create')}}
+      {{isCreatingQuestionBank ? resourceService?.frmelmnts?.lbl?.creating :
+      resourceService?.frmelmnts?.btn?.create}}
     </button>
   </div>
   <!--/Actions-->
@@ -358,7 +358,7 @@
 
   <!--Header-->
   <div class="sb-modal-header">
-    {{resourceService?.frmelmnts?.lbl?.selectObservableElements || 'Select Observable Elements'}}
+    {{resourceService?.frmelmnts?.lbl?.selectObservableElements}}
   </div>
   <!--/Header-->
 
@@ -367,7 +367,9 @@
     <div class="observable-elements-content">
       <app-select-observable [options]="observableElementsOptions" [selected]="selectedObservableElements"
         [config]="{type: 'single'}"
-        placeholder="{{resourceService?.frmelmnts?.lbl?.searchSelectElements || 'Search and select elements...'}}"
+        placeholder="{{resourceService?.frmelmnts?.lbl?.searchSelectElements}}"
+        [noOptionsFoundText]="resourceService?.frmelmnts?.lbl?.noOptionsFound"
+        [selectedElementsText]="resourceService?.frmelmnts?.lbl?.selectedElements"
         (selectedChange)="onObservableElementsSelected($event)">
       </app-select-observable>
     </div>
@@ -378,11 +380,11 @@
   <div class="sb-modal-actions">
     <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8"
       (click)="closeObservableElementsModal()">
-      {{resourceService?.frmelmnts?.btn?.cancel || 'Cancel'}}
+      {{resourceService?.frmelmnts?.lbl?.cancel}}
     </button>
     <button type="button" class="sb-btn sb-btn-normal sb-btn-primary"
       [disabled]="selectedObservableElements.length === 0" (click)="closeObservableElementsModal()" tabindex="0">
-      {{resourceService?.frmelmnts?.btn?.confirm || 'Confirm'}}
+      {{resourceService?.frmelmnts?.lbl?.confirm}}
     </button>
   </div>
   <!--/Actions-->

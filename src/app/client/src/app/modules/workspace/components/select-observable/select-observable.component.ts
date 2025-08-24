@@ -19,8 +19,10 @@ export interface SelectObservableConfig {
 export class SelectObservableComponent implements OnInit {
   @Input() options: SelectObservableOption[] = [];
   @Input() config: SelectObservableConfig = { type: 'single' };
-  @Input() placeholder: string = 'Search options...';
+  @Input() placeholder: string = '';
   @Input() selected: SelectObservableOption[] = [];
+  @Input() noOptionsFoundText: string = '';
+  @Input() selectedElementsText: string = '';
   @Output() selectedChange = new EventEmitter<SelectObservableOption[]>();
 
   searchTerm = '';
