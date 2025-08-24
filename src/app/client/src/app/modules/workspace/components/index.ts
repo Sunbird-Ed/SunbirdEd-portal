@@ -33,3 +33,4 @@ export * from './skill-map/skill-map.component';
 export * from './skill-map-editor/skill-map-editor.component';
 export * from './skill-map-tree/skill-map-tree.component';
 export * from './question-bank-list/question-bank-list.component';
+export * from './select-observable/select-observable.component';

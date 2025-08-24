@@ -566,7 +566,7 @@ export class SearchService {
     return this.learnerService.post(option);
   }
 
-  getObservableElements(): Observable<any[]> {
+  getObservableElements(): Observable<any> {
     const searchParams = {
       filters: {
         status: ['Live'],
@@ -580,7 +580,7 @@ export class SearchService {
           return data.result || {};
         } 
         else{
-          return {}
+          return {};
         }
       }),
       catchError(error => {

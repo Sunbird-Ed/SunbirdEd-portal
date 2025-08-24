@@ -214,6 +214,16 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
       ownershipType: this.ownershipType,
       timeDiff: this.userService.getServerTimeDiff
     };
+
+    // Add observable element data if available in query params
+    if (this.queryParams && this.queryParams['observableElementData'] && this.queryParams['primaryCategory']) {
+      try {
+        window.context.observableElementData = JSON.parse(this.queryParams['observableElementData']);
+        window.context.primaryCategory = this.queryParams['primaryCategory'];
+      } catch (error) {
+        console.error('Error parsing observableElementData:', error);
+      }
+    }
   }
   private getDocumentDir(): string {
     return typeof document !== 'undefined' ? document.dir || 'rtl' : 'rtl';

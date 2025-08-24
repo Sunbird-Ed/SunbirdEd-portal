@@ -130,10 +130,10 @@
         </div>
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.practicedescription}}</p>
       </div>
-      
+
       <!-- Question Bank -->
-      <div class="three wide column" *ngIf="permissionService.permissionAvailable"
-        appPermission [permission]='questionBankRole'>
+      <div class="three wide column" *ngIf="permissionService.permissionAvailable" appPermission
+        [permission]='questionBankRole'>
         <div class="ui link card" (click)="openCreateQuestionBankModal()" appTelemetryInteract
           [telemetryInteractEdata]="{id:'createQuestionBank',type:'click',pageid:'create-questionbank'}">
           <div class="content">
@@ -143,12 +143,13 @@
             </div>
           </div>
         </div>
-        <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.questionBankDesc || 'Create question bank for bulk questions creation'}}</p>
+        <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.questionBankDesc || 'Create question bank for
+          bulk questions creation'}}</p>
       </div>
-      
+
       <!-- Skill Domain -->
-      <div class="three wide column" *ngIf="permissionService.permissionAvailable"
-        appPermission [permission]='skillmapRole'>
+      <div class="three wide column" *ngIf="permissionService.permissionAvailable" appPermission
+        [permission]='skillmapRole'>
         <div class="ui link card" (click)="openCreateFrameworkModal()" appTelemetryInteract
           [telemetryInteractEdata]="{id:'createSkillMap',type:'click',pageid:'create-skillmap'}">
           <div class="content">
@@ -158,7 +159,8 @@
             </div>
           </div>
         </div>
-        <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.skillMapDesc || 'Create skill learning paths'}}</p>
+        <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.skillMapDesc || 'Create skill learning
+          paths'}}</p>
       </div>
     </div>
   </div>
@@ -234,8 +236,8 @@
 </div>
 
 <!-- Create Framework Modal -->
-<sui-modal *ngIf="showCreateFrameworkModal" [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'normal'"
-  class="sb-modal sb-course-modal" (dismissed)="closeCreateFrameworkModal();" #frameworkModal>
+<sui-modal *ngIf="showCreateFrameworkModal" [mustScroll]="true" [isClosable]="false" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal sb-course-modal" (dismissed)="closeCreateFrameworkModal();" #frameworkModal>
 
   <i class="icon close" (click)="frameworkModal.deny('denied')" tabindex="0"></i>
 
@@ -251,13 +253,10 @@
       <!-- Framework Name -->
       <div class="field required">
         <label>{{resourceService?.frmelmnts?.lbl?.name || 'Name'}}</label>
-        <input type="text" 
-               formControlName="name" 
-               placeholder="{{resourceService?.frmelmnts?.lbl?.enterSkillDomainName || 'Enter skill domain name'}}"
-               maxlength="120"
-               class="sb-form-control">
-        <div *ngIf="hasNameError" 
-             class="sb-color-error fs-0-85 mt-8">
+        <input type="text" formControlName="name"
+          placeholder="{{resourceService?.frmelmnts?.lbl?.enterSkillDomainName || 'Enter skill domain name'}}"
+          maxlength="120" class="sb-form-control">
+        <div *ngIf="hasNameError" class="sb-color-error fs-0-85 mt-8">
           {{resourceService?.frmelmnts?.lbl?.nameIsRequired || 'Name is required'}}
         </div>
       </div>
@@ -265,11 +264,9 @@
       <!-- Framework Description -->
       <div class="field mt-16">
         <label>{{resourceService?.frmelmnts?.lbl?.description || 'Description'}}</label>
-        <textarea formControlName="description" 
-                  rows="3" 
-                  placeholder="{{resourceService?.frmelmnts?.lbl?.enterSkillDomainDescription || 'Enter skill domain description'}}"
-                  maxlength="256"
-                  class="sb-form-control"></textarea>
+        <textarea formControlName="description" rows="3"
+          placeholder="{{resourceService?.frmelmnts?.lbl?.enterSkillDomainDescription || 'Enter skill domain description'}}"
+          maxlength="256" class="sb-form-control"></textarea>
       </div>
     </form>
   </div>
@@ -277,24 +274,22 @@
 
   <!--Actions-->
   <div class="sb-modal-actions">
-    <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" (click)="closeCreateFrameworkModal()">
+    <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8"
+      (click)="closeCreateFrameworkModal()">
       {{resourceService?.frmelmnts?.btn?.cancel || 'Cancel'}}
     </button>
-    <button type="button" 
-            class="sb-btn sb-btn-normal sb-btn-primary" 
-            [disabled]="isCreating"
-            [ngClass]="{'loading': isCreating}"
-            (click)="createFramework(frameworkModal)"
-            tabindex="0">
-      {{isCreating ? (resourceService?.frmelmnts?.lbl?.creating || 'Creating...') : (resourceService?.frmelmnts?.btn?.create || 'Create')}}
+    <button type="button" class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="isCreating"
+      [ngClass]="{'loading': isCreating}" (click)="createFramework(frameworkModal)" tabindex="0">
+      {{isCreating ? (resourceService?.frmelmnts?.lbl?.creating || 'Creating...') :
+      (resourceService?.frmelmnts?.btn?.create || 'Create')}}
     </button>
   </div>
   <!--/Actions-->
 </sui-modal>
 
 <!-- Create Question Bank Modal -->
-<sui-modal *ngIf="showCreateQuestionBankModal" [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'normal'"
-  class="sb-modal sb-course-modal" (dismissed)="closeCreateQuestionBankModal();" #questionBankModal>
+<sui-modal *ngIf="showCreateQuestionBankModal" [mustScroll]="true" [isClosable]="false" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal sb-course-modal" (dismissed)="closeCreateQuestionBankModal();" #questionBankModal>
 
   <i class="icon close" (click)="questionBankModal.deny('denied')" tabindex="0"></i>
 
@@ -310,13 +305,10 @@
       <!-- Question Bank Name -->
       <div class="field required">
         <label>{{resourceService?.frmelmnts?.lbl?.name || 'Name'}}</label>
-        <input type="text" 
-               formControlName="name" 
-               placeholder="{{resourceService?.frmelmnts?.lbl?.enterQuestionBankName || 'Enter question bank name'}}"
-               maxlength="120"
-               class="sb-form-control">
-        <div *ngIf="hasQuestionBankNameError" 
-             class="sb-color-error fs-0-85 mt-8">
+        <input type="text" formControlName="name"
+          placeholder="{{resourceService?.frmelmnts?.lbl?.enterQuestionBankName || 'Enter question bank name'}}"
+          maxlength="120" class="sb-form-control">
+        <div *ngIf="hasQuestionBankNameError" class="sb-color-error fs-0-85 mt-8">
           {{resourceService?.frmelmnts?.lbl?.nameIsRequired || 'Name is required'}}
         </div>
       </div>
@@ -325,20 +317,16 @@
       <div class="field required mt-16">
         <label>{{resourceService?.frmelmnts?.lbl?.observableElements || 'Observable Elements'}}</label>
         <div class="ui right labeled input">
-          <input type="text" 
-                 formControlName="observable" 
-                 placeholder="{{resourceService?.frmelmnts?.lbl?.selectObservableElements || 'Select observable element'}}"
-                 readonly
-                 class="sb-form-control">
-          <button type="button" 
-                  class="ui button primary" 
-                  (click)="openObservableSelector()"
-                  tabindex="0">
-            {{resourceService?.frmelmnts?.btn?.select || 'Select'}}
+          <input type="text" formControlName="observable"
+            placeholder="{{resourceService?.frmelmnts?.lbl?.selectObservableElements || 'Select observable element'}}"
+            readonly class="sb-form-control">
+          <button type="button" class="ui button primary" (click)="openObservableSelector()"
+            [disabled]="isLoadingObservableElements" [ngClass]="{'loading': isLoadingObservableElements}" tabindex="0">
+            {{isLoadingObservableElements ? (resourceService?.frmelmnts?.lbl?.loading || 'Loading...') :
+            (resourceService?.frmelmnts?.btn?.select || 'Select')}}
           </button>
         </div>
-        <div *ngIf="hasQuestionBankObservableElementError" 
-             class="sb-color-error fs-0-85 mt-8">
+        <div *ngIf="hasQuestionBankObservableElementError" class="sb-color-error fs-0-85 mt-8">
           {{resourceService?.frmelmnts?.lbl?.observableElementsIsRequired || 'Observable Element is required'}}
         </div>
       </div>
@@ -348,16 +336,53 @@
 
   <!--Actions-->
   <div class="sb-modal-actions">
-    <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" (click)="closeCreateQuestionBankModal()">
+    <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8"
+      (click)="closeCreateQuestionBankModal()">
       {{resourceService?.frmelmnts?.btn?.cancel || 'Cancel'}}
     </button>
-    <button type="button" 
-            class="sb-btn sb-btn-normal sb-btn-primary" 
-            [disabled]="isCreatingQuestionBank"
-            [ngClass]="{'loading': isCreatingQuestionBank}"
-            (click)="createQuestionBank(questionBankModal)"
-            tabindex="0">
-      {{isCreatingQuestionBank ? (resourceService?.frmelmnts?.lbl?.creating || 'Creating...') : (resourceService?.frmelmnts?.btn?.create || 'Create')}}
+    <button type="button" class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="isCreatingQuestionBank"
+      [ngClass]="{'loading': isCreatingQuestionBank}" (click)="createQuestionBank(questionBankModal)" tabindex="0">
+      {{isCreatingQuestionBank ? (resourceService?.frmelmnts?.lbl?.creating || 'Creating...') :
+      (resourceService?.frmelmnts?.btn?.create || 'Create')}}
+    </button>
+  </div>
+  <!--/Actions-->
+</sui-modal>
+
+<!-- Observable Elements Selection Modal -->
+<sui-modal *ngIf="showObservableElementsModal" [mustScroll]="true" [isClosable]="false" [transitionDuration]="0"
+  [size]="'large'" class="sb-modal sb-course-modal" (dismissed)="closeObservableElementsModal();"
+  #observableElementsModal>
+
+  <i class="icon close" (click)="observableElementsModal.deny('denied')" tabindex="0"></i>
+
+  <!--Header-->
+  <div class="sb-modal-header">
+    {{resourceService?.frmelmnts?.lbl?.selectObservableElements || 'Select Observable Elements'}}
+  </div>
+  <!--/Header-->
+
+  <!--Content-->
+  <div class="sb-modal-content sb-bg-color-primary-100 pt-0">
+    <div class="observable-elements-content">
+      <app-select-observable [options]="observableElementsOptions" [selected]="selectedObservableElements"
+        [config]="{type: 'single'}"
+        placeholder="{{resourceService?.frmelmnts?.lbl?.searchSelectElements || 'Search and select elements...'}}"
+        (selectedChange)="onObservableElementsSelected($event)">
+      </app-select-observable>
+    </div>
+  </div>
+  <!--/Content-->
+
+  <!--Actions-->
+  <div class="sb-modal-actions">
+    <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8"
+      (click)="closeObservableElementsModal()">
+      {{resourceService?.frmelmnts?.btn?.cancel || 'Cancel'}}
+    </button>
+    <button type="button" class="sb-btn sb-btn-normal sb-btn-primary"
+      [disabled]="selectedObservableElements.length === 0" (click)="closeObservableElementsModal()" tabindex="0">
+      {{resourceService?.frmelmnts?.btn?.confirm || 'Confirm'}}
     </button>
   </div>
   <!--/Actions-->

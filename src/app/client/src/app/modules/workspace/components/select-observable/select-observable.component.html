@@ -1,0 +1,41 @@
+<div>
+
+
+  <div class="select-observable" tabindex="0">
+    <!-- Search input section -->
+    <div class="section search-section">
+      <div class="input-wrapper">
+        <input type="text" [placeholder]="placeholder" [(ngModel)]="searchTerm" class="times-new-roman-font" />
+        <i class="fa fa-search search-icon"></i>
+      </div>
+    </div>
+
+    <!-- Available options section -->
+    <div class="section options-section options-section-scrollable" *ngIf="filteredOptions.length > 0">
+      <div class="options-chips options-chips-padded">
+        <span class="chip option times-new-roman-font" *ngFor="let opt of filteredOptions" (click)="selectOption(opt)">
+          {{opt.name}} ({{opt.code}})
+        </span>
+      </div>
+    </div>
+
+    <!-- No options message section -->
+    <div class="section no-options-section" *ngIf="filteredOptions.length === 0 && searchTerm">
+      <div class="no-options times-new-roman-font">
+        No options found
+      </div>
+    </div>
+  </div>
+   <div class="select-observable selected-div" tabindex="0">
+    <!-- Selected chips section -->
+    <div class="section selected-section" *ngIf="selected.length">
+      <span class="selected-elements-header times-new-roman-font">Selected Elements</span>
+      <div class="selected-chips selected-chips-scrollable">
+        <span class="chip selected times-new-roman-font" *ngFor="let opt of selected">
+          {{opt.name}} ({{opt.code}})
+          <span class="remove times-new-roman-font" (click)="removeOption(opt)">&times;</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
