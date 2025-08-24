@@ -793,14 +793,12 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
           this.skillMapTreeComponent?.clearAllHighlights();
           // Reset validation flag since everything is valid
           this.showValidationErrors = false;
-          this.createTermsAndAssociations().catch(error => {
+          this.createTermsAndAssociations(isReview).catch(error => {
             // Reset loading state on error
             this.isSavingDraft = false;
           });
         }
-        if (isReview) {
-          this.makeReviewApiCall(this.frameworkId);
-        }
+       
       } else {
         // Reset loading state if tree component not available
         this.isSavingDraft = false;
@@ -1003,7 +1001,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       this.isSendingForReview = false;
       return;
     }
-    this.makeReviewApiCall(this.frameworkId);
+    this.saveDraft(true);
   }
 
   /**
@@ -1015,7 +1013,6 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         frameworkId: frameworkId
       }
     };
-    this.saveDraft(true)
     const option = {
       url: `framework/v3/review/${frameworkId}`,
       data: requestBody
@@ -1386,7 +1383,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   /**
    * Main method to create terms and associations via API calls
    */
-  private async createTermsAndAssociations(): Promise<void> {
+  private async createTermsAndAssociations(isReview: boolean): Promise<void> {
     try {
       const frameworkIdentifier = this.getFrameworkIdentifier();
       if (!frameworkIdentifier) {
@@ -1414,6 +1411,10 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         this.resourceService?.frmelmnts?.lbl?.skillMapSavedDraft ||
         'Your skill domain has been successfully saved as draft.'
       );
+
+       if (isReview) {
+          this.makeReviewApiCall(this.frameworkId);
+        }
 
     } catch (error) {
       this.isSavingDraft = false;
@@ -1600,7 +1601,24 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    */
   private async createSingleTerm(node: any, frameworkIdentifier: string): Promise<void> {
     try {
+      // First check if code exists using search API
+      const searchRequestBody = {
+        request: {
+          query: "",
+          filters: {
+            status: ["Live"],
+            code: node?.code
+          },
+          sort_by: {
+            lastUpdatedOn: "desc"
+          }
+        }
+      };
 
+      // Make search API call
+      const searchResponse = await this.skillMapTreeService.makeApiCall('POST', 'composite/v1/search', searchRequestBody, this.contentService);
+
+      // Prepare term data
       const termData: any = {
         name: node?.name,
         code: node?.code,
@@ -1618,10 +1636,13 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
           term: termData
         }
       };
-      const createApiUrl = `framework/v1/term/create?framework=${frameworkIdentifier}&category=${node?.category}`;
 
-      try {
+      // If count is 0, create new term, else update existing
+      if (searchResponse?.result?.count === 0) {
+        // Create new term
+        const createApiUrl = `framework/v1/term/create?framework=${frameworkIdentifier}&category=${node?.category}`;
         const response = await this.skillMapTreeService.makeApiCall('POST', createApiUrl, requestBody, this.contentService);
+        
         if (!response) {
           throw new Error('No response received from create API');
         }
@@ -1633,29 +1654,33 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         if (!response?.result || !response.result.node_id) {
           throw new Error('Invalid create API response: missing node_id in result');
         }
+        
         const nodeIdArray = response.result.node_id;
         if (!Array.isArray(nodeIdArray) || nodeIdArray.length === 0) {
           throw new Error('Invalid create API response: node_id should be a non-empty array');
         }
 
-        const apiNodeId = nodeIdArray[0]; // Take first element
+        const apiNodeId = nodeIdArray[0];
         this.createdNodeIds.set(node?.id, apiNodeId);
-
-      } catch (createError) {
-        const updateApiUrl = `framework/v1/term/update/${requestBody?.request?.term?.code}?framework=${frameworkIdentifier}&category=${node?.category}`;
-
+      } else {
+        // Get the identifier from search response and extract last part after underscore
+        const searchTermIdentifier = node?.metadata?.id || "";
+        const updateId = searchTermIdentifier?.split('_')?.pop() || node?.code;
+        
+        // Update existing term
+        const updateApiUrl = `framework/v1/term/update/${updateId}?framework=${frameworkIdentifier}&category=${node?.category}`;
         const updateResponse = await this.skillMapTreeService.makeApiCall('PATCH', updateApiUrl, requestBody, this.contentService);
 
         if (updateResponse?.responseCode !== 'OK') {
           throw new Error(`Update API returned error: ${updateResponse?.responseCode} - ${updateResponse?.params?.errmsg || 'Unknown error'}`);
         }
 
-        const termIdentifier = updateResponse?.result?.node_id ||
+        const finalIdentifier = updateResponse?.result?.node_id ||
           updateResponse?.result?.identifier ||
           updateResponse?.result?.versionKey ||
           node?.code;
 
-        this.createdNodeIds.set(node?.id, termIdentifier);
+        this.createdNodeIds.set(node?.id, finalIdentifier);
       }
 
     } catch (error) {
@@ -1800,7 +1825,9 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
           term: termData
         }
       };
-      const apiUrl = `framework/v1/term/update/${update?.code}?framework=${frameworkIdentifier}&category=${update?.parentCategory}`;
+      // Extract the last part after the last underscore from parentNodeId
+      const nodeId = update?.parentNodeId?.split('_').pop() || update?.parentNodeId;
+      const apiUrl = `framework/v1/term/update/${nodeId}?framework=${frameworkIdentifier}&category=${update?.parentCategory}`;
 
       const response = await this.skillMapTreeService.makeApiCall('PATCH', apiUrl, requestBody, this.contentService);
       if (!response) {

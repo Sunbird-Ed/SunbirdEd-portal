@@ -8,6 +8,17 @@ export interface SkillMapNode {
   code: string;
   description?: string;
   children: SkillMapNode[];
+  metadata?: {
+    name: string;
+    code: string;
+    description?: string;
+    id: string;
+    category: string;
+    status: string;
+    behavioralIndicators?: string[];
+    measurableOutcomes?: string[];
+    assessmentCriteria?: string[];
+  };
 }
 
 export interface SkillMapData {
@@ -61,7 +72,6 @@ export class SkillMapTreeService {
    * This is used when loading existing frameworks from API
    */
   buildTreeFromCategories(categories: any[], resourceService: any): SkillMapNode {
-    // If no categories, return empty root with "Untitled" (for new skill maps)
     if (!categories || categories.length === 0) {
       return {
         id: 'root',
@@ -72,58 +82,100 @@ export class SkillMapTreeService {
       };
     }
 
-    // Create maps to organize terms
+    // Create maps for terms and nodes
     const nodeMap = new Map<string, SkillMapNode>();
-    const termsByCategory = new Map<string, any[]>();
-    const allTerms = new Map<string, any>();
+    const termMap = new Map<string, any>();
 
     // First pass: collect all terms and organize by category
-    for (const category of categories) {
-      if (category?.terms && category.terms.length > 0) {
-        // Filter out retired terms
-        const activeTerms = category.terms.filter(term => term?.status !== 'Retired');
-        
-        if (activeTerms.length > 0) {
-          termsByCategory.set(category?.code, activeTerms);
-
-          for (const term of activeTerms) {
-            // Store term with its category info
-            allTerms.set(term?.identifier, {
+    const domainTerms: any[] = [];
+    categories.forEach(category => {
+      if (category?.terms) {
+        category.terms.forEach(term => {
+          if (term?.status !== 'Retired') {
+            if (category.code === 'domain') {
+              domainTerms.push(term);
+            }
+            
+            // Store the term with its category and metadata
+            const isObservableElement = category.code === 'observableElement';
+            termMap.set(term.identifier, {
               ...term,
-              categoryCode: category?.code
+              category: category.code,
+              children: []
             });
 
-            // Create node for this term
+            // Create a node for the term
             const node: SkillMapNode = {
-              id: term?.identifier,
-              name: term?.name,
-              code: term?.code,
-              description: term?.description || '',
-              children: []
+              id: term.identifier,
+              name: term.name,
+              code: term.code,
+              description: term.description || '',
+              children: [],
+              metadata: {
+                name: term.name,
+                code: term.code,
+                description: term.description || '',
+                id: term.identifier,
+                category: category.code,
+                status: term.status,
+                behavioralIndicators: term.behavioralIndicators || [],
+                measurableOutcomes: term.measurableOutcomes || [],
+                assessmentCriteria: term.assessmentCriteria || []
+              }
             };
-            nodeMap.set(term?.identifier, node);
+            nodeMap.set(term.identifier, node);
           }
+        });
+      }
+    });
+
+    // Second pass: Build all associations
+    const processAssociations = (term: any, parentNode: SkillMapNode, level: number = 1) => {
+      // Log for debugging
+      console.log(`Processing term: ${term.name}, category: ${term.category}, level: ${level}`);
+      
+      if (term.associations?.length > 0) {
+        term.associations.forEach((assoc: any) => {
+          const childNode = nodeMap.get(assoc.identifier);
+          const childTerm = termMap.get(assoc.identifier);
+          
+          // Log child node info
+          console.log(`Found child: ${childNode?.name}, category: ${childTerm?.category}`);
+
+          if (childNode && childTerm && !this.hasNode(parentNode.children, childNode.id)) {
+            // Ensure child node has its metadata properly set
+            childNode.metadata = {
+              ...childNode.metadata,
+              category: childTerm.category,
+              id: childTerm.identifier
+            };
+
+            parentNode.children.push(childNode);
+            
+            // Always process child's associations, especially for subskill level
+            // Log the recursive call
+            console.log(`Processing child associations for: ${childNode.name}, level: ${level + 1}`);
+            processAssociations(childTerm, childNode, level + 1);
+          }
+        });
+      }
+    };
+
+    // Start processing associations from domain terms
+    const processedNodes = new Set<string>();
+    termMap.forEach((term, termId) => {
+      if (term.category === 'domain' && !processedNodes.has(termId)) {
+        const node = nodeMap.get(termId);
+        if (node) {
+          processAssociations(term, node);
+          processedNodes.add(termId);
         }
       }
-    }
-    // Find the domain term that should be the root for existing frameworks
-    const domainTerms = termsByCategory.get('domain') || [];
-    if (domainTerms.length === 0) {
-      return {
-        id: 'root',
-        name: resourceService?.frmelmnts?.lbl?.untitled || 'Untitled',
-        code: '',
-        description: '',
-        children: []
-      };
-    }
+    });
 
-    // Use the first domain term as the root node (for existing frameworks)
+    // Get the first domain term
     const domainTerm = domainTerms[0];
-    const rootNode = nodeMap.get(domainTerm?.identifier);
-
-    if (!rootNode) {
-      console.error('Could not find domain node for root');
+    if (!domainTerm) {
       return {
         id: 'root',
         name: resourceService?.frmelmnts?.lbl?.untitled || 'Untitled',
@@ -132,13 +184,32 @@ export class SkillMapTreeService {
         children: []
       };
     }
-    this.buildChildrenFromAssociations(rootNode, nodeMap, allTerms);
-    return rootNode;
+
+    // Return the domain node directly
+    const domainNode = nodeMap.get(domainTerm.identifier);
+    if (!domainNode) {
+      return {
+        id: 'root',
+        name: resourceService?.frmelmnts?.lbl?.untitled || 'Untitled',
+        code: '',
+        description: '',
+        children: []
+      };
+    }
+
+    return domainNode;
   }
 
   /**
    * Recursively build children from associations
    */
+  /**
+   * Helper method to check if a node with given ID exists in children array
+   */
+  private hasNode(children: SkillMapNode[], nodeId: string): boolean {
+    return children.some(child => child.id === nodeId);
+  }
+
   buildChildrenFromAssociations(
     parentNode: SkillMapNode,
     nodeMap: Map<string, SkillMapNode>,

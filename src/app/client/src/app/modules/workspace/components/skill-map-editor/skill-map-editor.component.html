@@ -124,9 +124,11 @@
                                     <mat-error
                                         *ngIf="codeFormControl.hasError('invalidCode') && !codeFormControl.hasError('required') && (codeFormControl.touched || showValidationErrors)">{{resourceService?.frmelmnts?.lbl?.codeInvalidFormat || 'Code format is invalid'}}</mat-error>
                                     <mat-error
-                                        *ngIf="codeFormControl.hasError('duplicateCode') && !codeFormControl.hasError('required') && !codeFormControl.hasError('invalidCode') && (codeFormControl.touched || showValidationErrors)">{{resourceService?.frmelmnts?.lbl?.codeNotUnique || 'Code must be unique'}}</mat-error>
+                                        *ngIf="codeFormControl.hasError('hasUnderscore') && !codeFormControl.hasError('required') && !codeFormControl.hasError('invalidCode') && (codeFormControl.touched || showValidationErrors)">{{resourceService?.frmelmnts?.lbl?.codeNoUnderscore || 'Code cannot contain underscore (_)'}}</mat-error>
                                     <mat-error
-                                        *ngIf="codeFormControl.hasError('codeExists') && !codeFormControl.hasError('required') && !codeFormControl.hasError('invalidCode') && !codeFormControl.hasError('duplicateCode') && (codeFormControl.touched || showValidationErrors)">{{resourceService?.frmelmnts?.lbl?.codeAlreadyExists || 'Code already exists'}}</mat-error>
+                                        *ngIf="codeFormControl.hasError('duplicateCode') && !codeFormControl.hasError('required') && !codeFormControl.hasError('invalidCode') && !codeFormControl.hasError('hasUnderscore') && (codeFormControl.touched || showValidationErrors)">{{resourceService?.frmelmnts?.lbl?.codeNotUnique || 'Code must be unique'}}</mat-error>
+                                    <mat-error
+                                        *ngIf="codeFormControl.hasError('codeExists') && !codeFormControl.hasError('required') && !codeFormControl.hasError('invalidCode') && !codeFormControl.hasError('duplicateCode') && !codeFormControl.hasError('hasUnderscore') && (codeFormControl.touched || showValidationErrors)">{{resourceService?.frmelmnts?.lbl?.codeAlreadyExists || 'Code already exists'}}</mat-error>
                                 </mat-form-field>
                             </div>
 
