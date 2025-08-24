@@ -1,10 +1,10 @@
 
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { Inject, Injectable } from '@angular/core';
 import { UserService } from './../user/user.service';
 import { ContentService } from './../content/content.service';
 import { ConfigService, ServerResponse, ResourceService } from '@sunbird/shared';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { SearchParam } from './../../interfaces/search';
 import { LearnerService } from './../learner/learner.service';
 import { PublicDataService } from './../public-data/public-data.service';
@@ -566,26 +566,27 @@ export class SearchService {
     return this.learnerService.post(option);
   }
 
-  getObservableElements() {
-    try {
-      const searchParams = {
-        filters: {
-          status: ['Live'],
-          category: "observableElement",
+  getObservableElements(): Observable<any[]> {
+    const searchParams = {
+      filters: {
+        status: ['Live'],
+        category: "observableElement",
+      }
+    };
+
+    return this.compositeSearch(searchParams).pipe(
+      map((data: ServerResponse) => {
+        if (data?.result) {
+          return data.result || {};
+        } 
+        else{
+          return {}
         }
-      };
-      this.compositeSearch(searchParams).subscribe({
-        next: (data: ServerResponse) => {
-          if (data?.result) {
-            window.config.observableElements = data.result || [];
-          } else {
-            window.config.observableElements = [];
-          }
-        }
-      });
-    } catch (error) {
-      console.error('Error in getObservableElements method:', error);
-      window.config.observableElements = [];
-    }
+      }),
+      catchError(error => {
+        console.error('Error in getObservableElements:', error);
+        return of({});
+      })
+    );
   }
 }

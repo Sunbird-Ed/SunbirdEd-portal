@@ -118,6 +118,12 @@
                 "copyId": "معرف النسخ"
             },
             "lbl": {
+                "noOptionsFound": "لم يتم العثور على خيارات",
+                "selectedElements": "العناصر المحددة",
+                "observableElements": "العناصر القابلة للملاحظة",
+                "noObservableElementsSelected": "لم يتم تحديد عناصر قابلة للملاحظة",
+                "selectObservableElements": "حدد العناصر القابلة للملاحظة",
+                "close": "إغلاق",
                 "createSkillDomain": "إنشاء مجال المهارات",
                 "enterSkillDomainName": "أدخل اسم مجال المهارات",
                 "enterSkillDomainDescription": "أدخل وصف مجال المهارات",

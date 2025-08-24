@@ -22,11 +22,11 @@
     <div class="ten wide column pt-0 uzindex">
       <div class="pb-10" *ngIf="reviewContent && totalCount> config.appConfig.WORKSPACE.PAGE_LIMIT && !showLoader && !showError">
         <div class="ui pagination menu mt-10 right-floated pt-0 " *ngIf="pager.pages.length">
-          <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0" (click)="navigateToPage(1) ">First</a>
-          <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0" (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
+          <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0" (click)="navigateToPage(1) ">{{resourceService?.frmelmnts?.lbl?.first || 'First'}}</a>
+          <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0" (click)="navigateToPage(pager.currentPage - 1)">{{resourceService?.frmelmnts?.lbl?.previous || 'Previous'}}</a>
           <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" tabindex="0" (click)="navigateToPage(page)" class="item">{{page}}</a>
-          <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.currentPage + 1)" class="item">Next</a>
-          <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.totalPages)" class="item ">Last</a>
+          <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.currentPage + 1)" class="item">{{resourceService?.frmelmnts?.lbl?.next || 'Next'}}</a>
+          <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.totalPages)" class="item ">{{resourceService?.frmelmnts?.lbl?.last || 'Last'}}</a>
         </div>
       </div>
     </div>
