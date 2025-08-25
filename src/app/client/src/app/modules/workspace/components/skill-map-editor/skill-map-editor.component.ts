@@ -429,7 +429,11 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   }
 
   private createNewSkillMap(): void {
-    this.frameworkName = '';
+    // Get framework name from query params similar to openEditFrameworkModal
+    const queryParams = this.activatedRoute?.snapshot?.queryParams;
+    const frameworkNameFromParams = queryParams?.['frameworkName'] || '';
+    
+    this.frameworkName = frameworkNameFromParams;
     this.skillMapData = {
       id: 'new-skilldomain',
       name: 'New Skill Domain', // Default metadata name
@@ -439,7 +443,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       framework: 'FMPS',
       rootNode: {
         id: 'root',
-        name: this.resourceService?.frmelmnts?.lbl?.untitled || 'Untitled', // Always "Untitled" for new skill maps
+        name: frameworkNameFromParams || this.resourceService?.frmelmnts?.lbl?.untitled || 'Untitled', // Use framework name instead of "Untitled"
         description: '', // Empty description for user to fill
         code: '', // Empty code for user to fill
         children: []
@@ -468,7 +472,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       framework: 'FMPS',
       rootNode: {
         id: 'root',
-        name: this.resourceService?.frmelmnts?.lbl?.untitled || 'Untitled', // Always "Untitled" for new skill maps
+        name: frameworkData.name || this.resourceService?.frmelmnts?.lbl?.untitled || 'Untitled', // Use framework name instead of "Untitled"
         description: '', // Empty description for user to fill
         code: '', // Empty code for user to fill
         children: []
@@ -544,14 +548,22 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         this.frameworkId = frameworkData.identifier;
       }
 
+      // Get framework name from query params for fallback
+      const queryParams = this.activatedRoute?.snapshot?.queryParams;
+      const frameworkName = queryParams?.['frameworkName'] || frameworkData?.name;
+
       // Process categories and terms to build tree structure
-      const rootNode = this.skillMapTreeService.buildTreeFromCategories(frameworkData?.categories || [], this.resourceService);
+      const rootNode = this.skillMapTreeService.buildTreeFromCategories(
+        frameworkData?.categories || [], 
+        this.resourceService, 
+        frameworkName
+      );
 
       // Create skill map data structure
       // Note: The rootNode is now the domain term, not a framework-level root
       this.skillMapData = {
         id: frameworkData?.identifier || frameworkData?.code || '',
-        name: frameworkData?.name || '',
+        name: frameworkData?.name || frameworkName || '',
         description: frameworkData?.description || '',
         code: frameworkData?.code || '',
         status: frameworkData?.status || 'Draft',
@@ -646,6 +658,21 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         )
       }
     );
+
+    // If this is an observableElement and we're in view/edit mode with existing data,
+    // fetch the latest data from API
+    if (this.isObservableElement && !this.isUpdatingObservableData && this.selectedNodeData?.data?.id && this.selectedNodeData.data.id !== 'root') {
+      // Only fetch if we don't already have the data or if data is empty
+      const hasExistingData = this.behavioralIndicators.length > 0 || 
+                             this.measurableOutcomes.length > 0 || 
+                             this.assessmentCriteria.length > 0;
+      
+      if (!hasExistingData) {
+        this.fetchAndUpdateObservableElementData().catch(error => {
+          console.error('Failed to fetch observableElement data:', error);
+        });
+      }
+    }
     
     // Reset form validation state
     this.skillMapTreeService.resetFormValidationState(
@@ -1381,6 +1408,40 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Fetch observableElement data from API and update current node
+   */
+  public async fetchAndUpdateObservableElementData(): Promise<void> {
+    if (!this.isObservableElement || !this.selectedNodeData?.data?.id) {
+      return;
+    }
+
+    try {
+      const frameworkCode = this.getFrameworkIdentifier();
+      const termIdentifier = this.selectedNodeData.data.id.split('_')?.pop();
+
+      const observableData = await this.skillMapTreeService.fetchObservableElementData(
+        termIdentifier,
+        frameworkCode,
+        this.contentService
+      );
+      this.behavioralIndicators.push(...observableData.behavioralIndicators);
+      this.measurableOutcomes.push(...observableData.measurableOutcomes);
+      this.assessmentCriteria.push(...observableData.assessmentCriteria);
+
+      // Update the node metadata
+      if (this.selectedNodeData.data.metadata) {
+        this.selectedNodeData.data.metadata.behavioralIndicators = [...observableData.behavioralIndicators];
+        this.selectedNodeData.data.metadata.measurableOutcomes = [...observableData.measurableOutcomes];
+        this.selectedNodeData.data.metadata.assessmentCriteria = [...observableData.assessmentCriteria];
+      }
+      this.cdr.detectChanges();
+    } catch (error) {
+      console.error('Error fetching observableElement data:', error);
+      this.toasterService.error(this.resourceService?.frmelmnts?.lbl?.failedToFetchObservableElementData || 'Failed to fetch observableElement data from API');
+    }
+  }
+
+  /**
    * Main method to create terms and associations via API calls
    */
   private async createTermsAndAssociations(isReview: boolean): Promise<void> {
@@ -1390,7 +1451,6 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         this.saveLocalDraftOnly();
         return;
       }
-      this.createdNodeIds.clear();
       this.termCreationQueue = [];
       this.associationUpdateQueue = [];
 
@@ -1499,12 +1559,12 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
    */
   private retireTermFromAPI(node: any): Promise<any> {
     const termData = node?.data;
-    if (!termData || !termData?.metadata) {
+    if (!termData) {
       return Promise.reject('Invalid term data');
     }
 
     const category = this.getCategoryByLevel(node?.getLevel());
-    const termCode = termData?.metadata?.code;
+    const termCode = termData?.code || termData?.metadata?.code;
     const frameworkIdentifier = this.frameworkId;
 
     if (!category || !termCode || !frameworkIdentifier) {
@@ -1604,13 +1664,9 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
       // First check if code exists using search API
       const searchRequestBody = {
         request: {
-          query: "",
           filters: {
             status: ["Live"],
             code: node?.code
-          },
-          sort_by: {
-            lastUpdatedOn: "desc"
           }
         }
       };
@@ -1637,23 +1693,10 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         }
       };
 
-      // If count is 0, create new term, else update existing
       if (searchResponse?.result?.count === 0) {
         // Create new term
         const createApiUrl = `framework/v1/term/create?framework=${frameworkIdentifier}&category=${node?.category}`;
         const response = await this.skillMapTreeService.makeApiCall('POST', createApiUrl, requestBody, this.contentService);
-        
-        if (!response) {
-          throw new Error('No response received from create API');
-        }
-
-        if (response?.responseCode !== 'OK') {
-          throw new Error(`Create API returned error: ${response?.responseCode} - ${response?.params?.errmsg || 'Unknown error'}`);
-        }
-
-        if (!response?.result || !response.result.node_id) {
-          throw new Error('Invalid create API response: missing node_id in result');
-        }
         
         const nodeIdArray = response.result.node_id;
         if (!Array.isArray(nodeIdArray) || nodeIdArray.length === 0) {
@@ -1663,8 +1706,7 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
         const apiNodeId = nodeIdArray[0];
         this.createdNodeIds.set(node?.id, apiNodeId);
       } else {
-        // Get the identifier from search response and extract last part after underscore
-        const searchTermIdentifier = node?.metadata?.id || "";
+        const searchTermIdentifier =  searchResponse?.result?.Term[0]?.identifier;
         const updateId = searchTermIdentifier?.split('_')?.pop() || node?.code;
         
         // Update existing term

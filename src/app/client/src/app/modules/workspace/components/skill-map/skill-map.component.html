@@ -11,7 +11,7 @@
     <thead>
       <tr>
         <th class="six wide UpReviewTableHeader">
-          {{ isSkillMapReviewer ? (resourceService?.frmelmnts?.lbl?.skillMap || 'Skill Domain') : (resourceService?.frmelmnts?.lbl?.skills || 'Skills') }}
+          {{(resourceService?.frmelmnts?.lbl?.skillMap || 'Skill Domain') }}
         </th>
         <th class="four wide UpReviewTableHeader">
           {{ isSkillMapReviewer ? (resourceService?.frmelmnts?.lbl?.author || 'Author') : (resourceService?.frmelmnts?.lbl?.lastUpdated || 'Last Updated') }}

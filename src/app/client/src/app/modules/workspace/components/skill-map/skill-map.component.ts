@@ -17,6 +17,7 @@ import { debounceTime, map } from 'rxjs/operators';
  * Interface for skill map content extending IContents with status property
  */
 interface ISkillMapContent extends IContents {
+  identifier?: string;
   status?: string;
   lastUpdatedOn?: string;
   code?: string;
@@ -342,7 +343,14 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
    * Process framework data to match expected content format
    */
   private processFrameworkData(frameworks: any[]): ISkillMapContent[] {
-    return frameworks.map(framework => ({
+    // Sort frameworks by lastUpdatedOn in descending order
+    const sortedFrameworks = [...frameworks].sort((a, b) => {
+      const dateA = new Date(a.lastUpdatedOn || 0).getTime();
+      const dateB = new Date(b.lastUpdatedOn || 0).getTime();
+      return dateB - dateA;
+    });
+    
+    return sortedFrameworks.map(framework => ({
       identifier: framework.identifier,
       name: framework.name,
       code: framework.code,
@@ -414,14 +422,6 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
           this.toasterService.success(
             this.resourceService.messages.smsg.m0006 || 'Content deleted successfully'
           );
-          // Refresh the skill map list
-          setTimeout(() => {
-            this.fetchSkillMapContent(
-              this.config.appConfig.WORKSPACE.PAGE_LIMIT,
-              this.pageNumber,
-              { queryParams: this.queryParams }
-            );
-          }, 1000);
         } else {
           // API returned success but with non-OK response code
           this.toasterService.error(
@@ -429,6 +429,17 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
             this.resourceService.messages.fmsg.failedToDeleteContent ||
             'Failed to delete content'
           );
+        }
+        // Refresh the skill map list by removing the deleted content
+        this.skillMapContent = this.skillMapContent.filter(content => content.identifier !== contentId);
+        this.totalCount = Number(this.totalCount) - 1;
+        
+        // Update pagination if necessary
+        if (this.skillMapContent.length === 0 && this.pageNumber > 1) {
+          this.navigateToPage(this.pageNumber - 1);
+        } else {
+          // Recalculate pagination
+          this.pager = this.paginationService.getPager(Number(this.totalCount), this.pageNumber, this.pageLimit);
         }
       },
       (err: ServerResponse) => {

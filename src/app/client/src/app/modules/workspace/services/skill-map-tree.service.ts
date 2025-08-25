@@ -60,7 +60,7 @@ export class SkillMapTreeService {
     const value = control?.value;
     if (!value) return null;
 
-    const validCodePattern = /^[a-zA-Z0-9_-]+$/;
+    const validCodePattern = /^[a-zA-Z0-9_.-]+$/;
     if (!validCodePattern.test(value)) {
       return { 'invalidCode': { value: control?.value } };
     }
@@ -71,11 +71,11 @@ export class SkillMapTreeService {
    * Build tree structure from framework categories
    * This is used when loading existing frameworks from API
    */
-  buildTreeFromCategories(categories: any[], resourceService: any): SkillMapNode {
+  buildTreeFromCategories(categories: any[], resourceService: any, frameworkName?: string): SkillMapNode {
     if (!categories || categories.length === 0) {
       return {
         id: 'root',
-        name: resourceService?.frmelmnts?.lbl?.untitled || 'Untitled',
+        name: frameworkName || resourceService?.frmelmnts?.lbl?.untitled || 'Untitled',
         code: '',
         description: '',
         children: []
@@ -178,7 +178,7 @@ export class SkillMapTreeService {
     if (!domainTerm) {
       return {
         id: 'root',
-        name: resourceService?.frmelmnts?.lbl?.untitled || 'Untitled',
+        name: frameworkName || resourceService?.frmelmnts?.lbl?.untitled || 'Untitled',
         code: '',
         description: '',
         children: []
@@ -190,11 +190,16 @@ export class SkillMapTreeService {
     if (!domainNode) {
       return {
         id: 'root',
-        name: resourceService?.frmelmnts?.lbl?.untitled || 'Untitled',
+        name: frameworkName || resourceService?.frmelmnts?.lbl?.untitled || 'Untitled',
         code: '',
         description: '',
         children: []
       };
+    }
+
+    // If framework name is provided and domain node name is empty or default, use framework name
+    if (frameworkName && (!domainNode.name || domainNode.name === 'Untitled' || domainNode.name === resourceService?.frmelmnts?.lbl?.untitled)) {
+      domainNode.name = frameworkName;
     }
 
     return domainNode;
@@ -625,6 +630,49 @@ export class SkillMapTreeService {
     nameFormControl?.setValue(metadata?.name || '', { emitEvent: false });
     codeFormControl?.setValue(metadata?.code || '', { emitEvent: false });
     descriptionFormControl?.setValue(metadata?.description || '', { emitEvent: false });
+  }
+
+  /**
+   * Fetch observableElement data from API
+   */
+  async fetchObservableElementData(
+    termIdentifier: string,
+    frameworkCode: string,
+    contentService: any
+  ): Promise<{
+    behavioralIndicators: string[],
+    measurableOutcomes: string[],
+    assessmentCriteria: string[]
+  }> {
+    try {
+      const option = {
+        url: `framework/v1/term/read/${termIdentifier}?framework=${frameworkCode}&category=observableElement`,
+      };
+
+      const response = await contentService.get(option).toPromise();
+      const term = response?.result?.term;
+
+      if (term) {
+        return {
+          behavioralIndicators: term.behavioralIndicators || [],
+          measurableOutcomes: term.measurableOutcomes || [],
+          assessmentCriteria: term.assessmentCriteria || []
+        };
+      }
+      
+      return {
+        behavioralIndicators: [],
+        measurableOutcomes: [],
+        assessmentCriteria: []
+      };
+    } catch (error) {
+      console.error('Error fetching observableElement data:', error);
+      return {
+        behavioralIndicators: [],
+        measurableOutcomes: [],
+        assessmentCriteria: []
+      };
+    }
   }
 
   /**

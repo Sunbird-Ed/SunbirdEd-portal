@@ -68,8 +68,12 @@
     }
     ,"WORKSPACEAUTHGARDROLES":[
     {
-        "roles":["SKILLMAP_CREATOR","SKILLMAP_REVIEWER","CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
+        "roles":["SKILLMAP_CREATOR","CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
         "roleName":"createRole","url":"workspace/content/create","tab":"CREATE"
+    },
+    {
+        "roles":["SKILLMAP_REVIEWER"],
+        "roleName":"skillmapReviewerRole","url":"workspace/content/skillmap-reviewer/1","tab":"CREATE"
     },
     {
         "roles":["ORG_ADMIN"],
