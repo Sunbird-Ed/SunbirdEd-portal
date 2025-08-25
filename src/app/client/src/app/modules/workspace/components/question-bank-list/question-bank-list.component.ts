@@ -2,7 +2,7 @@ import { combineLatest as observableCombineLatest } from 'rxjs';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
-import { SearchService, UserService } from '@sunbird/core';
+import { SearchService, UserService, PermissionService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService, IPagination,
   ResourceService, ILoaderMessage, INoResultMessage, IContents, NavigationHelperService
@@ -12,6 +12,29 @@ import * as _ from 'lodash-es';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui-v9';
 import { debounceTime, map } from 'rxjs/operators';
+
+/**
+ * Interface for question bank content extending IContents with status property
+ */
+interface IQuestionBankContent extends IContents {
+  status?: string;
+  lastUpdatedOn?: string;
+  code?: string;
+  objectType?: string;
+  type?: string;
+  identifier?: string;
+  metaData?: {
+    identifier?: string;
+    name?: string;
+    code?: string;
+    status?: string;
+    lastUpdatedOn?: string;
+    description?: string;
+    type?: string;
+    objectType?: string;
+    mimeType?: string;
+  };
+}
 
 @Component({
   selector: 'app-question-bank-list',
@@ -48,7 +71,10 @@ export class QuestionBankListComponent extends WorkSpace implements OnInit, Afte
   /**
    * Contains list of published question banks
    */
-  questionBanks: Array<IContents> = [];
+  /**
+   * Array to store question bank data
+   */
+  questionBanks: Array<IQuestionBankContent> = [];
 
   /**
    * To show / hide loader
@@ -162,6 +188,17 @@ export class QuestionBankListComponent extends WorkSpace implements OnInit, Afte
   public modalService: SuiModalService;
 
   /**
+   * To check user role for question banks
+   */
+  public isQuestionBankCreator: boolean = false;
+  public isQuestionBankReviewer: boolean = false;
+
+  /**
+   * Permission Service reference
+   */
+  public permissionService: PermissionService;
+
+  /**
    * Constructor to create injected service(s) object
    * Default method of Question Bank List Component class
    */
@@ -176,7 +213,8 @@ export class QuestionBankListComponent extends WorkSpace implements OnInit, Afte
     private resourceServiceRef: ResourceService,
     private configRef: ConfigService,
     private navigationhelperServiceRef: NavigationHelperService,
-    private modalServiceRef: SuiModalService
+    private modalServiceRef: SuiModalService,
+    private permissionServiceRef: PermissionService
   ) {
     super(searchService, workSpaceService, userService);
     this.route = routeRef;
@@ -187,21 +225,44 @@ export class QuestionBankListComponent extends WorkSpace implements OnInit, Afte
     this.paginationService = paginationServiceRef;
     this.navigationhelperService = navigationhelperServiceRef;
     this.modalService = modalServiceRef;
+    this.permissionService = permissionServiceRef;
     this.state = 'questionbank';
+    
+    // Check user roles
+    this.isQuestionBankCreator = this.permissionService.checkRolesPermissions(['CONTENT_CREATOR', 'CONTENT_CREATION']);
+    this.isQuestionBankReviewer = this.permissionService.checkRolesPermissions(['CONTENT_REVIEWER', 'CONTENT_REVIEW']);
   }
 
   ngOnInit() {
-    this.paginationDetails = this.paginationService.getPager(0, 1, this.config.appConfig.WORKSPACE.PAGE_LIMIT);
+    // Check current route to determine user role context
+    const currentUrl = this.route.url;
+    const isReviewerRoute = currentUrl.includes('question-bank-review');
+    if (isReviewerRoute) {
+      this.isQuestionBankReviewer = true;
+      this.isQuestionBankCreator = false;
+    }
+    
+    this.pager = this.paginationService.getPager(0, 1, this.config.appConfig.WORKSPACE.PAGE_LIMIT);
     this.pageLimit = this.config.appConfig.WORKSPACE.PAGE_LIMIT;
     
-    // Set up loader and no result messages
-    this.loaderMessage = {
-      'loaderMessage': this.resourceService.messages?.stmsg?.m0118 || 'Fetching question banks...',
-    };
-    this.noResultMessage = {
-      'messageText': this.resourceService.messages?.stmsg?.m0131 || 'No question banks found',
-      'message': this.resourceService.messages?.stmsg?.m0132 || 'Create a new question bank.'
-    };
+    // Set up loader and no result messages based on role
+    if (this.isQuestionBankReviewer && !this.isQuestionBankCreator) {
+      this.loaderMessage = {
+        'loaderMessage': this.resourceService.messages?.stmsg?.m0119 || 'Fetching question banks for review...',
+      };
+      this.noResultMessage = {
+        'messageText': this.resourceService.messages?.stmsg?.m0133 || 'No question banks found for review',
+        'message': this.resourceService.messages?.stmsg?.m0134 || 'Question banks will appear here when submitted for review.'
+      };
+    } else {
+      this.loaderMessage = {
+        'loaderMessage': this.resourceService.messages?.stmsg?.m0118 || 'Fetching question banks...',
+      };
+      this.noResultMessage = {
+        'messageText': this.resourceService.messages?.stmsg?.m0131 || 'No question banks found',
+        'message': this.resourceService.messages?.stmsg?.m0132 || 'Create a new question bank.'
+      };
+    }
     
     observableCombineLatest(
       this.activatedRoute.params,
@@ -237,9 +298,24 @@ export class QuestionBankListComponent extends WorkSpace implements OnInit, Afte
   fetchQuestionBanks(limit: number, pageNumber: number) {
     this.showPageLoader = true;
     this.pageNumber = pageNumber;
+    
+    // Define status filter based on user role
+    let statusFilter: string[] = [];
+    if (this.isQuestionBankCreator && !this.isQuestionBankReviewer) {
+      statusFilter = ['Draft', 'Review', 'Live']; // Creators see Draft, Review, and Live
+    } else if (this.isQuestionBankReviewer && !this.isQuestionBankCreator) {
+      statusFilter = ['Review']; // Reviewers only see Review status
+    } else if (this.isQuestionBankCreator && this.isQuestionBankReviewer) {
+      statusFilter = ['Draft', 'Review', 'Live']; // Users with both roles see all
+    } else {
+      statusFilter = ['Live']; // Default fallback - only published content
+    }
+
     const searchParams = {
       filters: {
-        contentType: 'Course'
+        contentType: 'SelfAssess',
+        primaryCategory: 'Question Bank',
+        status: statusFilter
       },
       limit: limit,
       offset: (pageNumber - 1) * (limit),
@@ -252,14 +328,14 @@ export class QuestionBankListComponent extends WorkSpace implements OnInit, Afte
         if (data.result.count && data.result.content.length > 0) {
           this.questionBanks = data.result.content;
           this.totalCount = data.result.count;
-          this.paginationDetails = this.paginationService.getPager(data.result.count, pageNumber, limit);
+          this.pager = this.paginationService.getPager(data.result.count, pageNumber, limit);
           this.showLoader = false;
           this.noResult = false;
         } else {
           this.showLoader = false;
           this.noResult = true;
           this.totalCount = 0;
-          this.paginationDetails = this.paginationService.getPager(0, pageNumber, limit);
+          this.pager = this.paginationService.getPager(0, pageNumber, limit);
         }
         this.showPageLoader = false;
       },
@@ -273,16 +349,42 @@ export class QuestionBankListComponent extends WorkSpace implements OnInit, Afte
   }
 
   /**
+   * Check if user can delete the question bank
+   * Only creators can delete Draft status question banks
+   */
+  canDeleteQuestionBank(questionBank: IQuestionBankContent): boolean {
+    return this.isQuestionBankCreator && questionBank.status === 'Draft';
+  }
+
+  /**
+   * Check if user can edit the question bank
+   * Only creators can edit Draft status question banks
+   */
+  canEditQuestionBank(questionBank: IQuestionBankContent): boolean {
+    return this.isQuestionBankCreator && questionBank.status === 'Draft';
+  }
+
+  /**
+   * Check if user can view the question bank
+   * All users can view Live, Review, and Published status question banks
+   */
+  canViewQuestionBank(questionBank: IQuestionBankContent): boolean {
+    return questionBank.status === 'Live' || questionBank.status === 'Review' || questionBank.status === 'Published';
+  }
+
+  /**
    * This method helps to navigate to different pages.
    * If page number is less than 1 or page number is greater than total number
    * of pages is less which is not possible, then it returns.
    */
   navigateToPage(page: number): void {
-    if (page < 1 || page > this.paginationDetails.totalPages) {
+    if (page < 1 || page > this.pager.totalPages) {
       return;
     }
     this.pageNumber = page;
-    this.route.navigate(['workspace/content/question-banks', this.pageNumber]);
+    this.route.navigate(['workspace/content/question-banks', this.pageNumber], {
+      queryParams: this.activatedRoute.snapshot.queryParams
+    });
   }
 
   /**
@@ -305,6 +407,23 @@ export class QuestionBankListComponent extends WorkSpace implements OnInit, Afte
    * Call delete API to delete content
    */
   deleteConfirmModal(contentId: string, objectType: string) {
+    // Find the question bank to check status and permissions
+    const questionBank = this.questionBanks.find(qb => qb.identifier === contentId);
+    
+    if (!questionBank) {
+      this.toasterService.error(this.resourceService.messages.fmsg.m0023 || 'Question bank not found');
+      return;
+    }
+    
+    // Only allow deletion for Draft status question banks by creators
+    if (!this.canDeleteQuestionBank(questionBank)) {
+      this.toasterService.warning(
+        this.resourceService.messages.imsg.canNotDeleteQuestionBank || 
+        'You can only delete draft question banks that you have created'
+      );
+      return;
+    }
+    
     this.contentIdToDelete = contentId;
     this.contentObjectTypeToDelete = objectType;
     this.showDeleteModal = true;
@@ -373,7 +492,7 @@ export class QuestionBankListComponent extends WorkSpace implements OnInit, Afte
   /**
    * Remove deleted questionbanks from list
    */
-  removeQuestionBanksFromList(questionBanks: Array<IContents>, contentIds: Array<string>) {
+  removeQuestionBanksFromList(questionBanks: Array<IQuestionBankContent>, contentIds: Array<string>) {
     _.forEach(contentIds, (contentId) => {
       questionBanks = _.filter(questionBanks, content => content.identifier !== contentId);
     });

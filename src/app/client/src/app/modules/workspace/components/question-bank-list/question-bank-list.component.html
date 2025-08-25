@@ -3,11 +3,6 @@
     <div class="sixteen wide column">
       <div class="question-bank-list" [appTelemetryImpression]="telemetryImpression">
         
-        <!-- Loader -->
-        <div class="twelve wide column mt-20" *ngIf="showPageLoader">
-          <app-loader [data]="loaderMessage"></app-loader>
-        </div>
-
         <!-- No Results -->
         <div *ngIf="(noResult || questionBanks?.length === 0) && !showPageLoader">
           <app-no-result [data]="noResultMessage"></app-no-result>
@@ -18,7 +13,10 @@
           <thead>
             <tr>
               <th class="six wide UpReviewTableHeader">
-                {{ resourceService?.frmelmnts?.lbl?.questionBanks || 'Question Banks' }}
+                <span *ngIf="isQuestionBankCreator && !isQuestionBankReviewer">{{ resourceService?.frmelmnts?.lbl?.questionBanks || 'Question Banks' }}</span>
+                <span *ngIf="isQuestionBankReviewer && !isQuestionBankCreator">{{ resourceService?.frmelmnts?.lbl?.questionBanksForReview || 'Question Banks for Review' }}</span>
+                <span *ngIf="isQuestionBankCreator && isQuestionBankReviewer">{{ resourceService?.frmelmnts?.lbl?.questionBanks || 'Question Banks' }}</span>
+                <span *ngIf="!isQuestionBankCreator && !isQuestionBankReviewer">{{ resourceService?.frmelmnts?.lbl?.questionBanks || 'Question Banks' }}</span>
               </th>
               <th class="four wide UpReviewTableHeader">
                 {{ resourceService?.frmelmnts?.lbl?.lastUpdated || 'Last Updated' }}
@@ -45,7 +43,7 @@
                       <i *ngIf="questionBank.name.length > 30">...</i>
                     </div>
                     <div class="UpReviewSubHeader">
-                      {{questionBank?.contentType || 'QuestionSet'}}
+                      {{questionBank?.contentType || resourceService?.frmelmnts?.lbl?.questionSet}}
                     </div>
                     <div class="UpReviewSubHeader" *ngIf="questionBank?.description">
                       {{questionBank?.description | slice:0:50}}
@@ -71,7 +69,7 @@
               
               <td>
                 <!-- Show view icon for Live, Review, and Published status question banks -->
-                <i *ngIf="questionBank.status === 'Live' || questionBank.status === 'Review' || questionBank.status === 'Published'" 
+                <i *ngIf="canViewQuestionBank(questionBank)" 
                    appTelemetryInteract 
                    [telemetryInteractObject]="{id:questionBank.identifier,type:questionBank.objectType,ver:'1.0'}"
                    [telemetryInteractEdata]="{id:'viewQuestionBank',type:'click',pageid:'question-banks'}"  
@@ -81,8 +79,8 @@
                    matTooltip="{{ resourceService?.frmelmnts?.btn?.view || 'View' }}" 
                    [matTooltipPosition]="'left'">
                 </i>
-                <!-- Show edit icon for Draft status question banks -->
-                <i *ngIf="questionBank.status === 'Draft'" 
+                <!-- Show edit icon for Draft status question banks (only for creators) -->
+                <i *ngIf="canEditQuestionBank(questionBank)" 
                    appTelemetryInteract 
                    [telemetryInteractObject]="{id:questionBank.identifier,type:questionBank.objectType,ver:'1.0'}"
                    [telemetryInteractEdata]="{id:'editQuestionBank',type:'click',pageid:'question-banks'}"  
@@ -95,8 +93,8 @@
               </td>
               
               <td>
-                <!-- Show delete icon only for Draft status question banks -->
-                <i *ngIf="questionBank.status === 'Draft'" 
+                <!-- Show delete icon only for Draft status question banks (only for creators) -->
+                <i *ngIf="canDeleteQuestionBank(questionBank)" 
                    appTelemetryInteract 
                    [telemetryInteractObject]="{id:questionBank.identifier,type:questionBank.objectType,ver:'1.0'}"
                    [telemetryInteractEdata]="{id:'deleteQuestionBank',type:'click',pageid:'question-banks'}"  
@@ -116,20 +114,20 @@
           <div class="two wide column"></div>
           <div class="ten wide column">
             <div class="pb-10" *ngIf="questionBanks && questionBanks.length > 0 && totalCount > config.appConfig.WORKSPACE.PAGE_LIMIT && !showPageLoader && !noResult">
-              <div class="ui pagination menu mt-10 right-floated p-0" *ngIf="paginationDetails.pages.length">
-                <a [ngClass]="{disabled:paginationDetails.currentPage===1}" class="item" tabindex="0" (click)="navigateToPage(1)">
+              <div class="ui pagination menu mt-10 right-floated p-0" *ngIf="pager.pages.length">
+                <a [ngClass]="{disabled:pager.currentPage===1}" class="item" tabindex="0" (click)="navigateToPage(1)">
                   {{ resourceService?.frmelmnts?.lbl?.first || 'First'}}
                 </a>
-                <a [ngClass]="{disabled:paginationDetails.currentPage===1}" class="item" tabindex="0" (click)="navigateToPage(paginationDetails.currentPage - 1)">
+                <a [ngClass]="{disabled:pager.currentPage===1}" class="item" tabindex="0" (click)="navigateToPage(pager.currentPage - 1)">
                   {{ resourceService?.frmelmnts?.lbl?.previous || 'Previous'}}
                 </a>
-                <a *ngFor="let page of paginationDetails.pages" [ngClass]="{active:paginationDetails.currentPage===page}" tabindex="0" (click)="navigateToPage(page)" class="item">
+                <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" tabindex="0" (click)="navigateToPage(page)" class="item">
                   {{page}}
                 </a>
-                <a [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}" tabindex="0" (click)="navigateToPage(paginationDetails.currentPage + 1)" class="item">
+                <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.currentPage + 1)" class="item">
                   {{ resourceService?.frmelmnts?.lbl?.next || 'Next'}}
                 </a>
-                <a [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}" tabindex="0" (click)="navigateToPage(paginationDetails.totalPages)" class="item">
+                <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.totalPages)" class="item">
                   {{ resourceService?.frmelmnts?.lbl?.last || 'Last'}}
                 </a>
               </div>
@@ -147,7 +145,7 @@
     {{resourceService?.frmelmnts?.lbl?.deleteContentHeading || 'Delete Content'}}
   </div>
   <div class="sb-modal-content">
-    <p>{{resourceService?.frmelmnts?.lbl?.deleteConfirmation || 'Are you sure you want to delete this question bank?'}}</p>
+    <p>{{resourceService?.frmelmnts?.lbl?.deleteQuestionBankConfirmation || 'Are you sure you want to delete this question bank?'}}</p>
   </div>
   <div class="sb-modal-actions">
     <button type="button" class="sb-btn sb-btn-normal sb-btn-error" [disabled]="isDeleting" (click)="confirmDelete()">
@@ -161,4 +159,4 @@
 </sui-modal>
 
 <!-- Main Loader -->
-<app-loader *ngIf="showLoader"></app-loader>
+<app-loader *ngIf="showLoader||showPageLoader"  [data]="loaderMessage"></app-loader>

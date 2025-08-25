@@ -85,6 +85,7 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
   public questionBankForm: FormGroup;
   public isCreating = false;
   public isCreatingQuestionBank = false;
+  public isQuestionBankReviewer = false;
   public submitted = false;
   public showCreateFrameworkModal = false;
   public showCreateQuestionBankModal = false;
@@ -145,6 +146,10 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
     this.courseRole = this.configService.rolesConfig.workSpaceRole.courseRole;
     this.skillmapRole = this.configService.rolesConfig.workSpaceRole.skillmapRole;
     this.questionBankRole = this.configService.rolesConfig.workSpaceRole.createRole || ['CONTENT_CREATOR'];
+    
+    // Check if user is a question bank reviewer (should not see create option)
+    this.isQuestionBankReviewer = this.permissionService.checkRolesPermissions(['CONTENT_REVIEWER', 'CONTENT_REVIEW']);
+    
     this.workSpaceService.questionSetEnabled$.subscribe(
       (response: any) => {
         this.enableQuestionSetCreation = response.questionSetEnablement;

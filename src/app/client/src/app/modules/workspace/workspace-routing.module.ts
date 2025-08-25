@@ -306,9 +306,19 @@ const routes: Routes = [
         path: 'question-banks/:pageNumber', component: QuestionBankListComponent, canActivate: [AuthGuard],
         data: {
           telemetry: {
-            env: telemetryEnv, pageid: 'workspace-content-question-banks', subtype: 'paginate', uri: '/workspace/content/question-banks',
+            env: telemetryEnv, pageid: 'workspace-content-question-banks', subtype: 'paginate', uri: 'workspace/content/question-banks',
             type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
-          }, roles: 'createRole',
+          }, roles: 'questionBankRole',
+          breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+        }
+      },
+      {
+        path: 'question-bank-review/:pageNumber', component: QuestionBankListComponent, canActivate: [AuthGuard],
+        data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'workspace-content-question-bank-review', subtype: 'paginate', uri: 'workspace/content/question-bank-review',
+            type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
+          }, roles: 'questionBankReviewerRole',
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
         }
       }

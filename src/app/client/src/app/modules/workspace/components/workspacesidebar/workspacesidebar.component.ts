@@ -86,6 +86,14 @@ export class WorkspacesidebarComponent implements OnInit {
   * roles for which training sub-tab to be shown
   */
  trainingRole: Array<string>;
+ /**
+  * roles for which question bank to be shown
+  */
+ questionBankRole: Array<string>;
+ /**
+  * roles for which question bank reviewer to be shown
+  */
+ questionBankReviewerRole: Array<string>;
 
   /**
   * roles for which admin to be shown
@@ -138,6 +146,8 @@ export class WorkspacesidebarComponent implements OnInit {
     this.skillmapRole = this.config.rolesConfig.workSpaceRole.skillmapRole;
     this.skillmapReviewerRole = this.config.rolesConfig.workSpaceRole.skillmapReviewerRole;
     this.trainingRole = this.config.rolesConfig.workSpaceRole.trainingRole;
+    this.questionBankRole = this.config.rolesConfig.workSpaceRole.questionBankRole;
+    this.questionBankReviewerRole = this.config.rolesConfig.workSpaceRole.questionBankReviewerRole;
   }
 
   setInteractData(id) {

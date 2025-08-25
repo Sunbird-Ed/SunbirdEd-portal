@@ -92,8 +92,13 @@
     {{ resourceService?.frmelmnts?.lbl?.skillDomains || 'Skill Domains' }}
   </a>
   <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('question-banks-button')" *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/question-banks',false)" 
-    appPermission [permission]='trainingRole' class="item" [routerLink]="['question-banks',1]" matTooltip="{{ resourceService?.frmelmnts?.lbl?.view_question_banks || 'View Question Banks' }}"
+    appPermission [permission]='questionBankRole' class="item" [routerLink]="['question-banks',1]" matTooltip="{{ resourceService?.frmelmnts?.lbl?.view_question_banks || 'View Question Banks' }}"
     [matTooltipPosition]="'right'">
     {{ resourceService?.frmelmnts?.snav?.questionBanks || 'Question Banks' }}
+  </a>
+  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('question-bank-review-button')" *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/question-bank-review',false)" 
+    appPermission [permission]='questionBankReviewerRole' class="item" [routerLink]="['question-bank-review',1]" matTooltip="{{ resourceService?.frmelmnts?.lbl?.view_question_bank_review || 'View Question Bank Review' }}"
+    [matTooltipPosition]="'right'">
+    {{ resourceService?.frmelmnts?.snav?.questionBankReview || 'Question Bank Review' }}
   </a>
 </div>

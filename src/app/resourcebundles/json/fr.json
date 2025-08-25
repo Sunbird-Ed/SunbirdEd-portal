@@ -134,6 +134,11 @@
                 "searchSelectElements": "Rechercher et sélectionner des éléments...",
                 "searchOptions": "Options de recherche...",
                 "skillMap": "Domaine de compétences",
+                "questionBanks": "Banques de questions",
+                "questionSet": "Ensemble de questions",
+                "deleteQuestionBankConfirmation": "Êtes-vous sûr de vouloir supprimer cette banque de questions?",
+                "view_question_banks": "Voir les banques de questions",
+                "view_question_bank_review": "Voir la révision des banques de questions",
                 "confirm": "Confirmer",
                 "skillMapSavedDraftFailed": "Échec de l'enregistrement du domaine de compétences en tant que brouillon.",
                 "submitToContinue": "Soumettre pour continuer.",
@@ -2044,7 +2049,9 @@
             },
             "snav": {
                 "shareViaLink": "Partagé via linkn",
-                "submittedForReview": "Soumis pour examen"
+                "submittedForReview": "Soumis pour examen",
+                "questionBanks": "Banques de questions",
+                "questionBankReview": "Révision des banques de questions"
             },
             "tab": {
                 "all": "Tous",
@@ -2371,6 +2378,8 @@
                 "m0129": "Chargement des termes et conditions.",
                 "m0130": "Nous allons chercher des districts",
                 "m0131": "Je n'ai trouvé aucun rapport",
+                "m0118": "Récupération des banques de questions...",
+                "m0132": "Créer une nouvelle banque de questions.",
                 "m0134": "Vous ne pouvez pas vous inscrire à ce lot, car il est fermé",
                 "m0135": "Entrez une date valide",
                 "m0136": "Dernière date d'inscription:",
