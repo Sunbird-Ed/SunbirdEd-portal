@@ -86,7 +86,7 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
   public isCreating = false;
   public isCreatingQuestionBank = false;
   public isQuestionBankReviewer = false;
-  public isSkillMapOnlyUser = false;
+  public isSkillMapUser = false;
   public submitted = false;
   public showCreateFrameworkModal = false;
   public showCreateQuestionBankModal = false;
@@ -155,7 +155,7 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
     const hasSkillMapRoles = this.permissionService.checkRolesPermissions(['SKILLMAP_CREATOR', 'SKILLMAP_REVIEWER']);
     const hasContentRoles = this.permissionService.checkRolesPermissions(['CONTENT_CREATOR', 'CONTENT_CREATION', 'CONTENT_REVIEWER', 'CONTENT_REVIEW', 'BOOK_CREATOR']);
     
-    this.isSkillMapOnlyUser = hasSkillMapRoles && !hasContentRoles;
+    this.isSkillMapUser = hasSkillMapRoles && !hasContentRoles;
     
     this.workSpaceService.questionSetEnabled$.subscribe(
       (response: any) => {
