@@ -7,8 +7,8 @@ const { logger } = require('@project-sunbird/logger');
 const { getBearerToken, getAuthToken } = require('../helpers/kongTokenHelper')
 
 const orgAdminAsCollaborator = async function assignOrgAdminAsCollaborator(req, res, next) {
-    const resourceId = req.body.request.resourceId
-    const userId = req.session.userId
+    const resourceId = req?.body?.request?.resourceId
+    const userId = req?.session?.userId
     if ( (req.url == '/content/lock/v1/create') && req.body.request.isRootOrgAdmin) {
         const token =   getAuthToken(req);
         axios.get(envHelper.CONTENT_PROXY_URL +'/action/content/v3/read/' + resourceId + '?fields=collaborators,createdBy')
