@@ -31,7 +31,7 @@
           <tbody [appTelemetryImpression]="telemetryImpression" [throttle]="[1000]" [trigger]="questionBanks">
             <tr class="UpForReviewListHover cursor-pointer" *ngFor="let questionBank of questionBanks let i = index;" 
                 [id]="i" [data]="questionBank"
-                appTelemetryInteract [telemetryInteractObject]="{id:questionBank.identifier,type:questionBank.objectType,ver:'1.0'}"
+                appTelemetryInteract [telemetryInteractObject]="{id:questionBank?.identifier,type:questionBank?.objectType,ver:'1.0'}"
                 [telemetryInteractEdata]="{id:'questionbank',type:'click',pageid:'question-banks'}">
               
               <td tabindex="0" (click)="contentClick(questionBank)">
@@ -39,15 +39,11 @@
                   <img src="{{'assets/images/default.png' | cdnprefixurl}}" class="ui tiny image UpReviewTinyImage">
                   <div class="content" style="padding:0 0.75rem !important;">
                     <div class="UpReviewHeader">
-                      {{questionBank.name | slice:0:30}}
-                      <i *ngIf="questionBank.name.length > 30">...</i>
+                      {{questionBank?.name | slice:0:30}}
+                      <i *ngIf="questionBank?.name?.length > 30">...</i>
                     </div>
                     <div class="UpReviewSubHeader">
                       {{questionBank?.contentType || resourceService?.frmelmnts?.lbl?.questionSet}}
-                    </div>
-                    <div class="UpReviewSubHeader" *ngIf="questionBank?.description">
-                      {{questionBank?.description | slice:0:50}}
-                      <span *ngIf="questionBank?.description?.length > 50">...</span>
                     </div>
                   </div>
                 </h5>
@@ -64,14 +60,14 @@
               </td>
               
               <td class="UpForReviewStatusOrange">
-                {{questionBank.status}}
+                {{questionBank?.status}}
               </td>
               
               <td>
                 <!-- Show view icon for Live, Review, and Published status question banks -->
                 <i *ngIf="canViewQuestionBank(questionBank)" 
                    appTelemetryInteract 
-                   [telemetryInteractObject]="{id:questionBank.identifier,type:questionBank.objectType,ver:'1.0'}"
+                   [telemetryInteractObject]="{id:questionBank?.identifier,type:questionBank?.objectType,ver:'1.0'}"
                    [telemetryInteractEdata]="{id:'viewQuestionBank',type:'click',pageid:'question-banks'}"  
                    class="eye large icon" 
                    tabindex="0" 
@@ -82,7 +78,7 @@
                 <!-- Show edit icon for Draft status question banks (only for creators) -->
                 <i *ngIf="canEditQuestionBank(questionBank)" 
                    appTelemetryInteract 
-                   [telemetryInteractObject]="{id:questionBank.identifier,type:questionBank.objectType,ver:'1.0'}"
+                   [telemetryInteractObject]="{id:questionBank?.identifier,type:questionBank?.objectType,ver:'1.0'}"
                    [telemetryInteractEdata]="{id:'editQuestionBank',type:'click',pageid:'question-banks'}"  
                    class="edit large icon" 
                    tabindex="0" 
@@ -96,11 +92,11 @@
                 <!-- Show delete icon only for Draft status question banks (only for creators) -->
                 <i *ngIf="canDeleteQuestionBank(questionBank)" 
                    appTelemetryInteract 
-                   [telemetryInteractObject]="{id:questionBank.identifier,type:questionBank.objectType,ver:'1.0'}"
+                   [telemetryInteractObject]="{id:questionBank?.identifier,type:questionBank?.objectType,ver:'1.0'}"
                    [telemetryInteractEdata]="{id:'deleteQuestionBank',type:'click',pageid:'question-banks'}"  
                    class="trash large icon" 
                    tabindex="0" 
-                   (click)="deleteConfirmModal(questionBank.identifier, questionBank.objectType); $event.stopPropagation()"
+                   (click)="deleteConfirmModal(questionBank?.identifier, questionBank?.objectType); $event.stopPropagation()"
                    matTooltip="{{ resourceService?.frmelmnts?.btn?.delete || 'Delete' }}" 
                    [matTooltipPosition]="'left'">
                 </i>
@@ -160,3 +156,6 @@
 
 <!-- Main Loader -->
 <app-loader *ngIf="showLoader||showPageLoader"  [data]="loaderMessage"></app-loader>
+
+<!-- Lock Info Popup -->
+<app-contentlock-info-popup [content]="lockPopupData" (closeEvent)="onCloseLockInfoPopup($event)" *ngIf="showLockedContentModal"></app-contentlock-info-popup>

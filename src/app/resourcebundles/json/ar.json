@@ -138,7 +138,7 @@
                 "questionSet": "مجموعة الأسئلة",
                 "deleteQuestionBankConfirmation": "هل أنت متأكد من أنك تريد حذف بنك الأسئلة هذا؟",
                 "view_question_banks": "عرض بنوك الأسئلة",
-                "view_question_bank_review": "عرض مراجعة بنك الأسئلة",
+                "view_question_bank_review": "عرض بنوك الأسئلة قيد المراجعة",
                 "confirm": "تأكيد",
                 "skillMapSavedDraftFailed": "فشل حفظ مجال المهارات كمسودة.",
                 "submitToContinue": "أرسل للمتابعة.",
@@ -2052,7 +2052,7 @@
                 "shareViaLink": "مشاركة عبر Linkn",
                 "submittedForReview": "قدم للمراجعة",
                 "questionBanks": "بنوك الأسئلة",
-                "questionBankReview": "مراجعة بنك الأسئلة"
+                "questionBankReview": "بنوك الأسئلة قيد المراجعة"
             },
             "tab": {
                 "all": "الجميع",

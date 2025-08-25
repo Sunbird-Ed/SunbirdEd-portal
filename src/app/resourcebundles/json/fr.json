@@ -138,7 +138,7 @@
                 "questionSet": "Ensemble de questions",
                 "deleteQuestionBankConfirmation": "Êtes-vous sûr de vouloir supprimer cette banque de questions?",
                 "view_question_banks": "Voir les banques de questions",
-                "view_question_bank_review": "Voir la révision des banques de questions",
+                "view_question_bank_review": "Voir les banques de questions en révision",
                 "confirm": "Confirmer",
                 "skillMapSavedDraftFailed": "Échec de l'enregistrement du domaine de compétences en tant que brouillon.",
                 "submitToContinue": "Soumettre pour continuer.",
@@ -2051,7 +2051,7 @@
                 "shareViaLink": "Partagé via linkn",
                 "submittedForReview": "Soumis pour examen",
                 "questionBanks": "Banques de questions",
-                "questionBankReview": "Révision des banques de questions"
+                "questionBankReview": "Banques de questions en révision"
             },
             "tab": {
                 "all": "Tous",

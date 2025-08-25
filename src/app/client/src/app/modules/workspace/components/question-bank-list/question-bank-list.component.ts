@@ -199,6 +199,16 @@ export class QuestionBankListComponent extends WorkSpace implements OnInit, Afte
   public permissionService: PermissionService;
 
   /**
+   * lock popup data for locked contents
+   */
+  lockPopupData: object;
+
+  /**
+   * To show content locked modal
+   */
+  showLockedContentModal = false;
+
+  /**
    * Constructor to create injected service(s) object
    * Default method of Question Bank List Component class
    */
@@ -229,8 +239,8 @@ export class QuestionBankListComponent extends WorkSpace implements OnInit, Afte
     this.state = 'questionbank';
     
     // Check user roles
-    this.isQuestionBankCreator = this.permissionService.checkRolesPermissions(['CONTENT_CREATOR', 'CONTENT_CREATION']);
-    this.isQuestionBankReviewer = this.permissionService.checkRolesPermissions(['CONTENT_REVIEWER', 'CONTENT_REVIEW']);
+    this.isQuestionBankCreator = this.permissionService.checkRolesPermissions(this.config.rolesConfig.workSpaceRole.questionBankRole);
+    this.isQuestionBankReviewer = this.permissionService.checkRolesPermissions( this.config.rolesConfig.workSpaceRole.questionBankReviewerRole);
   }
 
   ngOnInit() {
@@ -313,7 +323,6 @@ export class QuestionBankListComponent extends WorkSpace implements OnInit, Afte
 
     const searchParams = {
       filters: {
-        contentType: 'SelfAssess',
         primaryCategory: 'Question Bank',
         status: statusFilter
       },
@@ -323,7 +332,7 @@ export class QuestionBankListComponent extends WorkSpace implements OnInit, Afte
       sort_by: { lastUpdatedOn: 'desc' }
     };
 
-    this.search(searchParams).subscribe(
+    this.searchContentWithLockStatus(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.count && data.result.content.length > 0) {
           this.questionBanks = data.result.content;
@@ -400,7 +409,60 @@ export class QuestionBankListComponent extends WorkSpace implements OnInit, Afte
    * Contains methods to show success response and errors
    */
   contentClick(content) {
-    this.workSpaceService.navigateToContent(content, this.state);
+    // Check if content has lock info and user is not the creator
+    if (_.size(content.lockInfo) && this.userService.userid !== content.lockInfo.createdBy) {
+      // Content is locked by another user, show lock popup
+      this.lockPopupData = content;
+      this.showLockedContentModal = true;
+      return;
+    }
+
+    const status = content.status.toLowerCase();
+    
+    // For processing state, do nothing
+    if (status === 'processing') {
+      return;
+    }
+
+    // Determine the appropriate state/mode based on user role and content status
+    let navigateState = this.state;
+    
+    if (this.isQuestionBankCreator && !this.isQuestionBankReviewer) {
+      // Creator role logic
+      if (status === 'draft') {
+        // Draft content can be edited
+        navigateState = this.state; // Edit mode
+      } else if (status === 'review' || status === 'live') {
+        // Review and Live content should be viewed only
+        navigateState = 'upForReview'; // View mode
+      }
+    } else if (this.isQuestionBankReviewer && !this.isQuestionBankCreator) {
+      // Reviewer role logic - always view mode for review content
+      if (status === 'review') {
+        navigateState = 'upForReview'; // View mode
+      }
+    } else if (this.isQuestionBankCreator && this.isQuestionBankReviewer) {
+      // User has both roles
+      if (status === 'draft') {
+        // Draft content can be edited if creator
+        navigateState = this.state; // Edit mode
+      } else if (status === 'review' || status === 'live') {
+        // Review and Live content should be viewed only
+        navigateState = 'upForReview'; // View mode
+      }
+    } else {
+      // Default fallback - view mode
+      navigateState = 'upForReview'; // View mode
+    }
+    
+    this.workSpaceService.navigateToContent(content, navigateState);
+  }
+
+  /**
+   * Close lock popup modal
+   */
+  public onCloseLockInfoPopup() {
+    this.showLockedContentModal = false;
   }
 
   /**
@@ -505,16 +567,6 @@ export class QuestionBankListComponent extends WorkSpace implements OnInit, Afte
   removeContentId() {
     this.deleteContentIds = [];
     this.showDeleteModal = false;
-  }
-
-  /**
-   * This method calls the copy API service
-   */
-  copyContent(contentData: IContents) {
-    this.showLoader = true;
-    // Copy functionality to be implemented
-    this.toasterService.success(this.resourceService.messages.smsg.m0042);
-    this.showLoader = false;
   }
 
   setInteractEventData(id) {

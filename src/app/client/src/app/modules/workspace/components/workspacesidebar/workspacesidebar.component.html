@@ -97,8 +97,8 @@
     {{ resourceService?.frmelmnts?.snav?.questionBanks || 'Question Banks' }}
   </a>
   <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('question-bank-review-button')" *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/question-bank-review',false)" 
-    appPermission [permission]='questionBankReviewerRole' class="item" [routerLink]="['question-bank-review',1]" matTooltip="{{ resourceService?.frmelmnts?.lbl?.view_question_bank_review || 'View Question Bank Review' }}"
+    appPermission [permission]='questionBankReviewerRole' class="item" [routerLink]="['question-bank-review',1]" matTooltip="{{ resourceService?.frmelmnts?.lbl?.view_question_bank_review || 'View Question Banks In Review' }}"
     [matTooltipPosition]="'right'">
-    {{ resourceService?.frmelmnts?.snav?.questionBankReview || 'Question Bank Review' }}
+    {{ resourceService?.frmelmnts?.snav?.questionBankReview || 'Question Banks In Review' }}
   </a>
 </div>

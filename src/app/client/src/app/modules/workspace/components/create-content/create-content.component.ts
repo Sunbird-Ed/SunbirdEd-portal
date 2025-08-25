@@ -566,11 +566,9 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
       organisation: _.uniq(this.userService.orgNames),
       createdFor: this.userService?.userProfile?.rootOrgId ? [this.userService?.userProfile?.rootOrgId] : [],
       mimeType: this.configService.appConfig.CONTENT_CONST.CREATE_LESSON,
-      contentType: 'SelfAssess', // Same as assessment
-      resourceType: 'Learn',
       primaryCategory: 'Question Bank',
       observableElementIds: [selectedObservableElement.identifier],
-      framework: this.frameworkService._frameworkData?.frameworkdata?.defaultFramework?.code || 'NCF'
+      framework: this.frameworkService._frameworkData?.frameworkdata?.defaultFramework?.code
     };
 
     // Add creator name

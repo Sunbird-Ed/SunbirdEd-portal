@@ -139,7 +139,7 @@
                 "questionSet": "Question Set",
                 "deleteQuestionBankConfirmation": "Are you sure you want to delete this question bank?",
                 "view_question_banks": "View Question Banks",
-                "view_question_bank_review": "View Question Bank Review",
+                "view_question_bank_review": "View Question Banks In Review",
                 "failedToLoadContent": "Failed to load content.",
                 "frameworkRejected": "Framework rejected successfully.",
                 "failedToUpdateFramework": "Failed to update framework.",
@@ -2050,7 +2050,7 @@
                 "shareViaLink": "Shared via linkn",
                 "submittedForReview": "Submitted for review",
                 "questionBanks": "Question Banks",
-                "questionBankReview": "Question Bank Review"
+                "questionBankReview": "Question Banks In Review"
             },
             "tab": {
                 "all": "All",
