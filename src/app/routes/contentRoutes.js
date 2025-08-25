@@ -20,6 +20,7 @@ const courseSearchURI = '/content/course/v1/search';
 const assetUploadURI = '/content/asset/v1/upload/:id';
 const contentAllURI = '/content/*';
 const copyQuestionSetURI = '/content/questionset/v2/copy/:id';
+const contentFrameworkURI = '/content/framework/*';
 
 module.exports = (app) => {
     app.all(courseSearchURI,
@@ -29,6 +30,18 @@ module.exports = (app) => {
         proxyUtils.verifyToken(),
         isAPIWhitelisted.isAllowed(),
         proxyManagedUserRequest(assetUploadURI)
+    );
+    app.all(contentFrameworkURI,
+        // Generate telemetry for content service
+        telemetryHelper.generateTelemetryForContentService,
+        // Generate telemetry for proxy service
+        telemetryHelper.generateTelemetryForProxy,
+        bodyParser.json({ limit: '10mb' }),
+        bodyParser.urlencoded({ extended: true }),
+        healthService.checkDependantServiceHealth(['CONTENT', 'CASSANDRA']),
+        proxyUtils.verifyToken(),
+        isAPIWhitelisted.isAllowed(),
+        proxyManagedUserRequest(contentAllURI)
     );
     app.all(contentAllURI,
         // Generate telemetry for content service
