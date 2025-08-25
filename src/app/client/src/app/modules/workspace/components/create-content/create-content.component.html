@@ -2,7 +2,7 @@
   <div class="twelve wide column ">
     <div class="ui grid">
 
-      <div class="three wide column" *ngIf="permissionService.permissionAvailable && showCategory('book')" appPermission
+      <div class="three wide column" *ngIf="permissionService.permissionAvailable && showCategory('book') && !isSkillMapOnlyUser" appPermission
         [permission]='textBookRole' [appTelemetryImpression]="telemetryImpression">
 
         <div class="ui link card" routerLink="textbook" appTelemetryInteract
@@ -16,7 +16,7 @@
         </div>
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.textbookdescription}}</p>
       </div>
-      <div class="three wide column" *ngIf="permissionService.permissionAvailable && showCategory('course')"
+      <div class="three wide column" *ngIf="permissionService.permissionAvailable && showCategory('course') && !isSkillMapOnlyUser"
         appPermission [permission]='courseRole'>
         <div class="ui link card" routerLink="course" [queryParams]="{showFrameworkSelection: true}"
           appTelemetryInteract [telemetryInteractEdata]="{id:'createCourse',type:'click',pageid:'create-course'}">
@@ -55,7 +55,7 @@
         </div>
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.collectiondescription}}</p>
       </div> -->
-      <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('contentupload')"
+      <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('contentupload') && !isSkillMapOnlyUser"
         appPermission [permission]='contentUploadRole'>
         <div class="ui link card" routerLink="../edit/generic/" appTelemetryInteract
           [telemetryInteractEdata]="{id:'uploadContent',type:'click',pageid:'upload-content'}">
@@ -69,7 +69,7 @@
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.contentuploaddescription}}</p>
       </div>
       <!-- Assessment -->
-      <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('assessment')"
+      <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('assessment') && !isSkillMapOnlyUser"
         appPermission [permission]='assessmentRole'>
         <div class="ui link card" routerLink="assessment" appTelemetryInteract
           [telemetryInteractEdata]="{id:'createAssessment',type:'click',pageid:'create-assessment'}"
@@ -116,7 +116,7 @@
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.contentuploaddescription}}</p>
       </div> -->
       <!-- Practice Assessment -->
-      <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('assessment')"
+      <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('assessment') && !isSkillMapOnlyUser"
         appPermission [permission]='assessmentRole'>
         <div class="ui link card" routerLink="practice_assessment" appTelemetryInteract
           [telemetryInteractEdata]="{id:'createAssessment',type:'click',pageid:'create-assessment'}"
@@ -132,7 +132,7 @@
       </div>
 
       <!-- Question Bank -->
-      <div class="three wide column" *ngIf="permissionService.permissionAvailable && !isQuestionBankReviewer" appPermission
+      <div class="three wide column" *ngIf="permissionService.permissionAvailable && !isQuestionBankReviewer && !isSkillMapOnlyUser" appPermission
         [permission]='questionBankRole'>
         <div class="ui link card" (click)="openCreateQuestionBankModal()" appTelemetryInteract
           [telemetryInteractEdata]="{id:'createQuestionBank',type:'click',pageid:'create-questionbank'}">

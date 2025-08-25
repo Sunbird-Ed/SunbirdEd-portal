@@ -86,6 +86,7 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
   public isCreating = false;
   public isCreatingQuestionBank = false;
   public isQuestionBankReviewer = false;
+  public isSkillMapOnlyUser = false;
   public submitted = false;
   public showCreateFrameworkModal = false;
   public showCreateQuestionBankModal = false;
@@ -149,6 +150,12 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
     
     // Check if user is a question bank reviewer (should not see create option)
     this.isQuestionBankReviewer = this.permissionService.checkRolesPermissions(['CONTENT_REVIEWER', 'CONTENT_REVIEW']);
+    
+    // Check if user only has skill map roles and should not see other content creation options
+    const hasSkillMapRoles = this.permissionService.checkRolesPermissions(['SKILLMAP_CREATOR', 'SKILLMAP_REVIEWER']);
+    const hasContentRoles = this.permissionService.checkRolesPermissions(['CONTENT_CREATOR', 'CONTENT_CREATION', 'CONTENT_REVIEWER', 'CONTENT_REVIEW', 'BOOK_CREATOR']);
+    
+    this.isSkillMapOnlyUser = hasSkillMapRoles && !hasContentRoles;
     
     this.workSpaceService.questionSetEnabled$.subscribe(
       (response: any) => {
@@ -365,7 +372,7 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
           name: frameworkData.name,
           description: frameworkData.description || "Enter your description",
           type: "SkillMap",
-          code: this.generateFrameworkCode(frameworkData.name),
+          code: this.generateCode(frameworkData.name),
           channels: [
             {
               identifier: this.userService?.channel
@@ -407,7 +414,7 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
   /**
    * Generate framework code from name
    */
-  private generateFrameworkCode(name: string): string {
+  private generateCode(name: string): string {
     // Convert to lowercase, replace spaces and special characters with underscores
     const code = name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
     return code;
@@ -523,15 +530,17 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
       content: this.generateQuestionBankData(questionBankData)
     };
 
-    // Close modal
-    if (modal && modal.deny) {
-      modal.deny();
-    }
+    // Don't close modal yet - keep it open to show creating state
     
     // Create content using editorService
     this.editorService.create(requestData).subscribe(
       (response: any) => {
         this.isCreatingQuestionBank = false;
+        
+        // Close modal after successful creation
+        if (modal && modal.deny) {
+          modal.deny();
+        }
         this.showCreateQuestionBankModal = false;
         
         // Show success message
@@ -563,12 +572,11 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
       name: formData.name,
       description: formData.description || 'Question Bank for bulk questions creation',
       createdBy: this.userService.userProfile.id,
-      organisation: _.uniq(this.userService.orgNames),
       createdFor: this.userService?.userProfile?.rootOrgId ? [this.userService?.userProfile?.rootOrgId] : [],
       mimeType: this.configService.appConfig.CONTENT_CONST.CREATE_LESSON,
       primaryCategory: 'Question Bank',
       observableElementIds: [selectedObservableElement.identifier],
-      framework: this.frameworkService._frameworkData?.frameworkdata?.defaultFramework?.code
+      code: this.generateCode(formData.name)
     };
 
     // Add creator name
