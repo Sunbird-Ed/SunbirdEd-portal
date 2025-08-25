@@ -149,16 +149,42 @@ public retireFramework(frameworkId: string): Observable<ServerResponse> {
  * @returns Observable<ServerResponse>
  */
 public retireTerm(requestData: any): Observable<ServerResponse> {
-  const { category, code, framework } = requestData;
-  
-  const retireOptions = {
-    url: `framework/v3/term/retire/${code}?framework=${framework}&category=${category}`,
-    header: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
+  const { category, framework, code } = requestData;
+  const searchRequestBody = {
+    request: {
+      filters: {
+        code: code,
+        status: ["Live"]
+      }
     }
   };
-  return this.contentService.delete(retireOptions);
+
+  const searchOptions = {
+    url: 'composite/v1/search',
+    data: searchRequestBody
+  };
+
+  // Always search for the term first to get its identifier
+  return this.contentService.post(searchOptions).pipe(
+    mergeMap((searchResponse: any) => {
+      if (!searchResponse?.result?.Term || searchResponse.result.Term.length === 0) {
+        throw new Error(`No live term found with code: ${code}`);
+      }
+
+      // Get identifier from search results
+      const termIdentifier = searchResponse.result.Term[0].identifier;
+      
+      if (!termIdentifier) {
+        throw new Error(`No identifier found for term with code: ${code}`);
+      }
+
+      // Now retire the term using the found identifier
+      const retireOptions = {
+        url: `framework/v3/term/retire/${termIdentifier?.split('_')?.pop()}?framework=${framework}&category=${category}`,
+      };
+      return this.contentService.delete(retireOptions);
+    })
+  );
 }
 
 }
