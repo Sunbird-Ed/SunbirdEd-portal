@@ -10,6 +10,8 @@
       {{resourceService?.frmelmnts?.snav?.start}}
     </a>
 
+  
+
   <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('alltextbooks-button')"  *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/alltextbooks',false) " 
     appPermission [permission]='alltextbookRole' class="item" [routerLink]="['alltextbooks',1]"  matTooltip="{{ resourceService?.frmelmnts?.lbl?.view_all_textbooks }}"
     [matTooltipPosition]="'right'">
@@ -88,5 +90,15 @@
     appPermission [permission]='skillmapReviewerRole' class="item" [routerLink]="['skillmap-reviewer',1]"
     matTooltip="{{resourceService?.frmelmnts?.lbl?.view_skill_map_review || 'View Skill Domain Review' }}" [matTooltipPosition]="'right'">
     {{ resourceService?.frmelmnts?.lbl?.skillDomains || 'Skill Domains' }}
+  </a>
+  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('question-banks-button')" *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/question-banks',false)" 
+    appPermission [permission]='questionBankRole' class="item" [routerLink]="['question-banks',1]" matTooltip="{{ resourceService?.frmelmnts?.lbl?.view_question_banks || 'View Question Banks' }}"
+    [matTooltipPosition]="'right'">
+    {{ resourceService?.frmelmnts?.snav?.questionBanks || 'Question Banks' }}
+  </a>
+  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('question-bank-review-button')" *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/question-bank-review',false)" 
+    appPermission [permission]='questionBankReviewerRole' class="item" [routerLink]="['question-bank-review',1]" matTooltip="{{ resourceService?.frmelmnts?.lbl?.view_question_bank_review || 'View Question Banks In Review' }}"
+    [matTooltipPosition]="'right'">
+    {{ resourceService?.frmelmnts?.snav?.questionBankReview || 'Question Banks In Review' }}
   </a>
 </div>

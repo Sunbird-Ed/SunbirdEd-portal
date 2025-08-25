@@ -11,7 +11,9 @@
 
     "workSpaceRole":{
        "createRole": ["SKILLMAP_CREATOR","CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
-       "trainingRole": ["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW"],
+       "trainingRole": ["CONTENT_CREATOR","CONTENT_CREATION"],
+       "questionBankRole": ["CONTENT_CREATOR","CONTENT_CREATION"],
+       "questionBankReviewerRole": ["CONTENT_REVIEWER","CONTENT_REVIEW"],
        "draftRole": ["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
        "inreviewRole":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
        "publishedRole":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
@@ -64,7 +66,9 @@
        "uciAdmin": ["ORG_ADMIN"],
        "programDashboardRole":["PROGRAM_MANAGER","PROGRAM_DESIGNER"],
        "skillmapRole": ["SKILLMAP_CREATOR"],
-       "skillmapReviewerRole": ["SKILLMAP_REVIEWER"]
+       "skillmapReviewerRole": ["SKILLMAP_REVIEWER"],
+       "questionBankRole": ["CONTENT_CREATOR","CONTENT_CREATION"],
+       "questionBankReviewerRole": ["CONTENT_REVIEWER","CONTENT_REVIEW"]
     }
     ,"WORKSPACEAUTHGARDROLES":[
     {
@@ -125,6 +129,14 @@
     {
         "roles":["SKILLMAP_REVIEWER"],
         "roleName":"skillmapReviewerRole","url":"workspace/content/skillmap-reviewer/1","tab":"Skill Domain Reviewer"
+    },
+    {
+        "roles":["CONTENT_CREATOR","CONTENT_CREATION"],
+        "roleName":"questionBankRole","url":"/workspace/content/question-banks/1","tab":"Question Banks"
+    },
+    {
+        "roles":["CONTENT_REVIEWER","CONTENT_REVIEW"],
+        "roleName":"questionBankReviewerRole","url":"/workspace/content/question-bank-review/1","tab":"Question Bank Review"
     }
    ]
 

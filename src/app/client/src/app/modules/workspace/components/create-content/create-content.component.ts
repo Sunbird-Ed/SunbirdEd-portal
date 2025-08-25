@@ -3,8 +3,10 @@ import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ResourceService, ConfigService, NavigationHelperService, ToasterService } from '@sunbird/shared';
 import { FrameworkService, PermissionService, UserService, ContentService, PublicDataService } from '@sunbird/core';
+import { SearchService } from '@sunbird/core';
 import { IImpressionEventInput } from '@sunbird/telemetry';
-import { WorkSpaceService } from './../../services';
+import { WorkSpaceService, EditorService } from './../../services';
+import { SelectObservableOption } from '../select-observable/select-observable.component';
 import * as _ from 'lodash-es';
 // import { categoriesConfig } from '../../newConfig';
 @Component({
@@ -47,6 +49,10 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
    */
   skillmapRole: Array<string>;
   /**
+   * questionbank access role
+   */
+  questionBankRole: Array<string>;
+  /**
    * To call resource service which helps to use language constant
    */
   public resourceService: ResourceService;
@@ -73,9 +79,20 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
    * Framework creation form
    */
   public frameworkForm: FormGroup;
+  /**
+   * Question Bank creation form
+   */
+  public questionBankForm: FormGroup;
   public isCreating = false;
+  public isCreatingQuestionBank = false;
+  public isQuestionBankReviewer = false;
   public submitted = false;
   public showCreateFrameworkModal = false;
+  public showCreateQuestionBankModal = false;
+  public showObservableElementsModal = false;
+  public observableElementsOptions: SelectObservableOption[] = [];
+  public selectedObservableElements: SelectObservableOption[] = [];
+  public isLoadingObservableElements = false;
   /**
   * Constructor to create injected service(s) object
   *
@@ -98,7 +115,8 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
     public navigationhelperService: NavigationHelperService,
     public workSpaceService: WorkSpaceService, private router: Router,
     private formBuilder: FormBuilder, private toasterService: ToasterService,
-    private contentService: ContentService, private publicDataService: PublicDataService) {
+    private contentService: ContentService, private publicDataService: PublicDataService,
+    private searchService: SearchService, private editorService: EditorService) {
     this.resourceService = resourceService;
     this.frameworkService = frameworkService;
     this.permissionService = permissionService;
@@ -108,6 +126,12 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
     this.frameworkForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(120)]],
       description: ['', [Validators.maxLength(256)]]
+    });
+    
+    // Initialize question bank form
+    this.questionBankForm = this.formBuilder.group({
+      name: ['', [Validators.required, Validators.maxLength(120)]],
+      observable: ['', [Validators.required]]
     });
   }
 
@@ -121,6 +145,11 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
     this.assessmentRole = this.configService.rolesConfig.workSpaceRole.assessmentRole;
     this.courseRole = this.configService.rolesConfig.workSpaceRole.courseRole;
     this.skillmapRole = this.configService.rolesConfig.workSpaceRole.skillmapRole;
+    this.questionBankRole = this.configService.rolesConfig.workSpaceRole.createRole || ['CONTENT_CREATOR'];
+    
+    // Check if user is a question bank reviewer (should not see create option)
+    this.isQuestionBankReviewer = this.permissionService.checkRolesPermissions(['CONTENT_REVIEWER', 'CONTENT_REVIEW']);
+    
     this.workSpaceService.questionSetEnabled$.subscribe(
       (response: any) => {
         this.enableQuestionSetCreation = response.questionSetEnablement;
@@ -171,6 +200,21 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
   }
 
   /**
+   * Check if question bank name field has validation errors
+   */
+  get hasQuestionBankNameError() {
+    const nameControl = this.questionBankForm.get('name');
+    return nameControl && nameControl.invalid && (nameControl.touched || this.submitted);
+  }
+
+  /**
+   * Check if question bank observable field has validation errors
+   */
+  get hasQuestionBankObservableElementError() {
+    return this.selectedObservableElements.length === 0 && this.submitted;
+  }
+
+  /**
    * Open the Create Framework modal
    */
   openCreateFrameworkModal() {
@@ -189,6 +233,110 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
     this.frameworkForm.reset();
     this.submitted = false;
     this.isCreating = false;
+  }
+
+  /**
+   * Open the Create Question Bank modal
+   */
+  openCreateQuestionBankModal() {
+    // Reset form and state
+    this.questionBankForm.reset();
+    this.submitted = false;
+    this.isCreatingQuestionBank = false;
+    this.selectedObservableElements = [];
+    this.showCreateQuestionBankModal = true;
+  }
+
+  /**
+   * Close the Create Question Bank modal
+   */
+  closeCreateQuestionBankModal() {
+    this.showCreateQuestionBankModal = false;
+    this.showObservableElementsModal = false; // Also close observable modal if open
+    this.questionBankForm.reset();
+    this.submitted = false;
+    this.isCreatingQuestionBank = false;
+    this.selectedObservableElements = []; // Reset selected elements
+  }
+
+  /**
+   * Open observable elements selector
+   */
+  openObservableSelector() {
+    this.showObservableElementsModal = true;
+    this.loadObservableElements();
+  }
+
+  /**
+   * Load observable elements from API
+   */
+  loadObservableElements() {
+    if (this.observableElementsOptions.length > 0) {
+      return; // Already loaded
+    }
+
+    this.isLoadingObservableElements = true;
+    
+    this.searchService.getObservableElements().subscribe(
+      (response: any) => {
+        this.isLoadingObservableElements = false;
+        if (response && response.Term && Array.isArray(response.Term)) {
+          this.observableElementsOptions = response.Term.map(item => ({
+            identifier: item.identifier,
+            code: item.code,
+            name: item.name,
+            ...item // Include all other properties
+          }));
+        } else {
+          console.error('Invalid response format:', response);
+          this.toasterService.error(
+            this.resourceService?.frmelmnts?.emsg?.observableElementsLoadFailed || 
+            'Failed to load observable elements. Please try again.'
+          );
+        }
+      },
+      (error: any) => {
+        this.isLoadingObservableElements = false;
+        console.error('Error loading observable elements:', error);
+        this.toasterService.error(
+          this.resourceService?.frmelmnts?.emsg?.observableElementsLoadFailed || 
+          'Failed to load observable elements. Please try again.'
+        );
+      }
+    );
+  }
+
+  /**
+   * Handle observable elements selection
+   */
+  onObservableElementsSelected(selected: SelectObservableOption[]) {
+    this.selectedObservableElements = selected;
+    
+    // Update the form field value
+    if (selected.length > 0) {
+      const selectedElement = selected[0]; // Single select
+      const displayValue = `${selectedElement.name} (${selectedElement.code})`;
+      this.questionBankForm.patchValue({
+        observable: displayValue
+      });
+    } else {
+      this.questionBankForm.patchValue({
+        observable: ''
+      });
+    }
+    
+    // Mark the field as touched for validation
+    const observableControl = this.questionBankForm.get('observable');
+    if (observableControl) {
+      observableControl.markAsTouched();
+    }
+  }
+
+  /**
+   * Close observable elements modal
+   */
+  closeObservableElementsModal() {
+    this.showObservableElementsModal = false;
   }
 
   /**
@@ -351,6 +499,112 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
         frameworkDescription: requestBody.request.framework.description,
         frameworkId: nodeId
       }
+    });
+  }
+
+  /**
+   * Create question bank and navigate to question bank editor
+   */
+  createQuestionBank(modal: any) {
+    this.submitted = true;
+    
+    // Validate form - check selected observable elements instead of form control
+    const nameControl = this.questionBankForm.get('name');
+    if (!nameControl || nameControl.invalid || this.selectedObservableElements.length === 0) {
+      return;
+    }
+
+    this.isCreatingQuestionBank = true;
+    
+    const questionBankData = this.questionBankForm.value;
+    
+    // Prepare content creation request data similar to data-driven component
+    const requestData = {
+      content: this.generateQuestionBankData(questionBankData)
+    };
+
+    // Close modal
+    if (modal && modal.deny) {
+      modal.deny();
+    }
+    
+    // Create content using editorService
+    this.editorService.create(requestData).subscribe(
+      (response: any) => {
+        this.isCreatingQuestionBank = false;
+        this.showCreateQuestionBankModal = false;
+        
+        // Show success message
+        this.toasterService.success(
+          this.resourceService?.frmelmnts?.smsg?.questionBankCreated || 'Question Bank created successfully!'
+        );
+
+        // Create lock and navigate to editor
+        this.createLockAndNavigateToQuestionBankEditor({identifier: response.result.content_id});
+      },
+      (error: any) => {
+        this.isCreatingQuestionBank = false;
+        console.error('Error creating question bank:', error);
+        this.toasterService.error(
+          this.resourceService?.frmelmnts?.emsg?.questionBankCreationFailed || 
+          'Failed to create question bank. Please try again.'
+        );
+      }
+    );
+  }
+
+  /**
+   * Generate question bank creation data
+   */
+  private generateQuestionBankData(formData: any) {
+    const selectedObservableElement = this.selectedObservableElements[0]; // Single select
+    
+    const requestData = {
+      name: formData.name,
+      description: formData.description || 'Question Bank for bulk questions creation',
+      createdBy: this.userService.userProfile.id,
+      organisation: _.uniq(this.userService.orgNames),
+      createdFor: this.userService?.userProfile?.rootOrgId ? [this.userService?.userProfile?.rootOrgId] : [],
+      mimeType: this.configService.appConfig.CONTENT_CONST.CREATE_LESSON,
+      primaryCategory: 'Question Bank',
+      observableElementIds: [selectedObservableElement.identifier],
+      framework: this.frameworkService._frameworkData?.frameworkdata?.defaultFramework?.code
+    };
+
+    // Add creator name
+    if (!_.isEmpty(this.userService.userProfile.lastName)) {
+      requestData['creator'] = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
+    } else {
+      requestData['creator'] = this.userService.userProfile.firstName;
+    }
+
+    return requestData;
+  }
+
+  /**
+   * Create lock and navigate to question bank editor
+   */
+  private createLockAndNavigateToQuestionBankEditor(content: any) {
+    const state = 'draft';
+    const framework = this.frameworkService._frameworkData?.frameworkdata?.defaultFramework?.code;
+    
+    // Navigate to content editor with assessment type (same as practice assessment)
+    this.router.navigate(['/workspace/content/edit/content/', content.identifier, state, framework, 'Draft'], {
+      queryParams: {
+        contentType: 'assessment',
+        primaryCategory: 'Question Bank',
+        observableElementData: JSON.stringify(this.selectedObservableElements[0])
+      }
+    });
+  }
+
+  /**
+   * Remove selected observable element
+   */
+  removeSelectedObservableElement() {
+    this.selectedObservableElements = [];
+    this.questionBankForm.patchValue({
+      observable: ''
     });
   }
 }

@@ -128,6 +128,18 @@
                 "enterSkillDomainName": "Enter skill domain name",
                 "enterSkillDomainDescription": "Enter skill domain description",
                 "creating": "Creating...",
+                "questionBankDesc": "Create question bank for bulk questions creation",
+                "createQuestionBank": "Create Question Bank",
+                "enterQuestionBankName": "Enter question bank name",
+                "observableElementsIsRequired": "Observable Element is required",
+                "searchSelectElements": "Search and select elements...",
+                "searchOptions": "Search options...",
+                "skillMap": "Skill Domain",
+                "questionBanks": "Question Banks",
+                "questionSet": "Question Set",
+                "deleteQuestionBankConfirmation": "Are you sure you want to delete this question bank?",
+                "view_question_banks": "View Question Banks",
+                "view_question_bank_review": "View Question Banks In Review",
                 "failedToLoadContent": "Failed to load content.",
                 "frameworkRejected": "Framework rejected successfully.",
                 "failedToUpdateFramework": "Failed to update framework.",
@@ -1612,6 +1624,7 @@
                 "orientation": "Orientation",
                 "portrait": "Portrait",
                 "landscape": "Landscape",
+                "confirm": "Confirm",
                 "briefDescription": "Brief description about the Content",
                 "enterBriefDescription": "Brief description",
                 "enterTitle": "Enter Title For Content",
@@ -1717,7 +1730,6 @@
                 "skillMapDesc": "Create skill learning paths",
                 "view_skill_map": "View Skill Domain",
                 "view_skill_map_review": "View Skill Domain Review",
-                "skillMap": "Skill Domain",
                 "skillMapReview": "Skill Domain Review",
                 "urlRequiredMsg": "URL or File is required to upload",
                     "invalidContentTypeMsg": "Invalid content type (supported type: pdf, epub, h5p, mp4, youtube, html-zip, webm, whitelisted-domain)",
@@ -1865,6 +1877,9 @@
             },
             "emsg": {
                 "online": "Go online to download the transcript",
+                "observableElementsLoadFailed": "Failed to load observable elements. Please try again.",
+                "skillDomainCreationFailed": "Failed to create skill Domain. Please try again.",
+                "questionBankCreationFailed": "Failed to create question bank. Please try again.",
                 "desktop": {
                     "importValidZipFile": "This is an invalid telemetry file"
                 }
@@ -2033,7 +2048,9 @@
             },
             "snav": {
                 "shareViaLink": "Shared via linkn",
-                "submittedForReview": "Submitted for review"
+                "submittedForReview": "Submitted for review",
+                "questionBanks": "Question Banks",
+                "questionBankReview": "Question Banks In Review"
             },
             "tab": {
                 "all": "All",
@@ -2276,6 +2293,8 @@
                 "grpdeletesuccess": "Group deleted successfully",
                 "leaveGroup": "You are no longer part of this group",
                 "joinedProgramSuccessfully": "You have successfully joined this program",
+                "frameworkCreated": "Framework created successfully!",
+                "questionBankCreated": "Question Bank created successfully!",
                 "m0009": "Note created successfully...",
                 "m001": "Discussion forum enabled successfully",
                 "m0013": "Note updated successfully...",
@@ -2359,6 +2378,8 @@
                 "m0129": "Loading the terms and conditions.",
                 "m0130": "We are fetching districts",
                 "m0131": "Could not find any reports",
+                "m0118": "Fetching question banks...",
+                "m0132": "Create a new question bank.",
                 "m0134": "You cannot enrol into this batch, as it is closed",
                 "m0135": "Enter a valid date",
                 "m0136": "Last date for enrolment:",

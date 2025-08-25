@@ -1,0 +1,288 @@
+$primary: #3D79CB;
+$selected-bg: #e8f4fd;
+$search-bg: #f0f8ff;
+$options-bg: #fafafa;
+$section-border: #e1e8ed;
+
+.selected-div {
+  margin: 0.875rem 0 !important;
+}
+
+// Common font family class
+.times-new-roman-font {
+  font-family: 'Times New Roman', sans-serif !important;
+}
+
+// Options section scrollable styles
+.options-section-scrollable {
+  max-height: 12.5rem;
+  overflow-y: auto;
+}
+
+// Options chips padded styles
+.options-chips-padded {
+  padding: 0.5rem;
+}
+
+// Selected elements header styles
+.selected-elements-header {
+  display: block;
+  padding: 0.5rem 0.75rem;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: #333;
+  background-color: #f5f5f5;
+  border-radius: 0.25rem;
+}
+
+// Selected chips scrollable styles
+.selected-chips-scrollable {
+  max-height: 12.5rem;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+
+.select-observable {
+  position: relative;
+  width: 100%;
+  min-width: 15rem;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+
+  // Global override for any focus-visible styles within this component
+  *:focus-visible,
+  *:focus {
+    outline: none !important;
+  }
+
+  // Base section styling
+  .section {
+    margin-bottom: 0.0625rem;
+    border-bottom: 0.0625rem solid $section-border;
+    transition: all 0.3s ease;
+
+    &:last-child {
+      border-bottom: none;
+      // margin-bottom: 0;
+    }
+
+    .section-header {
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: #333;
+      padding: 0.75rem 1rem 0.5rem 1rem;
+      background: rgba($primary, 0.05);
+      border-bottom: 0.0625rem solid rgba($primary, 0.1);
+      margin-bottom: 0;
+      letter-spacing: 0.03125rem;
+      text-transform: uppercase;
+    }
+  }
+
+  // Selected chips section
+  .selected-section {
+    // background: $selected-bg;
+
+    .section-header {
+      background: rgba($primary, 0.1);
+      color: $primary;
+    }
+  }
+
+  // Search input section
+  .search-section {
+    .section-header {
+      background: rgba(#4a90e2, 0.08);
+      color: #4a90e2;
+    }
+  }
+
+  // Options section
+  .options-section {
+    margin: 1rem;
+    .section-header {
+      background: rgba(#666, 0.05);
+      color: #666;
+    }
+  }
+
+  // No options section
+  .no-options-section {
+    background: #fff9f9;
+
+    .no-options {
+      margin: 0;
+      border: none;
+      background: transparent;
+    }
+  }
+
+  // Selected chips at the top
+  .selected-chips {
+    display: flex;
+    flex-wrap: wrap;
+    // padding: 1rem;
+    margin: 1rem;
+
+    .chip.selected {
+      background: $primary;
+      color: #fff;
+      border-radius: 1.25rem;
+      padding: 0.5rem 0.75rem;
+      margin: 0.25rem 0.375rem 0.25rem 0;
+      display: flex;
+      align-items: center;
+      font-size: 0.8125rem;
+      box-shadow: 0 0.125rem 0.25rem rgba($primary, 0.3);
+      transition: all 0.2s ease;
+
+      &:hover {
+        transform: translateY(-0.0625rem);
+        box-shadow: 0 0.1875rem 0.375rem rgba($primary, 0.4);
+      }
+
+      .remove {
+        margin-left: 0.5rem;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 1rem;
+        line-height: 1;
+        padding: 0.125rem 0.25rem;
+        border-radius: 50%;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.2);
+        }
+      }
+    }
+  }
+
+  .input-wrapper {
+    display: flex;
+    width: 50%;
+    align-items: center;
+    border: 0.125rem solid $primary;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: #fff;
+    position: relative;
+    margin: 1rem;
+    box-shadow: 0 0.125rem 0.25rem rgba($primary, 0.1);
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 0.25rem 0.5rem rgba($primary, 0.15);
+    }
+
+    &:focus-within {
+      border-color: darken($primary, 10%);
+      box-shadow: 0 0 0 0.1875rem rgba($primary, 0.1);
+    }
+
+    // Override global focus-visible red border with higher specificity
+    &:focus-visible,
+    &:focus,
+    &.input-wrapper:focus-visible,
+    &.input-wrapper:focus {
+      outline: none !important;
+      border: 0.125rem solid darken($primary, 10%) !important;
+      box-shadow: 0 0 0 0.1875rem rgba($primary, 0.1) !important;
+    }
+
+    input {
+      border: none;
+      outline: none;
+      width: 100%;
+      font-size: 0.9375rem;
+      background: transparent;
+      color: #333;
+      padding-right: 2rem; // Make space for search icon
+
+      // Override global focus-visible red border specifically for input
+      &:focus-visible,
+      &:focus {
+        border: none !important;
+        outline: none !important;
+      }
+
+      &::placeholder {
+        color: #999;
+        opacity: 1;
+      }
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 1rem;
+      color: $primary;
+      font-size: 1.125rem;
+      pointer-events: none;
+    }
+  }
+
+  // Available options chips below input
+  .options-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.625rem;
+    padding: 1rem;
+    max-height: 18.75rem;
+    margin: 0;
+
+    // Custom scrollbar
+    &::-webkit-scrollbar {
+      width: 0.375rem;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 0.1875rem;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba($primary, 0.5);
+      border-radius: 0.1875rem;
+
+      &:hover {
+        background: rgba($primary, 0.7);
+      }
+    }
+
+    .chip.option {
+      background: #fff;
+      border: 0.125rem solid #dedede;
+      border-radius: 1.25rem;
+      padding: 0.5rem 0.875rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      display: inline-block;
+      box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.1);
+
+      &:hover {
+        background: $primary;
+        color: #fff;
+        transform: translateY(-0.125rem);
+        box-shadow: 0 0.25rem 0.5rem rgba($primary, 0.3);
+      }
+
+      &:active {
+        transform: translateY(0);
+        box-shadow: 0 0.125rem 0.25rem rgba($primary, 0.3);
+      }
+    }
+  }
+
+  .no-options {
+    padding: 1.5rem 1rem;
+    color: #999;
+    font-style: italic;
+    text-align: center;
+    font-size: 0.875rem;
+  }
+}

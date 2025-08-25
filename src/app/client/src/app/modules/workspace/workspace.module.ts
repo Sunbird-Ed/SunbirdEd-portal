@@ -16,7 +16,7 @@ import {
   UpforreviewContentplayerComponent, FlagConentplayerComponent, ReviewsubmissionsContentplayerComponent,
   PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
   AllContentComponent, FlagReviewerComponent, CollaboratingOnComponent,
-  CollaborationContentFilterComponent, WorkspaceContentFilterComponent, AllTextbooksComponent, NewCollectionEditorComponent, SkillMapComponent, SkillMapEditorComponent, SkillMapTreeComponent
+  CollaborationContentFilterComponent, WorkspaceContentFilterComponent, AllTextbooksComponent, NewCollectionEditorComponent, SkillMapComponent, SkillMapEditorComponent, SkillMapTreeComponent, QuestionBankListComponent, SelectObservableComponent
 } from './components';
 import { DateFilterXtimeAgoPipe } from './pipes';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -77,7 +77,9 @@ import { QuestionsetEditorLibraryModule } from '@project-sunbird/sunbird-questio
     NewCollectionEditorComponent,
     SkillMapComponent,
     SkillMapEditorComponent,
-    SkillMapTreeComponent
+    SkillMapTreeComponent,
+    QuestionBankListComponent,
+    SelectObservableComponent
   ],
   providers: [WorkSpaceService, EditorService, BatchService, ReviewCommentsService, DateFilterXtimeAgoPipe]
 })
