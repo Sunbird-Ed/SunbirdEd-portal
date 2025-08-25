@@ -530,14 +530,11 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
       content: this.generateQuestionBankData(questionBankData)
     };
 
-    // Don't close modal yet - keep it open to show creating state
-    
     // Create content using editorService
     this.editorService.create(requestData).subscribe(
       (response: any) => {
         this.isCreatingQuestionBank = false;
         
-        // Close modal after successful creation
         if (modal && modal.deny) {
           modal.deny();
         }
