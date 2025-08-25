@@ -583,7 +583,7 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
    */
   private createLockAndNavigateToQuestionBankEditor(content: any) {
     const state = 'draft';
-    const framework = this.frameworkService._frameworkData?.frameworkdata?.defaultFramework?.code || 'NCF';
+    const framework = this.frameworkService._frameworkData?.frameworkdata?.defaultFramework?.code;
     
     // Navigate to content editor with assessment type (same as practice assessment)
     this.router.navigate(['/workspace/content/edit/content/', content.identifier, state, framework, 'Draft'], {
