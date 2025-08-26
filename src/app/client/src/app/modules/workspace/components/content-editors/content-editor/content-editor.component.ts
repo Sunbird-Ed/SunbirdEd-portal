@@ -129,8 +129,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
       createdBy: this.userService.userProfile.id
     };
     return this.workspaceService.lockContent(input).pipe(tap((data) => {
-      this.queryParams = data.result;
-      this.router.navigate([], { relativeTo: this.activatedRoute, queryParams: data.result });
+      this.queryParams = { ...this.queryParams, ...data.result };
+      this.router.navigate([], { relativeTo: this.activatedRoute, queryParams: this.queryParams });
     }));
   }
   private getContentDetails() {
