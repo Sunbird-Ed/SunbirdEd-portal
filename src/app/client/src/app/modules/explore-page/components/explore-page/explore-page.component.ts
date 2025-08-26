@@ -139,7 +139,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.genericResourceService.initialize();
         this.instance = (<HTMLInputElement>document.getElementById('instance'))
             ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
-        this.subscription = this.utilService.currentRole.subscribe(async (result) => {
+        this.subscription = this.utilService.currentRole.pipe(takeUntil(this.unsubscribe$)).subscribe(async (result) => {
             if (result) {
                 this.userType = result;
             }
@@ -185,7 +185,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         this.defaultFilters = this.userService.defaultFrameworkFilters;
                         this.userProfile = this.userService.userProfile;
                     } else {
-                        this.userService.getGuestUser().subscribe((response) => {
+                        this.userService.getGuestUser().pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
                             const guestUserDetails: any = response;
                             if (guestUserDetails && !this.cacheService.exists('searchFilters')) {
                                 this.userProfile = guestUserDetails;
@@ -229,7 +229,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.frameworkCategoriesList = this.cslFrameworkService?.getAllFwCatName();
         this.isDesktopApp = this.utilService.isDesktopApp;
         this.setUserPreferences();
-        this.subscription$ = this.activatedRoute.queryParams.subscribe(queryParams => {
+        this.subscription$ = this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe$)).subscribe(queryParams => {
             this.selectedTab = queryParams.selectedTab;
             this.showTargetedCategory = false;
             this.getFormConfigs();
@@ -261,7 +261,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 })
             );
         this.listenLanguageChange();
-        this.contentManagerService.contentDownloadStatus$.subscribe(contentDownloadStatus => {
+        this.contentManagerService.contentDownloadStatus$.pipe(takeUntil(this.unsubscribe$)).subscribe(contentDownloadStatus => {
             this.contentDownloadStatus = contentDownloadStatus;
             this.addHoverData();
         });
@@ -665,7 +665,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.selectedTab === 'home') {
             if (!this.userType) {
                 if (this.isUserLoggedIn()) {
-                    this.userService.userData$.subscribe((profileData: IUserData) => {
+                    this.userService.userData$.pipe(takeUntil(this.unsubscribe$)).subscribe((profileData: IUserData) => {
                         if (profileData
                             && profileData.userProfile
                             && profileData.userProfile['profileUserType']) {
@@ -774,6 +774,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.unsubscribe$.complete();
         if (this.resourceDataSubscription) {
             this.resourceDataSubscription.unsubscribe();
+        }
+        if (this.subscription) {
+            this.subscription.unsubscribe();
         }
     }
 
@@ -1167,7 +1170,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.userPreference = { framework: this.userService.defaultFrameworkFilters };
                 this.transformUserPreference = this.cslFrameworkService.frameworkLabelTransform(this.frameworkCategoriesObject, this.userPreference);
             } else {
-                this.userService.getGuestUser().subscribe((response) => {
+                this.userService.getGuestUser().pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
                     this.userPreference = response;
                     this.transformUserPreference = this.cslFrameworkService.frameworkLabelTransform(this.frameworkCategoriesObject, this.userPreference);
                 });
@@ -1261,7 +1264,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     updateProfile(event) {
         if (this.isUserLoggedIn()) {
-            this.profileService.updateProfile({ framework: event }).subscribe(res => {
+            this.profileService.updateProfile({ framework: event }).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
                 this.userPreference.framework = event;
                 this.transformUserPreference = this.cslFrameworkService.frameworkLabelTransform(this.frameworkCategoriesObject, this.userPreference);
                 this.getFormConfigs();
@@ -1276,7 +1279,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             });
         } else {
             const req = { ...this.userPreference, framework: event };
-            this.userService.updateGuestUser(req).subscribe(res => {
+            this.userService.updateGuestUser(req).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
                 this.userPreference.framework = event;
                 this.transformUserPreference = this.cslFrameworkService.frameworkLabelTransform(this.frameworkCategoriesObject, this.userPreference);
                 this.getFormConfigs();
