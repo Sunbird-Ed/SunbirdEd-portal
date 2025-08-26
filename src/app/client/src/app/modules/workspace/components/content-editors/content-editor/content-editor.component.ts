@@ -215,20 +215,12 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
       timeDiff: this.userService.getServerTimeDiff
     };
 
-    // Add observable element data if available in query params
-    if (this.queryParams && this.queryParams['observableElementData'] && this.queryParams['primaryCategory']) {
-      try {
-        window.context.observableElementData = JSON.parse(this.queryParams['observableElementData']);
-        window.context.primaryCategory = this.queryParams['primaryCategory'];
-      } catch (error) {
-        console.error('Error parsing observableElementData:', error);
-      }
-    }
   }
+
   private getDocumentDir(): string {
     return typeof document !== 'undefined' ? document.dir || 'rtl' : 'rtl';
   }
-  
+
   private setWindowConfig() {
     window.config = _.cloneDeep(this.configService.editorConfig.CONTENT_EDITOR.WINDOW_CONFIG); // cloneDeep to preserve default config
     window.config.build_number = this.buildNumber;
@@ -245,6 +237,38 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     this.searchService.getObservableElements().subscribe(result => {
       window.config.observableElements = result || [];
     });
+    if (this.queryParams && this.queryParams['primaryCategory'] === 'Question Bank' && this.queryParams['obsEleId']) {
+      const obsEleId = this.queryParams['obsEleId'];
+      this.fetchObservableElementData(obsEleId);
+    }
+  }
+
+  /**
+   * Fetch observable element data by identifier
+   */
+  private fetchObservableElementData(obsEleId: string) {
+    const searchParams = {
+      filters: {
+        identifier: obsEleId,
+        status: ["Live"]
+      }
+    };
+
+    this.searchService.compositeSearch(searchParams).subscribe(
+      (response: any) => {
+        if (_.size(_.get(response, 'result.Term'))) {
+          window.config.observableElementData = response.result.Term;
+          window.config.primaryCategory = this.queryParams['primaryCategory'];
+        } else {
+          console.error('Observable element not found or invalid response format:', response);
+          this.toasterService.error('Failed to load observable element data. Please try again.');
+        }
+      },
+      (error: any) => {
+        console.error('Error fetching observable element data:', error);
+        this.toasterService.error('Failed to load observable element data. Please try again.');
+      }
+    );
   }
   /**
    * checks the permission using state, status and userId
