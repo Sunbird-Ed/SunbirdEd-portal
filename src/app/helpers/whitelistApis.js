@@ -1235,7 +1235,7 @@ const API_LIST = {
         ROLE.SKILLMAP_CREATOR
       ]
     },
-    '/content/framework/v3/term/read/:termId': {
+    '/content/framework/v1/term/read/:termId': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.SKILLMAP_CREATOR

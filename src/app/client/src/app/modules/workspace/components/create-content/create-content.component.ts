@@ -572,8 +572,8 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
       createdFor: this.userService?.userProfile?.rootOrgId ? [this.userService?.userProfile?.rootOrgId] : [],
       mimeType: this.configService.appConfig.CONTENT_CONST.CREATE_LESSON,
       primaryCategory: 'Question Bank',
-      observableElementIds: [selectedObservableElement.identifier],
-      code: this.generateCode(formData.name)
+      contentType: "Resource",
+      observableElementIds: [selectedObservableElement.identifier]
     };
 
     // Add creator name
