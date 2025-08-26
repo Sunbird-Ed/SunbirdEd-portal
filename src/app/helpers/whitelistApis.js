@@ -1235,6 +1235,12 @@ const API_LIST = {
         ROLE.SKILLMAP_CREATOR
       ]
     },
+    '/content/framework/v3/term/read/:termId': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.SKILLMAP_CREATOR
+      ]
+    },
     '/content/framework/v3/retire/:frameworkId': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
@@ -2164,6 +2170,7 @@ const API_LIST = {
     '/content/framework/v3/review/:frameworkId',
     '/content/framework/v3/reject/:frameworkId',
     '/content/framework/v3/term/retire/:termId',
+    '/content/framework/v1/term/read/:termId',
     '/content/framework/v3/retire/:frameworkId',
     '/content/framework/v3/read/:frameworkId'
   ]
