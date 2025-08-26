@@ -256,7 +256,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
 
     this.searchService.compositeSearch(searchParams).subscribe(
       (response: any) => {
-        if (response && response.result && response.result.Term && response.result.Term.length > 0) {
+        if (_.size(_.get(response, 'result.Term'))) {
           window.config.observableElementData = response.result.Term;
           window.config.primaryCategory = this.queryParams['primaryCategory'];
         } else {
