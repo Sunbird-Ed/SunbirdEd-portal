@@ -121,6 +121,21 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
                   });
                 }
             }
+             if (eid === 'END') {
+              if (!this.isFullScreen) {
+                  _.forEach(this.actionButtons, data => {
+                    if (data.name === 'fullscreen') {
+                      data.isInActive = false;
+                    }
+                  });
+                } else {
+                  _.forEach(this.fullScreenActionButtons, data => {
+                    if (data.name === 'minimize') {
+                      data.isInActive = false;
+                    }
+                  });
+                }
+             }
         });
       }
   }
