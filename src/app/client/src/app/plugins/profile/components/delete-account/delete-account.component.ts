@@ -19,6 +19,7 @@ export class DeleteAccountComponent implements OnInit, OnDestroy {
   @Input() contactType: string;
   @Input() userProfile: any;
   @Output() close = new EventEmitter<any>();
+  @Output() otpVerificationComplete = new EventEmitter<any>();
   @Input() dialogProps;
   @Input() deepLink:string = ''
   contactTypeForm: UntypedFormGroup;
@@ -115,25 +116,7 @@ export class DeleteAccountComponent implements OnInit, OnDestroy {
   }
 
   verificationSuccess(data) {
-      this.userService.deleteUser().subscribe(
-        (data: ServerResponse) => {
-          if(_.get(data, 'result.response') === 'SUCCESS'){
-            if(this.deviceDetectorService.isMobile() && this.deepLink !== ''){
-              //TODO changes need to be done on the Mobile Deeplink
-              const url = this.deepLink+'?userId='+ this.userProfile.userId;
-              window.open(url, '_blank');
-            }
-            window.location.replace('/logoff');
-            this.cacheService.removeAll();
-          }
-        },
-        (err) => {
-          //TODO we need to update the error 
-          const errorMessage =  this.resourceService.messages.fmsg.m0085;
-          this.toasterService.error(errorMessage);
-        }
-      );
-       
+    this.otpVerificationComplete.emit(data);
   }
 
   setInteractEventData() {

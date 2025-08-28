@@ -247,28 +247,22 @@ describe('DeleteAccountComponent', () => {
     });
 
     it('should create a instance of component and call the verificationSuccess method', () => {
-        //(global as any).window = Object.create(window);
-        const url = 'http://localhost/';
         const data = {}
-        userService.deleteUser = jest.fn().mockReturnValue(of(mockResponse.resendOtpSuccess));
+        jest.spyOn(component.otpVerificationComplete, 'emit');
         component.verificationSuccess(data);
-        expect(window.location.href).toEqual(url);
+        expect(component.otpVerificationComplete.emit).toHaveBeenCalledWith(data);
     });
     it('should create a instance of component and call the verificationSuccess method with mobile is true', () => {
-        //(global as any).window = Object.create(window);
-        const url = 'http://localhost/';
-        mockDeviceDetectorService.isMobile = jest.fn().mockReturnValue(true);
-        component.deepLink='deepLink'
         const data = {}
-        userService.deleteUser = jest.fn().mockReturnValue(of(mockResponse.resendOtpSuccess));
+        jest.spyOn(component.otpVerificationComplete, 'emit');
         component.verificationSuccess(data);
-        expect(window.location.href).toEqual(url);
+        expect(component.otpVerificationComplete.emit).toHaveBeenCalledWith(data);
     });
     it('should create a instance of component and call the verificationSuccess method with error', () => {
         const data = {}
-        userService.deleteUser = jest.fn().mockReturnValue(throwError({error:'erroroccured'}));
+        jest.spyOn(component.otpVerificationComplete, 'emit');
         component.verificationSuccess(data);
-        expect(toasterService.error).toBeCalled();
+        expect(component.otpVerificationComplete.emit).toHaveBeenCalledWith(data);
     });
 
     it('should create a instance of component and call the setInteractEventData method', () => {

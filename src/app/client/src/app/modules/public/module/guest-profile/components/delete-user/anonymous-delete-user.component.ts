@@ -1,10 +1,12 @@
 import { Component, EventEmitter, OnInit, Output, ViewChildren } from '@angular/core';
-import { ResourceService, ToasterService, NavigationHelperService, LayoutService, IUserData } from '@sunbird/shared';
+import { ResourceService, ToasterService, NavigationHelperService, LayoutService, IUserData, ConfigService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { takeUntil } from 'rxjs/operators';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { OrgDetailsService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-anonymous-delete-user',
@@ -31,9 +33,11 @@ export class AnonymousDeleteUserComponent implements OnInit {
   contactType = '';
   contactValue = '';
   showDelete = true
+  skipOtpVerification = false;
   constructor(public resourceService: ResourceService, public toasterService: ToasterService, public router: Router,
     private activatedRoute: ActivatedRoute, public navigationhelperService: NavigationHelperService,
-    public layoutService: LayoutService) {
+    public layoutService: LayoutService, public configService: ConfigService, public orgDetailsService: OrgDetailsService,
+    public deviceDetectorService: DeviceDetectorService) {
   }
 
   ngOnInit() {
@@ -43,6 +47,7 @@ export class AnonymousDeleteUserComponent implements OnInit {
       .map(key => obj[key]);
     this.navigationhelperService.setNavigationUrl();
     this.setTelemetryData();
+    this.checkOtpVerificationSetting();
     const snapshotQueryParams = _.get(this.activatedRoute, 'snapshot.queryParams', {});
     this.deepLink = snapshotQueryParams.deeplink
     this.userId = snapshotQueryParams.userId
@@ -101,6 +106,12 @@ export class AnonymousDeleteUserComponent implements OnInit {
   onSubmitForm() {
     if (this.enableSubmitBtn) {
       this.enableSubmitBtn = false;
+      
+      if (this.skipOtpVerification) {
+        this.verificationSuccess(null);
+        return;
+      }
+      
       this.showContactPopup = true;
       this.conditions = []
       this.inputFields.forEach((element) => {
@@ -108,6 +119,38 @@ export class AnonymousDeleteUserComponent implements OnInit {
       });
     } else {
       this.toasterService.warning(this.resourceService.messages.imsg.m0092)
+    }
+  }
+
+  /**
+   * Check system setting for OTP verification on delete
+   */
+  private checkOtpVerificationSetting() {
+    const verifyOtpOnDeleteUrl = _.get(this.configService, 'urlConFig.URLS.SYSTEM_SETTING.VERIFY_OTP_ON_DELETE');
+    if (!verifyOtpOnDeleteUrl) {
+      this.skipOtpVerification = false;
+      return;
+    }
+    
+    const systemSetting = {
+      url: verifyOtpOnDeleteUrl,
+    };
+    
+    this.orgDetailsService.learnerService.get(systemSetting).subscribe(response => {
+      if (_.get(response, 'result.response.value') === 'false') {
+        this.skipOtpVerification = true;
+      } else {
+        this.skipOtpVerification = false;
+      }
+    }, error => {
+      this.skipOtpVerification = false;
+    });
+  }
+
+  verificationSuccess(data) {
+    if (this.deviceDetectorService.isMobile() && this.deepLink !== '') {
+      const url = this.deepLink + '?userId=' + this.userId;
+      window.open(url, '_blank');
     }
   }
 
