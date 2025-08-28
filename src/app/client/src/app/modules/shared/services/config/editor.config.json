@@ -1,5 +1,5 @@
 {
-    "DEFAULT_PARAMS_FIELDS": "createdBy,status,mimeType,contentType,resourceType,collaborators,contentDisposition,primaryCategory,framework,targetFWIds,qumlVersion",
+    "DEFAULT_PARAMS_FIELDS": "createdBy,status,mimeType,contentType,resourceType,collaborators,contentDisposition,primaryCategory,framework,targetFWIds,qumlVersion,observableElementIds",
     "COLLECTION_EDITOR": {
         "WINDOW_CONFIG": {
             "editorConfig": {

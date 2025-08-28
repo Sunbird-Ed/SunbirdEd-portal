@@ -237,16 +237,15 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     this.searchService.getObservableElements().subscribe(result => {
       window.config.observableElements = result || [];
     });
-    if (this.queryParams && this.queryParams['primaryCategory'] === 'Question Bank' && this.queryParams['obsEleId']) {
-      const obsEleId = this.queryParams['obsEleId'];
-      this.fetchObservableElementData(obsEleId);
+    if (this.contentDetails && this.contentDetails?.primaryCategory === 'Question Bank' && _.size(this.contentDetails?.observableElementIds)) {
+      this.fetchObservableElementData(this.contentDetails.observableElementIds);
     }
   }
 
   /**
    * Fetch observable element data by identifier
    */
-  private fetchObservableElementData(obsEleId: string) {
+  private fetchObservableElementData(obsEleId: any[]) {
     const searchParams = {
       filters: {
         identifier: obsEleId,
@@ -258,7 +257,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
       (response: any) => {
         if (_.size(_.get(response, 'result.Term'))) {
           window.config.observableElementData = response.result.Term;
-          window.config.primaryCategory = this.queryParams['primaryCategory'];
+          window.config.primaryCategory = this.contentDetails.primaryCategory || this.queryParams['primaryCategory'];
         } else {
           console.error('Observable element not found or invalid response format:', response);
           this.toasterService.error('Failed to load observable element data. Please try again.');
