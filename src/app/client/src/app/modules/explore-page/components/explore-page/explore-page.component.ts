@@ -68,7 +68,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public enrolledSection: any;
     public completedCourseSection: any;
     public selectedCourseBatches: any;
-    public allEnrolledCourses: any
+    public allEnrolledCourses: any;
     frameworkCategories;
     frameworkCategoriesObject;
     transformUserPreference;
