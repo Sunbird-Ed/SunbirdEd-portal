@@ -573,6 +573,7 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
       mimeType: this.configService.appConfig.CONTENT_CONST.CREATE_LESSON,
       primaryCategory: 'Question Bank',
       contentType: "Resource",
+      framework: localStorage.getItem('selectedFramework'),
       observableElementIds: [selectedObservableElement.identifier]
     };
 
