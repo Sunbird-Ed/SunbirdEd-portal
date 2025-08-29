@@ -94,6 +94,7 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
   public observableElementsOptions: SelectObservableOption[] = [];
   public selectedObservableElements: SelectObservableOption[] = [];
   public isLoadingObservableElements = false;
+  private selectedObservableElement: SelectObservableOption;
   /**
   * Constructor to create injected service(s) object
   *
@@ -318,6 +319,7 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
    */
   onObservableElementsSelected(selected: SelectObservableOption[]) {
     this.selectedObservableElements = selected;
+    this.selectedObservableElement = selected[0]; // Store the first selected element
     
     // Update the form field value
     if (selected.length > 0) {
@@ -563,8 +565,6 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
    * Generate question bank creation data
    */
   private generateQuestionBankData(formData: any) {
-    const selectedObservableElement = this.selectedObservableElements[0]; // Single select
-    
     const requestData = {
       name: formData.name,
       description: formData.description || 'Question Bank for bulk questions creation',
@@ -574,7 +574,7 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
       primaryCategory: 'Question Bank',
       contentType: "Resource",
       framework: localStorage.getItem('selectedFramework'),
-      observableElementIds: [selectedObservableElement.identifier]
+      observableElementIds: [this.selectedObservableElement.identifier]
     };
 
     // Add creator name
@@ -592,14 +592,14 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
    */
   private createLockAndNavigateToQuestionBankEditor(content: any) {
     const state = 'draft';
-    const framework = this.frameworkService._frameworkData?.frameworkdata?.defaultFramework?.code;
+    const framework = localStorage.getItem('selectedFramework');
     
     // Navigate to content editor with assessment type (same as practice assessment)
     this.router.navigate(['/workspace/content/edit/content/', content.identifier, state, framework, 'Draft'], {
       queryParams: {
         contentType: 'assessment',
         primaryCategory: 'Question Bank',
-        observableElementData: JSON.stringify(this.selectedObservableElements[0])
+        obsEleId: this.selectedObservableElement?.identifier
       }
     });
   }
@@ -609,6 +609,7 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
    */
   removeSelectedObservableElement() {
     this.selectedObservableElements = [];
+    this.selectedObservableElement = null;
     this.questionBankForm.patchValue({
       observable: ''
     });

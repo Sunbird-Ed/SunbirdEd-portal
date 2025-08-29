@@ -431,7 +431,7 @@ export class QuestionBankListComponent extends WorkSpace implements OnInit, Afte
       // Creator role logic
       if (status === 'draft') {
         // Draft content can be edited
-        navigateState = this.state; // Edit mode
+        navigateState = 'draft'; // Edit mode
       } else if (status === 'review' || status === 'live') {
         // Review and Live content should be viewed only
         navigateState = 'upForReview'; // View mode
@@ -445,7 +445,7 @@ export class QuestionBankListComponent extends WorkSpace implements OnInit, Afte
       // User has both roles
       if (status === 'draft') {
         // Draft content can be edited if creator
-        navigateState = this.state; // Edit mode
+        navigateState = "draft"; // Edit mode
       } else if (status === 'review' || status === 'live') {
         // Review and Live content should be viewed only
         navigateState = 'upForReview'; // View mode
