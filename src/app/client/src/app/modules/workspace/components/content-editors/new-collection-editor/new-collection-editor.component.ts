@@ -333,6 +333,7 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
         cloudStorage: { provider: cloudProvider }
       },
       config: {
+        levels: this.config.editorConfig.COLLECTION_EDITOR.WINDOW_CONFIG.editorConfig.levels.rules.levels,
         primaryCategory: this.collectionDetails.primaryCategory,
         objectType: _.get(this.collectionDetails, 'objectType') || 'QuestionSet',
         mode: this.getEditorMode(),

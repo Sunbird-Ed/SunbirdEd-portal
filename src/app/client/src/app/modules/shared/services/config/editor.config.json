@@ -4,7 +4,7 @@
         "WINDOW_CONFIG": {
             "editorConfig": {
                 "rules": {
-                    "levels": 2,
+                    "levels": 1,
                     "objectTypes": []
                 },
                 "publishMode": false,
