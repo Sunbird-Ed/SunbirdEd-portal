@@ -231,8 +231,8 @@ export class SkillMapComponent extends WorkSpace implements OnInit, AfterViewIni
       'messageText': 'messages.stmsg.m0008'
     };
     this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
-    this.isSkillMapCreator = this.permissionService.checkRolesPermissions(['SKILLMAP_CREATOR']);
-    this.isSkillMapReviewer = this.permissionService.checkRolesPermissions(['SKILLMAP_REVIEWER']);
+    this.isSkillMapCreator = this.permissionService.checkRolesPermissions(['SKILLDOMAIN_CREATOR']);
+    this.isSkillMapReviewer = this.permissionService.checkRolesPermissions(['SKILLDOMAIN_REVIEWER']);
   }
 
   ngOnInit() {

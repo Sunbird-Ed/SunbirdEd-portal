@@ -289,8 +289,8 @@ export class SkillMapEditorComponent implements OnInit, OnDestroy {
     private publicDataService: PublicDataService,
     private skillMapTreeService: SkillMapTreeService
   ) {
-    this.isSkillMapCreator = this.permissionService.checkRolesPermissions(['SKILLMAP_CREATOR']);
-    this.isSkillMapReviewer = this.permissionService.checkRolesPermissions(['SKILLMAP_REVIEWER']);
+    this.isSkillMapCreator = this.permissionService.checkRolesPermissions(['SKILLDOMAIN_CREATOR']);
+    this.isSkillMapReviewer = this.permissionService.checkRolesPermissions(['SKILLDOMAIN_REVIEWER']);
   }
 
   ngOnInit(): void {
