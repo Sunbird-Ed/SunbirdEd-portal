@@ -153,7 +153,7 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
     this.isQuestionBankReviewer = this.permissionService.checkRolesPermissions(['CONTENT_REVIEWER', 'CONTENT_REVIEW']);
     
     // Check if user only has skill map roles and should not see other content creation options
-    const hasSkillMapRoles = this.permissionService.checkRolesPermissions(['SKILLMAP_CREATOR', 'SKILLMAP_REVIEWER']);
+    const hasSkillMapRoles = this.permissionService.checkRolesPermissions(['SKILLDOMAIN_CREATOR', 'SKILLDOMAIN_REVIEWER']);
     const hasContentRoles = this.permissionService.checkRolesPermissions(['CONTENT_CREATOR', 'CONTENT_CREATION', 'CONTENT_REVIEWER', 'CONTENT_REVIEW', 'BOOK_CREATOR']);
     
     this.isSkillMapUser = hasSkillMapRoles && !hasContentRoles;

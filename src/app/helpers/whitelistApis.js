@@ -26,8 +26,8 @@ const ROLE = {
   ANONYMOUS: 'ANONYMOUS',
   PROGRAM_MANAGER: "PROGRAM_MANAGER",
   PROGRAM_DESIGNER: "PROGRAM_DESIGNER",
-  SKILLMAP_CREATOR: "SKILLMAP_CREATOR",
-  SKILLMAP_REVIEWER: "SKILLMAP_REVIEWER"
+  SKILLDOMAIN_CREATOR: "SKILLDOMAIN_CREATOR",
+  SKILLDOMAIN_REVIEWER: "SKILLDOMAIN_REVIEWER"
 };
 
 const API_LIST = {
@@ -269,7 +269,7 @@ const API_LIST = {
         ROLE.COURSE_CREATOR,
         ROLE.BOOK_CREATOR, ROLE.BOOK_REVIEWER,
         ROLE.FLAG_REVIEWER, ROLE.ORG_ADMIN,
-        ROLE.SKILLMAP_CREATOR, ROLE.SKILLMAP_REVIEWER
+        ROLE.SKILLDOMAIN_CREATOR, ROLE.SKILLDOMAIN_REVIEWER
       ]
     },
 
@@ -1179,8 +1179,8 @@ const API_LIST = {
         ROLE.BOOK_CREATOR,
         ROLE.CONTENT_REVIEWER,
         ROLE.BOOK_REVIEWER,
-        ROLE.SKILLMAP_CREATOR,
-        ROLE.SKILLMAP_REVIEWER
+        ROLE.SKILLDOMAIN_CREATOR,
+        ROLE.SKILLDOMAIN_REVIEWER
       ]
     },
 
@@ -1188,37 +1188,37 @@ const API_LIST = {
     '/content/framework/v1/create': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
-        ROLE.SKILLMAP_CREATOR
+        ROLE.SKILLDOMAIN_CREATOR
       ]
     },
     '/content/framework/v1/term/create': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
-        ROLE.SKILLMAP_CREATOR
+        ROLE.SKILLDOMAIN_CREATOR
       ]
     },
     '/content/framework/v1/term/update/:termCode': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
-        ROLE.SKILLMAP_CREATOR
+        ROLE.SKILLDOMAIN_CREATOR
       ]
     },
     '/content/framework/v1/update/:frameworkId': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
-        ROLE.SKILLMAP_CREATOR
+        ROLE.SKILLDOMAIN_CREATOR
       ]
     },
     '/content/framework/v1/publish/:frameworkId': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
-        ROLE.SKILLMAP_REVIEWER
+        ROLE.SKILLDOMAIN_REVIEWER
       ]
     },
     '/content/framework/v1/category/create': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
-        ROLE.SKILLMAP_CREATOR
+        ROLE.SKILLDOMAIN_CREATOR
       ]
     },
 
@@ -1226,38 +1226,38 @@ const API_LIST = {
     '/content/framework/v3/reject/:frameworkId': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
-        ROLE.SKILLMAP_REVIEWER
+        ROLE.SKILLDOMAIN_REVIEWER
       ]
     },
     '/content/framework/v3/term/retire/:termId': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
-        ROLE.SKILLMAP_CREATOR
+        ROLE.SKILLDOMAIN_CREATOR
       ]
     },
     '/content/framework/v1/term/read/:termId': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
-        ROLE.SKILLMAP_CREATOR
+        ROLE.SKILLDOMAIN_CREATOR
       ]
     },
     '/content/framework/v3/retire/:frameworkId': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
-        ROLE.SKILLMAP_CREATOR
+        ROLE.SKILLDOMAIN_CREATOR
       ]
     },
     '/content/framework/v3/review/:frameworkId': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
-        ROLE.SKILLMAP_CREATOR
+        ROLE.SKILLDOMAIN_CREATOR
       ]
     },
     '/content/framework/v3/read/:frameworkId': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
-        ROLE.SKILLMAP_CREATOR,
-        ROLE.SKILLMAP_REVIEWER,
+        ROLE.SKILLDOMAIN_CREATOR,
+        ROLE.SKILLDOMAIN_REVIEWER,
       ]
     },
 
