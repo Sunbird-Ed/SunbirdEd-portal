@@ -72,6 +72,12 @@
         <dt>{{resourceService.frmelmnts.lbl.keywords}}</dt>
         <dd *ngIf="metadata.keywords">{{metadata.keywords}}</dd>
     </dl>
+    <dl class="sb-meta-data" *ngIf="metadata.observableElementNames && metadata.observableElementNames.length">
+        <dt>{{resourceService.frmelmnts.lbl?.observableElements || 'Observable Elements'}}</dt>
+        <dd>
+            <span *ngFor="let name of metadata.observableElementNames" class="ui label small element-chip mr-16 mb-8">{{name}}</span>
+        </dd>
+    </dl>
     <dl class="sb-meta-data">
         <dt>{{resourceService.frmelmnts.lbl.contentType}}</dt>
         <dd *ngIf="metadata.primaryCategory">{{metadata.primaryCategory}}</dd>
