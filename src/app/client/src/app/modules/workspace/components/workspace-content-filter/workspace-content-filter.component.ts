@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, ConfigService, NavigationHelperService, UtilService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
@@ -12,6 +12,8 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
   styleUrls: ['./workspace-content-filter.component.scss']
 })
 export class WorkspaceContentFilterComponent implements OnInit, OnDestroy {
+  @Input() showSortBy: boolean = false;
+  
   private languageSubscription: Subscription;
   modelChanged: Subject<string> = new Subject<string>();
   /**
