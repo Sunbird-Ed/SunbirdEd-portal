@@ -567,7 +567,7 @@ export class SearchService {
   }
 
   getObservableElements(): Observable<any> {
-    let frameworks = [];
+    let frameworks: string[] = [];
     const liveFrameworkPayload = {
       filters: {
         objectType: "Framework",
