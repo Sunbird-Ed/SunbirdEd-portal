@@ -199,6 +199,15 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
    */
   public collectionListModal = false;
   public isQuestionSetFilterEnabled: boolean;
+
+  public categoryCodes: string[] = [];
+
+  /**
+   * Helper method to check if a value is an array (for use in templates)
+   */
+  public isArray(value: any): boolean {
+    return Array.isArray(value);
+  }
   /**
     * Constructor to create injected service(s) object
     Default method of Draft Component class
@@ -384,21 +393,51 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
               channelMapping[channelId] = channelName;
             });
 
+            const frameworkCategories = this.cslFrameworkService.getFrameworkCategoriesObject();
+
             _.forEach(collections, collection => {
-              const obj = _.pick(collection, ['contentType', 'board', 'medium', 'name', 'gradeLevel', 'subject', 'channel']);
-              obj['channel'] = channelMapping[obj.channel];
+              const dynamicFields = {};
+
+              if (frameworkCategories && Array.isArray(frameworkCategories)) {
+                const categoryCodes = frameworkCategories.map(category => category.code);
+
+                categoryCodes.forEach(code => {
+                  if (collection[code] !== undefined) {
+                    dynamicFields[code] = collection[code];
+                  }
+                });
+              }
+
+              const requiredFields = {
+                contentType: collection.contentType,
+                name: collection.name,
+                channel: channelMapping[collection.channel]
+              };
+
+              const obj = { ...requiredFields, ...dynamicFields };
               this.collectionData.push(obj);
           });
 
-          this.headers = {
-            type: 'Type',
-            name: 'Name',
-            subject: 'Subject',
-            grade: 'Grade',
-            medium: 'Medium',
-            board: 'Board',
-            channel: 'Tenant Name'
+            const requiredHeaders = {
+              type: 'Type',
+              name: 'Name',
+              channel: 'Tenant Name'
             };
+
+            this.categoryCodes = [];
+            const dynamicHeaders = {};
+
+            if (frameworkCategories && Array.isArray(frameworkCategories)) {
+              frameworkCategories.forEach((category: any) => {
+                if (category.code) {
+                  this.categoryCodes.push(category.code);
+                  dynamicHeaders[category.code] = category.label ||
+                    category.code.charAt(0).toUpperCase() + category.code.slice(1);
+                }
+              });
+            }
+          
+          this.headers = { ...requiredHeaders, ...dynamicHeaders };
             if (!_.isUndefined(modal)) {
               this.deleteModal.deny();
             }
