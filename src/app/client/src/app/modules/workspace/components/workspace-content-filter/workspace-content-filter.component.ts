@@ -12,7 +12,7 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
   styleUrls: ['./workspace-content-filter.component.scss']
 })
 export class WorkspaceContentFilterComponent implements OnInit, OnDestroy {
-  @Input() showSortBy: boolean = false;
+  @Input() showSortByFilter: boolean = true;
   
   private languageSubscription: Subscription;
   modelChanged: Subject<string> = new Subject<string>();
