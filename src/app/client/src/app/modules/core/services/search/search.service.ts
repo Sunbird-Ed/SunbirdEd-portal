@@ -1,5 +1,5 @@
 
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { Inject, Injectable } from '@angular/core';
 import { UserService } from './../user/user.service';
 import { ContentService } from './../content/content.service';
@@ -567,14 +567,35 @@ export class SearchService {
   }
 
   getObservableElements(): Observable<any> {
+    let frameworks = [];
+    const liveFrameworkPayload = {
+      filters: {
+        objectType: "Framework",
+        status: ["Live"]
+      }
+    };
     const searchParams = {
       filters: {
         status: ['Live'],
         category: "observableElement",
+        framework: []
       }
     };
 
-    return this.compositeSearch(searchParams).pipe(
+    // First, get live frameworks
+    return this.compositeSearch(liveFrameworkPayload).pipe(
+      map((frameworkData: ServerResponse) => {
+        // Extract framework identifiers from the result
+        if (frameworkData?.result?.Framework) {
+          frameworks = frameworkData.result.Framework.map(framework => framework.identifier);
+        }
+        return frameworks;
+      }),
+      // Then make the second search call with the frameworks
+      switchMap((frameworkIds: string[]) => {
+        searchParams.filters.framework = frameworkIds;
+        return this.compositeSearch(searchParams);
+      }),
       map((data: ServerResponse) => {
         if (data?.result) {
           return data.result || {};
