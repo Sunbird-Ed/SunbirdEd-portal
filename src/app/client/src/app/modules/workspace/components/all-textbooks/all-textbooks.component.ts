@@ -14,6 +14,7 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui-v9';
 import { debounceTime, map } from 'rxjs/operators';
 import { ContentIDParam } from '../../interfaces/delteparam';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 @Component({
   selector: 'app-all-textbooks',
@@ -207,7 +208,8 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
-    config: ConfigService, public modalService: SuiModalService) {
+    config: ConfigService, public modalService: SuiModalService,
+    public cslFrameworkService: CslFrameworkService) {
     super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
@@ -220,6 +222,7 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
       'loaderMessage': this.resourceService.messages.stmsg.m0127,
     };
     this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
+    this.cslFrameworkService = cslFrameworkService;
   }
 
 
@@ -246,6 +249,15 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
   */
  fetchAllTextBooks(limit: number, pageNumber: number, bothParams) {
     this.showLoader = true;
+    const frameworkCategories = this.cslFrameworkService.getFrameworkCategoriesObject() as Array<any>;
+
+    const dynamicFilters = frameworkCategories.reduce((filters, category) => {
+      const code = category.code;
+      if (bothParams['queryParams'][code]) {
+        filters[code] = bothParams['queryParams'][code];
+      }
+      return filters;
+    }, {} as Record<string, any>);
     if (bothParams.queryParams.sort_by) {
       const sort_by = bothParams.queryParams.sort_by;
       const sortType = bothParams.queryParams.sortType;
@@ -262,11 +274,8 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
         status: bothParams.queryParams.status ? bothParams.queryParams.status : preStatus,
         contentType: this.config.appConfig.WORKSPACE.adminHandledContentType,
         objectType: this.config.appConfig.WORKSPACE.objectType,
-        board: bothParams.queryParams.board,
-        subject: bothParams.queryParams.subject,
-        medium: bothParams.queryParams.medium,
-        gradeLevel: bothParams.queryParams.gradeLevel,
-        channel: this.userService.channel
+        channel: this.userService.channel,
+        ...dynamicFilters
       },
       limit: limit,
       offset: (pageNumber - 1) * (limit),
