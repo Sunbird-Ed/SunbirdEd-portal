@@ -5,6 +5,7 @@ import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { map, catchError } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { WorkSpaceService } from './../work-space/workspace.service';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 /**
  * Service to provides CRUD methods to make content api request by extending DataService.
@@ -32,11 +33,12 @@ export class EditorService {
      * @param {ConfigService} config ConfigService reference
      */
     constructor(configService: ConfigService, contentService: ContentService, publicDataService: PublicDataService,
-        public workspaceService: WorkSpaceService, public userService: UserService) {
+        public workspaceService: WorkSpaceService, public userService: UserService, public cslFrameworkService: CslFrameworkService) {
         this.configService = configService;
         this.contentService = contentService;
         this.baseUrl = this.configService.urlConFig.URLS.CONTENT_PREFIX;
         this.publicDataService = publicDataService;
+        this.cslFrameworkService = cslFrameworkService;
     }
 
     /**
@@ -44,16 +46,16 @@ export class EditorService {
      * @param req OBJECT
      */
     create(req): Observable<ServerResponse> {
-      if (_.get(req, 'content.subject') && !_.isArray(_.get(req, 'content.subject'))) {
-        const subject = [];
-        subject.push(req.content.subject);
-        req.content.subject = subject;
-      }
-      if (_.get(req, 'content.medium') && !_.isArray(_.get(req, 'content.medium'))) {
-        const medium = [];
-        medium.push(req.content.medium);
-        req.content.medium = medium;
-      }
+      const frameworkCategories = this.cslFrameworkService.getFrameworkCategoriesObject() as Array<any>;
+      const categoryCodes = frameworkCategories.map((category) => category.code);
+      categoryCodes.forEach((code) => {
+        if (_.get(req, `content.${code}`) && !_.isArray(_.get(req, `content.${code}`))) {
+          const category = [];
+          category.push(req.content[code]);
+          req.content[code] = category;
+        }
+      });
+
         const option = {
             url: this.configService.urlConFig.URLS.CONTENT.CREATE,
             data: {
