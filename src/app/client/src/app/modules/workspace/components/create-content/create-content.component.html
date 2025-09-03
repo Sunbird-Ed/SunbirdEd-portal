@@ -69,7 +69,7 @@
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.contentuploaddescription}}</p>
       </div>
       <!-- Assessment -->
-      <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('assessment') && !isSkillMapUser"
+      <!-- <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('assessment') && !isSkillMapUser"
         appPermission [permission]='assessmentRole'>
         <div class="ui link card" routerLink="assessment" appTelemetryInteract
           [telemetryInteractEdata]="{id:'createAssessment',type:'click',pageid:'create-assessment'}"
@@ -82,7 +82,7 @@
           </div>
         </div>
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.assessmentdescription}}</p>
-      </div>
+      </div> -->
     </div>
   </div>
   <div class="twelve wide column ">
@@ -116,7 +116,7 @@
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.contentuploaddescription}}</p>
       </div> -->
       <!-- Practice Assessment -->
-      <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('assessment') && !isSkillMapUser"
+      <!-- <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('assessment') && !isSkillMapUser"
         appPermission [permission]='assessmentRole'>
         <div class="ui link card" routerLink="practice_assessment" appTelemetryInteract
           [telemetryInteractEdata]="{id:'createAssessment',type:'click',pageid:'create-assessment'}"
@@ -129,8 +129,27 @@
           </div>
         </div>
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.practicedescription}}</p>
+      </div> -->
+      <!-- New Quiz -->
+      <div class="three wide column" *ngIf="permissionService.permissionAvailable"
+        appPermission [permission]='quizRole'>
+        <div class="ui link card" (click)="createNewQuiz()" appTelemetryInteract
+          [telemetryInteractEdata]="{id:'createQuiz',type:'click',pageid:'create-quiz'}"
+          [telemetryInteractCdata]="[{ id: 'user:workspace:quiz:create', type: 'Feature' }, { id: 'SB-QUIZ-001', type: 'Task' }]"
+          [ngClass]="{'loading': isQuizLoading}">
+          <div class="content">
+            <div class="textcontent" *ngIf="!isQuizLoading">
+              <i class="fa fa-list-check icon"></i>
+              <span class="my-text ml-12">{{resourceService?.frmelmnts?.lbl?.newQuiz}}</span>
+            </div>
+            <div class="textcontent" *ngIf="isQuizLoading">
+              <i class="spinner loading icon"></i>
+              <span class="my-text ml-12">Loading Quiz Editor...</span>
+            </div>
+          </div>
+        </div>
+        <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.newQuizDescription}}</p>
       </div>
-
       <!-- Question Bank -->
       <div class="three wide column" *ngIf="permissionService.permissionAvailable && !isQuestionBankReviewer && !isSkillMapUser" appPermission
         [permission]='questionBankRole'>
@@ -143,8 +162,7 @@
             </div>
           </div>
         </div>
-        <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.questionBankDesc || 'Create question bank for
-          bulk questions creation'}}</p>
+        <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.questionBankDesc || 'Create question bank for bulk questions creation'}}</p>
       </div>
 
       <!-- Skill Domain -->
@@ -159,8 +177,7 @@
             </div>
           </div>
         </div>
-        <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.skillMapDesc || 'Create skill learning
-          paths'}}</p>
+        <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.skillMapDesc || 'Create skill learning paths'}}</p>
       </div>
     </div>
   </div>

@@ -324,6 +324,7 @@ export class QuestionBankListComponent extends WorkSpace implements OnInit, Afte
     const searchParams = {
       filters: {
         primaryCategory: 'Question Bank',
+        contentType: 'resource',
         status: statusFilter
       },
       limit: limit,
