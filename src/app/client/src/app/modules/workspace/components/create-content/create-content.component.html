@@ -151,7 +151,7 @@
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.newQuizDescription}}</p>
       </div>
       <!-- Question Bank -->
-      <div class="three wide column" *ngIf="permissionService.permissionAvailable && !isQuestionBankReviewer" appPermission
+      <div class="three wide column" *ngIf="permissionService.permissionAvailable" appPermission
         [permission]='questionBankRole'>
         <div class="ui link card" (click)="openCreateQuestionBankModal()" appTelemetryInteract
           [telemetryInteractEdata]="{id:'createQuestionBank',type:'click',pageid:'create-questionbank'}">

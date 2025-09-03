@@ -147,8 +147,8 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
     this.assessmentRole = this.configService.rolesConfig.workSpaceRole.assessmentRole;
     this.courseRole = this.configService.rolesConfig.workSpaceRole.courseRole;
     this.skillmapRole = this.configService.rolesConfig.workSpaceRole.skillmapRole;
-    this.questionBankRole = this.configService.rolesConfig.workSpaceRole.createRole || ['CONTENT_CREATOR'];
-    
+    this.questionBankRole = this.configService.rolesConfig.workSpaceRole.questionBankRole;
+
     // Check if user is a question bank reviewer (should not see create option)
     this.isQuestionBankReviewer = this.permissionService.checkRolesPermissions(['CONTENT_REVIEWER', 'CONTENT_REVIEW']);
     
