@@ -311,10 +311,13 @@ export class QuestionBankListComponent extends WorkSpace implements OnInit, Afte
     
     // Define status filter based on user role
     let statusFilter: string[] = [];
+    let isReviewer = false
     if (this.isQuestionBankCreator && !this.isQuestionBankReviewer) {
       statusFilter = ['Draft', 'Review', 'Live']; // Creators see Draft, Review, and Live
     } else if (this.isQuestionBankReviewer && !this.isQuestionBankCreator) {
-      statusFilter = ['Review']; // Reviewers only see Review status
+      statusFilter = ['Review']; // Users with Review role
+      isReviewer = true;
+      // Reviewers only see Review status
     } else if (this.isQuestionBankCreator && this.isQuestionBankReviewer) {
       statusFilter = ['Draft', 'Review', 'Live']; // Users with both roles see all
     } else {
@@ -326,7 +329,7 @@ export class QuestionBankListComponent extends WorkSpace implements OnInit, Afte
         primaryCategory: 'Question Bank',
         contentType: 'resource',
         status: statusFilter,
-        ...(!(statusFilter[0] === 'Review') && { createdBy: this.userService.userid })
+        ...(!isReviewer) && { createdBy: this.userService.userid }
       },
       limit: limit,
       offset: (pageNumber - 1) * (limit),
