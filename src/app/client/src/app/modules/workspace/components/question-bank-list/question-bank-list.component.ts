@@ -324,15 +324,26 @@ export class QuestionBankListComponent extends WorkSpace implements OnInit, Afte
       statusFilter = ['Live']; // Default fallback - only published content
     }
 
+    // Build filters object with proper typing
+    const filters: any = {
+      primaryCategory: 'Question Bank',
+      contentType: 'resource',
+      status: statusFilter
+    };
+
+    // Add createdBy filter based on user role
+    if (isReviewer) {
+      // Reviewers see content created by others (not themselves)
+      filters.createdBy = { '!=': this.userService.userid };
+    } else {
+      // Creators see only their own content
+      filters.createdBy = this.userService.userid;
+    }
+
     const searchParams = {
-      filters: {
-        primaryCategory: 'Question Bank',
-        contentType: 'resource',
-        status: statusFilter,
-        ...(!isReviewer) && { createdBy: this.userService.userid }
-      },
+      filters,
       limit: limit,
-      offset: (pageNumber - 1) * (limit),
+      offset: (pageNumber - 1) * limit,
       query: '',
       sort_by: { lastUpdatedOn: 'desc' }
     };
