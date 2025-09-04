@@ -326,7 +326,7 @@ export class QuestionBankListComponent extends WorkSpace implements OnInit, Afte
         primaryCategory: 'Question Bank',
         contentType: 'resource',
         status: statusFilter,
-        createdBy: this.userService.userid
+        ...(!(statusFilter[0] === 'Review') && { createdBy: this.userService.userid })
       },
       limit: limit,
       offset: (pageNumber - 1) * (limit),
