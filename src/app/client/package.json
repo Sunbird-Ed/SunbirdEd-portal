@@ -59,7 +59,7 @@
     "@ngx-translate/http-loader": "7.0.0",
     "@project-fmps/client-services": "1.0.0",
     "@project-fmps/common-form-elements": "^1.0.1",
-    "@project-fmps/sunbird-collection-editor": "1.0.9",
+    "@project-fmps/sunbird-collection-editor": "1.0.10",
     "@project-fmps/sunbird-video-player": "1.0.13",
     "@project-sunbird/chatbot-client": "4.0.0",
     "@project-sunbird/ckeditor-build-classic": "4.1.3",
