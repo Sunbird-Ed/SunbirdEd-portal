@@ -27,6 +27,7 @@ enum state {
   templateUrl: './collection-editor.component.html'
 })
 export class CollectionEditorComponent implements OnInit, OnDestroy {
+  public categoryCodes: string[] = [];
 
   private userProfile: IUserProfile;
   private routeParams: any;
@@ -40,6 +41,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   public ownershipType: Array<string>;
   public queryParams: object;
   resource_framework: string;
+  public frameworkCategories: any;
   collectionEditorURL: string = (<HTMLInputElement>document.getElementById('collectionEditorURL')) ?
   (<HTMLInputElement>document.getElementById('collectionEditorURL')).value : '';
   /**
@@ -79,6 +81,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
         }
         this.resource_framework = data.resource_framework['defaultFramework'].code;
         this.ownershipType = data.ownershipType;
+        this.frameworkCategories = data.frameworkCategories;
+        this.categoryCodes = data.categoryCodes;
         this.showLoader = false;
         this.initEditor();
         this.setWindowContext();
@@ -103,25 +107,43 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     const lockInfo = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     const allowedEditState = ['draft', 'allcontent', 'collaborating-on', 'uploaded', 'alltextbooks'].includes(this.routeParams.state);
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
+    const selectedFramework = localStorage.getItem('selectedFramework') || this.routeParams.framework;
+    
+    // Add framework categories fetch to the observable chain
+    const frameworkCategoriesObs = selectedFramework ? 
+      this.frameworkService.getFrameworkCategories(selectedFramework) : 
+      of({ result: { framework: { categories: [] } } });
+    
     if (_.isEmpty(lockInfo) && allowedEditState && ( allowedEditStatus || this.userService.userProfile.rootOrgAdmin )) {
       return combineLatest(
-      this.tenantService.tenantData$,
-      this.getCollectionDetails(),
-      this.editorService.getOwnershipType(),
-      this.lockContent(),
-      this.frameworkService.frameworkData$,
-      this.userService.userOrgDetails$).
-      pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2], resource_framework: data[4].frameworkdata })));
+        this.tenantService.tenantData$,
+        this.getCollectionDetails(),
+        this.editorService.getOwnershipType(),
+        this.lockContent(),
+        this.frameworkService.frameworkData$,
+        this.userService.userOrgDetails$,
+        frameworkCategoriesObs
+      ).
+      pipe(map(data => ({ 
+        tenantDetails: data[0].tenantData,
+        collectionDetails: data[1], 
+        ownershipType: data[2], 
+        resource_framework: data[4].frameworkdata,
+        frameworkCategories: data[6].result?.framework.categories,
+        categoryCodes: (data[6].result?.framework.categories || []).map(cat => cat.code)
+      })));
     } else {
       return combineLatest(
         this.tenantService.tenantData$,
         this.getCollectionDetails(),
         this.editorService.getOwnershipType(),
         this.frameworkService.frameworkData$,
-        this.userService.userOrgDetails$).
+        this.userService.userOrgDetails$,
+        frameworkCategoriesObs
+      ).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2], resource_framework: data[3].frameworkdata })));
+        collectionDetails: data[1], ownershipType: data[2], resource_framework: data[3].frameworkdata, frameworkCategories: data[5].result?.framework.categories, categoryCodes: (data[5].result?.framework.categories || []).map(cat => cat.code)
+})));
     }
   }
   lockContent () {
@@ -278,6 +300,9 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       _.intersection(this.userProfile.userRoles, ['FLAG_REVIEWER']).length > 0) {
       window.config.editorConfig.isFlagReviewer = true;
     }
+    window.config.frameworkCategories = this.frameworkCategories || [];
+    // Merge fwCategoriAsNames and categoryCodes for contentFields
+    window.config.contentFields = this.categoryCodes?.join();
     this.updateModeAndStatus();
   }
   /**

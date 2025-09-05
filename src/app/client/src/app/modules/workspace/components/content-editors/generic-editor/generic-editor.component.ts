@@ -18,6 +18,7 @@ jQuery.fn.iziModal = iziModal;
   templateUrl: './generic-editor.component.html'
 })
 export class GenericEditorComponent implements OnInit, OnDestroy {
+  public categoryCodes: string[] = [];
 
   private userProfile: IUserProfile;
   private routeParams: any;
@@ -34,6 +35,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   public videoMaxSize: any;
   public defaultContentFileSize: any;
   public isLargeFileUpload = false;
+  public frameworkCategories: any;
   genericEditorURL: string = (<HTMLInputElement>document.getElementById('genericEditorURL')) ?
   (<HTMLInputElement>document.getElementById('genericEditorURL')).value : '';
   cloudProvider: string = (<HTMLInputElement>document.getElementById('cloudProvider')) ?
@@ -68,6 +70,8 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
           this.logo = data.tenantDetails.logo;
         }
         this.ownershipType = data.ownershipType;
+        this.frameworkCategories = data.frameworkCategories;
+        this.categoryCodes = data.categoryCodes;
         this.showLoader = false;
         this.initEditor();
         this.setWindowContext();
@@ -93,16 +97,44 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     const lockInfo = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     const allowedEditState = ['draft', 'allcontent', 'collaborating-on', 'uploaded'].includes(this.routeParams.state);
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
+    const selectedFramework = localStorage.getItem('selectedFramework') || this.routeParams.framework;
+    
+    // Add framework categories fetch to the observable chain
+    const frameworkCategoriesObs = selectedFramework ? 
+      this.frameworkService.getFrameworkCategories(selectedFramework) : 
+      of({ result: { framework: { categories: [] } } });
+    
     if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
-      return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
-      this.editorService.getOwnershipType(), this.lockContent(), this.userService.userOrgDetails$).
-      pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2] })));
+      return combineLatest(
+        this.tenantService.tenantData$, 
+        this.getContentDetails(),
+        this.editorService.getOwnershipType(), 
+        this.lockContent(), 
+        this.userService.userOrgDetails$,
+        frameworkCategoriesObs
+      ).
+      pipe(map(data => ({ 
+        tenantDetails: data[0].tenantData,
+        collectionDetails: data[1], 
+        ownershipType: data[2],
+        frameworkCategories: data[5].result?.framework.categories,
+        categoryCodes: (data[5].result?.framework.categories || []).map(cat => cat.code)
+      })));
     } else {
-      return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
-      this.editorService.getOwnershipType(), this.userService.userOrgDetails$).
-      pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2] })));
+      return combineLatest(
+        this.tenantService.tenantData$, 
+        this.getContentDetails(),
+        this.editorService.getOwnershipType(), 
+        this.userService.userOrgDetails$,
+        frameworkCategoriesObs
+      ).
+      pipe(map(data => ({ 
+        tenantDetails: data[0].tenantData,
+        collectionDetails: data[1], 
+        ownershipType: data[2],
+        frameworkCategories: data[4].result?.framework.categories,
+        categoryCodes: (data[4].result?.framework.categories || []).map(cat => cat.code)
+      })));
     }
   }
   private lockContent () {
@@ -228,6 +260,8 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     window.config.videoMaxSize = this.videoMaxSize;
     window.config.defaultContentFileSize = this.defaultContentFileSize; // making configurable upload limit in workspace for content upload
     window.config.cloudStorage.provider = this.cloudProvider;
+    window.config.frameworkCategories = this.frameworkCategories || [];
+    window.config.contentFields = this.categoryCodes?.join();
   }
   /**
   * Re directed to the workspace on close of modal

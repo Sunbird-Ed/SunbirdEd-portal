@@ -21,6 +21,7 @@ jQuery.fn.iziModal = iziModal;
   templateUrl: './content-editor.component.html'
 })
 export class ContentEditorComponent implements OnInit, OnDestroy {
+  public categoryCodes: string[] = [];
 
   private userProfile: IUserProfile;
   private routeParams: any;
@@ -35,6 +36,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   public queryParams: object;
   public videoMaxSize: any;
   public fwCategoriAsNames: any;
+  public frameworkCategories: any;
   contentEditorURL: string = (<HTMLInputElement>document.getElementById('contentEditorURL')) ?
   (<HTMLInputElement>document.getElementById('contentEditorURL')).value : '';
   cloudProvider: string = (<HTMLInputElement>document.getElementById('cloudProvider')) ?
@@ -72,6 +74,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
           this.logo = data.tenantDetails.logo;
         }
         this.ownershipType = data.ownershipType;
+        this.frameworkCategories = data.frameworkCategories;
+        this.categoryCodes = data.categoryCodes;
         this.showLoader = false;
         this.initEditor();
         this.setWindowContext();
@@ -97,16 +101,45 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     const lockInfo = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     const allowedEditState = ['draft', 'allcontent', 'collaborating-on', 'uploaded'].includes(this.routeParams.state);
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
+
+    const selectedFramework = localStorage.getItem('selectedFramework') || this.routeParams.framework;
+
+    // Add framework categories fetch to the observable chain
+    const frameworkCategoriesObs = selectedFramework ? 
+      this.frameworkService.getFrameworkCategories(selectedFramework) : 
+      of({ result: { framework: { categories: [] } } });
+
     if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
-      return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
-      this.editorService.getOwnershipType(), this.lockContent(), this.userService.userOrgDetails$).
-      pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2] })));
+      return combineLatest(
+        this.tenantService.tenantData$, 
+        this.getContentDetails(),
+        this.editorService.getOwnershipType(), 
+        this.lockContent(), 
+        this.userService.userOrgDetails$,
+        frameworkCategoriesObs
+      ).
+      pipe(map(data => ({ 
+        tenantDetails: data[0].tenantData,
+        collectionDetails: data[1], 
+        ownershipType: data[2],
+        frameworkCategories: data[5].result?.framework.categories,
+        categoryCodes: (data[5].result?.framework.categories || []).map(cat => cat.code)
+      })));
     } else {
-      return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
-      this.editorService.getOwnershipType(), this.userService.userOrgDetails$).
-      pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2] })));
+      return combineLatest(
+        this.tenantService.tenantData$, 
+        this.getContentDetails(),
+        this.editorService.getOwnershipType(), 
+        this.userService.userOrgDetails$,
+        frameworkCategoriesObs
+      ).
+      pipe(map(data => ({ 
+        tenantDetails: data[0].tenantData,
+        collectionDetails: data[1], 
+        ownershipType: data[2],
+        frameworkCategories: data[4].result?.framework.categories,
+        categoryCodes: (data[4].result?.framework.categories || []).map(cat => cat.code)
+      })));
     }
   }
   lockContent () {
@@ -219,7 +252,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     window.config.lock = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     window.config.videoMaxSize = this.videoMaxSize;
     window.config.cloudStorage.provider = this.cloudProvider;
-    window.config.contentFields = this.fwCategoriAsNames.join();
+    window.config.contentFields = [...(this.fwCategoriAsNames || []), ...(this.categoryCodes || [])].join();
+    window.config.frameworkCategories = this.frameworkCategories || [];
   }
   /**
    * checks the permission using state, status and userId
