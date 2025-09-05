@@ -27,7 +27,6 @@ enum state {
   templateUrl: './collection-editor.component.html'
 })
 export class CollectionEditorComponent implements OnInit, OnDestroy {
-  public categoryCodes: string[] = [];
 
   private userProfile: IUserProfile;
   private routeParams: any;
@@ -122,7 +121,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
         this.getCollectionDetails(),
         this.editorService.getOwnershipType(),
         this.frameworkService.frameworkData$,
-        this.userService.userOrgDetails$,
+        this.userService.userOrgDetails$
       ).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
         collectionDetails: data[1], ownershipType: data[2], resource_framework: data[3].frameworkdata })));

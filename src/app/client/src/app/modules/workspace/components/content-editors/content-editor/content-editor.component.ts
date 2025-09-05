@@ -21,7 +21,6 @@ jQuery.fn.iziModal = iziModal;
   templateUrl: './content-editor.component.html'
 })
 export class ContentEditorComponent implements OnInit, OnDestroy {
-  public categoryCodes: string[] = [];
 
   private userProfile: IUserProfile;
   private routeParams: any;
