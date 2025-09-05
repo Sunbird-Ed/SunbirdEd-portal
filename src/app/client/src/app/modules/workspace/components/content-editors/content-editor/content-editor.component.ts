@@ -35,7 +35,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   public ownershipType: Array<string>;
   public queryParams: object;
   public videoMaxSize: any;
-  public fwCategoriAsNames: any;
+  public fwCategoriesAsNames: any;
   public frameworkCategories: any;
   contentEditorURL: string = (<HTMLInputElement>document.getElementById('contentEditorURL')) ?
   (<HTMLInputElement>document.getElementById('contentEditorURL')).value : '';
@@ -61,7 +61,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     this.portalVersion = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
     this.videoMaxSize = (<HTMLInputElement>document.getElementById('videoMaxSize')) ?
       (<HTMLInputElement>document.getElementById('videoMaxSize')).value : '100';
-    this.fwCategoriAsNames = this.cslFrameworkService?.getAllFwCatName();
+    this.fwCategoriesAsNames = this.cslFrameworkService?.getAllFwCatName();
   }
   ngOnInit() {
     this.userProfile = this.userService.userProfile;
@@ -252,7 +252,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     window.config.lock = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     window.config.videoMaxSize = this.videoMaxSize;
     window.config.cloudStorage.provider = this.cloudProvider;
-    window.config.contentFields = [...(this.fwCategoriAsNames || []), ...(this.categoryCodes || [])].join();
+    window.config.contentFields = [...(this.fwCategoriesAsNames || []), ...(this.categoryCodes || [])].join();
     window.config.frameworkCategories = this.frameworkCategories || [];
   }
   /**
