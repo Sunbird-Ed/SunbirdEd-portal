@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '@sunbird/environment';
 import { EditorService, WorkSpaceService } from '../../../services';
 import { tap, delay, map, first, mergeMap } from 'rxjs/operators';
+import { CslFrameworkService } from '../../../../public/services/csl-framework/csl-framework.service';
 import * as _ from 'lodash-es';
 jQuery.fn.iziModal = iziModal;
 
@@ -18,7 +19,6 @@ jQuery.fn.iziModal = iziModal;
   templateUrl: './generic-editor.component.html'
 })
 export class GenericEditorComponent implements OnInit, OnDestroy {
-  public categoryCodes: string[] = [];
 
   private userProfile: IUserProfile;
   private routeParams: any;
@@ -35,7 +35,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   public videoMaxSize: any;
   public defaultContentFileSize: any;
   public isLargeFileUpload = false;
-  public frameworkCategories: any;
+  public fwCategoriesAsNames: any;
   genericEditorURL: string = (<HTMLInputElement>document.getElementById('genericEditorURL')) ?
   (<HTMLInputElement>document.getElementById('genericEditorURL')).value : '';
   cloudProvider: string = (<HTMLInputElement>document.getElementById('cloudProvider')) ?
@@ -45,7 +45,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     private tenantService: TenantService, private telemetryService: TelemetryService, private router: Router,
     private navigationHelperService: NavigationHelperService, public workspaceService: WorkSpaceService,
     private configService: ConfigService, private editorService: EditorService, private toasterService: ToasterService,
-    private resourceService: ResourceService, private frameworkService: FrameworkService) {
+    private resourceService: ResourceService, private frameworkService: FrameworkService, private cslFrameworkService: CslFrameworkService) {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     this.buildNumber = buildNumber ? buildNumber.value : '1.0';
     const deviceId = (<HTMLInputElement>document.getElementById('deviceId'));
@@ -57,6 +57,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
       (<HTMLInputElement>document.getElementById('videoMaxSize')).value : '100';
       this.defaultContentFileSize = (<HTMLInputElement>document.getElementById('sunbirdDefaultFileSize')) ?
       (<HTMLInputElement>document.getElementById('sunbirdDefaultFileSize')).value : 150;
+      this.fwCategoriesAsNames = this.cslFrameworkService?.getAllFwCatName();
   }
   ngOnInit() {
     this.userProfile = this.userService.userProfile;
@@ -70,8 +71,6 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
           this.logo = data.tenantDetails.logo;
         }
         this.ownershipType = data.ownershipType;
-        this.frameworkCategories = data.frameworkCategories;
-        this.categoryCodes = data.categoryCodes;
         this.showLoader = false;
         this.initEditor();
         this.setWindowContext();
@@ -96,13 +95,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   private getDetails() {
     const lockInfo = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     const allowedEditState = ['draft', 'allcontent', 'collaborating-on', 'uploaded'].includes(this.routeParams.state);
-    const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
-    const selectedFramework = localStorage.getItem('selectedFramework') || this.routeParams.framework;
-    
-    // Add framework categories fetch to the observable chain
-    const frameworkCategoriesObs = selectedFramework ? 
-      this.frameworkService.getFrameworkCategories(selectedFramework) : 
-      of({ result: { framework: { categories: [] } } });
+    const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;    
     
     if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
       return combineLatest(
@@ -110,30 +103,24 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
         this.getContentDetails(),
         this.editorService.getOwnershipType(), 
         this.lockContent(), 
-        this.userService.userOrgDetails$,
-        frameworkCategoriesObs
+        this.userService.userOrgDetails$
       ).
       pipe(map(data => ({ 
         tenantDetails: data[0].tenantData,
         collectionDetails: data[1], 
-        ownershipType: data[2],
-        frameworkCategories: data[5].result?.framework.categories,
-        categoryCodes: (data[5].result?.framework.categories || []).map(cat => cat.code)
+        ownershipType: data[2]
       })));
     } else {
       return combineLatest(
         this.tenantService.tenantData$, 
         this.getContentDetails(),
         this.editorService.getOwnershipType(), 
-        this.userService.userOrgDetails$,
-        frameworkCategoriesObs
+        this.userService.userOrgDetails$
       ).
       pipe(map(data => ({ 
         tenantDetails: data[0].tenantData,
         collectionDetails: data[1], 
-        ownershipType: data[2],
-        frameworkCategories: data[4].result?.framework.categories,
-        categoryCodes: (data[4].result?.framework.categories || []).map(cat => cat.code)
+        ownershipType: data[2]
       })));
     }
   }
@@ -260,8 +247,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     window.config.videoMaxSize = this.videoMaxSize;
     window.config.defaultContentFileSize = this.defaultContentFileSize; // making configurable upload limit in workspace for content upload
     window.config.cloudStorage.provider = this.cloudProvider;
-    window.config.frameworkCategories = this.frameworkCategories || [];
-    window.config.contentFields = this.categoryCodes?.join();
+    window.config.contentFields = this.fwCategoriesAsNames.join();
   }
   /**
   * Re directed to the workspace on close of modal
