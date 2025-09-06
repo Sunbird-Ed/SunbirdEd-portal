@@ -229,12 +229,12 @@ export class AppComponent implements OnInit, OnDestroy {
       // If User is logged in and dob is missing, initiate consent workflow
       // Skip for managed users - SB-30762
       // Skip for SSO users     - SB-30762
-      if (!_.get(user, 'userProfile.dob') &&
-        (this.userService.loggedIn && !_.get(user, 'userProfile.managedBy')) &&
-        (_.isArray(_.get(user, 'userProfile.externalIds')) && _.get(user, 'userProfile.externalIds').length === 0)
-      ) {
-        this.router.navigate(['/signup'], { queryParams: { loginMode: 'gmail' } });
-      }
+      // if (!_.get(user, 'userProfile.dob') &&
+      //   (this.userService.loggedIn && !_.get(user, 'userProfile.managedBy')) &&
+      //   (_.isArray(_.get(user, 'userProfile.externalIds')) && _.get(user, 'userProfile.externalIds').length === 0)
+      // ) {
+      //   this.router.navigate(['/signup'], { queryParams: { loginMode: 'gmail' } });
+      // }
     });
   }
 
@@ -358,19 +358,36 @@ export class AppComponent implements OnInit, OnDestroy {
     * @description - This method sets the popup show values to true/false based on values from form config
   */
   checkPopupVisiblity(onboardingData) {
-      this.isOnboardingEnabled = onboardingData?.onboardingPopups ? onboardingData?.onboardingPopups?.isVisible : true;
-      this.isFWSelectionEnabled = onboardingData?.frameworkPopup ? onboardingData?.frameworkPopup?.isVisible : true;
-      this.isUserTypeEnabled = onboardingData?.userTypePopup ? onboardingData?.userTypePopup?.isVisible : true;
-      if (!(this.isOnboardingEnabled) || !(this.isFWSelectionEnabled)) {
-        this.userService.setGuestUser(true, onboardingData?.frameworkPopup?.defaultFormatedName); //user service method is set to true in case either of onboarding or framework popup is disabled
-      }
+    this.isOnboardingEnabled = false;
+    this.isFWSelectionEnabled = false;
+    this.isUserTypeEnabled = false;
+
+    this.userService.setGuestUser(true, "teacher");
+
+    localStorage.setItem("userType", "teacher");
+    localStorage.setItem("isStepperCompleted", "true");
+    localStorage.setItem("joyThemePopup", "false");
   }
 
   ngOnInit() {
+
+    this.isPopupEnabled = false;
+    this.isStepperCompleted = true;
     this.getOnboardingList();
     this.getOnboardingSkipStatus();
     this.checkToShowPopups();
     this.getStepperInfo();
+    // Check if user is logged in
+    if (!this.userService.loggedIn) {
+      this.router
+        .navigate(["/resources"], {
+          replaceUrl: true,
+        })
+        .then(() => {
+          window.location.reload();
+        });
+      return;
+    }
     this.isIOS = this.utilService.isIos;
     this.isDesktopApp = this.utilService.isDesktopApp;
     if (this.isDesktopApp) {
@@ -454,6 +471,19 @@ export class AppComponent implements OnInit, OnDestroy {
         this.joyThemePopup();
         this.changeDetectorRef.detectChanges();
         this.cslFrameworkService.setTransFormGlobalFilterConfig(channelId);
+        var options = {
+          context: {
+            env: this.activatedRoute.snapshot?.data?.telemetry?.env || "home",
+          },
+          edata: {
+            type: "view",
+            pageid: "home-page",
+            subtype: "",
+            uri: encodeURI(window.location.href),
+            visits: []
+          }
+        }
+        this.telemetryService.impression(options)
       }, error => {
         this.initApp = true;
         this.changeDetectorRef.detectChanges();
@@ -674,7 +704,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public checkTncAndFrameWorkSelected() {
     if (_.has(this.userService.userProfile, 'promptTnC') && _.has(this.userService.userProfile, 'tncLatestVersion') &&
       _.has(this.userService.userProfile, 'tncLatestVersion') && this.userService.userProfile.promptTnC === true) {
-      this.showTermsAndCondPopUp = true;
+      this.showTermsAndCondPopUp = false;
     } else {
       if (this.userService.loggedIn) {
         this.orgDetailsService.getCustodianOrgDetails().subscribe((custodianOrg) => {

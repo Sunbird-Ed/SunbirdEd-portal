@@ -99,10 +99,10 @@
     </div>
     <app-tnc-popup (close)="onAcceptTnc()" #termsAndCondPopUp *ngIf="showTermsAndCondPopUp">
     </app-tnc-popup>
-    <div *ngIf="showGlobalConsentPopUpSection">
+    <!-- <div *ngIf="showGlobalConsentPopUpSection">
       <app-global-consent-pii [type]="globalConsent" [isglobalConsent]="isglobalConsent" (close)="closeConsentPopUp()"
         [consentConfig]="consentConfig"></app-global-consent-pii>
-    </div>
+    </div> -->
     <app-modal-wrapper [config]="{disableClose: true, size: 'small', panelClass: 'material-modal'}"
       *ngIf="isCustodianOrgUser && usersProfile && !usersProfile?.managedBy && !usersProfile?.dob && (usersProfile?.userLocations?.length>0 || showYearOfBirthPopup)">
       <ng-template sbModalContent let-data>
