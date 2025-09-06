@@ -35,6 +35,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   public videoMaxSize: any;
   public defaultContentFileSize: any;
   public isLargeFileUpload = false;
+  public frameworkCategories: any;
   public fwCategoriesAsNames: any;
   genericEditorURL: string = (<HTMLInputElement>document.getElementById('genericEditorURL')) ?
   (<HTMLInputElement>document.getElementById('genericEditorURL')).value : '';
@@ -65,6 +66,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     this.queryParams = this.activatedRoute.snapshot.queryParams;
     this.isLargeFileUpload = _.get(this.activatedRoute, 'snapshot.data.isLargeFileUpload');
     this.disableBrowserBackButton();
+    this.setFrameworkCategories();
     this.getDetails().pipe(first(),
       tap(data => {
         if (data.tenantDetails) {
@@ -92,6 +94,17 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
         }
       );
   }
+  
+  private setFrameworkCategories() {
+    const categories = this.cslFrameworkService.getFrameworkCategoriesObject();
+    if (categories && Array.isArray(categories)) {
+      this.frameworkCategories = categories.map(category => ({
+        code: category.code,
+        name: category.label || category.code
+      }));
+    }
+  }
+  
   private getDetails() {
     const lockInfo = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     const allowedEditState = ['draft', 'allcontent', 'collaborating-on', 'uploaded'].includes(this.routeParams.state);
@@ -248,6 +261,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     window.config.defaultContentFileSize = this.defaultContentFileSize; // making configurable upload limit in workspace for content upload
     window.config.cloudStorage.provider = this.cloudProvider;
     window.config.contentFields = this.fwCategoriesAsNames.join();
+    window.config.fwCategoryDetails = this.frameworkCategories;
   }
   /**
   * Re directed to the workspace on close of modal

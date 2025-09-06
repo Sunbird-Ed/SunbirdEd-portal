@@ -34,6 +34,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   public ownershipType: Array<string>;
   public queryParams: object;
   public videoMaxSize: any;
+  public frameworkCategories: any;
   public fwCategoriesAsNames: any;
   contentEditorURL: string = (<HTMLInputElement>document.getElementById('contentEditorURL')) ?
   (<HTMLInputElement>document.getElementById('contentEditorURL')).value : '';
@@ -66,6 +67,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     this.routeParams = this.activatedRoute.snapshot.params;
     this.queryParams = this.activatedRoute.snapshot.queryParams;
     this.disableBrowserBackButton();
+    this.setFrameworkCategories();
     this.getDetails().pipe( first(),
       tap(data => {
         if (data.tenantDetails) {
@@ -93,6 +95,17 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
           this.closeModal();
         });
   }
+  
+  private setFrameworkCategories() {
+    const categories = this.cslFrameworkService.getFrameworkCategoriesObject();
+    if (categories && _.size(categories)) {
+      this.frameworkCategories = _.map(categories, category => ({
+        code: category.code,
+        label: category.label
+      }));
+    }
+  }
+  
   private getDetails() {
     const lockInfo = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     const allowedEditState = ['draft', 'allcontent', 'collaborating-on', 'uploaded'].includes(this.routeParams.state);
@@ -237,6 +250,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     window.config.videoMaxSize = this.videoMaxSize;
     window.config.cloudStorage.provider = this.cloudProvider;
     window.config.contentFields = this.fwCategoriesAsNames.join();
+    window.config.fwCategoryDetails = this.frameworkCategories;
   }
   /**
    * checks the permission using state, status and userId
