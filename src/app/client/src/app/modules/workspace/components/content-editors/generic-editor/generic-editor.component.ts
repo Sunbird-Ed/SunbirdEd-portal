@@ -100,7 +100,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     if (categories && Array.isArray(categories)) {
       this.frameworkCategories = categories.map(category => ({
         code: category.code,
-        name: category.label || category.code
+        label: category.label
       }));
     }
   }
