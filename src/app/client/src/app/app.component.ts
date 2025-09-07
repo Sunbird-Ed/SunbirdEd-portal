@@ -377,17 +377,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.getOnboardingSkipStatus();
     this.checkToShowPopups();
     this.getStepperInfo();
-    // Check if user is logged in
-    // if (!this.userService.loggedIn) {
-    //   this.router
-    //     .navigate(["/resources"], {
-    //       replaceUrl: true,
-    //     })
-    //     .then(() => {
-    //       window.location.reload();
-    //     });
-    //   return;
-    // }
     this.isIOS = this.utilService.isIos;
     this.isDesktopApp = this.utilService.isDesktopApp;
     if (this.isDesktopApp) {
