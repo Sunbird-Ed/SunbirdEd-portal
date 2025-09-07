@@ -7,18 +7,27 @@ import { ResourceService } from '@sunbird/shared';
 })
 export class FrameworkCatLabelTranslatePipe implements PipeTransform {
 
-  private _mapping = {
-    board: get(this.resourceService, 'frmelmnts.lbl.board'),
-    medium: get(this.resourceService, 'frmelmnts.lbl.medium'),
-    gradeLevel: get(this.resourceService, 'frmelmnts.lbl.class'),
-    publisher: get(this.resourceService, 'frmelmnts.lbl.publishedBy'),
-    subject: get(this.resourceService, 'frmelmnts.lbl.subject'),
-    audience: get(this.resourceService, 'frmelmnts.lbl.publishedUserType'),
-    class: get(this.resourceService, 'frmelmnts.lbl.class')
+  private buildMapping() {
+    const mapping: Record<string, string> = {};
+    const fwCategoryObject = JSON.parse(localStorage.getItem('fwCategoryObject') || '{}');
+  
+    Object.values(fwCategoryObject).forEach((category: any) => {
+      if (category?.code) {
+        mapping[category.code] = category.code || category.label || category.name;
+      }
+    });
+  
+    mapping['publisher'] = get(this.resourceService, 'frmelmnts.lbl.publishedBy');
+    mapping['audience'] = get(this.resourceService, 'frmelmnts.lbl.publishedUserType');
+    mapping['class'] = get(this.resourceService, 'frmelmnts.lbl.class');
+  
+    return mapping;
   }
+  private _mapping = this.buildMapping();
 
   private mappingProxy = new Proxy(this._mapping, {
-    get: (target, key) => {
+    get: (target, key: string | symbol) => {
+      if (typeof key === 'symbol') return undefined;
       return get(this.resourceService, key) || (key in target ? target[key] : key);
     }
   })
