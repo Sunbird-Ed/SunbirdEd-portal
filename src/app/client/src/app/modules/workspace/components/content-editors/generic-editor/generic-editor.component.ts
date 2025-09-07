@@ -97,8 +97,8 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   
   private setFrameworkCategories() {
     const categories = this.cslFrameworkService.getFrameworkCategoriesObject();
-    if (categories && Array.isArray(categories)) {
-      this.frameworkCategories = categories.map(category => ({
+    if (categories && _.size(categories)) {
+      this.frameworkCategories = _.map(categories, category => ({
         code: category.code,
         label: category.label
       }));
