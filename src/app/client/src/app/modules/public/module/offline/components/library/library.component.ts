@@ -317,18 +317,19 @@ export class LibraryComponent implements OnInit, OnDestroy {
             if (searchRes) {
                 const facets = this.searchService.updateFacetsData(_.get(searchRes, 'result.facets'));
                 this.facets = facets.filter(facet => facet.values.length > 0);
-                const filteredContents = _.omit(_.groupBy(searchRes['result'].content, this.frameworkCategoriesList[3]), ['undefined']);
-                const otherContents = _.filter(searchRes['result'].content, (content) => !content.subject );
+                const categoryKey = this.frameworkCategoriesList[this.frameworkCategoriesList.length - 1];
+                const filteredContents = _.omit(_.groupBy(searchRes['result'].content, categoryKey), ['undefined']);
+                const otherContents = _.filter(searchRes['result'].content, (content) => !content.categoryKey );
                 // Check for multiple subjects
                 for (const [key, value] of Object.entries(filteredContents)) {
-                    const isMultipleSubjects = key.split(',').length > 1;
-                    if (isMultipleSubjects) {
-                        const subjects = key.split(',');
-                        subjects.forEach((subject) => {
-                            if (filteredContents[subject]) {
-                                filteredContents[subject] = _.uniqBy(filteredContents[subject].concat(value), 'identifier');
+                    const isMultipleCategoryValues = key.split(',').length > 1;
+                    if (isMultipleCategoryValues) {
+                        const categoryValues = key.split(',');
+                        categoryValues.forEach((categoryValue) => {
+                            if (filteredContents[categoryValue]) {
+                                filteredContents[categoryValue] = _.uniqBy(filteredContents[categoryValue].concat(value), 'identifier');
                             } else {
-                                filteredContents[subject] = value;
+                                filteredContents[categoryValue] = value;
                             }
                         });
                         delete filteredContents[key];
