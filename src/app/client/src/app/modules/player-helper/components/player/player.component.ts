@@ -556,7 +556,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   getDocumentDir() {
-    return typeof document !== 'undefined' ? document.dir || 'ltr' : 'ltr';
+    return typeof document !== 'undefined' ? document.dir : 'ltr';
   }
 
   focusOnReplay() {
