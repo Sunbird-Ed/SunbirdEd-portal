@@ -21,8 +21,7 @@
       </div>
       <form class="ui form">
         <div *ngFor="let field of formFieldOptions">
-          <div class="required sb-field-form-group"
-            *ngIf="field.code === frameworkCategories?.fwCategory1?.code">
+          <div class="required sb-field-form-group">
             <div class="sb-field">
                 <mat-form-field id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
                   <mat-label>{{ (resourceService?.frmelmnts?.lbl[field?.code] | transposeTerms: resourceService?.frmelmnts?.lbl[field?.code] : resourceService?.selectedLang) || field?.label }}
@@ -36,45 +35,45 @@
                 </mat-form-field>
             </div>
           </div>
-          <div class="sb-field-form-group mt-8" *ngIf="field.code !== frameworkCategories?.fwCategory1?.code"
+          <!-- <div class="sb-field-form-group mt-8" *ngIf="field.code !== frameworkCategories?.fwCategory1?.code"
             [ngClass]="field.code === frameworkCategories?.fwCategory4?.code ? '' : 'required'">
             <div class="sb-field">
-                <mat-form-field *ngIf="field.code ===frameworkCategories?.fwCategory3?.code" id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
+                <mat-form-field id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
                   <mat-label>{{ (resourceService?.frmelmnts?.lbl[field?.code] | transposeTerms: resourceService?.frmelmnts?.lbl[field?.code] : resourceService?.selectedLang) || field?.label }}
                     <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
                   </mat-label>
                   <mat-select multiple name={{field.code}} role="listbox" aria-label="field?.label"
-                  class="selection" [(ngModel)]="selectedOption[field.code]" (selectionChange)="handleFieldChange($event, field)">
+                  class="selection" [(ngModel)]="selectedOption[field.code]" (selectionChange)="handleFieldChange($event, field)"> -->
                   <!-- <mat-select-trigger>
                     {{selectedOption[field.code] ? selectedOption[field.code][0] : ''}}
                     <span *ngIf="selectedOption[field.code]?.length > 1" class="example-additional-selection">
                       (+{{selectedOption[field.code].length - 1}} {{selectedOption[field.code]?.length === 2 ? 'other' : 'others'}})
                     </span>
                   </mat-select-trigger> -->
-                    <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of field.range" [value]="option?.name"
+                    <!-- <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of field.range" [value]="option?.name"
                     attr.aria-label="{{option?.name}}">{{option?.name}}</mat-option>
                   </mat-select>
-                </mat-form-field>
+                </mat-form-field> -->
 
-                <mat-form-field *ngIf="field.code !== frameworkCategories?.fwCategory3?.code" id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
+                <!-- <mat-form-field *ngIf="field.code !== frameworkCategories?.fwCategory3?.code" id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
                   <mat-label>{{ (resourceService?.frmelmnts?.lbl[field?.code] | transposeTerms: resourceService?.frmelmnts?.lbl[field?.code] : resourceService?.selectedLang) || field?.label }}
                     <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
                   </mat-label>
                   <mat-select multiple name={{field.code}} role="listbox" aria-label="field?.label"
-                  class="selection" [(ngModel)]="selectedOption[field.code]" (selectionChange)="handleFieldChange($event, field)">
+                  class="selection" [(ngModel)]="selectedOption[field.code]" (selectionChange)="handleFieldChange($event, field)"> -->
                   <!-- <mat-select-trigger>
                     {{selectedOption[field.code] ? selectedOption[field.code][0] : ''}}
                     <span *ngIf="selectedOption[field.code]?.length > 1" class="example-additional-selection">
                       (+{{selectedOption[field.code].length - 1}} {{selectedOption[field.code]?.length === 2 ? 'other' : 'others'}})
                     </span>
                   </mat-select-trigger> -->
-                    <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option?.name"
+                    <!-- <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option?.name"
                     attr.aria-label="{{option?.name}}">{{option?.name}}</mat-option>
                   </mat-select>
-                </mat-form-field>
+                </mat-form-field> -->
 
-            </div>
-          </div>
+            <!-- </div>
+          </div> -->
         </div>
       </form>
     </div>
