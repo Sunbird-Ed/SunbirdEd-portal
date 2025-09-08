@@ -205,7 +205,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     // set the resource bundles
     if (this.resourceService?.frmelmnts?.lbl) {
       this.playerConfig.context.resourceBundles = this.resourceService.frmelmnts.lbl;
-      this.playerConfig.context.dir = this.getDocumentDir() || 'rtl';
+      this.playerConfig.context.dir = this.getDocumentDir();
     }
     this.playerConfig.context.version = this.buildNumber;
     setTimeout(() => {
@@ -556,9 +556,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   getDocumentDir() {
-
-    return typeof document !== 'undefined' ? document.dir || 'rtl' : 'rtl';
-
+    return typeof document !== 'undefined' ? document.dir || 'ltr' : 'ltr';
   }
 
   focusOnReplay() {
