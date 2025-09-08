@@ -1,14 +1,11 @@
-export interface ICard {
+export interface ICardBase {
     name: string;
     image?: string;
     downloadStatus?: string;
     imageVisibility?: boolean;
     description?: string;
-    subject?: string;
-    medium?: string;
     creator?: string;
     orgDetails?: { orgName: string, email: string};
-    gradeLevel?: any;
     resourceType?: string;
     maxCount?: number;
     progress?: number;
@@ -38,4 +35,8 @@ export interface ICard {
         };
     };
   completionPercentage?: number;
+}
+
+export interface ICard extends ICardBase {
+    [key: string]: any;
 }
