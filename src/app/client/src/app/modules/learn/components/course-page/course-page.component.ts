@@ -318,7 +318,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     // let _filters = _.get(_pageData, 'search.filters');
     // _filters['audience'] = localStorage.getItem('userType') === 'other' ?
     // ['Student', 'Teacher'] : [_.capitalize(localStorage.getItem('userType'))];
-    // Courses are displayed based on subject and sorted alphabetically. Executed iff `isPageAssemble` flag is set to `false`.
+    // Courses are displayed based on last category and sorted alphabetically. Executed iff `isPageAssemble` flag is set to `false`.
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
       if (key === 'appliedFilters' || key === 'selectedTab') {
         return false;
@@ -341,20 +341,21 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(
         map((response) => {
           this._courseSearchResponse = response;
-          // For content(s) without subject name(s); map it to 'Others'
+          // For content(s) without last category's name(s); map it to 'Others'
+          const categoryKey = this.frameworkCategoriesList[this.frameworkCategoriesList.length - 1];
           _.forEach(_.get(response, 'result.content'), function (content) {
-            if (!_.get(content, this.frameworkCategoriesList[3]) || !_.size(_.get(content, this.frameworkCategoriesList[3]))) { content[this.frameworkCategoriesList[3]] = ['Others']; }
+            if (!_.get(content, categoryKey) || !_.size(_.get(content, categoryKey))) { content[categoryKey] = ['Others']; }
           });
-          const filteredContents = _.omit(_.groupBy(_.get(response, 'result.content'), this.frameworkCategoriesList[3]), ['undefined']);
+          const filteredContents = _.omit(_.groupBy(_.get(response, 'result.content'), categoryKey), ['undefined']);
           for (const [key, value] of Object.entries(filteredContents)) {
-            const isMultipleSubjects = key.split(',').length > 1;
-            if (isMultipleSubjects) {
-              const subjects = key.split(',');
-              subjects.forEach((subject) => {
-                if (filteredContents[subject]) {
-                  filteredContents[subject] = _.uniqBy(filteredContents[subject].concat(value), 'identifier');
+            const isMultipleCategoryValues = key.split(',').length > 1;
+            if (isMultipleCategoryValues) {
+              const categories = key.split(',');
+              categories.forEach((category) => {
+                if (filteredContents[category]) {
+                  filteredContents[category] = _.uniqBy(filteredContents[category].concat(value), 'identifier');
                 } else {
-                  filteredContents[subject] = value;
+                  filteredContents[category] = value;
                 }
               });
               delete filteredContents[key];
