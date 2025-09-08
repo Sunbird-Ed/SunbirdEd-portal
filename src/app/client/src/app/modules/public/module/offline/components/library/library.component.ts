@@ -319,7 +319,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
                 this.facets = facets.filter(facet => facet.values.length > 0);
                 const categoryKey = this.frameworkCategoriesList[this.frameworkCategoriesList.length - 1];
                 const filteredContents = _.omit(_.groupBy(searchRes['result'].content, categoryKey), ['undefined']);
-                const otherContents = _.filter(searchRes['result'].content, (content) => !content.categoryKey );
+                const otherContents = _.filter(searchRes['result'].content, (content) => !content[categoryKey] );
                 // Check for multiple subjects
                 for (const [key, value] of Object.entries(filteredContents)) {
                     const isMultipleCategoryValues = key.split(',').length > 1;
