@@ -122,16 +122,17 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         userType == "administrator" ? board.required = true  : null;
         const fieldOptions = [board];
 
-        for (let i = 2; ; i++) {
+        const totalCategories = this.frameworkCategories?.size;
+        for (let i = 2; i <= totalCategories; i++) {
           const categoryKey = `fwCategory${i}`;
           const category = this.frameworkCategories?.[categoryKey];
-          if (!category?.code) break; // Stop if no more categories exist
-
-          fieldOptions.push({
-            code: category.code,
-            label: category.label,
-            index: i
-          });
+          if (category?.code) {
+            fieldOptions.push({
+              code: category.code,
+              label: category.label,
+              index: i
+            });
+          }
         }
         return of(fieldOptions);
       }
@@ -167,16 +168,17 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         }));
       } else {
         const fieldOptions = [board];
-        for (let i = 2; ; i++) {
+        const totalCategories = this.frameworkCategories?.size;
+        for (let i = 2; i <= totalCategories; i++) {
           const categoryKey = `fwCategory${i}`;
           const category = this.frameworkCategories?.[categoryKey];
-          if (!category?.code) break; // Stop if no more categories exist
-
-          fieldOptions.push({
-            code: category.code,
-            label: category.label,
-            index: i
-          });
+          if (category?.code) {
+            fieldOptions.push({
+              code: category.code,
+              label: category.label,
+              index: i
+            });
+          }
         }
         return of(fieldOptions);
       }
