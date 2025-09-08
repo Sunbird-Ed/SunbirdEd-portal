@@ -69,7 +69,6 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     this.dialogRef = this.dialogProps && this.dialogProps.id && this.matDialog.getDialogById(this.dialogProps.id);
     this.popupControlService.changePopupStatus(false);
     this.selectedOption = _.pickBy(_.cloneDeep(this.formInput), 'length') || {}; // clone selected field inputs from parent
-    console.log('this.selectedOption form input', this.selectedOption);
     if (this.isGuestUser && !this.isStepper) {
       this.orgDetailsService.getOrgDetails(this.userService.slug).subscribe((data: any) => {
         this.guestUserHashTagId = data.hashTagId;
