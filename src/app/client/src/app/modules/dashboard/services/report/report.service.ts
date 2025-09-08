@@ -13,7 +13,9 @@ import  dayjs from 'dayjs';
 import { v4 as UUID } from 'uuid';
 import { CslFrameworkService } from '../../../../../app/modules/public/services/csl-framework/csl-framework.service';
 
-const PRE_DEFINED_PARAMETERS = ['$slug', '$board', '$state', '$channel'];
+// Framework categories will be dynamically added to this array
+const STATIC_PARAMETERS = ['$slug', '$state', '$channel'];
+let PRE_DEFINED_PARAMETERS = [...STATIC_PARAMETERS];
 
 
 @Injectable({
@@ -25,6 +27,21 @@ export class ReportService  {
 
   private cachedMapping = {};
   private frameworkCategories;
+  private firstFrameworkCategory: string | null = null;
+
+  /**
+   * @description Initializes dynamic parameters based on the first framework category (fwCategory1)
+   * This adds only the first framework category as a dynamic parameter (prefixed with $) to the PRE_DEFINED_PARAMETERS array
+   */
+  private initializeDynamicParameters(): void {
+    if (this.frameworkCategories && typeof this.frameworkCategories === 'object' && this.frameworkCategories.fwCategory1?.code) {
+      this.firstFrameworkCategory = this.frameworkCategories?.fwCategory1?.code;
+      PRE_DEFINED_PARAMETERS = [...STATIC_PARAMETERS, `$${this.firstFrameworkCategory}`];
+    } else {
+      this.firstFrameworkCategory = null;
+      PRE_DEFINED_PARAMETERS = [...STATIC_PARAMETERS];
+    }
+  }
 
   constructor(private sanitizer: DomSanitizer, private usageService: UsageService, private userService: UserService,
     private configService: ConfigService, private baseReportService: BaseReportService, private permissionService: PermissionService,
@@ -36,6 +53,7 @@ export class ReportService  {
       this._superAdminSlug = 'sunbird';
     }
     this.frameworkCategories = this.cslFrameworkService.getFrameworkCategories();
+    this.initializeDynamicParameters();
   }
 
   public fetchDataSource(filePath: string, id?: string | number): Observable<any> {
@@ -425,11 +443,12 @@ export class ReportService  {
           return this.cachedMapping['$slug'];
         }
       },
-      $board: {
+      [this.firstFrameworkCategory ? `$${this.firstFrameworkCategory}` : '$board']: {
         value: _.get(this.userService, 'userProfile.framework.[this.frameworkCategories.fwCategory1.code][0]'),
         masterData: () => {
-          if (!this.cachedMapping.hasOwnProperty('$board')) {
-            this.cachedMapping['$board'] = this.frameworkService.getChannel(_.get(this.userService, 'hashTagId'))
+          const cacheKey = this.firstFrameworkCategory ? `$${this.firstFrameworkCategory}` : '$board';
+          if (!this.cachedMapping.hasOwnProperty(cacheKey)) {
+            this.cachedMapping[cacheKey] = this.frameworkService.getChannel(_.get(this.userService, 'hashTagId'))
               .pipe(
                 mergeMap(channel => this.frameworkService.getFrameworkCategories(_.get(channel, 'result.channel.defaultFramework'))
                   .pipe(
@@ -444,7 +463,7 @@ export class ReportService  {
                 catchError(err => of([]))
               );
           }
-          return this.cachedMapping['$board'];
+          return this.cachedMapping[cacheKey];
         }
       },
       $state: {
