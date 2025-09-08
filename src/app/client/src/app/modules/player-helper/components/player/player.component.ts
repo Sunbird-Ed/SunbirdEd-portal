@@ -195,6 +195,19 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
   loadDefaultPlayer(url = this.configService.appConfig.PLAYER_CONFIG.baseURL) {
     const iFrameSrc = url + '&build_number=' + this.buildNumber;
+    if (this.playerConfig) {
+      this.playerConfig.context = {
+        ...this.playerConfig.context,
+        resourceBundles: {},
+        dir: ""
+      };
+    }
+    // set the resource bundles
+    if (this.resourceService?.frmelmnts?.lbl) {
+      this.playerConfig.context.resourceBundles = this.resourceService.frmelmnts.lbl;
+      this.playerConfig.context.dir = this.getDocumentDir() || 'rtl';
+    }
+    this.playerConfig.context.version = this.buildNumber;
     setTimeout(() => {
       const playerElement = this.contentIframe.nativeElement;
       playerElement.src = iFrameSrc;
@@ -541,7 +554,13 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.focusOnReplay();
     this.ratingPopupClose.emit({});
   }
-  
+
+  getDocumentDir() {
+
+    return typeof document !== 'undefined' ? document.dir || 'rtl' : 'rtl';
+
+  }
+
   focusOnReplay() {
     if (this.playerType === 'quml-player') {
       const replayButton: HTMLElement = document.querySelector('.replay-section');
