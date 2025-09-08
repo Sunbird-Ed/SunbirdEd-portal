@@ -178,7 +178,13 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
     this.globalFilterCategories = this.cslFrameworkService.getAlternativeCodeForFilter();
     this.CourseSearchFieldCategory = [...this.globalFilterCategories, ...this.frameworkCategoriesList];
-    this.facetsList = ['channel', this.frameworkCategories?.fwCategory2?.code,this.frameworkCategories?.fwCategory3?.code,this.frameworkCategories?.fwCategory4?.code];
+    this.facetsList = [
+      'channel',
+      ...Object.keys(this.frameworkCategories || {})
+        .filter(key => key.startsWith('fwCategory'))
+        .map(key => this.frameworkCategories[key]?.code)
+        .filter(Boolean)
+    ];
     this.initLayout();
     if (!this.userService.loggedIn) {
       this.getChannelId();
