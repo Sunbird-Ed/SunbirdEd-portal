@@ -131,7 +131,7 @@ export class AppComponent implements OnInit, OnDestroy {
   onboardingDataSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   onboardingData$ = this.onboardingDataSubject;
   isOnboardingEnabled = true;
-  isFWSelectionEnabled = true;
+  isFWSelectionEnabled = false;
   isUserTypeEnabled = true;
   @ViewChild('increaseFontSize') increaseFontSize: ElementRef;
   @ViewChild('decreaseFontSize') decreaseFontSize: ElementRef;
@@ -358,21 +358,16 @@ export class AppComponent implements OnInit, OnDestroy {
     * @description - This method sets the popup show values to true/false based on values from form config
   */
   checkPopupVisiblity(onboardingData) {
-    this.isOnboardingEnabled = false;
-    this.isFWSelectionEnabled = false;
-    this.isUserTypeEnabled = false;
-
-    this.userService.setGuestUser(true, "teacher");
-
-    localStorage.setItem("userType", "teacher");
-    localStorage.setItem("isStepperCompleted", "true");
-    localStorage.setItem("joyThemePopup", "false");
+    this.isOnboardingEnabled = onboardingData?.onboardingPopups ? onboardingData?.onboardingPopups?.isVisible : true;
+    this.isFWSelectionEnabled = onboardingData?.frameworkPopup ? onboardingData?.frameworkPopup?.isVisible : true;
+    this.isUserTypeEnabled = onboardingData?.userTypePopup ? onboardingData?.userTypePopup?.isVisible : true;
+    if (!(this.isOnboardingEnabled) || !(this.isFWSelectionEnabled)) {
+      this.userService.setGuestUser(true, onboardingData?.frameworkPopup?.defaultFormatedName); //user service method is set to true in case either of onboarding or framework popup is disabled
+    }
   }
 
   ngOnInit() {
 
-    this.isPopupEnabled = false;
-    this.isStepperCompleted = true;
     this.getOnboardingList();
     this.getOnboardingSkipStatus();
     this.checkToShowPopups();
@@ -460,19 +455,6 @@ export class AppComponent implements OnInit, OnDestroy {
         this.joyThemePopup();
         this.changeDetectorRef.detectChanges();
         this.cslFrameworkService.setTransFormGlobalFilterConfig(channelId);
-        var options = {
-          context: {
-            env: this.activatedRoute.snapshot?.data?.telemetry?.env || "home",
-          },
-          edata: {
-            type: "view",
-            pageid: "home-page",
-            subtype: "",
-            uri: encodeURI(window.location.href),
-            visits: []
-          }
-        }
-        this.telemetryService.impression(options)
       }, error => {
         this.initApp = true;
         this.changeDetectorRef.detectChanges();
@@ -753,7 +735,7 @@ export class AppComponent implements OnInit, OnDestroy {
               this.guestUserDetails = response;
               this.showFrameWorkPopUp = false;
             }, error => {
-              this.showFrameWorkPopUp = true;
+              this.showFrameWorkPopUp = false;
             });
           } else {
             this.checkLocationStatus();
