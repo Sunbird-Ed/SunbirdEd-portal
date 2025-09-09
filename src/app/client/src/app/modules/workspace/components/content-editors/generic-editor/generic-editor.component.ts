@@ -37,6 +37,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   public isLargeFileUpload = false;
   public frameworkCategories: any;
   public fwCategoriesAsNames: any;
+  public instance: string;
   genericEditorURL: string = (<HTMLInputElement>document.getElementById('genericEditorURL')) ?
   (<HTMLInputElement>document.getElementById('genericEditorURL')).value : '';
   cloudProvider: string = (<HTMLInputElement>document.getElementById('cloudProvider')) ?
@@ -59,6 +60,8 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
       this.defaultContentFileSize = (<HTMLInputElement>document.getElementById('sunbirdDefaultFileSize')) ?
       (<HTMLInputElement>document.getElementById('sunbirdDefaultFileSize')).value : 150;
       this.fwCategoriesAsNames = this.cslFrameworkService?.getAllFwCatName();
+    this.instance = (<HTMLInputElement>document.getElementById('instance'))
+      ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
   }
   ngOnInit() {
     this.userProfile = this.userService.userProfile;
@@ -242,6 +245,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
       framework: this.routeParams.framework,
       ownershipType: this.ownershipType,
       timeDiff: this.userService.getServerTimeDiff,
+      instance: this.instance,
       primaryCategories: _.without(this.frameworkService['_channelData'].contentPrimaryCategories, 'Course Assessment')
     };
     if (this.isLargeFileUpload || (_.get(this.contentDetails, 'contentDisposition') === 'online-only')) {
