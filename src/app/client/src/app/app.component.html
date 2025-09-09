@@ -83,13 +83,13 @@
     <!-- popup disabled  -->
     <div *ngIf="loadPopUps && isOnboardingEnabled">
       <!-- 2nd popup BMGS  -->
-      <app-modal-wrapper #frameWorkPopUp *ngIf="showFrameWorkPopUp && isFWSelectionEnabled"
+      <!-- <app-modal-wrapper #frameWorkPopUp *ngIf="showFrameWorkPopUp && isFWSelectionEnabled"
         [config]="{disableClose: true, panelClass: ['overflow-visible', 'material-modal'], autoFocus: false}">
         <ng-template sbModalContent let-data>
           <app-popup [dialogProps]="data" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit"
             [isGuestUser]="isGuestUser" (submit)="updateFrameWork($event)"></app-popup>
         </ng-template>
-      </app-modal-wrapper>
+      </app-modal-wrapper> -->
       <app-validate-teacher-identifier-popup *ngIf="showUserVerificationPopup && labels" [labels]="labels"
         [userFeedData]="userFeed"> </app-validate-teacher-identifier-popup>
       <!-- 1 & 3rd popup User Type & location -->
@@ -99,10 +99,10 @@
     </div>
     <app-tnc-popup (close)="onAcceptTnc()" #termsAndCondPopUp *ngIf="showTermsAndCondPopUp">
     </app-tnc-popup>
-    <!-- <div *ngIf="showGlobalConsentPopUpSection">
+    <div *ngIf="showGlobalConsentPopUpSection">
       <app-global-consent-pii [type]="globalConsent" [isglobalConsent]="isglobalConsent" (close)="closeConsentPopUp()"
         [consentConfig]="consentConfig"></app-global-consent-pii>
-    </div> -->
+    </div>
     <app-modal-wrapper [config]="{disableClose: true, size: 'small', panelClass: 'material-modal'}"
       *ngIf="isCustodianOrgUser && usersProfile && !usersProfile?.managedBy && !usersProfile?.dob && (usersProfile?.userLocations?.length>0 || showYearOfBirthPopup)">
       <ng-template sbModalContent let-data>
