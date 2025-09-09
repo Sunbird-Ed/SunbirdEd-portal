@@ -198,14 +198,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     if (this.playerConfig) {
       this.playerConfig.context = {
         ...this.playerConfig.context,
-        resourceBundles: {},
-        dir: ""
+        resourceBundles: this.resourceService?.frmelmnts?.lbl ?? {},
+        dir: this.getDocumentDir()
       };
-    }
-    // set the resource bundles
-    if (this.resourceService?.frmelmnts?.lbl) {
-      this.playerConfig.context.resourceBundles = this.resourceService.frmelmnts.lbl;
-      this.playerConfig.context.dir = this.getDocumentDir();
     }
     setTimeout(() => {
       const playerElement = this.contentIframe.nativeElement;
