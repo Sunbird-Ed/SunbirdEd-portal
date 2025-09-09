@@ -13,7 +13,7 @@ export class FrameworkCatLabelTranslatePipe implements PipeTransform {
   
     Object.values(fwCategoryObject).forEach((category: any) => {
       if (category?.code) {
-        mapping[category.code] = category.code || category.label || category.name;
+        mapping[category.code] = get(this.resourceService, 'frmelmnts.lbl.' + category.code);
       }
     });
   
