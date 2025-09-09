@@ -131,7 +131,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
           }
           
           if (!category.code) {
-            throw new Error(`Missing required 'code' property in ${categoryKey}`);
+            throw new Error(`Missing required 'code' property in ${categoryKey} while building form field options for guest user. Category value: ${JSON.stringify(category)}`);
           }
           if (category?.code) {
             fieldOptions.push({
