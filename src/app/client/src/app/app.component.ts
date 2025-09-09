@@ -358,16 +358,21 @@ export class AppComponent implements OnInit, OnDestroy {
     * @description - This method sets the popup show values to true/false based on values from form config
   */
   checkPopupVisiblity(onboardingData) {
-    this.isOnboardingEnabled = onboardingData?.onboardingPopups ? onboardingData?.onboardingPopups?.isVisible : true;
-    this.isFWSelectionEnabled = onboardingData?.frameworkPopup ? onboardingData?.frameworkPopup?.isVisible : true;
-    this.isUserTypeEnabled = onboardingData?.userTypePopup ? onboardingData?.userTypePopup?.isVisible : true;
-    if (!(this.isOnboardingEnabled) || !(this.isFWSelectionEnabled)) {
-      this.userService.setGuestUser(true, onboardingData?.frameworkPopup?.defaultFormatedName); //user service method is set to true in case either of onboarding or framework popup is disabled
-    }
+    this.isOnboardingEnabled = false;
+    this.isFWSelectionEnabled = false;
+    this.isUserTypeEnabled = false;
+
+    this.userService.setGuestUser(true, "teacher");
+
+    localStorage.setItem("userType", "teacher");
+    localStorage.setItem("isStepperCompleted", "true");
+    localStorage.setItem("joyThemePopup", "false");
   }
 
   ngOnInit() {
 
+    this.isPopupEnabled = false;
+    this.isStepperCompleted = true;
     this.getOnboardingList();
     this.getOnboardingSkipStatus();
     this.checkToShowPopups();
@@ -688,7 +693,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public checkTncAndFrameWorkSelected() {
     if (_.has(this.userService.userProfile, 'promptTnC') && _.has(this.userService.userProfile, 'tncLatestVersion') &&
       _.has(this.userService.userProfile, 'tncLatestVersion') && this.userService.userProfile.promptTnC === true) {
-      this.showTermsAndCondPopUp = true;
+      this.showTermsAndCondPopUp = false;
     } else {
       if (this.userService.loggedIn) {
         this.orgDetailsService.getCustodianOrgDetails().subscribe((custodianOrg) => {
