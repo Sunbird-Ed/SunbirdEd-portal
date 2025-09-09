@@ -152,17 +152,10 @@ export class MainFooterComponent implements OnInit, AfterViewInit, OnDestroy {
           (params, queryParams) => {
             return { ...params, ...queryParams };
           }).subscribe((params) => {
-            if (params.dialCode) {
-              const source = params.source || 'search';
-              applink = `${applink}`;
-            } else {
-              applink = `${applink}`;
-            }
             this.redirect(applink.replace(/\s+/g, ''));
           });
       } else {
         const path = this.router.url.split('/')[1];
-        applink = `${applink}`;
         this.redirect(applink);
       }
     }
