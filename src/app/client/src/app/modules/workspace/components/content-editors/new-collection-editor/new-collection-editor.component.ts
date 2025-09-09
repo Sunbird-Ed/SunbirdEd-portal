@@ -213,7 +213,6 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
       }
       if (!this.showQuestionEditor) {
         this.setEditorConfig();
-        this.editorConfig.context['framework'] = _.get(this.collectionDetails, 'framework');
         if (_.get(this.collectionDetails, 'primaryCategory') && _.get(this.collectionDetails, 'primaryCategory') !== 'Curriculum Course') {
           this.editorConfig.context['targetFWIds'] = _.get(this.collectionDetails, 'targetFWIds');
         }
