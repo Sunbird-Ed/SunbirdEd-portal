@@ -305,9 +305,8 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   redirectToSunbirdApp() {
     this.isRedirectToSunbirdApp = true;
     this.telemetryService.interact(this.appMobileDownloadInteractData);
-    let applink = this.configService.appConfig.UrlLinks.downloadDikshaApp;
-    const utm_source = this.userService.slug ? `diksha-${this.userService.slug}` : 'diksha';
-    applink = `${applink}&utm_source=${utm_source}&utm_medium=${this.dialSearchSource}&utm_campaign=dial&utm_term=${this.dialCode}`;
+    let applink = this.configService.appConfig.UrlLinks.downloadSunbirdApp;
+    applink = `${applink}`;
     window.location.href = applink.replace(/\s+/g, '');
   }
   setTelemetryData() {
