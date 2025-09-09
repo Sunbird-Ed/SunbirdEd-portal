@@ -49,9 +49,10 @@ export class EditorService {
       const frameworkCategories = this.cslFrameworkService.getFrameworkCategoriesObject() as Array<any>;
       const categoryCodes = frameworkCategories.map((category) => category.code);
       categoryCodes.forEach((code) => {
-        if (_.get(req, `content.${code}`) && !_.isArray(_.get(req, `content.${code}`))) {
+        const categoryValue = _.get(req, `content.${code}`);
+        if (categoryValue && !_.isArray(categoryValue)) {
           const category = [];
-          category.push(req.content[code]);
+          category.push(categoryValue);
           req.content[code] = category;
         }
       });
