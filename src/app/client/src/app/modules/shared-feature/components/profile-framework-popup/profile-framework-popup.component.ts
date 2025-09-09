@@ -126,6 +126,13 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         for (let i = 2; i <= totalCategories; i++) {
           const categoryKey = `fwCategory${i}`;
           const category = this.frameworkCategories?.[categoryKey];
+          if (!category) {
+            throw new Error(`Category ${categoryKey} is not defined in frameworkCategories`);
+          }
+          
+          if (!category.code) {
+            throw new Error(`Missing required 'code' property in ${categoryKey}`);
+          }
           if (category?.code) {
             fieldOptions.push({
               code: category.code,
@@ -172,6 +179,12 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         for (let i = 2; i <= totalCategories; i++) {
           const categoryKey = `fwCategory${i}`;
           const category = this.frameworkCategories?.[categoryKey];
+          if (!category) {
+            throw new Error(`Category ${categoryKey} is not defined in frameworkCategories`);
+          }
+          if (!category.code) {
+            throw new Error(`Missing required 'code' property in ${categoryKey}`);
+          }
           if (category?.code) {
             fieldOptions.push({
               code: category.code,
