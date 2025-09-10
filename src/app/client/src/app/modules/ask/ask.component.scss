@@ -1,0 +1,182 @@
+/* Ask Component Styles */
+/* This SCSS file styles the Ask component to match the Sunbird Portal design system */
+
+.ask-container {
+  min-height: 100vh;
+  background-color: #f5f5f5; /* Light beige background similar to the screenshot */
+  padding: 0;
+  margin: 0;
+}
+
+.ask-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  min-height: calc(100vh - 120px); /* Account for header height */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Changed from center to flex-start */
+  padding-top: 2rem; /* Add some top padding */
+}
+
+/* Search Section Styles */
+.ask-search-section {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 2rem;
+  margin-top: 1rem; /* Add some top margin */
+}
+
+.search-input-container {
+  display: flex;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.search-input-container:focus-within {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Search Input Styles */
+.search-input {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  border: none;
+  outline: none;
+  font-size: 1.1rem;
+  color: #333;
+  background: transparent;
+  
+  &::placeholder {
+    color: #999;
+    font-style: italic;
+  }
+  
+  &:focus {
+    outline: none;
+  }
+  
+  &:disabled {
+    background-color: #f8f8f8;
+    cursor: not-allowed;
+  }
+}
+
+/* Ask Button Styles */
+.ask-button {
+  background-color: #0074d9; /* Dark blue button color from screenshot */
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 100px;
+  
+  &:hover:not(:disabled) {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+  }
+  
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+  
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  &.loading {
+    background-color: #0074d9;
+  }
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  display: inline-flex;
+  align-items: center;
+  
+  .icon.loading {
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Search Results Styles */
+.search-results {
+  width: 100%;
+  max-width: 800px;
+  margin-top: 2rem;
+}
+
+.results-placeholder {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  
+  p {
+    margin: 0.5rem 0;
+    color: #666;
+  }
+  
+  .placeholder-note {
+    font-size: 0.9rem;
+    color: #999;
+    font-style: italic;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .ask-content {
+    padding: 1rem;
+    padding-top: 1.5rem;
+  }
+  
+  .search-input-container {
+    flex-direction: column;
+  }
+  
+  .ask-button {
+    border-radius: 0 0 12px 12px;
+    padding: 0.8rem 1.5rem;
+  }
+  
+  .search-input {
+    border-radius: 12px 12px 0 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .ask-content {
+    padding-top: 1rem;
+  }
+  
+  .search-input {
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+  }
+  
+  .ask-button {
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+  }
+}

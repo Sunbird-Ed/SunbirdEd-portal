@@ -127,6 +127,8 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : 'mydownloads';
     } else if (url.indexOf('observation') >= 0) {
       this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : 'observation';
+    } else if (url.indexOf('ask') >= 0) {
+      this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : 'ask';
     } else {
       this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : null;
     }
@@ -173,7 +175,39 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   }
 
   processFormData(formData) {
+    // First, add the Ask tab to the form data before sorting
+    const askTab = {
+      index: 999, // High index to ensure it appears at the end
+      title: 'frmelmnts.tab.ask',
+      desc: 'frmelmnts.tab.ask',
+      menuType: 'Content',
+      contentType: 'ask',
+      isEnabled: true,
+      isOnlineOnly: true,
+      theme: {
+        baseColor: '',
+        textColor: '',
+        supportingColor: '',
+        className: 'ask',
+        imageName: 'ask-banner-img.svg'
+      },
+      anonumousUserRoute: {
+        route: '/ask',
+        queryParam: 'ask'
+      },
+      loggedInUserRoute: {
+        route: '/ask',
+        queryParam: 'ask'
+      },
+      isLoginMandatory: false
+    };
+    
+    // Add the Ask tab to the form data array
+    formData.push(askTab);
+    
+    // Now sort the content types by index
     this.contentTypes = _.sortBy(formData, 'index');
+    
     const defaultTab = _.find(this.contentTypes, ['default', true]);
     this.selectedContentType = this.activatedRoute.snapshot.queryParams.selectedTab || _.get(defaultTab, 'contentType') || 'textbook';
   }

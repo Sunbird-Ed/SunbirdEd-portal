@@ -1,0 +1,129 @@
+<!-- Ask Results Component Template -->
+<!-- This template displays search results in Sunbird's design system style -->
+
+<div class="ask-results-container">
+  
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+    </div>
+    <p class="loading-text">Searching for educational resources...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !isLoading" class="error-state">
+    <div class="error-icon">
+      <i class="icon warning"></i>
+    </div>
+    <h3 class="error-title">Unable to search</h3>
+    <p class="error-message">{{ error }}</p>
+    <button class="retry-button" (click)="onRetry()">Try Again</button>
+  </div>
+
+  <!-- Results Header -->
+  <div *ngIf="results.length > 0 && !isLoading" class="results-header">
+    <h2 class="results-title">
+      Educational resources for {{ query }}
+    </h2>
+    <p class="results-count">{{ results.length }} resource{{ results.length !== 1 ? 's' : '' }} found</p>
+  </div>
+
+  <!-- Results List -->
+  <div *ngIf="results.length > 0 && !isLoading" class="results-list">
+    <div *ngFor="let result of results; let i = index" 
+         class="result-card"
+         (click)="onResultClick(result)"
+         (click)="trackResultClick(result)">
+      
+      <!-- Result Type Badge -->
+      <div class="result-type-badge" [ngClass]="getTypeColor(getResultType(result))">
+        {{ getResultType(result) }}
+      </div>
+
+      <!-- Result Content -->
+      <div class="result-content">
+        <div class="result-main">
+          <!-- Title -->
+          <h3 class="result-title">{{ result.name }}</h3>
+          
+          <!-- Content Metadata -->
+          <div class="result-metadata" *ngIf="hasContentMetadata(result)">
+            <div class="metadata-row">
+              <span class="metadata-item" *ngIf="result.medium">
+                <i class="icon file"></i>
+                {{ result.medium }}
+              </span>
+              <span class="metadata-item" *ngIf="result.subject && result.subject.length > 0">
+                <i class="icon book"></i>
+                {{ result.subject.join(', ') }}
+              </span>
+              <span class="metadata-item" *ngIf="result.grade && result.grade.length > 0">
+                <i class="icon users"></i>
+                {{ result.grade.join(', ') }}
+              </span>
+            </div>
+          </div>
+          
+          <!-- Description (fallback if no metadata) -->
+          <p class="result-description" *ngIf="!hasContentMetadata(result) && result.description">
+            {{ getTruncatedDescription(result.description) }}
+          </p>
+
+          <!-- Recommendation -->
+          <div class="result-recommendation" *ngIf="result.recommendation">
+            <div class="recommendation-box">
+              <strong>Why recommended:</strong> {{ result.recommendation }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Thumbnail -->
+        <div class="result-thumbnail" *ngIf="hasThumbnail(result)">
+          <img [src]="result.thumbnail" 
+               [alt]="result.name"
+               class="thumbnail-image"
+               (error)="onImageError($event)">
+        </div>
+      </div>
+
+      <!-- Result Footer -->
+      <div class="result-footer">
+        <div class="result-meta">
+          <span class="result-score" *ngIf="result.score">
+            <i class="icon star"></i>
+            {{ getFormattedScore(result.score) }}% match
+          </span>
+        </div>
+        <div class="result-actions">
+          <button class="view-button" (click)="onResultClick(result); $event.stopPropagation()">
+            View Resource
+            <i class="icon external"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Results State -->
+  <div *ngIf="results.length === 0 && !isLoading && !error" class="no-results-state">
+    <div class="no-results-icon">
+      <i class="icon search"></i>
+    </div>
+    <h3 class="no-results-title">No resources found</h3>
+    <p class="no-results-message">
+      We couldn't find any educational resources for "{{ query }}". 
+      Try rephrasing your question or using different keywords.
+    </p>
+    <div class="no-results-suggestions">
+      <h4>Suggestions:</h4>
+      <ul>
+        <li>Try using more specific terms</li>
+        <li>Check your spelling</li>
+        <li>Use broader keywords</li>
+        <li>Try asking about a specific subject or grade level</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
