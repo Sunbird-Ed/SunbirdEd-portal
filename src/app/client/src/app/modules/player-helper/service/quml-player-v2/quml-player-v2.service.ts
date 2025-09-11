@@ -55,6 +55,10 @@ export class QumlPlayerV2Service implements QuestionCursor, EditorCursor {
     this.questionMap.set(key, value);
   }
 
+  removeQuestionMap(key: string): void {
+    this.questionMap.delete(key);
+  }
+
   clearQuestionMap() {
     this.questionMap.clear();
   }
