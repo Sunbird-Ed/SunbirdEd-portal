@@ -1,8 +1,8 @@
-export interface ISelectFilter {
-board?: Array<string> ;
-subject?: Array<string>;
-grades?: Array<string>;
-medium?: Array<string>;
+export interface ISelectFilterBase {
 contentType?: Array<string>;
 searchText: string;
+}
+
+export interface ISelectFilter extends ISelectFilterBase {
+    [key: string]: Array<string> | string;
 }

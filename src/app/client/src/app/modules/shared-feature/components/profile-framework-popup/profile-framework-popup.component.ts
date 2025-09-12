@@ -30,7 +30,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   @Input() dialogProps;
   @Input() hashId;
   @Input() isStepper: boolean = false;
-  public allowedFields = ['board', 'medium', 'gradeLevel', 'subject'];
+  public allowedFields: string[] = [];
   private _formFieldProperties: any;
   public formFieldOptions = [];
   private custOrgFrameworks: any;
@@ -62,6 +62,10 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.frameworkCategories = this.cslFrameworkService.getFrameworkCategories();
     this.frameworkCategoriesObject = this.cslFrameworkService.getFrameworkCategoriesObject();
+    
+    const frameworkCategoryCodes = this.cslFrameworkService.getAllFwCatName();
+    this.allowedFields = frameworkCategoryCodes || [];
+    
     this.dialogRef = this.dialogProps && this.dialogProps.id && this.matDialog.getDialogById(this.dialogProps.id);
     this.popupControlService.changePopupStatus(false);
     this.selectedOption = _.pickBy(_.cloneDeep(this.formInput), 'length') || {}; // clone selected field inputs from parent
@@ -70,14 +74,14 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         this.guestUserHashTagId = data.hashTagId;
       });
       this.guestUserHashTagId =this.guestUserHashTagId || this.hashId;
-      this.allowedFields = [this.frameworkCategories?.fwCategory1?.code, this.frameworkCategories?.fwCategory2?.code, this.frameworkCategories?.fwCategory3?.code];
+      this.allowedFields = this.cslFrameworkService.getAllFwCatName() || [];
     }
     if (this.isGuestUser && this.isStepper) {
       this.orgDetailsService.getCustodianOrgDetails().subscribe((custodianOrg) => {
         this.guestUserHashTagId = custodianOrg.result.response.value;
 
       });
-      this.allowedFields = [this.frameworkCategories?.fwCategory1?.code, this.frameworkCategories?.fwCategory2?.code, this.frameworkCategories?.fwCategory3?.code];
+      this.allowedFields = this.cslFrameworkService.getAllFwCatName() || [];
     }
     this.editMode = _.some(this.selectedOption, 'length') || false;
     this.unsubscribe = this.isCustodianOrgUser().pipe(
@@ -116,10 +120,27 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       } else {
         let userType = localStorage.getItem('userType');
         userType == "administrator" ? board.required = true  : null;
-        const fieldOptions = [board,
-          { code: this.frameworkCategories?.fwCategory2?.code, label: this.frameworkCategories?.fwCategory2?.label, index: 2 },
-          { code: this.frameworkCategories?.fwCategory3?.code, label: this.frameworkCategories?.fwCategory3?.label, index: 3 },
-          { code: this.frameworkCategories?.fwCategory4?.code, label: this.frameworkCategories?.fwCategory4?.label, index: 4 }];
+        const fieldOptions = [board];
+
+        const totalCategories = this.frameworkCategories?.size;
+        for (let i = 2; i <= totalCategories; i++) {
+          const categoryKey = `fwCategory${i}`;
+          const category = this.frameworkCategories?.[categoryKey];
+          if (!category) {
+            throw new Error(`Category ${categoryKey} is not defined in frameworkCategories`);
+          }
+          
+          if (!category.code) {
+            throw new Error(`Missing required 'code' property in ${categoryKey} while building form field options for guest user. Category value: ${JSON.stringify(category)}`);
+          }
+          if (category?.code) {
+            fieldOptions.push({
+              code: category.code,
+              label: category.label,
+              index: i
+            });
+          }
+        }
         return of(fieldOptions);
       }
     }));
@@ -153,10 +174,25 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
           return this.getUpdatedFilters(board, true);
         }));
       } else {
-        const fieldOptions = [board,
-          { code: this.frameworkCategories?.fwCategory2?.code, label: this.frameworkCategories?.fwCategory2?.label, index: 2 },
-          { code: this.frameworkCategories?.fwCategory3?.code, label: this.frameworkCategories?.fwCategory3?.label, index: 3 },
-          { code: this.frameworkCategories?.fwCategory4?.code, label: this.frameworkCategories?.fwCategory4?.label, index: 4 }];
+        const fieldOptions = [board];
+        const totalCategories = this.frameworkCategories?.size;
+        for (let i = 2; i <= totalCategories; i++) {
+          const categoryKey = `fwCategory${i}`;
+          const category = this.frameworkCategories?.[categoryKey];
+          if (!category) {
+            throw new Error(`Category ${categoryKey} is not defined in frameworkCategories`);
+          }
+          if (!category.code) {
+            throw new Error(`Missing required 'code' property in ${categoryKey}`);
+          }
+          if (category?.code) {
+            fieldOptions.push({
+              code: category.code,
+              label: category.label,
+              index: i
+            });
+          }
+        }
         return of(fieldOptions);
       }
     }));

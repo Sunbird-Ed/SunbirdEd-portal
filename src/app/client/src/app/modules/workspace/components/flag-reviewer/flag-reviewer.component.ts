@@ -13,6 +13,8 @@ import { WorkSpaceService } from '../../services';
 import * as _ from 'lodash-es';
 import { SuiModalService } from 'ng2-semantic-ui-v9';
 import { IImpressionEventInput } from '@sunbird/telemetry';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
+
 /**
  * The  FlagReviewerComponent search for all the flag-reviewer
 */
@@ -151,7 +153,8 @@ export class FlagReviewerComponent extends WorkSpace implements OnInit, AfterVie
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
     config: ConfigService, permissionService: PermissionService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService,
+    public cslFrameworkService: CslFrameworkService) {
     super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
@@ -165,6 +168,7 @@ export class FlagReviewerComponent extends WorkSpace implements OnInit, AfterVie
     this.state = 'flagreviewer';
     this.permissionService = permissionService;
     this.sortByOption = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
+    this.cslFrameworkService = cslFrameworkService;
   }
 
   ngOnInit() {
@@ -194,6 +198,15 @@ export class FlagReviewerComponent extends WorkSpace implements OnInit, AfterVie
   */
   fecthFlagReviewerContent(limit: number, pageNumber: number, bothParams) {
     this.showLoader = true;
+    const frameworkCategories = this.cslFrameworkService.getFrameworkCategoriesObject() as Array<any>;
+
+    const dynamicFilters = frameworkCategories.reduce((filters, category) => {
+      const code = category.code;
+      if (bothParams['queryParams'][code]) {
+        filters[code] = bothParams['queryParams'][code];
+      }
+      return filters;
+    }, {} as Record<string, any>);
     if (bothParams.queryParams.sort_by) {
       const sort_by = bothParams.queryParams.sort_by;
       const sortType = bothParams.queryParams.sortType;
@@ -213,10 +226,7 @@ export class FlagReviewerComponent extends WorkSpace implements OnInit, AfterVie
           rolesMap['FLAG_REVIEWER'])),
         createdBy: { '!=': this.userService.userid },
         objectType: this.config.appConfig.WORKSPACE.objectType,
-        board: bothParams.queryParams.board,
-        subject: bothParams.queryParams.subject,
-        medium: bothParams.queryParams.medium,
-        gradeLevel: bothParams.queryParams.gradeLevel,
+        ...dynamicFilters,
         primaryCategory: bothParams.queryParams.primaryCategory ?
         bothParams.queryParams.primaryCategory : (!_.isEmpty(primaryCategories) ? primaryCategories :
         this.config.appConfig.WORKSPACE.primaryCategory),

@@ -13,6 +13,8 @@ import { WorkSpaceService } from '../../services';
 import * as _ from 'lodash-es';
 import { SuiModalService } from 'ng2-semantic-ui-v9';
 import { IImpressionEventInput } from '@sunbird/telemetry';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
+
 /**
  * The upforReview component search for all the upforreview content
 */
@@ -148,7 +150,8 @@ export class UpForReviewComponent extends WorkSpace implements OnInit, AfterView
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
     config: ConfigService, permissionService: PermissionService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService,
+    public cslFrameworkService: CslFrameworkService) {
     super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
@@ -161,6 +164,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit, AfterView
     };
     this.state = 'upForReview';
     this.permissionService = permissionService;
+    this.cslFrameworkService = cslFrameworkService;
   }
 
   ngOnInit() {
@@ -192,6 +196,15 @@ export class UpForReviewComponent extends WorkSpace implements OnInit, AfterView
   */
   fecthUpForReviewContent(limit: number, pageNumber: number, bothParams) {
     this.showLoader = true;
+    const frameworkCategories = this.cslFrameworkService.getFrameworkCategoriesObject() as Array<any>;
+
+    const dynamicFilters = frameworkCategories.reduce((filters, category) => {
+      const code = category.code;
+      if (bothParams['queryParams'][code]) {
+        filters[code] = bothParams['queryParams'][code];
+      }
+      return filters;
+    }, {} as Record<string, any>);
     if (bothParams.queryParams.sort_by) {
       const sort_by = bothParams.queryParams.sort_by;
       const sortType = bothParams.queryParams.sortType;
@@ -210,10 +223,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit, AfterView
           rolesMap['CONTENT_REVIEW'])),
         createdBy: { '!=': this.userService.userid },
         objectType: this.isQuestionSetEnabled ? this.config.appConfig.WORKSPACE.allowedObjectType : this.config.appConfig.WORKSPACE.objectType,
-        board: bothParams.queryParams.board,
-        subject: bothParams.queryParams.subject,
-        medium: bothParams.queryParams.medium,
-        gradeLevel: bothParams.queryParams.gradeLevel
+        ...dynamicFilters
       },
       limit: limit,
       offset: (pageNumber - 1) * (limit),

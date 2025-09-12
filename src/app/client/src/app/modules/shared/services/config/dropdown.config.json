@@ -372,22 +372,6 @@
         "WORKSPACE": {
             "label": [
                 {
-                    "id": "board",
-                    "name": "Board/Syllabus"
-                },
-                {
-                    "id": "gradeLevel",
-                    "name": "Grades"
-                },
-                {
-                    "id": "medium",
-                    "name": "Medium"
-                },
-                {
-                    "id": "subject",
-                    "name": "Subjects"
-                },
-                {
                     "id": "contentType",
                     "name": "Content Types"
                 },

@@ -70,13 +70,18 @@ const isReportParameterized = (report) => _.get(report, 'parameters.length') > 0
 const getHashedValue = (val) => Buffer.from(val).toString("base64");
 
 const getParameterValue = (param, user) => {
+    const firstFrameworkCategory = _.get(user, 'frameworkCategories.fwCategory1.code', 'board');
+    
     const parametersMapping = {
         $slug: _.get(user, 'rootOrg.slug'),
-        $board: _.get(user, 'framework.board'),
+        [firstFrameworkCategory ? `$${firstFrameworkCategory}` : '$board']: _.get(user, `framework.${firstFrameworkCategory || 'board'}`),
         $state: _.get(_.find(_.get(user, 'userLocations'), ['type', 'state']), 'name'),
         $channel: _.get(user, 'rootOrg.hashTagId')
     };
-    return parametersMapping[param];
+    
+    return parametersMapping[param] || 
+           (param === '$board' && parametersMapping[`$${firstFrameworkCategory}`]) || 
+           null;
 }
 
 const getParametersHash = (report, user) => {

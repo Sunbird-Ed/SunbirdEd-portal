@@ -126,21 +126,18 @@ export namespace CollectionHierarchyAPI {
     status?: string;
   }
 
-  export interface Content {
+  export interface ContentBase {
     code?: string;
     notes?: string;
     keywords?: string[];
-    subject?: string;
     channel?: string;
     description?: string;
     edition?: string;
     language?: string[];
     mimeType?: string;
-    medium?: string;
     idealScreenSize?: string;
     createdOn?: string;
     appIcon?: string;
-    gradeLevel?: string[];
     collections?: Collection[];
     children?: Child[];
     appId?: string;
@@ -166,8 +163,11 @@ export namespace CollectionHierarchyAPI {
     compatibilityLevel?: number;
     name?: string;
     usedByContent?: any[];
-    board?: string;
     status?: string;
+  }
+
+  export interface Content extends ContentBase {
+    [key: string]: any;
   }
 
 }
