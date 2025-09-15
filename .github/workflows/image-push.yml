@@ -27,29 +27,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        working-directory: src/app/client
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
 
-      - name: Cache yarn dependencies
-        uses: actions/cache@v4
-        id: yarn-cache
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-client-${{ hashFiles('src/app/client/yarn.lock', 'src/app/client/package.json') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-client-
-            ${{ runner.os }}-yarn-
-
-      - name: Cache client node_modules
-        uses: actions/cache@v4
-        id: client-node-modules-cache
-        with:
-          path: src/app/client/node_modules
-          key: ${{ runner.os }}-client-node-modules-${{ hashFiles('src/app/client/yarn.lock', 'src/app/client/package.json') }}
-          restore-keys: |
-            ${{ runner.os }}-client-node-modules-
 
       - name: Create app_dist folder
         run: |
@@ -59,17 +37,13 @@ jobs:
 
       - name: Install Client Dependencies
         working-directory: src/app/client
-        if: steps.client-node-modules-cache.outputs.cache-hit != 'true'
         run: |
-          echo "Cache miss - installing dependencies"
-          yarn install --frozen-lockfile --prefer-offline --no-progress --production=true
+          echo "Installing client dependencies fresh from package.json"
+          yarn install --prefer-offline --no-progress --production=true
 
       - name: Build Client
         working-directory: src/app/client
         run: |
-          if [[ "${{ steps.client-node-modules-cache.outputs.cache-hit }}" == "true" ]]; then
-            echo "Using cached node_modules, skipping install"
-          fi
           if [[ "${{ env.BUILD_DOCKER_IMAGE }}" == "true" ]]; then
             npm run build
             cd ..
@@ -110,29 +84,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Get yarn cache directory path for server
-        id: yarn-cache-dir-path-server
-        working-directory: src/app
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
 
-      - name: Cache yarn dependencies for server
-        uses: actions/cache@v4
-        id: yarn-cache-server
-        with:
-          path: ${{ steps.yarn-cache-dir-path-server.outputs.dir }}
-          key: ${{ runner.os }}-yarn-server-${{ hashFiles('src/app/yarn.lock', 'src/app/package.json') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-server-
-            ${{ runner.os }}-yarn-
-
-      - name: Cache server node_modules
-        uses: actions/cache@v4
-        id: server-node-modules-cache
-        with:
-          path: src/app/app_dist/node_modules
-          key: ${{ runner.os }}-server-node-modules-${{ hashFiles('src/app/yarn.lock', 'src/app/package.json') }}
-          restore-keys: |
-            ${{ runner.os }}-server-node-modules-
 
       - name: Create app_dist folder
         run: |
@@ -146,13 +98,8 @@ jobs:
           cp -R libs helpers proxy resourcebundles package.json framework.config.js sunbird-plugins routes constants controllers server.js ./../../Dockerfile app_dist
           cd app_dist
           
-          if [[ "${{ steps.server-node-modules-cache.outputs.cache-hit }}" != "true" ]]; then
-            echo "Cache miss - installing server dependencies"
-            # Use frozen-lockfile for faster, deterministic installs
-            yarn install --frozen-lockfile --prefer-offline --ignore-engines --no-progress --production=true
-          else
-            echo "Using cached server node_modules, skipping install"
-          fi
+          echo "Installing server dependencies fresh from package.json"
+          yarn install --prefer-offline --ignore-engines --no-progress --production=true
           
           node helpers/resourceBundles/build.js -task="phraseAppPull"
 
