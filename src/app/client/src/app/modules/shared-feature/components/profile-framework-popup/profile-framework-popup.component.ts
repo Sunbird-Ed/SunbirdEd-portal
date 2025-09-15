@@ -125,8 +125,6 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
             })
           );
         } else {
-          console.log('data in getFrameworkOptions', data);
-          console.log('categories', categories);
           return of(categories);  // Wrap in of() to return an Observable
         }
       })
@@ -184,7 +182,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       this.enableSubmitButton();
       return;
     }
-    this.unsubscribe = this.getFormatedFilterDetails().pipe().subscribe(
+    this.unsubscribe = this.getFormatedFilterDetails().subscribe(
       (formFieldProperties) => {
         if (!formFieldProperties.length) {
         } else {
