@@ -304,6 +304,20 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     if (downloadStatus && artifactUrl && !_.startsWith(artifactUrl, 'http://')) {
       this.playerConfig.metadata.artifactUrl = `${location.origin}/${artifactUrl}`;
     }
+    
+    const defaults = {
+        'traceId': 'afhjgh',
+        'sideMenu': {
+          'showDownload': true,
+          'showExit': true,
+          'showPrint': true,
+          'showReplay': true,
+          'showShare': true
+        }
+      }
+    
+    this.playerConfig['config'] = { ...this.playerConfig['config'], ...defaults };
+    
     this.addUserDataToContext();
     if (this.isMobileOrTab) {
       this.isFullScreenView = true;
