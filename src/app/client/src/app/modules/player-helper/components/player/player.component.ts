@@ -297,7 +297,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   loadNewPlayer() {
-    this.showNewPlayer = true; // Ensure we show the web component player
     const downloadStatus = Boolean(_.get(this.playerConfig, 'metadata.desktopAppMetadata.isAvailable'));
     const artifactUrl = _.get(this.playerConfig, 'metadata.artifactUrl');
     this.contentId = _.get(this.playerConfig, 'metadata.identifier');
@@ -326,6 +325,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         this.rotatePlayer();
       }
     }
+    this.showNewPlayer = true;
     if (this.userService.loggedIn) {
       this.userService.userData$.subscribe((user: any) => {
         if (user && !user.err) {
