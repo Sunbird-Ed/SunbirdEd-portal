@@ -297,6 +297,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   loadNewPlayer() {
+    this.showNewPlayer = true; // Ensure we show the web component player
     const downloadStatus = Boolean(_.get(this.playerConfig, 'metadata.desktopAppMetadata.isAvailable'));
     const artifactUrl = _.get(this.playerConfig, 'metadata.artifactUrl');
     this.contentId = _.get(this.playerConfig, 'metadata.identifier');
@@ -304,6 +305,20 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     if (downloadStatus && artifactUrl && !_.startsWith(artifactUrl, 'http://')) {
       this.playerConfig.metadata.artifactUrl = `${location.origin}/${artifactUrl}`;
     }
+    
+    const defaults = {
+        'traceId': 'afhjgh',
+        'sideMenu': {
+          'showDownload': true,
+          'showExit': true,
+          'showPrint': true,
+          'showReplay': true,
+          'showShare': true
+        }
+      }
+    
+    this.playerConfig['config'] = { ...this.playerConfig['config'], ...defaults };
+    
     this.addUserDataToContext();
     if (this.isMobileOrTab) {
       this.isFullScreenView = true;
@@ -311,7 +326,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         this.rotatePlayer();
       }
     }
-    this.showNewPlayer = true;
     if (this.userService.loggedIn) {
       this.userService.userData$.subscribe((user: any) => {
         if (user && !user.err) {
