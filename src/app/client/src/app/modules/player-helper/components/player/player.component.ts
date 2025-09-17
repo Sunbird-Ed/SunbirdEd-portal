@@ -433,8 +433,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       return;
     }
     let eventCopy = event;
-    if (newPlayerEvent) {
-      eventCopy = { detail: {telemetryData: event.detail } };
+    if (newPlayerEvent && event.detail) {
+      eventCopy = { detail: { telemetryData: event.detail } };
     }
     const eid = _.get(eventCopy, 'detail.telemetryData.eid');
     const contentId = _.get(eventCopy, 'detail.telemetryData.object.id');
