@@ -131,7 +131,7 @@ export class AppComponent implements OnInit, OnDestroy {
   onboardingDataSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   onboardingData$ = this.onboardingDataSubject;
   isOnboardingEnabled = true;
-  isFWSelectionEnabled = false;
+  isFWSelectionEnabled = true;
   isUserTypeEnabled = true;
   @ViewChild('increaseFontSize') increaseFontSize: ElementRef;
   @ViewChild('decreaseFontSize') decreaseFontSize: ElementRef;
@@ -675,7 +675,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public checkTncAndFrameWorkSelected() {
     if (_.has(this.userService.userProfile, 'promptTnC') && _.has(this.userService.userProfile, 'tncLatestVersion') &&
       _.has(this.userService.userProfile, 'tncLatestVersion') && this.userService.userProfile.promptTnC === true) {
-      this.showTermsAndCondPopUp = false;
+      this.showTermsAndCondPopUp = true;
     } else {
       if (this.userService.loggedIn) {
         this.orgDetailsService.getCustodianOrgDetails().subscribe((custodianOrg) => {
@@ -735,7 +735,7 @@ export class AppComponent implements OnInit, OnDestroy {
               this.guestUserDetails = response;
               this.showFrameWorkPopUp = false;
             }, error => {
-              this.showFrameWorkPopUp = false;
+              this.showFrameWorkPopUp = true;
             });
           } else {
             this.checkLocationStatus();
