@@ -47,16 +47,24 @@ export class CslFrameworkService {
    * @param userSelFramework - User-selected framework (optional)
    * @param channelId - Channel ID 
    */
-  public setDefaultFWforCsl(userSelFramework?: any, channelId?: any): void {
+  public setDefaultFWforCsl(userSelFramework?: any, channelId?: any): Promise<void> {
     if (!userSelFramework && channelId) {
-      this.channelService.getFrameWork(channelId).subscribe((channelData: any) => {
-        this.defaultFramework = _.get(channelData, 'result.channel.defaultFramework');
-        let selectedFW = this.defaultFramework;
-        localStorage.setItem('selectedFramework', selectedFW);
-        this.setFWCatConfigFromCsl(selectedFW);
+      return new Promise((resolve, reject) => {
+        this.channelService.getFrameWork(channelId).subscribe({
+          next: (channelData: any) => {
+            this.defaultFramework = _.get(channelData, 'result.channel.defaultFramework');
+            let selectedFW = this.defaultFramework;
+            localStorage.setItem('selectedFramework', selectedFW);
+            this.setFWCatConfigFromCsl(selectedFW).then(resolve).catch(reject);
+          },
+          error: (error) => {
+            console.error('Error getting framework:', error);
+            reject(error);
+          }
+        });
       });
     } else {
-      this.setFWCatConfigFromCsl(userSelFramework);
+      return this.setFWCatConfigFromCsl(userSelFramework);
     }
   }
 
