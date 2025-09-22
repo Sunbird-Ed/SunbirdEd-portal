@@ -342,11 +342,19 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
         map((response) => {
           this._courseSearchResponse = response;
           // For content(s) without last category's name(s); map it to 'Others'
+          const globalFilterCategoriesObject = this.cslFrameworkService.getGlobalFilterCategoriesObject();
           const categoryKey = this.frameworkCategoriesList[this.frameworkCategoriesList.length - 1];
+          let lastCategoryCode = categoryKey;
+          if (globalFilterCategoriesObject) {
+            const categoryObj = globalFilterCategoriesObject.find((filter) => filter?.code === categoryKey || filter?.alternativeCode === categoryKey);
+            if (categoryObj) {
+              lastCategoryCode = categoryObj?.alternativeCode;
+            }
+          }
           _.forEach(_.get(response, 'result.content'), function (content) {
-            if (!_.get(content, categoryKey) || !_.size(_.get(content, categoryKey))) { content[categoryKey] = ['Others']; }
+            if (!_.get(content, lastCategoryCode) || !_.size(_.get(content, lastCategoryCode))) { content[lastCategoryCode] = ['Others']; }
           });
-          const filteredContents = _.omit(_.groupBy(_.get(response, 'result.content'), categoryKey), ['undefined']);
+          const filteredContents = _.omit(_.groupBy(_.get(response, 'result.content'), lastCategoryCode), ['undefined']);
           for (const [key, value] of Object.entries(filteredContents)) {
             const isMultipleCategoryValues = key.split(',').length > 1;
             if (isMultipleCategoryValues) {
