@@ -521,18 +521,29 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                     if (_.has(response, 'result.QuestionSet')) {
                                         this.searchResponse = _.merge(this.searchResponse, _.get(response, 'result.QuestionSet'));
                                     }
+                                    const globalFilterCategoriesObject = this.cslFrameworkService.getGlobalFilterCategoriesObject();
+                                    const lastCategory = this.frameworkCategoriesList[this.frameworkCategoriesList.length - 1];
+                                    let lastCategoryCode = lastCategory;
+                                    if (globalFilterCategoriesObject) {
+                                        const categoryObj = globalFilterCategoriesObject.find((filter) => filter?.code === lastCategory || filter?.alternativeCode === lastCategory);
+                                        if (categoryObj) {
+                                          lastCategoryCode = categoryObj?.alternativeCode;
+                                        }
+                                      }
+                                      
                                     const filteredContents = omit(groupBy(this.searchResponse, content => {
-                                        return content[groupByKey] || content[this.frameworkCategoriesList[3]] || 'Others';
+                                        return content[groupByKey] || content[lastCategoryCode] || 'Others';
                                     }), ['undefined']);
+                                    
                                     for (const [key, value] of Object.entries(filteredContents)) {
-                                        const isMultipleSubjects = key && key.split(',').length > 1;
-                                        if (isMultipleSubjects) {
-                                            const subjects = key && key.split(',');
-                                            subjects.forEach((subject) => {
-                                                if (filteredContents[subject]) {
-                                                    filteredContents[subject] = uniqBy(filteredContents[subject].concat(value), 'identifier');
+                                        const isMultipleCategoryValues = key && key.split(',').length > 1;
+                                        if (isMultipleCategoryValues) {
+                                            const categories = key && key.split(',');
+                                            categories.forEach((category) => {
+                                                if (filteredContents[category]) {
+                                                    filteredContents[category] = uniqBy(filteredContents[category].concat(value), 'identifier');
                                                 } else {
-                                                    filteredContents[subject] = value;
+                                                    filteredContents[category] = value;
                                                 }
                                             });
                                             delete filteredContents[key];
@@ -593,6 +604,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                             }
                                         });
                                         this.facetSections = _.sortBy(this.facetSections, ['index']);
+                                        this.facetSections = this.facetSections.filter(section => section.data && section.data.length > 0);
                                         if (facetKeys.indexOf('search') > -1) {
                                             this.contentSections = [];
                                             const searchSections = currentPageData.sections.filter(sec => sec.facetKey === 'search');

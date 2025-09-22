@@ -19,11 +19,6 @@ export class ConfigService {
    */
   urlConFig = (<any>urlConfig['default']);
   /**
-   * property containing drop down config
-   *
-   */
-  dropDownConfig = (<any>dropDownConfig['default']);
-  /**
    * property containing roles config
    *
    */
@@ -48,5 +43,38 @@ export class ConfigService {
   *
   */
   offlineConfig = (<any>offlineConfig['default']);
+
+  /**
+   * property containing drop down config
+   *
+   */
+  // Modified copy of dropdown config
+  dropDownConfig: any;
+
+  constructor() {
+    // Clone the imported dropdown config
+    const rawDropDownConfig = (<any>dropDownConfig['default']);
+    this.dropDownConfig = JSON.parse(JSON.stringify(rawDropDownConfig));
+
+    const fwObj = localStorage.getItem('fwCategoryObject');
+    if (fwObj) {
+      const frameworkCategories = JSON.parse(fwObj);
+
+      const dynamicLabels = Object.values(frameworkCategories).map((category: any) => {
+        return {
+          id: category.code,
+          name: category.label
+        };
+      });
+
+      // Append to dropDownConfig.FILTER.WORKSPACE.label
+      if (!Array.isArray(this.dropDownConfig.FILTER.WORKSPACE.label)) {
+        this.dropDownConfig.FILTER.WORKSPACE.label = [];
+      }
+
+      this.dropDownConfig.FILTER.WORKSPACE.label.push(...dynamicLabels);
+    }
+
+  }
 }
 

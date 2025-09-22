@@ -358,15 +358,16 @@ export class AppComponent implements OnInit, OnDestroy {
     * @description - This method sets the popup show values to true/false based on values from form config
   */
   checkPopupVisiblity(onboardingData) {
-      this.isOnboardingEnabled = onboardingData?.onboardingPopups ? onboardingData?.onboardingPopups?.isVisible : true;
-      this.isFWSelectionEnabled = onboardingData?.frameworkPopup ? onboardingData?.frameworkPopup?.isVisible : true;
-      this.isUserTypeEnabled = onboardingData?.userTypePopup ? onboardingData?.userTypePopup?.isVisible : true;
-      if (!(this.isOnboardingEnabled) || !(this.isFWSelectionEnabled)) {
-        this.userService.setGuestUser(true, onboardingData?.frameworkPopup?.defaultFormatedName); //user service method is set to true in case either of onboarding or framework popup is disabled
-      }
+    this.isOnboardingEnabled = onboardingData?.onboardingPopups ? onboardingData?.onboardingPopups?.isVisible : true;
+    this.isFWSelectionEnabled = onboardingData?.frameworkPopup ? onboardingData?.frameworkPopup?.isVisible : true;
+    this.isUserTypeEnabled = onboardingData?.userTypePopup ? onboardingData?.userTypePopup?.isVisible : true;
+    if (!(this.isOnboardingEnabled) || !(this.isFWSelectionEnabled)) {
+      this.userService.setGuestUser(true, onboardingData?.frameworkPopup?.defaultFormatedName); //user service method is set to true in case either of onboarding or framework popup is disabled
+    }
   }
 
   ngOnInit() {
+
     this.getOnboardingList();
     this.getOnboardingSkipStatus();
     this.checkToShowPopups();
@@ -439,10 +440,16 @@ export class AppComponent implements OnInit, OnDestroy {
             return this.setOrgDetails();
           }            
         }))
-      .subscribe(data => {
+      .subscribe((data) => {
         const channelId = data.hashTagId || data.rootOrgId;
-        this.cacheService.set('channelId', channelId);        
-        this.cslFrameworkService.setDefaultFWforCsl('',channelId );
+        this.cacheService.set('channelId', channelId);
+        this.cslFrameworkService.setDefaultFWforCsl('', channelId)
+          .then(() => {
+            this.cslFrameworkService.setTransFormGlobalFilterConfig(channelId);
+          })
+          .catch(error => {
+            console.error('Error initializing framework:', error);
+          });
         this.tenantService.getTenantInfo(this.userService.slug);
         this.tenantService.initialize();
         this.setPortalTitleLogo();
@@ -453,7 +460,6 @@ export class AppComponent implements OnInit, OnDestroy {
         localStorage.setItem('joyThemePopup', 'true');
         this.joyThemePopup();
         this.changeDetectorRef.detectChanges();
-        this.cslFrameworkService.setTransFormGlobalFilterConfig(channelId);
       }, error => {
         this.initApp = true;
         this.changeDetectorRef.detectChanges();

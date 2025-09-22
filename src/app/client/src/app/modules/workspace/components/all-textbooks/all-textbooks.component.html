@@ -132,20 +132,26 @@ class="sb-modal custom-lg-modal" (dismissed)="this.collectionListModal = false" 
         <thead>
           <th class="w-10" id="contentType">{{headers.type}}</th>
           <th class="w-30" id="contentName">{{headers.name}}</th>
-          <th class="w-10" id="contentSubject">{{headers.subject}}</th>
-          <th class="w-10" id="contentGrade">{{headers.grade}}</th>
-          <th class="w-10" id="contentMedium">{{headers.medium}}</th>
-          <th class="w-10" id="contentBoard">{{headers.board}}</th>
+
+          <!-- Dynamic category headers -->
+          <ng-container *ngFor="let code of categoryCodes">
+            <th class="w-10" [id]="'content' + code">{{headers[code]}}</th>
+          </ng-container>
+          
           <th class="w-20" id="contentchannel">{{headers.channel}}</th>
         </thead>
         <tbody>
           <tr *ngFor = "let row of collectionData">
             <td class="white-space-inherit">{{row['contentType']}}</td>
             <td class="white-space-inherit font-weight-bold">{{row['name']}}</td>
-            <td class="white-space-inherit">{{row['subject']?.join(", ") || '-'}}</td>
-            <td class="white-space-inherit">{{row['gradeLevel']?.join(", ") || '-'}}</td>
-            <td class="white-space-inherit">{{row['medium']?.join(", ") || '-'}}</td>
-            <td class="white-space-inherit">{{row['board']}}</td>
+            
+            <!-- Dynamic category cells -->
+            <ng-container *ngFor="let code of categoryCodes">
+              <td class="white-space-inherit">
+                {{isArray(row[code]) ? (row[code]?.join(', ') || '-') : (row[code] || '-')}}
+              </td>
+            </ng-container>
+
             <td class="white-space-inherit">{{row['channel']}}</td>
           </tr>
         </tbody>
