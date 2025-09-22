@@ -84,66 +84,55 @@ router.post('/proxy', async (req, res) => {
 
     nlwebResponse.data.on('end', () => {
       try {
-        console.log('Stream ended. Full response data:', responseData);
+        console.log('Stream ended. Full response data length:', responseData.length);
         
         // Parse the streaming response - NLWeb sends Server-Sent Events format
-        const lines = responseData.split('\n').filter(line => line.trim());
+        // Events are separated by double newlines. Each event may contain multi-line data:
+        // data: {"json": ...}\n
+        const events = responseData.split('\n\n').filter(evt => evt.trim());
         const results = [];
         let toolSelection = null;
         let rememberData = null;
-        
-        // Process each line in the stream
-        for (const line of lines) {
+
+        for (const evt of events) {
           try {
-            // Handle Server-Sent Events format - strip 'data: ' prefix if present
-            let jsonLine = line;
-            if (line.startsWith('data: ')) {
-              jsonLine = line.substring(6); // Remove 'data: ' prefix
-            }
-            
-            // Skip empty lines or non-JSON lines
-            if (!jsonLine.trim()) {
-              continue;
-            }
-            
-            const data = JSON.parse(jsonLine);
-            console.log('Parsed message:', data.message_type, data);
-            
+            // Stitch together all data: lines in this event
+            const dataLines = evt
+              .split('\n')
+              .map(l => l.trim())
+              .filter(l => l.startsWith('data:'))
+              .map(l => l.substring(5).trim());
+
+            if (dataLines.length === 0) continue;
+
+            const jsonStr = dataLines.join('');
+            if (!jsonStr) continue;
+
+            const data = JSON.parse(jsonStr);
+            console.log('Parsed SSE event:', data.message_type);
+
             // Handle result_batch messages - these contain the actual results
             if (data.message_type === 'result_batch' && data.results && Array.isArray(data.results)) {
               console.log('Processing result_batch with', data.results.length, 'results');
-              
               data.results.forEach((result, index) => {
                 const schemaObject = result.schema_object || result;
-                
-                // Ensure score is properly formatted (0-100 range)
                 let score = result.score || 0;
-                if (typeof score === 'string') {
-                  score = parseFloat(score) || 0;
-                }
-                // If score is in decimal format (0-1), convert to percentage (0-100)
-                if (score > 0 && score <= 1) {
-                  score = score * 100;
-                }
-                // Ensure score is within 0-100 range
+                if (typeof score === 'string') score = parseFloat(score) || 0;
+                if (score > 0 && score <= 1) score = score * 100;
                 score = Math.max(0, Math.min(100, score));
-                
-                // Extract content metadata from schema object
                 const contentMetadata = extractContentMetadata(schemaObject);
-                
                 results.push({
                   name: result.name || schemaObject.name || 'Untitled',
                   url: result.url || schemaObject.contentUrl || '',
                   description: result.description || schemaObject.description || '',
                   snippet: result.description || schemaObject.description || '',
-                  score: Math.round(score), // Round to nearest integer
+                  score: Math.round(score),
                   type: determineContentType(result, schemaObject),
                   thumbnail: result.thumbnail || schemaObject.thumbnailUrl || '',
                   schema_object: schemaObject,
                   recommendation: result.description || schemaObject.description || '',
                   details: result.details || {},
                   site: result.site || '',
-                  // Content metadata
                   medium: contentMetadata.medium,
                   subject: contentMetadata.subject,
                   grade: contentMetadata.grade,
@@ -151,72 +140,98 @@ router.post('/proxy', async (req, res) => {
                 });
               });
             }
-            
+
+            // Handle 'result' messages - NLWeb streams individual batches under `content`
+            if (data.message_type === 'result') {
+              const contentPayload = Array.isArray(data.content)
+                ? data.content
+                : (typeof data.content === 'string'
+                    ? (() => { try { return JSON.parse(data.content); } catch { return []; } })()
+                    : (data.content && data.content.items && Array.isArray(data.content.items) ? data.content.items : (data.content ? [data.content] : [])));
+
+              console.log('Processing result payload. IsArray:', Array.isArray(contentPayload), 'length:', contentPayload.length);
+              contentPayload.forEach((item) => {
+                const schemaObject = item.schema_object || item;
+                let score = item.score || 0;
+                if (typeof score === 'string') score = parseFloat(score) || 0;
+                if (score > 0 && score <= 1) score = score * 100;
+                score = Math.max(0, Math.min(100, score));
+
+                const contentMetadata = extractContentMetadata(schemaObject);
+                const normalized = {
+                  name: item.name || schemaObject.name || 'Untitled',
+                  url: item.url || schemaObject.contentUrl || schemaObject.identifier || '',
+                  description: item.description || schemaObject.description || '',
+                  snippet: item.description || schemaObject.description || '',
+                  score: Math.round(score),
+                  type: determineContentType(item, schemaObject),
+                  thumbnail: item.thumbnail || schemaObject.thumbnailUrl || schemaObject.appIcon || '',
+                  schema_object: schemaObject,
+                  recommendation: item.why_recommended || item.description || schemaObject.description || '',
+                  details: item.details || {},
+                  site: item.site || '',
+                  medium: contentMetadata.medium,
+                  subject: contentMetadata.subject,
+                  grade: contentMetadata.grade,
+                  board: contentMetadata.board
+                };
+
+                // Filter out empty/meaningless results here to avoid final 0 due to later filtering
+                const hasName = normalized.name && normalized.name.trim().toLowerCase() !== 'untitled';
+                const hasUrl = normalized.url && normalized.url.trim();
+                const hasDesc = normalized.description && normalized.description.trim();
+                const hasScore = typeof normalized.score === 'number' && normalized.score > 0;
+                if (hasName && (hasUrl || hasDesc || hasScore)) {
+                  results.push(normalized);
+                }
+              });
+            }
+
             // Collect item_details as results (legacy support)
             if (data.message_type === 'item_details') {
-              // Handle the actual structure from NLWeb
               const item = data.schema_object || {};
-              
-              // Ensure score is properly formatted (0-100 range)
               let score = data.score || 0;
-              if (typeof score === 'string') {
-                score = parseFloat(score) || 0;
-              }
-              // If score is in decimal format (0-1), convert to percentage (0-100)
-              if (score > 0 && score <= 1) {
-                score = score * 100;
-              }
-              // Ensure score is within 0-100 range
+              if (typeof score === 'string') score = parseFloat(score) || 0;
+              if (score > 0 && score <= 1) score = score * 100;
               score = Math.max(0, Math.min(100, score));
-              
-              // Extract content metadata from schema object
               const contentMetadata = extractContentMetadata(item);
-              
               results.push({
                 name: data.name || item.name || 'Untitled',
                 url: data.url || item.url || '',
                 description: item.description || data.explanation || '',
                 snippet: data.explanation || item.description || '',
-                score: Math.round(score), // Round to nearest integer
+                score: Math.round(score),
                 type: determineContentType(data, item),
                 thumbnail: item.thumbnailUrl || '',
                 schema_object: item,
                 recommendation: data.details ? JSON.stringify(data.details) : '',
                 details: data.details || {},
                 site: data.site || '',
-                // Content metadata
                 medium: contentMetadata.medium,
                 subject: contentMetadata.subject,
                 grade: contentMetadata.grade,
                 board: contentMetadata.board
               });
             }
-            
+
             // Handle ensemble results - comprehensive recommendations
             if (data.message_type === 'ensemble_result') {
               const ensembleData = data.result;
               if (ensembleData && ensembleData.success && ensembleData.recommendations) {
                 const recommendations = ensembleData.recommendations;
-                
-                // Process ensemble items
                 if (recommendations.items && Array.isArray(recommendations.items)) {
                   recommendations.items.forEach((item, index) => {
-                    // Calculate proper score based on position and relevance
-                    // First item gets highest score, subsequent items get slightly lower scores
-                    const baseScore = 95; // Start with 95%
-                    const positionPenalty = index * 2; // Reduce by 2% for each position
-                    const calculatedScore = Math.max(baseScore - positionPenalty, 70); // Minimum 70%
-                    
-                    // Extract content metadata from ensemble item
+                    const baseScore = 95;
+                    const positionPenalty = index * 2;
+                    const calculatedScore = Math.max(baseScore - positionPenalty, 70);
                     const schemaObject = item.schema_object || item;
                     const contentMetadata = extractContentMetadata(schemaObject);
-                    
                     results.push({
                       name: item.name || 'Untitled',
                       url: item.url || '',
                       description: item.description || '',
                       snippet: item.why_recommended || item.description || '',
-                      score: calculatedScore, // Proper score based on position and relevance
+                      score: calculatedScore,
                       type: 'ensemble_recommendation',
                       category: item.category || '',
                       thumbnail: item.schema_object?.thumbnailUrl || '',
@@ -228,7 +243,6 @@ router.post('/proxy', async (req, res) => {
                       ensemble_tips: recommendations.overall_tips || [],
                       ensemble_type: ensembleData.ensemble_type || 'general',
                       total_items_retrieved: ensembleData.total_items_retrieved || 0,
-                      // Content metadata
                       medium: contentMetadata.medium,
                       subject: contentMetadata.subject,
                       grade: contentMetadata.grade,
@@ -238,25 +252,20 @@ router.post('/proxy', async (req, res) => {
                 }
               }
             }
-            
-            // Handle intermediate messages from ensemble processing
+
             if (data.message_type === 'intermediate_message') {
-              // Log intermediate messages for debugging
               console.log('Ensemble processing:', data.message);
             }
-            
-            // Store tool selection info
+
             if (data.message_type === 'tool_selection') {
               toolSelection = data;
             }
-            
-            // Store remember data
+
             if (data.message_type === 'remember') {
               rememberData = data;
             }
-            
           } catch (e) {
-            console.log('Skipping invalid JSON line:', line, 'Error:', e.message);
+            console.log('Skipping invalid SSE event due to parse error:', e.message);
             continue;
           }
         }
