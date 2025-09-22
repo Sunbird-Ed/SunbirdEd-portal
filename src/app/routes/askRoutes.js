@@ -1,18 +1,32 @@
 /**
  * Ask Routes - Backend routes for Ask functionality
- * This file provides proxy routes to the NLWeb service
+ * This file provides proxy routes to the NLWeb service with unified response handling
+ * Supports all 8 NLWeb tools: Search, Details, Ensemble, etc.
  */
 
 const express = require('express');
 const axios = require('axios');
+const envHelper = require('../helpers/environmentVariablesHelper');
 const router = express.Router();
 
 // Add body parsing middleware
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
-// NLWeb service configuration
-const NLWEB_BASE_URL = process.env.NLWEB_BASE_URL || 'http://127.0.0.1:8000';
+// NLWeb service configuration (uses env helper -> optionalEnv.NLWEB_BASE_URL)
+const NLWEB_BASE_URL = envHelper.NLWEB_BASE_URL || 'http://127.0.0.1:8000';
+
+// Supported NLWeb tools
+const NLWEB_TOOLS = [
+  'search',
+  'details', 
+  'ensemble',
+  'recommend',
+  'explain',
+  'compare',
+  'summarize',
+  'generate'
+];
 
 /**
  * Proxy route for Ask functionality
@@ -95,7 +109,50 @@ router.post('/proxy', async (req, res) => {
             const data = JSON.parse(jsonLine);
             console.log('Parsed message:', data.message_type, data);
             
-            // Collect item_details as results
+            // Handle result_batch messages - these contain the actual results
+            if (data.message_type === 'result_batch' && data.results && Array.isArray(data.results)) {
+              console.log('Processing result_batch with', data.results.length, 'results');
+              
+              data.results.forEach((result, index) => {
+                const schemaObject = result.schema_object || result;
+                
+                // Ensure score is properly formatted (0-100 range)
+                let score = result.score || 0;
+                if (typeof score === 'string') {
+                  score = parseFloat(score) || 0;
+                }
+                // If score is in decimal format (0-1), convert to percentage (0-100)
+                if (score > 0 && score <= 1) {
+                  score = score * 100;
+                }
+                // Ensure score is within 0-100 range
+                score = Math.max(0, Math.min(100, score));
+                
+                // Extract content metadata from schema object
+                const contentMetadata = extractContentMetadata(schemaObject);
+                
+                results.push({
+                  name: result.name || schemaObject.name || 'Untitled',
+                  url: result.url || schemaObject.contentUrl || '',
+                  description: result.description || schemaObject.description || '',
+                  snippet: result.description || schemaObject.description || '',
+                  score: Math.round(score), // Round to nearest integer
+                  type: determineContentType(result, schemaObject),
+                  thumbnail: result.thumbnail || schemaObject.thumbnailUrl || '',
+                  schema_object: schemaObject,
+                  recommendation: result.description || schemaObject.description || '',
+                  details: result.details || {},
+                  site: result.site || '',
+                  // Content metadata
+                  medium: contentMetadata.medium,
+                  subject: contentMetadata.subject,
+                  grade: contentMetadata.grade,
+                  board: contentMetadata.board
+                });
+              });
+            }
+            
+            // Collect item_details as results (legacy support)
             if (data.message_type === 'item_details') {
               // Handle the actual structure from NLWeb
               const item = data.schema_object || {};
@@ -121,7 +178,7 @@ router.post('/proxy', async (req, res) => {
                 description: item.description || data.explanation || '',
                 snippet: data.explanation || item.description || '',
                 score: Math.round(score), // Round to nearest integer
-                type: item.encodingFormat || 'content',
+                type: determineContentType(data, item),
                 thumbnail: item.thumbnailUrl || '',
                 schema_object: item,
                 recommendation: data.details ? JSON.stringify(data.details) : '',
@@ -211,8 +268,11 @@ router.post('/proxy', async (req, res) => {
           return scoreB - scoreA; // Descending order
         });
         
-        // Create final response
-        const finalResponse = {
+        console.log('Total results collected:', results.length);
+        console.log('Sample result:', results[0]);
+        
+        // Create final response using normalization
+        const rawResponse = {
           message_type: 'result_batch',
           results: results,
           tool_selection: toolSelection,
@@ -226,7 +286,11 @@ router.post('/proxy', async (req, res) => {
           } : null
         };
         
-        console.log('Final response:', finalResponse);
+        // Normalize the response for consistent frontend handling
+        const finalResponse = normalizeNLWebResponse(rawResponse, query);
+        
+        console.log('Final normalized response:', finalResponse);
+        console.log('Final results count:', finalResponse.results ? finalResponse.results.length : 0);
         res.json(finalResponse);
         
       } catch (error) {
@@ -331,7 +395,7 @@ function createMockResponse(query) {
     message_type: 'result_batch',
     results: [
       {
-        name: `Educational Resources for ${query}`,
+        name: `Resources for ${query}`,
         url: 'https://example.com/resource1',
         description: `Comprehensive educational materials covering ${query} with interactive content and examples.`,
         snippet: `Learn about ${query} through engaging multimedia content.`,
@@ -365,6 +429,185 @@ function createMockResponse(query) {
       }
     ]
   };
+}
+
+/**
+ * Normalize NLWeb response from different tools into unified structure
+ * This function handles responses from all 8 NLWeb tools and creates a consistent format
+ * @param nlwebResponse - Raw response from NLWeb
+ * @param originalQuery - Original user query
+ * @returns Normalized response object
+ */
+function normalizeNLWebResponse(nlwebResponse, originalQuery) {
+  console.log('Normalizing NLWeb response:', nlwebResponse);
+  console.log('Input results count:', nlwebResponse.results ? nlwebResponse.results.length : 0);
+  
+  const normalizedResponse = {
+    message_type: 'result_batch',
+    query: originalQuery,
+    query_id: nlwebResponse.query_id || `ask_${Date.now()}`,
+    tool_selection: nlwebResponse.tool_selection || null,
+    remember: nlwebResponse.remember || null,
+    ensemble_info: null,
+    results: []
+  };
+
+  // Process different message types from NLWeb
+  if (nlwebResponse.results && Array.isArray(nlwebResponse.results)) {
+    console.log('Processing', nlwebResponse.results.length, 'results for normalization');
+    normalizedResponse.results = nlwebResponse.results.map((result, index) => {
+      console.log('Normalizing result', index, ':', result.name);
+      return normalizeResult(result, index);
+    });
+    console.log('Normalized results count:', normalizedResponse.results.length);
+  } else {
+    console.log('No results found in response or results is not an array');
+  }
+
+  // Extract ensemble information if present
+  if (normalizedResponse.results.length > 0 && normalizedResponse.results[0].ensemble_theme) {
+    normalizedResponse.ensemble_info = {
+      theme: normalizedResponse.results[0].ensemble_theme,
+      tips: normalizedResponse.results[0].ensemble_tips || [],
+      type: normalizedResponse.results[0].ensemble_type || 'general',
+      total_items_retrieved: normalizedResponse.results[0].total_items_retrieved || 0
+    };
+  }
+
+  console.log('Final normalized response results count:', normalizedResponse.results.length);
+  return normalizedResponse;
+}
+
+/**
+ * Normalize individual result from NLWeb tool response
+ * @param result - Raw result from NLWeb
+ * @param index - Index of the result for ID generation
+ * @returns Normalized result object
+ */
+function normalizeResult(result, index) {
+  const schemaObject = result.schema_object || result;
+  
+  // Extract content metadata from schema_object
+  const contentMetadata = extractContentMetadata(schemaObject);
+  
+  // Generate unique ID if not present
+  const id = result.id || `ask_result_${Date.now()}_${index}`;
+  
+  // Normalize score to 0-100 range
+  const normalizedScore = normalizeScore(result.score);
+  
+  // Determine content type
+  const contentType = determineContentType(result, schemaObject);
+  
+  return {
+    // Core identification
+    id: id,
+    name: result.name || result.title || 'Untitled',
+    url: result.url || '',
+    
+    // Content information
+    description: result.description || result.snippet || '',
+    snippet: result.snippet || result.description || '',
+    type: contentType,
+    category: result.category || '',
+    
+    // Scoring and relevance
+    score: normalizedScore,
+    relevance: normalizedScore,
+    
+    // Media and presentation
+    thumbnail: result.thumbnail || result.image || schemaObject.thumbnailUrl || '',
+    image: result.image || schemaObject.thumbnailUrl || '',
+    
+    // Educational metadata
+    medium: contentMetadata.medium,
+    subject: contentMetadata.subject,
+    grade: contentMetadata.grade,
+    board: contentMetadata.board,
+    
+    // Recommendations and explanations
+    recommendation: result.recommendation || result.why_recommended || '',
+    why_recommended: result.why_recommended || result.recommendation || '',
+    
+    // Technical metadata
+    schema_object: schemaObject,
+    details: result.details || {},
+    site: result.site || '',
+    
+    // Ensemble-specific fields
+    ensemble_theme: result.ensemble_theme,
+    ensemble_tips: result.ensemble_tips,
+    ensemble_type: result.ensemble_type,
+    total_items_retrieved: result.total_items_retrieved
+  };
+}
+
+/**
+ * Normalize score to 0-100 range
+ * @param score - Raw score value
+ * @returns Normalized score (0-100)
+ */
+function normalizeScore(score) {
+  if (!score) return 0;
+  
+  let numScore = typeof score === 'string' ? parseFloat(score) : score;
+  
+  if (isNaN(numScore)) return 0;
+  
+  // If score is in decimal format (0-1), convert to percentage (0-100)
+  if (numScore > 0 && numScore <= 1) {
+    numScore = numScore * 100;
+  }
+  
+  // Ensure score is within 0-100 range
+  return Math.max(0, Math.min(100, Math.round(numScore)));
+}
+
+/**
+ * Determine content type from result and schema object
+ * @param result - The result object
+ * @param schemaObject - The schema object
+ * @returns Content type string
+ */
+function determineContentType(result, schemaObject) {
+  // Check explicit type first
+  if (result.type) {
+    return result.type.toLowerCase();
+  }
+  
+  // Check encoding format
+  if (schemaObject.encodingFormat) {
+    const format = schemaObject.encodingFormat.toLowerCase();
+    if (format.includes('video') || format.includes('mp4')) return 'video';
+    if (format.includes('pdf') || format.includes('application/pdf')) return 'pdf';
+    if (format.includes('textbook') || format.includes('etextbook')) return 'etextbook';
+    if (format.includes('presentation') || format.includes('ppt')) return 'presentation';
+    if (format.includes('audio') || format.includes('mp3')) return 'audio';
+    if (format.includes('interactive') || format.includes('h5p')) return 'interactive';
+  }
+  
+  // Check genre
+  if (schemaObject.genre && Array.isArray(schemaObject.genre)) {
+    const genre = schemaObject.genre.find((g) => 
+      g.toLowerCase().includes('video') || 
+      g.toLowerCase().includes('pdf') || 
+      g.toLowerCase().includes('textbook') ||
+      g.toLowerCase().includes('presentation')
+    );
+    if (genre) {
+      return formatMediumName(genre).toLowerCase();
+    }
+  }
+  
+  // Check URL for hints
+  if (result.url) {
+    if (result.url.includes('youtube.com') || result.url.includes('video')) return 'video';
+    if (result.url.includes('.pdf') || result.url.includes('pdf')) return 'pdf';
+    if (result.url.includes('course') || result.url.includes('learn')) return 'course';
+  }
+  
+  // Default to content
+  return 'content';
 }
 
 /**

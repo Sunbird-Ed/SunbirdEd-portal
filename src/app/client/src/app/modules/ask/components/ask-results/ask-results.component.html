@@ -8,7 +8,7 @@
     <div class="loading-spinner">
       <div class="spinner"></div>
     </div>
-    <p class="loading-text">Searching for educational resources...</p>
+    <p class="loading-text">Searching for resources...</p>
   </div>
 
   <!-- Error State -->
@@ -24,28 +24,88 @@
   <!-- Results Header -->
   <div *ngIf="results.length > 0 && !isLoading" class="results-header">
     <h2 class="results-title">
-      Educational resources for {{ query }}
+      Resources for {{ query }}
     </h2>
     <p class="results-count">{{ results.length }} resource{{ results.length !== 1 ? 's' : '' }} found</p>
   </div>
 
+  <!-- Ensemble Information (if available) -->
+  <div *ngIf="hasEnsembleResults() && getEnsembleInfo()" class="ensemble-info">
+    <div class="ensemble-header">
+      <h3>{{ getEnsembleInfo().theme }}</h3>
+      <p class="ensemble-type">{{ getEnsembleInfo().type | titlecase }}</p>
+    </div>
+    <div *ngIf="getEnsembleInfo().tips && getEnsembleInfo().tips.length > 0" class="ensemble-tips">
+      <h4>Learning Tips:</h4>
+      <ul>
+        <li *ngFor="let tip of getEnsembleInfo().tips">{{ tip }}</li>
+      </ul>
+    </div>
+    <div class="ensemble-stats">
+      <span>{{ getEnsembleInfo().total_items_retrieved }} items found</span>
+    </div>
+  </div>
+
+  <!-- Filters and Sorting -->
+  <div *ngIf="results.length > 0 && !isLoading" class="results-controls">
+    <div class="filters">
+      <label>Filter by type:</label>
+      <select [(ngModel)]="selectedType" (change)="onTypeFilterChange(selectedType)">
+        <option *ngFor="let type of getAvailableTypes()" [value]="type">
+          {{ type | titlecase }} ({{ getResultCountByType(type) }})
+        </option>
+      </select>
+    </div>
+    
+    <div class="sorting">
+      <label>Sort by:</label>
+      <select [(ngModel)]="sortBy" (change)="onSortChange(sortBy)">
+        <option value="score">Relevance Score</option>
+        <option value="name">Name</option>
+        <option value="type">Content Type</option>
+      </select>
+    </div>
+    
+    <div class="score-filter">
+      <label>Min Score:</label>
+      <input type="range" min="0" max="100" [(ngModel)]="minScore" 
+             (change)="onScoreFilterChange(minScore)">
+      <span>{{ minScore }}%</span>
+    </div>
+  </div>
+
+  <!-- Results Summary -->
+  <div *ngIf="results.length > 0 && !isLoading" class="results-summary">
+    <p>
+      Showing {{ getFilteredResults().length }} of {{ results.length }} results 
+      (Average score: {{ getAverageScore() }}%)
+    </p>
+  </div>
+
   <!-- Results List -->
-  <div *ngIf="results.length > 0 && !isLoading" class="results-list">
-    <div *ngFor="let result of results; let i = index" 
+  <div *ngIf="getFilteredResults().length > 0 && !isLoading" class="results-list">
+    <div *ngFor="let result of getFilteredResults(); let i = index" 
          class="result-card"
+         [ngClass]="'result-' + result.type"
          (click)="onResultClick(result)"
          (click)="trackResultClick(result)">
       
       <!-- Result Type Badge -->
-      <div class="result-type-badge" [ngClass]="getTypeColor(getResultType(result))">
-        {{ getResultType(result) }}
+      <div class="result-type-badge" [ngClass]="getTypeColor(determineContentTypeFromResult(result))">
+        <i [ngClass]="getContentTypeIcon(determineContentTypeFromResult(result))"></i>
+        {{ getContentTypeDisplayName(determineContentTypeFromResult(result)) }}
       </div>
 
       <!-- Result Content -->
       <div class="result-content">
         <div class="result-main">
-          <!-- Title -->
-          <h3 class="result-title">{{ result.name }}</h3>
+          <!-- Title with Score -->
+          <div class="result-header">
+            <h3 class="result-title">{{ result.name }}</h3>
+            <div class="result-score" [ngClass]="getScoreClass(result.score)">
+              {{ getFormattedScore(result.score) }}%
+            </div>
+          </div>
           
           <!-- Content Metadata -->
           <div class="result-metadata" *ngIf="hasContentMetadata(result)">
@@ -62,20 +122,31 @@
                 <i class="icon users"></i>
                 {{ result.grade.join(', ') }}
               </span>
+              <span class="metadata-item" *ngIf="result.board && result.board.length > 0">
+                <i class="icon school"></i>
+                {{ result.board.join(', ') }}
+              </span>
             </div>
           </div>
           
-          <!-- Description (fallback if no metadata) -->
-          <p class="result-description" *ngIf="!hasContentMetadata(result) && result.description">
+          <!-- Description -->
+          <p class="result-description" *ngIf="result.description">
             {{ getTruncatedDescription(result.description) }}
           </p>
 
+          <!-- Snippet (if different from description) -->
+          <p class="result-snippet" *ngIf="result.snippet && result.snippet !== result.description">
+            {{ getTruncatedDescription(result.snippet, 100) }}
+          </p>
+
           <!-- Recommendation -->
-          <div class="result-recommendation" *ngIf="result.recommendation">
+          <!-- <div class="result-recommendation" *ngIf="result.recommendation || result.why_recommended">
             <div class="recommendation-box">
-              <strong>Why recommended:</strong> {{ result.recommendation }}
+              <strong>Why recommended:</strong>
+              <span [innerHTML]="formatRecommendation(result.recommendation || result.why_recommended)"></span>
             </div>
-          </div>
+          </div> -->
+
         </div>
 
         <!-- Thumbnail -->
@@ -88,22 +159,12 @@
       </div>
 
       <!-- Result Footer -->
-      <div class="result-footer">
-        <div class="result-meta">
-          <span class="result-score" *ngIf="result.score">
-            <i class="icon star"></i>
-            {{ getFormattedScore(result.score) }}% match
-          </span>
-        </div>
-        <div class="result-actions">
-          <button class="view-button" (click)="onResultClick(result); $event.stopPropagation()">
-            View Resource
-            <i class="icon external"></i>
-          </button>
-        </div>
-      </div>
+      <!-- <div class="result-footer"> -->
+        <!-- Footer content can be added here if needed -->
+      <!-- </div> -->
     </div>
   </div>
+
 
   <!-- No Results State -->
   <div *ngIf="results.length === 0 && !isLoading && !error" class="no-results-state">
@@ -112,7 +173,7 @@
     </div>
     <h3 class="no-results-title">No resources found</h3>
     <p class="no-results-message">
-      We couldn't find any educational resources for "{{ query }}". 
+      We couldn't find any resources for "{{ query }}". 
       Try rephrasing your question or using different keywords.
     </p>
     <div class="no-results-suggestions">

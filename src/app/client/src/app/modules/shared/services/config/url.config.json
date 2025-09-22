@@ -48,7 +48,6 @@
     "ELECTRON_DIALOG_PREFIX": "/dialog/",
     "PUBLIC_PREFIX": "/api/",
     "ACTION_PREFIX": "/action/",
-    "NLWEB_BASE_URL": "http://localhost:8000",
     "EXT_PLUGIN_PREFIX": "/plugin/",
     "ANNOUNCEMENT_PREFIX": "/announcement/v1",
     "TENANT_PREFIX": "/v1/tenant",
@@ -379,7 +378,8 @@
       "GENERIC_REPORTS": "reports/mlreports/v1/fetch",
       "ALL_EVIDENCE":"observations/mlreports/v1/listAllEvidences"
     },
-    "UCI": "/uci"
+    "UCI": "/uci",
+    "NLWEB_BASE_URL": "/api/ask/proxy"
 
   }
 }
