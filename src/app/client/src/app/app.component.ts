@@ -131,7 +131,7 @@ export class AppComponent implements OnInit, OnDestroy {
   onboardingDataSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   onboardingData$ = this.onboardingDataSubject;
   isOnboardingEnabled = true;
-  isFWSelectionEnabled = false;
+  isFWSelectionEnabled = true;
   isUserTypeEnabled = true;
   @ViewChild('increaseFontSize') increaseFontSize: ElementRef;
   @ViewChild('decreaseFontSize') decreaseFontSize: ElementRef;
@@ -440,10 +440,16 @@ export class AppComponent implements OnInit, OnDestroy {
             return this.setOrgDetails();
           }            
         }))
-      .subscribe(data => {
+      .subscribe((data) => {
         const channelId = data.hashTagId || data.rootOrgId;
-        this.cacheService.set('channelId', channelId);        
-        this.cslFrameworkService.setDefaultFWforCsl('',channelId );
+        this.cacheService.set('channelId', channelId);
+        this.cslFrameworkService.setDefaultFWforCsl('', channelId)
+          .then(() => {
+            this.cslFrameworkService.setTransFormGlobalFilterConfig(channelId);
+          })
+          .catch(error => {
+            console.error('Error initializing framework:', error);
+          });
         this.tenantService.getTenantInfo(this.userService.slug);
         this.tenantService.initialize();
         this.setPortalTitleLogo();
@@ -454,7 +460,6 @@ export class AppComponent implements OnInit, OnDestroy {
         localStorage.setItem('joyThemePopup', 'true');
         this.joyThemePopup();
         this.changeDetectorRef.detectChanges();
-        this.cslFrameworkService.setTransFormGlobalFilterConfig(channelId);
       }, error => {
         this.initApp = true;
         this.changeDetectorRef.detectChanges();
@@ -675,7 +680,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public checkTncAndFrameWorkSelected() {
     if (_.has(this.userService.userProfile, 'promptTnC') && _.has(this.userService.userProfile, 'tncLatestVersion') &&
       _.has(this.userService.userProfile, 'tncLatestVersion') && this.userService.userProfile.promptTnC === true) {
-      this.showTermsAndCondPopUp = false;
+      this.showTermsAndCondPopUp = true;
     } else {
       if (this.userService.loggedIn) {
         this.orgDetailsService.getCustodianOrgDetails().subscribe((custodianOrg) => {
@@ -735,7 +740,7 @@ export class AppComponent implements OnInit, OnDestroy {
               this.guestUserDetails = response;
               this.showFrameWorkPopUp = false;
             }, error => {
-              this.showFrameWorkPopUp = false;
+              this.showFrameWorkPopUp = true;
             });
           } else {
             this.checkLocationStatus();
