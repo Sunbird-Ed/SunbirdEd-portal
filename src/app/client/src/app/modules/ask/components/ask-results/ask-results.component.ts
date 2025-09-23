@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { AskResult, AskResponse } from '../../services/ask.service';
+import { Router } from '@angular/router';
 
 /**
  * AskResultsComponent - Displays search results from the Ask functionality
@@ -30,7 +31,7 @@ export class AskResultsComponent implements OnInit, OnDestroy {
   // Available content types for filtering
   contentTypes: string[] = ['all', 'video', 'pdf', 'etextbook', 'presentation', 'audio', 'interactive', 'content', 'course'];
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     // Initialize component
@@ -44,6 +45,26 @@ export class AskResultsComponent implements OnInit, OnDestroy {
    * Handle click on a result item
    * @param result - The clicked result
    */
+  handleResultClick(result: AskResult): void {
+    this.trackResultClick(result);
+  
+    const schemaObject = (result as any).schema_object || {};
+    let contentId = schemaObject.identifier || this.extractContentIdFromUrl(result.url);
+    console.log('DEBUG printing contentId:', contentId, 'schemaObject:', schemaObject, 'url:', result.url);
+
+    if (!contentId) {
+      console.error('No content ID found for result:', result);
+      return;
+    }
+  
+    // Navigate properly based on MIME type
+    if (schemaObject.mimeType === 'application/vnd.ekstep.content-collection') {
+      this.router.navigate(['/learn/course', contentId]);
+    } else {
+      this.router.navigate(['/resources/play/content', contentId]);
+    }
+  }
+  
   onResultClick(result: AskResult): void {
     this.resultClick.emit(result);
     
@@ -70,8 +91,7 @@ export class AskResultsComponent implements OnInit, OnDestroy {
     const contentId = schemaObject.identifier || this.extractContentIdFromUrl(result.url);
     
     if (contentId) {
-      // Navigate to collection player route
-      window.open(`/learn/course/${contentId}`, '_blank');
+      this.router.navigate(['/learn/course', contentId]);
     } else {
       console.error('No content ID found for collection:', result);
     }
@@ -87,8 +107,7 @@ export class AskResultsComponent implements OnInit, OnDestroy {
     const contentId = schemaObject.identifier || this.extractContentIdFromUrl(result.url);
     
     if (contentId) {
-      // Navigate to content player route
-      window.open(`/resources/play/content/${contentId}`, '_blank');
+      this.router.navigate(['/resources/play/content', contentId]);
     } else {
       console.error('No content ID found for content:', result);
     }
