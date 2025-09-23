@@ -306,7 +306,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
     
     const defaults = {
-        'traceId': 'afhjgh',
+        'traceId': '13cba410-7ccb-46be-afc1-b1adcff303b1',
         'sideMenu': {
           'showDownload': true,
           'showExit': true,
