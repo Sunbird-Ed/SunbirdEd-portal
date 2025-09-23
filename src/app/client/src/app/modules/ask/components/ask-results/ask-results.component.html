@@ -87,8 +87,8 @@
     <div *ngFor="let result of getFilteredResults(); let i = index" 
          class="result-card"
          [ngClass]="'result-' + result.type"
-         (click)="onResultClick(result)"
-         (click)="trackResultClick(result)">
+         (click)="handleResultClick(result)"
+         >
       
       <!-- Result Type Badge -->
       <div class="result-type-badge" [ngClass]="getTypeColor(determineContentTypeFromResult(result))">
