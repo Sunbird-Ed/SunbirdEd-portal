@@ -581,7 +581,6 @@ export class UserService {
     } else {
       userFramework = (isUserLoggedIn && framework && _.pick(framework, [this.frameworkCategories?.fwCategory2?.code, this.frameworkCategories?.fwCategory3?.code, this.frameworkCategories?.fwCategory1?.code, 'id'])) || {};
     }
-  
-    return { [this.frameworkCategories?.fwCategory1?.code]: this.defaultBoard, ...userFramework };
+    return userFramework;
   }
 }
