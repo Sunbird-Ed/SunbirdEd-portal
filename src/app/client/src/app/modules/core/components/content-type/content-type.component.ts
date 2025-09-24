@@ -175,37 +175,6 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   }
 
   processFormData(formData) {
-    // First, add the Ask tab to the form data before sorting
-    const askTab = {
-      index: 999, // High index to ensure it appears at the end
-      title: 'frmelmnts.tab.ask',
-      desc: 'frmelmnts.tab.ask',
-      menuType: 'Content',
-      contentType: 'ask',
-      isEnabled: true,
-      isOnlineOnly: true,
-      theme: {
-        baseColor: '',
-        textColor: '',
-        supportingColor: '',
-        className: 'ask',
-        imageName: 'ask-banner-img.svg'
-      },
-      anonumousUserRoute: {
-        route: '/ask',
-        queryParam: 'ask'
-      },
-      loggedInUserRoute: {
-        route: '/ask',
-        queryParam: 'ask'
-      },
-      isLoginMandatory: false
-    };
-    
-    // Add the Ask tab to the form data array
-    formData.push(askTab);
-    
-    // Now sort the content types by index
     this.contentTypes = _.sortBy(formData, 'index');
     
     const defaultTab = _.find(this.contentTypes, ['default', true]);
