@@ -14,7 +14,7 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
 // NLWeb service configuration (uses env helper -> optionalEnv.NLWEB_BASE_URL)
-const NLWEB_BASE_URL = envHelper.NLWEB_BASE_URL || 'http://127.0.0.1:8000';
+const NLWEB_BASE_URL = envHelper.NLWEB_BASE_URL
 
 // Supported NLWeb tools
 const NLWEB_TOOLS = [
