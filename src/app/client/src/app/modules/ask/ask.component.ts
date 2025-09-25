@@ -35,7 +35,7 @@ export class AskComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private resourceService: ResourceService,
+    public resourceService: ResourceService,
     private telemetryService: TelemetryService,
     private askService: AskService,
     private userService: UserService
