@@ -12,7 +12,7 @@
         <input 
           type="text" 
           class="search-input"
-          placeholder="What do you want to ask?"
+          [placeholder]="resourceService.frmelmnts?.btn?.askPlaceholder || 'What do you want to ask?'"
           [(ngModel)]="searchQuery"
           (keypress)="onKeyPress($event)"
           [disabled]="isSearching"
@@ -26,7 +26,7 @@
           [disabled]="isSearching || !searchQuery.trim()"
           [class.loading]="isSearching"
         >
-          <span *ngIf="!isSearching">Ask</span>
+          <span *ngIf="!isSearching">{{resourceService.frmelmnts?.btn?.ask || 'Ask'}}</span>
           <span *ngIf="isSearching" class="loading-spinner">
             <i class="icon loading"></i>
           </span>
