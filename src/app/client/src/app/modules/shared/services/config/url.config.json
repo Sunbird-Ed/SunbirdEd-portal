@@ -378,7 +378,8 @@
       "GENERIC_REPORTS": "reports/mlreports/v1/fetch",
       "ALL_EVIDENCE":"observations/mlreports/v1/listAllEvidences"
     },
-    "UCI": "/uci"
+    "UCI": "/uci",
+    "NLWEB_BASE_URL": "/api/ask/proxy"
 
   }
 }

@@ -1,0 +1,190 @@
+<!-- Ask Results Component Template -->
+<!-- This template displays search results in Sunbird's design system style -->
+
+<div class="ask-results-container">
+  
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+    </div>
+    <p class="loading-text">Searching for resources...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !isLoading" class="error-state">
+    <div class="error-icon">
+      <i class="icon warning"></i>
+    </div>
+    <h3 class="error-title">Unable to search</h3>
+    <p class="error-message">{{ error }}</p>
+    <button class="retry-button" (click)="onRetry()">Try Again</button>
+  </div>
+
+  <!-- Results Header -->
+  <div *ngIf="results.length > 0 && !isLoading" class="results-header">
+    <h2 class="results-title">
+      Resources for {{ query }}
+    </h2>
+    <p class="results-count">{{ results.length }} resource{{ results.length !== 1 ? 's' : '' }} found</p>
+  </div>
+
+  <!-- Ensemble Information (if available) -->
+  <div *ngIf="hasEnsembleResults() && getEnsembleInfo()" class="ensemble-info">
+    <div class="ensemble-header">
+      <h3>{{ getEnsembleInfo().theme }}</h3>
+      <p class="ensemble-type">{{ getEnsembleInfo().type | titlecase }}</p>
+    </div>
+    <div *ngIf="getEnsembleInfo().tips && getEnsembleInfo().tips.length > 0" class="ensemble-tips">
+      <h4>Learning Tips:</h4>
+      <ul>
+        <li *ngFor="let tip of getEnsembleInfo().tips">{{ tip }}</li>
+      </ul>
+    </div>
+    <div class="ensemble-stats">
+      <span>{{ getEnsembleInfo().total_items_retrieved }} items found</span>
+    </div>
+  </div>
+
+  <!-- Filters and Sorting -->
+  <div *ngIf="results.length > 0 && !isLoading" class="results-controls">
+    <div class="filters">
+      <label>Filter by type:</label>
+      <select [(ngModel)]="selectedType" (change)="onTypeFilterChange(selectedType)">
+        <option *ngFor="let type of getAvailableTypes()" [value]="type">
+          {{ type | titlecase }} ({{ getResultCountByType(type) }})
+        </option>
+      </select>
+    </div>
+    
+    <div class="sorting">
+      <label>Sort by:</label>
+      <select [(ngModel)]="sortBy" (change)="onSortChange(sortBy)">
+        <option value="score">Relevance Score</option>
+        <option value="name">Name</option>
+        <option value="type">Content Type</option>
+      </select>
+    </div>
+    
+    <div class="score-filter">
+      <label>Min Score:</label>
+      <input type="range" min="0" max="100" [(ngModel)]="minScore" 
+             (change)="onScoreFilterChange(minScore)">
+      <span>{{ minScore }}%</span>
+    </div>
+  </div>
+
+  <!-- Results Summary -->
+  <div *ngIf="results.length > 0 && !isLoading" class="results-summary">
+    <p>
+      Showing {{ getFilteredResults().length }} of {{ results.length }} results 
+      (Average score: {{ getAverageScore() }}%)
+    </p>
+  </div>
+
+  <!-- Results List -->
+  <div *ngIf="getFilteredResults().length > 0 && !isLoading" class="results-list">
+    <div *ngFor="let result of getFilteredResults(); let i = index" 
+         class="result-card"
+         [ngClass]="'result-' + result.type"
+         (click)="handleResultClick(result)"
+         >
+      
+      <!-- Result Type Badge -->
+      <div class="result-type-badge" [ngClass]="getTypeColor(determineContentTypeFromResult(result))">
+        <i [ngClass]="getContentTypeIcon(determineContentTypeFromResult(result))"></i>
+        {{ getContentTypeDisplayName(determineContentTypeFromResult(result)) }}
+      </div>
+
+      <!-- Result Content -->
+      <div class="result-content">
+        <div class="result-main">
+          <!-- Title with Score -->
+          <div class="result-header">
+            <h3 class="result-title">{{ result.name }}</h3>
+            <div class="result-score" [ngClass]="getScoreClass(result.score)">
+              {{ getFormattedScore(result.score) }}%
+            </div>
+          </div>
+          
+          <!-- Content Metadata -->
+          <div class="result-metadata" *ngIf="hasContentMetadata(result)">
+            <div class="metadata-row">
+              <span class="metadata-item" *ngIf="result.medium">
+                <i class="icon file"></i>
+                {{ result.medium }}
+              </span>
+              <span class="metadata-item" *ngIf="result.subject && result.subject.length > 0">
+                <i class="icon book"></i>
+                {{ result.subject.join(', ') }}
+              </span>
+              <span class="metadata-item" *ngIf="result.grade && result.grade.length > 0">
+                <i class="icon users"></i>
+                {{ result.grade.join(', ') }}
+              </span>
+              <span class="metadata-item" *ngIf="result.board && result.board.length > 0">
+                <i class="icon school"></i>
+                {{ result.board.join(', ') }}
+              </span>
+            </div>
+          </div>
+          
+          <!-- Description -->
+          <p class="result-description" *ngIf="result.description">
+            {{ getTruncatedDescription(result.description) }}
+          </p>
+
+          <!-- Snippet (if different from description) -->
+          <p class="result-snippet" *ngIf="result.snippet && result.snippet !== result.description">
+            {{ getTruncatedDescription(result.snippet, 100) }}
+          </p>
+
+          <!-- Recommendation -->
+          <!-- <div class="result-recommendation" *ngIf="result.recommendation || result.why_recommended">
+            <div class="recommendation-box">
+              <strong>Why recommended:</strong>
+              <span [innerHTML]="formatRecommendation(result.recommendation || result.why_recommended)"></span>
+            </div>
+          </div> -->
+
+        </div>
+
+        <!-- Thumbnail -->
+        <div class="result-thumbnail" *ngIf="hasThumbnail(result)">
+          <img [src]="result.thumbnail" 
+               [alt]="result.name"
+               class="thumbnail-image"
+               (error)="onImageError($event)">
+        </div>
+      </div>
+
+      <!-- Result Footer -->
+      <!-- <div class="result-footer"> -->
+        <!-- Footer content can be added here if needed -->
+      <!-- </div> -->
+    </div>
+  </div>
+
+
+  <!-- No Results State -->
+  <div *ngIf="results.length === 0 && !isLoading && !error" class="no-results-state">
+    <div class="no-results-icon">
+      <i class="icon search"></i>
+    </div>
+    <h3 class="no-results-title">No resources found</h3>
+    <p class="no-results-message">
+      We couldn't find any resources for "{{ query }}". 
+      Try rephrasing your question or using different keywords.
+    </p>
+    <div class="no-results-suggestions">
+      <h4>Suggestions:</h4>
+      <ul>
+        <li>Try using more specific terms</li>
+        <li>Check your spelling</li>
+        <li>Use broader keywords</li>
+        <li>Try asking about a specific subject or grade level</li>
+      </ul>
+    </div>
+  </div>
+
+</div>

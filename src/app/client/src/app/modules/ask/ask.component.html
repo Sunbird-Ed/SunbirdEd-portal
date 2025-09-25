@@ -1,0 +1,49 @@
+<!-- Ask Component Template -->
+<!-- This template provides a search interface and displays results using the ensemble tool -->
+
+<div class="ask-container">
+  <!-- Main content area with light beige background -->
+  <div class="ask-content">
+    
+    <!-- Search Input Section - moved to top -->
+    <div class="ask-search-section">
+      <div class="search-input-container">
+        <!-- Search input field -->
+        <input 
+          type="text" 
+          class="search-input"
+          [placeholder]="resourceService.frmelmnts?.btn?.askPlaceholder || 'What do you want to ask?'"
+          [(ngModel)]="searchQuery"
+          (keypress)="onKeyPress($event)"
+          [disabled]="isSearching"
+          #searchInput
+        />
+        
+        <!-- Ask button -->
+        <button 
+          class="ask-button"
+          (click)="onAsk()"
+          [disabled]="isSearching || !searchQuery.trim()"
+          [class.loading]="isSearching"
+        >
+          <span *ngIf="!isSearching">{{resourceService.frmelmnts?.btn?.ask || 'Ask'}}</span>
+          <span *ngIf="isSearching" class="loading-spinner">
+            <i class="icon loading"></i>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Search Results Section -->
+    <div class="search-results-section" *ngIf="searchQuery || isSearching || searchResults.length > 0 || error">
+      <app-ask-results
+        [results]="searchResults"
+        [query]="searchQuery"
+        [isLoading]="isSearching"
+        [error]="error"
+        (retry)="onRetry()">
+      </app-ask-results>
+    </div>
+
+  </div>
+</div>
