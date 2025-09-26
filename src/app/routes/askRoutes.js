@@ -7,6 +7,7 @@
 const express = require('express');
 const axios = require('axios');
 const envHelper = require('../helpers/environmentVariablesHelper');
+const isAPIWhitelisted = require('../helpers/apiWhiteList');
 const router = express.Router();
 
 // Add body parsing middleware
@@ -32,7 +33,7 @@ const NLWEB_TOOLS = [
  * Proxy route for Ask functionality
  * POST /api/ask/proxy
  */
-router.post('/proxy', async (req, res) => {
+router.post('/proxy', isAPIWhitelisted.isAllowed(), async (req, res) => {
   let query = '';
   
   try {
@@ -349,7 +350,7 @@ router.post('/proxy', async (req, res) => {
  * Health check route for Ask service
  * GET /api/ask/health
  */
-router.get('/health', async (req, res) => {
+router.get('/health', isAPIWhitelisted.isAllowed(), async (req, res) => {
   try {
     // Check if NLWeb service is available
     const healthResponse = await axios.get(`${NLWEB_BASE_URL}/who`, {
@@ -378,7 +379,7 @@ router.get('/health', async (req, res) => {
  * Get available sites from NLWeb
  * GET /api/ask/sites
  */
-router.get('/sites', async (req, res) => {
+router.get('/sites', isAPIWhitelisted.isAllowed(), async (req, res) => {
   try {
     const sitesResponse = await axios.get(`${NLWEB_BASE_URL}/sites`, {
       timeout: 10000
