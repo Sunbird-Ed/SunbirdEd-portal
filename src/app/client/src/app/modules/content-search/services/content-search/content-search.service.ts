@@ -18,9 +18,7 @@ export class ContentSearchService {
   private defaultBoard: string;
   private custodianOrg: boolean;
   private _filters: any = {};
-  get filters() {
-    return _.cloneDeep(this._filters);
-  }
+  public filters: any = {};
   requiredCategories: any;
   private _searchResults$ = new BehaviorSubject<any>(undefined);
   public frameworkCategories;
@@ -105,6 +103,7 @@ export class ContentSearchService {
       }), first());
   }
   public fetchFilter(boardName?) {
+    this.filters = _.cloneDeep(this._filters);
     if (!this.custodianOrg || !boardName) {
       return of(this.filters);
     }
