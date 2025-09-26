@@ -1357,7 +1357,7 @@ const API_LIST = {
     '/api/ask/sites': {
      checksNeeded: ['ROLE_CHECK'],
     ROLE_CHECK: [ROLE.PUBLIC]
-},
+    },
     '/api/data/v1/form/update': {
       description: 'API for form update; mobile team also uses same API.',
       checksNeeded: ['ROLE_CHECK'],
