@@ -2085,6 +2085,9 @@ const API_LIST = {
     '/assessment/programs/mlcore/v1/join/:id',
     '/assessment/users/mlcore/v1/solutions/:id',
     '/learner/user/v1/delete',
+    '/nlweb/ask/proxy',
+    '/nlweb/ask/health',
+    '/nlweb/ask/sites',
   ]
 };
 module.exports = API_LIST;

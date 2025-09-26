@@ -196,6 +196,11 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       contentType: 'global'
     };
     this.formService.getFormConfig(formServiceInputParams).subscribe((data: any) => {
+      _.forEach(data, (value, key)=>{
+        if('frmelmnts.tab.ask'=== value.title){
+          
+        }
+      })
       this.processFormData(data);
       this.updateForm();
       this.setContentTypeOnUrlChange();
