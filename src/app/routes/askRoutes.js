@@ -31,7 +31,7 @@ const NLWEB_TOOLS = [
 
 /**
  * Proxy route for Ask functionality
- * POST /api/ask/proxy
+ * POST /nlweb/ask/proxy
  */
 router.post('/proxy', isAPIWhitelisted.isAllowed(), async (req, res) => {
   let query = '';
@@ -348,7 +348,7 @@ router.post('/proxy', isAPIWhitelisted.isAllowed(), async (req, res) => {
 
 /**
  * Health check route for Ask service
- * GET /api/ask/health
+ * GET /nlweb/ask/health
  */
 router.get('/health', isAPIWhitelisted.isAllowed(), async (req, res) => {
   try {
@@ -377,7 +377,7 @@ router.get('/health', isAPIWhitelisted.isAllowed(), async (req, res) => {
 
 /**
  * Get available sites from NLWeb
- * GET /api/ask/sites
+ * GET /nlweb/ask/sites
  */
 router.get('/sites', isAPIWhitelisted.isAllowed(), async (req, res) => {
   try {
@@ -805,5 +805,5 @@ function formatMediumName(medium) {
 }
 
 module.exports = (app) => {
-  app.use('/api/ask', router);
+  app.use('/nlweb/ask', router);
 };

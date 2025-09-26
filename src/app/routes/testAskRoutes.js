@@ -7,7 +7,7 @@ const router = express.Router();
 
 /**
  * Simple test endpoint
- * GET /api/ask/test
+ * GET /nlweb/ask/test
  */
 router.get('/test', (req, res) => {
   res.json({
@@ -19,7 +19,7 @@ router.get('/test', (req, res) => {
 
 /**
  * Test proxy endpoint
- * POST /api/ask/test-proxy
+ * POST /nlweb/ask/test-proxy
  */
 router.post('/test-proxy', (req, res) => {
   console.log('Test proxy called with body:', req.body);
@@ -32,5 +32,5 @@ router.post('/test-proxy', (req, res) => {
 });
 
 module.exports = (app) => {
-  app.use('/api/ask', router);
+  app.use('/nlweb/ask', router);
 };

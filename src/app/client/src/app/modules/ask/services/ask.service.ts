@@ -106,7 +106,7 @@ export class AskService {
     private http: HttpClient,
     private configService: ConfigService
   ) {
-    // All requests now go through the backend proxy at /api/ask/*
+    // All requests now go through the backend proxy at /nlweb/ask/*
   }
 
   /**
@@ -115,10 +115,10 @@ export class AskService {
    * @returns Observable of AskResponse
    */
   askQuestion(request: AskRequest): Observable<AskResponse> {
-    console.log('AskService: Making request to /api/ask/proxy with:', request);
+    console.log('AskService: Making request to /nlweb/ask/proxy with:', request);
     
     // Use the proxy service instead of direct calls
-    return this.http.post<AskResponse>('/api/ask/proxy', request)
+    return this.http.post<AskResponse>('/nlweb/ask/proxy', request)
       .pipe(
         map(response => {
           console.log('AskService: Received response:', response);
@@ -137,10 +137,10 @@ export class AskService {
    * @returns Observable of AskResponse
    */
   askQuestionStreaming(request: AskRequest): Observable<AskResponse> {
-    console.log('AskService: Making streaming request to /api/ask/proxy with:', request);
+    console.log('AskService: Making streaming request to /nlweb/ask/proxy with:', request);
     
     // Use the proxy service for streaming as well
-    return this.http.post<AskResponse>('/api/ask/proxy', request)
+    return this.http.post<AskResponse>('/nlweb/ask/proxy', request)
       .pipe(
         map(response => {
           console.log('AskService: Received streaming response:', response);
@@ -467,7 +467,7 @@ export class AskService {
    * @returns Observable of sites array
    */
   getAvailableSites(): Observable<string[]> {
-    return this.http.get<{sites: string[]}>('/api/ask/sites')
+    return this.http.get<{sites: string[]}>('/nlweb/ask/sites')
       .pipe(
         map(response => response.sites || []),
         catchError(error => {
@@ -482,7 +482,7 @@ export class AskService {
    * @returns Observable of boolean
    */
   checkServiceHealth(): Observable<boolean> {
-    return this.http.get('/api/ask/health')
+    return this.http.get('/nlweb/ask/health')
       .pipe(
         map(() => true),
         catchError(() => {

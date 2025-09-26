@@ -31,7 +31,7 @@ export class AskProxyService {
     };
 
     // Use Sunbird's backend to proxy the request to NLWeb
-    return this.http.post('/api/ask/proxy', requestBody)
+    return this.http.post('/nlweb/ask/proxy', requestBody)
       .pipe(
         map(response => this.transformResponse(response)),
         catchError(error => {
