@@ -1346,6 +1346,18 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+    '/nlweb/ask/proxy': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC,ROLE.ANONYMOUS]
+    },
+    '/nlweb/ask/health': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC,ROLE.ANONYMOUS]
+    },
+    '/nlweb/ask/sites': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC,ROLE.ANONYMOUS]
+    },
     '/api/data/v1/form/update': {
       description: 'API for form update; mobile team also uses same API.',
       checksNeeded: ['ROLE_CHECK'],
@@ -2073,6 +2085,9 @@ const API_LIST = {
     '/assessment/programs/mlcore/v1/join/:id',
     '/assessment/users/mlcore/v1/solutions/:id',
     '/learner/user/v1/delete',
+    '/nlweb/ask/proxy',
+    '/nlweb/ask/health',
+    '/nlweb/ask/sites',
   ]
 };
 module.exports = API_LIST;

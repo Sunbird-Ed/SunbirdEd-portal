@@ -268,7 +268,6 @@ require('./routes/discussionsForum.js')(app, keycloak) // report routes
 
 require('./routes/uci.js')(app, keycloak) // report routes
 
-
 app.all(['/content-editor/telemetry', '/collection-editor/telemetry'], bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '50mb' }), keycloak.protect(), telemetryHelper.logSessionEvents)
 
@@ -290,6 +289,8 @@ app.all(['/content/data/v1/telemetry', '/action/data/v3/telemetry'], proxy(envHe
 }))
 
 app.get(['/v1/tenant/info', '/v1/tenant/info/:tenantId'], proxyUtils.addCorsHeaders, tenantHelper.getInfo) // tenant api
+
+require('./routes/askRoutes.js')(app) // ask routes for NLWeb integration - MUST be before publicRoutes
 
 require('./routes/publicRoutes.js')(app) // public api routes
 
