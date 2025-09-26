@@ -1348,15 +1348,15 @@ const API_LIST = {
     },
     '/nlweb/ask/proxy': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.PUBLIC,ROLE.ANONYMOUS]
     },
     '/nlweb/ask/health': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.PUBLIC,ROLE.ANONYMOUS]
     },
     '/nlweb/ask/sites': {
-     checksNeeded: ['ROLE_CHECK'],
-     ROLE_CHECK: [ROLE.PUBLIC]
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC,ROLE.ANONYMOUS]
     },
     '/api/data/v1/form/update': {
       description: 'API for form update; mobile team also uses same API.',
