@@ -13,6 +13,7 @@ const { memoryStore } = require('../helpers/keyCloakHelper')
 
 module.exports = function (app) {
     const proxyReqPathResolverMethod = function (req) {
+        console.log("inside public routes contentProxyUrl", contentProxyUrl);
         return require('url').parse(contentProxyUrl + req.originalUrl).path
     }
 
