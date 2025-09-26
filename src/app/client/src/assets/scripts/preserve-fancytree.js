@@ -5,6 +5,10 @@
 (function() {
     'use strict';
     
+    // Constants for timing configuration
+    var CHECK_INTERVAL_MS = 100; // milliseconds between restoration checks
+    var MAX_CHECK_DURATION_MS = 10000; // maximum time to keep checking (10 seconds)
+    
     // Store reference to fancytree plugin before it gets overridden
     var originalFancyTree = null;
     var originalJQuery = null;
@@ -37,12 +41,12 @@
                 clearInterval(checkInterval);
             }
         }
-    }, 100);
+    }, CHECK_INTERVAL_MS);
     
-    // Clear interval after 10 seconds to avoid infinite checking
+    // Clear interval after maximum duration to avoid infinite checking
     setTimeout(function() {
         clearInterval(checkInterval);
-    }, 10000);
+    }, MAX_CHECK_DURATION_MS);
     
     // Make restore function available globally for manual restoration
     window.restoreFancyTree = restoreFancyTree;

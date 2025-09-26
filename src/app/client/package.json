@@ -242,7 +242,7 @@
       "lodash-es": "<rootDir>/node_modules/lodash/"
     },
     "transformIgnorePatterns": [
-      "node_modules/(?!.*\\.mjs$|@project-sunbird)"
+      "node_modules/(?!.*\\.mjs$|@project-sunbird|uuid)"
     ],
     "snapshotSerializers": [
       "jest-preset-angular/build/serializers/no-ng-attributes",

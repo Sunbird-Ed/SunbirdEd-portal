@@ -16,6 +16,10 @@ declare global {
   templateUrl: './fancy-tree.component.html'
 })
 export class FancyTreeComponent implements AfterViewInit {
+  // Constants for magic numbers
+  private static readonly RESTORATION_RETRY_DELAY = 100; // milliseconds
+  private static readonly FALLBACK_RETRY_DELAY = 500; // milliseconds
+
   @ViewChild('fancyTree', {static: true}) public tree: ElementRef;
   @Input() public nodes: any;
   @Input() public options: any;
@@ -60,7 +64,7 @@ export class FancyTreeComponent implements AfterViewInit {
       } else {
         // Try to restore fancytree if available
         if (window.restoreFancyTree && window.restoreFancyTree()) {
-          setTimeout(() => initializeFancyTree(), 100);
+          setTimeout(() => initializeFancyTree(), FancyTreeComponent.RESTORATION_RETRY_DELAY);
         } else {
           console.error('FancyTree plugin not available and could not be restored');
         }
@@ -71,7 +75,7 @@ export class FancyTreeComponent implements AfterViewInit {
     this.lazzyLoadScriptService.loadScript('fancytree-all-deps.js').subscribe(() => {
       if (!initializeFancyTree()) {
         // Fallback: try again after a short delay
-        setTimeout(() => initializeFancyTree(), 500);
+        setTimeout(() => initializeFancyTree(), FancyTreeComponent.FALLBACK_RETRY_DELAY);
       }
     }, err => {
       console.error('loading fancy tree failed', err);

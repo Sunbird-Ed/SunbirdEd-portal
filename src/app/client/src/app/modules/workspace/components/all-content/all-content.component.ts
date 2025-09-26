@@ -399,7 +399,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
               const dynamicFields = {};
 
               if (frameworkCategories && Array.isArray(frameworkCategories)) {
-                const categoryCodes = frameworkCategories.map(category => {return {code: category.code, collectionCode: category.alternativeCode}; });
+                const categoryCodes = frameworkCategories.map(category => ({code: category.code, collectionCode: category.alternativeCode}));
 
                 categoryCodes.forEach(category => {
                   if (collection[category.code] || collection[category.collectionCode]) {
