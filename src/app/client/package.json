@@ -171,9 +171,14 @@
   },
   "resolutions": {},
   "jest": {
-    "preset": "ts-jest",
+    "preset": "jest-preset-angular",
     "verbose": true,
     "testEnvironment": "jsdom",
+    "testEnvironmentOptions": {
+      "resources": "usable",
+      "pretendToBeVisual": false,
+      "url": "http://localhost"
+    },
     "globals": {
       "ts-jest": {
         "tsconfig": "<rootDir>/tsconfig.spec.json",
@@ -214,6 +219,7 @@
       "text"
     ],
     "moduleNameMapper": {
+      "canvas": "<rootDir>/__mocks__/canvas.js",
       "^@sunbird/core": "<rootDir>/src/app/modules/core",
       "^@sunbird/shared": "<rootDir>/src/app/modules/shared",
       "^@sunbird/home": "<rootDir>/src/app/modules/home",
@@ -242,7 +248,7 @@
       "lodash-es": "<rootDir>/node_modules/lodash/"
     },
     "transformIgnorePatterns": [
-      "node_modules/(?!.*\\.mjs$|@project-sunbird|uuid)"
+      "node_modules/(?!.*\\.mjs$|@project-sunbird|uuid|crypto-ld)"
     ],
     "snapshotSerializers": [
       "jest-preset-angular/build/serializers/no-ng-attributes",
