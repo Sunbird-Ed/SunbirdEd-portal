@@ -33,7 +33,7 @@ const NLWEB_TOOLS = [
  * Proxy route for Ask functionality
  * POST /nlweb/ask/proxy
  */
-router.post('/nlweb/ask/proxy', isAPIWhitelisted.isAllowed(), async (req, res) => {
+router.post('/proxy', isAPIWhitelisted.isAllowed(), async (req, res) => {
   let query = '';
   
   try {
@@ -62,7 +62,34 @@ router.post('/nlweb/ask/proxy', isAPIWhitelisted.isAllowed(), async (req, res) =
       thread_id: thread_id
     });
 
-    console.log('Making request to NLWeb:', `${NLWEB_BASE_URL}/ask?${params}`);
+    // If UI requested non-streaming, use POST JSON (avoids upstream login redirects)
+    if (streaming === false || streaming === 'false') {
+      console.log('Making POST request to NLWeb:', `${NLWEB_BASE_URL}/ask`);
+      const postBody = {
+        query: ensembleQuery,
+        site,
+        model,
+        generate_mode: generate_mode || 'none',
+        oauth_id,
+        thread_id
+      };
+
+      const postResp = await axios.post(`${NLWEB_BASE_URL}/ask`, postBody, {
+        timeout: 30000,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      });
+
+      // Normalize and return
+      const transformed = transformNLWebResponse(postResp.data);
+      const finalResponse = normalizeNLWebResponse(transformed, query);
+      console.log('Final normalized response (non-streaming):', finalResponse);
+      return res.json(finalResponse);
+    }
+
+    console.log('Making request to NLWeb (SSE):', `${NLWEB_BASE_URL}/ask?${params}`);
 
     // Make request to NLWeb service with streaming support
     const nlwebResponse = await axios.get(`${NLWEB_BASE_URL}/ask?${params}`, {
@@ -350,7 +377,7 @@ router.post('/nlweb/ask/proxy', isAPIWhitelisted.isAllowed(), async (req, res) =
  * Health check route for Ask service
  * GET /nlweb/ask/health
  */
-router.get('/nlweb/ask/health', isAPIWhitelisted.isAllowed(), async (req, res) => {
+router.get('/health', isAPIWhitelisted.isAllowed(), async (req, res) => {
   try {
     // Check if NLWeb service is available
     const healthResponse = await axios.get(`${NLWEB_BASE_URL}/who`, {
@@ -379,7 +406,7 @@ router.get('/nlweb/ask/health', isAPIWhitelisted.isAllowed(), async (req, res) =
  * Get available sites from NLWeb
  * GET /nlweb/ask/sites
  */
-router.get('/nlweb/ask/sites', isAPIWhitelisted.isAllowed(), async (req, res) => {
+router.get('/sites', isAPIWhitelisted.isAllowed(), async (req, res) => {
   try {
     const sitesResponse = await axios.get(`${NLWEB_BASE_URL}/sites`, {
       timeout: 10000
