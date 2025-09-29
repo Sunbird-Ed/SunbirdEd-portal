@@ -36,6 +36,7 @@ const isAllowed = () => {
       } else {
         let REQ_URL = req.path;
         // Pattern match for URL
+        console.log('API WHITELIST CHECK - Incoming request URL:', REQ_URL);
         _.forEach(API_LIST.URL_PATTERN, (url) => {
           let regExp = pathToRegexp(url);
           if (regExp.test(REQ_URL)) {

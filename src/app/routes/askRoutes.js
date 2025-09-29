@@ -33,7 +33,7 @@ const NLWEB_TOOLS = [
  * Proxy route for Ask functionality
  * POST /nlweb/ask/proxy
  */
-router.post('/proxy', isAPIWhitelisted.isAllowed(), async (req, res) => {
+router.post('/nlweb/ask/proxy', isAPIWhitelisted.isAllowed(), async (req, res) => {
   let query = '';
   
   try {
@@ -350,7 +350,7 @@ router.post('/proxy', isAPIWhitelisted.isAllowed(), async (req, res) => {
  * Health check route for Ask service
  * GET /nlweb/ask/health
  */
-router.get('/health', isAPIWhitelisted.isAllowed(), async (req, res) => {
+router.get('/nlweb/ask/health', isAPIWhitelisted.isAllowed(), async (req, res) => {
   try {
     // Check if NLWeb service is available
     const healthResponse = await axios.get(`${NLWEB_BASE_URL}/who`, {
@@ -379,7 +379,7 @@ router.get('/health', isAPIWhitelisted.isAllowed(), async (req, res) => {
  * Get available sites from NLWeb
  * GET /nlweb/ask/sites
  */
-router.get('/sites', isAPIWhitelisted.isAllowed(), async (req, res) => {
+router.get('/nlweb/ask/sites', isAPIWhitelisted.isAllowed(), async (req, res) => {
   try {
     const sitesResponse = await axios.get(`${NLWEB_BASE_URL}/sites`, {
       timeout: 10000
