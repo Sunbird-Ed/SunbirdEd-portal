@@ -574,6 +574,7 @@ export class UserService {
   get defaultFrameworkFilters() {
     const isUserLoggedIn = this.loggedIn || false;
     const { framework = null } = this.userProfile || {};
+    this.frameworkCategories = localStorage.getItem('fwCategoryObject') ? JSON.parse(localStorage.getItem('fwCategoryObject')) : this.frameworkCategories;
     let userFramework = {}
     if (!isUserLoggedIn) {
       let userDetails = JSON.parse(localStorage.getItem('guestUserDetails'));

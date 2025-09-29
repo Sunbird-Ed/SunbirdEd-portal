@@ -44,7 +44,9 @@ describe('App Component', () => {
   const mockDeviceRegisterService: Partial<DeviceRegisterService> = {};
   const mockCoursesService: Partial<CoursesService> = {};
   const mockTenantService: Partial<TenantService> = {
-    tenantData$: of({favicon: 'sample-favicon'}) as any
+    tenantData$: of({tenantData: {favicon: 'sample-favicon'}}) as any,
+    getTenantInfo: jest.fn(),
+    initialize: jest.fn()
   };
   const mockTelemetryService: Partial<TelemetryService> = {};
   const mockRouter: Partial<Router> = {
@@ -102,7 +104,8 @@ describe('App Component', () => {
 
   const mockCslFrameworkService: Partial<CslFrameworkService> = {
     getFrameworkCategories: jest.fn(),
-    setDefaultFWforCsl: jest.fn()
+    setDefaultFWforCsl: jest.fn().mockResolvedValue({}),
+    setTransFormGlobalFilterConfig: jest.fn()
   };
 
   beforeAll(() => {
@@ -141,6 +144,15 @@ describe('App Component', () => {
 
   beforeEach(() => {
       jest.clearAllMocks();
+      
+      // Re-setup mocks that need to return specific values
+      mockCslFrameworkService.setDefaultFWforCsl = jest.fn().mockResolvedValue({});
+      mockCslFrameworkService.setTransFormGlobalFilterConfig = jest.fn();
+      
+      // Setup DOM elements that the component expects
+      const mockIcon = document.createElement('link');
+      mockIcon.setAttribute('rel', 'icon');
+      document.head.appendChild(mockIcon);
   });
 
   it('should be create a instance of appComponent', () => {
@@ -375,7 +387,7 @@ describe('App Component', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should be return user details for web and Ios', () => {
+    it('should be return user details for web and Ios', async () => {
       // arrange
       jest.spyOn(appComponent, 'notifyNetworkChange').mockImplementation();
       jest.spyOn(appComponent.formService, 'getFormConfig').mockReturnValue(of({"response":true}));
@@ -417,8 +429,6 @@ describe('App Component', () => {
       });
       jest.spyOn(appComponent, 'changeLanguageAttribute').mockImplementation();
       mockGeneraliseLabelService.getGeneraliseResourceBundle = jest.fn(() => {});
-      mockTenantService.getTenantInfo = jest.fn(() => {});
-      mockTenantService.initialize = jest.fn(() => {});
       mockTelemetryService.initialize = jest.fn(() => ({cdata: {}}));
       jest.spyOn(document, 'getElementById').mockImplementation(() => {
         return {value: ['val-01', '12', '-', '.']} as any;
@@ -437,8 +447,13 @@ describe('App Component', () => {
       jest.spyOn(appComponent, 'changeLanguageAttribute').mockImplementation();
       mockGeneraliseLabelService.getGeneraliseResourceBundle = jest.fn();
       jest.spyOn(appComponent, 'checkToShowPopups').mockImplementation();
+      
       // act
       appComponent.ngOnInit();
+      
+      // Wait for async operations to complete
+      await new Promise(resolve => setTimeout(resolve, 0));
+      
       // assert
       expect(mockLayoutService.switchableLayout).toHaveBeenCalled();
       expect(mockTelemetryService.makeUTMSession).toHaveBeenCalled();
@@ -529,6 +544,8 @@ describe('App Component', () => {
       jest.spyOn(appComponent, 'checkToShowPopups').mockImplementation();
       // act
       appComponent.ngOnInit();
+      // Wait for async operations to complete
+      await new Promise(resolve => setTimeout(resolve, 0));
       // assert
       expect(mockLayoutService.switchableLayout).toHaveBeenCalled();
       expect(mockTelemetryService.makeUTMSession).toHaveBeenCalled();

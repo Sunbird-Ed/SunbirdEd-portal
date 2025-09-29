@@ -76,6 +76,11 @@
               },
               {
                 "glob": "**/*",
+                "input": "node_modules/@project-sunbird/sunbird-quml-player-web-component/lib/assets",
+                "output": "/assets/"
+              },
+              {
+                "glob": "**/*",
                 "input": "node_modules/@project-sunbird/sunbird-questionset-editor/lib/assets",
                 "output": "/assets/"
               }
@@ -99,7 +104,8 @@
               "./node_modules/@project-sunbird/discussions-ui/assets/styles/global.scss",
               "node_modules/@project-sunbird/sunbird-pdf-player-web-component/styles.css",
               "node_modules/@project-sunbird/sunbird-epub-player-web-component/styles.css",
-              "node_modules/@project-sunbird/sunbird-video-player-web-component/styles.css"
+              "node_modules/@project-sunbird/sunbird-video-player-web-component/styles.css",
+              "node_modules/@project-sunbird/sunbird-quml-player-web-component/styles.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -117,6 +123,7 @@
               "node_modules/leaflet/dist/leaflet.js",
               "./node_modules/katex/dist/katex.min.js",
               "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js",
+              "src/assets/scripts/preserve-fancytree.js",
               "src/assets/libs/semantic-ui/modal.min.js",
               "node_modules/video.js/dist/video.js",
               "node_modules/videojs-contrib-quality-levels/dist/videojs-contrib-quality-levels.min.js",
@@ -126,6 +133,7 @@
               "node_modules/@project-sunbird/sunbird-pdf-player-web-component/sunbird-pdf-player.js",
               "node_modules/@project-sunbird/sunbird-epub-player-web-component/sunbird-epub-player.js",
               "node_modules/@project-sunbird/sunbird-video-player-web-component/sunbird-video-player.js",
+              "node_modules/@project-sunbird/sunbird-quml-player-web-component/sunbird-quml-player.js",
               {
                 "inject": false,
                 "input": "src/assets/libs/semantic-ui/transition.min.js",

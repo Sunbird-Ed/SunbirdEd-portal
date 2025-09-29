@@ -411,11 +411,11 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
               const dynamicFields = {};
               
               if (frameworkCategories && Array.isArray(frameworkCategories)) {
-                const categoryCodes = frameworkCategories.map(category => category.code);
-                
-                categoryCodes.forEach(code => {
-                  if (collection[code] !== undefined) {
-                    dynamicFields[code] = collection[code];
+                const categoryCodes = frameworkCategories.map(category => ({code: category.code, collectionCode: category.alternativeCode}));
+
+                categoryCodes.forEach(category => {
+                  if (collection[category.code] || collection[category.collectionCode]) {
+                    dynamicFields[category.code] = collection[category.code] || collection[category.collectionCode];
                   }
                 });
               }

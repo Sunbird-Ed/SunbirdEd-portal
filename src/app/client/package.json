@@ -76,9 +76,10 @@
     "@project-sunbird/sunbird-file-upload-library": "1.0.4",
     "@project-sunbird/sunbird-pdf-player-v9": "5.5.0",
     "@project-sunbird/sunbird-pdf-player-web-component": "1.4.0",
-    "@project-sunbird/sunbird-questionset-editor": "8.0.5",
+    "@project-sunbird/sunbird-questionset-editor": "8.0.6",
     "@project-sunbird/sunbird-quml-player": "7.0.4",
     "@project-sunbird/sunbird-quml-player-v9": "5.1.5",
+    "@project-sunbird/sunbird-quml-player-web-component": "4.0.2",
     "@project-sunbird/sunbird-resource-library": "7.0.4",
     "@project-sunbird/sunbird-video-player-v9": "5.5.1",
     "@project-sunbird/sunbird-video-player-web-component": "1.2.5",
@@ -170,9 +171,14 @@
   },
   "resolutions": {},
   "jest": {
-    "preset": "ts-jest",
+    "preset": "jest-preset-angular",
     "verbose": true,
     "testEnvironment": "jsdom",
+    "testEnvironmentOptions": {
+      "resources": "usable",
+      "pretendToBeVisual": false,
+      "url": "http://localhost"
+    },
     "globals": {
       "ts-jest": {
         "tsconfig": "<rootDir>/tsconfig.spec.json",
@@ -213,6 +219,7 @@
       "text"
     ],
     "moduleNameMapper": {
+      "canvas": "<rootDir>/__mocks__/canvas.js",
       "^@sunbird/core": "<rootDir>/src/app/modules/core",
       "^@sunbird/shared": "<rootDir>/src/app/modules/shared",
       "^@sunbird/home": "<rootDir>/src/app/modules/home",
@@ -241,7 +248,7 @@
       "lodash-es": "<rootDir>/node_modules/lodash/"
     },
     "transformIgnorePatterns": [
-      "node_modules/(?!.*\\.mjs$|@project-sunbird)"
+      "node_modules/(?!.*\\.mjs$|@project-sunbird|uuid|crypto-ld)"
     ],
     "snapshotSerializers": [
       "jest-preset-angular/build/serializers/no-ng-attributes",

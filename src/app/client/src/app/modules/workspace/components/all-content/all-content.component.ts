@@ -393,17 +393,17 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
               channelMapping[channelId] = channelName;
             });
 
-            const frameworkCategories = this.cslFrameworkService.getFrameworkCategoriesObject();
+            const frameworkCategories = this.cslFrameworkService.getGlobalFilterCategoriesObject();
 
             _.forEach(collections, collection => {
               const dynamicFields = {};
 
               if (frameworkCategories && Array.isArray(frameworkCategories)) {
-                const categoryCodes = frameworkCategories.map(category => category.code);
+                const categoryCodes = frameworkCategories.map(category => ({code: category.code, collectionCode: category.alternativeCode}));
 
-                categoryCodes.forEach(code => {
-                  if (collection[code] !== undefined) {
-                    dynamicFields[code] = collection[code];
+                categoryCodes.forEach(category => {
+                  if (collection[category.code] || collection[category.collectionCode]) {
+                    dynamicFields[category.code] = collection[category.code] || collection[category.collectionCode];
                   }
                 });
               }
