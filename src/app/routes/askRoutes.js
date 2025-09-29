@@ -32,6 +32,7 @@ const NLWEB_TOOLS = [
 /**
  * Proxy route for Ask functionality
  * POST /nlweb/ask/proxy
+ * Note: Router is mounted at '/nlweb/ask' from server.js, so use relative path.
  */
 router.post('/nlweb/ask/proxy', isAPIWhitelisted.isAllowed(), async (req, res) => {
   let query = '';
@@ -832,5 +833,6 @@ function formatMediumName(medium) {
 }
 
 module.exports = (app) => {
-  app.use('/nlweb/ask', router);
+  // Mount at root because route handlers use absolute paths like '/nlweb/ask/proxy'
+  app.use('/', router);
 };
