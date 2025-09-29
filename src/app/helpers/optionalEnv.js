@@ -295,6 +295,6 @@ let optionalEnvVariables = {
     PORTAL_CDN_URL: env.sunbird_portal_cdn_url || '',
     sunbird_portal_preview_cdn_url: env.sunbird_portal_preview_cdn_url,
     sunbird_portal_cdn_blob_url: env.sunbird_portal_cdn_blob_url || '',
-    NLWEB_BASE_URL: env.sunbird_nlweb_api_url || 'http://localhost:8000',
+    NLWEB_BASE_URL: env.sunbird_nlweb_api_url,
 }
 module.exports = optionalEnvVariables;

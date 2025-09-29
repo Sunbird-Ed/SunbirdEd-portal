@@ -290,7 +290,8 @@ app.all(['/content/data/v1/telemetry', '/action/data/v3/telemetry'], proxy(envHe
 
 app.get(['/v1/tenant/info', '/v1/tenant/info/:tenantId'], proxyUtils.addCorsHeaders, tenantHelper.getInfo) // tenant api
 
-require('./routes/askRoutes.js')(app) // ask routes for NLWeb integration - MUST be before publicRoutes
+// Mount Ask routes at root so routes are defined with absolute paths
+require('./routes/askRoutes.js')(app)
 
 require('./routes/publicRoutes.js')(app) // public api routes
 
