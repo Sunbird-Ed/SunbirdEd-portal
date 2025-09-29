@@ -62,36 +62,7 @@ router.post('/nlweb/ask/proxy', isAPIWhitelisted.isAllowed(), async (req, res) =
       item_to_remember: query, // Use original query as item_to_remember
       thread_id: thread_id
     });
-
-    // If UI requested non-streaming, use POST JSON (avoids upstream login redirects)
-    // if (streaming === false || streaming === 'false') {
-    //   console.log('Making POST request to NLWeb:', `${NLWEB_BASE_URL}/ask`);
-    //   const postBody = {
-    //     query: ensembleQuery,
-    //     site,
-    //     model,
-    //     generate_mode: generate_mode || 'none',
-    //     oauth_id,
-    //     thread_id
-    //   };
-
-    //   const postResp = await axios.post(`${NLWEB_BASE_URL}/ask`, postBody, {
-    //     timeout: 30000,
-    //     headers: {
-    //       'Accept': 'application/json',
-    //       'Content-Type': 'application/json'
-    //     }
-    //   });
-
-    //   // Normalize and return
-    //   const transformed = transformNLWebResponse(postResp.data);
-    //   const finalResponse = normalizeNLWebResponse(transformed, query);
-    //   console.log('Final normalized response (non-streaming):', finalResponse);
-    //   return res.json(finalResponse);
-    // }
-
-    // console.log('Making request to NLWeb (SSE):', `${NLWEB_BASE_URL}/ask?${params}`);
-
+    
     // Make request to NLWeb service with streaming support
     const nlwebResponse = await axios.get(`${NLWEB_BASE_URL}/ask?${params}`, {
       timeout: 30000, // 30 second timeout
