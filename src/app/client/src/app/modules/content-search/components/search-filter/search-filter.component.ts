@@ -3,10 +3,12 @@ import * as _ from 'lodash-es';
 import { LibraryFiltersLayout } from '@project-sunbird/common-consumption';
 import { ResourceService, LayoutService, UtilService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subject, merge, of, zip, BehaviorSubject, defer } from 'rxjs';
+import { Subject, merge, of, zip, BehaviorSubject, defer, Observable } from 'rxjs';
 import { debounceTime, map, tap, switchMap, takeUntil, retry, catchError } from 'rxjs/operators';
 import { ContentSearchService } from '../../services';
 import { FormService } from '@sunbird/core';
+import { OrgDetailsService } from '../../../core/services/org-details/org-details.service';
+import { UserService } from '../../../core/services/user/user.service';
 import { IFrameworkCategoryFilterFieldTemplateConfig } from '@project-sunbird/common-form-elements-full';
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { CslFrameworkService } from  '../../../public/services/csl-framework/csl-framework.service';
@@ -59,7 +61,40 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     private contentSearchService: ContentSearchService,
     private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef,
     public layoutService: LayoutService, private formService: FormService,
-    private cacheService: CacheService, private utilService: UtilService, private cslFrameworkService: CslFrameworkService ) { }
+    private cacheService: CacheService, private utilService: UtilService, private cslFrameworkService: CslFrameworkService,
+    private orgDetailsService: OrgDetailsService, private userService: UserService ) { }
+
+  private initializeContentSearch(): Observable<any> {
+    return this.getChannelInfo().pipe(
+      switchMap(({ channelId, custodianOrg }) => {
+        const defaultBoard = _.get(this.defaultFilters, `${this.frameworkCategories?.fwCategory1?.code}[0]`) || '';
+        return this.contentSearchService.initialize(channelId, custodianOrg, defaultBoard);
+      })
+    );
+  }
+
+  private getChannelInfo(): Observable<{ channelId: string, custodianOrg: boolean }> {
+    if (this.userService.loggedIn) {
+      return this.orgDetailsService.getCustodianOrgDetails()
+        .pipe(
+          map(custodianOrg => {
+            const result = { channelId: this.userService.hashTagId, custodianOrg: false };
+            if (this.userService.hashTagId === _.get(custodianOrg, 'result.response.value')) {
+              result.custodianOrg = true;
+            }
+            return result;
+          })
+        );
+    } else {
+      if (this.userService.slug) {
+        return this.orgDetailsService.getOrgDetails(this.userService.slug)
+          .pipe(map((orgDetails: any) => ({ channelId: orgDetails.hashTagId, custodianOrg: false })));
+      } else {
+        return this.orgDetailsService.orgDetails$
+          .pipe(map(({ orgDetails }) => ({ channelId: orgDetails.hashTagId, custodianOrg: false })));
+      }
+    }
+  }
 
   get filterData() {
     return _.get(this.pageData, 'metaData.filters') || [ ...this.frameworkCategoriesList, ...this.globalFilterCategories, 'channel', 'audience', 'publisher'];
@@ -124,8 +159,22 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
     this.getFilterForm$();
     this.checkForWindowSize();
-    merge(this.boardChangeHandler(), this.fetchSelectedFilterOptions(), this.handleFilterChange(), this.getFacets(), this.filterConfig$)
-      .pipe(takeUntil(this.unsubscribe$))
+    
+    // Initialize content search first, then proceed with other operations
+    this.initializeContentSearch()
+      .pipe(
+        switchMap(() => {
+          // After initialization is complete, start other operations
+          return merge(
+            this.boardChangeHandler(),
+            this.fetchSelectedFilterOptions(),
+            this.handleFilterChange(),
+            this.getFacets(),
+            this.filterConfig$
+          );
+        }),
+        takeUntil(this.unsubscribe$)
+      )
       .subscribe(null, error => {
         console.error('Error while fetching filters', error);
       });
