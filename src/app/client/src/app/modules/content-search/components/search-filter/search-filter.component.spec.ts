@@ -8,6 +8,8 @@ import { of, throwError } from 'rxjs';
 import { ContentSearchService } from './../../services';
 import * as _ from 'lodash-es';
 import { CslFrameworkService } from  '../../../public/services/csl-framework/csl-framework.service';
+import { OrgDetailsService } from '../../../core/services/org-details/org-details.service';
+import { UserService } from '../../../core/services/user/user.service';
 
 describe('SearchFilterComponent', () => {
     let component: SearchFilterComponent;
@@ -18,7 +20,8 @@ describe('SearchFilterComponent', () => {
             gradeLevel: 'se_gradeLevels',
             board: 'se_boards'
         } as any,
-        fetchFilter:jest.fn()
+        fetchFilter: jest.fn(() => of({})),
+        initialize: jest.fn(() => of(true))
     };
     const mockFormService: Partial<FormService> = {};
 
@@ -54,6 +57,19 @@ describe('SearchFilterComponent', () => {
         getAlternativeCodeForFilter: jest.fn(),
         getAllFwCatName: jest.fn(),
     };
+    const mockOrgDetailsService: Partial<OrgDetailsService> = {
+        getCustodianOrgDetails: jest.fn(() => of({
+            result: { response: { value: 'sample-org' } }
+        } as any)),
+        getOrgDetails: jest.fn(() => of({
+            result: { response: { value: 'sample-org' } }
+        } as any))
+    };
+    const mockUserService: Partial<UserService> = {
+        loggedIn: false,
+        slug: 'sample-slug',
+        hashTagId: 'sample-hashtag-id'
+    };
 
     beforeAll(() => {
         component = new SearchFilterComponent(
@@ -66,7 +82,9 @@ describe('SearchFilterComponent', () => {
             mockFormService as FormService,
             mockCacheService as CacheService,
             mockUtilService as UtilService,
-            mockCslFrameworkService as CslFrameworkService
+            mockCslFrameworkService as CslFrameworkService,
+            mockOrgDetailsService as OrgDetailsService,
+            mockUserService as UserService
         );
     });
 
