@@ -294,17 +294,17 @@ export class SearchService {
   **/
   public updateOption(option: any) {
     this.globalFilterCategories = this.cslFrameworkService.getAlternativeCodeForFilter();
-    if (_.get(option, `data.request.filters.${this.frameworkCategories?.fwCategory1?.code}`)) {
-      option.data.request.filters[this.globalFilterCategories[0]] = option.data.request.filters[this.frameworkCategories?.fwCategory1?.code];
-      delete option.data.request.filters[this.frameworkCategories?.fwCategory1?.code];
-    }
-    if (_.get(option, `data.request.filters.${this.frameworkCategories?.fwCategory3?.code}`)) {
-      option.data.request.filters[this.globalFilterCategories[2]] = option.data.request.filters[this.frameworkCategories?.fwCategory3?.code];
-      delete option.data.request.filters[this.frameworkCategories?.fwCategory3?.code];
-    }
-    if (_.get(option, `data.request.filters.${this.frameworkCategories?.fwCategory2?.code}`)) {
-      option.data.request.filters[this.globalFilterCategories[1]] = option.data.request.filters[this.frameworkCategories?.fwCategory2?.code];
-      delete option.data.request.filters[this.frameworkCategories?.fwCategory2?.code];
+    
+    if (this.frameworkCategories && this.globalFilterCategories) {
+      Object.keys(this.frameworkCategories).forEach((categoryKey, index) => {
+        const categoryCode = this.frameworkCategories[categoryKey]?.code;
+        if (categoryCode && _.get(option, `data.request.filters.${categoryCode}`)) {
+          if (this.globalFilterCategories[index] && !_.get(option, `data.request.filters.${this.globalFilterCategories[index]}`)) {
+            option.data.request.filters[this.globalFilterCategories[index]] = option.data.request.filters[categoryCode];
+          }
+          delete option.data.request.filters[categoryCode];
+        }
+      });
     }
 
     return option.data;

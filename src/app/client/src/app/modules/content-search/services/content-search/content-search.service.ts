@@ -58,6 +58,8 @@ export class ContentSearchService {
   }
   fetchChannelData() {
 
+    this.frameworkCategories = this.cslFrameworkService.getFrameworkCategories();
+    this.frameworkCategoriesObject = this.cslFrameworkService.getFrameworkCategoriesObject();
     this.requiredCategories = {
       categories: Object.values<FrameworkCategory>(this.frameworkCategories || {})
         .map((category) => category?.code)
