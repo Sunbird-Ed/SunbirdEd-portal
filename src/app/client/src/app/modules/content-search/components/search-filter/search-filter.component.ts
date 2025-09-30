@@ -79,7 +79,8 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
         .pipe(
           map(custodianOrg => {
             const result = { channelId: this.userService.hashTagId, custodianOrg: false };
-            if (this.userService.hashTagId === _.get(custodianOrg, 'result.response.value')) {
+            const custodianOrgValue = _.get(custodianOrg, 'result.response.value');
+            if (this.userService.hashTagId === custodianOrgValue) {
               result.custodianOrg = true;
             }
             return result;
