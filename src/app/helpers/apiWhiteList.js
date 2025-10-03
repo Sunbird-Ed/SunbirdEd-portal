@@ -34,7 +34,7 @@ const isAllowed = () => {
       if (shouldAllow(req)) {
         next();
       } else {
-        let REQ_URL = req.path;
+        let REQ_URL = (req.originalUrl || req.path || '').split('?')[0];
         // Pattern match for URL
         console.log('API WHITELIST CHECK - Incoming request URL:', REQ_URL);
         _.forEach(API_LIST.URL_PATTERN, (url) => {
