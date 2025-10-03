@@ -10,9 +10,7 @@ const envHelper = require('../helpers/environmentVariablesHelper');
 const isAPIWhitelisted = require('../helpers/apiWhiteList');
 const router = express.Router();
 
-// Add body parsing middleware
-router.use(express.json());
-router.use(express.urlencoded({ extended: true }));
+// Do not add global body parsers here; they would affect unrelated routes when mounted at '/'
 
 // NLWeb service configuration (uses env helper -> optionalEnv.NLWEB_BASE_URL)
 const NLWEB_BASE_URL = envHelper.NLWEB_BASE_URL
@@ -34,7 +32,7 @@ const NLWEB_TOOLS = [
  * POST /nlweb/ask/proxy
  * Note: Router is mounted at '/nlweb/ask' from server.js, so use relative path.
  */
-router.post('/nlweb/ask/proxy', isAPIWhitelisted.isAllowed(), async (req, res) => {
+router.post('/nlweb/ask/proxy', express.json(), express.urlencoded({ extended: true }), isAPIWhitelisted.isAllowed(), async (req, res) => {
   let query = '';
   
   try {
