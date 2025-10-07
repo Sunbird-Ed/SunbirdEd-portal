@@ -19,7 +19,7 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        run: yarn install --prefer-offline --no-progress --production=true
+        run: yarn install --prefer-offline --no-progress
         working-directory: src/app/client
 
       - name: Run lint
@@ -42,7 +42,7 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        run: yarn install --prefer-offline --no-progress --production=true
+        run: yarn install --prefer-offline --no-progress
         working-directory: src/app/client
 
       - name: Run test shard ${{ matrix.shard }}
