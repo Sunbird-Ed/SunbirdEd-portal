@@ -148,6 +148,11 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
 
     query: string;
     sort: object;
+    
+    /**
+    * To store content mime type for deletion
+    */
+    contentMimeType: string;
     /**
       * To check if questionSet enabled
      */
@@ -296,6 +301,7 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
                     type: param.data.metaData.contentType,
                     ver: '1.0'
                 };
+                this.contentMimeType = param.data.metaData.mimeType;
                 this.deleteConfirmModal(param.data.metaData.identifier);
             } else {
                 this.workSpaceService.navigateToContent(param.data.metaData, this.state);
@@ -325,7 +331,12 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
                 this.loaderMessage = {
                     'loaderMessage': this.resourceService.messages.stmsg.m0034,
                 };
-                this.delete(contentIds).subscribe(
+                // Choose the appropriate delete method based on mime type
+                const deleteObservable = this.contentMimeType === 'application/vnd.sunbird.questionset' 
+                  ? this.deleteQuestionSet(contentIds)
+                  : this.delete(contentIds);
+
+                deleteObservable.subscribe(
                     (data: ServerResponse) => {
                         this.showLoader = false;
                         this.draftList = this.removeContent(this.draftList, contentIds);

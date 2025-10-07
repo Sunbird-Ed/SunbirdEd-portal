@@ -377,15 +377,15 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
       this.deleteModal = modal;
     }
     this.showCollectionLoader = false;
-    if (this.contentMimeType === 'application/vnd.ekstep.content-collection') {
-      this.deleteContent(this.currentContentId);
+    if (this.contentMimeType === 'application/vnd.ekstep.content-collection' || this.contentMimeType === 'application/vnd.sunbird.questionset') {
+      this.deleteContentOrQuestionSet(this.currentContentId);
       return;
     }
     this.getLinkedCollections(this.currentContentId)
       .subscribe((response) => {
         const count = _.get(response, 'result.count');
         if (!count) {
-          this.deleteContent(this.currentContentId);
+          this.deleteContentOrQuestionSet(this.currentContentId);
           return;
         }
         this.showCollectionLoader = true;
@@ -468,14 +468,20 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
   }
 
   /**
-  * This method deletes content using the content id.
+  * This method deletes content or question set based on mime type
   */
-  public deleteContent(contentIds) {
+  public deleteContentOrQuestionSet(contentIds) {
         this.showLoader = true;
         this.loaderMessage = {
           'loaderMessage': this.resourceService.messages.stmsg.m0034,
         };
-        this.delete(contentIds).subscribe(
+
+        // Choose the appropriate delete method based on mime type
+        const deleteObservable = this.contentMimeType === 'application/vnd.sunbird.questionset' 
+          ? this.deleteQuestionSet(contentIds)
+          : this.delete(contentIds);
+
+        deleteObservable.subscribe(
           (data: ServerResponse) => {
             this.showLoader = false;
             this.publishedContent = this.removeContent(this.publishedContent, contentIds);
@@ -486,7 +492,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
           },
           (err: ServerResponse) => {
             this.showLoader = false;
-            this.toasterService.success(this.resourceService.messages.fmsg.m0022);
+            this.toasterService.error(this.resourceService.messages.fmsg.m0022);
           }
         );
         if (!_.isUndefined(this.deleteModal)) {

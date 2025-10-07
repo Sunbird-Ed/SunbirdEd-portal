@@ -364,8 +364,8 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
       this.deleteModal = modal;
     }
     this.showCollectionLoader = false;
-    if (this.contentMimeType === 'application/vnd.ekstep.content-collection') {
-      this.deleteContent(this.currentContentId);
+    if (this.contentMimeType === 'application/vnd.ekstep.content-collection' || this.contentMimeType === 'application/vnd.sunbird.questionset') {
+      this.deleteContentOrQuestionSet(this.currentContentId);
       return;
     }
 
@@ -373,7 +373,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
       .subscribe((response) => {
         const count = _.get(response, 'result.count');
         if (!count) {
-          this.deleteContent(this.currentContentId);
+          this.deleteContentOrQuestionSet(this.currentContentId);
           return;
         }
         this.showCollectionLoader = true;
@@ -455,14 +455,20 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
   }
 
   /**
-  * This method deletes content using the content id.
+  * This method deletes content or question set based on mime type
   */
-  deleteContent(contentId) {
+  deleteContentOrQuestionSet(contentId) {
     this.showLoader = true;
     this.loaderMessage = {
       'loaderMessage': this.resourceService.messages.stmsg.m0034,
     };
-    this.delete(contentId).subscribe(
+
+    // Choose the appropriate delete method based on mime type
+    const deleteObservable = this.contentMimeType === 'application/vnd.sunbird.questionset' 
+      ? this.deleteQuestionSet(contentId)
+      : this.delete(contentId);
+
+    deleteObservable.subscribe(
       (data: ServerResponse) => {
         this.showLoader = false;
         this.allContent = this.removeAllMyContent(this.allContent, contentId);

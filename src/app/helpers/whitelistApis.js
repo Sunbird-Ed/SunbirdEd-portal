@@ -1671,6 +1671,13 @@ const API_LIST = {
         ROLE.CONTENT_REVIEWER
       ]
     },
+    '/action/questionset/v2/retire/:do_id': {
+      description: 'QuestionSet retire',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR
+      ]
+    },
     '/action/questionset/v2/read/:do_id': {
       description: 'Question read',
       checksNeeded: ['ROLE_CHECK'],
@@ -2043,6 +2050,7 @@ const API_LIST = {
     '/action/questionset/v2/reject/:do_id',
     '/action/questionset/v2/read/:do_id',
     '/action/questionset/v2/hierarchy/:do_id',
+    '/action/questionset/v2/retire/:do_id',
     '/content/questionset/v2/copy/:do_id',
     '/action/question/v2/read/:do_id',
     '/action/question/v2/review/:do_id',
