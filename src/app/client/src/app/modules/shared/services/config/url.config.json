@@ -348,7 +348,8 @@
       "READ": "questionset/v2/read",
       "HIERARCHY_READ": "questionset/v2/hierarchy",
       "COPY": "questionset/v2/copy",
-      "LIST_API": "api/question/v2/list"
+      "LIST_API": "api/question/v2/list",
+      "RETIRE": "questionset/v2/retire"
     },
     "OBJECTCATEGORY": {
       "READ": "object/category/definition/v1/read"
