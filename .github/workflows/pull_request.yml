@@ -18,25 +18,9 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Restore node_modules cache
-        id: cache
-        uses: actions/cache@v4
-        with:
-          path: src/app/client/node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-node-modules-
-
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --prefer-offline --no-progress --production=true
         working-directory: src/app/client
-      
-      - name: Save node_modules cache
-        if: steps.cache.outputs.cache-hit != 'true'
-        uses: actions/cache@v4
-        with:
-          path: src/app/client/node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Run lint
         run: yarn lint
@@ -57,25 +41,9 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Restore node_modules cache
-        id: cache
-        uses: actions/cache@v4
-        with:
-          path: src/app/client/node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-node-modules-
-      
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --prefer-offline --no-progress --production=true
         working-directory: src/app/client
-      
-      - name: Save node_modules cache
-        if: steps.cache.outputs.cache-hit != 'true'
-        uses: actions/cache@v4
-        with:
-          path: src/app/client/node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Run test shard ${{ matrix.shard }}
         run: yarn test:ci -- --shard=${{ matrix.shard }}/8
