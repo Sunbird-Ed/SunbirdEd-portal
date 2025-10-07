@@ -377,7 +377,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
       this.deleteModal = modal;
     }
     this.showCollectionLoader = false;
-    if (this.contentMimeType === 'application/vnd.ekstep.content-collection' || this.contentMimeType === 'application/vnd.sunbird.questionset') {
+    if (this.contentMimeType === this.config.editorConfig.COLLECTION_EDITOR.mimeCollection || this.contentMimeType === this.config.editorConfig.QUESTIONSET_EDITOR.mimeCollection) {
       this.deleteContent(this.currentContentId);
       return;
     }

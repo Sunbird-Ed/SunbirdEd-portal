@@ -332,7 +332,7 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
                     'loaderMessage': this.resourceService.messages.stmsg.m0034,
                 };
                 // Choose the appropriate delete method based on mime type
-                const deleteObservable = this.contentMimeType === 'application/vnd.sunbird.questionset' 
+                const deleteObservable = this.contentMimeType === this.config.editorConfig.QUESTIONSET_EDITOR.mimeCollection
                   ? this.deleteQuestionSet(contentIds)
                   : this.delete(contentIds);
 
