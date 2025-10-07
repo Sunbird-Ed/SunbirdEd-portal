@@ -378,14 +378,14 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
     }
     this.showCollectionLoader = false;
     if (this.contentMimeType === 'application/vnd.ekstep.content-collection' || this.contentMimeType === 'application/vnd.sunbird.questionset') {
-      this.deleteContentOrQuestionSet(this.currentContentId);
+      this.deleteContent(this.currentContentId);
       return;
     }
     this.getLinkedCollections(this.currentContentId)
       .subscribe((response) => {
         const count = _.get(response, 'result.count');
         if (!count) {
-          this.deleteContentOrQuestionSet(this.currentContentId);
+          this.deleteContent(this.currentContentId);
           return;
         }
         this.showCollectionLoader = true;
@@ -470,7 +470,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
   /**
   * This method deletes content or question set based on mime type
   */
-  public deleteContentOrQuestionSet(contentIds) {
+  public deleteContent(contentIds) {
         this.showLoader = true;
         this.loaderMessage = {
           'loaderMessage': this.resourceService.messages.stmsg.m0034,
