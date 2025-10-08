@@ -344,7 +344,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       if (!isOldThemeDisabled) {
         this.showSwitchTheme = true;
       }
-      if (isOldThemeDisabled && layoutType !== 'joy') {
+      if(isOldThemeDisabled && layoutType !== 'joy') {
         this.layoutService.initiateSwitchLayout();
       }
     })
@@ -381,7 +381,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     } else {
       delete this.queryParam.key; // Or handle empty search if needed
     }
-
     // Preserve the returnTo and isInside parameters for back button functionality
     if (currentQueryParams.returnTo) {
       this.queryParam.returnTo = currentQueryParams.returnTo;
@@ -389,7 +388,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     if (currentQueryParams.isInside) {
       this.queryParam.isInside = currentQueryParams.isInside;
     }
-
     const url = this.router.url.split('?')[0];
     let redirectUrl;
     if (url.indexOf('/explore-course') !== -1) {
