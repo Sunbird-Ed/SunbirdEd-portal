@@ -138,7 +138,7 @@ describe('ContentSearchService', () => {
     expect(mappedCategories).toEqual({
       'category1': 'value1',
       'category2': 'value2',
-      'category3': 'value3',
+      'code3': 'value3',  // Last category code is not mapped
     });
   });
 

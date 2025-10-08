@@ -34,11 +34,12 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   public ownershipType: Array<string>;
   public queryParams: object;
   public videoMaxSize: any;
-  public fwCategoriAsNames: any;
+  public frameworkCategories: any;
+  public fwCategoriesAsNames: any;
   contentEditorURL: string = (<HTMLInputElement>document.getElementById('contentEditorURL')) ?
-    (<HTMLInputElement>document.getElementById('contentEditorURL')).value : '';
+  (<HTMLInputElement>document.getElementById('contentEditorURL')).value : '';
   cloudProvider: string = (<HTMLInputElement>document.getElementById('cloudProvider')) ?
-    (<HTMLInputElement>document.getElementById('cloudProvider')).value : '';
+  (<HTMLInputElement>document.getElementById('cloudProvider')).value : '';
 
 
   /**
@@ -59,14 +60,15 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     this.portalVersion = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
     this.videoMaxSize = (<HTMLInputElement>document.getElementById('videoMaxSize')) ?
       (<HTMLInputElement>document.getElementById('videoMaxSize')).value : '100';
-    this.fwCategoriAsNames = this.cslFrameworkService?.getAllFwCatName();
+    this.fwCategoriesAsNames = this.cslFrameworkService?.getAllFwCatName();
   }
   ngOnInit() {
     this.userProfile = this.userService.userProfile;
     this.routeParams = this.activatedRoute.snapshot.params;
     this.queryParams = this.activatedRoute.snapshot.queryParams;
     this.disableBrowserBackButton();
-    this.getDetails().pipe(first(),
+    this.setFrameworkCategories();
+    this.getDetails().pipe( first(),
       tap(data => {
         if (data.tenantDetails) {
           this.logo = data.tenantDetails.logo;
@@ -93,24 +95,48 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
           this.closeModal();
         });
   }
+  
+  private setFrameworkCategories() {
+    const categories = this.cslFrameworkService.getFrameworkCategoriesObject();
+    if (categories && _.size(categories)) {
+      this.frameworkCategories = _.map(categories, category => ({
+        code: category.code,
+        label: category.label
+      }));
+    }
+  }
+  
   private getDetails() {
     const lockInfo = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     const allowedEditState = ['draft', 'allcontent', 'collaborating-on', 'uploaded'].includes(this.routeParams.state);
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
+
+
     if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
-      return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
-        this.editorService.getOwnershipType(), this.lockContent(), this.userService.userOrgDetails$).
-        pipe(map(data => ({
-          tenantDetails: data[0].tenantData,
-          collectionDetails: data[1], ownershipType: data[2]
-        })));
+      return combineLatest(
+        this.tenantService.tenantData$, 
+        this.getContentDetails(),
+        this.editorService.getOwnershipType(), 
+        this.lockContent(), 
+        this.userService.userOrgDetails$
+      ).
+      pipe(map(data => ({ 
+        tenantDetails: data[0].tenantData,
+        collectionDetails: data[1], 
+        ownershipType: data[2],
+      })));
     } else {
-      return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
-        this.editorService.getOwnershipType(), this.userService.userOrgDetails$).
-        pipe(map(data => ({
-          tenantDetails: data[0].tenantData,
-          collectionDetails: data[1], ownershipType: data[2]
-        })));
+      return combineLatest(
+        this.tenantService.tenantData$, 
+        this.getContentDetails(),
+        this.editorService.getOwnershipType(), 
+        this.userService.userOrgDetails$,
+      ).
+      pipe(map(data => ({ 
+        tenantDetails: data[0].tenantData,
+        collectionDetails: data[1], 
+        ownershipType: data[2]
+      })));
     }
   }
   lockContent() {
@@ -223,7 +249,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     window.config.lock = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     window.config.videoMaxSize = this.videoMaxSize;
     window.config.cloudStorage.provider = this.cloudProvider;
-    window.config.contentFields = this.fwCategoriAsNames.join();
+    window.config.contentFields = this.fwCategoriesAsNames.join();
+    window.config.fwCategoryDetails = this.frameworkCategories;
   }
   /**
    * checks the permission using state, status and userId

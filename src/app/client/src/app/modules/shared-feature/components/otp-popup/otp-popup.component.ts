@@ -16,7 +16,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
 
   @Input() otpData: any;
   @Input() redirectToLogin: boolean;
-  @Input() delete = false
+  @Input() delete=false
   @Output() redirectToParent = new EventEmitter();
   @Output() verificationSuccess = new EventEmitter();
   @Output() closeContactForm = new EventEmitter();
@@ -38,12 +38,12 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
   resendOtpInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   cancelInteractEdata: IInteractEventEdata;
-  submitUserDeleteInteractEdata: IInteractEventEdata;
+  submitUserDeleteInteractEdata:IInteractEventEdata;
   remainingAttempt: 'string';
   constructor(public resourceService: ResourceService, public tenantService: TenantService,
-    public deviceDetectorService: DeviceDetectorService, public otpService: OtpService, public userService: UserService,
-    public utilService: UtilService, public configService: ConfigService,
-    public toasterService: ToasterService, public navigationhelperService: NavigationHelperService) {
+              public deviceDetectorService: DeviceDetectorService, public otpService: OtpService, public userService: UserService,
+              public utilService: UtilService, public configService: ConfigService,
+              public toasterService: ToasterService,public navigationhelperService: NavigationHelperService) {
   }
 
   ngOnInit() {

@@ -144,7 +144,7 @@ export class MainFooterComponent implements OnInit, AfterViewInit, OnDestroy {
       // For iGot the URL is direclty taken; no UTM needed
       this.redirect(playstoreLink);
     } else {
-      let applink = this.configService.appConfig.UrlLinks.downloadDikshaApp;
+      let applink = this.configService.appConfig.UrlLinks.downloadSunbirdApp;
       const sendUtmParams = _.get(this.activatedRoute, 'firstChild.firstChild.snapshot.data.sendUtmParams');
       const utm_source = this.userService.slug ? `${this.instance}-${this.userService.slug}` : this.instance;
       if (sendUtmParams) {
@@ -152,17 +152,10 @@ export class MainFooterComponent implements OnInit, AfterViewInit, OnDestroy {
           (params, queryParams) => {
             return { ...params, ...queryParams };
           }).subscribe((params) => {
-            if (params.dialCode) {
-              const source = params.source || 'search';
-              applink = `${applink}&referrer=utm_source=${utm_source}&utm_medium=${source}&utm_campaign=dial&utm_term=${params.dialCode}`;
-            } else {
-              applink = `${applink}&referrer=utm_source=${utm_source}&utm_medium=get&utm_campaign=redirection`;
-            }
             this.redirect(applink.replace(/\s+/g, ''));
           });
       } else {
         const path = this.router.url.split('/')[1];
-        applink = `${applink}&referrer=utm_source=${utm_source}&utm_medium=${path}`;
         this.redirect(applink);
       }
     }

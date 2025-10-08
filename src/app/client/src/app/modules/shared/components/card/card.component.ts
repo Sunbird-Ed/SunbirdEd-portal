@@ -20,6 +20,20 @@ export class CardComponent {
   hover: Boolean;
   isConnected: Boolean = navigator.onLine;
   route: string;
+  
+  get categories(): string[] {
+    const fwCategoryObject = localStorage.getItem('fwCategoryObject');
+    if (fwCategoryObject) {
+      try {
+        const categories = JSON.parse(fwCategoryObject);
+        return Object.keys(categories).map(key => categories[key].code);
+      } catch (e) {
+        console.error('Error parsing framework categories:', e);
+        return [];
+      }
+    }
+    return [];
+  }
 
   constructor(public resourceService: ResourceService, private router: Router) {
     this.resourceService = resourceService;

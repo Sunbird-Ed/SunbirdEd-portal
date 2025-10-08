@@ -67,8 +67,8 @@ export const mockListApiResponse = {
     'reports': [
         {
             'reportid': 'd0fd5dfb-6bcf-4382-ba6d-fbb07552660d',
-            'title': 'DIKSHA Usage Report',
-            'description': 'This report provides details of DIKSHA usage',
+            'title': 'SUNBIRD Usage Report',
+            'description': 'This report provides details of SUNBIRD usage',
             'authorizedroles': [
                 'ORG_ADMIN'
             ],
@@ -162,7 +162,7 @@ export const mockParameterizedReports = {
                             {
                                 'fill': false,
                                 'label': 'app',
-                                'dataExpr': 'prod.diksha.app'
+                                'dataExpr': 'prod.sunbird.app'
                             }
                         ],
                         'chartType': 'line',

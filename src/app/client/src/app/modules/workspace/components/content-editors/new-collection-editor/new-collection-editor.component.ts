@@ -213,7 +213,6 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
       }
       if (!this.showQuestionEditor) {
         this.setEditorConfig();
-        this.editorConfig.context['framework'] = _.get(this.collectionDetails, 'framework');
         if (_.get(this.collectionDetails, 'primaryCategory') && _.get(this.collectionDetails, 'primaryCategory') !== 'Curriculum Course') {
           this.editorConfig.context['targetFWIds'] = _.get(this.collectionDetails, 'targetFWIds');
         }
@@ -342,9 +341,13 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
     };
     this.editorConfig.config.showAddCollaborator = true;
     this.editorConfig.config.publicStorageAccount = this.publicStorageAccount;
+    let framework = this.collectionDetails.framework;
+    if (!framework) {
+        framework = this.frameworkService['_channelData'].defaultFramework || localStorage.getItem('selectedFramework');
+    }
+    this.editorConfig.context.framework = framework;
     if (this.showQuestionEditor) {
       this.editorConfig.config.showAddCollaborator = false;
-      this.editorConfig.context.framework = this.collectionDetails.framework || this.frameworkService['_channelData'].defaultFramework;
     }
     this.editorConfig.config = _.assign(this.editorConfig.config, this.hierarchyConfig);
   }
@@ -364,7 +367,7 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
   }
 
   private getEditorMode() {
-    const contentStatus = this.collectionDetails.status.toLowerCase();
+    const contentStatus = ((this.routeParams?.contentStatus || this.collectionDetails.status) ?? '').toLowerCase();
     if (contentStatus === 'draft' || contentStatus === 'live' || contentStatus === 'flagdraft'
         || contentStatus === 'unlisted') {
       return 'edit';

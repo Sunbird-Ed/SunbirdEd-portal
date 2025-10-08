@@ -155,7 +155,7 @@ let optionalEnvVariables = {
     // PhraseApp configuration
     PHRASE_APP: {
         phrase_authToken: env.sunbird_phraseApp_token || '',
-        phrase_project: env.phrase_project || 'DIKSHA Portal,Sunbird Creation',
+        phrase_project: env.phrase_project || 'SUNBIRD Portal,Sunbird Creation',
         phrase_locale: env.phrase_locale || ['en-IN', 'bn-IN', 'hi-IN', 'kn-IN', 'mr-IN', 'ur-IN', 'te-IN', 'ta-IN'],
         phrase_fileformat: env.phrase_fileformat || 'json'
     },
@@ -295,5 +295,6 @@ let optionalEnvVariables = {
     PORTAL_CDN_URL: env.sunbird_portal_cdn_url || '',
     sunbird_portal_preview_cdn_url: env.sunbird_portal_preview_cdn_url,
     sunbird_portal_cdn_blob_url: env.sunbird_portal_cdn_blob_url || '',
+    NLWEB_BASE_URL: env.sunbird_nlweb_api_url,
 }
 module.exports = optionalEnvVariables;

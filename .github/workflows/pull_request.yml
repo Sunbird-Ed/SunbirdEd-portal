@@ -1,0 +1,50 @@
+name: Code Quality Checks
+
+on:
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  lint:
+    name: Run Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: yarn install --prefer-offline --no-progress
+        working-directory: src/app/client
+
+      - name: Run lint
+        run: yarn lint
+        working-directory: src/app/client
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        shard: [1, 2, 3, 4, 5, 6, 7, 8]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: yarn install --prefer-offline --no-progress
+        working-directory: src/app/client
+
+      - name: Run test shard ${{ matrix.shard }}
+        run: yarn test:ci -- --shard=${{ matrix.shard }}/8
+        working-directory: src/app/client

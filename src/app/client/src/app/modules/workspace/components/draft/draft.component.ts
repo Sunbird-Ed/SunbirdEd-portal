@@ -4,6 +4,8 @@ import {combineLatest } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService, FrameworkService } from '@sunbird/core';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
+
 import {
     ServerResponse, PaginationService, ConfigService, ToasterService, IPagination,
     ResourceService, ILoaderMessage, INoResultMessage, ICard, NavigationHelperService
@@ -146,6 +148,11 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
 
     query: string;
     sort: object;
+    
+    /**
+    * To store content mime type for deletion
+    */
+    contentMimeType: string;
     /**
       * To check if questionSet enabled
      */
@@ -167,7 +174,8 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
         activatedRoute: ActivatedRoute,
         route: Router, userService: UserService,
         toasterService: ToasterService, resourceService: ResourceService,
-        config: ConfigService, public navigationhelperService: NavigationHelperService) {
+        config: ConfigService, public navigationhelperService: NavigationHelperService,
+        public cslFrameworkService: CslFrameworkService) {
         super(searchService, workSpaceService, userService);
         this.paginationService = paginationService;
         this.route = route;
@@ -175,6 +183,7 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
         this.toasterService = toasterService;
         this.resourceService = resourceService;
         this.config = config;
+        this.cslFrameworkService = cslFrameworkService;
         this.state = 'draft';
         this.loaderMessage = {
             'loaderMessage': this.resourceService.messages.stmsg.m0011,
@@ -211,6 +220,16 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
         this.draftList = [];
         this.totalCount = 0;
         this.noResult = false;
+        const frameworkCategories = this.cslFrameworkService.getFrameworkCategoriesObject() as Array<any>;
+        
+        const dynamicFilters = frameworkCategories.reduce((filters, category) => {
+            const code = category.code;
+            if (bothParams['queryParams'][code]) {
+                filters[code] = bothParams['queryParams'][code];
+            }
+            return filters;
+          }, {} as Record<string, any>);
+
         const primaryCategories = _.compact(_.concat(this.frameworkService['_channelData'].contentPrimaryCategories, this.frameworkService['_channelData'].collectionPrimaryCategories));
         if (bothParams['queryParams'].sort_by) {
             const sort_by = bothParams['queryParams'].sort_by;
@@ -227,10 +246,7 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
                 createdBy: this.userService.userid,
                 // tslint:disable-next-line:max-line-length
                 primaryCategory: _.get(bothParams, 'queryParams.primaryCategory') || (!_.isEmpty(primaryCategories) ? primaryCategories : this.config.appConfig.WORKSPACE.primaryCategory),
-                board: bothParams['queryParams'].board,
-                subject: bothParams['queryParams'].subject,
-                medium: bothParams['queryParams'].medium,
-                gradeLevel: bothParams['queryParams'].gradeLevel
+                ...dynamicFilters
             },
             limit: this.pageLimit,
             offset: (this.pageNumber - 1) * (this.pageLimit),
@@ -285,6 +301,7 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
                     type: param.data.metaData.contentType,
                     ver: '1.0'
                 };
+                this.contentMimeType = param.data.metaData.mimeType;
                 this.deleteConfirmModal(param.data.metaData.identifier);
             } else {
                 this.workSpaceService.navigateToContent(param.data.metaData, this.state);
@@ -314,7 +331,12 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
                 this.loaderMessage = {
                     'loaderMessage': this.resourceService.messages.stmsg.m0034,
                 };
-                this.delete(contentIds).subscribe(
+                // Choose the appropriate delete method based on mime type
+                const deleteObservable = this.contentMimeType === this.config.editorConfig.QUESTIONSET_EDITOR.mimeCollection
+                  ? this.deleteQuestionSet(contentIds)
+                  : this.delete(contentIds);
+
+                deleteObservable.subscribe(
                     (data: ServerResponse) => {
                         this.showLoader = false;
                         this.draftList = this.removeContent(this.draftList, contentIds);

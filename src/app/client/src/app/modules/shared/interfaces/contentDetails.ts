@@ -5,7 +5,7 @@ export interface ContentDetails {
     batchId?: string;
 }
 
-export interface ContentData {
+export interface ContentDataBase {
     body: any;
     mimeType: string;
     contentType: string;
@@ -47,6 +47,10 @@ export interface ContentData {
     originData?: any;
     primaryCategory?: string;
     additionalCategories?: Array<string>;
+}
+
+export interface ContentData extends ContentDataBase {
+    [key: string]: any;
 }
 
 export interface ContentCreditsData {

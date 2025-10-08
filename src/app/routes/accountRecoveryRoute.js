@@ -46,8 +46,8 @@ module.exports = (app) => {
           URL: req.url,
           body: JSON.stringify(req.body),
           msg: 'portal - reset password sfailed',
-          uuid: _get(req,'headers.x-msgid'),
-          did:_get(req,'headers.x-device-id'),
+          uuid: _.get(req,'headers.x-msgid'),
+          did: _.get(req,'headers.x-device-id'),
           error: JSON.stringify(err)
         });
       }
@@ -70,6 +70,7 @@ module.exports = (app) => {
         try {
           proxyUtils.addReqLog(req);
           const data = JSON.parse(proxyResData.toString('utf8'));
+          logger.info({msg: "verify response", data})
           if (data.responseCode === 'OK') {
             req.session.otpVerifiedFor = req.body;
             const _encrypt = {
@@ -78,12 +79,14 @@ module.exports = (app) => {
             if (req.body.request.userId) {
               _encrypt['id'] = req.body.request.userId
             }
+            logger.info({msg: "before encryption", _encrypt})
             var timeInMin = 5;
             var validator = encriptWithTime(_encrypt, timeInMin);
             const reqType = req.body.request.type;
             const dataToEncrypt = {};
             dataToEncrypt[reqType] = req.body.request.key;
             req.session.otpEncryptedInfo = encrypt(JSON.stringify(dataToEncrypt));
+            logger.info({msg: "after encryption", validator})
             data['reqData'] = validator;
           }
           return data;

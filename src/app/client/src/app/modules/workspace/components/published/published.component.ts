@@ -13,6 +13,7 @@ import * as _ from 'lodash-es';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { combineLatest, forkJoin } from 'rxjs';
 import { ContentIDParam } from '../../interfaces/delteparam';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 /**
  * Interface for passing the configuartion for modal
@@ -168,6 +169,15 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
    * To check if questionSet enabled
    */
    public isQuestionSetEnabled: boolean;
+  public categoryCodes: string[] = [];
+
+  /**
+   * Helper method to check if a value is an array (for use in templates)
+   */
+  public isArray(value: any): boolean {
+    return Array.isArray(value);
+  }
+
   /**
     * Constructor to create injected service(s) object
     Default method of Draft Component class
@@ -187,7 +197,8 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
     config: ConfigService, public navigationhelperService: NavigationHelperService,
-    public coursesService: CoursesService) {
+    public coursesService: CoursesService,
+    public cslFrameworkService: CslFrameworkService) {
     super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
@@ -196,6 +207,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
     this.resourceService = resourceService;
     this.config = config;
     this.state = 'published';
+    this.cslFrameworkService = cslFrameworkService;
   }
 
   ngOnInit() {
@@ -266,6 +278,15 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
     } else {
       this.sort = { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn };
     }
+    const frameworkCategories = this.cslFrameworkService.getFrameworkCategoriesObject() as Array<any>;
+
+    const dynamicFilters = frameworkCategories.reduce((filters, category) => {
+      const code = category.code;
+      if (bothParams['queryParams'][code]) {
+        filters[code] = bothParams['queryParams'][code];
+      }
+      return filters;
+    }, {} as Record<string, any>);
     // tslint:disable-next-line:max-line-length
     const primaryCategories = _.compact(_.concat(this.frameworkService['_channelData'].contentPrimaryCategories, this.frameworkService['_channelData'].collectionPrimaryCategories));
     const searchParams = {
@@ -276,10 +297,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
         // tslint:disable-next-line:max-line-length
         primaryCategory: _.get(bothParams, 'queryParams.primaryCategory') || (!_.isEmpty(primaryCategories) ? primaryCategories : this.config.appConfig.WORKSPACE.primaryCategory),
         // mimeType: this.config.appConfig.WORKSPACE.mimeType,
-        board: bothParams['queryParams'].board,
-        subject: bothParams['queryParams'].subject,
-        medium: bothParams['queryParams'].medium,
-        gradeLevel: bothParams['queryParams'].gradeLevel
+        ...dynamicFilters
       },
       limit: this.pageLimit,
       offset: (this.pageNumber - 1) * (this.pageLimit),
@@ -359,7 +377,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
       this.deleteModal = modal;
     }
     this.showCollectionLoader = false;
-    if (this.contentMimeType === 'application/vnd.ekstep.content-collection') {
+    if (this.contentMimeType === this.config.editorConfig.COLLECTION_EDITOR.mimeCollection || this.contentMimeType === this.config.editorConfig.QUESTIONSET_EDITOR.mimeCollection) {
       this.deleteContent(this.currentContentId);
       return;
     }
@@ -387,21 +405,52 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
               channelMapping[channelId] = channelName;
             });
 
+            const frameworkCategories = this.cslFrameworkService.getFrameworkCategoriesObject();
+            
             _.forEach(collections, collection => {
-              const obj = _.pick(collection, ['contentType', 'board', 'medium', 'name', 'gradeLevel', 'subject', 'channel']);
-              obj['channel'] = channelMapping[obj.channel];
+              const dynamicFields = {};
+              
+              if (frameworkCategories && Array.isArray(frameworkCategories)) {
+                const categoryCodes = frameworkCategories.map(category => ({code: category.code, collectionCode: category.alternativeCode}));
+
+                categoryCodes.forEach(category => {
+                  if (collection[category.code] || collection[category.collectionCode]) {
+                    dynamicFields[category.code] = collection[category.code] || collection[category.collectionCode];
+                  }
+                });
+              }
+              
+              const requiredFields = {
+                contentType: collection.contentType,
+                name: collection.name,
+                channel: channelMapping[collection.channel]
+              };
+              
+              const obj = { ...requiredFields, ...dynamicFields };
               this.collectionData.push(obj);
           });
 
-          this.headers = {
-             type: 'Type',
-             name: 'Name',
-             subject: 'Subject',
-             grade: 'Grade',
-             medium: 'Medium',
-             board: 'Board',
-             channel: 'Tenant Name'
-             };
+          const requiredHeaders = {
+            type: 'Type',
+            name: 'Name',
+            channel: 'Tenant Name'
+          };
+          
+          this.categoryCodes = [];
+          const dynamicHeaders = {};
+          
+          if (frameworkCategories && Array.isArray(frameworkCategories)) {
+            frameworkCategories.forEach((category: any) => {
+              if (category.code) {
+                this.categoryCodes.push(category.code);
+                dynamicHeaders[category.code] = category.label || 
+                  category.code.charAt(0).toUpperCase() + category.code.slice(1);
+              }
+            });
+          }
+          
+          this.headers = { ...requiredHeaders, ...dynamicHeaders };
+          
              if (!_.isUndefined(this.deleteModal)) {
               this.deleteModal.deny();
             }
@@ -419,14 +468,20 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
   }
 
   /**
-  * This method deletes content using the content id.
+  * This method deletes content or question set based on mime type
   */
   public deleteContent(contentIds) {
         this.showLoader = true;
         this.loaderMessage = {
           'loaderMessage': this.resourceService.messages.stmsg.m0034,
         };
-        this.delete(contentIds).subscribe(
+
+        // Choose the appropriate delete method based on mime type
+        const deleteObservable = this.contentMimeType === 'application/vnd.sunbird.questionset' 
+          ? this.deleteQuestionSet(contentIds)
+          : this.delete(contentIds);
+
+        deleteObservable.subscribe(
           (data: ServerResponse) => {
             this.showLoader = false;
             this.publishedContent = this.removeContent(this.publishedContent, contentIds);
@@ -437,7 +492,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
           },
           (err: ServerResponse) => {
             this.showLoader = false;
-            this.toasterService.success(this.resourceService.messages.fmsg.m0022);
+            this.toasterService.error(this.resourceService.messages.fmsg.m0022);
           }
         );
         if (!_.isUndefined(this.deleteModal)) {

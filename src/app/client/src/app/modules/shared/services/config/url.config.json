@@ -144,7 +144,9 @@
       "TNC_LIST": "data/v1/system/settings/list",
       "ORG_ADMIN_URL": "data/v1/system/settings/get/orgAdminTnc",
       "GROUPS_TNC": "data/v1/system/settings/get/groupsTnc",
-      "REPORT_VIEWER_TNC": "data/v1/system/settings/get/reportViewerTnc"
+      "REPORT_VIEWER_TNC": "data/v1/system/settings/get/reportViewerTnc",
+      "ENABLE_DELETE_ACCOUNT": "data/v1/system/settings/get/enableDeleteAccount",
+      "VERIFY_OTP_ON_DELETE": "data/v1/system/settings/get/verifyOtpOnDelete"
     },
     "COURSE_FRAMEWORK": {
       "COURSE_FRAMEWORKID": "data/v1/system/settings/get/courseFrameworkId"
@@ -346,7 +348,8 @@
       "READ": "questionset/v2/read",
       "HIERARCHY_READ": "questionset/v2/hierarchy",
       "COPY": "questionset/v2/copy",
-      "LIST_API": "api/question/v2/list"
+      "LIST_API": "api/question/v2/list",
+      "RETIRE": "questionset/v2/retire"
     },
     "OBJECTCATEGORY": {
       "READ": "object/category/definition/v1/read"
@@ -362,20 +365,22 @@
       "OBSERVATION_SUBMISSION_UPDATE": "observationSubmissions/mlsurvey/v1/update/",
       "GET_ASSESSMENT": "observations/mlsurvey/v1/assessment/",
       "OBSERVATION_REPORT_SOLUTION_LIST": "observationSubmissions/mlsurvey/v1/solutionList?",
-      "JOIN_PROGRAM": "programs/mlcore/v1/join",
-      "READ_PROGRAM": "users/mlcore/v1/solutions"
+      "JOIN_PROGRAM":"programs/mlcore/v1/join",
+      "READ_PROGRAM":"users/mlcore/v1/solutions"
     },
     "KENDRA": {
       "TARGETTED_ENTITY_TYPES": "users/mlcore/v1/targetedEntity/",
       "PRESIGNED_URLS": "cloud-services/mlcore/v1/files/preSignedUrls",
       "PROGRAMS_BY_PLATFORM_ROLES": "user-extension/mlcore/v1/programsByPlatformRoles",
       "SOLUTIONS_BY_PROGRAMID": "user-extension/mlcore/v1/solutions",
-      "DISTRICTS_AND_ORGANISATIONS": "resource/mlreports/v1/filtervalues"
+      "DISTRICTS_AND_ORGANISATIONS":"resource/mlreports/v1/filtervalues"
     },
     "DHITI": {
       "GENERIC_REPORTS": "reports/mlreports/v1/fetch",
       "ALL_EVIDENCE": "observations/mlreports/v1/listAllEvidences"
     },
-    "UCI": "/uci"
+    "UCI": "/uci",
+    "NLWEB_BASE_URL": "/nlweb/ask/proxy"
+
   }
 }

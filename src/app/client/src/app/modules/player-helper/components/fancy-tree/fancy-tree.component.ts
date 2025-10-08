@@ -5,11 +5,21 @@ import { TelemetryInteractDirective } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
 import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
 
+declare global {
+  interface Window {
+    restoreFancyTree?: () => boolean;
+  }
+}
+
 @Component({
   selector: 'app-fancy-tree',
   templateUrl: './fancy-tree.component.html'
 })
 export class FancyTreeComponent implements AfterViewInit {
+  // Constants for magic numbers
+  private static readonly RESTORATION_RETRY_DELAY = 100; // milliseconds
+  private static readonly FALLBACK_RETRY_DELAY = 500; // milliseconds
+
   @ViewChild('fancyTree', {static: true}) public tree: ElementRef;
   @Input() public nodes: any;
   @Input() public options: any;
@@ -42,13 +52,33 @@ export class FancyTreeComponent implements AfterViewInit {
       },
     };
     options = { ...options, ...this.options };
+    
+    // Enhanced fancytree initialization with fallback restoration
+    const initializeFancyTree = () => {
+      if ($ && $.fn && $.fn.fancytree) {
+        $(this.tree.nativeElement).fancytree(options);
+        if (this.options && this.options.showConnectors) {
+          $('.fancytree-container').addClass('fancytree-connectors');
+        }
+        return true;
+      } else {
+        // Try to restore fancytree if available
+        if (window.restoreFancyTree && window.restoreFancyTree()) {
+          setTimeout(() => initializeFancyTree(), FancyTreeComponent.RESTORATION_RETRY_DELAY);
+        } else {
+          console.error('FancyTree plugin not available and could not be restored');
+        }
+        return false;
+      }
+    };
+    
     this.lazzyLoadScriptService.loadScript('fancytree-all-deps.js').subscribe(() => {
-      $(this.tree.nativeElement).fancytree(options);
-      if (this.options.showConnectors) {
-        $('.fancytree-container').addClass('fancytree-connectors');
+      if (!initializeFancyTree()) {
+        // Fallback: try again after a short delay
+        setTimeout(() => initializeFancyTree(), FancyTreeComponent.FALLBACK_RETRY_DELAY);
       }
     }, err => {
-      console.error('loading fancy tree failed');
+      console.error('loading fancy tree failed', err);
     });
   }
 

@@ -252,10 +252,10 @@ export class ListAllReportsComponent implements OnInit {
 
     $(el).on('click', 'tbody tr td:not(.details-control)', (event) => {
       const rowData = masterTable && masterTable.row(event?.currentTarget).data();
-      if (_.get(rowData, 'reportid') && _.get(rowData, 'hashed_val') || (this.reportService.isUserSuperAdmin() && rowData?.hasOwnProperty('materialize'))) {
-        const reportid = _.get(rowData, 'reportid');
-        const hashed_val = _.get(rowData, 'hashed_val');
-        const materialize = _.get(rowData, 'materialize');
+      if (_.get(rowData, 'reportid') && _.get(rowData, 'hashed_val')  || (this.reportService.isUserSuperAdmin() && rowData?.hasOwnProperty('materialize'))) {
+        const reportid = _.get(rowData,'reportid');
+        const hashed_val = _.get(rowData,'hashed_val');
+        const materialize = _.get(rowData,'materialize');
         this.logTelemetry({ type: 'select-report', id: `${reportid}` });
         this.rowClickEventHandler(reportid, hashed_val, materialize || false);
       }

@@ -48,16 +48,16 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
   groupId: string;
   isQuestionSet = false;
   isDesktopApp = false;
-  isTypeCopyQuestionset: boolean = false;
+  isTypeCopyQuestionset:boolean = false;
   frameworkCategoriesList;
 
   @HostListener('window:beforeunload')
-  canDeactivate() {
-    // returning true will navigate without confirmation
-    // returning false will show a confirm dialog before navigating away
-    const deviceType = this.telemetryService.getDeviceType();
-    return deviceType === 'Desktop' && this.isQuestionSet && !this.isTypeCopyQuestionset ? false : true;
-  }
+    canDeactivate() {
+      // returning true will navigate without confirmation
+      // returning false will show a confirm dialog before navigating away
+      const deviceType = this.telemetryService.getDeviceType();
+      return deviceType === 'Desktop' && this.isQuestionSet && !this.isTypeCopyQuestionset ? false : true;
+    }
 
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,

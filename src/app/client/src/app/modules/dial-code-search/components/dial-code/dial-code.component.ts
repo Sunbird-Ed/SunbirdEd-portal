@@ -41,7 +41,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   public selectChapterTelemetryCdata: Array<{}> = [];
   public selectChapterInteractEdata: IInteractEventEdata;
   public showMobilePopup = false;
-  public isRedirectToDikshaApp = false;
+  public isRedirectToSunbirdApp = false;
   public closeMobilePopupInteractData: any;
   public appMobileDownloadInteractData: any;
   public dialSearchSource: string;
@@ -90,7 +90,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
         const { constantData, metaData, dynamicFields } = this.configService.appConfig.GetPage;
         this.searchResults = this.utilService.getDataForCard(linkedContents, constantData, dynamicFields, metaData);
         if (_.get(this.searchResults[0], 'contentType') === 'TextBook') {
-          sessionStorage.setItem('l1parent', this.searchResults[0].identifier);
+          sessionStorage.setItem('l1parent',  this.searchResults[0].identifier);
         }
         this.appendItems(0, this.itemsToLoad);
         if (this.searchResults.length === 1) {
@@ -296,18 +296,16 @@ export class DialCodeComponent implements OnInit, OnDestroy {
     if (localStorage) {
       localStorage.setItem('showMobilePopUp', 'true');
     }
-    if (!this.isRedirectToDikshaApp) {
+    if (!this.isRedirectToSunbirdApp) {
       this.telemetryService.interact(this.closeMobilePopupInteractData);
       (document.querySelector('.mobile-app-popup') as HTMLElement).style.bottom = '-999px';
       (document.querySelector('.mobile-popup-dimmer') as HTMLElement).style.display = 'none';
     }
   }
-  redirectToDikshaApp() {
-    this.isRedirectToDikshaApp = true;
+  redirectToSunbirdApp() {
+    this.isRedirectToSunbirdApp = true;
     this.telemetryService.interact(this.appMobileDownloadInteractData);
-    let applink = this.configService.appConfig.UrlLinks.downloadDikshaApp;
-    const utm_source = this.userService.slug ? `diksha-${this.userService.slug}` : 'diksha';
-    applink = `${applink}&utm_source=${utm_source}&utm_medium=${this.dialSearchSource}&utm_campaign=dial&utm_term=${this.dialCode}`;
+    const applink = this.configService.appConfig.UrlLinks.downloadSunbirdApp;
     window.location.href = applink.replace(/\s+/g, '');
   }
   setTelemetryData() {

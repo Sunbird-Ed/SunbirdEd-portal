@@ -16,7 +16,7 @@ export const Response = {
     count: 5,
     data: [
       {
-        name: 'Enrollment challenges in DIKSHA Courses-1621768529433',
+        name: 'Enrollment challenges in SUNBIRD Courses-1621768529433',
         contentType: 'Observation',
         metaData: {
           identifier: '60aa395289c54c29e61e51e0',
@@ -30,7 +30,7 @@ export const Response = {
         subject: ['School development Program'],
       },
       {
-        name: 'Enrollment challenges in DIKSHA Courses-1621842462039',
+        name: 'Enrollment challenges in SUNBIRD Courses-1621842462039',
         contentType: 'Observation',
         metaData: {
           identifier: '60ab5a1e5f71ce040512ca3f',

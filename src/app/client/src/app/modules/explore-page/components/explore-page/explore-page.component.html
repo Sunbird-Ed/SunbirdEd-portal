@@ -46,7 +46,7 @@
           </div>
 
           <!-- Template for displaying sections based on form configuration -->
-          <div *ngIf="_currentPageData?.sections && _currentPageData?.isEnabled" aria-label="User Preferences">
+          <!-- <div *ngIf="_currentPageData?.sections && _currentPageData?.isEnabled" aria-label="User Preferences">
             <div *ngIf="getSelectedTab() === 'home'" (click)="showEdit = !showEdit" class="sb-section-preference"
               tabindex="0">
               <div class="preference">
@@ -58,25 +58,34 @@
                 </p>
                 <p>
                   <span *ngFor="let category of transformUserPreference" class="mr-24">
-                    <span>{{ (resourceService?.frmelmnts?.lbl[category?.code] | transposeTerms: resourceService?.frmelmnts?.lbl[category?.code] : resourceService?.selectedLang) || category?.labels }}:
-                    </span>
-                    <span class="font-weight-bold mb-8" *ngIf="category?.values?.length > 1">{{category?.values[0]}}
-                      ...+ {{category?.values?.length-1}}</span>
-                    <span class="font-weight-bold mb-8"
-                      *ngIf="category?.values?.length === 1">{{category?.values[0]}}</span>
+                  <span>{{ (resourceService?.frmelmnts?.lbl[category?.code] | transposeTerms: resourceService?.frmelmnts?.lbl[category?.code] : resourceService?.selectedLang) || category?.labels }}:
+                  </span>
+                  <span class="font-weight-bold mb-8" *ngIf="category?.values?.length > 1">{{category?.values[0]}} ...+ {{category?.values?.length-1}}</span>
+                    <span class="font-weight-bold mb-8" *ngIf="category?.values?.length === 1">{{category?.values[0]}}</span>
                   </span>
                 </p>
               </div>
               <button
                 class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border">{{resourceService?.frmelmnts?.lbl?.changePreferences}}</button>
             </div>
-          </div>
+          </div> -->
           <div *ngFor="let section of facetSections">
             <div
               *ngIf="getSelectedTab() === 'home' && section?.section?.facetKey === 'ContinueLearning' && enrolledSection?.contents?.length && isUserLoggedIn()"
               class="sb-library-cards relative9">
               <div class="twelve wide column relative9">
                 <app-page-section [hideProgress]="true" (visits)="prepareVisits($event)" [section]="enrolledSection"
+                  (playEvent)="playEnrolledContent($event, 'My courses')" (viewAll)="viewAll($event)"
+                  [layoutConfiguration]="layoutConfiguration">
+                </app-page-section>
+              </div>
+              <hr class="section-hr my-32" />
+            </div>
+              <div
+              *ngIf="getSelectedTab() === 'home' && section?.section?.facetKey === 'ContinueLearning' && completedCourseSection?.contents?.length && isUserLoggedIn()"
+              class="sb-library-cards relative9">
+              <div class="twelve wide column relative9">
+                <app-page-section [hideProgress]="true" (visits)="prepareVisits($event)" [section]="completedCourseSection"
                   (playEvent)="playEnrolledContent($event, 'My courses')" (viewAll)="viewAll($event)"
                   [layoutConfiguration]="layoutConfiguration">
                 </app-page-section>
@@ -110,8 +119,7 @@
                 </ng-container>
               </app-slick>
 
-              <hr
-                *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0"
+              <hr *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0"
                 class="section-hr my-32" />
             </div>
             <sb-pills-grid *ngIf="section?.section?.isEnabled" [title]="getSectionTitle(section?.section?.title)"
@@ -132,19 +140,16 @@
               [pillSize]="'medium'" [platform]="'portal'" [pillBorder]="'semi_round'"
               [pillsMultiRow]="'auto_responsive'" [pillTextElipsis]="'two_line'"
               (select)="handleTargetedpillSelected($event)">
-              <sb-pill-item *ngFor="let pillData of targetedCategory"
-                [name]="(pillData?.icon?.web ? pillData?.name : '') | titlecase" [icon]="pillData?.icon?.web"
-                [value]="(pillData?.icon?.web ? pillData : '')"
-                [theme]="(pillData?.icon?.web ? (targetedCategorytheme | async) : Categorytheme)"></sb-pill-item>
+              <sb-pill-item *ngFor="let pillData of targetedCategory" [name]="(pillData?.icon?.web ? pillData?.name : '') | titlecase"
+              [icon]="pillData?.icon?.web" [value]="(pillData?.icon?.web ? pillData : '')" [theme]="(pillData?.icon?.web ? (targetedCategorytheme | async) : Categorytheme)"></sb-pill-item>
             </sb-pills-grid>
             <hr class="section-hr my-32" />
           </div>
           <div *ngIf="getSelectedTab() === 'home'">
             <div *ngFor="let section of contentSections" class="pl-16">
               <sb-content-section *ngIf="section?.isEnabled" (cardClick)="playContent($event, section?.title)"
-                [sortBy]="section?.apiConfig?.sortBy" [searchRequest]="section?.searchRequest"
-                [title]="getContentSectionTitle(section?.title)" [layoutConfig]="layoutConfiguration"
-                (viewMoreClick)="viewAll($event, section)"
+                [sortBy]="section?.apiConfig?.sortBy" [searchRequest]="section?.searchRequest" [title]="getContentSectionTitle(section?.title)"
+                [layoutConfig]="layoutConfiguration" (viewMoreClick)="viewAll($event, section)"
                 [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall" [categoryKeys]="categoryKeys">
               </sb-content-section>
             </div>
@@ -165,23 +170,20 @@
             <sb-library-cards-grid *ngIf="!isDesktopApp" [layoutConfig]="layoutConfiguration"
               [type]="'infinite_card_grid'" [title]="section.name"
               [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3"
-              (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)"
-              (enterKey)="playContent($event, section.name)" [categoryKeys]="categoryKeys">
+              (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)" (enterKey)="playContent($event, section.name)" [categoryKeys]="categoryKeys">
             </sb-library-cards-grid>
             <div class="sb-desktop-library-card relative9">
               <sb-library-cards-grid *ngIf="isDesktopApp" [layoutConfig]="layoutConfiguration"
                 [type]="'infinite_card_grid_with_hover'" [title]="section?.name"
                 [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3"
-                (hoverActionClick)="hoverActionClicked($event)" (viewMoreClick)="viewAll(section)"
-                [categoryKeys]="categoryKeys">
+                (hoverActionClick)="hoverActionClicked($event)" (viewMoreClick)="viewAll(section)" [categoryKeys]="categoryKeys"> 
               </sb-library-cards-grid>
             </div>
           </div>
         </div>
         <div *ngIf="showLoader && getSelectedTab() !== 'explore'">
           <sb-library-cards-grid [layoutConfig]="layoutConfiguration" *ngFor="let i of numberOfSections"
-            [type]="'infinite_card_grid'" [isLoading]="true" [maxCardCount]="!isUserLoggedIn() ? 4: 3"
-            [categoryKeys]="categoryKeys">
+            [type]="'infinite_card_grid'" [isLoading]="true" [maxCardCount]="!isUserLoggedIn() ? 4: 3" [categoryKeys]="categoryKeys">
           </sb-library-cards-grid>
         </div>
         <div
@@ -238,8 +240,8 @@
   [config]="{disableClose: false, panelClass: ['overflow-visible', 'material-modal']}">
   <ng-template sbModalContent let-data>
     <app-popup [dialogProps]="data" [formInput]="userPreference?.framework" [showCloseIcon]="true"
-      [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" [isPreference]="true" [isGuestUser]="true"
-      [hashId]="channelId" (submit)="updateProfile($event)" (close)="showEdit = !showEdit">
+      [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" [isPreference]="true" [isGuestUser]="true" [hashId]="channelId"
+      (submit)="updateProfile($event)" (close)="showEdit = !showEdit">
     </app-popup>
   </ng-template>
 </app-modal-wrapper>

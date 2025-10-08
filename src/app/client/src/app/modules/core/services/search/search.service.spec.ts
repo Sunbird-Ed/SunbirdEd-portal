@@ -80,10 +80,10 @@ describe('SearchService', () => {
         selectMedium: 'Select Medium',
         selectClass: 'Select Classes',
         selectSubject: 'Select Subjects',
-        publisher: 'Publisher',
+        publisher:'Publisher',
         selectPublisher: 'Select publisher'
       },
-
+      
     }
   };
 
@@ -95,16 +95,16 @@ describe('SearchService', () => {
     getAlternativeCodeForFilter: jest.fn(),
     getFrameworkCategories: jest.fn(),
     setDefaultFWforCsl: jest.fn(),
-    getGlobalFilterCategoriesObject: jest.fn(() => [
-      { index: 1, label: 'board', placeHolder: 'selectBoard', code: 'board', name: 'Board' },
-      { index: 2, label: 'medium', placeHolder: 'selectMedium', code: 'medium', name: 'Medium' },
-      { index: 3, label: 'class', placeHolder: 'selectClass', code: 'gradeLevel', name: 'gradeLevel' },
-      { index: 4, label: 'subject', placeHolder: 'selectSubject', code: 'subject', name: 'subject' },
-      { index: 5, label: 'publisher', placeHolder: 'selectPublisher', code: 'publisher', name: 'publisher' },
-      { index: 6, label: 'contentType', placeHolder: 'selectContentType', code: 'contentType', name: 'contentType' }]
+    getGlobalFilterCategoriesObject: jest.fn(()=> [
+      { index: 1,label: 'board',placeHolder: 'selectBoard', code: 'board', name: 'Board' },
+      { index: 2 ,label: 'medium',placeHolder: 'selectMedium', code: 'medium', name: 'Medium' },
+      { index: 3,label: 'class', placeHolder: 'selectClass',code:'gradeLevel', name: 'gradeLevel'},
+      { index: 4,label: 'subject', placeHolder: 'selectSubject',code:'subject', name: 'subject'},
+      { index: 5,label: 'publisher', placeHolder: 'selectPublisher',code:'publisher', name: 'publisher'},
+      { index: 6,label: 'contentType', placeHolder: 'selectContentType',code:'contentType', name: 'contentType'}]
     ),
     getGlobalFilterCategories: jest.fn(() => ({
-      fwCategory1: {},
+      fwCategory1: { },
     })),
   };
 
@@ -247,7 +247,7 @@ describe('SearchService', () => {
     it('should call the updateFacetsData with facets value primaryCategory', () => {
       const facets = [{ name: 'primaryCategory' }];
       const obj = searchService.updateFacetsData(facets);
-      expect(obj).toEqual([{ name: 'primaryCategory' }]);
+      expect(obj).toEqual([{ name: 'primaryCategory'}]);
     });
 
     it('should call the updateFacetsData with facets value mimeType', () => {
@@ -259,20 +259,20 @@ describe('SearchService', () => {
     it('should call the updateFacetsData with facets value mediaType', () => {
       const facets = [{ name: 'mediaType' }];
       const obj = searchService.updateFacetsData(facets);
-      expect(obj).toEqual([{ name: 'mediaType' }]);
+      expect(obj).toEqual([{ name: 'mediaType'}]);
     });
 
     it('should call the updateFacetsData with facets value audience', () => {
       const facets = [{ name: 'audience' }];
       const lbl = undefined;
       const obj = searchService.updateFacetsData(facets);
-      expect(obj).toEqual([{ name: 'audience' }]);
+      expect(obj).toEqual([{ name: 'audience'}]);
     });
 
     it('should call the updateFacetsData with facets value channel', () => {
       const facets = [{ name: 'channel' }];
       const obj = searchService.updateFacetsData(facets);
-      expect(obj).toEqual([{ name: 'channel' }]);
+      expect(obj).toEqual([{ name: 'channel'}]);
     });
 
     it('should call the updateFacetsData with facets value additionalCategories', () => {

@@ -1,10 +1,10 @@
 <div class="ui grid mt-5">
   <div class="twelve wide column ">
     <div class="ui grid">
-
+      
       <div class="three wide column" *ngIf="permissionService.permissionAvailable && showCategory('book')" appPermission
-        [permission]='textBookRole' [appTelemetryImpression]="telemetryImpression">
-
+        [permission]='textBookRole'  [appTelemetryImpression]="telemetryImpression">
+        
         <div class="ui link card" routerLink="textbook" appTelemetryInteract
           [telemetryInteractEdata]="{id:'createTextbook',type:'click',pageid:'create-textbook'}">
           <div class="content">
@@ -16,10 +16,10 @@
         </div>
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.textbookdescription}}</p>
       </div>
-      <div class="three wide column" *ngIf="permissionService.permissionAvailable && showCategory('course')"
-        appPermission [permission]='courseRole'>
-        <div class="ui link card" routerLink="course" [queryParams]="{showFrameworkSelection: true}"
-          appTelemetryInteract [telemetryInteractEdata]="{id:'createCourse',type:'click',pageid:'create-course'}">
+      <div class="three wide column" *ngIf="permissionService.permissionAvailable && showCategory('course')" appPermission
+        [permission]='courseRole'>
+        <div class="ui link card" routerLink="course" [queryParams]="{showFrameworkSelection: true}" appTelemetryInteract
+          [telemetryInteractEdata]="{id:'createCourse',type:'click',pageid:'create-course'}">
           <div class="content">
             <div class="textcontent">
               <i class='my-icon file text outline icon'></i>
@@ -29,21 +29,21 @@
         </div>
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.coursedescription}}</p>
       </div>
-      <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('resource')"
-        appPermission [permission]='lessonRole'>
+      <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('resource')" appPermission
+        [permission]='lessonRole'>
         <div class="ui link card" routerLink="studymaterial" appTelemetryInteract
           [telemetryInteractEdata]="{id:'createStudyMaterial',type:'click',pageid:'create-study-material'}">
           <div class="content">
             <div class="textcontent">
               <i class='my-icon file text icon'></i>
-              <span class="my-text">{{resourceService?.frmelmnts?.lbl?.lesson}}</span>
+              <span class="my-text">{{resourceService?.frmelmnts?.lbl?.resource}}</span>
             </div>
           </div>
         </div>
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.lessondescription}}</p>
       </div>
-      <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('collection')"
-        appPermission [permission]='collectionRole'>
+      <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('collection')" appPermission
+        [permission]='collectionRole'>
         <div class="ui link card" routerLink="collection" appTelemetryInteract
           [telemetryInteractEdata]="{id:'createColllection',type:'click',pageid:'create-collection'}">
           <div class="content">
@@ -59,21 +59,8 @@
   </div>
   <div class="twelve wide column ">
     <div class="ui grid">
-      <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('lessonPlan')"
-        appPermission [permission]='lessonplanRole'>
-        <div class="ui link card" routerLink="lessonplan">
-          <div class="content" appTelemetryInteract
-            [telemetryInteractEdata]="{id:'createLessonPlan',type:'click',pageid:'create-lesson-plan'}">
-            <div class="textcontent">
-              <i class='my-icon file text outline icon'></i>
-              <span class="my-text">{{resourceService?.frmelmnts?.lbl?.lessonplan}}</span>
-            </div>
-          </div>
-        </div>
-        <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.lessonplandescription}}</p>
-      </div>
-      <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('contentupload')"
-        appPermission [permission]='contentUploadRole'>
+      <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('contentupload')" appPermission
+        [permission]='contentUploadRole'>
         <div class="ui link card" routerLink="../edit/generic/" appTelemetryInteract
           [telemetryInteractEdata]="{id:'uploadContent',type:'click',pageid:'upload-content'}">
           <div class="content">
@@ -85,8 +72,7 @@
         </div>
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.contentuploaddescription}}</p>
       </div>
-      <div class="three wide column"
-        *ngIf="permissionService.permissionAvailable  && showCategory('contentuploadlarge')" appPermission
+      <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('contentuploadlarge')" appPermission
         [permission]='contentUploadRole'>
         <div class="ui link card" routerLink="../edit/editorforlargecontent/" appTelemetryInteract
           [telemetryInteractEdata]="{id:'uploadContent',type:'click',pageid:'upload-content'}">
@@ -100,11 +86,10 @@
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.contentuploaddescription}}</p>
       </div>
       <!-- Assessment -->
-      <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('assessment')"
-        appPermission [permission]='assessmentRole'>
+      <div class="three wide column" *ngIf="permissionService.permissionAvailable  && showCategory('assessment')" appPermission
+        [permission]='assessmentRole'>
         <div class="ui link card" routerLink="assessment" appTelemetryInteract
-          [telemetryInteractEdata]="{id:'createAssessment',type:'click',pageid:'create-assessment'}"
-          [telemetryInteractCdata]="[{ id: 'user:workspace:assessment:create', type: 'Feature' }, { id: 'SB-17206', type: 'Task' }]">
+          [telemetryInteractEdata]="{id:'createAssessment',type:'click',pageid:'create-assessment'}" [telemetryInteractCdata]="[{ id: 'user:workspace:assessment:create', type: 'Feature' }, { id: 'SB-17206', type: 'Task' }]">
           <div class="content">
             <div class="textcontent">
               <img src="./assets/images/checklist.png" width="36" class="ml-8" />
@@ -114,76 +99,72 @@
         </div>
         <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.assessmentdescription}}</p>
       </div>
-    </div>
-  </div>
-  <div class="twelve wide column ">
-    <div class="ui grid">
-      <div class="three wide column" *ngIf="permissionService.permissionAvailable && showCategory('questionsets')"
-        appPermission [permission]='collectionRole'>
+      <div class="three wide column" *ngIf="permissionService.permissionAvailable && showCategory('questionsets')" appPermission
+        [permission]='collectionRole'>
         <div class="ui link card" routerLink="questionset">
           <div class="content" appTelemetryInteract
             [telemetryInteractEdata]="{id:'QuestionSet',type:'click',pageid:'create-questionset'}">
             <div class="textcontent">
               <i class='my-icon file text outline icon'></i>
-              <span class="my-text">QuestionSet</span>
+              <span class="my-text">{{resourceService?.frmelmnts?.lbl?.questionset}}</span>
             </div>
           </div>
         </div>
-        <p class="workspaceinstuction">Create Questionsets</p>
+        <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.questionsetdescription}}</p>
       </div>
     </div>
   </div>
-  <div class="twelve wide column sb-bulk-upload hide">
-    <div class="ui grid">
-      <div class="six wide column">
-        <h4 class="my-16 bulk-upload-title">Bulk Content Upload</h4>
-        <button class="sb-btn sb-btn-primary sb-btn-normal" routerLink="bulkupload">
-          <i class="upload icon"></i> Upload .CSV file
-        </button>
-        <div class="bulk-content-upload-info mt-16">
-          <p>Please upload the CSV file in the required format “Sample Upload CSV File”. Refer “user Guide” for
-            instructions and guidelines to follow.</p>
+  <div class="twelve wide column sb-bulk-upload hide"> 
+        <div class="ui grid">
+            <div class="six wide column">
+                <h4 class="my-16 bulk-upload-title">Bulk Content Upload</h4>
+                <button class="sb-btn sb-btn-primary sb-btn-normal" routerLink="bulkupload">
+                    <i class="upload icon"></i> Upload .CSV file
+                </button>
+                <div class="bulk-content-upload-info mt-16">
+                    <p>Please upload the CSV file in the required format “Sample Upload CSV File”. Refer “user Guide” for
+                    instructions and guidelines to follow.</p>
+                </div>
+            </div>
         </div>
-      </div>
+        <h4 class="mt-16 bulk-upload-title">Last upload file</h4>
+        <div class="sb-bulk-upload-details-report-info d-flex flex-ai-center">
+            <div class="py-16 sb-bulk-upload-file d-flex flex-ai-center">
+                <img src="" alt="" class="sb-upload-file mr-15">
+                <span class="sb-bulk-upload-content-title">Dummy Text.CSV</span>
+            </div>
+            <div class="sb-bulk-upload-status">
+                <div class="sb-label sb-label-table sb-label-gray-0">In progress</div>
+            </div>
+            <div class="sb-bulk-upload-details-report flex-jc-flex-end d-flex">
+                <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal ">View Report</button>
+            </div>
+        </div>
+        <div class="sb-bulk-upload-details-report-info d-flex flex-ai-center">
+            <div class="py-16 sb-bulk-upload-file d-flex flex-ai-center">
+                <img src="" alt="" class="sb-upload-file mr-15">
+                <span class="sb-bulk-upload-content-title">Dummy Text.CSV</span>
+            </div>
+            <div class="sb-bulk-upload-status">
+                <div class="sb-label sb-label-table sb-label-error-0"><i class="exclamation circle icon"></i>Completed
+                with errors</div>
+            </div>
+            <div class="sb-bulk-upload-details-report flex-jc-flex-end d-flex">
+                <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal ">View Report</button>
+            </div>
+        </div>
+        <div class="sb-bulk-upload-details-report-info d-flex flex-ai-center">
+            <div class="py-16 sb-bulk-upload-file d-flex flex-ai-center">
+                <img src="" alt="" class="sb-upload-file mr-15">
+                <span class="sb-bulk-upload-content-title">Dummy Text.CSV</span>
+            </div>
+            <div class="sb-bulk-upload-status">
+                <div class="sb-label sb-label-table sb-label-success-0">completed</div>
+            </div>
+            <div class="sb-bulk-upload-details-report flex-jc-flex-end d-flex">
+                <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal ">View Report</button>
+            </div>
+        </div>
     </div>
-    <h4 class="mt-16 bulk-upload-title">Last upload file</h4>
-    <div class="sb-bulk-upload-details-report-info d-flex flex-ai-center">
-      <div class="py-16 sb-bulk-upload-file d-flex flex-ai-center">
-        <img src="" alt="" class="sb-upload-file mr-15">
-        <span class="sb-bulk-upload-content-title">Dummy Text.CSV</span>
-      </div>
-      <div class="sb-bulk-upload-status">
-        <div class="sb-label sb-label-table sb-label-gray-0">In progress</div>
-      </div>
-      <div class="sb-bulk-upload-details-report flex-jc-flex-end d-flex">
-        <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal ">View Report</button>
-      </div>
-    </div>
-    <div class="sb-bulk-upload-details-report-info d-flex flex-ai-center">
-      <div class="py-16 sb-bulk-upload-file d-flex flex-ai-center">
-        <img src="" alt="" class="sb-upload-file mr-15">
-        <span class="sb-bulk-upload-content-title">Dummy Text.CSV</span>
-      </div>
-      <div class="sb-bulk-upload-status">
-        <div class="sb-label sb-label-table sb-label-error-0"><i class="exclamation circle icon"></i>Completed
-          with errors</div>
-      </div>
-      <div class="sb-bulk-upload-details-report flex-jc-flex-end d-flex">
-        <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal ">View Report</button>
-      </div>
-    </div>
-    <div class="sb-bulk-upload-details-report-info d-flex flex-ai-center">
-      <div class="py-16 sb-bulk-upload-file d-flex flex-ai-center">
-        <img src="" alt="" class="sb-upload-file mr-15">
-        <span class="sb-bulk-upload-content-title">Dummy Text.CSV</span>
-      </div>
-      <div class="sb-bulk-upload-status">
-        <div class="sb-label sb-label-table sb-label-success-0">completed</div>
-      </div>
-      <div class="sb-bulk-upload-details-report flex-jc-flex-end d-flex">
-        <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal ">View Report</button>
-      </div>
-    </div>
-  </div>
 </div>
 <router-outlet></router-outlet>

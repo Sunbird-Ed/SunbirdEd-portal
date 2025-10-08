@@ -217,6 +217,10 @@
     -webkit-mask-image: url(/assets/images/mask-image/question_set.svg) !important;
     // mask-image: url(/assets/images/mask-image/question_set.svg);
   }
+  &__ask {
+    -webkit-mask-image: url(/assets/images/mask-image/ask.svg) !important;
+    // mask-image: url(/assets/images/mask-image/ask.svg);
+  }
 }
 html[layout=joy] .help-page .help-page__header {
   border-radius: 1.5rem 1.5rem 0 0 !important;

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CoreModule } from '@sunbird/core';
 import { WorkspaceRoutingModule } from './workspace-routing.module';
@@ -64,6 +64,7 @@ import { QuestionsetEditorLibraryModule } from '@project-sunbird/sunbird-questio
     WorkspaceContentFilterComponent,
     NewCollectionEditorComponent
   ],
-  providers: [WorkSpaceService, EditorService, BatchService, ReviewCommentsService, DateFilterXtimeAgoPipe]
+  providers: [WorkSpaceService, EditorService, BatchService, ReviewCommentsService, DateFilterXtimeAgoPipe],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class WorkspaceModule { }

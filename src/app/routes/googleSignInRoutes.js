@@ -186,13 +186,13 @@ const getQueryParams = (queryObj) => {
 }
 const getErrorMessage = (error) => {
   if (error === 'USER_NAME_NOT_PRESENT' || _.get(error, 'message') === 'USER_NAME_NOT_PRESENT') {
-    return 'Your account could not be created on DIKSHA due to your Google Security settings';
+    return 'Your account could not be created on SUNBIRD due to your Google Security settings';
   } else if(error === 'GOOGLE_ACCESS_DENIED' || _.get(error, 'message') === 'GOOGLE_ACCESS_DENIED') {
-    return 'Your account could not be created on DIKSHA due to your Google Security settings';
+    return 'Your account could not be created on SUNBIRD due to your Google Security settings';
   } else if(_.get(error, 'params.err') === 'USER_ACCOUNT_BLOCKED') {
     return 'User account is blocked. Please contact admin';
   } else {
-    return 'Your account could not be signed in to DIKSHA due to technical issue. Please try again after some time';
+    return 'Your account could not be signed in to SUNBIRD due to technical issue. Please try again after some time';
   }
 }
 const handleCreateUserError = (error) => {

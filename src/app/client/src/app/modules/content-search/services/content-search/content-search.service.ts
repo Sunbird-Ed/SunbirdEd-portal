@@ -4,6 +4,10 @@ import { Observable, BehaviorSubject, of } from 'rxjs';
 import { skipWhile, mergeMap, first, map } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
+
+interface FrameworkCategory {
+  code: string;
+}
 @Injectable({ providedIn: 'root' })
 export class ContentSearchService {
   private channelId: string;
@@ -13,17 +17,9 @@ export class ContentSearchService {
   }
   private defaultBoard: string;
   private custodianOrg: boolean;
-  private _filters = {
-    board: [],
-    medium: [],
-    gradeLevel: [],
-    subject: [],
-    publisher: []
-  };
-  get filters() {
-    return _.cloneDeep(this._filters);
-  }
-  requiredCategories = { categories: 'board,gradeLevel,medium,class,subject' };
+  private _filters: any = {};
+  public filters: any = {};
+  requiredCategories: any;
   private _searchResults$ = new BehaviorSubject<any>(undefined);
   public frameworkCategories;
   public frameworkCategoriesObject;
@@ -33,9 +29,23 @@ export class ContentSearchService {
       .pipe(skipWhile(data => data === undefined || data === null));
   }
 
-  constructor(private frameworkService: FrameworkService, private channelService: ChannelService, private cslFrameworkService:CslFrameworkService) { 
+  constructor(private frameworkService: FrameworkService, private channelService: ChannelService, private cslFrameworkService: CslFrameworkService) { 
     this.frameworkCategories = this.cslFrameworkService.getFrameworkCategories();
     this.frameworkCategoriesObject = this.cslFrameworkService.getFrameworkCategoriesObject();
+    
+    Object.values(this.frameworkCategories || {}).forEach((category: any) => {
+      if (category?.code) {
+        this._filters[category.code] = [];
+      }
+    });
+    this._filters['publisher'] = [];
+    
+    this.requiredCategories = {
+      categories: Object.values(this.frameworkCategories || {})
+        .map((category: any) => category?.code)
+        .filter(Boolean)
+        .join(',')
+    };
   }
 
   public initialize(channelId: string, custodianOrg = false, defaultBoard: string) {
@@ -47,16 +57,30 @@ export class ContentSearchService {
     return this.fetchChannelData();
   }
   fetchChannelData() {
-    this.requiredCategories = {categories: `${this.frameworkCategories?.fwCategory1?.code},${this.frameworkCategories?.fwCategory2?.code},${this.frameworkCategories?.fwCategory3?.code},${this.frameworkCategories?.fwCategory4?.code}`};
-        return this.channelService.getFrameWork(this.channelId)
+
+    this.frameworkCategories = this.cslFrameworkService.getFrameworkCategories();
+    this.frameworkCategoriesObject = this.cslFrameworkService.getFrameworkCategoriesObject();
+    this.requiredCategories = {
+      categories: Object.values<FrameworkCategory>(this.frameworkCategories || {})
+        .map((category) => category?.code)
+        .filter(Boolean)
+        .join(',')
+    };
+    
+    return this.channelService.getFrameWork(this.channelId)
       .pipe(mergeMap((channelDetails) => {
         if (this.custodianOrg) {
-          this._filters[this.frameworkCategories?.fwCategory1?.code] = _.get(channelDetails, 'result.channel.frameworks') || [{
-            name: _.get(channelDetails, 'result.channel.defaultFramework'),
-            identifier: _.get(channelDetails, 'result.channel.defaultFramework')
-          }]; // framework array is empty assigning defaultFramework as only board
-          const selectedBoard = this._filters[this.frameworkCategories?.fwCategory1?.code].find((fwCategory1) => fwCategory1.name === this.defaultBoard) || this._filters[this.frameworkCategories?.fwCategory1?.code][0];
-          this._frameworkId = _.get(selectedBoard, 'identifier');
+          const firstCategoryCode = Object.values<FrameworkCategory>(this.frameworkCategories || {})[0]?.code;
+          if (firstCategoryCode) {
+            this._filters[firstCategoryCode] = _.get(channelDetails, 'result.channel.frameworks') || [{
+              name: _.get(channelDetails, 'result.channel.defaultFramework'),
+              identifier: _.get(channelDetails, 'result.channel.defaultFramework')
+            }]; 
+            const selectedBoard = this._filters[firstCategoryCode].find((category: any) => 
+              category.name === this.defaultBoard
+            ) || this._filters[firstCategoryCode][0];
+            this._frameworkId = _.get(selectedBoard, 'identifier');
+          }
         } else {
           this._frameworkId = _.get(channelDetails, 'result.channel.defaultFramework');
         }
@@ -66,10 +90,14 @@ export class ContentSearchService {
         return this.frameworkService.getSelectedFrameworkCategories(this._frameworkId, this.requiredCategories);
       }), map(frameworkDetails => {
         const frameworkCategories: any[] = _.get(frameworkDetails, 'result.framework.categories');
+        const allCategoryCodes = Object.values<FrameworkCategory>(this.frameworkCategories || {}).map(c => c.code);
+        const firstCategoryCode = allCategoryCodes[0];
+        const otherCategoryCodes = allCategoryCodes.slice(1);
+        
         frameworkCategories.forEach(category => {
-          if ([this.frameworkCategories?.fwCategory2?.code, this.frameworkCategories?.fwCategory3?.code,this.frameworkCategories?.fwCategory4?.code].includes(category.code)) {
+          if (otherCategoryCodes.includes(category.code)) {
             this._filters[category.code] = category.terms || [];
-          } else if (!this.custodianOrg && category.code === this.frameworkCategories?.fwCategory1?.code) {
+          } else if (!this.custodianOrg && category.code === firstCategoryCode) {
             this._filters[category.code] = category.terms || [];
           }
         });
@@ -77,18 +105,32 @@ export class ContentSearchService {
       }), first());
   }
   public fetchFilter(boardName?) {
+    this.filters = _.cloneDeep(this._filters);
     if (!this.custodianOrg || !boardName) {
       return of(this.filters);
     }
-    const selectedBoard = this._filters[this.frameworkCategories?.fwCategory1?.code].find((fwCategory1) => fwCategory1.name === boardName)
-      || this._filters[this.frameworkCategories?.fwCategory1?.code].find((fwCategory1) => fwCategory1.name === this.defaultBoard) || this._filters[this.frameworkCategories?.fwCategory1?.code][0];
-    this._frameworkId = this._frameworkId = _.get(selectedBoard, 'identifier');
+    
+    const firstCategoryCode = Object.values<FrameworkCategory>(this.frameworkCategories || {})[0]?.code;
+    if (!firstCategoryCode) {
+      return of(this.filters);
+    }
+    
+    const selectedBoard = this._filters[firstCategoryCode]?.find((fwCategory: any) => fwCategory.name === boardName) ||
+      this._filters[firstCategoryCode]?.find((fwCategory: any) => fwCategory.name === this.defaultBoard) ||
+      (this._filters[firstCategoryCode]?.[0] || {});
+      
+    this._frameworkId = _.get(selectedBoard, 'identifier');
+    
     return this.frameworkService.getSelectedFrameworkCategories(this._frameworkId, this.requiredCategories).pipe(map(frameworkDetails => {
       const frameworkCategories: any[] = _.get(frameworkDetails, 'result.framework.categories');
+      const allCategoryCodes = Object.values<FrameworkCategory>(this.frameworkCategories || {}).map(c => c.code);
+      const firstCategoryCode = allCategoryCodes[0];
+      const otherCategoryCodes = allCategoryCodes.slice(1);
+      
       frameworkCategories.forEach(category => {
-        if ([this.frameworkCategories?.fwCategory2?.code,this.frameworkCategories?.fwCategory3?.code,this.frameworkCategories?.fwCategory4?.code].includes(category.code)) {
+        if (otherCategoryCodes.includes(category.code)) {
           this._filters[category.code] = category.terms || [];
-        } else if (category.code === this.frameworkCategories?.fwCategory1?.code && !this.custodianOrg) {
+        } else if (category.code === firstCategoryCode && !this.custodianOrg) {
           this._filters[category.code] = category.terms || [];
         }
       });
@@ -98,19 +140,31 @@ export class ContentSearchService {
 
   get getCategoriesMapping() {
     this.globalFilterCategories = this.cslFrameworkService.getAlternativeCodeForFilter();
-    return {
-      [this.frameworkCategories?.fwCategory4?.code]: this.globalFilterCategories[3],
-      [this.frameworkCategories?.fwCategory3?.code]: this.globalFilterCategories[2],
-      [this.frameworkCategories?.fwCategory2?.code]: this.globalFilterCategories[1],
-      [this.frameworkCategories?.fwCategory1?.code]: this.globalFilterCategories[0]
-    };
+    const mapping = {};
+    
+    const categories = Object.values<FrameworkCategory>(this.frameworkCategories || {});
+    
+    categories.forEach((category, index) => {
+      if (category?.code && this.globalFilterCategories[index] !== undefined) {
+        mapping[category.code] = this.globalFilterCategories[index];
+      }
+    });
+    
+    return mapping;
   }
 
   public mapCategories({ filters = {} }) {
+    const mapping = this.getCategoriesMapping;
+    const categories = Object.values<FrameworkCategory>(this.frameworkCategories || {});
+    const lastCategoryCode = categories[categories.length - 1]?.code;
+    
     return _.reduce(filters, (acc, value, key) => {
-      const mappedValue = _.get(this.getCategoriesMapping, [key]);
-      if (mappedValue && key !== this.frameworkCategories?.fwCategory4?.code) { acc[mappedValue] = value; delete acc[key]; }
+      const mappedValue = mapping[key];
+      if (mappedValue && key !== lastCategoryCode) { 
+        acc[mappedValue] = value; 
+        delete acc[key]; 
+      }
       return acc;
-    }, filters);
+    }, { ...filters });
   }
 }

@@ -9,8 +9,8 @@
  * @version     - 2.0.0
  */
 
-const cloudService = require('client-cloud-services');
-const envHelper = require('../../helpers/environmentVariablesHelper');
+const cloudService  = require('client-cloud-services');
+const envHelper     = require('../../helpers/environmentVariablesHelper');
 const cloudProvider = envHelper?.sunbird_cloud_storage_provider;
 
 /**
@@ -26,7 +26,7 @@ let cloudConfig = {
   publicObjectStorage: envHelper?.cloud_storage_resourceBundle_bucketname,
   region: envHelper?.cloud_private_storage_region,
   projectId: envHelper?.cloud_private_storage_project,
-  endpoint: envHelper?.cloud_private_storage_endpoint
+  endpoint:envHelper?.cloud_private_storage_endpoint
 };
 
 let cloudClient = cloudService.init(cloudConfig);

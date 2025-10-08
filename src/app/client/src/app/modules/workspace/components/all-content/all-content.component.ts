@@ -14,6 +14,7 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui-v9';
 import { debounceTime, map } from 'rxjs/operators';
 import { ContentIDParam } from '../../interfaces/delteparam';
+import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
 @Component({
   selector: 'app-all-content',
@@ -198,6 +199,15 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
    */
   public collectionListModal = false;
   public isQuestionSetFilterEnabled: boolean;
+
+  public categoryCodes: string[] = [];
+
+  /**
+   * Helper method to check if a value is an array (for use in templates)
+   */
+  public isArray(value: any): boolean {
+    return Array.isArray(value);
+  }
   /**
     * Constructor to create injected service(s) object
     Default method of Draft Component class
@@ -216,7 +226,8 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
-    config: ConfigService, public modalService: SuiModalService) {
+    config: ConfigService, public modalService: SuiModalService,
+    public cslFrameworkService: CslFrameworkService) {
     super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
@@ -229,6 +240,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
       'loaderMessage': this.resourceService.messages.stmsg.m0110,
     };
     this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
+    this.cslFrameworkService = cslFrameworkService;
   }
 
   ngOnInit() {
@@ -259,6 +271,15 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
   */
   fecthAllContent(limit: number, pageNumber: number, bothParams) {
     this.showLoader = true;
+    const frameworkCategories = this.cslFrameworkService.getFrameworkCategoriesObject() as Array<any>;
+
+    const dynamicFilters = frameworkCategories.reduce((filters, category) => {
+      const code = category.code;
+      if (bothParams['queryParams'][code]) {
+        filters[code] = bothParams['queryParams'][code];
+      }
+      return filters;
+    }, {} as Record<string, any>);
     if (bothParams.queryParams.sort_by) {
       const sort_by = bothParams.queryParams.sort_by;
       const sortType = bothParams.queryParams.sortType;
@@ -277,10 +298,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
         createdBy: this.userService.userid,
         // tslint:disable-next-line:max-line-length
         primaryCategory: _.get(bothParams, 'queryParams.primaryCategory') || (!_.isEmpty(primaryCategories) ? primaryCategories : this.config.appConfig.WORKSPACE.primaryCategory),
-        board: bothParams.queryParams.board,
-        subject: bothParams.queryParams.subject,
-        medium: bothParams.queryParams.medium,
-        gradeLevel: bothParams.queryParams.gradeLevel
+        ...dynamicFilters
       },
       limit: limit,
       offset: (pageNumber - 1) * (limit),
@@ -346,7 +364,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
       this.deleteModal = modal;
     }
     this.showCollectionLoader = false;
-    if (this.contentMimeType === 'application/vnd.ekstep.content-collection') {
+    if (this.contentMimeType === this.config.editorConfig.COLLECTION_EDITOR.mimeCollection || this.contentMimeType === this.config.editorConfig.QUESTIONSET_EDITOR.mimeCollection) {
       this.deleteContent(this.currentContentId);
       return;
     }
@@ -375,21 +393,51 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
               channelMapping[channelId] = channelName;
             });
 
+            const frameworkCategories = this.cslFrameworkService.getGlobalFilterCategoriesObject();
+
             _.forEach(collections, collection => {
-              const obj = _.pick(collection, ['contentType', 'board', 'medium', 'name', 'gradeLevel', 'subject', 'channel']);
-              obj['channel'] = channelMapping[obj.channel];
+              const dynamicFields = {};
+
+              if (frameworkCategories && Array.isArray(frameworkCategories)) {
+                const categoryCodes = frameworkCategories.map(category => ({code: category.code, collectionCode: category.alternativeCode}));
+
+                categoryCodes.forEach(category => {
+                  if (collection[category.code] || collection[category.collectionCode]) {
+                    dynamicFields[category.code] = collection[category.code] || collection[category.collectionCode];
+                  }
+                });
+              }
+
+              const requiredFields = {
+                contentType: collection.contentType,
+                name: collection.name,
+                channel: channelMapping[collection.channel]
+              };
+
+              const obj = { ...requiredFields, ...dynamicFields };
               this.collectionData.push(obj);
           });
 
-          this.headers = {
-            type: 'Type',
-            name: 'Name',
-            subject: 'Subject',
-            grade: 'Grade',
-            medium: 'Medium',
-            board: 'Board',
-            channel: 'Tenant Name'
+            const requiredHeaders = {
+              type: 'Type',
+              name: 'Name',
+              channel: 'Tenant Name'
             };
+
+            this.categoryCodes = [];
+            const dynamicHeaders = {};
+
+            if (frameworkCategories && Array.isArray(frameworkCategories)) {
+              frameworkCategories.forEach((category: any) => {
+                if (category.code) {
+                  this.categoryCodes.push(category.code);
+                  dynamicHeaders[category.code] = category.label ||
+                    category.code.charAt(0).toUpperCase() + category.code.slice(1);
+                }
+              });
+            }
+          
+          this.headers = { ...requiredHeaders, ...dynamicHeaders };
             if (!_.isUndefined(modal)) {
               this.deleteModal.deny();
             }
@@ -407,14 +455,20 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
   }
 
   /**
-  * This method deletes content using the content id.
+  * This method deletes content or question set based on mime type
   */
   deleteContent(contentId) {
     this.showLoader = true;
     this.loaderMessage = {
       'loaderMessage': this.resourceService.messages.stmsg.m0034,
     };
-    this.delete(contentId).subscribe(
+
+    // Choose the appropriate delete method based on mime type
+    const deleteObservable = this.contentMimeType === 'application/vnd.sunbird.questionset' 
+      ? this.deleteQuestionSet(contentId)
+      : this.delete(contentId);
+
+    deleteObservable.subscribe(
       (data: ServerResponse) => {
         this.showLoader = false;
         this.allContent = this.removeAllMyContent(this.allContent, contentId);

@@ -323,11 +323,11 @@ export class AppComponent implements OnInit, OnDestroy {
     //   }, error => { this.isPopupEnabled = true; });;
     this.isPopupEnabled = true;
   }
-
+  
   /**
       * @description - This method enables/disables the onboarding popups based on the isvisible values returned from the form config request
   */
-  async getOnboardingSkipStatus() {
+  async getOnboardingSkipStatus(){
     const formReadInputParams = {
       formType: 'onboardingPopupVisibility',
       formAction: 'onboarding',
@@ -353,7 +353,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.popupControlService.setOnboardingData(this.onboardingData);
     this.checkPopupVisiblity(this.onboardingData);
   }
-
+  
   /**
     * @description - This method sets the popup show values to true/false based on values from form config
   */
@@ -367,6 +367,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
     this.getOnboardingList();
     this.getOnboardingSkipStatus();
     this.checkToShowPopups();
@@ -437,12 +438,18 @@ export class AppComponent implements OnInit, OnDestroy {
               );
             });
             return this.setOrgDetails();
-          }
+          }            
         }))
-      .subscribe(data => {
+      .subscribe((data) => {
         const channelId = data.hashTagId || data.rootOrgId;
         this.cacheService.set('channelId', channelId);
-        this.cslFrameworkService.setDefaultFWforCsl('', channelId);
+        this.cslFrameworkService.setDefaultFWforCsl('', channelId)
+          .then(() => {
+            this.cslFrameworkService.setTransFormGlobalFilterConfig(channelId);
+          })
+          .catch(error => {
+            console.error('Error initializing framework:', error);
+          });
         this.tenantService.getTenantInfo(this.userService.slug);
         this.tenantService.initialize();
         this.setPortalTitleLogo();

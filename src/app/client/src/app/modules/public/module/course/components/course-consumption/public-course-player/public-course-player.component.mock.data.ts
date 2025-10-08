@@ -65,7 +65,7 @@ export const coursePlayerMockData = {
       ]
     },
     'c_sunbird_dev_private_batch_count': 0,
-    'licenseterms': 'By creating and uploading content on DIKSHA, you consent to publishing this content under the Creative Commons Framework, specifically under the CC-BY-SA 4.0 license.',
+    'licenseterms': 'By creating and uploading content on SUNBIRD, you consent to publishing this content under the Creative Commons Framework, specifically under the CC-BY-SA 4.0 license.',
     'organisation': [
       'Sunbird'
     ],

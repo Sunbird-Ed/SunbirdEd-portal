@@ -1,11 +1,12 @@
 import { Component, EventEmitter, OnInit, Output, ViewChildren } from '@angular/core';
-import { ResourceService, ToasterService, NavigationHelperService, LayoutService, IUserData } from '@sunbird/shared';
+import { ResourceService, ToasterService, NavigationHelperService, LayoutService, IUserData, ConfigService, CacheService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { takeUntil } from 'rxjs/operators';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { UserService } from '@sunbird/core';
+import { UserService, OrgDetailsService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-delete-user',
@@ -28,10 +29,12 @@ export class DeleteUserComponent implements OnInit {
   pageId = 'delete-user';
   userProfile: any;
   deepLink;
+  skipOtpVerification = false;
+  
   constructor(public resourceService: ResourceService, public toasterService: ToasterService, public router: Router,
-    public userService: UserService,
+    public userService: UserService, public configService: ConfigService, public orgDetailsService: OrgDetailsService,
     private activatedRoute: ActivatedRoute, public navigationhelperService: NavigationHelperService,
-    public layoutService: LayoutService) {
+    public layoutService: LayoutService, public cacheService: CacheService, public deviceDetectorService: DeviceDetectorService) {
     this.userService.userData$.subscribe((user: IUserData) => {
       this.userProfile = user.userProfile;
     })
@@ -44,6 +47,7 @@ export class DeleteUserComponent implements OnInit {
       .map(key => obj[key]);
     this.navigationhelperService.setNavigationUrl();
     this.setTelemetryData();
+    this.checkOtpVerificationSetting();
     if (_.get(this.activatedRoute, 'snapshot.queryParams.deeplink')) {
       this.deepLink =_.get(this.activatedRoute, 'snapshot.queryParams.deeplink')
     } 
@@ -94,6 +98,12 @@ export class DeleteUserComponent implements OnInit {
   onSubmitForm() {
     if (this.enableSubmitBtn) {
       this.enableSubmitBtn = false;
+      
+      if (this.skipOtpVerification) {
+        this.verificationSuccess();
+        return;
+      }
+      
       this.showContactPopup = true;
       this.conditions = []
       this.inputFields.forEach((element) => {
@@ -102,6 +112,55 @@ export class DeleteUserComponent implements OnInit {
     }else{
       this.toasterService.warning(this.resourceService.messages.imsg.m0092)
     }
+  }
+
+  /**
+   * Check system setting for OTP verification on delete
+   */
+  private checkOtpVerificationSetting() {
+    const verifyOtpOnDeleteUrl = _.get(this.configService, 'urlConFig.URLS.SYSTEM_SETTING.VERIFY_OTP_ON_DELETE');
+    if (!verifyOtpOnDeleteUrl) {
+      this.skipOtpVerification = false;
+      return;
+    }
+    
+    const systemSetting = {
+      url: verifyOtpOnDeleteUrl,
+    };
+    
+    this.orgDetailsService.learnerService.get(systemSetting).subscribe(response => {
+      if (_.get(response, 'result.response.value') === 'false') {
+        this.skipOtpVerification = true;
+      } else {
+        this.skipOtpVerification = false;
+      }
+    }, error => {
+      this.skipOtpVerification = false;
+    });
+  }
+
+  /**
+   * Direct delete without OTP verification
+   */
+  verificationSuccess() {
+    this.userService.deleteUser().subscribe(data => {
+        if(_.get(data, 'result.response') === 'SUCCESS'){
+          this.toasterService.success("Your account is deleted successfully");
+          if(this.deviceDetectorService.isMobile() && this.deepLink !== ''){
+            //TODO changes need to be done on the Mobile Deeplink
+            const url = this.deepLink+'?userId='+ this.userProfile.userId;
+            window.open(url, '_blank');
+          }
+          window.location.replace('/logoff');
+          this.cacheService.removeAll();
+        }
+      },
+      (err) => {
+        //TODO we need to update the error 
+        const errorMessage =  this.resourceService.messages.fmsg.m0085;
+        this.toasterService.error(errorMessage);
+      }
+    );
   }
 
   /**
