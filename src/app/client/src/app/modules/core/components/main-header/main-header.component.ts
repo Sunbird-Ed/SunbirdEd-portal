@@ -379,7 +379,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     if (key && key.length) {
       this.queryParam.key = key;
     } else {
-      delete this.queryParam.key; // Or handle empty search if needed
+      delete this.queryParam.key; // Handle empty search if needed
     }
     // Preserve the returnTo and isInside parameters for back button functionality
     if (currentQueryParams.returnTo) {
