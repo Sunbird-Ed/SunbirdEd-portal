@@ -438,7 +438,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     setDesktopFilters(isDefaultFilters) {
         const userPreferences: any = this.userService.anonymousUserPreference;
         if (userPreferences) {
-            _.forEach([this.frameworkCategories?.fwCategory1?.code, this.frameworkCategories?.fwCategory2?.code, this.frameworkCategories?.fwCategory3?.code, this.frameworkCategories?.fwCategory4?.code], (item) => {
+            const allFrameworkCategoryCodes = Object.values(this.frameworkCategories || {})
+                .map((category: any) => category?.code)
+                .filter(Boolean);
+            _.forEach(allFrameworkCategoryCodes, (item) => {
                 if (!_.has(this.selectedFilters, item) || !_.get(this.selectedFilters[item], 'length')) {
                     const itemData = _.isArray(userPreferences.framework[item]) ?
                         userPreferences.framework[item] : _.split(userPreferences.framework[item], ', ');
