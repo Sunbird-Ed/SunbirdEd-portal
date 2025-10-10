@@ -377,7 +377,7 @@ describe('UserService', () => {
       .filter(code => !!code);
     const expected: any = {};
     allCodes.forEach(code => {
-      if (Object.prototype.hasOwnProperty.call(mockUserProfile.framework, code)) {
+      if (mockUserProfile.framework.hasOwnProperty(code)) {
         expected[code] = mockUserProfile.framework[code];
       }
     });
