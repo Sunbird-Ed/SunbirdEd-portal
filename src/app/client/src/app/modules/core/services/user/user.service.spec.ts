@@ -372,10 +372,9 @@ describe('UserService', () => {
     Object.defineProperty(userService, 'userProfile', { get: jest.fn(() => mockUserProfile) });
     const result = userService.defaultFrameworkFilters;
     expect(result).toEqual({
-      [userService.frameworkCategories?.fwCategory1?.code]: userService.defaultBoard,
+      [userService.frameworkCategories?.fwCategory1?.code]: 'MockCategory1',
       [userService.frameworkCategories?.fwCategory2?.code]: 'MockCategory2',
       [userService.frameworkCategories?.fwCategory3?.code]: 'MockCategory3',
-      [userService.frameworkCategories?.fwCategory1?.code]: 'MockCategory1',
       id: 'MockUserId',
     });
   });
