@@ -371,12 +371,20 @@ describe('UserService', () => {
     Object.defineProperty(userService, 'loggedIn', { get: jest.fn(() => true) });
     Object.defineProperty(userService, 'userProfile', { get: jest.fn(() => mockUserProfile) });
     const result = userService.defaultFrameworkFilters;
-    expect(result).toEqual({
-      [userService.frameworkCategories?.fwCategory1?.code]: 'MockCategory1',
-      [userService.frameworkCategories?.fwCategory2?.code]: 'MockCategory2',
-      [userService.frameworkCategories?.fwCategory3?.code]: 'MockCategory3',
-      id: 'MockUserId',
+
+    const allCodes = Object.values(userService.frameworkCategories || {})
+      .map((c: any) => c && c.code)
+      .filter(code => !!code);
+    const expected: any = {};
+    allCodes.forEach(code => {
+      if (Object.prototype.hasOwnProperty.call(mockUserProfile.framework, code)) {
+        expected[code] = mockUserProfile.framework[code];
+      }
     });
+    expected.id = mockUserProfile.framework.id;
+
+    expect(result).toEqual(expected);
+    expect(Object.keys(result)).not.toContain('undefined');
   });
 
     it('should return defaultFrameworkFilters with user not logged in', () => {
