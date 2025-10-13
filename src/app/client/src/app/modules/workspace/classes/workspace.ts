@@ -79,7 +79,6 @@ export class WorkSpace {
             contentList.result.content = allContent;
             contentList.result.QuestionSet = [];
             // Remove QuestionSet to prevent duplicate display
-            //contentList.result.QuestionSet;
             return contentList;
         }));
     }
