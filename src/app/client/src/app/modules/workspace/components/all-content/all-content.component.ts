@@ -310,11 +310,8 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
     }
     this.searchContentWithLockStatus(searchParams).subscribe(
       (data: ServerResponse) => {
-        if (data.result.count && (!_.isEmpty(data.result.content) ||
-        (!_.isEmpty(data.result.QuestionSet)))) {
-          if (this.isQuestionSetFilterEnabled === true && data.result.QuestionSet) {
-            data.result.content = _.concat(data.result.content, data.result.QuestionSet);
-          }
+        if (data.result.count && !_.isEmpty(data.result.content)) {
+          // QuestionSets are now already merged into content array by searchContentWithLockStatus
           this.allContent = data.result.content;
           this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, pageNumber, limit);
