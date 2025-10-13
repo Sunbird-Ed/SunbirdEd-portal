@@ -114,7 +114,6 @@ export class WorkSpace {
     deleteQuestionSet(contentId) {
         return this.workSpaceService.deleteQuestionSet(contentId);
     }
-
     /**
     * Method to remove content localcaly
     */
@@ -156,7 +155,7 @@ export class WorkSpace {
     * search collection Api call
     */
     getLinkedCollections(contentId: ContentIDParam): any {
-        return this.workSpaceService.searchContent(contentId);
+       return this.workSpaceService.searchContent(contentId);
     }
 
     /**
