@@ -266,6 +266,8 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     window.config.cloudStorage.provider = this.cloudProvider;
     window.config.contentFields = this.fwCategoriesAsNames.join();
     window.config.fwCategoryDetails = this.frameworkCategories;
+    window.config.fwApiSlug = this.configService.urlConFig.URLS.PUBLIC_URL_PREFIX;
+    window.config.getCategorysUrl = this.configService.urlConFig.URLS.READ_URL;
   }
   /**
   * Re directed to the workspace on close of modal
