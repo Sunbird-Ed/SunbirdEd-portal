@@ -7,7 +7,7 @@ const optionalEnvVariables = require('./optionalEnv');
 * @description mandEnvVariables file contains the Environment variable that is minimally required for the portal to run.
 * @description optionalEnvVariables file contains optional environment variable that can be used when needed.
 */
-let envVariables = { ...mandEnvVariables, ...optionalEnvVariables }
+let envVariables = { ...mandEnvVariables, ...optionalEnvVariables}
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
   ? env.sunbird_cassandra_urls.split(',') : ['localhost']

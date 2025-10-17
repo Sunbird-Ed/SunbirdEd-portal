@@ -1,0 +1,197 @@
+name: Portal Build and Push Docker Image
+
+on:
+  push:
+    tags:
+      - '*'
+
+env:
+  NODE_VERSION: '18.20.*'
+  PYTHON: /usr/bin/python3.7
+  BUILD_CDN_ASSETS: ${{ vars.BUILD_CDN_ASSETS || 'false' }}
+  CDN_URL: ${{ secrets.CDN_URL }}
+  BUILD_DOCKER_IMAGE: ${{ vars.BUILD_DOCKER_IMAGE || 'true' }}
+
+jobs:
+  build-client:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+
+
+      - name: Create app_dist folder
+        run: |
+          cd src/app
+          mkdir -p app_dist/
+          rm -rf dist-cdn
+
+      - name: Install Client Dependencies
+        working-directory: src/app/client
+        run: |
+          echo "Installing client dependencies fresh from package.json"
+          yarn install --prefer-offline --no-progress --production=true
+
+      - name: Build Client
+        working-directory: src/app/client
+        run: |
+          if [[ "${{ env.BUILD_DOCKER_IMAGE }}" == "true" ]]; then
+            npm run build
+            cd ..
+            mv app_dist/dist/index.html app_dist/dist/index.ejs
+          fi
+          if [[ "${{ env.BUILD_CDN_ASSETS }}" == "true" ]]; then
+            cd client
+              npm run build-cdn -- --base-href=${{ env.CDN_URL }}
+              export sunbird_portal_cdn_url=${{ env.CDN_URL }}
+              npm run inject-cdn-fallback
+          fi
+
+      - name: List app_dist contents after build-client
+        run: |
+          echo "Contents of app_dist after build-client job:"
+          ls -la src/app/app_dist/
+
+      - name: Upload app_dist
+        uses: actions/upload-artifact@v4
+        with:
+          name: client-app-dist
+          path: src/app/app_dist
+          retention-days: 1
+          compression-level: 6
+
+  build-server:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if BUILD_DOCKER_IMAGE is true
+        if: ${{ env.BUILD_DOCKER_IMAGE == 'true' }}
+        run: echo "BUILD_DOCKER_IMAGE is true, proceeding with build-server job."
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+
+
+      - name: Create app_dist folder
+        run: |
+          cd src/app
+          mkdir -p app_dist/
+          rm -rf dist-cdn
+
+      - name: Install and Build Server
+        run: |
+          cd src/app
+          cp -R libs helpers proxy resourcebundles package.json framework.config.js sunbird-plugins routes constants controllers server.js ./../../Dockerfile app_dist
+          cd app_dist
+          
+          echo "Installing server dependencies fresh from package.json"
+          yarn install --prefer-offline --ignore-engines --no-progress --production=true
+          
+          node helpers/resourceBundles/build.js -task="phraseAppPull"
+
+      - name: List app_dist contents after build-server
+        run: |
+          echo "Contents of app_dist after build-server job:"
+          ls -la src/app/app_dist/
+
+      - name: Upload app_dist
+        uses: actions/upload-artifact@v4
+        with:
+          name: server-app-dist
+          path: src/app/app_dist
+          retention-days: 1
+          compression-level: 6
+
+  docker-build:
+    needs: [build-server, build-client]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Create app_dist directory structure
+        run: |
+          mkdir -p src/app/app_dist
+          mkdir -p temp/client
+          mkdir -p temp/server
+
+      - name: Download client artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: client-app-dist
+          path: temp/client
+
+      - name: Download server artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: server-app-dist
+          path: temp/server
+
+      - name: Merge artifacts into common app_dist
+        run: |
+          # Copy client files
+          cp -r temp/client/* src/app/app_dist/ 2>/dev/null || true
+          
+          # Copy server files (this will merge, not overwrite everything)
+          cp -r temp/server/* src/app/app_dist/ 2>/dev/null || true
+          
+          echo "Final merged contents:"
+          ls -la src/app/app_dist/
+
+      - name: Build Docker Image
+        run: |
+          IMAGE_NAME="player"
+          IMAGE_TAG=$(echo "${{ github.ref_name }}_$(echo $GITHUB_SHA | cut -c1-7)" | tr '[:upper:]' '[:lower:]')
+          echo "IMAGE_NAME=${IMAGE_NAME}" >> $GITHUB_ENV
+          echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_ENV
+          
+          docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ./src/app/app_dist
+
+      - name: Login Docker Registry
+        if: ${{ env.BUILD_DOCKER_IMAGE == 'true' }}
+        run: |
+          echo "Pushing Docker image: ${IMAGE_NAME}:${IMAGE_TAG}"
+          
+          case "${{ vars.REGISTRY_PROVIDER }}" in
+          "gcp")
+            echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" | base64 --decode > $HOME/gcloud-key.json
+            gcloud auth activate-service-account --key-file=$HOME/gcloud-key.json
+            gcloud auth configure-docker ${{ secrets.REGISTRY_NAME }}
+            REGISTRY_URL=$(echo "${{ secrets.REGISTRY_URL }}" | tr '[:upper:]' '[:lower:]') 
+            ;;
+          "azure" | "dockerhub")
+            echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login "${{ secrets.REGISTRY_NAME }}" \
+              --username "${{ secrets.REGISTRY_USERNAME }}" --password-stdin
+            REGISTRY_URL=$(echo "${{ secrets.REGISTRY_URL }}" | tr '[:upper:]' '[:lower:]')
+            ;;
+          *)
+            REPO_NAME_LOWERCASE=$(echo "${GITHUB_REPOSITORY}" | tr '[:upper:]' '[:lower:]')
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            REGISTRY_URL="ghcr.io/$REPO_NAME_LOWERCASE"
+            ;;
+          esac
+           echo "REGISTRY_URL=${REGISTRY_URL}" >> $GITHUB_ENV
+
+      - name: Push Docker image
+        if: ${{ env.BUILD_DOCKER_IMAGE == 'true' }}
+        run: |
+          docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${REGISTRY_URL}/${IMAGE_NAME}:${IMAGE_TAG}
+          docker push ${REGISTRY_URL}/${IMAGE_NAME}:${IMAGE_TAG}
+          echo "Docker image pushed successfully: ${REGISTRY_URL}/${IMAGE_NAME}:${IMAGE_TAG}"

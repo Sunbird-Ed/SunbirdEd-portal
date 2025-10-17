@@ -230,3 +230,76 @@ Installing Sunbird requires two primary software components:
 | [@project-sunbird/sb-notification](https://www.npmjs.com/package/@project-sunbird/sb-notification)           	| https://github.com/Sunbird-Ed/sb-notification                    	| 6.0.0       	| NG 14      	|
 | [@shikshalokam/sl-questionnaire](https://www.npmjs.com/package/@shikshalokam/sl-questionnaire)           	    | https://github.com/shikshalokam/sl-questionnaire-components       | 2.3.0       	| NG 12      	|
 | [@shikshalokam/sl-reports-library](https://www.npmjs.com/package/@shikshalokam/sl-reports-library)           	| https://github.com/shikshalokam/sl-reports-library                | 3.0.1       	| NG 14      	|
+
+
+### CI/CD Workflows
+
+#### Docker Build and Push Workflow
+
+This repository includes a GitHub Actions workflow to automate the process of building and pushing Docker images to a container registry.
+
+#### Workflow Overview
+
+The workflow is defined in [`.github/workflows/image-push.yml`](.github/workflows/image-push.yml). It triggers on every `push` to a tag in the repository.
+
+#### Key Features
+
+- Builds the Docker image using the `build.sh` script.
+- Supports multiple container registries:
+  - Google Container Registry (GCR)
+  - Azure Container Registry (ACR)
+  - DockerHub Registry
+  - GitHub Container Registry (GHCR)
+- Automatically tags the Docker image with the Git tag and a short commit hash.
+
+#### Prerequisites
+
+Before running this workflow, ensure the following:
+
+1. ***Secrets Configuration***:
+   - Add the required secrets based on the value passed to `REGISTRY_PROVIDER` variable: If no values are passed in variables and secrets the image will be pushed to GHCR.
+     - **For Google Container Registry (GCR)**:
+       - `REGISTRY_PROVIDER` : gcp
+       - `GCP_SERVICE_ACCOUNT_KEY`: Base64-encoded Google Cloud service account key.
+       - `REGISTRY_NAME`: The registry name (e.g., `asia-south1-docker.pkg.dev`).
+       - `REGISTRY_URL`: The full URL of the registry (e.g., `<registry_name>/<project_id>/<artifact_name>`).
+     - **For DockerHub Registries**:
+       - `REGISTRY_PROVIDER` : dockerhub
+       - `REGISTRY_NAME`: The registry name (e.g., `docker.io`).
+       - `REGISTRY_URL`: The full URL of the registry (e.g., `docker.io/username`).
+       - `REGISTRY_USERNAME` and `REGISTRY_PASSWORD`: Credentials for the registry.
+     - **For Azure Container Registry (ACR)**:
+       - `REGISTRY_PROVIDER` : azure
+       - `REGISTRY_NAME`: The name of your Azure Container Registry (e.g., `myregistry.azurecr.io`).
+       - `REGISTRY_URL`: The full URL of the registry(e.g., `myregistry.azurecr.io`)
+       - `REGISTRY_USERNAME`: The username for your Azure Container Registry.
+       - `REGISTRY_PASSWORD`: The password for your Azure Container Registry.
+
+     - **For GitHub Container Registry (GHCR)**:
+       - `GITHUB_TOKEN`: Automatically available for GitHub Container Registry.
+
+      > **Note:** All variables and secrets must be configured in **Settings → Secrets and variables → Actions** in your GitHub repository.
+
+#### Code Quality
+
+The project maintains code quality through automated checks that run on every pull request:
+
+1. **Linting**
+   - Runs ESLint to check code style and quality
+   - Command: `yarn lint`
+
+2. **Dependencies**
+   - Uses `yarn install` for deterministic installations
+   - GitHub Actions cache for faster builds
+
+3. **Code Formatting**
+   - Ensures consistent code formatting
+   - Can be automatically fixed using `yarn lint:fix`
+
+4. **Testing**
+   - Runs automated tests using 8 parallel shards for faster execution
+   - Each shard runs a portion of the test suite
+   - Tests are executed in the `src/app/client` directory
+   - Command: `yarn test:ci`
+
+These checks ensure consistent code style and secure dependency management.

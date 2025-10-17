@@ -6,10 +6,12 @@
 */
 
 import { Component, EventEmitter, OnInit, Output, ViewChildren } from '@angular/core';
-import { ResourceService, ToasterService, NavigationHelperService, LayoutService, IUserData } from '@sunbird/shared';
+import { ResourceService, ToasterService, NavigationHelperService, LayoutService, IUserData, ConfigService } from '@sunbird/shared';
 import { _ } from 'lodash-es';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
+import { OrgDetailsService } from '@sunbird/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { AnonymousDeleteUserComponent } from './anonymous-delete-user.component'
 
 describe('AnonymousDeleteUserComponent', () => {
@@ -39,7 +41,8 @@ describe('AnonymousDeleteUserComponent', () => {
         }
     };
     const toasterService: Partial<ToasterService> = {
-        warning: jest.fn()
+        warning: jest.fn(),
+        success: jest.fn()
     };
     const router: Partial<Router> = {
         url: 'test'
@@ -77,8 +80,26 @@ describe('AnonymousDeleteUserComponent', () => {
         goBack: jest.fn()
     };
     const layoutService: Partial<LayoutService> = {
+        switchableLayout: jest.fn().mockReturnValue(of({ layout: 'abcd' })),
         initlayoutConfig: jest.fn(),
         redoLayoutCSS: jest.fn()
+    };
+    const configService: Partial<ConfigService> = {
+        urlConFig: {
+            URLS: {
+                SYSTEM_SETTING: {
+                    VERIFY_OTP_ON_DELETE: '/api/system/settings/get/verifyOtpOnDelete'
+                }
+            }
+        }
+    };
+    const orgDetailsService: Partial<OrgDetailsService> = {
+        learnerService: {
+            get: jest.fn().mockReturnValue(of({ result: { response: { value: 'false' } } }))
+        }
+    } as any;
+    const deviceDetectorService: Partial<DeviceDetectorService> = {
+        isMobile: jest.fn().mockReturnValue(false)
     };
 
     beforeAll(() => {
@@ -88,13 +109,34 @@ describe('AnonymousDeleteUserComponent', () => {
             router as Router,
             activatedRoute as ActivatedRoute,
             navigationhelperService as NavigationHelperService,
-            layoutService as LayoutService
+            layoutService as LayoutService,
+            configService as ConfigService,
+            orgDetailsService as OrgDetailsService,
+            deviceDetectorService as DeviceDetectorService
         )
     });
 
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
+        
+        // Setup the orgDetailsService mock properly
+        component.orgDetailsService = {
+            learnerService: {
+                get: jest.fn().mockReturnValue(of({ result: { response: { value: 'false' } } }))
+            }
+        } as any;
+        
+        // Setup the configService mock properly
+        component.configService = {
+            urlConFig: {
+                URLS: {
+                    SYSTEM_SETTING: {
+                        VERIFY_OTP_ON_DELETE: '/api/system/settings/get/verifyOtpOnDelete'
+                    }
+                }
+            }
+        } as any;
     });
 
     it('should create a instance of component', () => {
@@ -141,6 +183,10 @@ describe('AnonymousDeleteUserComponent', () => {
                 }
             }
         ]
+        
+        // Set skipOtpVerification to false to test the normal flow
+        component.skipOtpVerification = false;
+        
         component.onSubmitForm();
         expect(component).toBeTruthy();
         expect(component.showContactPopup).toBeTruthy();

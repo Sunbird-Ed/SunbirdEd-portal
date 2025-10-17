@@ -323,6 +323,14 @@ export class WorkSpaceService {
     return this.actionService.post(option);
   }
 
+  deleteQuestionSet(id: string): Observable<ServerResponse> {
+    const option = {
+      url: `${this.config.urlConFig.URLS.QUESTIONSET.RETIRE}/${id}`,
+      data: { "request": { "questionset": {} } }
+    };
+    return this.actionService.delete(option);
+  }
+
   getQuestion(contentId: string, option: any = { params: {} }): Observable<ServerResponse> {
     const param = { fields: this.config.editorConfig.DEFAULT_PARAMS_FIELDS };
     const req = {

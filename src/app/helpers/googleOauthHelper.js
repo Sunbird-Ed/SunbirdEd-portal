@@ -82,7 +82,7 @@ const keycloakMergeGoogleDesktop = getKeyCloakClient({
   }
 })
 
-const keycloakMergeGoogleIos = getKeyCloakClient({
+const keycloakMergeGoogleIos =  getKeyCloakClient({
   resource: envHelper?.KEYCLOAK_GOOGLE_CLIENT?.clientId,
   bearerOnly: true,
   serverUrl: envHelper?.PORTAL_MERGE_AUTH_SERVER_URL,

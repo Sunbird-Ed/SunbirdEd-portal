@@ -170,5 +170,5 @@ export class GuestProfileComponent implements OnInit {
   goBack() {
     this.navigationHelperService.goBack();
   }
-
+  
 }

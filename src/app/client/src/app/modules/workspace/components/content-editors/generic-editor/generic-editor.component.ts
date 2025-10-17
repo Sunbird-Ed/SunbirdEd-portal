@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '@sunbird/environment';
 import { EditorService, WorkSpaceService } from '../../../services';
 import { tap, delay, map, first, mergeMap } from 'rxjs/operators';
+import { CslFrameworkService } from '../../../../public/services/csl-framework/csl-framework.service';
 import * as _ from 'lodash-es';
 jQuery.fn.iziModal = iziModal;
 
@@ -34,6 +35,9 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   public videoMaxSize: any;
   public defaultContentFileSize: any;
   public isLargeFileUpload = false;
+  public frameworkCategories: any;
+  public fwCategoriesAsNames: any;
+  public instance: string;
   genericEditorURL: string = (<HTMLInputElement>document.getElementById('genericEditorURL')) ?
   (<HTMLInputElement>document.getElementById('genericEditorURL')).value : '';
   cloudProvider: string = (<HTMLInputElement>document.getElementById('cloudProvider')) ?
@@ -43,7 +47,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     private tenantService: TenantService, private telemetryService: TelemetryService, private router: Router,
     private navigationHelperService: NavigationHelperService, public workspaceService: WorkSpaceService,
     private configService: ConfigService, private editorService: EditorService, private toasterService: ToasterService,
-    private resourceService: ResourceService, private frameworkService: FrameworkService) {
+    private resourceService: ResourceService, private frameworkService: FrameworkService, private cslFrameworkService: CslFrameworkService) {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     this.buildNumber = buildNumber ? buildNumber.value : '1.0';
     const deviceId = (<HTMLInputElement>document.getElementById('deviceId'));
@@ -55,6 +59,9 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
       (<HTMLInputElement>document.getElementById('videoMaxSize')).value : '100';
       this.defaultContentFileSize = (<HTMLInputElement>document.getElementById('sunbirdDefaultFileSize')) ?
       (<HTMLInputElement>document.getElementById('sunbirdDefaultFileSize')).value : 150;
+      this.fwCategoriesAsNames = this.cslFrameworkService?.getAllFwCatName();
+    this.instance = (<HTMLInputElement>document.getElementById('instance'))
+      ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
   }
   ngOnInit() {
     this.userProfile = this.userService.userProfile;
@@ -62,6 +69,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     this.queryParams = this.activatedRoute.snapshot.queryParams;
     this.isLargeFileUpload = _.get(this.activatedRoute, 'snapshot.data.isLargeFileUpload');
     this.disableBrowserBackButton();
+    this.setFrameworkCategories();
     this.getDetails().pipe(first(),
       tap(data => {
         if (data.tenantDetails) {
@@ -89,20 +97,47 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
         }
       );
   }
+  
+  private setFrameworkCategories() {
+    const categories = this.cslFrameworkService.getFrameworkCategoriesObject();
+    if (categories && _.size(categories)) {
+      this.frameworkCategories = _.map(categories, category => ({
+        code: category.code,
+        label: category.label
+      }));
+    }
+  }
+  
   private getDetails() {
     const lockInfo = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     const allowedEditState = ['draft', 'allcontent', 'collaborating-on', 'uploaded'].includes(this.routeParams.state);
-    const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
+    const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;    
+    
     if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
-      return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
-      this.editorService.getOwnershipType(), this.lockContent(), this.userService.userOrgDetails$).
-      pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2] })));
+      return combineLatest(
+        this.tenantService.tenantData$, 
+        this.getContentDetails(),
+        this.editorService.getOwnershipType(), 
+        this.lockContent(), 
+        this.userService.userOrgDetails$
+      ).
+      pipe(map(data => ({ 
+        tenantDetails: data[0].tenantData,
+        collectionDetails: data[1], 
+        ownershipType: data[2]
+      })));
     } else {
-      return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
-      this.editorService.getOwnershipType(), this.userService.userOrgDetails$).
-      pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2] })));
+      return combineLatest(
+        this.tenantService.tenantData$, 
+        this.getContentDetails(),
+        this.editorService.getOwnershipType(), 
+        this.userService.userOrgDetails$
+      ).
+      pipe(map(data => ({ 
+        tenantDetails: data[0].tenantData,
+        collectionDetails: data[1], 
+        ownershipType: data[2]
+      })));
     }
   }
   private lockContent () {
@@ -210,6 +245,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
       framework: this.routeParams.framework,
       ownershipType: this.ownershipType,
       timeDiff: this.userService.getServerTimeDiff,
+      instance: this.instance,
       primaryCategories: _.without(this.frameworkService['_channelData'].contentPrimaryCategories, 'Course Assessment')
     };
     if (this.isLargeFileUpload || (_.get(this.contentDetails, 'contentDisposition') === 'online-only')) {
@@ -228,6 +264,8 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     window.config.videoMaxSize = this.videoMaxSize;
     window.config.defaultContentFileSize = this.defaultContentFileSize; // making configurable upload limit in workspace for content upload
     window.config.cloudStorage.provider = this.cloudProvider;
+    window.config.contentFields = this.fwCategoriesAsNames.join();
+    window.config.fwCategoryDetails = this.frameworkCategories;
   }
   /**
   * Re directed to the workspace on close of modal

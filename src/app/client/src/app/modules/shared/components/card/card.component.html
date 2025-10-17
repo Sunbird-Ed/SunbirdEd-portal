@@ -36,15 +36,13 @@
           <img src="{{data.ribbon.left.image}}" class="sb-card-badge"
             *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.image" alt="{{data.ribbon.left.name}}">
         </div>
-        <div class="sb-card-meta-item ellipsis" *ngIf="data.subject" title="{{data.subject}}">
-          {{resourceService.frmelmnts.lbl.subject | transposeTerms: 'frmelmnts.lbl.subject' : resourceService?.selectedLang}} : {{data.subject}}
-        </div>
-        <div class="sb-card-meta-item ellipsis mt-4" *ngIf="data.gradeLevel" title="{{data.gradeLevel}}">
-          {{resourceService.frmelmnts.lbl.class | transposeTerms: 'frmelmnts.lbl.class' : resourceService?.selectedLang}} : {{data.gradeLevel}}
-        </div>
-        <div class="sb-card-meta-item ellipsis mt-4" *ngIf="data.medium" title="{{data.medium}}">
-          {{resourceService.frmelmnts.lbl.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}} : {{data.medium}}
-        </div>
+        <ng-container *ngFor="let cat of categories">
+          <div class="sb-card-meta-item ellipsis" *ngIf="data[cat]" [title]="data[cat]">
+            {{ resourceService.frmelmnts.lbl[cat]
+            | transposeTerms: 'frmelmnts.lbl.' + cat : resourceService?.selectedLang
+            }} : {{ data[cat] }}
+          </div>
+        </ng-container>
       </div>
       <!--/Meta Details - Non-Course-->
     </div>

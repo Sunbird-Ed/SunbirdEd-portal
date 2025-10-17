@@ -3,7 +3,7 @@ export interface IUserData {
     err: ServerResponse;
     userProfile: IUserProfile;
 }
-export interface IUserProfile {
+export interface IUserProfileBase {
     missingFields?: Array<string>;
     badgeAssertions?: Array<string>;
     lastName: string;
@@ -13,7 +13,6 @@ export interface IUserProfile {
     education: Array<IEducation>;
     gender: string;
     regOrgId: string;
-    subject: Array<string>;
     roles: Array<string>;
     language: Array<string>;
     updatedDate: string;
@@ -48,7 +47,6 @@ export interface IUserProfile {
     phone: string;
     dob: string;
     registeredOrg: any;
-    grade: Array<string>;
     currentLoginTime: string;
     location: string;
     status: number | string;
@@ -66,14 +64,18 @@ export interface IUserProfile {
     managedBy?: string;
     userOrgDetails?: any;
 }
-export interface IJobProfile {
+
+export interface IUserProfile extends IUserProfileBase {
+    [key: string]: Array<string> | Array<IAddress> | Array<IJobProfile> | any;
+}
+
+export interface IJobProfileBase {
     jobName: string;
     orgName: string;
     role: string;
     updatedBy: string;
     endDate: string;
     isVerified: string;
-    subject: Array<string>;
     joiningDate: string;
     updatedDate: string;
     isCurrentJob: boolean;
@@ -88,6 +90,10 @@ export interface IJobProfile {
     verifiedDate: string;
     isRejected: boolean | any;
     id: string;
+}
+
+export interface IJobProfile extends IJobProfileBase {
+    [key: string]: Array<string> | any;
 }
 export interface IAddress {
     country: string;

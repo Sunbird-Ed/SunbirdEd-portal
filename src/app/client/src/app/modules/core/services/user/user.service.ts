@@ -146,9 +146,9 @@ export class UserService {
       DataService.sessionId = this._anonymousSid;
     }
     try {
-      this._appId = document.getElementById('appId') ? (<HTMLInputElement>document.getElementById('appId')).value : undefined;
+      this._appId = document.getElementById('appId')?(<HTMLInputElement>document.getElementById('appId')).value: undefined;
       this.defaultBoard = (<HTMLInputElement>document.getElementById('defaultBoard')).value;
-      this._cloudStorageUrls = document.getElementById('cloudStorageUrls') ? (<HTMLInputElement>document.getElementById('cloudStorageUrls')).value.split(',') : [];
+      this._cloudStorageUrls = document.getElementById('cloudStorageUrls')?(<HTMLInputElement>document.getElementById('cloudStorageUrls')).value.split(','):[];
     } catch (error) {
     }
     this._slug = baseHref && baseHref.split('/')[1] ? baseHref.split('/')[1] : '';
@@ -337,20 +337,20 @@ export class UserService {
     ));
   }
 
-  /**
- * This method invokes learner service to delete tthe user account
- */
-  public deleteUser() {
-    const options = {
-      url: this.config.urlConFig.URLS.USER.DELETE,
-      data: {
-        request: {
-          'userId': this.userid
+    /**
+   * This method invokes learner service to delete tthe user account
+   */
+    public deleteUser() {
+      const options = {
+        url: this.config.urlConFig.URLS.USER.DELETE,
+        data: {
+          request: {
+            'userId': this.userid
+          }
         }
-      }
-    };
-    return this.learnerService.post(options);
-  }
+      };
+      return this.learnerService.post(options);
+    }
 
   get orgIdNameMap() {
     const mapOrgIdNameData = {};
@@ -503,15 +503,15 @@ export class UserService {
       return response;
     }));
   }
-
+  
   /**
     * @description - This method is called in the case where either of onboarding or framework popup is disabled and setGuest value is made true
   */
-  setGuestUser(value: boolean, defaultFormatedName: string): void {
+  setGuestUser(value: boolean, defaultFormatedName: string): void{
     this.setGuest = value;
     this.formatedName = defaultFormatedName;
   }
-
+  
   getGuestUser(): Observable<any> {
     if (this.isDesktopApp) {
       return this.getAnonymousUserPreference().pipe(map((response: ServerResponse) => {
@@ -528,12 +528,12 @@ export class UserService {
         this.guestUserProfile = JSON.parse(guestUserDetails);
         this._guestData$.next({ userProfile: this.guestUserProfile });
         return of(this.guestUserProfile);
-      }
-      else if (this.setGuest) {
-        const configData = { "formatedName": this.formatedName }
+      } 
+      else if(this.setGuest){
+        const configData = {"formatedName": this.formatedName}
         return of(configData);
       }
-      else {
+      else{
         return throwError(undefined);
       }
     }
@@ -574,6 +574,7 @@ export class UserService {
   get defaultFrameworkFilters() {
     const isUserLoggedIn = this.loggedIn || false;
     const { framework = null } = this.userProfile || {};
+    this.frameworkCategories = localStorage.getItem('fwCategoryObject') ? JSON.parse(localStorage.getItem('fwCategoryObject')) : this.frameworkCategories;
     let userFramework = {}
     if (!isUserLoggedIn) {
       let userDetails = JSON.parse(localStorage.getItem('guestUserDetails'));
@@ -581,7 +582,6 @@ export class UserService {
     } else {
       userFramework = (isUserLoggedIn && framework && _.pick(framework, [this.frameworkCategories?.fwCategory2?.code, this.frameworkCategories?.fwCategory3?.code, this.frameworkCategories?.fwCategory1?.code, 'id'])) || {};
     }
-
-    return { [this.frameworkCategories?.fwCategory1?.code]: this.defaultBoard, ...userFramework };
+    return userFramework;
   }
 }

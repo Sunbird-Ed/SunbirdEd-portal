@@ -206,6 +206,23 @@ module.exports = function (app) {
     })
   )
 
+  app.delete([
+    '/action/questionset/v2/retire/:do_id'
+    ],
+    isAPIWhitelisted.isAllowed(),
+    addCorsHeaders,
+    proxyUtils.verifyToken(),
+    proxy(learnerURL, {
+      limit: reqDataLimitOfContentUpload,
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
+      proxyReqPathResolver: function (req) {
+        let originalUrl = req.originalUrl.replace('/action/', '')
+        return require('url').parse(learnerURL + originalUrl).path
+      },
+      userResDecorator: userResDecorator
+    })
+  )
+
   app.post('/action/object/category/definition/v1/read',
     isAPIWhitelisted.isAllowed(),
     addCorsHeaders,

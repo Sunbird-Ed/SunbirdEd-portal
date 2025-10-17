@@ -29,7 +29,7 @@ import { CslFrameworkService } from '../../../public/services/csl-framework/csl-
 export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy {
   @Input() facets;
   @Input() queryParamsToOmit;
-  @Input() supportedFilterAttributes = ['se_boards', 'se_mediums', 'se_gradeLevels', 'se_subjects', 'primaryCategory', 'mediaType', 'additionalCategories', 'channel'];
+  @Input() supportedFilterAttributes = [ 'se_boards', 'se_mediums', 'se_gradeLevels', 'se_subjects', 'primaryCategory', 'mediaType', 'additionalCategories', 'channel'];
   public filterLayout = LibraryFiltersLayout;
   public selectedMediaTypeIndex = 0;
   public selectedMediaType: string;
@@ -118,7 +118,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
   ngOnInit() {
     this.frameworkCategoriesList = this.cslFrameworkService.getAllFwCatName();
     this.globalFilterCategories = this.cslFrameworkService.getAlternativeCodeForFilter();
-    this.supportedFilterAttributes = [...this.globalFilterCategories, 'primaryCategory', 'mediaType', 'additionalCategories', 'channel'];
+    this.supportedFilterAttributes = [ ...this.globalFilterCategories, 'primaryCategory', 'mediaType', 'additionalCategories', 'channel'];
     this.setResetFilterInteractData();
     this.fetchSelectedFilterAndFilterOption();
     this.handleFilterChange();
@@ -230,7 +230,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
       });
       this.selectedFilters.channel = channelIds;
     }
-    if (this?.utilService?.isDesktopApp && queryFilters?.selectedTab === 'mydownloads' && this.isConnected) {
+    if(this?.utilService?.isDesktopApp && queryFilters?.selectedTab === 'mydownloads' && this.isConnected) {
       this.queryParamsToOmit = this.queryParamsToOmit && this.queryParamsToOmit.length ? this.queryParamsToOmit.push('key') : ['key']
       if (this.selectedFilters.key) {
         delete this.selectedFilters.key;
@@ -302,7 +302,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
       queryParams: {
         ...(() => {
           const queryParams = _.cloneDeep(this.activatedRoute.snapshot.queryParams);
-          const queryFilters = [...this.supportedFilterAttributes, ...[this.frameworkCategoriesList[0], this.frameworkCategoriesList[1], this.frameworkCategoriesList[2], 'channel']];
+          const queryFilters = [...this.supportedFilterAttributes, ...[this.frameworkCategoriesList[0],this.frameworkCategoriesList[1],this.frameworkCategoriesList[2], 'channel']];
           queryFilters.forEach((attr) => delete queryParams[attr]);
           return queryParams;
         })()

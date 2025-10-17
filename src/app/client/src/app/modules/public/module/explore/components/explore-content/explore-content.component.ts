@@ -127,6 +127,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     });
     this.checkForBack();
     this.moveToTop();
+    this.fetchContents();
   }
   goback() {
     if (this.navigationhelperService['_history'].length > 1) {
@@ -296,6 +297,9 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       )
       .subscribe(data => {
         this.showLoader = false;
+        if (_.get(data, ["result", "count"]) === 0) {
+          this.contentList = []
+        }
         this.facets = this.searchService.updateFacetsData(_.get(data, 'result.facets'));
         this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
         this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
@@ -395,7 +399,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
 
   private setNoResultMessage() {
     this.resourceService.languageSelected$.subscribe(item => {
-    let title = this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noBookfoundTitle'), 'frmelmnts.lbl.noBookfoundTitle', get(item, 'value'));    
+    let title = this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noContentfoundTitle'), 'frmelmnts.lbl.noContentfoundTitle', get(item, 'value'));    
     if (this.queryParams.key) {
       const title_part1 = _.replace(this.resourceService.frmelmnts.lbl.desktop.yourSearch, '{key}', this.queryParams.key);
       const title_part2 = this.resourceService.frmelmnts.lbl.desktop.notMatchContent;
@@ -403,8 +407,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     }
       this.noResultMessage = {
         'title': title,
-        'subTitle': this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noBookfoundSubTitle'), 'frmelmnts.lbl.noBookfoundSubTitle', get(item, 'value')),
-        'buttonText': this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noBookfoundButtonText'), 'frmelmnts.lbl.noBookfoundButtonText', get(item, 'value')),
+        'subTitle': this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noContentfoundSubTitle'), 'frmelmnts.lbl.noContentfoundSubTitle', get(item, 'value')),
+        'buttonText': this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noContentfoundButtonText'), 'frmelmnts.lbl.noContentfoundButtonText', get(item, 'value')),
         'showExploreContentButton': false
       };
       

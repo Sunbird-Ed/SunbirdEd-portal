@@ -121,7 +121,7 @@ module.exports = (app, keycloak) => {
     '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/:slug/play/*', '/explore-course', '/explore-course/*',
     '/:slug/explore-course', '/:slug/explore-course/*', '/:slug/signup', '/signup', '/:slug/sign-in/*',
     '/sign-in/*', '/download/*', '/accountMerge/*', '/:slug/accountMerge/*', '/:slug/download/*', '/certs/*', '/:slug/certs/*', '/recover/*', '/:slug/recover/*', '/explore-groups',
-    '/guest-profile', '/guest-profile/*'],
+    '/guest-profile','/guest-profile/*'],
     session({
       secret: envHelper?.PORTAL_SESSION_SECRET_KEY,
       resave: false,
@@ -189,8 +189,8 @@ function getLocals(req) {
   locals.offlineDesktopAppSupportedLanguage = envHelper.sunbird_portal_offline_supported_languages,
     locals.offlineDesktopAppDownloadUrl = envHelper.SUNBIRD_PORTAL_BASE_URL
   locals.logFingerprintDetails = envHelper.LOG_FINGERPRINT_DETAILS,
-    locals.slugForProminentFilter = envHelper?.sunbird_portal_slugForProminentFilter,
-    locals.deviceId = '';
+  locals.slugForProminentFilter = envHelper?.sunbird_portal_slugForProminentFilter,
+  locals.deviceId = '';
   locals.deviceProfileApi = envHelper.DEVICE_PROFILE_API;
   locals.slug = slug ? slug : '';
   locals.collectionEditorURL = envHelper?.CONTENT_EDITORS_URL?.COLLECTION_EDITOR;
@@ -203,9 +203,9 @@ function getLocals(req) {
   locals.p2reCaptchaEnabled = envHelper.sunbird_p2_reCaptcha_enabled;
   locals.p3reCaptchaEnabled = envHelper.sunbird_p3_reCaptcha_enabled;
   locals.sunbirdQuestionSetChildrenLimit = envHelper.sunbird_questionset_children_limit,
-    locals.sunbirdCollectionChildrenLimit = envHelper.sunbird_collection_children_limit,
-    locals.sunbirdNavAccessibility = envHelper.sunbird_portal_nav_accessibility,
-    locals.enableSSO = envHelper.sunbird_enable_sso;
+  locals.sunbirdCollectionChildrenLimit = envHelper.sunbird_collection_children_limit,
+  locals.sunbirdNavAccessibility = envHelper.sunbird_portal_nav_accessibility,
+  locals.enableSSO = envHelper.sunbird_enable_sso;
   locals.reportsListVersion = envHelper?.reportsListVersion;
   locals.sunbirdDefaultFileSize = envHelper.SUNBIRD_DEFAULT_FILE_SIZE;
   locals.baseUrl = null;

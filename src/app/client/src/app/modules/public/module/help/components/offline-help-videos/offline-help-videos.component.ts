@@ -47,7 +47,7 @@ export class OfflineHelpVideosComponent implements OnInit, OnDestroy, AfterViewI
           id: 'add-content-offline',
           name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0095),
           thumbnail: 'assets/images/play-icon.svg',
-          url: 'assets/videos/How_do_I_download_content_from_DIKSHA_Library.mp4'
+          url: 'assets/videos/How_do_I_download_content_from_SUNBIRD_Library.mp4'
         },
         {
           id: 'add-content-online',
@@ -77,7 +77,7 @@ export class OfflineHelpVideosComponent implements OnInit, OnDestroy, AfterViewI
           id: 'add-content-offline-joyful-theme',
           name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.downloadcontent),
           thumbnail: 'assets/images/play-icon.svg',
-          url: 'assets/videos/How_do_I_download_content_from_DIKSHA_Library_joyful_theme.mp4'
+          url: 'assets/videos/How_do_I_download_content_from_SUNBIRD_Library_joyful_theme.mp4'
         },
         {
           id: 'find-content-offline-joyful-theme',
@@ -95,7 +95,7 @@ export class OfflineHelpVideosComponent implements OnInit, OnDestroy, AfterViewI
           id: 'how-to-login',
           name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.login),
           thumbnail: 'assets/images/play-icon.svg',
-          url: 'assets/videos/How_do_I_login_on_diksha.mp4'
+          url: 'assets/videos/How_do_I_login_on_sunbird.mp4'
         },
         {
           id: 'recover-account',
@@ -104,16 +104,16 @@ export class OfflineHelpVideosComponent implements OnInit, OnDestroy, AfterViewI
           url: 'assets/videos/How_do_I_recover_myaccount.mp4'
         },
         {
-          id: 'register-on-diksha',
+          id: 'register-on-sunbird',
           name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.register),
           thumbnail: 'assets/images/play-icon.svg',
-          url: 'assets/videos/How_do_I_register_on_diksha.mp4'
+          url: 'assets/videos/How_do_I_register_on_sunbird.mp4'
         },
         {
           id: 'how-to-login-joyful-theme',
           name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.loginnewtheme),
           thumbnail: 'assets/images/play-icon.svg',
-          url: 'assets/videos/How_do_I_login_on_diksha_joyful_theme.mp4'
+          url: 'assets/videos/How_do_I_login_on_sunbird_joyful_theme.mp4'
         },
         {
           id: 'recover-account-joyful-theme',
@@ -122,22 +122,22 @@ export class OfflineHelpVideosComponent implements OnInit, OnDestroy, AfterViewI
           url: 'assets/videos/How_do_I_recover_myaccount_joyful_theme.mp4'
         },
         {
-          id: 'register-on-diksha-joyful-theme',
+          id: 'register-on-sunbird-joyful-theme',
           name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.registernewtheme),
           thumbnail: 'assets/images/play-icon.svg',
-          url: 'assets/videos/How_do_I_register_on_diksha_joyful_theme.mp4'
+          url: 'assets/videos/How_do_I_register_on_sunbird_joyful_theme.mp4'
         },
         {
           id: 'add-managed-user',
           name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.manageuser),
           thumbnail: 'assets/images/play-icon.svg',
-          url: 'assets/videos/How_do_I_add_users_on_DIKSHA.mp4'
+          url: 'assets/videos/How_do_I_add_users_on_SUNBIRD.mp4'
         },
         {
           id: 'add-managed-user-joyful-theme',
           name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.manageusernewtheme),
           thumbnail: 'assets/images/play-icon.svg',
-          url: 'assets/videos/How_do_I_add_users_on_DIKSHA_joyful_theme.mp4'
+          url: 'assets/videos/How_do_I_add_users_on_SUNBIRD_joyful_theme.mp4'
         },
         {
           id: 'login-with-sso-joyful-theme',

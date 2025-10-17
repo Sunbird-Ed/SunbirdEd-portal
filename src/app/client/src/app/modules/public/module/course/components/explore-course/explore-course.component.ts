@@ -51,8 +51,8 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
     public allMimeType;
     public frameworkCategoriesList;
     public categoryKeys;
-
-
+ 
+    
     constructor(public searchService: SearchService, public router: Router,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
         public resourceService: ResourceService, public toasterService: ToasterService,
@@ -139,7 +139,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
         }
         this.selectedFilters = filterData;
         const defaultFilters = _.reduce(filters, (collector: any, element) => {
-            if (element.code === this.frameworkCategoriesList[0]) {
+            if (element.code === this.frameworkCategoriesList[0] ) {
                 collector[this.frameworkCategoriesList[0]] = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
             }
             return collector;

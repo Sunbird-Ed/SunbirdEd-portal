@@ -1346,6 +1346,18 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+    '/nlweb/ask/proxy': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC,ROLE.ANONYMOUS]
+    },
+    '/nlweb/ask/health': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC,ROLE.ANONYMOUS]
+    },
+    '/nlweb/ask/sites': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC,ROLE.ANONYMOUS]
+    },
     '/api/data/v1/form/update': {
       description: 'API for form update; mobile team also uses same API.',
       checksNeeded: ['ROLE_CHECK'],
@@ -1659,6 +1671,13 @@ const API_LIST = {
         ROLE.CONTENT_REVIEWER
       ]
     },
+    '/action/questionset/v2/retire/:do_id': {
+      description: 'QuestionSet retire',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR
+      ]
+    },
     '/action/questionset/v2/read/:do_id': {
       description: 'Question read',
       checksNeeded: ['ROLE_CHECK'],
@@ -1757,7 +1776,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/kendra/resource/mlreports/v1/filtervalues': {
+    '/kendra/resource/mlreports/v1/filtervalues':{
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
@@ -1825,11 +1844,11 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    "/assessment/programs/mlcore/v1/join/:id": {
+    "/assessment/programs/mlcore/v1/join/:id":{
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    "/assessment/users/mlcore/v1/solutions/:id": {
+    "/assessment/users/mlcore/v1/solutions/:id":{
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
@@ -2031,6 +2050,7 @@ const API_LIST = {
     '/action/questionset/v2/reject/:do_id',
     '/action/questionset/v2/read/:do_id',
     '/action/questionset/v2/hierarchy/:do_id',
+    '/action/questionset/v2/retire/:do_id',
     '/content/questionset/v2/copy/:do_id',
     '/action/question/v2/read/:do_id',
     '/action/question/v2/review/:do_id',
@@ -2073,6 +2093,9 @@ const API_LIST = {
     '/assessment/programs/mlcore/v1/join/:id',
     '/assessment/users/mlcore/v1/solutions/:id',
     '/learner/user/v1/delete',
+    '/nlweb/ask/proxy',
+    '/nlweb/ask/health',
+    '/nlweb/ask/sites',
   ]
 };
 module.exports = API_LIST;

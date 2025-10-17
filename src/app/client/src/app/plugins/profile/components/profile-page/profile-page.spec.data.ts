@@ -681,7 +681,7 @@ export const Response = {
         'params': null,
         'responseCode': 'OK',
         'result': {
-            'signedUrl': 'https://dikshastagingprivate.blob.core.windows.net/ntp-staging-e-credentials/0124784842112040965_0130645322226647040/3feb12d0-c65d-11ea-a42f-51f91f72670a.pdf?sv=2017-04-17&se=2020-08-31T13%3A26%3A03Z&sr=b&sp=r&sig=FA0x70%2B4HpfsT35jwdE5mgF/KXM0tfRbnCITt8797CQ%3D'
+            'signedUrl': 'https://sunbirdstagingprivate.blob.core.windows.net/ntp-staging-e-credentials/0124784842112040965_0130645322226647040/3feb12d0-c65d-11ea-a42f-51f91f72670a.pdf?sv=2017-04-17&se=2020-08-31T13%3A26%3A03Z&sr=b&sp=r&sig=FA0x70%2B4HpfsT35jwdE5mgF/KXM0tfRbnCITt8797CQ%3D'
         }
     },
     personaTenantValues: [

@@ -226,7 +226,7 @@ export const Response = {
       "Exam Question"
     ],
     "framework": "",
-    "name": "dikshacustodian",
+    "name": "sunbirdcustodian",
     "defaultCourseFramework": "TPD",
     "assetPrimaryCategories": [
       "Asset",

@@ -14,7 +14,7 @@
               <div class="small-box border-round border-r50"></div>
             </div>
             <label
-              class="d-block text-center font-weight-bold">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile | interpolate:'{instance}': instance}}</label>
+              class="d-block text-center font-weight-bold">{{resourceService?.frmelmnts?.lbl?.downloadSunbirdForMobile | interpolate:'{instance}': instance}}</label>
             <a class="d-block app-download" (click)="redirectToMobileApp()" tabindex="0">
               <img class="playStore-img cursor-pointer" src="/assets/images/google_playstore.png"
                 alt="{{ resourceService?.frmelmnts?.lbl?.altGoogleplay }}">
@@ -48,7 +48,7 @@
       <div class="sbt-container">
         <img src="/assets/images/footer-line.svg" class="sbt-skyline-path" alt="line path">
         <div class="sbt-footer-shade">
-          <img src="/assets/images/footer-flower.svg" alt="flower image shade is showing on footer">
+          <!-- <img src="/assets/images/footer-flower.svg" alt="flower image shade is showing on footer"> -->
         </div>
         <div class="ui grid stackable px-72">
           <div class="six wide column contantDetails px-0">
@@ -71,8 +71,8 @@
           </div>
           <div class="six wide column p-0 d-flex sbt-footer-download-app">
             <div class="sbt-footer-bg relative">
-              <img [attr.aria-label]="resourceService.frmelmnts?.lnk?.footerAppDownload | interpolate:'{instance}':  instance" class="sbt-footer-bg-img cursor-pointer" tabindex="0" src="/assets/images/footer-flower-set.svg" alt="">
-              <label class="d-block text-center font-weight-bold sbt-footer-title">{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile | interpolate:'{instance}':  instance}}</label>
+              <img [attr.aria-label]="resourceService.frmelmnts?.lnk?.footerAppDownload | interpolate:'{instance}':  instance" class="sbt-footer-bg-img cursor-pointer" tabindex="0" src="/assets/images/footer-mobile-frame.svg" alt="">
+              <label class="d-block text-center font-weight-bold sbt-footer-title">{{resourceService.frmelmnts?.lnk?.footerSUNBIRDForMobile | interpolate:'{instance}':  instance}}</label>
               <a class="d-block app-download" (click)="redirectToMobileApp()">
                 <img tabindex="0" class="playStore-img cursor-pointer" src="/assets/images/google_playstore.png"
                   alt="{{ resourceService?.frmelmnts?.lbl?.altGoogleplay }}">

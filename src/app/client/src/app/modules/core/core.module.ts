@@ -37,7 +37,7 @@ import { CslFrameworkService } from '../public/services/csl-framework/csl-framew
     CommonConsumptionModule,
     LocationModule,
     NotificationModule,
-
+    
   ],
   declarations: [MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent, PermissionDirective,
     BodyScrollDirective, OnlineOnlyDirective,

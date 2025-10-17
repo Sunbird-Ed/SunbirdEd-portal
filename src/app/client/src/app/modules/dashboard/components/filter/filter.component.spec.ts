@@ -297,7 +297,7 @@ describe('FilterComponent', () => {
     component.filtersFormGroup = new FormBuilder().group({
       Organisation: new FormControl('xyz')
     });
-    jest.spyOn(component, 'checkDependencyFilters')
+    jest.spyOn(component,'checkDependencyFilters')
     component.filters = mockChartData.dependencyFilters;
     component.selectedFilters = mockChartData.selectedFiltersWithoutDependecy;
     component.checkDependencyFilters();
@@ -313,7 +313,7 @@ describe('FilterComponent', () => {
     jest.spyOn(component, 'ngOnDestroy')
     component.ngOnDestroy();
     expect(component.unsubscribe).toBeDefined()
-  });
+});
 
   it('should choose the first option', () => {
     const mockMatAutocomplete: any = {
@@ -346,7 +346,7 @@ describe('FilterComponent', () => {
         Organisation: 'Organisation 1',
       },
     };
-    jest.spyOn(component, 'formGeneration').mockImplementation(() => { });
+    jest.spyOn(component, 'formGeneration').mockImplementation(() => {});
     component.selectedFilter = mockSelectedFilter;
     jest.advanceTimersByTime(0);
     expect(component.formGeneration).toHaveBeenCalledWith(mockSelectedFilter.data);

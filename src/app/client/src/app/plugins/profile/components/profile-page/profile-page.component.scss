@@ -233,18 +233,17 @@
 
 ::ng-deep {
   .avatar-container {
-    .my-avatar.verified .sb-avatar-list-item .sb-avatar__img {
-      border: 1px solid !important;
+     .my-avatar.verified .sb-avatar-list-item .sb-avatar__img {
+      border: 1px solid  !important;
       border-color: var(--secondary-color) !important;
     }
-
-    .avatar-tickmark {
+     .avatar-tickmark {
       width: 2rem;
       height: 2rem;
       position: absolute;
       right: 0%;
       z-index: 9;
-      top: 0.2rem;
+      top: 0.2rem; 
     }
   }
 }
