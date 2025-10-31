@@ -251,7 +251,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             }),
             switchMap(this.fetchEnrolledCoursesSection.bind(this)),
     
-            switchMap((enrolledSection:any) =>
+            switchMap((enrolledSection: any) =>
                
                     this.fetchContents().pipe(
                     map((pageContentData: any[]) => {
@@ -259,7 +259,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         const allContents = _.flatMap(pageContentData, section => section.contents || []);
                         const metadataMap = _.keyBy(allContents, 'identifier');
                         
-                        const enrichedContents = (this.enrolledSection.contents || []).map(content => {
+                        const enrichedContents = (enrolledSection.contents || []).map(content => {
                         const courseId = _.get(content, 'metaData.courseId') ||
                                         _.get(content, 'identifier') ||
                                         _.get(content, 'metaData.identifier');
@@ -296,7 +296,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         ),
          
             tap((finalSection) => {
-                if (!finalSection) return;            
+                if (!finalSection) {return;}            
                 const sections = Array.isArray(finalSection) ? finalSection : [finalSection];
 
                 const currentTab = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab');
@@ -702,7 +702,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                 }), tap(data => {
                                     // this.userPreference = this.setUserPreferences();
                                     this.showLoader = false;              
-                                    const userProfileSubjects = _.get(this.userService,`userProfile.framework.${this.frameworkCategoriesList[3]}`) || [];
+                                    const userProfileSubjects = _.get(this.userService, `userProfile.framework.${this.frameworkCategoriesList[3]}`) || [];
                                     const [userSubjects, notUserSubjects] = partition(sortBy(data, ['name']), value => {
                                         const { name = null } = value || {};
                                         if (!name) { return false; }
