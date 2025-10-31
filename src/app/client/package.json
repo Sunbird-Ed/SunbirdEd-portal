@@ -220,6 +220,8 @@
     ],
     "moduleNameMapper": {
       "canvas": "<rootDir>/__mocks__/canvas.js",
+      "chart.js": "<rootDir>/__mocks__/chart.js",
+      "ng2-charts": "<rootDir>/__mocks__/ng2-charts.js",
       "^@sunbird/core": "<rootDir>/src/app/modules/core",
       "^@sunbird/shared": "<rootDir>/src/app/modules/shared",
       "^@sunbird/home": "<rootDir>/src/app/modules/home",
