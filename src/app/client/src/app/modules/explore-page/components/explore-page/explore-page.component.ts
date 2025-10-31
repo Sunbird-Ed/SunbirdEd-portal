@@ -236,7 +236,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         const enrolledSection$ = this.getQueryParams().pipe(
             tap(() => {
                 const currentPage = this._currentPageData = this.getCurrentPageData();
-                console.log('Current Page Data on Query Params Change', currentPage);
+               
                 this.pageTitleSrc = get(this.resourceService, 'RESOURCE_CONSUMPTION_ROOT') + get(currentPage, 'title');
                 this.isFilterEnabled = true;
                 if (_.get(currentPage, 'filter')) {
