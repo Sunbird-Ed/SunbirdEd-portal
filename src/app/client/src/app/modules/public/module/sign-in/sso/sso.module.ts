@@ -4,7 +4,7 @@ import { SsoRoutingModule } from './sso-routing.module';
 import {SelectOrgComponent, UpdateContactComponent, AuthFailedComponent} from './components';
 import {TelemetryModule} from '@sunbird/telemetry';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
-import { SuiModule } from 'ng2-semantic-ui-v9';
+import { SuiModule } from '@project-sunbird/ng2-semantic-ui';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@sunbird/shared';
 import { RecaptchaModule } from 'ng-recaptcha';

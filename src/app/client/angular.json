@@ -36,17 +36,17 @@
               },
                {
                 "glob": "**/*",
-                "input": "./node_modules/@project-sunbird/sunbird-pdf-player-web-component/lib/assets/",
+                "input": "./node_modules/@project-sunbird/sunbird-pdf-player-web-component/assets/",
                 "output": "/assets/"
               },
               {
                 "glob": "**/*",
-                "input": "./node_modules/@project-sunbird/sunbird-epub-player-web-component/lib/assets/",
+                "input": "./node_modules/@project-sunbird/sunbird-epub-player-web-component/assets/",
                 "output": "/assets/"
               },
               {
                 "glob": "**/*",
-                "input": "./node_modules/@project-sunbird/sunbird-video-player-web-component/lib/assets/",
+                "input": "./node_modules/@project-sunbird/sunbird-video-player-web-component/assets/",
                 "output": "/assets/"
               },
               {
@@ -76,7 +76,7 @@
               },
               {
                 "glob": "**/*",
-                "input": "node_modules/@project-sunbird/sunbird-quml-player-web-component/lib/assets",
+                "input": "node_modules/@project-sunbird/sunbird-quml-player-web-component/assets",
                 "output": "/assets/"
               },
               {

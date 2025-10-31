@@ -8,7 +8,7 @@ import { CoreModule } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
-  SuiProgressModule, SuiRatingModule, SuiCollapseModule, SuiCheckboxModule } from 'ng2-semantic-ui-v9';
+  SuiProgressModule, SuiRatingModule, SuiCollapseModule, SuiCheckboxModule } from '@project-sunbird/ng2-semantic-ui';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RecaptchaModule } from 'ng-recaptcha';
 
