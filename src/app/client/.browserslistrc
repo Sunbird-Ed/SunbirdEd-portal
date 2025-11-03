@@ -1,4 +1,3 @@
-# Conservative browserslist to avoid version 142 chrome issue
 # Only target well-established, stable browser versions
 
 chrome 130
