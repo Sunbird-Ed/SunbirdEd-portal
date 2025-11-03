@@ -1,0 +1,8 @@
+# Conservative browserslist to avoid version 142 chrome issue
+# Only target well-established, stable browser versions
+
+chrome 130
+firefox 128  
+edge 130
+safari 17
+ios_saf 17
