@@ -241,60 +241,47 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.isFilterEnabled = true;
                 if (_.get(currentPage, 'filter')) {
                     this.isFilterEnabled = _.get(currentPage, 'filter.isEnabled');
-                   
                 }
                 if ((_.get(currentPage, 'filter') && !_.get(currentPage, 'filter.isEnabled'))) {
                     this.fetchContents$.next(currentPage);
                 }
-               
                 this.setFilterConfig(currentPage);
             }),
             switchMap(this.fetchEnrolledCoursesSection.bind(this)),
-    
-            switchMap((enrolledSection: any) =>
-               
-                    this.fetchContents().pipe(
-                    map((pageContentData: any[]) => {
-                        
-                        const allContents = _.flatMap(pageContentData, section => section.contents || []);
-                        const metadataMap = _.keyBy(allContents, 'identifier');
-                        
-                        const enrichedContents = (enrolledSection.contents || []).map(content => {
-                        const courseId = _.get(content, 'metaData.courseId') ||
-                                        _.get(content, 'identifier') ||
-                                        _.get(content, 'metaData.identifier');
-                        const metadata = metadataMap[courseId];
-
-                        if (metadata) {
-                            const filterCategories = this.cslFrameworkService.getGlobalFilterCategoriesObject();
-                            if (filterCategories) {
-                                filterCategories.forEach(category => {
-                                    if (category.type === 'framework') {
-                                        content[category.code] = _.get(metadata, category.alternativeCode, []);
-                                    }
-                                });
+            map((enrolledSection: any) => {
+                if (!enrolledSection) return enrolledSection;
+                
+                // Get framework fields from query params
+                const queryParams = _.get(this.activatedRoute, 'snapshot.queryParams');
+                const filterCategories = this.cslFrameworkService.getGlobalFilterCategoriesObject();
+                
+                const enrichedContents = (enrolledSection.contents || []).map(content => {
+                    if (filterCategories) {
+                        filterCategories.forEach(category => {
+                            if (category.type === 'framework') {
+                                content[category.code] = 
+                                    (queryParams[category.code] && queryParams[category.code].split(',')) ||     // From query params
+                                    _.get(content, `content.${category.alternativeCode}`) ||                     // From content.se_boards etc
+                                    _.get(content, `content.${category.code}`) ||                               // From content.board etc
+                                    [];
                             }
-                        }
-
-                        return content;
                         });
+                    }
+                    return content;
+                });
 
-                        const sectionData = {
-                            ...enrolledSection,
-                            contents: enrichedContents,
-                            count: enrichedContents.length
-                        };
-                        
-                        if (!sectionData.name) {
-                            sectionData.name = this.getSectionName(get(this.activatedRoute, 'snapshot.queryParams.selectedTab'));
-                        }
-                        return sectionData;
-                    
-                    
-                }),
-            )
-        ),
-         
+                const sectionData = {
+                    ...enrolledSection,
+                    contents: enrichedContents,
+                    count: enrichedContents.length
+                };
+
+                if (!sectionData.name) {
+                    sectionData.name = this.getSectionName(get(this.activatedRoute, 'snapshot.queryParams.selectedTab'));
+                }
+                
+                return sectionData;
+            }),
             tap((finalSection) => {
                 if (!finalSection) {return;}            
                 const sections = Array.isArray(finalSection) ? finalSection : [finalSection];
@@ -313,8 +300,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 } else {
                     this.enrolledSection = null;
                 }
-
-            })           
+            })      
         );
 
         this.subscription$ = merge(concat(this.fetchChannelData(), enrolledSection$), this.initLayout(), this.fetchContents())
@@ -388,6 +374,19 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         formatedContent.metaData.mimeType = 'application/vnd.ekstep.content-collection';
                         formatedContent.metaData.contentType = _.get(content, 'content.primaryCategory') || _.get(content, 'content.contentType');
                         
+                        // Add framework fields from content object
+                        const filterCategories = this.cslFrameworkService.getGlobalFilterCategoriesObject();
+                        if (filterCategories) {
+                            filterCategories.forEach(category => {
+                                if (category.type === 'framework') {
+                                    // Try both alternativeCode and code paths
+                                    formatedContent[category.code] = 
+                                        _.get(content, `content.${category.alternativeCode}`) || 
+                                        _.get(content, `content.${category.code}`) || [];
+                                }
+                            });
+                        }
+                        
                         const trackableObj = _.get(content, 'content.trackable');
                         if (trackableObj) {
                             formatedContent.metaData.trackable = trackableObj;
@@ -395,8 +394,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         
                         return formatedContent;
                     }));
-               
-                   
                     
                     this.allEnrolledCourses = filteredCourses;
                  
@@ -587,16 +584,14 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         }
                        
                         return this.searchService.contentSearch(option)
-                            .pipe( 
+                            .pipe(
                                 map((response) => {
                                     const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
                                     this._facets$.next(request.facets ?
                                     this.utilService.processCourseFacetData(_.get(response, 'result'), _.get(request, 'facets')) : {});
                                     this.searchResponse = get(response, 'result.content');
-                                   
                                     if (_.has(response, 'result.QuestionSet')) {
                                         this.searchResponse = _.merge(this.searchResponse, _.get(response, 'result.QuestionSet'));
-                                        
                                     }
                                     const globalFilterCategoriesObject = this.cslFrameworkService.getGlobalFilterCategoriesObject();
                                     const lastCategory = this.frameworkCategoriesList[this.frameworkCategoriesList.length - 1];
@@ -635,7 +630,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                             sections.push({
                                                 name: section,
                                                 contents: filteredContents[section]
-                                               
                                             });
                                         }
                                     }
@@ -682,7 +676,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                             }
                                         });
                                         this.facetSections = _.sortBy(this.facetSections, ['index']);
-                                     
                                         this.facetSections = this.facetSections.filter(section => section.data && section.data.length > 0);
                                         if (facetKeys.indexOf('search') > -1) {
                                             this.contentSections = [];
