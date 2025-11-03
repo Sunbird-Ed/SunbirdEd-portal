@@ -195,6 +195,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                             }
                         });
                     }
+                    
                     this._addFiltersInTheQueryParams();
                     return this.contentSearchService.initialize(this.channelId, this.custodianOrg, get(this.defaultFilters, this.frameworkCategories?.fwCategory1.code[0]));
                 }),
@@ -236,6 +237,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         const enrolledSection$ = this.getQueryParams().pipe(
             tap(() => {
                 const currentPage = this._currentPageData = this.getCurrentPageData();
+               
                 this.pageTitleSrc = get(this.resourceService, 'RESOURCE_CONSUMPTION_ROOT') + get(currentPage, 'title');
                 this.isFilterEnabled = true;
                 if (_.get(currentPage, 'filter')) {
@@ -246,7 +248,60 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
                 this.setFilterConfig(currentPage);
             }),
-            switchMap(this.fetchEnrolledCoursesSection.bind(this))
+            switchMap(this.fetchEnrolledCoursesSection.bind(this)),
+            map((enrolledSection: any) => {
+                if (!enrolledSection) return enrolledSection;
+                
+                // Get framework fields from query params
+                const queryParams = _.get(this.activatedRoute, 'snapshot.queryParams');
+                const filterCategories = this.cslFrameworkService.getGlobalFilterCategoriesObject();
+                
+                const enrichedContents = (enrolledSection.contents || []).map(content => {
+                    if (filterCategories) {
+                        filterCategories.forEach(category => {
+                            if (category.type === 'framework') {
+                                content[category.code] = 
+                                    (queryParams[category.code] && queryParams[category.code].split(',')) ||     // From query params
+                                    _.get(content, `content.${category.alternativeCode}`) ||                     // From content.se_boards etc
+                                    _.get(content, `content.${category.code}`) ||                               // From content.board etc
+                                    [];
+                            }
+                        });
+                    }
+                    return content;
+                });
+
+                const sectionData = {
+                    ...enrolledSection,
+                    contents: enrichedContents,
+                    count: enrichedContents.length
+                };
+
+                if (!sectionData.name) {
+                    sectionData.name = this.getSectionName(get(this.activatedRoute, 'snapshot.queryParams.selectedTab'));
+                }
+                
+                return sectionData;
+            }),
+            tap((finalSection) => {
+                if (!finalSection) {return;}            
+                const sections = Array.isArray(finalSection) ? finalSection : [finalSection];
+
+                const currentTab = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab');
+                const expectedSectionName =
+                    this.getSectionName(currentTab) ||
+                    sections[0]?.name ||
+                    this.resourceService.frmelmnts?.lbl?.mytrainings ||
+                    '';
+
+                const enrolledSection = sections.find(s => s.name === expectedSectionName);
+               
+                if (enrolledSection) {
+                    this.enrolledSection = enrolledSection;
+                } else {
+                    this.enrolledSection = null;
+                }
+            })      
         );
 
         this.subscription$ = merge(concat(this.fetchChannelData(), enrolledSection$), this.initLayout(), this.fetchContents())
@@ -306,7 +361,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     let filteredCourses = _.filter(enrolledCourses || [], enrolledContentPredicate);
                     filteredCourses = _.orderBy(filteredCourses, [sortingField], [sortingOrder]);
                     this.enrolledCourses = filteredCourses
-                    
                     const { constantData, metaData, dynamicFields } = _.get(this.configService, 'appConfig.CoursePageSection.enrolledCourses');
                     
                 
@@ -320,6 +374,19 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         delete formatedContent.category;
                         formatedContent.metaData.mimeType = 'application/vnd.ekstep.content-collection';
                         formatedContent.metaData.contentType = _.get(content, 'content.primaryCategory') || _.get(content, 'content.contentType');
+                        
+                        // Add framework fields from content object
+                        const filterCategories = this.cslFrameworkService.getGlobalFilterCategoriesObject();
+                        if (filterCategories) {
+                            filterCategories.forEach(category => {
+                                if (category.type === 'framework') {
+                                    // Try both alternativeCode and code paths
+                                    formatedContent[category.code] = 
+                                        _.get(content, `content.${category.alternativeCode}`) || 
+                                        _.get(content, `content.${category.code}`) || [];
+                                }
+                            });
+                        }
                         
                         const trackableObj = _.get(content, 'content.trackable');
                         if (trackableObj) {
@@ -354,7 +421,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     completedCourseSection.name = this.resourceService.frmelmnts.lbl.completedCourses || "Completed courses";
                     this.enrolledSection = enrolledSection;
                     this.completedCourseSection = completedCourseSection;
-                })
+
+                }),
+                
             );
     }
 
@@ -514,12 +583,13 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         if (this.userService.loggedIn) {
                             option.filters['visibility'] = option.filters['channel'] = [];
                         }
+                       
                         return this.searchService.contentSearch(option)
                             .pipe(
                                 map((response) => {
                                     const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
                                     this._facets$.next(request.facets ?
-                                        this.utilService.processCourseFacetData(_.get(response, 'result'), _.get(request, 'facets')) : {});
+                                    this.utilService.processCourseFacetData(_.get(response, 'result'), _.get(request, 'facets')) : {});
                                     this.searchResponse = get(response, 'result.content');
                                     if (_.has(response, 'result.QuestionSet')) {
                                         this.searchResponse = _.merge(this.searchResponse, _.get(response, 'result.QuestionSet'));
@@ -626,7 +696,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                 }), tap(data => {
                                     // this.userPreference = this.setUserPreferences();
                                     this.showLoader = false;              
-                                    const userProfileSubjects = _.get(this.userService,  `userProfile.framework.${this.frameworkCategoriesList[3]}`) || [];
+                                    const userProfileSubjects = _.get(this.userService, `userProfile.framework.${this.frameworkCategoriesList[3]}`) || [];
                                     const [userSubjects, notUserSubjects] = partition(sortBy(data, ['name']), value => {
                                         const { name = null } = value || {};
                                         if (!name) { return false; }
