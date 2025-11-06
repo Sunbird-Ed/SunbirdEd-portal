@@ -50,11 +50,7 @@ export class EditorService {
       const categoryCodes = frameworkCategories.map((category) => category.code);
       categoryCodes.forEach((code) => {
         const categoryValue = _.get(req, `content.${code}`);
-        if (categoryValue && !_.isArray(categoryValue)) {
-          const category = [];
-          category.push(categoryValue);
-          req.content[code] = category;
-        }
+        req.content[code] = categoryValue;
       });
 
         const option = {

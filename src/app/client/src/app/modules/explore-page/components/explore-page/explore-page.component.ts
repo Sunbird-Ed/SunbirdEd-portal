@@ -246,7 +246,70 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
                 this.setFilterConfig(currentPage);
             }),
-            switchMap(this.fetchEnrolledCoursesSection.bind(this))
+            switchMap(this.fetchEnrolledCoursesSection.bind(this)),
+            switchMap((enrolledSection:any) =>
+               
+                    this.fetchContents().pipe(
+                    map((pageContentData: any[]) => {
+                        
+                        const allContents = _.flatMap(pageContentData, section => section.contents || []);
+                        const metadataMap = _.keyBy(allContents, 'identifier');
+                        
+                        const enrichedContents = (this.enrolledSection.contents || []).map(content => {
+                        const courseId = _.get(content, 'metaData.courseId') ||
+                                        _.get(content, 'identifier') ||
+                                        _.get(content, 'metaData.identifier');
+                        const metadata = metadataMap[courseId];
+
+                        if (metadata) {
+                            const filterCategories = this.cslFrameworkService.getGlobalFilterCategoriesObject();
+                            if (filterCategories) {
+                                filterCategories.forEach(category => {
+                                    if (category.type === 'framework') {
+                                        content[category.code] = _.get(metadata, category.alternativeCode, []);
+                                    }
+                                });
+                            }
+                        }
+
+                        return content;
+                        });
+
+                         const sectionData = {
+                            ...enrolledSection,
+                            contents: enrichedContents,
+                            count: enrichedContents.length
+                        };
+                        
+                        if (!sectionData.name) {
+                            sectionData.name = this.getSectionName(get(this.activatedRoute, 'snapshot.queryParams.selectedTab'));
+                        }
+                        return sectionData;
+                    
+                    
+                }),
+            )
+        ),
+        tap((finalSection) => {
+                if (!finalSection) return;            
+                const sections = Array.isArray(finalSection) ? finalSection : [finalSection];
+
+                const currentTab = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab');
+                const expectedSectionName =
+                    this.getSectionName(currentTab) ||
+                    sections[0]?.name ||
+                    this.resourceService.frmelmnts?.lbl?.mytrainings ||
+                    '';
+
+                const enrolledSection = sections.find(s => s.name === expectedSectionName);
+               
+                if (enrolledSection) {
+                    this.enrolledSection = enrolledSection;
+                } else {
+                    this.enrolledSection = null;
+                }
+            })         
+
         );
 
         this.subscription$ = merge(concat(this.fetchChannelData(), enrolledSection$), this.initLayout(), this.fetchContents())
