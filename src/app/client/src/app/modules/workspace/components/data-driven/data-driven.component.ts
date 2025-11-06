@@ -330,11 +330,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     const dataType = field.dataType;
     const categoryValue = requestData[code];
       if (_.isUndefined(categoryValue)) return;
-
-      if (dataType === 'text' && !_.isArray(categoryValue)) {
-        requestData[code] = categoryValue.toString(); 
-      }
-      else if (dataType === 'list' && !_.isArray(categoryValue)) {
+      if (dataType === 'list' && !_.isArray(categoryValue)) {
         requestData[code] = [categoryValue];
       }
     });
