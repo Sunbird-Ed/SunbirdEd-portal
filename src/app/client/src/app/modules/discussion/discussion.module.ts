@@ -1,5 +1,5 @@
 import { DiscussionService } from './services/discussion/discussion.service';
-import { SuiModalModule } from 'ng2-semantic-ui-v9';
+import { SuiModalModule } from '@project-sunbird/ng2-semantic-ui';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ForumComponent } from './components/forum/forum.component';
