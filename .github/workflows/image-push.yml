@@ -36,6 +36,13 @@ jobs:
           mkdir -p app_dist/
           rm -rf dist-cdn
 
+      - name: Update Browserslist DB
+        working-directory: src/app/client
+        run: |
+          echo "Updating browserslist/caniuse-lite database to include latest browser versions"
+          # This updates caniuse-lite so Browserslist knows about the newest browser versions
+          npx browserslist@latest --update-db --no-progress || true
+
       - name: Install Client Dependencies
         working-directory: src/app/client
         run: |
