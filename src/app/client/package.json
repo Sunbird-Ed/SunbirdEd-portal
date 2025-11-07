@@ -170,6 +170,11 @@
   "resolutions": {
     "datatables.net": "1.10.20"
   },
+  "browserslist": [
+    "defaults",
+    "not IE 11",
+    "not dead"
+  ],
   "jest": {
     "preset": "jest-preset-angular",
     "verbose": true,

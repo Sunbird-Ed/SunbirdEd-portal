@@ -11,6 +11,7 @@ env:
   BUILD_CDN_ASSETS: ${{ vars.BUILD_CDN_ASSETS || 'false' }}
   CDN_URL: ${{ secrets.CDN_URL }}
   BUILD_DOCKER_IMAGE: ${{ vars.BUILD_DOCKER_IMAGE || 'true' }}
+  BROWSERSLIST: "defaults, not IE 11, not dead"
 
 jobs:
   build-client:
