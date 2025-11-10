@@ -15,6 +15,7 @@ import { ContentManagerService } from '../../../public/module/offline/services';
 import * as _ from 'lodash-es';
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { ProfileService } from '@sunbird/profile';
+import { shareReplay } from 'rxjs/operators';
 import { SegmentationTagService } from '../../../core/services/segmentation-tag/segmentation-tag.service';
 import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 
@@ -233,6 +234,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         });
         this.initConfiguration();
         this.segmentationTagService.getSegmentCommand();
+        const cachedContents$ = this.fetchContents().pipe(shareReplay(1));
         const enrolledSection$ = this.getQueryParams().pipe(
             tap(() => {
                 const currentPage = this._currentPageData = this.getCurrentPageData();
@@ -247,73 +249,37 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.setFilterConfig(currentPage);
             }),
             switchMap(this.fetchEnrolledCoursesSection.bind(this)),
-            switchMap((enrolledSection:any) =>
-
-                    this.fetchContents().pipe(
+            switchMap((enrolledSection: any) => {
+                if (!enrolledSection) {
+                        return of(enrolledSection);
+                }            
+                return cachedContents$.pipe(
                     map((pageContentData: any[]) => {
-
-                        const allContents = _.flatMap(pageContentData, section => section.contents || []);
-                        const metadataMap = _.keyBy(allContents, 'identifier');
-
-                        const enrichedContents = (this.enrolledSection.contents || []).map(content => {
-                        const courseId = _.get(content, 'metaData.courseId') ||
-                                        _.get(content, 'identifier') ||
-                                        _.get(content, 'metaData.identifier');
-                        const metadata = metadataMap[courseId];
-
-                        if (metadata) {
-                            const filterCategories = this.cslFrameworkService.getGlobalFilterCategoriesObject();
-                            if (filterCategories) {
-                                filterCategories.forEach(category => {
-                                    if (category.type === 'framework') {
-                                        content[category.code] = _.get(metadata, category.alternativeCode, []);
-                                    }
-                                });
-                            }
-                        }
-
-                        return content;
-                        });
-
-                        const sectionData = {
-                            ...enrolledSection,
-                            contents: enrichedContents,
-                            count: enrichedContents.length
-                        };
-
-                        if (!sectionData.name) {
-                            sectionData.name = this.getSectionName(get(this.activatedRoute, 'snapshot.queryParams.selectedTab'));
-                        }
-                        return sectionData;
-
-
+                        this.enrichEnrolledSectionWithMetadata(enrolledSection, pageContentData)}),
+                    catchError((err) => {
+                        console.error('Failed to fetch or process contents', err);
+                        return of({
+                                ...enrolledSection,
+                                contents: [],
+                                count: 0,
+                                name: this.getSectionName(get(this.activatedRoute, 'snapshot.queryParams.selectedTab')),
+                            });
+                        })
+                    );
                 }),
-            )
-        ),
-
-            tap((finalSection) => {
-                if (!finalSection) return;            
-                const sections = Array.isArray(finalSection) ? finalSection : [finalSection];
-
-                const currentTab = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab');
-                const expectedSectionName =
-                    this.getSectionName(currentTab) ||
-                    sections[0]?.name ||
-                    this.resourceService.frmelmnts?.lbl?.mytrainings ||
-                    '';
-
-                const enrolledSection = sections.find(s => s.name === expectedSectionName);
-
-                if (enrolledSection) {
-                    this.enrolledSection = enrolledSection;
-                } else {
-                    this.enrolledSection = null;
-                }
-
+                tap((finalSection) => {
+                    if (!finalSection) return;            
+                    const sections = Array.isArray(finalSection) ? finalSection : [finalSection];
+                    const currentTab = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab');
+                    const expectedSectionName =
+                        this.getSectionName(currentTab) ||
+                        sections[0]?.name ||
+                        this.resourceService.frmelmnts?.lbl?.mytrainings ||
+                        '';
+                    const enrolledSection = sections.find(s => s.name === expectedSectionName);
+                    this.enrolledSection = enrolledSection;             
             })           
-
         );
-
         this.subscription$ = merge(concat(this.fetchChannelData(), enrolledSection$), this.initLayout(), this.fetchContents())
             .pipe(
                 takeUntil(this.unsubscribe$),
@@ -321,12 +287,47 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     console.error(err);
                     return of({});
                 })
-            );
+            )
+            .subscribe();
         this.listenLanguageChange();
         this.contentManagerService.contentDownloadStatus$.subscribe(contentDownloadStatus => {
             this.contentDownloadStatus = contentDownloadStatus;
             this.addHoverData();
         });
+    }
+
+    private enrichEnrolledSectionWithMetadata(enrolledSection: any, pageContentData: any[]): any {
+        const allContents = _.flatMap(pageContentData, section => section.contents || []);
+        const metadataMap = _.keyBy(allContents, 'identifier');
+
+        const enrichedContents = (enrolledSection.contents || []).map(content => {
+            const courseId =
+            _.get(content, 'metaData.courseId') ||
+            _.get(content, 'identifier') ||
+            _.get(content, 'metaData.identifier');
+
+            const metadata = metadataMap[courseId];
+            if (metadata) {
+            const filterCategories = this.cslFrameworkService.getGlobalFilterCategoriesObject();
+            if (filterCategories) {
+                filterCategories.forEach(category => {
+                if (category.type === 'framework') {
+                    content[category.code] = _.get(metadata, category.alternativeCode, []);
+                }
+                });
+            }
+            }
+            return content;
+        });
+
+        return {
+            ...enrolledSection,
+            contents: enrichedContents,
+            count: enrichedContents.length,
+            name:
+            enrolledSection.name ||
+            this.getSectionName(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab')),
+        };
     }
 
     public fetchEnrolledCoursesSection() {
