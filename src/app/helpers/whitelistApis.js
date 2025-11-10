@@ -822,12 +822,6 @@ const API_LIST = {
         ROLE.CONTENT_CREATOR, ROLE.COURSE_CREATOR, ROLE.BOOK_CREATOR
       ]
     },
-    '/action/assessment/v3/items/retire/:do_id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [
-        ROLE.CONTENT_CREATOR, ROLE.COURSE_CREATOR, ROLE.BOOK_CREATOR
-      ]
-    },
 
     // Assessment items service
     '/action/assessmentitems/update/': {
@@ -1981,7 +1975,6 @@ const API_LIST = {
     '/action/assessment/v3/items/read/:do_id',
     '/action/assessment/v3/items/update/:do_id',
     '/action/assessment/v3/itemsets/retire/:do_id',
-    '/action/assessment/v3/items/retire/:do_id',
     '/action/content/v3/update/:do_id',
     '/action/content/v3/read/:do_id',
     '/action/content/v3/hierarchy/:do_id',
