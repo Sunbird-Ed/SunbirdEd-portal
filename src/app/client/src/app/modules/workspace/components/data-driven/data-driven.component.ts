@@ -325,16 +325,27 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     } else {
       requestData.contentType = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];
     }
-    this.formFieldProperties.forEach(field => {
-    const code = field.code;
-    const dataType = field.dataType;
-    const categoryValue = requestData[code];
-      if (_.isUndefined(categoryValue)) return;
+
+    for(const {code, dataType} of this.formFieldProperties) {
+      const categoryValue = requestData[code];
+      if (_.isUndefined(categoryValue)) continue;
       if (dataType === 'list' && !_.isArray(categoryValue)) {
         requestData[code] = [categoryValue];
       }
-    });
+    }
+    
     console.log("requestData", requestData);
+
+    // this.formFieldProperties.forEach(field => {
+    // const code = field.code;
+    // const dataType = field.dataType;
+    // const categoryValue = requestData[code];
+    //   if (_.isUndefined(categoryValue)) return;
+    //   if (dataType === 'list' && !_.isArray(categoryValue)) {
+    //     requestData[code] = [categoryValue];
+    //   }
+    // });
+    // console.log("requestData", requestData);
 
     return requestData;
   }
