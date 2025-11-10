@@ -253,7 +253,7 @@ export class UtilService {
   }
 
   clearSearchQuery() {
-    this.searchQuery.next(undefined);
+    this.searchQuery.next("LOADING");
   }
 
   updateSearchKeyword(keyword: string) {
