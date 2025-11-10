@@ -322,7 +322,7 @@
       "CREATE": "assessment/v3/items/create",
       "READ": "assessment/v3/items/read",
       "UPDATE": "assessment/v3/items/update",
-      "RETIRE": "assessment/v3/itemsets/retire"
+      "RETIRE": "assessment/v3/items/retire"
     },
     "ASSET": {
       "CREATE": "content/v3/create",
