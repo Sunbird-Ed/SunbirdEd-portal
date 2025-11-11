@@ -102,7 +102,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     refreshFilter: boolean = true;
     public categoryKeys;
     frameworkCategoriesList;
-
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     }
@@ -241,14 +240,13 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.isFilterEnabled = true;
                 if (_.get(currentPage, 'filter')) {
                     this.isFilterEnabled = _.get(currentPage, 'filter.isEnabled');
-                   
                 }
                 if ((_.get(currentPage, 'filter') && !_.get(currentPage, 'filter.isEnabled'))) {
                     this.fetchContents$.next(currentPage);
                 }
                 this.setFilterConfig(currentPage);
             }),
-            switchMap(this.fetchEnrolledCoursesSection.bind(this)),   
+            switchMap(this.fetchEnrolledCoursesSection.bind(this))  
         );
 
         this.subscription$ = merge(concat(this.fetchChannelData(), enrolledSection$), this.initLayout(), this.fetchContents())
@@ -308,6 +306,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     let filteredCourses = _.filter(enrolledCourses || [], enrolledContentPredicate);
                     filteredCourses = _.orderBy(filteredCourses, [sortingField], [sortingOrder]);
                     this.enrolledCourses = filteredCourses
+
                     const { constantData, metaData, dynamicFields } = _.get(this.configService, 'appConfig.CoursePageSection.enrolledCourses');
                     
                 
@@ -355,7 +354,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     completedCourseSection.name = this.resourceService.frmelmnts.lbl.completedCourses || "Completed courses";
                     this.enrolledSection = enrolledSection;
                     this.completedCourseSection = completedCourseSection;
-
                 }),
                 
             );
@@ -505,7 +503,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         const option = this.searchService.getSearchRequest(request, get(filters, 'primaryCategory'));
                         const params = _.get(this.activatedRoute, 'snapshot.queryParams');
                         _.filter(Object.keys(params),filterValue => { 
-                            if (((_.get(currentPageData, 'metaData.filters',[]).indexOf(filterValue) !== -1))) {
+                            if (((_.get(currentPageData, 'metaData.filters').indexOf(filterValue) !== -1))) {
                                 let param = {};
                                 param[filterValue] = (typeof (params[filterValue]) === "string") ? params[filterValue].split(',') : params[filterValue];
                                 if (param[filterValue].length === 1 && param[filterValue][0] === 'CBSE/NCERT') {
@@ -517,15 +515,13 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         if (this.userService.loggedIn) {
                             option.filters['visibility'] = option.filters['channel'] = [];
                         }
-                        console.log('Search Request', option);
                        
                         return this.searchService.contentSearch(option)
                             .pipe( 
                                 map((response) => {
-                                    console.log('Search Response', response);
                                     const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
                                     this._facets$.next(request.facets ?
-                                    this.utilService.processCourseFacetData(_.get(response, 'result'), _.get(request, 'facets')) : {});
+                                        this.utilService.processCourseFacetData(_.get(response, 'result'), _.get(request, 'facets')) : {});
                                     this.searchResponse = get(response, 'result.content');
                                    
                                     if (_.has(response, 'result.QuestionSet')) {
@@ -568,7 +564,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                             sections.push({
                                                 name: section,
                                                 contents: filteredContents[section]
-                                               
                                             });
                                         }
                                     }
