@@ -46,12 +46,12 @@ export class EditorService {
      * @param req OBJECT
      */
     create(req): Observable<ServerResponse> {
-      const frameworkCategories = this.cslFrameworkService.getFrameworkCategoriesObject() as Array<any>;
-      const categoryCodes = frameworkCategories.map((category) => category.code);
-      categoryCodes.forEach((code) => {
-        const categoryValue = _.get(req, `content.${code}`);
-        req.content[code] = categoryValue;
-      });
+    //   const frameworkCategories = this.cslFrameworkService.getFrameworkCategoriesObject() as Array<any>;
+    //   const categoryCodes = frameworkCategories.map((category) => category.code);
+    //   categoryCodes.forEach((code) => {
+    //     const categoryValue = _.get(req, `content.${code}`);
+    //     req.content[code] = categoryValue;
+    //   });
 
         const option = {
             url: this.configService.urlConFig.URLS.CONTENT.CREATE,
