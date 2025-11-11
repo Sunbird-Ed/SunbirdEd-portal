@@ -8,7 +8,7 @@ import { DOCUMENT } from '@angular/common';
 export class LazzyLoadScriptService {
 
   private cdnUrl = '';
-  private _loadedLibraries: { [url: string]: ReplaySubject<void | any> } = {};
+  private _loadedLibraries: { [url: string]: ReplaySubject<void> } = {};
 
   public loadScript(url: string): Observable<any> {
     url = this.cdnUrl + url;
@@ -20,7 +20,7 @@ export class LazzyLoadScriptService {
     script.type = 'text/javascript';
     script.src = url;
     script.onload = () => {
-      this._loadedLibraries[url].next("LOADING");
+      this._loadedLibraries[url].next();
       this._loadedLibraries[url].complete();
     };
     this.document.body.appendChild(script);

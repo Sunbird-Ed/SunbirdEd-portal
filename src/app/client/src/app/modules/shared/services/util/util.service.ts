@@ -14,7 +14,7 @@ import { TransposeTermsPipe } from '../../pipes/transposeTerms/transposeTerms.pi
 export class UtilService {
   static singletonInstance: UtilService;
   public showAppPopUp = false;
-  private searchQuery = new Subject<void | any>();
+  private searchQuery = new Subject<void>();
   public searchQuery$ = this.searchQuery.asObservable();
   public languageChange = new EventEmitter<ILanguage>();
   public hideHeaderTabs = new EventEmitter<boolean>();
@@ -253,7 +253,7 @@ export class UtilService {
   }
 
   clearSearchQuery() {
-    this.searchQuery.next("LOADING");
+    this.searchQuery.next();
   }
 
   updateSearchKeyword(keyword: string) {

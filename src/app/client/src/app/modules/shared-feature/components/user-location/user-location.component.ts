@@ -353,7 +353,7 @@ export class UserLocationComponent implements OnInit, OnDestroy, AfterViewInit {
         this.telemetryLogEvents('User Profile', true);
       }
       this.closeModal();
-    }, (err: any[]) => {
+    }, (err) => {
       if (!_.isEmpty(err[0])) {
         this.telemetryLogEvents('Device Profile', false);
       }
