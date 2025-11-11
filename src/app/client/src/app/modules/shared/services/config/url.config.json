@@ -61,8 +61,6 @@
     "DHITI_PREFIX":"/dhiti/",
     "CLOUD_PREFIX":"/cloudUpload/",
     "CUSTOM_RESOURCE_BUNDLE": "/api/data/v1/form/read",
-    "PUBLIC_URL_PREFIX": "/api",
-    "READ_URL": "/v1/read/",
     "REPORT": {
       "READ": "/get",
       "LIST": "/list",
@@ -322,7 +320,7 @@
       "CREATE": "assessment/v3/items/create",
       "READ": "assessment/v3/items/read",
       "UPDATE": "assessment/v3/items/update",
-      "RETIRE": "assessment/v3/items/retire"
+      "RETIRE": "assessment/v3/itemsets/retire"
     },
     "ASSET": {
       "CREATE": "content/v3/create",
