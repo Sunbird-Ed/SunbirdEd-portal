@@ -4,7 +4,7 @@ import { FormService } from '../form/form.service';
 import { KendraService } from '../kendra/kendra.service';
 import { IUserData, ConfigService, ResourceService, AlertModal } from '@sunbird/shared';
 import { take } from 'rxjs/operators';
-import { SuiModalService } from 'ng2-semantic-ui-v9';
+import { SuiModalService } from '@project-sunbird/ng2-semantic-ui';
 import { Router } from '@angular/router';
 import { SlUtilsService } from '@shikshalokam/sl-questionnaire';
 

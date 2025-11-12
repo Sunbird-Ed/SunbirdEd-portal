@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SuiModalModule } from 'ng2-semantic-ui-v9';
+import { SuiModalModule } from '@project-sunbird/ng2-semantic-ui';
 
 import { SharedModule } from '../../modules/shared/shared.module';
 import { TelemetryModule } from '../../modules/telemetry/telemetry.module';

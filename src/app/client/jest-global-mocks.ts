@@ -81,3 +81,16 @@ const util = require('util');
 if (!(global as any).util) {
   (global as any).util = util;
 }
+
+// Mock Chart.js for ng2-charts compatibility
+const Chart = {
+  register: jest.fn(),
+  registerables: [],
+  defaults: {
+    global: {}
+  }
+};
+
+// Make Chart available globally for tests
+(global as any).Chart = Chart;
+(window as any).Chart = Chart;

@@ -481,7 +481,7 @@ export class ReportComponent implements OnInit {
       switchMap(reports => {
         if (this.reportService.isUserSuperAdmin()) {
           return this.reportService.getMaterializedChildRows(reports).pipe(
-            map(response => {
+            map((response: any[]) => {
               const [reportObj] = response;
               return _.get(reportObj, 'children');
             })

@@ -1,5 +1,5 @@
 
-import { SuiModal } from 'ng2-semantic-ui-v9';
+import { SuiModal } from '@project-sunbird/ng2-semantic-ui';
 import { Location, LocationStrategy } from '@angular/common';
 import { ResourceService } from '../../services';
 import * as _ from 'lodash-es';
@@ -14,7 +14,7 @@ describe("Alert-Modal Component", () => {
   const mockLocation: Partial<Location> = {
     back: jest.fn()
   };
-  const mockModal: Partial<SuiModal<IAlertModalContext, void, void>> = {
+  const mockModal: Partial<SuiModal<IAlertModalContext, void>> = {
     deny:jest.fn(),
     approve:jest.fn()
   };
@@ -44,7 +44,7 @@ describe("Alert-Modal Component", () => {
   }
   beforeAll(() => {
     component = new AlertModalComponent(
-      mockModal as SuiModal<IAlertModalContext, void, void>,
+      mockModal as SuiModal<IAlertModalContext, void>,
       mockLocation as Location,
       mockResourceService as ResourceService,
       mockLocationStratergy as LocationStrategy

@@ -36,17 +36,17 @@
               },
                {
                 "glob": "**/*",
-                "input": "./node_modules/@project-sunbird/sunbird-pdf-player-web-component/lib/assets/",
+                "input": "./node_modules/@project-sunbird/sunbird-pdf-player-web-component/assets/",
                 "output": "/assets/"
               },
               {
                 "glob": "**/*",
-                "input": "./node_modules/@project-sunbird/sunbird-epub-player-web-component/lib/assets/",
+                "input": "./node_modules/@project-sunbird/sunbird-epub-player-web-component/assets/",
                 "output": "/assets/"
               },
               {
                 "glob": "**/*",
-                "input": "./node_modules/@project-sunbird/sunbird-video-player-web-component/lib/assets/",
+                "input": "./node_modules/@project-sunbird/sunbird-video-player-web-component/assets/",
                 "output": "/assets/"
               },
               {
@@ -76,7 +76,7 @@
               },
               {
                 "glob": "**/*",
-                "input": "node_modules/@project-sunbird/sunbird-quml-player-web-component/lib/assets",
+                "input": "node_modules/@project-sunbird/sunbird-quml-player-web-component/assets",
                 "output": "/assets/"
               },
               {
@@ -95,7 +95,6 @@
               "./node_modules/leaflet/dist/leaflet.css",
               "src/assets/styles/styles.scss",
               "node_modules/video.js/dist/video-js.min.css",
-              "node_modules/katex/dist/katex.min.css",
               "./node_modules/@project-sunbird/sb-themes/themes/themes-material_UI.scss",
               "./node_modules/@project-sunbird/sb-themes/themes/themes-df.scss",
               "./node_modules/@project-sunbird/sb-themes/themes/themes-portal.scss",
@@ -121,7 +120,6 @@
               "node_modules/datatables.net/js/jquery.dataTables.js",
               "src/assets/libs/semantic-ui/sidebar.min.js",
               "node_modules/leaflet/dist/leaflet.js",
-              "./node_modules/katex/dist/katex.min.js",
               "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js",
               "src/assets/scripts/preserve-fancytree.js",
               "src/assets/libs/semantic-ui/modal.min.js",
