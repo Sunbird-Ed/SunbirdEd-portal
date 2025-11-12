@@ -102,7 +102,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     refreshFilter: boolean = true;
     public categoryKeys;
     frameworkCategoriesList;
-
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     }
@@ -241,81 +240,13 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.isFilterEnabled = true;
                 if (_.get(currentPage, 'filter')) {
                     this.isFilterEnabled = _.get(currentPage, 'filter.isEnabled');
-                   
                 }
                 if ((_.get(currentPage, 'filter') && !_.get(currentPage, 'filter.isEnabled'))) {
                     this.fetchContents$.next(currentPage);
                 }
-               
                 this.setFilterConfig(currentPage);
-                
             }),
-            switchMap(this.fetchEnrolledCoursesSection.bind(this)),
-            switchMap((enrolledSection:any) => {
-                
-                return of (enrolledSection).pipe(
-                    map((section: any[]) => {
-                        const allContents = this.searchResponse;
-                        const metadataMap = _.keyBy(allContents, 'identifier');
-                        const enrichedContents: any[] = [];
-                        const sectionArray = Array.isArray(this.enrolledSection.contents)
-                        ? this.enrolledSection.contents
-                        : [];
-                        
-                        for (const content of sectionArray) {
-                            const courseId =
-                                _.get(content, 'metaData.courseId') ||
-                                _.get(content, 'contentId') ||
-                                _.get(content, 'identifier');
-                            const metadata = metadataMap[courseId];
-
-                            if (metadata) {
-                                const filterCategories = this.cslFrameworkService.getGlobalFilterCategoriesObject();
-                                if (filterCategories) {
-                                    filterCategories.forEach(category => {
-                                        if (category.type === 'framework') {
-                                            content[category.code] = _.get(metadata, category.alternativeCode, []);
-                                        }
-                                    });
-                                }
-                            }
-                        enrichedContents.push(content);
-                        };
-
-                        const sectionData = {
-                            ...enrolledSection,
-                            contents: enrichedContents,
-                            count: enrichedContents.length
-                        };
-                        
-                        if (!sectionData.name) {
-                            sectionData.name = this.getSectionName(get(this.activatedRoute, 'snapshot.queryParams.selectedTab'));
-                        }
-                        return sectionData;
-                }),
-            );
-          }),
-            tap((finalSection) => {
-                if (!finalSection) return;            
-                const sections = Array.isArray(finalSection) ? finalSection : [finalSection];
-
-                const currentTab = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab');
-                const expectedSectionName =
-                    this.getSectionName(currentTab) ||
-                    sections[0]?.name ||
-                    this.resourceService.frmelmnts?.lbl?.mytrainings ||
-                    '';
-
-                const enrolledSection = sections.find(s => s.name === expectedSectionName);
-                
-               
-                if (enrolledSection) {
-                    this.enrolledSection = enrolledSection;
-                } else {
-                    this.enrolledSection = null;
-                }
-
-            })           
+            switchMap(this.fetchEnrolledCoursesSection.bind(this))
         );
 
         this.subscription$ = merge(concat(this.fetchChannelData(), enrolledSection$), this.initLayout(), this.fetchContents())
@@ -375,6 +306,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     let filteredCourses = _.filter(enrolledCourses || [], enrolledContentPredicate);
                     filteredCourses = _.orderBy(filteredCourses, [sortingField], [sortingOrder]);
                     this.enrolledCourses = filteredCourses
+                    
                     const { constantData, metaData, dynamicFields } = _.get(this.configService, 'appConfig.CoursePageSection.enrolledCourses');
                     
                 
@@ -396,7 +328,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         
                         return formatedContent;
                     }));
-               
+                    
                     this.allEnrolledCourses = filteredCourses;
                  
                     completedCourseSection.contents = _.compact(_.map(filteredCourses, content => {
@@ -422,9 +354,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     completedCourseSection.name = this.resourceService.frmelmnts.lbl.completedCourses || "Completed courses";
                     this.enrolledSection = enrolledSection;
                     this.completedCourseSection = completedCourseSection;
-
-                }),
-                
+                })
             );
     }
 
@@ -503,7 +433,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             this.setDesktopFilters(false);
         }
         this.fetchContents$.next(currentPageData);
-        
     }
 
     setDesktopFilters(isDefaultFilters) {
@@ -573,7 +502,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         const option = this.searchService.getSearchRequest(request, get(filters, 'primaryCategory'));
                         const params = _.get(this.activatedRoute, 'snapshot.queryParams');
                         _.filter(Object.keys(params),filterValue => { 
-                            if (((_.get(currentPageData, 'metaData.filters',[]).indexOf(filterValue) !== -1))) {
+                            if (((_.get(currentPageData, 'metaData.filters').indexOf(filterValue) !== -1))) {
                                 let param = {};
                                 param[filterValue] = (typeof (params[filterValue]) === "string") ? params[filterValue].split(',') : params[filterValue];
                                 if (param[filterValue].length === 1 && param[filterValue][0] === 'CBSE/NCERT') {
@@ -585,17 +514,15 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         if (this.userService.loggedIn) {
                             option.filters['visibility'] = option.filters['channel'] = [];
                         }
-                        
                         return this.searchService.contentSearch(option)
-                            .pipe( 
+                            .pipe(
                                 map((response) => {
                                     const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
                                     this._facets$.next(request.facets ?
-                                    this.utilService.processCourseFacetData(_.get(response, 'result'), _.get(request, 'facets')) : {});
+                                        this.utilService.processCourseFacetData(_.get(response, 'result'), _.get(request, 'facets')) : {});
                                     this.searchResponse = get(response, 'result.content');
-                                    
                                     if (_.has(response, 'result.QuestionSet')) {
-                                        this.searchResponse = _.merge(this.searchResponse, _.get(response, 'result.QuestionSet'));   
+                                        this.searchResponse = _.merge(this.searchResponse, _.get(response, 'result.QuestionSet'));
                                     }
                                     const globalFilterCategoriesObject = this.cslFrameworkService.getGlobalFilterCategoriesObject();
                                     const lastCategory = this.frameworkCategoriesList[this.frameworkCategoriesList.length - 1];
@@ -634,7 +561,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                             sections.push({
                                                 name: section,
                                                 contents: filteredContents[section]
-                                               
                                             });
                                         }
                                     }
@@ -681,15 +607,12 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                             }
                                         });
                                         this.facetSections = _.sortBy(this.facetSections, ['index']);
-                                     
                                         this.facetSections = this.facetSections.filter(section => section.data && section.data.length > 0);
                                         if (facetKeys.indexOf('search') > -1) {
                                             this.contentSections = [];
                                             const searchSections = currentPageData.sections.filter(sec => sec.facetKey === 'search');
                                             searchSections.forEach((item) => {
                                                 this.contentSections.push(this.getContentSection(item, option));
-
-
                                             });
 
                                         }
@@ -703,7 +626,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                 }), tap(data => {
                                     // this.userPreference = this.setUserPreferences();
                                     this.showLoader = false;              
-                                    const userProfileSubjects = _.get(this.userService,`userProfile.framework.${this.frameworkCategoriesList[3]}`) || [];
+                                    const userProfileSubjects = _.get(this.userService,  `userProfile.framework.${this.frameworkCategoriesList[3]}`) || [];
                                     const [userSubjects, notUserSubjects] = partition(sortBy(data, ['name']), value => {
                                         const { name = null } = value || {};
                                         if (!name) { return false; }
