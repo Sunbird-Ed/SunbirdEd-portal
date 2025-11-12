@@ -325,7 +325,6 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     } else {
       requestData.contentType = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];
     }
-   
     return requestData;
   }
 
