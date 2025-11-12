@@ -10,7 +10,6 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { DatasetsComponent } from './components/program-datasets/program-datasets.component';
 import { DashletModule } from '@project-sunbird/sb-dashlet';
 import { DashboardSharedModule } from '../dashboard/dashboard-shared.module';
-// import { FilterComponent } from '../dashboard/components/filter/filter.component';
 import { BigDataPipe } from './pipes/bigData/big-data.pipe';
 import { ChartTypePipe } from './pipes/chartType/chart-type.pipe';
 import { SbChartComponent } from './shared/sb-chart/sb-chart.component';
@@ -44,7 +43,6 @@ const TIME_RANGE_DATE_FORMAT = {
 @NgModule({
   declarations: [
   DatasetsComponent,
-  // FilterComponent,
   BigDataPipe,
   ChartTypePipe,
   SbChartComponent,
