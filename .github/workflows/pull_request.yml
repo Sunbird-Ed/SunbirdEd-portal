@@ -20,7 +20,7 @@ jobs:
 
       - name: Update Browserslist DB
         working-directory: src/app/client
-        run: npx browserslist@latest --update-db --no-progress
+        run: npx browserslist@latest --update-db --no-progress || true
 
       - name: Install dependencies
         run: yarn install --prefer-offline --no-progress

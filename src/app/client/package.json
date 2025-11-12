@@ -14,7 +14,7 @@
     "start-desktop": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng build --output-path=../../desktop/public/portal --watch=true --configuration=desktop-staging && mv ../../desktop/public/portal/index.html ../../desktop/public/portal/index.ejs",
     "prod-desktop": "node --max_old_space_size=8096 ./node_modules/@angular/cli/bin/ng build --configuration production --output-path=../../desktop/public/portal --configuration=desktop-production && mv ../../desktop/public/portal/index.html ../../desktop/public/portal/index.ejs",
     "proxy": "ng serve --proxy-config proxy.config.js",
-    "postinstall": "npx -y browserslist@latest --update-db",
+    "postinstall": "npx -y browserslist@latest --update-db || true",
     "build": "node --max_old_space_size=8096 ./node_modules/@angular/cli/bin/ng build --configuration production --progress=false --output-path=./../app_dist/dist --deploy-url dist/",
     "post-build": "gulp post:build",
     "build-dev": "ng build --configuration production --build-optimizer=false --deploy-url dist/",
