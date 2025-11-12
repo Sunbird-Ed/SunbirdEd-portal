@@ -1,13 +1,20 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {
-  OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent,
-  ReportComponent, ListAllReportsComponent, CourseDashboardComponent, ReIssueCertificateComponent,
-  DashboardSidebarComponent
-} from './components/';
+// Import components directly to avoid circular dependency with barrel export
+import { OrganisationComponent } from './components/organization/organization.component';
+import { CourseConsumptionComponent } from './components/course-consumption/course-consumption.component';
+import { CourseProgressComponent } from './components/course-progress/course-progress.component';
+import { UsageReportsComponent } from './components/usage-reports/usage-reports.component';
+import { ReportComponent } from './components/report/report.component';
+import { ListAllReportsComponent } from './components/list-all-reports/list-all-reports.component';
+import { CourseDashboardComponent } from './components/course-dashboard/course-dashboard.component';
+import { ReIssueCertificateComponent } from './components/re-issue-certificate/re-issue-certificate.component';
+import { DashboardSidebarComponent } from './components/dashboard-sidebar/dashboard-sidebar.component';
 import { AuthGuard } from '../core/guard/auth-gard.service';
+
 const telemetryEnv = 'course-dashboard';
-const routes: Routes = [
+
+export const DASHBOARD_ROUTES: Routes = [
   {
     path: '', component: DashboardSidebarComponent, canActivate: [AuthGuard],
     data: {
@@ -125,7 +132,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [RouterModule.forChild(DASHBOARD_ROUTES)],
   exports: [RouterModule]
 })
 export class DashboardRoutingModule { }
