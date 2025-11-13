@@ -18,6 +18,10 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Update Browserslist DB
+        working-directory: src/app/client
+        run: npx browserslist@latest --update-db --no-progress || true
+
       - name: Install dependencies
         run: yarn install --prefer-offline --no-progress
         working-directory: src/app/client
@@ -40,6 +44,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
+
+      - name: Update Browserslist DB
+        working-directory: src/app/client
+        run: npx browserslist@latest --update-db --no-progress || true
 
       - name: Install dependencies
         run: yarn install --prefer-offline --no-progress
