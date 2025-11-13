@@ -250,72 +250,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 
             }),
             switchMap(this.fetchEnrolledCoursesSection.bind(this)),
-            switchMap((enrolledSection:any) => {
-                
-                return of (enrolledSection).pipe(
-                    map((section: any[]) => {
-                        const allContents = this.searchResponse;
-                        const metadataMap = _.keyBy(allContents, 'identifier');
-                        const enrichedContents: any[] = [];
-                        const sectionArray = Array.isArray(this.enrolledSection.contents)
-                        ? this.enrolledSection.contents
-                        : [];
-                        
-                        for (const content of sectionArray) {
-                            const courseId =
-                                _.get(content, 'metaData.courseId') ||
-                                _.get(content, 'contentId') ||
-                                _.get(content, 'identifier');
-                            const metadata = metadataMap[courseId];
-
-                            if (metadata) {
-                                const filterCategories = this.cslFrameworkService.getGlobalFilterCategoriesObject();
-                                if (filterCategories) {
-                                    filterCategories.forEach(category => {
-                                        if (category.type === 'framework') {
-                                            content[category.code] = _.get(metadata, category.alternativeCode, []);
-                                        }
-                                    });
-                                }
-                            }
-                        enrichedContents.push(content);
-                        };
-
-                        const sectionData = {
-                            ...enrolledSection,
-                            contents: enrichedContents,
-                            count: enrichedContents.length
-                        };
-                        
-                        if (!sectionData.name) {
-                            sectionData.name = this.getSectionName(get(this.activatedRoute, 'snapshot.queryParams.selectedTab'));
-                        }
-                        return sectionData;
-                }),
             );
-          }),
-            tap((finalSection) => {
-                if (!finalSection) return;            
-                const sections = Array.isArray(finalSection) ? finalSection : [finalSection];
-
-                const currentTab = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab');
-                const expectedSectionName =
-                    this.getSectionName(currentTab) ||
-                    sections[0]?.name ||
-                    this.resourceService.frmelmnts?.lbl?.mytrainings ||
-                    '';
-
-                const enrolledSection = sections.find(s => s.name === expectedSectionName);
-                
-               
-                if (enrolledSection) {
-                    this.enrolledSection = enrolledSection;
-                } else {
-                    this.enrolledSection = null;
-                }
-
-            })           
-        );
+                 
 
         this.subscription$ = merge(concat(this.fetchChannelData(), enrolledSection$), this.initLayout(), this.fetchContents())
             .pipe(
@@ -330,6 +266,18 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             this.contentDownloadStatus = contentDownloadStatus;
             this.addHoverData();
         });
+    }
+
+    private readonly CACHE_KEY = 'cachedAllContents';
+    getCachedSearchResponse(): any[] | null {
+        const cached = localStorage.getItem(this.CACHE_KEY);
+        return cached ? JSON.parse(cached) : null;
+    }
+
+    setCachedSearchResponse(data: any[]): void {
+        if (data && data.length > 0) {
+            localStorage.setItem(this.CACHE_KEY, JSON.stringify(data));
+        }
     }
 
     public fetchEnrolledCoursesSection() {
@@ -423,9 +371,44 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.completedCourseSection = completedCourseSection;
 
                 }),
-                
-            );
-    }
+                map(() => {
+                        const enrolledSection = this.enrolledSection;
+                        let allContents = this.getCachedSearchResponse();
+                        if (!allContents || allContents.length === 0) {
+                            allContents = this.searchResponse;
+                            this.setCachedSearchResponse(allContents);
+                        }
+
+                        console.log('allContents (cached or fresh):', allContents);
+                        // const allContents = this.searchResponse;
+                        // console.log('allContents', allContents);
+                        const metadataMap = _.keyBy(allContents, 'identifier');
+                        const sectionArray = Array.isArray(this.enrolledSection.contents)
+                            ? this.enrolledSection.contents
+                            : [];
+                            
+                        for (const content of sectionArray) {
+                                const courseId =
+                                    _.get(content, 'metaData.courseId') ||
+                                    _.get(content, 'contentId') ||
+                                    _.get(content, 'identifier');
+                                const metadata = metadataMap[courseId];
+
+                                if (metadata) {
+                                    const filterCategories = this.cslFrameworkService.getGlobalFilterCategoriesObject();
+                                    if (filterCategories) {
+                                        filterCategories.forEach(category => {
+                                            if (category.type === 'framework') {
+                                                content[category.code] = _.get(metadata, category.alternativeCode, []);
+                                            }
+                                        });
+                                    }
+                                }
+                            };
+                        
+                        
+                    }),
+    )};
 
     initLayout() {
         return this.layoutService.switchableLayout()
