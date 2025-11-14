@@ -17,7 +17,7 @@ export class TelemetryImportComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   importedFilesSize = 0;
   callImportList = false;
-  apiCallSubject = new Subject();
+  apiCallSubject = new Subject<void>();
   contentStatusObject = {};
   localStatusArr = ['inProgress', 'inQueue'];
   apiCallTimer = timer(1000, 3000).pipe(filter(data => !data || (this.callImportList)));

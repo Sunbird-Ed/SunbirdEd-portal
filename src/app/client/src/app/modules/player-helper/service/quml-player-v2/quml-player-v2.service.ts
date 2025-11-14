@@ -39,7 +39,7 @@ export class QumlPlayerV2Service implements QuestionCursor, EditorCursor {
     const hierarchy = this.playerService.getQuestionSetHierarchy(identifier);
     const questionSetResponse = this.playerService.getQuestionSetRead(identifier);
 
-    return forkJoin([hierarchy, questionSetResponse]).pipe(map(res => {
+    return forkJoin([hierarchy, questionSetResponse]).pipe(map((res: any[]) => {
       const questionSet = _.get(res[0], 'result.questionset');
       const questionsetData = _.get(res[1], 'result.questionset');
       _.merge(questionSet, this.playerService.getProperties(questionsetData, this.configService.editorConfig.QUESTIONSET_EDITOR.additionalProperties))

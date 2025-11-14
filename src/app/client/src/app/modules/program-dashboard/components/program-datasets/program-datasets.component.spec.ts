@@ -6,7 +6,7 @@ import { ResourceService, LayoutService, ConfigService, OnDemandReportService, T
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryService } from '@sunbird/telemetry';
 import { mockData } from './program-datasets.component.spec.data';
-import { ReportService } from '../../../dashboard';
+import { ReportService } from '../../../dashboard/services';
 import { Location } from '@angular/common';
 import { ChangeDetectorRef } from '@angular/core';
 import dayjs from 'dayjs';

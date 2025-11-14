@@ -10,7 +10,7 @@ export class FileReaderMock {
     DONE = FileReader.DONE;
     EMPTY = FileReader.EMPTY;
     LOADING = FileReader.LOADING;
-    readyState = 0;
+    readyState: 0 | 1 | 2 = 0;
     error: FileReader['error'] = null;
     result: FileReader['result'] = null;
     abort = jest.fn();

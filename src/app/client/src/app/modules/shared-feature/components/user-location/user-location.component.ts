@@ -345,7 +345,7 @@ export class UserLocationComponent implements OnInit, OnDestroy, AfterViewInit {
     let response1: any;
     response1 = this.updateDeviceProfileData(data, locationDetails);
     const response2 = this.updateUserProfileData(data);
-    forkJoin([response1, response2]).subscribe((res) => {
+    forkJoin([response1, response2]).subscribe((res: any[]) => {
       if (!_.isEmpty(res[0])) {
         this.telemetryLogEvents('Device Profile', true);
       }

@@ -1,6 +1,6 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SuiModule } from 'ng2-semantic-ui-v9';
+import { SuiModule } from '@project-sunbird/ng2-semantic-ui';
 import { TelemetryModule } from '@sunbird/telemetry';
 import {
   ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
