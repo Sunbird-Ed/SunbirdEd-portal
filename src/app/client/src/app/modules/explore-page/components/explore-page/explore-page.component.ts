@@ -360,38 +360,43 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
                     }),
                     switchMap(() =>{
-                    return this.searchService.contentSearch({ filters: { identifier: _.map(this.enrolledCourses, 'content.identifier') }, fields: ["name","gradeLevel","identifier","medium","board","subject","resourceType","contentType","channel","organisation","trackable", "se_boards","se_subjects", "se_mediums","se_gradeLevels","creator"] })
-                        .pipe(
-                            map((response) => {
-                                const allContents =  get(response, 'result.content');
-                                const metadataMap = _.keyBy(allContents, 'identifier');
-     
-                                for (const content of this.enrolledSection.contents) {
-                                            const courseId =
-                                                _.get(content, 'metaData.courseId');
-                                            const metadata = metadataMap[courseId];
+                        const currentPageData = this.getCurrentPageData();
+                        console.log('Current page data', currentPageData);
+                        const fields = _.get(currentPageData, 'search.fields');
+                        return this.searchService.contentSearch({ filters: { identifier: _.map(this.enrolledCourses, 'content.identifier')}, fields: fields })
+                            .pipe(
+                                map((response) => {
+                                    const allContents =  get(response, 'result.content');
+                                    const metadataMap = _.keyBy(allContents, 'identifier');
+                                    const filterCategories = this.cslFrameworkService.getGlobalFilterCategoriesObject();
+                                    console.log('Filter categories', filterCategories);
+                                    console.log('Enrolled contents', this.enrolledSection.contents);
 
-                                            if (metadata) {
-                                                const filterCategories = this.cslFrameworkService.getGlobalFilterCategoriesObject();
-                                                if (filterCategories) {
-                                                    filterCategories.forEach(category => {
-                                                        if (category.type === 'framework') {
-                                                            content[category.code] = _.get(metadata, category.alternativeCode, []);
-                                                        }
-                                                    });
+                                    for (const content of this.enrolledSection.contents) {
+                                                const courseId =
+                                                    _.get(content, 'metaData.courseId');
+                                                const metadata = metadataMap[courseId];
+
+                                                if (metadata) {
+                                                    if (filterCategories) {
+                                                        filterCategories.forEach(category => {
+                                                            if (category.type === 'framework') {
+                                                                content[category.code] = _.get(metadata, category.alternativeCode, []) ||  _.get(metadata, category.code, []) ;
+                                                            }
+                                                        });
+                                                    }
                                                 }
-                                            }
-                                        };
-                                console.log('Content', this.enrolledSection);
-                                this.enrolledSection = {
-                                    ...this.enrolledSection,
-                                    contents: [...this.enrolledSection.contents]
-                                };
-                                return this.enrolledSection;   
-                        }),
-                    )}
-                )
-        )};
+                                            };
+                                    console.log('Content', this.enrolledSection);
+                                    this.enrolledSection = {
+                                        ...this.enrolledSection,
+                                        contents: [...this.enrolledSection.contents]
+                                    };
+                                    return this.enrolledSection;   
+                            }),
+                        )}
+                    )
+            )};
     initLayout() {
         return this.layoutService.switchableLayout()
             .pipe(
