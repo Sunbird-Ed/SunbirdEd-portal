@@ -366,7 +366,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                     const allContents =  get(response, 'result.content');
                                     const metadataMap = _.keyBy(allContents, 'identifier');
                                     const filterCategories = this.cslFrameworkService.getGlobalFilterCategoriesObject();
-
+                                    const enrolledContent = this.enrolledSection;
                                     for (const content of this.enrolledSection.contents) {
                                                 const courseId = _.get(content, 'metaData.courseId');
                                                 const metadata = metadataMap[courseId];
@@ -380,8 +380,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                                             }
                                                     };   
                                                 }
-                                            
-                                    this.enrolledSection = {...this.enrolledSection};
+                                    this.enrolledSection = enrolledContent;
                                      
                             }),
                         )}
