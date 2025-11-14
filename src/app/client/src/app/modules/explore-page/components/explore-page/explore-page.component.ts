@@ -268,18 +268,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }
 
-    private readonly CACHE_KEY = 'cachedAllContents';
-    getCachedSearchResponse(): any[] | null {
-        const cached = localStorage.getItem(this.CACHE_KEY);
-        return cached ? JSON.parse(cached) : null;
-    }
-
-    setCachedSearchResponse(data: any[]): void {
-        if (data && data.length > 0) {
-            localStorage.setItem(this.CACHE_KEY, JSON.stringify(data));
-        }
-    }
-
     public fetchEnrolledCoursesSection() {
         return this.coursesService.enrolledCourseData$
             .pipe(
@@ -370,46 +358,40 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.enrolledSection = enrolledSection;
                     this.completedCourseSection = completedCourseSection;
 
-                }),
-                map(() => {
-                        const enrolledSection = this.enrolledSection;
-                        let allContents = this.getCachedSearchResponse();
-                        if (!allContents || allContents.length === 0) {
-                            allContents = this.searchResponse;
-                            this.setCachedSearchResponse(allContents);
-                        }
-
-                        console.log('allContents (cached or fresh):', allContents);
-                        // const allContents = this.searchResponse;
-                        // console.log('allContents', allContents);
-                        const metadataMap = _.keyBy(allContents, 'identifier');
-                        const sectionArray = Array.isArray(this.enrolledSection.contents)
-                            ? this.enrolledSection.contents
-                            : [];
-                            
-                        for (const content of sectionArray) {
-                                const courseId =
-                                    _.get(content, 'metaData.courseId') ||
-                                    _.get(content, 'contentId') ||
-                                    _.get(content, 'identifier');
-                                const metadata = metadataMap[courseId];
-
-                                if (metadata) {
-                                    const filterCategories = this.cslFrameworkService.getGlobalFilterCategoriesObject();
-                                    if (filterCategories) {
-                                        filterCategories.forEach(category => {
-                                            if (category.type === 'framework') {
-                                                content[category.code] = _.get(metadata, category.alternativeCode, []);
-                                            }
-                                        });
-                                    }
-                                }
-                            };
-                        
-                        
                     }),
-    )};
+                    switchMap(() =>{
+                    return this.searchService.contentSearch({ filters: { identifier: _.map(this.enrolledCourses, 'content.identifier') }, fields: ["name","gradeLevel","identifier","medium","board","subject","resourceType","contentType","channel","organisation","trackable", "se_boards","se_subjects", "se_mediums","se_gradeLevels","creator"] })
+                        .pipe(
+                            map((response) => {
+                                const allContents =  get(response, 'result.content');
+                                const metadataMap = _.keyBy(allContents, 'identifier');
+     
+                                for (const content of this.enrolledSection.contents) {
+                                            const courseId =
+                                                _.get(content, 'metaData.courseId');
+                                            const metadata = metadataMap[courseId];
 
+                                            if (metadata) {
+                                                const filterCategories = this.cslFrameworkService.getGlobalFilterCategoriesObject();
+                                                if (filterCategories) {
+                                                    filterCategories.forEach(category => {
+                                                        if (category.type === 'framework') {
+                                                            content[category.code] = _.get(metadata, category.alternativeCode, []);
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        };
+                                console.log('Content', this.enrolledSection);
+                                this.enrolledSection = {
+                                    ...this.enrolledSection,
+                                    contents: [...this.enrolledSection.contents]
+                                };
+                                return this.enrolledSection;   
+                        }),
+                    )}
+                )
+        )};
     initLayout() {
         return this.layoutService.switchableLayout()
             .pipe(
@@ -575,7 +557,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                     this._facets$.next(request.facets ?
                                     this.utilService.processCourseFacetData(_.get(response, 'result'), _.get(request, 'facets')) : {});
                                     this.searchResponse = get(response, 'result.content');
-                                    
+
                                     if (_.has(response, 'result.QuestionSet')) {
                                         this.searchResponse = _.merge(this.searchResponse, _.get(response, 'result.QuestionSet'));   
                                     }
