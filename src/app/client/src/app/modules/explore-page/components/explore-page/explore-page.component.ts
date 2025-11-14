@@ -360,39 +360,29 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
                     }),
                     switchMap(() =>{
-                        const currentPageData = this.getCurrentPageData();
-                        console.log('Current page data', currentPageData);
-                        const fields = _.get(currentPageData, 'search.fields');
-                        return this.searchService.contentSearch({ filters: { identifier: _.map(this.enrolledCourses, 'content.identifier')}, fields: fields })
+                        return this.searchService.contentSearch({ filters: { identifier: _.map(this.enrolledCourses, 'content.identifier')}, fields: _.get(this.getCurrentPageData(), 'search.fields')})
                             .pipe(
                                 map((response) => {
                                     const allContents =  get(response, 'result.content');
                                     const metadataMap = _.keyBy(allContents, 'identifier');
                                     const filterCategories = this.cslFrameworkService.getGlobalFilterCategoriesObject();
-                                    console.log('Filter categories', filterCategories);
-                                    console.log('Enrolled contents', this.enrolledSection.contents);
 
                                     for (const content of this.enrolledSection.contents) {
-                                                const courseId =
-                                                    _.get(content, 'metaData.courseId');
+                                                const courseId = _.get(content, 'metaData.courseId');
                                                 const metadata = metadataMap[courseId];
 
-                                                if (metadata) {
-                                                    if (filterCategories) {
-                                                        filterCategories.forEach(category => {
-                                                            if (category.type === 'framework') {
-                                                                content[category.code] = _.get(metadata, category.alternativeCode, []) ||  _.get(metadata, category.code, []) ;
+                                                if (metadata && filterCategories) {
+                                                    for (const category of filterCategories) {
+                                                        if (category.type !== 'framework') continue;
+                                                            content[category.code] =
+                                                                _.get(metadata, category.code) ??
+                                                                _.get(metadata, category.alternativeCode);
                                                             }
-                                                        });
-                                                    }
+                                                    };   
                                                 }
-                                            };
-                                    console.log('Content', this.enrolledSection);
-                                    this.enrolledSection = {
-                                        ...this.enrolledSection,
-                                        contents: [...this.enrolledSection.contents]
-                                    };
-                                    return this.enrolledSection;   
+                                            
+                                    this.enrolledSection = {...this.enrolledSection};
+                                     
                             }),
                         )}
                     )
