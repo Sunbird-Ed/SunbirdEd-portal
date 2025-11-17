@@ -9,7 +9,7 @@ import {
 import { Router, ActivatedRoute } from '@angular/router';
 import { cloneDeep, get, find, map as _map, pick, omit, groupBy, sortBy, replace, uniqBy, forEach, has, uniq, flatten, each, isNumber, toString, partition, toLower, includes } from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
-import { map, tap, switchMap, skipWhile, takeUntil, catchError, startWith } from 'rxjs/operators';
+import { map, tap, switchMap, skipWhile, takeUntil, catchError, startWith, mapTo } from 'rxjs/operators';
 import { ContentSearchService } from '@sunbird/content-search';
 import { ContentManagerService } from '../../../public/module/offline/services';
 import * as _ from 'lodash-es';
@@ -271,7 +271,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public fetchEnrolledCoursesSection() {
         return this.coursesService.enrolledCourseData$
             .pipe(
-                tap(({ enrolledCourses, err }) => {
+                map(({ enrolledCourses, err }) => {
                     this.enrolledCourses = this.enrolledSection = [];
                     this.completeCourses = this.completedCourseSection = [];                   
                     const sortingField = (get(this.getCurrentPageData(), 'sortingField')) ?
@@ -352,40 +352,84 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         
                         return formatedContent;
                     }));
-                    enrolledSection.count = enrolledSection.contents.length;
-                    completedCourseSection.count = completedCourseSection.contents.length;
-                    completedCourseSection.name = this.resourceService.frmelmnts.lbl.completedCourses || "Completed courses";
-                    this.enrolledSection = enrolledSection;
-                    this.completedCourseSection = completedCourseSection;
 
-                    }),
-                    switchMap(() =>{
-                        return this.searchService.contentSearch({ filters: { identifier: _.map(this.enrolledCourses, 'content.identifier')}, fields: _.get(this.getCurrentPageData(), 'search.fields')})
-                            .pipe(
-                                map((response) => {
-                                    const allContents =  get(response, 'result.content');
+                enrolledSection.count = enrolledSection.contents.length;
+                completedCourseSection.count = completedCourseSection.contents.length;
+                completedCourseSection.name = this.resourceService.frmelmnts.lbl.completedCourses || "Completed courses";
+               
+                this.searchService.contentSearch({ filters: { identifier: _.map(this.enrolledCourses, 'content.identifier')}, fields: _.get(this.getCurrentPageData(), 'search.fields')})
+                    // .pipe(
+                    //     map((response) => {
+                    .subscribe((response) => {
+                            const allContents =  get(response, 'result.content');
                                     const metadataMap = _.keyBy(allContents, 'identifier');
                                     const filterCategories = this.cslFrameworkService.getGlobalFilterCategoriesObject();
                                     const enrolledContent = this.enrolledSection;
                                     for (const content of this.enrolledSection.contents) {
-                                                const courseId = _.get(content, 'metaData.courseId');
-                                                const metadata = metadataMap[courseId];
+                                        const courseId = _.get(content, 'metaData.courseId');
+                                        const metadata = metadataMap[courseId];
+                                        console.log('metadata', metadata);
 
-                                                if (metadata && filterCategories) {
-                                                    for (const category of filterCategories) {
-                                                        if (category.type !== 'framework') continue;
-                                                            content[category.code] =
-                                                                _.get(metadata, category.code) ??
-                                                                _.get(metadata, category.alternativeCode);
-                                                            }
-                                                    };   
+                                        if (metadata && filterCategories) {
+                                            for (const category of filterCategories) {
+                                                if (category.type == 'framework') {
+                                                    content[category.code] =
+                                                    _.get(metadata, category.code) ??
+                                                    _.get(metadata, category.alternativeCode);
                                                 }
-                                    this.enrolledSection = enrolledContent;
-                                     
-                            }),
-                        )}
-                    )
-            )};
+                                            }
+                                        }   
+                                    }
+                                  
+                                    // this.enrolledSection = enrolledContent; 
+                        });
+                this.enrolledSection = enrolledSection;
+                this.completedCourseSection = completedCourseSection;
+                // )
+               
+
+                })
+             
+                // tap((enrolledData) =>{
+                //         const currentPageData = this.getCurrentPageData();
+                //         console.log('currentPageData', currentPageData);
+                //         const contentType = currentPageData.contentType;
+                //         console.log('contentType', contentType);
+
+                //         return this.searchService.contentSearch({ filters: { identifier: _.map(this.enrolledCourses, 'content.identifier')}, fields: _.get(this.getCurrentPageData(), 'search.fields')})
+                //             .pipe(
+                //                 map((response) => {
+                //                     console.log('response', response);
+                //                     const allContents =  get(response, 'result.content');
+                //                     const metadataMap = _.keyBy(allContents, 'identifier');
+                //                     const filterCategories = this.cslFrameworkService.getGlobalFilterCategoriesObject();
+                //                     const enrolledContent = this.enrolledSection;
+                //                     for (const content of this.enrolledSection.contents) {
+                //                         const courseId = _.get(content, 'metaData.courseId');
+                //                         const metadata = metadataMap[courseId];
+                //                         console.log('metadata', metadata);
+
+                //                         if (metadata && filterCategories) {
+                //                             for (const category of filterCategories) {
+                //                                 if (category.type == 'framework') {
+                //                                     content[category.code] =
+                //                                     _.get(metadata, category.code) ??
+                //                                     _.get(metadata, category.alternativeCode);
+                //                                 }
+                //                             }
+                //                         }   
+                //                     }
+                                  
+                //                     this.enrolledSection = enrolledContent; 
+                //                     // return enrolledData;
+          
+                //                 })                              
+                //     );
+                // })
+            );
+        }
+           
+     
     initLayout() {
         return this.layoutService.switchableLayout()
             .pipe(
