@@ -471,7 +471,7 @@ describe('ReportService', () => {
     const input = [{ isParameterized: true, children: [], parameters: ['$board'], reportid: '123' }];
     jest.spyOn(reportService, 'getParameterValues').mockReturnValue({ masterData: () => of(['CBSE']) } as any);
     jest.spyOn(reportService, 'getParameterFromHash').mockReturnValue('NCERT');
-    reportService['getMaterializedChildRows'](input).subscribe(res => {
+    reportService['getMaterializedChildRows'](input).subscribe((res: any[]) => {
       expect(res).toBeDefined();
       expect(res.length).toBe(1);
       expect(reportService.getParameterValues).toHaveBeenCalled();
@@ -486,7 +486,7 @@ describe('ReportService', () => {
   it('should return the same report for unknow parameters', () => {
     const input = [{ isParameterized: true, children: [], parameters: ['$board'], reportid: '123' }];
     jest.spyOn(reportService, 'getParameterValues').mockReturnValue(null);
-    reportService['getMaterializedChildRows'](input).subscribe(res => {
+    reportService['getMaterializedChildRows'](input).subscribe((res: any[]) => {
       expect(res).toBeDefined();
       expect(res.length).toBe(1);
       expect(res).toEqual(input);
@@ -496,7 +496,7 @@ describe('ReportService', () => {
   it('should return the same report if the api to get masterData fails', () => {
     const input = [{ isParameterized: true, children: [], parameters: ['$board'], reportid: '123' }];
     jest.spyOn(reportService, 'getParameterValues').mockReturnValue({ masterData: () => throwError('') } as any);
-    reportService['getMaterializedChildRows'](input).subscribe(res => {
+    reportService['getMaterializedChildRows'](input).subscribe((res: any[]) => {
       expect(res).toBeDefined();
       expect(res.length).toBe(1);
       expect(res).toEqual(input);

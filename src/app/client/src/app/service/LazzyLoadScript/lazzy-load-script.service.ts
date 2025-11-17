@@ -8,7 +8,7 @@ import { DOCUMENT } from '@angular/common';
 export class LazzyLoadScriptService {
 
   private cdnUrl = '';
-  private _loadedLibraries: { [url: string]: ReplaySubject<any> } = {};
+  private _loadedLibraries: { [url: string]: ReplaySubject<void> } = {};
 
   public loadScript(url: string): Observable<any> {
     url = this.cdnUrl + url;

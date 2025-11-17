@@ -1,3 +1,23 @@
+// Mock Chart.js before any imports that might use it
+(global as any).Chart = {
+  register: jest.fn(),
+  registerables: [],
+  defaults: { global: {} }
+};
+(window as any).Chart = (global as any).Chart;
+
+// Mock ng2-charts module
+jest.mock('ng2-charts', () => ({
+  BaseChartDirective: jest.fn().mockImplementation(() => ({
+    data: null,
+    options: null,
+    chart: null,
+    update: jest.fn(),
+    render: jest.fn(),
+  })),
+  NgChartsModule: jest.fn(),
+}));
+
 import { DataChartComponent } from './data-chart.component';
 import { mockChartData } from './data-chart.component.spec.data';
 import { DomSanitizer } from '@angular/platform-browser';

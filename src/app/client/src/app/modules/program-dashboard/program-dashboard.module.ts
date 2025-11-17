@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SuiModule } from 'ng2-semantic-ui-v9';
+import { SuiModule } from '@project-sunbird/ng2-semantic-ui';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
@@ -9,7 +9,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { DatasetsComponent } from './components/program-datasets/program-datasets.component';
 import { DashletModule } from '@project-sunbird/sb-dashlet';
-import { DashboardModule} from '../dashboard';
+import { DashboardSharedModule } from '../dashboard/dashboard-shared.module';
 import { BigDataPipe } from './pipes/bigData/big-data.pipe';
 import { ChartTypePipe } from './pipes/chartType/chart-type.pipe';
 import { SbChartComponent } from './shared/sb-chart/sb-chart.component';
@@ -70,7 +70,7 @@ const TIME_RANGE_DATE_FORMAT = {
     MatExpansionModule,
     MatAutocompleteModule,
     DashletModule,
-    DashboardModule,
+    DashboardSharedModule,
     MatDatepickerModule,
     MatNativeDateModule
   ],

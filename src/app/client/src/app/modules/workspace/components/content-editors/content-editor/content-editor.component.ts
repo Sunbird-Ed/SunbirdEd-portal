@@ -251,6 +251,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     window.config.cloudStorage.provider = this.cloudProvider;
     window.config.contentFields = this.fwCategoriesAsNames.join();
     window.config.fwCategoryDetails = this.frameworkCategories;
+    window.config.fwApiSlug = this.configService.urlConFig.URLS.PUBLIC_URL_PREFIX;
+    window.config.getCategorysUrl = this.configService.urlConFig.URLS.READ_URL;
   }
   /**
    * checks the permission using state, status and userId

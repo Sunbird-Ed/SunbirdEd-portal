@@ -19,7 +19,7 @@ import { CslFrameworkService } from '../../../public/services/csl-framework/csl-
  * Interface for passing the configuartion for modal
 */
 
-import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui-v9';
+import { SuiModalService, TemplateModalConfig, ModalTemplate } from '@project-sunbird/ng2-semantic-ui';
 
 /**
  * The published  component search for all the published component
