@@ -303,3 +303,8 @@ The project maintains code quality through automated checks that run on every pu
    - Command: `yarn test:ci`
 
 These checks ensure consistent code style and secure dependency management.
+
+## Database Migration Support
+
+### YugabyteDB Migration
+For YugabyteDB migration support, please use the configuration `sunbird_cassandra_urls` to point to YugabyteDB.
