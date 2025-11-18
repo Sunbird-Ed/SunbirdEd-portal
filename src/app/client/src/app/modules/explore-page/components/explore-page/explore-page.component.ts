@@ -9,7 +9,7 @@ import {
 import { Router, ActivatedRoute } from '@angular/router';
 import { cloneDeep, get, find, map as _map, pick, omit, groupBy, sortBy, replace, uniqBy, forEach, has, uniq, flatten, each, isNumber, toString, partition, toLower, includes } from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
-import { map, tap, switchMap, skipWhile, takeUntil, catchError, startWith, mapTo } from 'rxjs/operators';
+import { map, tap, switchMap, skipWhile, takeUntil, catchError, startWith} from 'rxjs/operators';
 import { ContentSearchService } from '@sunbird/content-search';
 import { ContentManagerService } from '../../../public/module/offline/services';
 import * as _ from 'lodash-es';
@@ -247,8 +247,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.fetchContents$.next(currentPage);
                 }
                 this.setFilterConfig(currentPage);
-               
-                         
+                           
             }),
             switchMap(this.fetchEnrolledCoursesSection.bind(this)),
             );
