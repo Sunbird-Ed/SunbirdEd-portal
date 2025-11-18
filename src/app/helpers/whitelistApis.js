@@ -983,13 +983,17 @@ const API_LIST = {
     '/action/dialcode/v3/search': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
-        ROLE.BOOK_CREATOR
+        ROLE.BOOK_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.CONTENT_CREATOR
       ]
     },
     '/action/dialcode/v3/read/:dialId': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
-        ROLE.BOOK_CREATOR
+        ROLE.BOOK_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.CONTENT_CREATOR
       ]
     },
     '/action/dialcode/v1/reserve/:do_id': {
