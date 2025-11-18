@@ -356,16 +356,13 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 completedCourseSection.count = completedCourseSection.contents.length;
                 completedCourseSection.name = this.resourceService.frmelmnts.lbl.completedCourses || "Completed courses";
 
-                if (this.enrolledCourses && this.enrolledCourses.length > 0) {
+                if (!_.isEmpty(this.enrolledCourses)) {
                     this.searchService.contentSearch({ filters: { identifier: _.map(this.enrolledCourses, 'content.identifier')}, fields: _.get(this.getCurrentPageData(), 'search.fields')})
                         .subscribe((response) => {
-                                const allContents =  get(response, 'result.content');
-                                const metadataMap = _.keyBy(allContents, 'identifier');
+                                const contentMap = _.keyBy(get(response, 'result.content'), 'identifier');
                                 const filterCategories = this.cslFrameworkService.getGlobalFilterCategoriesObject();
                                 for (const content of this.enrolledSection.contents) {
-                                    const courseId = _.get(content, 'metaData.courseId');
-                                    const metadata = metadataMap[courseId];
-
+                                    const metadata = contentMap[_.get(content, 'metaData.courseId')];
                                     if (metadata && filterCategories) {
                                         for (const category of filterCategories) {
                                             if (category.type === 'framework') {
@@ -375,8 +372,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                                     }
                                                 }
                                             }   
-                                    }         
-                            });
+                                        }        
+                                    });
                 }
 
                 this.enrolledSection = enrolledSection;
