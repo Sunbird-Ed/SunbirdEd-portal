@@ -9,7 +9,7 @@ import {
 import { Router, ActivatedRoute } from '@angular/router';
 import { cloneDeep, get, find, map as _map, pick, omit, groupBy, sortBy, replace, uniqBy, forEach, has, uniq, flatten, each, isNumber, toString, partition, toLower, includes } from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
-import { map, tap, switchMap, skipWhile, takeUntil, catchError, startWith} from 'rxjs/operators';
+import { map, tap, switchMap, skipWhile, takeUntil, catchError, startWith } from 'rxjs/operators';
 import { ContentSearchService } from '@sunbird/content-search';
 import { ContentManagerService } from '../../../public/module/offline/services';
 import * as _ from 'lodash-es';
@@ -240,7 +240,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.isFilterEnabled = true;
                 if (_.get(currentPage, 'filter')) {
                     this.isFilterEnabled = _.get(currentPage, 'filter.isEnabled');
-                   
                 }
 
                 if ((_.get(currentPage, 'filter') && !_.get(currentPage, 'filter.isEnabled'))) {
@@ -309,7 +308,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     
                     let filteredCourses = _.filter(enrolledCourses || [], enrolledContentPredicate);
                     filteredCourses = _.orderBy(filteredCourses, [sortingField], [sortingOrder]);
-                    this.enrolledCourses = filteredCourses
+                    this.enrolledCourses = filteredCourses;
                     const { constantData, metaData, dynamicFields } = _.get(this.configService, 'appConfig.CoursePageSection.enrolledCourses');
                     
                 
@@ -356,35 +355,38 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 enrolledSection.count = enrolledSection.contents.length;
                 completedCourseSection.count = completedCourseSection.contents.length;
                 completedCourseSection.name = this.resourceService.frmelmnts.lbl.completedCourses || "Completed courses";
-               
-                this.searchService.contentSearch({ filters: { identifier: _.map(this.enrolledCourses, 'content.identifier')}, fields: _.get(this.getCurrentPageData(), 'search.fields')})
-                    .subscribe((response) => {
-                            const allContents =  get(response, 'result.content');
-                            const metadataMap = _.keyBy(allContents, 'identifier');
-                            const filterCategories = this.cslFrameworkService.getGlobalFilterCategoriesObject();
-                            for (const content of this.enrolledSection.contents) {
-                                const courseId = _.get(content, 'metaData.courseId');
-                                const metadata = metadataMap[courseId];
 
-                                if (metadata && filterCategories) {
-                                    for (const category of filterCategories) {
-                                        if (category.type == 'framework') {
-                                            content[category.code] =
-                                                    _.get(metadata, category.code) ??
-                                                    _.get(metadata, category.alternativeCode);
+                if (this.enrolledCourses && this.enrolledCourses.length > 0) {
+                    this.searchService.contentSearch({ filters: { identifier: _.map(this.enrolledCourses, 'content.identifier')}, fields: _.get(this.getCurrentPageData(), 'search.fields')})
+                        .subscribe((response) => {
+                                const allContents =  get(response, 'result.content');
+                                const metadataMap = _.keyBy(allContents, 'identifier');
+                                const filterCategories = this.cslFrameworkService.getGlobalFilterCategoriesObject();
+                                for (const content of this.enrolledSection.contents) {
+                                    const courseId = _.get(content, 'metaData.courseId');
+                                    const metadata = metadataMap[courseId];
+
+                                    if (metadata && filterCategories) {
+                                        for (const category of filterCategories) {
+                                            if (category.type === 'framework') {
+                                                content[category.code] =
+                                                        _.get(metadata, category.code) ??
+                                                        _.get(metadata, category.alternativeCode);
+                                                    }
                                                 }
-                                            }
-                                        }   
+                                            }   
                                     }         
-                        });
+                            });
+                }
 
                 this.enrolledSection = enrolledSection;
                 this.completedCourseSection = completedCourseSection;
                         
                 })
+           
             );
         }
-           
+      
     initLayout() {
         return this.layoutService.switchableLayout()
             .pipe(
@@ -660,7 +662,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                 }), tap(data => {
                                     // this.userPreference = this.setUserPreferences();
                                     this.showLoader = false;              
-                                    const userProfileSubjects = _.get(this.userService,`userProfile.framework.${this.frameworkCategoriesList[3]}`) || [];
+                                    const userProfileSubjects = _.get(this.userService, `userProfile.framework.${this.frameworkCategoriesList[3]}`) || [];
                                     const [userSubjects, notUserSubjects] = partition(sortBy(data, ['name']), value => {
                                         const { name = null } = value || {};
                                         if (!name) { return false; }
