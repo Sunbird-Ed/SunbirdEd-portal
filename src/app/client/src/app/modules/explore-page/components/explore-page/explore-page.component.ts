@@ -132,7 +132,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         public contentManagerService: ContentManagerService, private cacheService: CacheService,
         private browserCacheTtlService: BrowserCacheTtlService, private profileService: ProfileService,
         private segmentationTagService: SegmentationTagService, private observationUtil: ObservationUtilService,
-        private genericResourceService: GenericResourceService, private cdr: ChangeDetectorRef, private cslFrameworkService:CslFrameworkService) {
+        private genericResourceService: GenericResourceService, private cdr: ChangeDetectorRef, private cslFrameworkService: CslFrameworkService) {
         this.genericResourceService.initialize();
         this.instance = (<HTMLInputElement>document.getElementById('instance'))
             ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
@@ -241,13 +241,16 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 if (_.get(currentPage, 'filter')) {
                     this.isFilterEnabled = _.get(currentPage, 'filter.isEnabled');
                 }
+
                 if ((_.get(currentPage, 'filter') && !_.get(currentPage, 'filter.isEnabled'))) {
                     this.fetchContents$.next(currentPage);
                 }
                 this.setFilterConfig(currentPage);
+
             }),
-            switchMap(this.fetchEnrolledCoursesSection.bind(this))
+            switchMap(this.fetchEnrolledCoursesSection.bind(this)),
         );
+
 
         this.subscription$ = merge(concat(this.fetchChannelData(), enrolledSection$), this.initLayout(), this.fetchContents())
             .pipe(
@@ -267,9 +270,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public fetchEnrolledCoursesSection() {
         return this.coursesService.enrolledCourseData$
             .pipe(
-                tap(({ enrolledCourses, err }) => {
+                map(({ enrolledCourses, err }) => {
                     this.enrolledCourses = this.enrolledSection = [];
-                    this.completeCourses = this.completedCourseSection = [];                   
+                    this.completeCourses = this.completedCourseSection = [];
                     const sortingField = (get(this.getCurrentPageData(), 'sortingField')) ?
                         (get(this.getCurrentPageData(), 'sortingField')) : 'enrolledDate';
                     const sortingOrder = (get(this.getCurrentPageData(), 'sortingOrder')) ?
@@ -281,80 +284,104 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         count: 0,
                         contents: []
                     };
-                    
+
                     const completedCourseSection = {
-                        name: this.getSectionName(get(this.activatedRoute, 'snapshot.queryParams.selectedTab')), 
+                        name: this.getSectionName(get(this.activatedRoute, 'snapshot.queryParams.selectedTab')),
                         length: 0,
                         count: 0,
                         contents: []
                     };
-                    
+
                     const { contentType: pageContentType = null, search: { filters: { primaryCategory: pagePrimaryCategories = [] } } } = this.getCurrentPageData();
-                    
-                    if (err) { 
-                        return enrolledSection; 
+
+                    if (err) {
+                        return enrolledSection;
                     }
-                    
+
                     const enrolledContentPredicate = course => {
                         const { primaryCategory = null, contentType = null } = _.get(course, 'content') || {};
                         return pagePrimaryCategories.some(category =>
-                            (_.toLower(category) === _.toLower(primaryCategory)) || 
+                            (_.toLower(category) === _.toLower(primaryCategory)) ||
                             (_.toLower(category) === _.toLower(contentType))) ||
                             (_.toLower(contentType) === _.toLower(pageContentType));
                     };
-                    
+
                     let filteredCourses = _.filter(enrolledCourses || [], enrolledContentPredicate);
                     filteredCourses = _.orderBy(filteredCourses, [sortingField], [sortingOrder]);
-                    this.enrolledCourses = filteredCourses
-                    
+                    this.enrolledCourses = filteredCourses;
                     const { constantData, metaData, dynamicFields } = _.get(this.configService, 'appConfig.CoursePageSection.enrolledCourses');
-                    
-                
+
+
                     enrolledSection.contents = _.compact(_.map(filteredCourses, content => {
                         if (content.status === 2) {
-                            return null; 
+                            return null;
                         }
-                        
+
                         const formatedContent = this.utilService.processContent(content, constantData, dynamicFields, metaData);
                         formatedContent.organisation = content.content.organisation;
                         delete formatedContent.category;
                         formatedContent.metaData.mimeType = 'application/vnd.ekstep.content-collection';
                         formatedContent.metaData.contentType = _.get(content, 'content.primaryCategory') || _.get(content, 'content.contentType');
-                        
+
                         const trackableObj = _.get(content, 'content.trackable');
                         if (trackableObj) {
                             formatedContent.metaData.trackable = trackableObj;
                         }
-                        
+
                         return formatedContent;
                     }));
-                    
+
                     this.allEnrolledCourses = filteredCourses;
-                 
+
                     completedCourseSection.contents = _.compact(_.map(filteredCourses, content => {
                         if (content.status !== 2) {
-                            return null; 
+                            return null;
                         }
-                        
+
                         const formatedContent = this.utilService.processContent(content, constantData, dynamicFields, metaData);
                         formatedContent.metaData.mimeType = 'application/vnd.ekstep.content-collection';
                         formatedContent.metaData.contentType = _.get(content, 'content.primaryCategory') || _.get(content, 'content.contentType');
                         formatedContent.organisation = content.content.organisation;
                         delete formatedContent.category;
-                        
+
                         const trackableObj = _.get(content, 'content.trackable');
                         if (trackableObj) {
                             formatedContent.metaData.trackable = trackableObj;
                         }
-                        
+
                         return formatedContent;
                     }));
+
                     enrolledSection.count = enrolledSection.contents.length;
                     completedCourseSection.count = completedCourseSection.contents.length;
                     completedCourseSection.name = this.resourceService.frmelmnts.lbl.completedCourses || "Completed courses";
+
+                    if (!_.isEmpty(this.enrolledCourses)) {
+                        this.searchService.contentSearch({ filters: { identifier: _.map(this.enrolledCourses, 'content.identifier') }, fields: _.get(this.getCurrentPageData(), 'search.fields') })
+                            .subscribe((response) => {
+                                const contentMap = _.keyBy(get(response, 'result.content'), 'identifier');
+                                const filterCategories = this.cslFrameworkService.getGlobalFilterCategoriesObject();
+                                for (const content of this.enrolledSection.contents) {
+                                    const metadata = contentMap[_.get(content, 'metaData.courseId')];
+                                    if (metadata && filterCategories) {
+                                        for (const category of filterCategories) {
+                                            if (category.type === 'framework') {
+                                                content[category.code] =
+                                                    _.get(metadata, category.code) ??
+                                                    _.get(metadata, category.alternativeCode);
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                            
+                    }
+
                     this.enrolledSection = enrolledSection;
                     this.completedCourseSection = completedCourseSection;
+
                 })
+
             );
     }
 
@@ -433,6 +460,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             this.setDesktopFilters(false);
         }
         this.fetchContents$.next(currentPageData);
+
     }
 
     setDesktopFilters(isDefaultFilters) {
@@ -501,8 +529,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         }
                         const option = this.searchService.getSearchRequest(request, get(filters, 'primaryCategory'));
                         const params = _.get(this.activatedRoute, 'snapshot.queryParams');
-                        _.filter(Object.keys(params),filterValue => { 
-                            if (((_.get(currentPageData, 'metaData.filters').indexOf(filterValue) !== -1))) {
+                        _.filter(Object.keys(params), filterValue => {
+                            if (((_.get(currentPageData, 'metaData.filters', []).indexOf(filterValue) !== -1))) {
                                 let param = {};
                                 param[filterValue] = (typeof (params[filterValue]) === "string") ? params[filterValue].split(',') : params[filterValue];
                                 if (param[filterValue].length === 1 && param[filterValue][0] === 'CBSE/NCERT') {
@@ -514,6 +542,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         if (this.userService.loggedIn) {
                             option.filters['visibility'] = option.filters['channel'] = [];
                         }
+
                         return this.searchService.contentSearch(option)
                             .pipe(
                                 map((response) => {
@@ -521,6 +550,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                     this._facets$.next(request.facets ?
                                         this.utilService.processCourseFacetData(_.get(response, 'result'), _.get(request, 'facets')) : {});
                                     this.searchResponse = get(response, 'result.content');
+
                                     if (_.has(response, 'result.QuestionSet')) {
                                         this.searchResponse = _.merge(this.searchResponse, _.get(response, 'result.QuestionSet'));
                                     }
@@ -530,14 +560,14 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                     if (globalFilterCategoriesObject) {
                                         const categoryObj = globalFilterCategoriesObject.find((filter) => filter?.code === lastCategory || filter?.alternativeCode === lastCategory);
                                         if (categoryObj) {
-                                          lastCategoryCode = categoryObj?.alternativeCode;
+                                            lastCategoryCode = categoryObj?.alternativeCode;
                                         }
-                                      }
-                                      
+                                    }
+
                                     const filteredContents = omit(groupBy(this.searchResponse, content => {
                                         return content[groupByKey] || content[lastCategoryCode] || 'Others';
                                     }), ['undefined']);
-                                    
+
                                     for (const [key, value] of Object.entries(filteredContents)) {
                                         const isMultipleCategoryValues = key && key.split(',').length > 1;
                                         if (isMultipleCategoryValues) {
@@ -561,6 +591,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                             sections.push({
                                                 name: section,
                                                 contents: filteredContents[section]
+
                                             });
                                         }
                                     }
@@ -607,12 +638,15 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                             }
                                         });
                                         this.facetSections = _.sortBy(this.facetSections, ['index']);
+
                                         this.facetSections = this.facetSections.filter(section => section.data && section.data.length > 0);
                                         if (facetKeys.indexOf('search') > -1) {
                                             this.contentSections = [];
                                             const searchSections = currentPageData.sections.filter(sec => sec.facetKey === 'search');
                                             searchSections.forEach((item) => {
                                                 this.contentSections.push(this.getContentSection(item, option));
+
+
                                             });
 
                                         }
@@ -625,8 +659,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                     });
                                 }), tap(data => {
                                     // this.userPreference = this.setUserPreferences();
-                                    this.showLoader = false;              
-                                    const userProfileSubjects = _.get(this.userService,  `userProfile.framework.${this.frameworkCategoriesList[3]}`) || [];
+                                    this.showLoader = false;
+                                    const userProfileSubjects = _.get(this.userService, `userProfile.framework.${this.frameworkCategoriesList[3]}`) || [];
                                     const [userSubjects, notUserSubjects] = partition(sortBy(data, ['name']), value => {
                                         const { name = null } = value || {};
                                         if (!name) { return false; }
@@ -678,7 +712,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         data[currentBoard][currentUserType]) {
                         this.showTargetedCategory = true;
                         this.dataThemeAttribute = document.documentElement.getAttribute('data-mode');
-                        const pillBgColor = this.dataThemeAttribute === 'light'? "rgba(255,255,255,1)" :"rgba(36,37,36,1)" 
+                        const pillBgColor = this.dataThemeAttribute === 'light' ? "rgba(255,255,255,1)" : "rgba(36,37,36,1)"
                         this.targetedCategory = data[currentBoard][currentUserType];
                         this.targetedCategorytheme = {
                             "iconBgColor": "rgba(255,255,255,1)",
@@ -1142,11 +1176,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         try {
             if (this.isUserLoggedIn()) {
                 this.userPreference = { framework: this.userService.defaultFrameworkFilters };
-                this.transformUserPreference = this.cslFrameworkService.frameworkLabelTransform(this.frameworkCategoriesObject,this.userPreference);
+                this.transformUserPreference = this.cslFrameworkService.frameworkLabelTransform(this.frameworkCategoriesObject, this.userPreference);
             } else {
                 this.userService.getGuestUser().subscribe((response) => {
                     this.userPreference = response;
-                    this.transformUserPreference = this.cslFrameworkService.frameworkLabelTransform(this.frameworkCategoriesObject,this.userPreference);
+                    this.transformUserPreference = this.cslFrameworkService.frameworkLabelTransform(this.frameworkCategoriesObject, this.userPreference);
                 });
             }
         } catch (error) {
@@ -1240,7 +1274,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.isUserLoggedIn()) {
             this.profileService.updateProfile({ framework: event }).subscribe(res => {
                 this.userPreference.framework = event;
-                this.transformUserPreference = this.cslFrameworkService.frameworkLabelTransform(this.frameworkCategoriesObject,this.userPreference);
+                this.transformUserPreference = this.cslFrameworkService.frameworkLabelTransform(this.frameworkCategoriesObject, this.userPreference);
                 this.getFormConfigs();
                 this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
                 this._addFiltersInTheQueryParams(event);
@@ -1255,7 +1289,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             const req = { ...this.userPreference, framework: event };
             this.userService.updateGuestUser(req).subscribe(res => {
                 this.userPreference.framework = event;
-                this.transformUserPreference = this.cslFrameworkService.frameworkLabelTransform(this.frameworkCategoriesObject,this.userPreference);
+                this.transformUserPreference = this.cslFrameworkService.frameworkLabelTransform(this.frameworkCategoriesObject, this.userPreference);
                 this.getFormConfigs();
                 this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
                 this.showorHideBanners();
