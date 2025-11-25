@@ -60,7 +60,7 @@
     "@ngx-translate/http-loader": "7.0.0",
     "@project-sunbird/chatbot-client": "4.0.0",
     "@project-sunbird/ckeditor-build-classic": "4.1.3",
-    "@project-sunbird/client-services": "8.0.2",
+    "@project-sunbird/client-services": "8.0.6",
     "@project-sunbird/common-consumption": "7.0.12",
     "@project-sunbird/common-form-elements-full": "6.0.3",
     "@project-sunbird/discussions-ui": "5.4.0",
