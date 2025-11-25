@@ -75,7 +75,7 @@
     "dependencies": {
         "@project-sunbird/OpenRAP": "file:OpenRAP/dist/project-sunbird-OpenRAP-1.0.2.tgz",
         "@project-sunbird/logger": "0.0.11",
-        "body-parser": "1.19.0",
+        "body-parser": "2.2.1",
         "busboy": "0.3.0",
         "cheerio": "1.0.0-rc.3",
         "decompress-zip": "0.2.2",
