@@ -155,7 +155,6 @@
     "@types/jquery": "3.5.29",
     "@types/jquery.fancytree": "2.7.34",
     "@types/node": "12.20.15",
-    "abort-controller": "^3.0.0",
     "angular-eslint": "19.4.0",
     "codelyzer": "6.0.0",
     "eslint": "^9.26.0",
