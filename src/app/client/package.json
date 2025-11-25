@@ -174,7 +174,7 @@
   "jest": {
     "preset": "jest-preset-angular",
     "verbose": true,
-    "testEnvironment": "./jest-environment-jsdom-with-fetch.js",
+    "testEnvironment": "jsdom",
     "testEnvironmentOptions": {
       "resources": "usable",
       "pretendToBeVisual": false,
