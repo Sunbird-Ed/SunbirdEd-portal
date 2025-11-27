@@ -272,10 +272,10 @@
     uuid "8.3.2"
     yargs "17.5.1"
 
-"@angular/common@14.3.0":
-  version "14.3.0"
-  resolved "https://registry.yarnpkg.com/@angular/common/-/common-14.3.0.tgz#dcf675e1db3016cdb605a05be6182a8cea71e139"
-  integrity sha512-pV9oyG3JhGWeQ+TFB0Qub6a1VZWMNZ6/7zEopvYivdqa5yDLLDSBRWb6P80RuONXyGnM1pa7l5nYopX+r/23GQ==
+"@angular/common@19.2.16":
+  version "19.2.16"
+  resolved "https://registry.yarnpkg.com/@angular/common/-/common-19.2.16.tgz#2ce9c21b7f2181e6d6ab85c346ad6280ef83e23b"
+  integrity sha512-sugztO7XIiLRoVjn0WJK9ooBm9zejsqlE5k4ZGvy1zFafM8LMjFHwD4KymN8JB3AOb7Ad4lJHVq1IvwWnpqeWw==
   dependencies:
     tslib "^2.3.0"
 
@@ -2555,10 +2555,10 @@
   dependencies:
     ally.js "1.4.1"
 
-"@project-sunbird/sunbird-questionset-editor@8.0.5":
-  version "8.0.5"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-questionset-editor/-/sunbird-questionset-editor-8.0.5.tgz#fbdb273caab8c96f5b42938910d0d7a8b47fa314"
-  integrity sha512-gIRSuWMhyiA4WwgUdHDgBp9cv+EFz1bRkxrDDlJx3b/KJl85XnDKtW5FksYRyosBINRpMp75zvAbfMkgXlFJVA==
+"@project-sunbird/sunbird-questionset-editor@8.0.6":
+  version "8.0.6"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-questionset-editor/-/sunbird-questionset-editor-8.0.6.tgz#5c68e03f1ef8a6880bc0d10448bdb8fb7c48c8b9"
+  integrity sha512-W28g0AdOYdFsODQ7lf6i46RKUN59r3ajnX/4BtvIeOInBLbr/GukGpcPMHp3mZeuf30IQHlocLeURDGbAxFjOA==
   dependencies:
     tslib "^2.0.0"
 
@@ -2569,6 +2569,11 @@
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
     tslib "^2.2.0"
+
+"@project-sunbird/sunbird-quml-player-web-component@4.0.2":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-web-component/-/sunbird-quml-player-web-component-4.0.2.tgz#32a1a3bde379a7d1c545d83e14cf161c231449d1"
+  integrity sha512-qTutKgBYmcvAnwA5QX8cZ8mFVamzvi9Jafl2WMc6ci8G4/cQRFkdrsz3vmQ4BWC2LErOWL+8q59BaL9+XA0naQ==
 
 "@project-sunbird/sunbird-quml-player@7.0.4":
   version "7.0.4"
