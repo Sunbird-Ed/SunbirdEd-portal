@@ -63,10 +63,12 @@ Object.defineProperty(document.body.style, 'transform', {
 
 HTMLCanvasElement.prototype.getContext = <typeof HTMLCanvasElement.prototype.getContext>jest.fn();
 
-// Polyfill for TextEncoder and TextDecoder
-const { TextEncoder, TextDecoder } = require('util');
-global.TextEncoder = TextEncoder;
-global.TextDecoder = TextDecoder;
+// Polyfill for TextEncoder and TextDecoder (if not already set)
+if (typeof global.TextEncoder === 'undefined') {
+  const { TextEncoder, TextDecoder } = require('util');
+  global.TextEncoder = TextEncoder;
+  global.TextDecoder = TextDecoder;
+}
 
 // Polyfill for crypto.randomUUID if needed
 if (!global.crypto) {
