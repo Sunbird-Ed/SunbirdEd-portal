@@ -47,7 +47,7 @@ function svg2png(svgString) {
 }
 
 function png2base64(pngString) {
-    var base64Image = new Buffer(pngString, 'binary').toString('base64');
+    var base64Image = Buffer.from(pngString, 'binary').toString('base64');
     return 'data:image/png;base64,'+base64Image;
 }
 
