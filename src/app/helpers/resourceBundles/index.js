@@ -1,7 +1,7 @@
 let dateFormat = require('dateformat')
 const envHelper = require('../environmentVariablesHelper.js')
 let HttpStatus = require('http-status-codes')
-let uuidv1 = require('uuid/v1')
+const { v1: uuidv1 } = require('uuid')
 let path = require('path')
 let fs = require('fs')
 const API_VERSION = '1.0'

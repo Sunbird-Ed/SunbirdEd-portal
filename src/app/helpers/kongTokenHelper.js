@@ -6,7 +6,7 @@
 'use strict';
 
 const _                                     = require('lodash');
-const uuidv1                                = require('uuid/v1');
+const { v1: uuidv1 } = require('uuid');
 const { logger }                            = require('@project-sunbird/logger');
 const { sendRequest }                       = require('./httpRequestHandler');
 

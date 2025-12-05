@@ -6,7 +6,7 @@
 
 const _                     = require('lodash');
 const request               = require('request');
-const uuidv1                = require('uuid/v1');
+const { v1: uuidv1 } = require('uuid');
 const dateFormat            = require('dateformat');
 const envHelper             = require('./environmentVariablesHelper.js');
 const telemetryHelper       = require('./telemetryHelper');

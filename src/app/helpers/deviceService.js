@@ -5,7 +5,7 @@ const httpSatusCode = require('http-status-codes');
 const { logger } = require('@project-sunbird/logger');
 const {sendRequest} = require('./httpRequestHandler');
 const {parseJson} = require('./utilityService');
-const uuidv1 = require('uuid/v1');
+const { v1: uuidv1 } = require('uuid');
 const { getBearerToken } = require('../helpers/kongTokenHelper')
 
 const getDeviceProfile = async (req, res) => {

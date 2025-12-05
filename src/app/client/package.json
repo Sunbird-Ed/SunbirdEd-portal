@@ -35,8 +35,8 @@
     "ext": "png,jpeg,js,ts,html,json,css,scss"
   },
   "engines": {
-    "node": ">=16.19.0",
-    "npm": ">=8.19.3"
+    "node": ">=22",
+    "npm": ">=10"
   },
   "private": true,
   "dependencies": {

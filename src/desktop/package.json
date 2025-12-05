@@ -130,7 +130,7 @@
     "keywords": [],
     "license": "MIT",
     "engines": {
-        "node": ">=16.19.0",
-        "npm": ">=8.19.3"
+        "node": ">=22",
+        "npm": ">=10"
     }
 }

@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const envHelper = require('./environmentVariablesHelper.js');
 const axios = require('axios');
-const uuidv1 = require('uuid/v1')
+const { v1: uuidv1 } = require('uuid')
 const dateFormat = require('dateformat')
 const { logger } = require('@project-sunbird/logger');
 const { getBearerToken, getAuthToken } = require('../helpers/kongTokenHelper')

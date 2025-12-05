@@ -1,5 +1,5 @@
 var LRU = require('lru-cache');
-var uuidv4 = require('uuid/v4');
+var { v4: uuidv4 } = require('uuid');
 var fs = require('fs');
 var path = require('path')
 

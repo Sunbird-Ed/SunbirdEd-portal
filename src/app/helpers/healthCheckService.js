@@ -7,7 +7,7 @@
 const { logger } = require('@project-sunbird/logger');
 var async = require('async')
 var request = require('request')
-var uuidv1 = require('uuid/v1')
+var { v1: uuidv1 } = require('uuid')
 var envHelper = require('./environmentVariablesHelper.js')
 var cassandra = require('cassandra-driver')
 var fs = require('fs');

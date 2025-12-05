@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 const request = require('request-promise');
 const envHelper = require('./../helpers/environmentVariablesHelper.js')
 const dateFormat = require('dateformat')
-const uuidv1 = require('uuid/v1')
+const { v1: uuidv1 } = require('uuid')
 const { logger } = require('@project-sunbird/logger');
 const { logError } = require('../helpers/utilityService');
 

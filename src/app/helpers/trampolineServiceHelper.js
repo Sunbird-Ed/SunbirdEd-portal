@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const async = require('async')
 const request = require('request')
-const uuidv1 = require('uuid/v1')
+const { v1: uuidv1 } = require('uuid')
 const dateFormat = require('dateformat')
 const _ = require('lodash')
 const telemetryHelper = require('./telemetryHelper.js')

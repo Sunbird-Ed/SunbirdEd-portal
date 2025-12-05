@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const dateFormat = require('dateformat')
-const uuidv1 = require('uuid/v1')
+const { v1: uuidv1 } = require('uuid')
 const envHelper = require('./environmentVariablesHelper.js')
 const async = require('async')
 const _ = require('lodash')

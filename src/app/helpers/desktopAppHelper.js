@@ -1,6 +1,6 @@
 const envHelper = require('./../helpers/environmentVariablesHelper.js');
 const dateFormat = require('dateformat');
-const uuidv1 = require('uuid/v1');
+const { v1: uuidv1 } = require('uuid');
 const request = require('request');
 const _ = require('lodash');
 const compareVersions = require('compare-versions');

@@ -6,7 +6,7 @@
  */
 
 const _                 = require('lodash');
-const uuidv1            = require('uuid/v1');
+const { v1: uuidv1 } = require('uuid');
 const dateFormat        = require('dateformat');
 const { logger }        = require('@project-sunbird/logger');
 const { pathToRegexp, match }  = require("path-to-regexp");

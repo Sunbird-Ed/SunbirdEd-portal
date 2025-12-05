@@ -17,7 +17,7 @@ const {acceptTermsAndCondition} = require('./userHelper');
 const httpSatusCode = require('http-status-codes');
 const { logger } = require('@project-sunbird/logger');
 const {delay} = require('../helpers/utilityService');
-const uuidv1 = require('uuid/v1');
+const { v1: uuidv1 } = require('uuid');
 const {parseJson} = require('./utilityService');
 
 const handleError = (error) => {

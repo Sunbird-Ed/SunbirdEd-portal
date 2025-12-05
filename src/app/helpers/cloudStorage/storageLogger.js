@@ -7,7 +7,7 @@
 
 const { logger }          = require('@project-sunbird/logger');
 const dateFormat          = require('dateformat');
-const uuidv1              = require('uuid/v1');
+const { v1: uuidv1 } = require('uuid');
 
 module.exports = {
   's500': (res, logMessage = '', stack = '', errorMessage) => {
