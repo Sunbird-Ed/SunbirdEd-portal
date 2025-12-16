@@ -11,7 +11,7 @@ import {
 import { WorkSpaceService } from '../../services';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput } from '@sunbird/telemetry';
-import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui-v9';
+import { SuiModalService, TemplateModalConfig, ModalTemplate } from '@project-sunbird/ng2-semantic-ui';
 import { debounceTime, map } from 'rxjs/operators';
 import { ContentIDParam } from '../../interfaces/delteparam';
 import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
@@ -310,11 +310,8 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
     }
     this.searchContentWithLockStatus(searchParams).subscribe(
       (data: ServerResponse) => {
-        if (data.result.count && (!_.isEmpty(data.result.content) ||
-        (!_.isEmpty(data.result.QuestionSet)))) {
-          if (this.isQuestionSetFilterEnabled === true && data.result.QuestionSet) {
-            data.result.content = _.concat(data.result.content, data.result.QuestionSet);
-          }
+        if (data.result.count && !_.isEmpty(data.result.content)) {
+          // QuestionSets are now already merged into content array by searchContentWithLockStatus
           this.allContent = data.result.content;
           this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, pageNumber, limit);

@@ -580,7 +580,12 @@ export class UserService {
       let userDetails = JSON.parse(localStorage.getItem('guestUserDetails'));
       userFramework = _.get(userDetails, 'framework');
     } else {
-      userFramework = (isUserLoggedIn && framework && _.pick(framework, [this.frameworkCategories?.fwCategory2?.code, this.frameworkCategories?.fwCategory3?.code, this.frameworkCategories?.fwCategory1?.code, 'id'])) || {};
+      const allFrameworkCategoryCodes = Object.values(this.frameworkCategories || {})
+        .map((category: any) => category?.code)
+        .filter(Boolean);
+      
+      const fieldsToPick = [...allFrameworkCategoryCodes, 'id'];
+      userFramework = (isUserLoggedIn && framework && _.pick(framework, fieldsToPick)) || {};
     }
     return userFramework;
   }

@@ -61,6 +61,8 @@
     "DHITI_PREFIX": "/dhiti/",
     "CLOUD_PREFIX": "/cloudUpload/",
     "CUSTOM_RESOURCE_BUNDLE": "/api/data/v1/form/read",
+    "PUBLIC_URL_PREFIX": "/api",
+    "READ_URL": "/v1/read/",
     "REPORT": {
       "READ": "/get",
       "LIST": "/list",

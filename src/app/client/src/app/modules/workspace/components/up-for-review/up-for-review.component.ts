@@ -11,7 +11,7 @@ import {
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import * as _ from 'lodash-es';
-import { SuiModalService } from 'ng2-semantic-ui-v9';
+import { SuiModalService } from '@project-sunbird/ng2-semantic-ui';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { CslFrameworkService } from '../../../public/services/csl-framework/csl-framework.service';
 

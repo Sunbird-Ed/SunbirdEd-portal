@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SuiModal, ComponentModalConfig, ModalSize } from 'ng2-semantic-ui-v9';
+import { SuiModal, ComponentModalConfig, ModalSize } from '@project-sunbird/ng2-semantic-ui';
 import { Location, LocationStrategy } from '@angular/common';
 import {ResourceService} from '../../services';
 import * as _ from 'lodash-es';
@@ -17,11 +17,16 @@ export class AlertModalComponent {
   isChecked = false;
   public resourceService: ResourceService;
   instance: string;
-  constructor(public modal: SuiModal<IAlertModalContext, void, void>, private location: Location, resourceService: ResourceService, public locationStrategy: LocationStrategy) {
+  
+  get context() {
+    return (this.modal as any).context;
+  }
+  
+  constructor(public modal: SuiModal<IAlertModalContext, void>, private location: Location, resourceService: ResourceService, public locationStrategy: LocationStrategy) {
     this.resourceService = resourceService;
     this.instance = _.upperCase(this.resourceService.instance);
     this.locationStrategy.onPopState(() => {
-      this.modal.approve();
+      this.modal.approve(undefined);
    });
   }
 

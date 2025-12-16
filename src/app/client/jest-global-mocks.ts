@@ -63,10 +63,12 @@ Object.defineProperty(document.body.style, 'transform', {
 
 HTMLCanvasElement.prototype.getContext = <typeof HTMLCanvasElement.prototype.getContext>jest.fn();
 
-// Polyfill for TextEncoder and TextDecoder
-const { TextEncoder, TextDecoder } = require('util');
-global.TextEncoder = TextEncoder;
-global.TextDecoder = TextDecoder;
+// Polyfill for TextEncoder and TextDecoder (if not already set)
+if (typeof global.TextEncoder === 'undefined') {
+  const { TextEncoder, TextDecoder } = require('util');
+  global.TextEncoder = TextEncoder;
+  global.TextDecoder = TextDecoder;
+}
 
 // Polyfill for crypto.randomUUID if needed
 if (!global.crypto) {
@@ -81,3 +83,16 @@ const util = require('util');
 if (!(global as any).util) {
   (global as any).util = util;
 }
+
+// Mock Chart.js for ng2-charts compatibility
+const Chart = {
+  register: jest.fn(),
+  registerables: [],
+  defaults: {
+    global: {}
+  }
+};
+
+// Make Chart available globally for tests
+(global as any).Chart = Chart;
+(window as any).Chart = Chart;
