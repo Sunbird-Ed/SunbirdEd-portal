@@ -275,7 +275,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     let userType = localStorage.getItem('userType');
     if (this.isGuestUser && userType == "administrator") {
       formServiceInputParams.formAction = 'create',
-      formServiceInputParams.contentType= 'admin_framework'
+        formServiceInputParams.contentType = 'admin_framework'
       delete formServiceInputParams.framework;
     }
     const hashTagId = this.isGuestUser ? this.guestUserHashTagId : _.get(this.userService, 'hashTagId');
@@ -298,25 +298,25 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       // Process to handle in case of component rendered in stepper dialog
       // API to be called for updation
 
-      if(this.isStepper && this.isGuestUser) {
-        const user: any = { name: 'guest', formatedName: 'Guest', framework: selectedOption };
-        const userType = localStorage.getItem('userType');
-        if (userType) {
-          user.role = userType;
-        }
-        this.userService.createGuestUser(user).subscribe(data => {
-          this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
-        }, error => {
-          this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005')); 
-        });
-      } else {
-        const req = {
-          framework: selectedOption
-        };
-        this.profileService.updateProfile(req).subscribe(res => {
-          this.userService.setUserFramework(selectedOption);
-        });
+    if (this.isStepper && this.isGuestUser) {
+      const user: any = { name: 'guest', formatedName: 'Guest', framework: selectedOption };
+      const userType = localStorage.getItem('userType');
+      if (userType) {
+        user.role = userType;
       }
+      this.userService.createGuestUser(user).subscribe(data => {
+        this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
+      }, error => {
+        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+      });
+    } else {
+      const req = {
+        framework: selectedOption
+      };
+      this.profileService.updateProfile(req).subscribe(res => {
+        this.userService.setUserFramework(selectedOption);
+      });
+    }
     this.submit.emit(selectedOption);
   }
   private enableSubmitButton() {

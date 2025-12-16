@@ -72,10 +72,10 @@ describe('SearchService', () => {
     frmelmnts: {
       lbl: {
         oneCourse: 'COURSE',
-        board:'Board',
+        board: 'Board',
         medium: 'Medium',
-        class:'Classes',
-        subject:'Subjects',
+        class: 'Classes',
+        subject: 'Subjects',
         selectBoard: 'Select Board',
         selectMedium: 'Select Medium',
         selectClass: 'Select Classes',

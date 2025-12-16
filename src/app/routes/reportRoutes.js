@@ -10,7 +10,7 @@ const DATASERVICE_URL = utils?.defaultHost(utils?.envVariables?.DATASERVICE_URL)
 
 const reqDataLimitOfContentUpload = '50mb';
 const _ = require('lodash');
-const {getUserDetailsV2} = require('../helpers/userHelper');
+const { getUserDetailsV2 } = require('../helpers/userHelper');
 const envHelper = require('../helpers/environmentVariablesHelper');
 const StorageService = require('../helpers/cloudStorage/index');
 
@@ -67,7 +67,7 @@ module.exports = function (app) {
     proxyUtils.verifyToken(),
     proxy(sunbird_data_product_service, {
       limit: reqDataLimitOfContentUpload,
-      proxyReqOptDecorator: proxyUtils.overRideRequestHeaders(sunbird_data_product_service, {'X-Channel-Id': true}),
+      proxyReqOptDecorator: proxyUtils.overRideRequestHeaders(sunbird_data_product_service, { 'X-Channel-Id': true }),
       proxyReqPathResolver: function (req) {
         let urlParam = req.originalUrl.replace('/report/', 'dataset/v1/');
         let query = require('url').parse(req.url).query;
@@ -165,25 +165,32 @@ module.exports = function (app) {
         reportHelper.validateRoles(['ORG_ADMIN']),
         StorageService.CLOUD_CLIENT.fileReadStream(envHelper?.cloud_storage_privatereports_bucketname));
 
-    app.get(`${BASE_REPORT_URL}/dataset/get/:datasetId`,
-        proxyUtils.verifyToken(),
-        reportHelper.validateRoles(['REPORT_ADMIN']),
-        proxy(DATASERVICE_URL, {
-            limit: reqDataLimitOfContentUpload,
-            proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(DATASERVICE_URL),
-            proxyReqPathResolver: function (req) {
-                const updatedUrl = req.originalUrl.replace("/report", "");
-                return `/api/data/v3${updatedUrl}`;
-            },
-            userResDecorator: (proxyRes, proxyResData, req, res) => {
-                try {
-                    const data = JSON.parse(proxyResData.toString('utf8'));
-                    if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
-                    else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
-                } catch (err) {
-                    return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
-                }
-            }
-        })
-    )
+  app.get('/admin-reports/:slug/:filename',
+    proxyUtils.verifyToken(),
+    reportHelper.validateSlug(['geo-summary', 'geo-detail', 'geo-summary-district', 'user-summary', 'user-detail',
+      'validated-user-summary', 'validated-user-summary-district', 'validated-user-detail', 'declared_user_detail']),
+    reportHelper.validateRoles(['ORG_ADMIN']),
+    StorageService.CLOUD_CLIENT.fileReadStream(envHelper?.cloud_storage_privatereports_bucketname));
+
+  app.get(`${BASE_REPORT_URL}/dataset/get/:datasetId`,
+    proxyUtils.verifyToken(),
+    reportHelper.validateRoles(['REPORT_ADMIN']),
+    proxy(DATASERVICE_URL, {
+      limit: reqDataLimitOfContentUpload,
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(DATASERVICE_URL),
+      proxyReqPathResolver: function (req) {
+        const updatedUrl = req.originalUrl.replace("/report", "");
+        return `/api/data/v3${updatedUrl}`;
+      },
+      userResDecorator: (proxyRes, proxyResData, req, res) => {
+        try {
+          const data = JSON.parse(proxyResData.toString('utf8'));
+          if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+          else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
+        } catch (err) {
+          return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
+        }
+      }
+    })
+  )
 }

@@ -139,7 +139,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
       })));
     }
   }
-  lockContent () {
+  lockContent() {
     const contentInfo = {
       contentType: this.routeParams.type,
       framework: this.routeParams.framework,
@@ -147,15 +147,15 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
       mimeType: 'application/vnd.ekstep.ecml-archive'
     };
     const input = {
-      resourceId : contentInfo.identifier,
-      resourceType : 'Content',
-      resourceInfo : JSON.stringify(contentInfo),
-      creatorInfo : JSON.stringify({'name': this.userService.userProfile.firstName, 'id': this.userService.userProfile.id}),
-      createdBy : this.userService.userProfile.id
+      resourceId: contentInfo.identifier,
+      resourceType: 'Content',
+      resourceInfo: JSON.stringify(contentInfo),
+      creatorInfo: JSON.stringify({ 'name': this.userService.userProfile.firstName, 'id': this.userService.userProfile.id }),
+      createdBy: this.userService.userProfile.id
     };
     return this.workspaceService.lockContent(input).pipe(tap((data) => {
       this.queryParams = data.result;
-      this.router.navigate([], {relativeTo: this.activatedRoute, queryParams: data.result});
+      this.router.navigate([], { relativeTo: this.activatedRoute, queryParams: data.result });
     }));
   }
   private getContentDetails() {
@@ -218,8 +218,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     window.context = {
       user: {
         id: this.userService.userid,
-        name : !_.isEmpty(this.userProfile.lastName) ? this.userProfile.firstName + ' ' + this.userProfile.lastName :
-        this.userProfile.firstName,
+        name: !_.isEmpty(this.userProfile.lastName) ? this.userProfile.firstName + ' ' + this.userProfile.lastName :
+          this.userProfile.firstName,
         orgIds: this.userProfile.organisationIds,
         organisations: this.userService.orgIdNameMap
       },
@@ -307,8 +307,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  retireLock () {
-    const inputData = {'resourceId': this.routeParams.contentId, 'resourceType': 'Content'};
+  retireLock() {
+    const inputData = { 'resourceId': this.routeParams.contentId, 'resourceType': 'Content' };
     this.workspaceService.retireLock(inputData).subscribe(
       (data: ServerResponse) => {
         this.redirectToWorkSpace();
@@ -319,7 +319,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     );
   }
 
-  redirectToWorkSpace () {
+  redirectToWorkSpace() {
     if (this.routeParams.state === 'collaborating-on') {
       this.navigationHelperService.navigateToWorkSpace('/workspace/content/collaborating-on/1');
     } else {

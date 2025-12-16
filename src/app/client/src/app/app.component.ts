@@ -159,7 +159,7 @@ export class AppComponent implements OnInit, OnDestroy {
       document.documentElement.setAttribute('layout', 'base');
     }
   }
-  
+
   /**
    * dispatch telemetry window unload event before browser closes
    * @param  event
@@ -460,6 +460,7 @@ export class AppComponent implements OnInit, OnDestroy {
         localStorage.setItem('joyThemePopup', 'true');
         this.joyThemePopup();
         this.changeDetectorRef.detectChanges();
+        this.cslFrameworkService.setTransFormGlobalFilterConfig(channelId);
       }, error => {
         this.initApp = true;
         this.changeDetectorRef.detectChanges();

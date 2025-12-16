@@ -8,7 +8,8 @@
       <app-search-filter [facets$]="facets$" [layoutConfiguration]="layoutConfiguration" [isOpen]='true'
         *ngIf="initFilter" (filterChange)="getFilters($event)" [defaultTab]="defaultTab"
         [pageData]="getCurrentPageData()" [pageId]="isUserLoggedIn() ? 'resource-page' : 'explore-page'"
-        [defaultFilters]="defaultFilters" [userSelectedPreference]="userSelectedPreference" [filterResponseData]="filterResponseData">
+        [defaultFilters]="defaultFilters" [userSelectedPreference]="userSelectedPreference"
+        [filterResponseData]="filterResponseData">
       </app-search-filter>
     </div>
     <!-- Filter for desktop version -->
@@ -23,7 +24,8 @@
       <div class="sb-desktop-filter-section" *ngIf="isFilterEnabled">
         <app-search-filter [facets$]="facets$" [layoutConfiguration]="layoutConfiguration" [isOpen]='true'
           *ngIf="initFilter" (filterChange)="getFilters($event)" [pageData]="getCurrentPageData()"
-          [pageId]="isUserLoggedIn() ? 'resource-page' : 'explore-page'" [defaultFilters]="defaultFilters" [filterResponseData]="filterResponseData">
+          [pageId]="isUserLoggedIn() ? 'resource-page' : 'explore-page'" [defaultFilters]="defaultFilters"
+          [filterResponseData]="filterResponseData">
         </app-search-filter>
       </div>
     </div>
@@ -33,7 +35,8 @@
         <div class="sb-library-cards relative9">
           <div *ngIf="!layoutConfiguration && (getSelectedTab() !== 'home' && getSelectedTab() !== 'explore')">
             <h4 class="sb-categories-title text-left mt-16" *ngIf="apiContentList.length">
-              {{resourceService?.frmelmnts?.lbl?.textbooks}}</h4>
+              {{resourceService?.frmelmnts?.lbl?.textbooks}}
+            </h4>
           </div>
           <div class="twelve wide column relative9"
             *ngIf="enrolledSection?.contents?.length && isUserLoggedIn() && !_currentPageData?.sections">
@@ -118,19 +121,19 @@
 
               <hr *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0"
                 class="section-hr my-32" />
-              </div>
-              <sb-pills-grid *ngIf="section?.section?.isEnabled" [title]="getSectionTitle(section?.section?.title)"
-                [minDisplayCount]="section?.section?.theme?.limit || 4"
-                [viewMoreText]="resourceService?.frmelmnts?.lbl?.viewmore"
-                [viewLessText]="resourceService?.frmelmnts?.lbl?.viewless" [pillSize]="'medium'" [platform]="'portal'"
-                [pillBorder]="'semi_round'" [pillsMultiRow]="'auto_responsive'" [pillTextElipsis]="'two_line'"
-                (select)="handlePillSelect($event, section.name)">
-                <sb-pill-item *ngFor="let pillData of section.data" [name]="pillData?.name | titlecase"
-                  [icon]="utilService.getSectionPillIcon(section?.section?.theme?.icons, pillData?.value)"
-                  [value]="pillData" [theme]="pillData?.theme"></sb-pill-item>
-              </sb-pills-grid>
-              <hr *ngIf="section?.section?.isEnabled && section?.data?.length" class="section-hr my-32" />
-            
+            </div>
+            <sb-pills-grid *ngIf="section?.section?.isEnabled" [title]="getSectionTitle(section?.section?.title)"
+              [minDisplayCount]="section?.section?.theme?.limit || 4"
+              [viewMoreText]="resourceService?.frmelmnts?.lbl?.viewmore"
+              [viewLessText]="resourceService?.frmelmnts?.lbl?.viewless" [pillSize]="'medium'" [platform]="'portal'"
+              [pillBorder]="'semi_round'" [pillsMultiRow]="'auto_responsive'" [pillTextElipsis]="'two_line'"
+              (select)="handlePillSelect($event, section.name)">
+              <sb-pill-item *ngFor="let pillData of section.data" [name]="pillData?.name | titlecase"
+                [icon]="utilService.getSectionPillIcon(section?.section?.theme?.icons, pillData?.value)"
+                [value]="pillData" [theme]="pillData?.theme"></sb-pill-item>
+            </sb-pills-grid>
+            <hr *ngIf="section?.section?.isEnabled && section?.data?.length" class="section-hr my-32" />
+
           </div>
           <div *ngIf="showTargetedCategory && targetedCategory.length">
             <sb-pills-grid [title]="getSectionCategoryTitle('frmelmnts.lbl.targetCategory')" [minDisplayCount]="4"
@@ -233,7 +236,8 @@
 </app-batch-info>
 
 
-<app-modal-wrapper *ngIf="showEdit" [config]="{disableClose: false, panelClass: ['overflow-visible', 'material-modal']}">
+<app-modal-wrapper *ngIf="showEdit"
+  [config]="{disableClose: false, panelClass: ['overflow-visible', 'material-modal']}">
   <ng-template sbModalContent let-data>
     <app-popup [dialogProps]="data" [formInput]="userPreference?.framework" [showCloseIcon]="true"
       [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" [isPreference]="true" [isGuestUser]="true" [hashId]="channelId"

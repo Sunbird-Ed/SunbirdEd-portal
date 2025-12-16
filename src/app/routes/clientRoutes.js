@@ -187,7 +187,7 @@ function getLocals(req) {
   locals.offlineDesktopAppVersion = envHelper.sunbird_portal_offline_app_version
   locals.offlineDesktopAppReleaseDate = envHelper.sunbird_portal_offline_app_release_date
   locals.offlineDesktopAppSupportedLanguage = envHelper.sunbird_portal_offline_supported_languages,
-  locals.offlineDesktopAppDownloadUrl = envHelper.SUNBIRD_PORTAL_BASE_URL
+    locals.offlineDesktopAppDownloadUrl = envHelper.SUNBIRD_PORTAL_BASE_URL
   locals.logFingerprintDetails = envHelper.LOG_FINGERPRINT_DETAILS,
   locals.slugForProminentFilter = envHelper?.sunbird_portal_slugForProminentFilter,
   locals.deviceId = '';

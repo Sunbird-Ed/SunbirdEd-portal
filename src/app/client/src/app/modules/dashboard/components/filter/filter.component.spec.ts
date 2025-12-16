@@ -52,7 +52,7 @@ describe('FilterComponent', () => {
   };
   const mockChangeDetectionRef: Partial<ChangeDetectorRef> = {
   };
-  const selectedDialogData:Partial<typeof MAT_DIALOG_DATA>={}
+  const selectedDialogData: Partial<typeof MAT_DIALOG_DATA> = {}
   beforeAll(() => {
     component = new FilterComponent(
       mockResourceService as ResourceService,
@@ -139,8 +139,8 @@ describe('FilterComponent', () => {
 
   it('should call formUpdate and update the form', fakeAsync(() => {
     component.filtersFormGroup = new FormBuilder().group({
-          state: ['1']
-        });
+      state: ['1']
+    });
     jest.spyOn(component, 'formUpdate');
     component.ngOnInit();
     tick(1000);
@@ -148,8 +148,8 @@ describe('FilterComponent', () => {
     tick(1000);
     component.filters = mockChartData.filters;
     component.chartData = [{ data: mockChartData.chartData, id: 'chartId' }];
-    component.selectedFilters = {"state":['01285019302823526477']};
-    component.previousFilters = {"state":['b00bc992ef25f1a9a8d']}
+    component.selectedFilters = { "state": ['01285019302823526477'] };
+    component.previousFilters = { "state": ['b00bc992ef25f1a9a8d'] }
     component.formUpdate(component.chartData)
     expect(component.formUpdate).toHaveBeenCalled();
   }));
@@ -197,15 +197,15 @@ describe('FilterComponent', () => {
 
   it('should call getSelectedData', () => {
     component.filterQuery = '';
-    jest.spyOn(component,'getFilters')
+    jest.spyOn(component, 'getFilters')
     component.getFilters(['cd', 'ef']);
     expect(component.getFilters).toHaveBeenCalled();
   });
 
   it('should call formUpdate and update the form with first filter', fakeAsync(() => {
     component.filtersFormGroup = new FormBuilder().group({
-          state: ['1']
-        });
+      state: ['1']
+    });
     jest.spyOn(component, 'formUpdate');
     component.ngOnInit();
     tick(1000);
@@ -215,8 +215,8 @@ describe('FilterComponent', () => {
     component.chartData = [{ data: mockChartData.chartData, id: 'chartId' }];
     component.firstFilter = 'state';
     component.currentReference = 'state';
-    component.selectedFilters = {"state":['01285019302823526477']};
-    component.previousFilters = {"state":['b00bc992ef25f1a9a8d']}
+    component.selectedFilters = { "state": ['01285019302823526477'] };
+    component.previousFilters = { "state": ['b00bc992ef25f1a9a8d'] }
     component.formUpdate(component.chartData)
     expect(component.formUpdate).toHaveBeenCalled();
   }));
@@ -224,10 +224,10 @@ describe('FilterComponent', () => {
   it('should call filterData', fakeAsync(() => {
     jest.spyOn(component, 'filterData');
     component.filters = mockChartData.filters;
-    component.chartData = [{ data: mockChartData.chartData, 'selectedFilters':{"state":['b00bc992ef25f1a9a8d63291e20efc8d'],"Date": '2020-04-28'}, id: 'chartId' }];
+    component.chartData = [{ data: mockChartData.chartData, 'selectedFilters': { "state": ['b00bc992ef25f1a9a8d63291e20efc8d'], "Date": '2020-04-28' }, id: 'chartId' }];
     component.firstFilter = ['state'];
     component.currentReference = 'state';
-    component.selectedFilters = {"state":['b00bc992ef25f1a9a8d63291e20efc8d'],"Date": '2020-04-28'};
+    component.selectedFilters = { "state": ['b00bc992ef25f1a9a8d63291e20efc8d'], "Date": '2020-04-28' };
     component.filterData();
     expect(component.filterData).toHaveBeenCalled();
   }));
@@ -237,7 +237,7 @@ describe('FilterComponent', () => {
     component.filters = mockChartData.filters;
     component.chartData = [{ data: mockChartData.chartData, id: 'chartId' }];
     component.currentReference = 'state';
-    component.selectedFilters = {"Plays":['10']};
+    component.selectedFilters = { "Plays": ['10'] };
     component.filterData();
     expect(component.filterData).toHaveBeenCalled();
   }));
@@ -248,7 +248,7 @@ describe('FilterComponent', () => {
     component.previousFilters = {};
     component.chartData = [{ data: mockChartData.chartData, id: 'chartId' }];
     component.currentReference = 'state';
-    component.selectedFilters = {"Plays":['10']};
+    component.selectedFilters = { "Plays": ['10'] };
     component.filterData();
     expect(component.filterData).toHaveBeenCalled();
   }));
@@ -261,14 +261,14 @@ describe('FilterComponent', () => {
     expect(response).toEqual(false);
   }));
 
-  it('should call getFiltersValues', ()=>{
-    jest.spyOn(component,'getFiltersValues');
+  it('should call getFiltersValues', () => {
+    jest.spyOn(component, 'getFiltersValues');
     component.getFiltersValues('state');
     expect(component.getFiltersValues).toHaveBeenCalled();
   })
 
-  it('should call getFiltersValues with array arg', ()=>{
-    jest.spyOn(component,'getFiltersValues');
+  it('should call getFiltersValues with array arg', () => {
+    jest.spyOn(component, 'getFiltersValues');
     component.getFiltersValues(['state']);
     expect(component.getFiltersValues).toHaveBeenCalled();
   })
@@ -279,7 +279,7 @@ describe('FilterComponent', () => {
     component.previousFilters = {};
     component.chartData = [{ data: mockChartData.chartData, id: 'chartId' }];
     component.currentReference = 'state';
-    component.selectedFilters = {"Plays":['10'],"state":['b00bc992ef25f1a9a8d63291e20efc8d'],"Date": '2020-04-28'};
+    component.selectedFilters = { "Plays": ['10'], "state": ['b00bc992ef25f1a9a8d63291e20efc8d'], "Date": '2020-04-28' };
     component.filterData();
     expect(component.filterData).toHaveBeenCalled();
   }));
@@ -287,9 +287,9 @@ describe('FilterComponent', () => {
   it('should call getDateRange', () => {
     jest.spyOn(component, 'getDateRange');
     component.filtersFormGroup = new FormBuilder().group({
-          Date: ['1']
+      Date: ['1']
     });
-    component.getDateRange({startDate:"2022-07-04T18:30:00.000Z", endDate:"2022-07-06T18:30:00.000Z"},'Date');
+    component.getDateRange({ startDate: "2022-07-04T18:30:00.000Z", endDate: "2022-07-06T18:30:00.000Z" }, 'Date');
     expect(component.getDateRange).toHaveBeenCalled();
   })
 
@@ -309,8 +309,8 @@ describe('FilterComponent', () => {
     component.unsubscribe = {
       next: jest.fn(),
       complete: jest.fn()
-  } as any;
-    jest.spyOn(component,'ngOnDestroy')
+    } as any;
+    jest.spyOn(component, 'ngOnDestroy')
     component.ngOnDestroy();
     expect(component.unsubscribe).toBeDefined()
 });

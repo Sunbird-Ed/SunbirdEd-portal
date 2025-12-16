@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import {ResourceService, ServerResponse, UtilService, ConfigService, ToasterService, NavigationHelperService} from '@sunbird/shared';
+import { ResourceService, ServerResponse, UtilService, ConfigService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { Validators, UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import * as _ from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -59,7 +59,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
     this.otpForm = new UntypedFormGroup({
       otp: new UntypedFormControl('', [Validators.required])
     });
-   this.resendOtpEnablePostTimer();
+    this.resendOtpEnablePostTimer();
     this.enableSubmitButton();
     this.setInteractEventData();
   }
@@ -72,7 +72,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
       this.enableResendButton = true;
     }, 22000);
     const interval = setInterval(() => {
-      this.resendOTPbtn =this.delete ? this.resourceService.frmelmnts.lbl.resendOTP + ' in ' + this.counter + ' seconds' : this.resourceService.frmelmnts.lbl.resendOTP + ' (' + this.counter + ')';
+      this.resendOTPbtn = this.delete ? this.resourceService.frmelmnts.lbl.resendOTP + ' in ' + this.counter + ' seconds' : this.resourceService.frmelmnts.lbl.resendOTP + ' (' + this.counter + ')';
       this.counter--;
       if (this.counter < 0) {
         this.resendOTPbtn = this.resourceService.frmelmnts.lbl.resendOTP;
@@ -84,15 +84,15 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
 
   verifyOTP() {
     const wrongOTPMessage = this.otpData.type === 'phone' ? this.resourceService.frmelmnts.lbl.wrongPhoneOTP :
-    this.resourceService.frmelmnts.lbl.wrongEmailOTP;
+      this.resourceService.frmelmnts.lbl.wrongEmailOTP;
     this.enableSubmitBtn = false;
     const request = {
       'request': {
         'key': this.otpData.value,
         'type': this.otpData.type,
         'otp': this.otpForm.controls.otp.value,
-        ...( this.otpData.value && this.otpData.value.match(/(([a-z]|[A-Z])+[*]{1,}([a-z]*[A-Z]*[0-9]*)*@)|([*]{1,})+/g) &&
-        { 'userId': this.otpData.userId||this.userService.userid })
+        ...(this.otpData.value && this.otpData.value.match(/(([a-z]|[A-Z])+[*]{1,}([a-z]*[A-Z]*[0-9]*)*@)|([*]{1,})+/g) &&
+          { 'userId': this.otpData.userId || this.userService.userid })
       }
     };
     this.otpService.verifyOTP(request).subscribe(
@@ -101,9 +101,9 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
         this.errorMessage = '';
         let emitData = {};
         if (this.otpData.type === 'phone') {
-          emitData = {'phone': this.otpData.value, 'phoneVerified': true};
+          emitData = { 'phone': this.otpData.value, 'phoneVerified': true };
         } else if (this.otpData.type === 'email') {
-          emitData = {'email': this.otpData.value, 'emailVerified': true};
+          emitData = { 'email': this.otpData.value, 'emailVerified': true };
         }
         this.verificationSuccess.emit(emitData);
       },
@@ -131,7 +131,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
   resendOTP() {
     this.disableResendButton = false;
     this.enableResendButton = false;
-    this.resendOtpCounter = this.resendOtpCounter + 1 ;
+    this.resendOtpCounter = this.resendOtpCounter + 1;
     if (this.resendOtpCounter >= this.maxResendTry) {
       this.disableResendButton = false;
       this.infoMessage = '';
@@ -143,8 +143,8 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
       'request': {
         'key': this.otpData.value,
         'type': this.otpData.type,
-        ...( this.otpData.value && this.otpData.value.match(/(([a-z]|[A-Z])+[*]{1,}([a-z]*[A-Z]*[0-9]*)*@)|([*]{1,})+/g) &&
-        { userId: this.userService.userid, templateId: this.configService.appConfig.OTPTemplate.updateContactTemplate })
+        ...(this.otpData.value && this.otpData.value.match(/(([a-z]|[A-Z])+[*]{1,}([a-z]*[A-Z]*[0-9]*)*@)|([*]{1,})+/g) &&
+          { userId: this.userService.userid, templateId: this.configService.appConfig.OTPTemplate.updateContactTemplate })
       }
     };
     this.otpService.generateOTP(request).subscribe(

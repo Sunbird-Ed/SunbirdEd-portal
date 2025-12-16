@@ -13,7 +13,7 @@ import { WebExtensionsConfig } from './framework.config';
 import { CacheService } from '../app/modules/shared/services/cache-service/cache.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { PluginModules } from './framework.config';
-import {ChatLibModule, ChatLibService} from '@project-sunbird/chatbot-client';
+import { ChatLibModule, ChatLibService } from '@project-sunbird/chatbot-client';
 import { RouteReuseStrategy } from '@angular/router';
 import { CustomRouteReuseStrategy } from './service/CustomRouteReuseStrategy/CustomRouteReuseStrategy';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

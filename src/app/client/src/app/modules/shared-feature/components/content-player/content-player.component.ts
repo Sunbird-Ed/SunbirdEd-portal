@@ -94,7 +94,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
       this.getContent();
       CsGroupAddableBloc.instance.state$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
         this.isGroupAdmin = !_.isEmpty(_.get(this.activatedRoute.snapshot, 'queryParams.groupId'))
-        && _.get(data.params, 'groupData.isAdmin');
+          && _.get(data.params, 'groupData.isAdmin');
       });
     });
 
@@ -118,7 +118,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: this.groupId ? [{id: this.groupId, type: 'Group'}] : [],
+        cdata: this.groupId ? [{ id: this.groupId, type: 'Group' }] : [],
       },
       object: {
         id: this.contentId,
@@ -185,7 +185,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
   }
 
   getQuestionSetHierarchy() {
-    const serveiceRef =  this.userService.loggedIn ? this.playerService : this.publicPlayerService;
+    const serveiceRef = this.userService.loggedIn ? this.playerService : this.publicPlayerService;
     this.publicPlayerService.getQuestionSetHierarchy(this.contentId).pipe(
       takeUntil(this.unsubscribe$))
       .subscribe((response) => {
