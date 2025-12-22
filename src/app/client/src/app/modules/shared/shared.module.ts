@@ -37,7 +37,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { AutocompletePipe } from './components/material-auto-complete/auto-complete-pipe';
 import { MaterialAutoCompleteComponent } from './components/material-auto-complete/material-auto-complete.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatInputModule   } from '@angular/material/input';
+import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';

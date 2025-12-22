@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DeviceRegisterService, UserService } from '@sunbird/core';
-import { ResourceService, UtilService, NavigationHelperService, ToasterService, ConfigService} from '@sunbird/shared';
+import { ResourceService, UtilService, NavigationHelperService, ToasterService, ConfigService } from '@sunbird/shared';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
@@ -40,7 +40,7 @@ export class GuestProfileComponent implements OnInit {
   avatarConfig = {
     size: this.config.constants.SIZE.LARGE,
     view: this.config.constants.VIEW.VERTICAL,
-    isTitle:false
+    isTitle: false
   };
   editProfileInteractEdata: IInteractEventEdata;
   editFrameworkInteractEData: IInteractEventEdata;
@@ -163,9 +163,9 @@ export class GuestProfileComponent implements OnInit {
   }
 
   ngOnDestroy() {
-      this.unsubscribe$.next();
-      this.unsubscribe$.complete();
-    }
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
   goBack() {
     this.navigationHelperService.goBack();

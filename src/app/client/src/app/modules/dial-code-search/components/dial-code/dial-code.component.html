@@ -1,12 +1,12 @@
 <app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration">
 </app-landing-section>
 
-<div [ngClass]="layoutConfiguration ? 'sbt-center-container relative9 sbt-dial-code sbt-inside-page-container':''" >
-<!-- Back button -->
-<div class="sb-bg-color-white sb-back-btn-panel">
-  <div class="ui container py-8">
-    <button type="button" appTelemetryInteract [telemetryInteractEdata]="backInteractEdata"
-      [telemetryInteractCdata]="telemetryCdata" class="sb-btn sb-btn-normal sb-btn-link
+<div [ngClass]="layoutConfiguration ? 'sbt-center-container relative9 sbt-dial-code sbt-inside-page-container':''">
+  <!-- Back button -->
+  <div class="sb-bg-color-white sb-back-btn-panel">
+    <div class="ui container py-8">
+      <button type="button" appTelemetryInteract [telemetryInteractEdata]="backInteractEdata"
+        [telemetryInteractCdata]="telemetryCdata" class="sb-btn sb-btn-normal sb-btn-link
       sb-btn-link-primary sb-left-icon-btn px-0" (click)="goBack()" tabindex="0">
       <i class="icon-svg icon-svg--xxs icon-back mr-4" aria-hidden="true">
         <svg class="icon icon-svg--primary">
@@ -24,12 +24,13 @@
       <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" [type]="'portal_qrcode_flatresult'" [isLoading]="true" [categoryKeys]="categoryKeys"></sb-library-card>
     </div>
   </div>
-  <div class="dial-code-section-result">
-    <div class="sb-pageSection" *ngIf="!showLoader && searchResults.length > 0">
-      <div class="section-header">
-        <p>
-          {{resourceService?.frmelmnts?.lbl?.showingResultsForWithCount | interpolate:'{resultCount}' : searchResults.length}}&nbsp;"<strong>{{dialCode}}</strong>"
-        </p>
+
+  <!-- Main container -->
+  <div class="ui container py-24" [appTelemetryImpression]="telemetryImpression">
+    <div class="sb-grid" *ngIf="showLoader">
+      <div [id]="i" [data]=[] class="sb-grid--item" *ngFor="let i of numberOfSections">
+        <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" [type]="'portal_qrcode_flatresult'"
+          [isLoading]="true" [categoryKeys]="categoryKeys"></sb-library-card>
       </div>
     </div>
     <div *ngIf="showSelectChapter && !showLoader && searchResults?.length > 0" class="my-24">
@@ -85,8 +86,7 @@
         </div>
       </div>
     </div>
-  </div>
-  <!-- END - CCD for DIAL Code search result(s) -->
+    <!-- END - CCD for DIAL Code search result(s) -->
 
   <div [appTelemetryImpression]="dialResultImpression">
       <div class="content-grid">
@@ -144,7 +144,6 @@
       </div>
     </div>
   </div>
-</div>
 </div>
 <app-batch-info *ngIf="showBatchInfo" [enrolledBatchInfo]="selectedCourseBatches" (modelClose)="showBatchInfo = false">
 </app-batch-info>

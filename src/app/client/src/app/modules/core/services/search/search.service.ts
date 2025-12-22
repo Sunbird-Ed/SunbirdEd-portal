@@ -544,15 +544,15 @@ export class SearchService {
   /**
    * global User Search.
   */
- globalUserSearch(requestParam: SearchParam): Observable<ServerResponse> {
-  const option = {
-    url: this.config.urlConFig.URLS.ADMIN.USER_SEARCH,
-    data: {
-      request: {
-        filters: requestParam.filters,
+  globalUserSearch(requestParam: SearchParam): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.ADMIN.USER_SEARCH,
+      data: {
+        request: {
+          filters: requestParam.filters,
+        }
       }
-    }
-  };
-  return this.learnerService.post(option);
-}
+    };
+    return this.learnerService.post(option);
+  }
 }

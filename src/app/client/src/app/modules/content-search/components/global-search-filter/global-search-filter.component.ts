@@ -60,17 +60,17 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
     let channelData;
     if (this.selectedFilters.channel) {
       const channelIds = [];
-      const facetsData = _.find(this.facets, {'name': 'channel'});
+      const facetsData = _.find(this.facets, { 'name': 'channel' });
       _.forEach(this.selectedFilters.channel, (value, index) => {
-        channelData = _.find(facetsData.values, {'identifier': value});
+        channelData = _.find(facetsData.values, { 'identifier': value });
         if (!channelData) {
-          channelData = _.find(facetsData.values, {'name': value});
+          channelData = _.find(facetsData.values, { 'name': value });
         }
         channelIds.push(channelData.name);
       });
       this.selectedFilters.channel = channelIds;
     }
-    this.filterChangeEvent.next({event: this.selectedFilters[facet.name], type: facet.name});
+    this.filterChangeEvent.next({ event: this.selectedFilters[facet.name], type: facet.name });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -87,7 +87,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
         return -1;
       }).map((f) => {
         if (f.name === 'mediaType') {
-          f.values = f.mimeTypeList.map((m) => ({name: m}));
+          f.values = f.mimeTypeList.map((m) => ({ name: m }));
 
           return {
             facet: f.name,
@@ -122,10 +122,10 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
     this.setResetFilterInteractData();
     this.fetchSelectedFilterAndFilterOption();
     this.handleFilterChange();
-        // screen size
-        if (window.innerWidth <= 992 ) {
-          this.isOpen = false;
-        }
+    // screen size
+    if (window.innerWidth <= 992) {
+      this.isOpen = false;
+    }
     this.connectionService.monitor().subscribe(isConnected => {
       this.isConnected = isConnected;
     });
@@ -136,10 +136,10 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
     if (this.utilService.isDesktopApp) {
       const userPreferences: any = this.userService.anonymousUserPreference;
       if (userPreferences) {
-        _.forEach([this.frameworkCategoriesList[0],this.frameworkCategoriesList[1],this.frameworkCategoriesList[2], 'channel'], (item) => {
+        _.forEach([this.frameworkCategoriesList[0], this.frameworkCategoriesList[1], this.frameworkCategoriesList[2], 'channel'], (item) => {
           if (!_.has(this.selectedFilters, item)) {
             this.selectedFilters[item] = _.isArray(userPreferences.framework[item]) ?
-            userPreferences.framework[item] : _.split(userPreferences.framework[item], ', ');
+              userPreferences.framework[item] : _.split(userPreferences.framework[item], ', ');
           }
         });
       }
@@ -153,7 +153,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
     }
     if (this.queryParamsToOmit) {
       queryFilters = _.omit(_.get(this.activatedRoute, 'snapshot.queryParams'), this.queryParamsToOmit);
-      queryFilters = {...queryFilters, ...this.selectedFilters};
+      queryFilters = { ...queryFilters, ...this.selectedFilters };
     }
     redirectUrl = decodeURI(redirectUrl);
     this.router.navigate([redirectUrl], {
@@ -167,11 +167,11 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
       map((queryParams) => {
         const queryFilters: any = {};
         _.forIn(queryParams, (value, key) => {
-          if ([...this.frameworkCategoriesList,...this.globalFilterCategories,'channel', 'primaryCategory', 'key', 'mediaType', 'additionalCategories'].includes(key)) {
+          if ([...this.frameworkCategoriesList, ...this.globalFilterCategories, 'channel', 'primaryCategory', 'key', 'mediaType', 'additionalCategories'].includes(key)) {
             queryFilters[key] = key === 'key' || _.isArray(value) ? value : [value];
           }
         });
-        if(_.get(queryParams,'ignoreSavedFilter')){
+        if (_.get(queryParams, 'ignoreSavedFilter')) {
           queryFilters['ignoreSavedFilter'] = queryParams.ignoreSavedFilter;
         }
         if (queryParams.selectedTab) {
@@ -189,12 +189,12 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
           this.cacheService.remove('searchFiltersAll');
         }
         if (this.cacheService.exists('searchFiltersAll') && !_.get(filters, 'key') &&
-        _.get(filters, 'ignoreSavedFilter') !== 'true') {
+          _.get(filters, 'ignoreSavedFilter') !== 'true') {
           this.selectedFilters = _.cloneDeep(this.cacheService.get('searchFiltersAll'));
         } else {
-          if( _.get(filters, 'ignoreSavedFilter') === 'true'){
+          if (_.get(filters, 'ignoreSavedFilter') === 'true') {
 
-          } else{
+          } else {
             this.cacheService.remove('searchFiltersAll');
             this.selectedFilters = _.cloneDeep(filters);
           }
@@ -208,37 +208,37 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
 
   private handleFilterChange() {
     this.filterChangeEvent.pipe(
-      filter(({type, event}) => {
+      filter(({ type, event }) => {
         if (type === 'mediaType' && this.selectedMediaTypeIndex !== event.data.index) {
           this.selectedMediaTypeIndex = event.data.index;
         }
         return true;
       }),
       debounceTime(1000)).subscribe(({ type, event }) => {
-      this.emitFilterChangeEvent();
-    });
+        this.emitFilterChangeEvent();
+      });
   }
 
   public updateRoute() {
     let queryFilters = _.get(this.activatedRoute, 'snapshot.queryParams');
     if (this?.selectedFilters?.channel) {
       const channelIds = [];
-      const facetsData = _.find(this.facets, {'name': 'channel'});
+      const facetsData = _.find(this.facets, { 'name': 'channel' });
       _.forEach(this.selectedFilters.channel, (value, index) => {
-        const data = _.find(facetsData.values, {'name': value});
+        const data = _.find(facetsData.values, { 'name': value });
         channelIds.push(data.identifier);
       });
       this.selectedFilters.channel = channelIds;
     }
     if(this?.utilService?.isDesktopApp && queryFilters?.selectedTab === 'mydownloads' && this.isConnected) {
       this.queryParamsToOmit = this.queryParamsToOmit && this.queryParamsToOmit.length ? this.queryParamsToOmit.push('key') : ['key']
-      if(this.selectedFilters.key) {
+      if (this.selectedFilters.key) {
         delete this.selectedFilters.key;
       }
     }
     if (this.queryParamsToOmit) {
       queryFilters = _.omit(_.get(this.activatedRoute, 'snapshot.queryParams'), this.queryParamsToOmit);
-      queryFilters = {...queryFilters, ...this.selectedFilters};
+      queryFilters = { ...queryFilters, ...this.selectedFilters };
     }
     if (this.cacheService.get('searchFiltersAll')) {
       this.selectedFilters['selectedTab'] = 'all';

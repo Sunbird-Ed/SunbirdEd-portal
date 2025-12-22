@@ -140,4 +140,5 @@ export class BatchInfoComponent implements OnInit, OnDestroy {
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
+
 }

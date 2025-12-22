@@ -50,9 +50,9 @@ describe('App Component', () => {
   };
   const mockTelemetryService: Partial<TelemetryService> = {};
   const mockRouter: Partial<Router> = {
-    events: of({id: 1, url: 'sample-url'}) as any,
+    events: of({ id: 1, url: 'sample-url' }) as any,
     navigate: jest.fn()
-};
+  };
   const mockConfigService: Partial<ConfigService> = {
     appConfig: {
       layoutConfiguration: 'joy',
@@ -156,7 +156,7 @@ describe('App Component', () => {
   });
 
   it('should be create a instance of appComponent', () => {
-      expect(appComponent).toBeTruthy();
+    expect(appComponent).toBeTruthy();
   });
 
   it('should handle login', () => {
@@ -183,11 +183,11 @@ describe('App Component', () => {
   describe('checkForCustodianUser', () => {
     it('should set user as custodian if it is', (done) => {
       const custodianOrg = {
-        result: {response: {value: 'ROOT_ORG'}}
+        result: { response: { value: 'ROOT_ORG' } }
       }
       mockOrgDetailsService.getCustodianOrgDetails = jest.fn().mockReturnValue(of(custodianOrg)) as any;
       const mockUserProfile = {
-        rootOrg: {rootOrgId: 'ROOT_ORG'}
+        rootOrg: { rootOrgId: 'ROOT_ORG' }
       }
       Object.defineProperty(mockUserService, 'userProfile', {
         get: jest.fn(() => mockUserProfile)
@@ -201,7 +201,7 @@ describe('App Component', () => {
 
     it('should set user as non custodian user', (done) => {
       const custodianOrg = {
-        result: {response: {value: ''}}
+        result: { response: { value: '' } }
       }
       mockOrgDetailsService.getCustodianOrgDetails = jest.fn().mockReturnValue(of(custodianOrg)) as any;
       appComponent.checkForCustodianUser();
@@ -224,12 +224,12 @@ describe('App Component', () => {
 
     it('should show global consent popup for non custodian user', (done) => {
       Object.defineProperty(mockUserService, 'userProfile', {
-        get: jest.fn(() => {rootOrgId: 'ROOT_ORG'})
+        get: jest.fn(() => { rootOrgId: 'ROOT_ORG' })
       });
       Object.defineProperty(mockUserService, 'loggedIn', {
         get: jest.fn(() => true)
       });
-      const nonCustodianOrg = { result: {response: {value: ''}}}
+      const nonCustodianOrg = { result: { response: { value: '' } } }
       mockOrgDetailsService.getCustodianOrgDetails = jest.fn().mockReturnValue(of(nonCustodianOrg)) as any;
       appComponent.onAcceptTnc();
       setTimeout(() => {
@@ -240,7 +240,7 @@ describe('App Component', () => {
 
     it('should check framework selected or not for logged in and custodian user', (done) => {
       const mockUserProfile = {
-        rootOrg: {rootOrgId: 'ROOT_ORG'}
+        rootOrg: { rootOrgId: 'ROOT_ORG' }
       }
       Object.defineProperty(mockUserService, 'userProfile', {
         get: jest.fn(() => mockUserProfile)
@@ -248,7 +248,7 @@ describe('App Component', () => {
       Object.defineProperty(mockUserService, 'loggedIn', {
         get: jest.fn(() => true)
       });
-      const nonCustodianOrg = { result: {response: {value: 'ROOT_ORG'}}}
+      const nonCustodianOrg = { result: { response: { value: 'ROOT_ORG' } } }
       mockOrgDetailsService.getCustodianOrgDetails = jest.fn().mockReturnValue(of(nonCustodianOrg)) as any;
       jest.spyOn(appComponent, 'checkFrameworkSelected').mockImplementation();
       appComponent.onAcceptTnc();
@@ -272,7 +272,7 @@ describe('App Component', () => {
 
   it('should invoked ngOnDestroy before unload', () => {
     // arrange
-    mockTelemetryService.syncEvents = jest.fn(() => {});
+    mockTelemetryService.syncEvents = jest.fn(() => { });
     jest.spyOn(appComponent, 'ngOnDestroy').mockImplementation(() => {
       return;
     });
@@ -303,7 +303,7 @@ describe('App Component', () => {
 
   it('should be set Selected Theme Colour', () => {
     jest.spyOn(document, 'getElementById').mockImplementation(() => {
-      return {value: ['val-01', '12', '-', '.'], checked: false} as any;
+      return { value: ['val-01', '12', '-', '.'], checked: false } as any;
     });
     appComponent.setSelectedThemeColour({});
     expect(document.getElementById).toHaveBeenCalled();
@@ -330,7 +330,8 @@ describe('App Component', () => {
     it('should checked after child component initialized', () => {
       // arrange
       const mHeaderPos = { height: 50, checked: true };
-      const mHeader = [{addEventListener: jest.fn((as, listener, sd) => ({}))
+      const mHeader = [{
+        addEventListener: jest.fn((as, listener, sd) => ({}))
       }];
       jest.spyOn(document, 'querySelectorAll').mockImplementation((selector) => {
         switch (selector) {
@@ -350,9 +351,9 @@ describe('App Component', () => {
   });
 
   it('should check FullScreen View', () => {
-    mockNavigationHelperService.contentFullScreenEvent = of({fullScreen: true}) as any;
+    mockNavigationHelperService.contentFullScreenEvent = of({ fullScreen: true }) as any;
     appComponent.checkFullScreenView();
-    expect(appComponent.isFullScreenView).toStrictEqual({fullScreen: true});
+    expect(appComponent.isFullScreenView).toStrictEqual({ fullScreen: true });
   });
 
   describe('checkTncAndFrameWorkSelected', () => {
@@ -397,17 +398,17 @@ describe('App Component', () => {
         }
       } as any;
       jest.spyOn(appComponent, 'checkFullScreenView').mockImplementation();
-      mockLayoutService.switchableLayout = jest.fn(() => of([{data: ''}]));
+      mockLayoutService.switchableLayout = jest.fn(() => of([{ data: '' }]));
       mockActivatedRoute.queryParams = of({
         id: 'sample-id',
         utm_campaign: 'utm_campaign',
         utm_medium: 'utm_medium',
         clientId: 'android',
-        context: JSON.stringify({data: 'sample-data'})
+        context: JSON.stringify({ data: 'sample-data' })
       });
       Storage.prototype.getItem = jest.fn(() => 'sample-data');
       jest.spyOn(appComponent, 'handleHeaderNFooter').mockImplementation();
-      mockResourceService.initialize = jest.fn(() => {});
+      mockResourceService.initialize = jest.fn(() => { });
       jest.spyOn(appComponent, 'setDeviceId').mockImplementation(() => {
         return of('sample-device-id');
       });
@@ -417,11 +418,11 @@ describe('App Component', () => {
       jest.spyOn(appComponent, 'getOnboardingList').mockImplementation(() => {
         return of('onboardingFormData');
       });
-      mockNavigationHelperService.initialize = jest.fn(() => {});
-      mockUserService.initialize = jest.fn(() => ({uid: 'sample-uid'}));
+      mockNavigationHelperService.initialize = jest.fn(() => { });
+      mockUserService.initialize = jest.fn(() => ({ uid: 'sample-uid' }));
       jest.spyOn(appComponent, 'getOrgDetails').mockImplementation();
-      mockPermissionService.initialize = jest.fn(() => {});
-      mockCoursesService.initialize = jest.fn(() => {});
+      mockPermissionService.initialize = jest.fn(() => { });
+      mockCoursesService.initialize = jest.fn(() => { });
       mockTelemetryService.makeUTMSession = jest.fn();
       mockUserService.startSession = jest.fn(() => true);
       jest.spyOn(appComponent, 'checkForCustodianUser').mockImplementation(() => {
@@ -431,7 +432,7 @@ describe('App Component', () => {
       mockGeneraliseLabelService.getGeneraliseResourceBundle = jest.fn(() => {});
       mockTelemetryService.initialize = jest.fn(() => ({cdata: {}}));
       jest.spyOn(document, 'getElementById').mockImplementation(() => {
-        return {value: ['val-01', '12', '-', '.']} as any;
+        return { value: ['val-01', '12', '-', '.'] } as any;
       });
       appComponent.telemetryContextData = {
         did: 'sample-did',
@@ -487,17 +488,17 @@ describe('App Component', () => {
         }
       } as any;
       jest.spyOn(appComponent, 'checkFullScreenView').mockImplementation();
-      mockLayoutService.switchableLayout = jest.fn(() => of([{data: ''}]));
+      mockLayoutService.switchableLayout = jest.fn(() => of([{ data: '' }]));
       mockActivatedRoute.queryParams = of({
         id: 'sample-id',
         utm_campaign: 'utm_campaign',
         utm_medium: 'utm_medium',
         clientId: 'android',
-        context: JSON.stringify({data: 'sample-data'})
+        context: JSON.stringify({ data: 'sample-data' })
       });
       Storage.prototype.getItem = jest.fn(() => 'sample-data');
       jest.spyOn(appComponent, 'handleHeaderNFooter').mockImplementation();
-      mockResourceService.initialize = jest.fn(() => {});
+      mockResourceService.initialize = jest.fn(() => { });
       jest.spyOn(appComponent, 'setDeviceId').mockImplementation(() => {
         return of('sample-device-id');
       });
@@ -507,23 +508,23 @@ describe('App Component', () => {
       jest.spyOn(appComponent, 'getOnboardingList').mockImplementation(() => {
         return of('onboardingFormData');
       });
-      mockNavigationHelperService.initialize = jest.fn(() => {});
-      mockUserService.initialize = jest.fn(() => ({uid: 'sample-uid'}));
+      mockNavigationHelperService.initialize = jest.fn(() => { });
+      mockUserService.initialize = jest.fn(() => ({ uid: 'sample-uid' }));
       jest.spyOn(appComponent, 'getOrgDetails').mockImplementation();
-      mockPermissionService.initialize = jest.fn(() => {});
-      mockCoursesService.initialize = jest.fn(() => {});
+      mockPermissionService.initialize = jest.fn(() => { });
+      mockCoursesService.initialize = jest.fn(() => { });
       mockTelemetryService.makeUTMSession = jest.fn();
       mockUserService.startSession = jest.fn(() => true);
       jest.spyOn(appComponent, 'checkForCustodianUser').mockImplementation(() => {
         return true;
       });
       jest.spyOn(appComponent, 'changeLanguageAttribute').mockImplementation();
-      mockGeneraliseLabelService.getGeneraliseResourceBundle = jest.fn(() => {});
-      mockTenantService.getTenantInfo = jest.fn(() => {});
-      mockTenantService.initialize = jest.fn(() => {});
-      mockTelemetryService.initialize = jest.fn(() => ({cdata: {}}));
+      mockGeneraliseLabelService.getGeneraliseResourceBundle = jest.fn(() => { });
+      mockTenantService.getTenantInfo = jest.fn(() => { });
+      mockTenantService.initialize = jest.fn(() => { });
+      mockTelemetryService.initialize = jest.fn(() => ({ cdata: {} }));
       jest.spyOn(document, 'getElementById').mockImplementation(() => {
-        return {value: ['val-01', '12', '-', '.']} as any;
+        return { value: ['val-01', '12', '-', '.'] } as any;
       });
       appComponent.telemetryContextData = {
         did: 'sample-did',
@@ -537,7 +538,7 @@ describe('App Component', () => {
       jest.spyOn(appComponent, 'joyThemePopup').mockImplementation();
     
       mockChangeDetectionRef.detectChanges = jest.fn();
-      mockUserService.getGuestUser = jest.fn(() => of({role: 'teacher'}));
+      mockUserService.getGuestUser = jest.fn(() => of({ role: 'teacher' }));
       mockOrgDetailsService.getOrgDetails = jest.fn(() => of({
         hashTagId: 'sample-hasTag-id'
       })) as any;
@@ -569,17 +570,17 @@ describe('App Component', () => {
         }
       } as any;
       jest.spyOn(appComponent, 'checkFullScreenView').mockImplementation();
-      mockLayoutService.switchableLayout = jest.fn(() => of([{data: ''}]));
+      mockLayoutService.switchableLayout = jest.fn(() => of([{ data: '' }]));
       mockActivatedRoute.queryParams = of({
         id: 'sample-id',
         utm_campaign: 'utm_campaign',
         utm_medium: 'utm_medium',
         clientId: 'android',
-        context: JSON.stringify({data: 'sample-data'})
+        context: JSON.stringify({ data: 'sample-data' })
       });
       Storage.prototype.getItem = jest.fn(() => 'sample-data');
       jest.spyOn(appComponent, 'handleHeaderNFooter').mockImplementation();
-      mockResourceService.initialize = jest.fn(() => {});
+      mockResourceService.initialize = jest.fn(() => { });
       jest.spyOn(appComponent, 'setDeviceId').mockImplementation(() => {
         return of('sample-device-id');
       });
@@ -589,8 +590,8 @@ describe('App Component', () => {
       jest.spyOn(appComponent, 'getOnboardingList').mockImplementation(() => {
         return of('onboardingFormData');
       });
-      mockNavigationHelperService.initialize = jest.fn(() => {});
-      mockUserService.initialize = jest.fn(() => ({uid: 'sample-uid'}));
+      mockNavigationHelperService.initialize = jest.fn(() => { });
+      mockUserService.initialize = jest.fn(() => ({ uid: 'sample-uid' }));
       jest.spyOn(appComponent, 'getOrgDetails').mockImplementation();
       mockUserService.startSession = jest.fn(() => true);
       jest.spyOn(appComponent, 'checkForCustodianUser').mockImplementation(() => {
@@ -598,7 +599,7 @@ describe('App Component', () => {
       });
       jest.spyOn(appComponent, 'changeLanguageAttribute').mockImplementation();
       jest.spyOn(document, 'getElementById').mockImplementation(() => {
-        return {value: ['val-01', '12', '-', '.']} as any;
+        return { value: ['val-01', '12', '-', '.'] } as any;
       });
       appComponent.telemetryContextData = {
         did: 'sample-did',
@@ -611,7 +612,7 @@ describe('App Component', () => {
       Storage.prototype.setItem = jest.fn(() => true);
       jest.spyOn(appComponent, 'joyThemePopup').mockImplementation();
       mockChangeDetectionRef.detectChanges = jest.fn();
-      mockUserService.getGuestUser = jest.fn(() => throwError({role: 'teacher'}));
+      mockUserService.getGuestUser = jest.fn(() => throwError({ role: 'teacher' }));
       mockOrgDetailsService.getOrgDetails = jest.fn(() => throwError({
         hashTagId: 'sample-hasTag-id'
       })) as any;

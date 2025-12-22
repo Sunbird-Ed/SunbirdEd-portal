@@ -172,6 +172,10 @@ $sb-certificatePage-loader-img-width: calculateRem(30px);
         color: $sb-certificatePage-holder-desc-primary-color;
         margin: 0;
       }
+      .sb-btn-arrow {
+        border-top:1px solid var(--gray-200);
+        border-bottom:1px solid var(--gray-200);
+      }
     }
 
     .sb-certificatePage-holder-name {

@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { ConfigService } from '../../../shared/services/config/config.service';
 import { ServerResponse } from '../../../shared/interfaces/serverResponse';
-import {  IUserProfile,IUserData,IOrganization} from '../../../shared/interfaces/userProfile';
+import { IUserProfile, IUserData, IOrganization } from '../../../shared/interfaces/userProfile';
 import { LearnerService } from './../learner/learner.service';
 import { ContentService } from './../content/content.service';
 import { Injectable, Inject, EventEmitter } from '@angular/core';
@@ -37,7 +37,7 @@ export class UserService {
   timeDiff: any;
 
   //default Board for the instance 
-  defaultBoard:any;
+  defaultBoard: any;
 
   /**
    * Contains root org id
@@ -516,7 +516,7 @@ export class UserService {
     if (this.isDesktopApp) {
       return this.getAnonymousUserPreference().pipe(map((response: ServerResponse) => {
         this.guestUserProfile = _.get(response, 'result');
-        if(!localStorage.getItem('guestUserDetails')) {
+        if (!localStorage.getItem('guestUserDetails')) {
           localStorage.setItem('guestUserDetails', JSON.stringify(this.guestUserProfile));
         }
         this._guestData$.next({ userProfile: this.guestUserProfile });
