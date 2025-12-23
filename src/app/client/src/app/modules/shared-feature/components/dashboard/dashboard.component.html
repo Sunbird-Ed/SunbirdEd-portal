@@ -1,14 +1,15 @@
-<sb-dashlet [type]="'table'" [data]="DashletRowData" [config]="columnConfig" #lib>
-  <ng-template sbTemplateRef="header" let-config>
-    <div role="alert" class="datatable-update">
-      <div *ngIf="lastUpdatedOn">
-        <label class="last-update-label px-8">
-          {{ resourceService?.frmelmnts?.lbl?.lastupdate}} : {{lastUpdatedOn | date:'MMM d, y, h:mm a'}}
-        </label>
-      </div>
-      <button class="download-csv" (click)="downloadCSV($event)">
-        {{ resourceService?.frmelmnts?.lbl?.downloadAsCSV }}<img src="assets/images/download-icon.svg"
-          class="download-icon"></button>
+<div class="dashboard-datatable">
+  <div role="alert" class="datatable-update">
+    <div *ngIf="lastUpdatedOn">
+      <label class="last-update-label px-8">
+        {{ resourceService?.frmelmnts?.lbl?.lastupdate}} : {{lastUpdatedOn | date:'MMM d, y, h:mm a'}}
+      </label>
     </div>
-  </ng-template>
-</sb-dashlet>
+    <button class="download-csv" (click)="downloadCSV($event)">
+      {{ resourceService?.frmelmnts?.lbl?.downloadAsCSV }}<img src="assets/images/download-icon.svg"
+        class="download-icon"></button>
+  </div>
+
+  <ngx-datatable class="material" [rows]="rows" [columns]="ngxColumns" [headerHeight]="50" [rowHeight]="'auto'">
+  </ngx-datatable>
+</div>
