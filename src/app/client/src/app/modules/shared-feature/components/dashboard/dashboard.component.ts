@@ -27,10 +27,8 @@ export class DashboardComponent implements OnInit {
   rows: any[] = [];
   ngxColumns: Array<{ prop: string; name: string }> = [];
   // Aliases/compatibility for templates that expect ngx-datatable-style inputs
-  tableData: any[] = [];
+  // tableData: any[] = [];
   columns: Array<{ prop: string; name: string; isSortable?: boolean; placeholder?: string }> = [];
-  tableMessage: any = {};
-  filterModel: { [key: string]: any } = {};
   isColumnsSearchable = false;
   keyUp: Subject<any> = new Subject<any>();
   // Keep a Dashlet-shaped wrapper for backward compatibility with sb-dashlet
@@ -47,24 +45,20 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.rows = this.dashletData.rows;
+    console.log("DashletRowData values:", this.DashletRowData.values || this.dashletData.rows);
+    this.columnConfig = { columnConfig: this.dashletData.columns };
 
-    this.rows = Array.isArray(this.dashletData && this.dashletData.rows) ? this.dashletData.rows : [];
-    const cols = Array.isArray(this.dashletData && this.dashletData.columns) ? this.dashletData.columns : [];
     this.rows.forEach(row => {
-      cols.forEach(col => {
+      this.columnConfig.columnConfig.forEach(col => {
         if (row[col.data] === null || row[col.data] === undefined || row[col.data] === '') {
           row[col.data] = 'NA';
         }
       });
     });
-    this.ngxColumns = cols.map((c: any) => ({ prop: c.data, name: c.title }));
-    this.columnConfig = { columnConfig: cols };
-    this.DashletRowData.values = this.rows;
-
-    // Populate compatibility aliases so the new ngx-datatable markup works with existing data
-    this.tableData = this.rows;
+    this.ngxColumns = this.columnConfig.columnConfig.map((c: any) => ({ prop: c.data, name: c.title }));
+    // this.rows = this.DashletRowData.values;
     this.columns = this.ngxColumns.map(c => ({ name: c.name, prop: c.prop, isSortable: false, placeholder: '' }));
-    this.tableMessage = { emptyMessage: (this.resourceService && this.resourceService?.frmelmnts && this.resourceService?.frmelmnts?.msg?.noRecordsFound) || 'No records found' };
   }
 
   /**
