@@ -8,85 +8,76 @@
 }
 
 ::ng-deep {
-  .sb-table-responsive-div {
-    width: 100%;
-    overflow-x: auto;
-  }
 
-  .ngx-datatable {
-    display: block;
-    width: 100%;
-    white-space: nowrap;
-    background: var(--white);
+  .ngx-datatable.material {
+    // Adapter for: table.dataTable.no-footer
+    box-shadow: 0.375rem 0.375rem 0.125rem 0 rgb(0 0 0 / 10%);
     border: calculateRem(1px) solid var(--rc-dddddd);
-    box-shadow: 0.25rem 0.25rem 0.125rem rgba(0, 0, 0, 0.06);
-    font-size: 0.95rem;
-  }
-
-  .ngx-datatable .datatable-header-cell {
-    padding: 0.5rem;
-    text-align: left;
-    font-weight: 600;
     background: var(--white);
-    position: relative;
-    width: 1.0rem
-  }
+    font-size: .875rem;
+    border-radius: 1.5rem;
+    // overflow: hidden;
+    width: 100%;
+    display: block;
 
-  .ngx-datatable .datatable-header-cell .datatable-header-cell-label {
-    padding-left: 1.5rem !important;
-    display: inline-block;
-    vertical-align: middle;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+    .datatable-header {
+      border-bottom: 0px !important;
 
-  .ngx-datatable .datatable-header-cell.sortable .sort-btn {
-    background-image: url(../../../../../assets/images/sort.svg);
-    background-repeat: no-repeat !important;
-    background-size: 1.2rem 0.9rem;
-    width: 1.0rem;
-    height: 1rem;
-    position: absolute;
-    left: 0.3rem;
-    top: 50%;
-    transform: translateY(-50%);
-  }
+      .datatable-header-cell {
+        text-align: left;
+        background: var(--white);
+        font-weight: bold;
+        border-bottom: none !important;
 
+        .datatable-header-cell-template-wrap {
+          display: flex;
+          align-items: center;
+          width: 100%;
 
-  .ngx-datatable .datatable-body-cell {
-    padding: 0.5rem 0.5rem !important;
-    border-top: none !important;
-    font-size: 0.9rem;
-    line-height: 1.4;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+          .datatable-header-cell-label {
+            order: 2;
+          }
 
-
-  }
-
-  .ngx-datatable .datatable-body-row:nth-child(odd) {
-    background-color: var(--gray-0);
-  }
-
-  .ngx-datatable .datatable-body {
-    margin-right: calculateRem(6px);
-
-    &:hover {
-      background-color: var(--white);
-    }
-  }
-
-  @media (max-width: 720px) {
-    .ngx-datatable .datatable-header-cell .datatable-header-cell-label {
-      padding-left: 1.6rem !important;
-      font-size: 0.9rem;
+          .sort-btn {
+            order: 1;
+            margin-right: calculateRem(8px);
+            margin-left: 0;
+            background-image: url(../../../../../assets/images/sort.svg) !important;
+            background-size: 1.5rem 1rem;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+            width: 1.5rem !important;
+            height: 1rem !important;
+            flex-shrink: 0;
+            display: inline-block !important; // Ensure it behaves like a block for dimensions
+          }
+        }
+      }
     }
 
-    .ngx-datatable .datatable-body-cell {
-      padding: 0.4rem 0.6rem !important;
-      font-size: 0.82rem;
+    // Body Styles
+    .datatable-body {
+
+      .datatable-body-row {
+        &.datatable-row-even {
+          background-color: var(--gray-0) !important;
+        }
+
+        .datatable-body-cell {
+          text-align: left;
+          padding: 0.5rem 1.5rem !important;
+          border-top: none !important;
+
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+
+        }
+      }
+    }
+
+    .datatable-footer {
+      border-top: none;
     }
   }
 }
@@ -95,7 +86,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 1rem 0;
+  margin: 1rem 0rem;
 
   .last-update-label {
     font-size: 0.87rem;
