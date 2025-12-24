@@ -1,14 +1,43 @@
-<sb-dashlet [type]="'table'" [data]="DashletRowData" [config]="columnConfig" #lib>
-  <ng-template sbTemplateRef="header" let-config>
-    <div role="alert" class="datatable-update">
-      <div *ngIf="lastUpdatedOn">
-        <label class="last-update-label px-8">
-          {{ resourceService?.frmelmnts?.lbl?.lastupdate}} : {{lastUpdatedOn | date:'MMM d, y, h:mm a'}}
-        </label>
+<div class="dashboard-datatable">
+
+  <!-- Header stays as-is -->
+  <ng-container *ngIf="columnConfig">
+    <ng-template #dashletHeader let-config>
+      <div role="alert" class="datatable-update">
+        <div *ngIf="lastUpdatedOn">
+          <label class="last-update-label px-8">
+            {{ resourceService?.frmelmnts?.lbl?.lastupdate }} :
+            {{ lastUpdatedOn | date:'MMM d, y, h:mm a' }}
+          </label>
+        </div>
+        <button class="download-csv" (click)="downloadCSV($event)">
+          {{ resourceService?.frmelmnts?.lbl?.downloadAsCSV }}
+          <img src="assets/images/download-icon.svg" class="download-icon">
+        </button>
       </div>
-      <button class="download-csv" (click)="downloadCSV($event)">
-        {{ resourceService?.frmelmnts?.lbl?.downloadAsCSV }}<img src="assets/images/download-icon.svg"
-          class="download-icon"></button>
-    </div>
-  </ng-template>
-</sb-dashlet>
+    </ng-template>
+
+    <ng-container
+      *ngTemplateOutlet="dashletHeader; context: { $implicit: columnConfig }">
+    </ng-container>
+  </ng-container>
+
+ 
+  <div class="sb-table-responsive-div">
+    <ngx-datatable
+      class="material striped"
+      [rows]="rows"
+      [columns]="ngxColumns"
+      [columnMode]="'force'"
+      [headerHeight]="50"
+      [rowHeight]="50"
+      [footerHeight]="0"
+      [scrollbarV]="true"
+      [scrollbarH]="true"
+      [virtualization]="false"
+      [reorderable]="false">
+
+    </ngx-datatable>
+  </div>
+
+</div>
