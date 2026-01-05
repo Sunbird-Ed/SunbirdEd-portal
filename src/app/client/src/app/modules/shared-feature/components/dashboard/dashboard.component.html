@@ -1,25 +1,16 @@
 <div class="dashboard-datatable">
 
-  <ng-container *ngIf="columnConfig">
-    <ng-template #dashletHeader let-config>
-      <div role="alert" class="datatable-update">
-        <div *ngIf="lastUpdatedOn">
-          <label class="last-update-label px-8">
-            {{ resourceService?.frmelmnts?.lbl?.lastupdate }} :
-            {{ lastUpdatedOn | date:'MMM d, y, h:mm a' }}
-          </label>
-        </div>
-        <button class="download-csv" (click)="downloadCSV($event)">
-          {{ resourceService?.frmelmnts?.lbl?.downloadAsCSV }}
-          <img src="assets/images/download-icon.svg" class="download-icon">
-        </button>
-      </div>
-    </ng-template>
-
-    <ng-container *ngTemplateOutlet="dashletHeader; context: { $implicit: columnConfig }">
-    </ng-container>
-  </ng-container>
-
+  <div *ngIf="columnConfig" role="alert" class="datatable-update">
+    <div *ngIf="lastUpdatedOn">
+      <label class="last-update-label px-8"> {{ resourceService?.frmelmnts?.lbl?.lastupdate }} : {{ lastUpdatedOn |
+        date:'MMM d, y, h:mm a' }}
+      </label>
+    </div>
+    <button class="download-csv" (click)="downloadCSV($event)">
+      {{ resourceService?.frmelmnts?.lbl?.downloadAsCSV }}
+      <img src="assets/images/download-icon.svg" class="download-icon">
+    </button>
+  </div>
 
   <div class="sb-table-responsive-div">
     <ngx-datatable class="material striped" [rows]="rows" [columns]="ngxColumns" [columnMode]="'force'"

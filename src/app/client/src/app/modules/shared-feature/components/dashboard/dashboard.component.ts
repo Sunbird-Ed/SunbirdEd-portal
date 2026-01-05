@@ -1,5 +1,4 @@
-import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { GroupsService } from '@sunbird/groups';
 import { ToasterService, ResourceService } from '@sunbird/shared';
 // import 'datatables.net';
@@ -23,19 +22,12 @@ export class DashboardComponent implements OnInit {
   @Input() lastUpdatedOn: string;
   @Input() dashletData: any;
   @Input() fileName: string;
-  // Rows and columns shaped for ngx-datatable
+
   rows: any[] = [];
   ngxColumns: Array<{ prop: string; name: string }> = [];
-  // Aliases/compatibility for templates that expect ngx-datatable-style inputs
-  // tableData: any[] = [];
-  columns: Array<{ prop: string; name: string; isSortable?: boolean; placeholder?: string }> = [];
-  isColumnsSearchable = false;
-  keyUp: Subject<any> = new Subject<any>();
-  // Keep a Dashlet-shaped wrapper for backward compatibility with sb-dashlet
-  DashletRowData = { values: [] };
   columnConfig: IColumnConfig;
-  @ViewChild('lib', { static: false }) lib: any;
-  @Output() downloadCsv: EventEmitter<{}> = new EventEmitter(); // emit the event once the download csv button click
+
+  @Output() downloadCsv: EventEmitter<{}> = new EventEmitter();
 
 
   constructor(
@@ -58,9 +50,6 @@ export class DashboardComponent implements OnInit {
       });
       return newRow;
     });
-
-    console.log("DashletRowData values:", this.rows);
-    this.columns = this.ngxColumns.map(c => ({ name: c.name, prop: c.prop, isSortable: true, placeholder: '' }));
   }
 
   /**
@@ -68,8 +57,7 @@ export class DashboardComponent implements OnInit {
    * @description- Download CSV file.
    */
   downloadCSV($event) {
-    this.downloadCsv.emit(); // emit the event to parent component to generate telemetry events
-    const fileName = this.fileName + '.csv';
+    this.downloadCsv.emit();
     try {
       const options = {
         filename: this.fileName,

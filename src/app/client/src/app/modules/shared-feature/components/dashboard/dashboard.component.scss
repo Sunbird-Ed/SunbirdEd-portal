@@ -2,28 +2,26 @@
 
 .group-name {
   font-family: Noto Sans Regular;
+  font-size: 1.25rem;
   line-height: 1.5rem;
   color: var(--primary-color);
-  font-size: 1.25rem;
 }
 
 ::ng-deep {
-
   .ngx-datatable.material {
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-
     border: 1px solid #e0e0e0;
+    border-radius: 1rem;
     background: var(--white);
     font-size: .875rem;
-    border-radius: 1.0rem;
 
     .datatable-header {
+      border-bottom: 0 !important;
       background-color: #fff;
-      border-bottom: 0px !important;
 
       .datatable-header-cell {
-        font-weight: bold;
         padding: 0.3rem 1.5rem !important;
+        font-weight: bold;
         color: #333;
 
         .datatable-header-cell-template-wrap {
@@ -33,27 +31,21 @@
           .datatable-header-cell-label {
             order: 1;
             white-space: normal;
-
           }
 
           .sort-btn {
             order: -1;
-            margin-top: 4px;
-            margin-right: 4px !important;
-            background-image: url(../../../../../assets/images/sort.svg) !important;
-            background-size: contain !important;
-            background-repeat: no-repeat !important;
-            background-position: center !important;
+            flex-shrink: 0;
             width: 0.75rem !important;
             height: 1rem !important;
-            flex-shrink: 0;
+            margin: 4px 4px 0 0 !important;
+            background: url(../../../../../assets/images/sort.svg) center / contain no-repeat !important;
           }
         }
       }
     }
 
     .datatable-body {
-
       .datatable-body-row {
         border-top: 1px solid #f5f5f5;
 
@@ -62,11 +54,11 @@
         }
 
         .datatable-body-cell {
-          padding: 0.5rem 1.5rem !important;
-          padding-left: 2.5rem !important;
           display: flex;
           align-items: center;
-          color: color(s) black;
+          padding: 0.5rem 1.5rem !important;
+          padding-left: 2.5rem !important;
+          color: black;
         }
       }
     }
@@ -81,27 +73,27 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 1rem 0rem;
+  margin: 1rem 0;
 
   .last-update-label {
+    margin-bottom: 0;
     font-size: 0.87rem;
     color: var(--gray-300);
-    margin-bottom: 0;
   }
 
   .download-csv {
-    color: var(--primary-color);
+    background: transparent;
+    border: none;
     font-size: 0.87rem;
     font-weight: bold;
-    border: none;
-    background: transparent;
-    outline: none !important;
+    color: var(--primary-color);
     cursor: pointer;
+    outline: none !important;
 
     .download-icon {
-      margin: 0 0.5rem;
       width: 1rem;
       height: 1rem;
+      margin: 0 0.5rem;
     }
   }
 }
