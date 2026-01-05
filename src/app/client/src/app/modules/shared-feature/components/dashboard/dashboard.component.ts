@@ -45,10 +45,21 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.rows = this.dashletData.rows;
-    console.log("DashletRowData values:", this.rows);
     this.columnConfig = { columnConfig: this.dashletData.columns };
     this.ngxColumns = this.dashletData.columns.map((c: any) => ({ prop: c.data, name: c.title }));
+
+    this.rows = this.dashletData.rows.map(row => {
+      const newRow = { ...row };
+      this.ngxColumns.forEach(col => {
+        const val = newRow[col.prop];
+        if (val === null || val === undefined || val === '') {
+          newRow[col.prop] = 'NA';
+        }
+      });
+      return newRow;
+    });
+
+    console.log("DashletRowData values:", this.rows);
     this.columns = this.ngxColumns.map(c => ({ name: c.name, prop: c.prop, isSortable: true, placeholder: '' }));
   }
 
@@ -75,13 +86,13 @@ export class DashboardComponent implements OnInit {
         const rowData = {};
         this.ngxColumns.forEach(col => {
           const val = row[col.prop];
-          rowData[col.prop] = (val === null || val === undefined) ? '' : val;
+          rowData[col.prop] = (val === null || val === undefined || val === 'NA') ? '' : val;
         });
         return rowData;
       });
       const csvExporter = new ExportToCsv(options);
       const csvOutput = csvExporter.generateCsv(csvData || []);
-   
+
 
     } catch (err) {
       this.toasterService.error(this.resourceService.messages.fmsg.m0085);

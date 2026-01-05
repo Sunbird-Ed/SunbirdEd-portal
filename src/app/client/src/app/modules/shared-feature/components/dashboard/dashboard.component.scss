@@ -10,68 +10,63 @@
 ::ng-deep {
 
   .ngx-datatable.material {
-    // Adapter for: table.dataTable.no-footer
-    box-shadow: 0.375rem 0.375rem 0.125rem 0 rgb(0 0 0 / 10%);
-    border: calculateRem(1px) solid var(--rc-dddddd);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+    border: 1px solid #e0e0e0;
     background: var(--white);
     font-size: .875rem;
-    border-radius: 1.5rem;
-    // overflow: hidden;
-    width: 100%;
-    display: block;
+    border-radius: 1.0rem;
 
     .datatable-header {
+      background-color: #fff;
       border-bottom: 0px !important;
 
       .datatable-header-cell {
-        text-align: left;
-        background: var(--white);
         font-weight: bold;
-        border-bottom: none !important;
+        padding: 0.3rem 1.5rem !important;
+        color: #333;
 
         .datatable-header-cell-template-wrap {
           display: flex;
-          align-items: center;
-          width: 100%;
+          align-items: flex-start;
 
           .datatable-header-cell-label {
-            order: 2;
+            order: 1;
+            white-space: normal;
+
           }
 
           .sort-btn {
-            order: 1;
-            margin-right: calculateRem(8px);
-            margin-left: 0;
+            order: -1;
+            margin-top: 4px;
+            margin-right: 4px !important;
             background-image: url(../../../../../assets/images/sort.svg) !important;
-            background-size: 1.5rem 1rem;
+            background-size: contain !important;
             background-repeat: no-repeat !important;
             background-position: center !important;
-            width: 1.5rem !important;
+            width: 0.75rem !important;
             height: 1rem !important;
             flex-shrink: 0;
-            display: inline-block !important; // Ensure it behaves like a block for dimensions
           }
         }
       }
     }
 
-    // Body Styles
     .datatable-body {
 
       .datatable-body-row {
+        border-top: 1px solid #f5f5f5;
+
         &.datatable-row-even {
           background-color: var(--gray-0) !important;
         }
 
         .datatable-body-cell {
-          text-align: left;
           padding: 0.5rem 1.5rem !important;
-          border-top: none !important;
-
+          padding-left: 2.5rem !important;
           display: flex;
           align-items: center;
-          justify-content: flex-start;
-
+          color: color(s) black;
         }
       }
     }

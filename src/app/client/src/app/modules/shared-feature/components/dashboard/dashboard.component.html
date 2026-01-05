@@ -1,6 +1,5 @@
 <div class="dashboard-datatable">
 
-  <!-- Header stays as-is -->
   <ng-container *ngIf="columnConfig">
     <ng-template #dashletHeader let-config>
       <div role="alert" class="datatable-update">
@@ -24,8 +23,7 @@
 
   <div class="sb-table-responsive-div">
     <ngx-datatable class="material striped" [rows]="rows" [columns]="ngxColumns" [columnMode]="'force'"
-      [headerHeight]="50" [rowHeight]="'auto'" [footerHeight]="0" [scrollbarV]="true" [scrollbarH]="true"
-      [virtualization]="false" [reorderable]="false">
+      [scrollbarV]="false" [scrollbarH]="false" [headerHeight]="60">
 
     </ngx-datatable>
   </div>
