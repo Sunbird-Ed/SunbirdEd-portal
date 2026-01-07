@@ -11,10 +11,10 @@ import { ConfigService, ResourceService, ToasterService, NavigationHelperService
 import * as _ from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { first, map, takeUntil, tap } from 'rxjs/operators';
-import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
+import { CsContentProgressCalculator } from '@jeraldj/client-services/services/content/utilities/content-progress-calculator';
 import TreeModel from 'tree-model';
 import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
-import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
+import { CsCourseService } from '@jeraldj/client-services/services/course/interface';
 import { result } from 'lodash';
 
 const ACCESSEVENT = 'renderer:question:submitscore';

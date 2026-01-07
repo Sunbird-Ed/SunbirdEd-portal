@@ -16,7 +16,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { ContentSearchModule } from '@sunbird/content-search';
 import {CommonConsumptionModule} from '@project-sunbird/common-consumption';
 import { CertificateDirectivesModule } from 'sb-svg2pdf-v13';
-import { CsModule } from '@project-sunbird/client-services';
+import { CsModule } from '@jeraldj/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
 import { CommonFormElementsModule } from '@project-sunbird/common-form-elements-full';
 import {LocationModule} from '../location';

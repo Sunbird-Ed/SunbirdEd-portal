@@ -2,8 +2,8 @@ import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormControl, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormService, OtpService, TncService, UserService } from '@sunbird/core';
-import { Consent, ConsentStatus } from '@project-sunbird/client-services/models';
-import { CsUserService } from '@project-sunbird/client-services/services/user/interface';
+import { Consent, ConsentStatus } from '@jeraldj/client-services/models';
+import { CsUserService } from '@jeraldj/client-services/services/user/interface';
 import {
   IUserData,
   NavigationHelperService,

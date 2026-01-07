@@ -1,6 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { Directive, OnInit, HostListener, ElementRef, Input, Inject } from '@angular/core';
-import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
+import { CsGroupAddableBloc } from '@jeraldj/client-services/blocs';
 import { filter } from 'rxjs/operators';
 import { ResourceService } from './../../services/resource/resource.service';
 import { NavigationHelperService } from '../../services/navigation-helper/navigation-helper.service';
@@ -8,8 +8,8 @@ import { ToasterService } from '../../services/toaster/toaster.service';
 import * as _ from 'lodash-es';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { CsGroupService } from '@project-sunbird/client-services/services/group/interface';
-import { CsModule } from '@project-sunbird/client-services';
+import { CsGroupService } from '@jeraldj/client-services/services/group/interface';
+import { CsModule } from '@jeraldj/client-services';
 import { TelemetryService } from '@sunbird/telemetry';
 import { SELECT_ACTIVITY } from '../../../groups/interfaces/telemetryConstants';
 import { ActivityDashboardService } from '../../services';

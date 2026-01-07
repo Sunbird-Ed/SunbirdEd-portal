@@ -17,7 +17,7 @@ import { CourseBatchService, CourseConsumptionService, CourseProgressService } f
 import { ContentUtilsServiceService, ConnectionService } from '@sunbird/shared';
 import dayjs from 'dayjs';
 import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
-import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
+import { CsCourseService } from '@jeraldj/client-services/services/course/interface';
 
 @Component({
   selector: 'app-course-player',
