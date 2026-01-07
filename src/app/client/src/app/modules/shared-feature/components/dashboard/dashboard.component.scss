@@ -7,93 +7,95 @@
   color: var(--primary-color);
 }
 
-::ng-deep {
-  .ngx-datatable.material {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    border: 1px solid #e0e0e0;
-    border-radius: 1rem;
-    background: var(--white);
-    font-size: .875rem;
+:host {
+  ::ng-deep {
+    .ngx-datatable.material {
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e0e0e0;
+      border-radius: 1rem;
+      background: var(--white);
+      font-size: .875rem;
 
-    .datatable-header {
-      border-bottom: 0 !important;
-      background-color: #fff;
+      .datatable-header {
+        border-bottom: 0 !important;
+        background-color: #fff;
 
-      .datatable-header-cell {
-        padding: 0.3rem 1.5rem !important;
-        font-weight: bold;
-        color: #333;
-
-        .datatable-header-cell-template-wrap {
-          display: flex;
-          align-items: flex-start;
-
-          .datatable-header-cell-label {
-            order: 1;
-            white-space: normal;
-          }
-
-          .sort-btn {
-            order: -1;
-            flex-shrink: 0;
-            width: 0.75rem !important;
-            height: 1rem !important;
-            margin: 4px 4px 0 0 !important;
-            background: url(../../../../../assets/images/sort.svg) center / contain no-repeat !important;
-          }
-        }
-      }
-    }
-
-    .datatable-body {
-      .datatable-body-row {
-        border-top: 1px solid #f5f5f5;
-
-        &.datatable-row-even {
-          background-color: var(--gray-0) !important;
-        }
-
-        .datatable-body-cell {
-          display: flex;
-          align-items: center;
+        .datatable-header-cell {
           padding: 0.5rem 1.5rem !important;
-          padding-left: 2.5rem !important;
-          color: black;
+          font-weight: bold;
+          color: #333;
+
+          .datatable-header-cell-template-wrap {
+            display: flex;
+            align-items: flex-start;
+
+            .datatable-header-cell-label {
+              order: 1;
+              white-space: normal;
+            }
+
+            .sort-btn {
+              order: -1;
+              flex-shrink: 0;
+              width: 0.75rem !important;
+              height: 1rem !important;
+              margin: 4px 4px 0 0 !important;
+              background: url(../../../../../assets/images/sort.svg) center / contain no-repeat !important;
+            }
+          }
         }
       }
-    }
 
-    .datatable-footer {
-      border-top: none;
+      .datatable-body {
+        .datatable-body-row {
+          border-top: 1px solid #f5f5f5;
+
+          &.datatable-row-even {
+            background-color: var(--gray-0) !important;
+          }
+
+          .datatable-body-cell {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1.5rem !important;
+            padding-left: 2.5rem !important;
+            color: black;
+          }
+        }
+      }
+
+      .datatable-footer {
+        border-top: none;
+      }
     }
   }
-}
 
-.datatable-update {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 1rem 0;
+  .datatable-update {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 1rem 0;
 
-  .last-update-label {
-    margin-bottom: 0;
-    font-size: 0.87rem;
-    color: var(--gray-300);
-  }
+    .last-update-label {
+      margin-bottom: 0;
+      font-size: 0.87rem;
+      color: var(--gray-300);
+    }
 
-  .download-csv {
-    background: transparent;
-    border: none;
-    font-size: 0.87rem;
-    font-weight: bold;
-    color: var(--primary-color);
-    cursor: pointer;
-    outline: none !important;
+    .download-csv {
+      background: transparent;
+      border: none;
+      font-size: 0.87rem;
+      font-weight: bold;
+      color: var(--primary-color);
+      cursor: pointer;
+      outline: none !important;
 
-    .download-icon {
-      width: 1rem;
-      height: 1rem;
-      margin: 0 0.5rem;
+      .download-icon {
+        width: 1rem;
+        height: 1rem;
+        margin: 0 0.5rem;
+      }
     }
   }
 }
