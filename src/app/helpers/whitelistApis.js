@@ -1707,6 +1707,55 @@ const API_LIST = {
       checksNeeded: [],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
+    // Unversioned NodeBB-style endpoints (topic/post/bookmark) for NodeBB 4.7.2
+    '/discussion/topics': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/topics/:tid': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/topics/:tid/state': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/topics/:tid/follow': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/topics/:tid/tags': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/topics/:tid/pin': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/posts/:pid': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/posts/:pid/state': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/posts/:pid/vote': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/posts/:pid/bookmark': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/bookmarks': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/user/:userslug/bookmarks': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
     '/discussion/user/username/:username': {
       checksNeeded: [],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
@@ -2232,6 +2281,19 @@ const API_LIST = {
     '/discussion/v3/users/:uid/ban',
     '/discussion/v3/users/:uid/tokens',
     '/discussion/v3/users/:uid/tokens/:token',
+    // Unversioned NodeBB-style patterns
+    '/discussion/topics',
+    '/discussion/topics/:tid',
+    '/discussion/topics/:tid/state',
+    '/discussion/topics/:tid/follow',
+    '/discussion/topics/:tid/tags',
+    '/discussion/topics/:tid/pin',
+    '/discussion/posts/:pid',
+    '/discussion/posts/:pid/state',
+    '/discussion/posts/:pid/vote',
+    '/discussion/posts/:pid/bookmark',
+    '/discussion/bookmarks',
+    '/discussion/user/:userslug/bookmarks',
   ]
 };
 module.exports = API_LIST;
