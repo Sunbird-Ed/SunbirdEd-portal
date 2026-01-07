@@ -1602,6 +1602,111 @@ const API_LIST = {
       checksNeeded: [],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
+    // New: v3 endpoints equivalent to discussion v2 (keep v2 for backward compatibility)
+    '/discussion/v3/topics': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v3/topics/:tid': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v3/topics/:tid/state': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v3/topics/:tid/follow': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v3/topics/:tid/tags': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v3/topics/:tid/pin': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v3/categories': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v3/categories/:cid': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v3/categories/:cid/state': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v3/categories/:cid/privileges': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v3/groups': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v3/groups/:slug': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v3/groups/:slug/membership': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v3/groups/:slug/membership/:uid': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v3/posts/:pid': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v3/posts/:pid/state': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v3/posts/:pid/vote': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v3/posts/:pid/bookmark': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v3/users': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v3/users/:uid': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v3/users/:uid/password': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v3/users/:uid/follow': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v3/users/:uid/chats': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v3/users/:uid/ban': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v3/users/:uid/tokens': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v3/users/:uid/tokens/:token': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
     '/discussion/user/username/:username': {
       checksNeeded: [],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
@@ -2100,6 +2205,33 @@ const API_LIST = {
     '/nlweb/ask/proxy',
     '/nlweb/ask/health',
     '/nlweb/ask/sites',
+    // discussion v3 patterns (mirror of v2 patterns for NodeBB v3 support)
+    '/discussion/v3/topics',
+    '/discussion/v3/topics/:tid',
+    '/discussion/v3/topics/:tid/state',
+    '/discussion/v3/topics/:tid/follow',
+    '/discussion/v3/topics/:tid/tags',
+    '/discussion/v3/topics/:tid/pin',
+    '/discussion/v3/categories',
+    '/discussion/v3/categories/:cid',
+    '/discussion/v3/categories/:cid/state',
+    '/discussion/v3/categories/:cid/privileges',
+    '/discussion/v3/groups',
+    '/discussion/v3/groups/:slug',
+    '/discussion/v3/groups/:slug/membership',
+    '/discussion/v3/groups/:slug/membership/:uid',
+    '/discussion/v3/posts/:pid',
+    '/discussion/v3/posts/:pid/state',
+    '/discussion/v3/posts/:pid/vote',
+    '/discussion/v3/posts/:pid/bookmark',
+    '/discussion/v3/users',
+    '/discussion/v3/users/:uid',
+    '/discussion/v3/users/:uid/password',
+    '/discussion/v3/users/:uid/follow',
+    '/discussion/v3/users/:uid/chats',
+    '/discussion/v3/users/:uid/ban',
+    '/discussion/v3/users/:uid/tokens',
+    '/discussion/v3/users/:uid/tokens/:token',
   ]
 };
 module.exports = API_LIST;
