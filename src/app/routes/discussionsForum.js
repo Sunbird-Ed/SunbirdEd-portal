@@ -145,9 +145,9 @@ module.exports = function (app) {
     app.delete(`${BASE_REPORT_URL}/v3/posts/:pid`, verifyToken(), proxyObject());
     app.put(`${BASE_REPORT_URL}/v3/posts/:pid/state`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v3/posts/:pid/state`, verifyToken(), proxyObject());
-    app.post(`${BASE_REPORT_URL}/v3/posts/:pid/vote`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v3/posts/:pid/vote`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v3/posts/:pid/vote`, verifyToken(), proxyObject());
-    app.post(`${BASE_REPORT_URL}/v3/posts/:pid/bookmark`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v3/posts/:pid/bookmark`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v3/posts/:pid/bookmark`, verifyToken(), proxyObject());
 
     // util apis : not require for now
