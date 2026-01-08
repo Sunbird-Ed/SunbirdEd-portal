@@ -9,9 +9,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CacheService } from '../../../../modules/shared/services/cache-service/cache.service';
 import { takeUntil } from 'rxjs/operators';
 import { CertificateDownloadAsPdfService } from 'sb-svg2pdf-v13';
-import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
+import { CsCourseService } from '@jeraldj/client-services/services/course/interface';
 import { FieldConfig, FieldConfigOption } from '@project-sunbird/common-form-elements-full';
-import { CsCertificateService } from '@project-sunbird/client-services/services/certificate/interface';
+import { CsCertificateService } from '@jeraldj/client-services/services/certificate/interface';
 import { CslFrameworkService } from '../../../../modules/public/services/csl-framework/csl-framework.service';
 
 @Component({

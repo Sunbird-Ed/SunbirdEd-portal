@@ -12,7 +12,7 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
 import { UserService, FormService } from '../../../core/services';
 import { OnDestroy } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
+import { CsContentProgressCalculator } from '@jeraldj/client-services/services/content/utilities/content-progress-calculator';
 import { ContentService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
 

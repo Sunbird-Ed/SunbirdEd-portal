@@ -1,4 +1,4 @@
-import { GroupEntityStatus, GroupMembershipType, GroupMemberRole } from '@project-sunbird/client-services/models/group';
+import { GroupEntityStatus, GroupMembershipType, GroupMemberRole } from '@jeraldj/client-services/models/group';
 
 export const notificationData = {
     data: {

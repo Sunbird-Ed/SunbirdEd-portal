@@ -83,6 +83,19 @@ module.exports = function (app) {
     app.put(`${BASE_REPORT_URL}/v2/topics/:tid/pin`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/topics/:tid/pin`, verifyToken(), proxyObject());
 
+    // v3 topics apis
+    app.post(`${BASE_REPORT_URL}/v3/topics`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/v3/topics/:tid`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/v3/topics/update/:tid`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.delete(`${BASE_REPORT_URL}/v3/topics/:tid`, verifyToken(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v3/topics/:tid/state`,bodyParser.json({ limit: '10mb' }),  verifyToken(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v3/topics/:tid/follow`,bodyParser.json({ limit: '10mb' }),  verifyToken(), proxyObject());
+    app.delete(`${BASE_REPORT_URL}/v3/topics/:tid/follow`, verifyToken(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v3/topics/:tid/tags`,bodyParser.json({ limit: '10mb' }),  verifyToken(), proxyObject());
+    app.delete(`${BASE_REPORT_URL}/v3/topics/:tid/tags`, verifyToken(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v3/topics/:tid/pin`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.delete(`${BASE_REPORT_URL}/v3/topics/:tid/pin`, verifyToken(), proxyObject());
+
     // categories apis
     app.post(`${BASE_REPORT_URL}/v2/categories`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.put(`${BASE_REPORT_URL}/v2/categories/:cid`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
@@ -92,6 +105,15 @@ module.exports = function (app) {
     app.put(`${BASE_REPORT_URL}/v2/categories/:cid/privileges`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/categories/:cid/privileges`, verifyToken(), proxyObject());
 
+    // v3 categories apis
+    app.post(`${BASE_REPORT_URL}/v3/categories`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v3/categories/:cid`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.delete(`${BASE_REPORT_URL}/v3/categories/:cid`, verifyToken(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v3/categories/:cid/state`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.delete(`${BASE_REPORT_URL}/v3/categories/:cid/state`, verifyToken(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v3/categories/:cid/privileges`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.delete(`${BASE_REPORT_URL}/v3/categories/:cid/privileges`, verifyToken(), proxyObject());
+
     // groups apis
     app.post(`${BASE_REPORT_URL}/v2/groups`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/groups/:slug`, verifyToken(), proxyObject());
@@ -100,6 +122,13 @@ module.exports = function (app) {
     app.delete(`${BASE_REPORT_URL}/v2/groups/:slug/membership`, verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/groups/:slug/membership/:uid`, verifyToken(), proxyObject());
 
+    // v3 groups apis
+    app.post(`${BASE_REPORT_URL}/v3/groups`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.delete(`${BASE_REPORT_URL}/v3/groups/:slug`, verifyToken(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v3/groups/:slug/membership`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v3/groups/:slug/membership/:uid`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.delete(`${BASE_REPORT_URL}/v3/groups/:slug/membership`, verifyToken(), proxyObject());
+    app.delete(`${BASE_REPORT_URL}/v3/groups/:slug/membership/:uid`, verifyToken(), proxyObject());
 
     // post apis
     app.post(`${BASE_REPORT_URL}/v2/posts/:pid`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
@@ -110,6 +139,16 @@ module.exports = function (app) {
     app.delete(`${BASE_REPORT_URL}/v2/posts/:pid/vote`, verifyToken(), proxyObject());
     app.post(`${BASE_REPORT_URL}/v2/posts/:pid/bookmark`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/posts/:pid/bookmark`, verifyToken(), proxyObject());
+
+    // v3 post apis
+    app.post(`${BASE_REPORT_URL}/v3/posts/:pid`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.delete(`${BASE_REPORT_URL}/v3/posts/:pid`, verifyToken(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v3/posts/:pid/state`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.delete(`${BASE_REPORT_URL}/v3/posts/:pid/state`, verifyToken(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v3/posts/:pid/vote`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.delete(`${BASE_REPORT_URL}/v3/posts/:pid/vote`, verifyToken(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v3/posts/:pid/bookmark`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.delete(`${BASE_REPORT_URL}/v3/posts/:pid/bookmark`, verifyToken(), proxyObject());
 
     // util apis : not require for now
     // app.post(`${BASE_REPORT_URL}/v2/util/upload`, verifyToken(), proxyObject());
@@ -130,6 +169,19 @@ module.exports = function (app) {
     app.post(`${BASE_REPORT_URL}/v2/users/:uid/tokens`, verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/users/:uid/tokens/:token`, verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/user/username/:username`, verifyToken(), proxyObject());
+
+    // v3 user api
+    app.post(`${BASE_REPORT_URL}/v3/users`, verifyToken(), bodyParser.json({ limit: '10mb' }), checkEmail(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v3/users/:uid`, verifyToken(), proxyObject());
+    app.delete(`${BASE_REPORT_URL}/v3/users/:uid`, verifyToken(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v3/users/:uid/password`, verifyToken(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v3/users/:uid/follow`, verifyToken(), proxyObject());
+    app.delete(`${BASE_REPORT_URL}/v3/users/:uid/follow`, verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/v3/users/:uid/chats`, verifyToken(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v3/users/:uid/ban`, verifyToken(), proxyObject());
+    app.get(`${BASE_REPORT_URL}/v3/users/:uid/tokens`, verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/v3/users/:uid/tokens`, verifyToken(), proxyObject());
+    app.delete(`${BASE_REPORT_URL}/v3/users/:uid/tokens/:token`, verifyToken(), proxyObject());
 
     // TODO: add into white api and add role owner check
     app.post(`${BASE_REPORT_URL}/user/v1/create`, isAPIWhitelisted.isAllowed(), verifyToken(), proxyObjectForCreate());
