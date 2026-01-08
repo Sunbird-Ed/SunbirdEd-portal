@@ -1,58 +1,95 @@
-name: Code Quality Checks
+name: Pull Request Quality Checks
 
 on:
   pull_request:
     branches:
-      - '**'
 
 jobs:
-  lint:
-    name: Run Linting
+  quality-checks:
+    name: Code Quality & Tests
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
 
-      - name: Set up Node.js
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # required for Sonar
+
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version-file: '.nvmrc'
+          cache: 'npm'
 
-      - name: Update Browserslist DB
-        working-directory: src/app/client
-        run: npx browserslist@latest --update-db --no-progress || true
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
 
-      - name: Install dependencies
-        run: yarn install --prefer-offline --no-progress
-        working-directory: src/app/client
+      # -----------------------------
+      # Frontend - Lint
+      # -----------------------------
+      - name: Frontend lint
+        working-directory: frontend
+        run: npm run lint
 
-      - name: Run lint
-        run: yarn lint
-        working-directory: src/app/client
+      # -----------------------------
+      # Frontend - Type check
+      # -----------------------------
+      - name: Frontend type check
+        working-directory: frontend
+        run: npx tsc --noEmit
 
-  test:
-    name: Run Tests
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        shard: [1, 2, 3, 4, 5, 6, 7, 8]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      # -----------------------------
+      # Frontend - Tests
+      # -----------------------------
+      - name: Frontend tests
+        working-directory: frontend
+        run: |
+          if npm run | grep -q test; then
+            npm run test -- --run
+          else
+            echo "No frontend tests configured"
+          fi
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      # -----------------------------
+      # Backend - Install
+      # -----------------------------
+      - name: Install backend dependencies
+        working-directory: backend
+        run: npm ci
+
+      # -----------------------------
+      # Backend - Lint
+      # -----------------------------
+      - name: Backend lint
+        working-directory: backend
+        run: npm run lint
+
+      # -----------------------------
+      # Backend - Type check
+      # -----------------------------
+      - name: Backend type check
+        working-directory: backend
+        run: npx tsc --noEmit
+
+      # -----------------------------
+      # Backend - Tests
+      # -----------------------------
+      - name: Backend tests
+        working-directory: backend
+        run: |
+          if npm run | grep -q test; then
+            npm run test
+          else
+            echo "No backend tests configured"
+          fi
+
+      # -----------------------------
+      # Sonar Scan
+      # -----------------------------
+      - name: SonarQube / SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
-          node-version: '18'
-
-      - name: Update Browserslist DB
-        working-directory: src/app/client
-        run: npx browserslist@latest --update-db --no-progress || true
-
-      - name: Install dependencies
-        run: yarn install --prefer-offline --no-progress
-        working-directory: src/app/client
-
-      - name: Run test shard ${{ matrix.shard }}
-        run: yarn test:ci -- --shard=${{ matrix.shard }}/8
-        working-directory: src/app/client
+          projectBaseDir: .
