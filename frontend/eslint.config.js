@@ -22,8 +22,14 @@ export default [
     plugins: {
       '@typescript-eslint': tseslint,
     },
+    files: ["**/*.jsx", "**/*.tsx"],
 
     rules: {
+       "max-lines": ["error", {
+        max: 250,
+        skipBlankLines: true,
+        skipComments: true
+      }],
       // Minimal enterprise safety
       'no-console': ['warn', { allow: ['warn', 'error'] }],
       'no-debugger': 'error',
@@ -34,6 +40,7 @@ export default [
         'warn',
         { argsIgnorePattern: '^_' },
       ],
+
     },
   },
 

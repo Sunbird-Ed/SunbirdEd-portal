@@ -40,20 +40,36 @@ nvm use
 
 ```
 SunbirdEd-portal/
-├── frontend/          # React application
+├── .github/                    # CI/CD workflows & GitHub config
+│   ├── copilot-instructions.md
+│   └── workflows/
+│       └── pull-request.yml
+├── frontend/                   # React application
+│   ├── public/
 │   ├── src/
 │   │   ├── App.tsx
 │   │   ├── main.tsx
 │   │   └── styles/
-│   ├── vite.config.ts
-│   └── package.json
-├── backend/           # Express API server
+│   ├── .prettierrc.json       # Prettier configuration
+│   ├── eslint.config.js       # ESLint configuration
+│   ├── jest.config.js         # Jest test configuration
+│   ├── package.json
+│   ├── tsconfig.json          # TypeScript configuration
+│   ├── tsconfig.node.json     # Node TypeScript config
+│   └── vite.config.ts         # Vite build configuration
+├── backend/                    # Express API server
 │   ├── src/
 │   │   ├── app.ts
 │   │   └── server.ts
-│   └── package.json
-└── .github/           # CI/CD workflows
-    └── workflows/
+│   ├── .prettierrc.json       # Prettier configuration
+│   ├── eslint.config.js       # ESLint configuration
+│   ├── package.json
+│   ├── tsconfig.json          # TypeScript configuration
+│   └── nodemon.json           # Nodemon configuration
+├── .gitignore                  # Git ignore rules
+├── .nvmrc                      # Node.js version specification
+├── README.md                   # This file
+└── sonar-project.properties    # SonarQube configuration
 ```
 
 ## 🚀 Getting Started
@@ -88,7 +104,6 @@ npm run preview
 
 # Run tests
 npm run test
-npm run test:watch     # Watch mode
 npm run test:coverage  # With coverage report
 
 # Code quality
@@ -147,7 +162,6 @@ The frontend uses Jest with React Testing Library:
 ```bash
 cd frontend
 npm run test           # Run all tests
-npm run test:watch     # Run tests in watch mode
 npm run test:coverage  # Generate coverage report
 ```
 
@@ -155,8 +169,9 @@ npm run test:coverage  # Generate coverage report
 Backend testing setup is ready but tests need to be implemented:
 
 ```bash
-cd backend
-npm run test  # Will be available once tests are added
+cd backend 
+npm run test           # Run all tests
+npm run test:coverage  # Generate coverage report
 ```
 
 ## 📝 Code Quality

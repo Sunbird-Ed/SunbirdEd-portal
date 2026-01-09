@@ -20,7 +20,14 @@
     "skipLibCheck": true,
 
     /* Source maps */
-    "sourceMap": true
+    "sourceMap": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    /* Testing */
+    "types": ["vitest/globals", "node"]
+
+    
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

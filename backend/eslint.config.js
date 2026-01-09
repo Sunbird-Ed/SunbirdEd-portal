@@ -13,7 +13,14 @@ export default [
     plugins: {
       '@typescript-eslint': tseslint,
     },
+    files: ["**/*.jsx", "**/*.tsx"],
     rules: {
+      "max-lines": ["error", {
+        max: 250,
+        skipBlankLines: true,
+        skipComments: true
+      }],
+
       'no-console': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
     },
