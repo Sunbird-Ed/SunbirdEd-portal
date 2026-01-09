@@ -72,7 +72,7 @@ SunbirdEd-portal/
 └── sonar-project.properties    # SonarQube configuration
 ```
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### 1. Clone the Repository
 
@@ -149,12 +149,12 @@ npm run lint:fix      # Auto-fix linting errors
    ```
 
 
-## 🌐 Application URLs
+## Application URLs
 
 - **Frontend**: http://localhost:5173
 - **Backend API**: http://localhost:3000
 
-## 🧪 Testing
+## Testing
 
 ### Frontend Testing
 The frontend uses Jest with React Testing Library:
@@ -174,7 +174,7 @@ npm run test           # Run all tests
 npm run test:coverage  # Generate coverage report
 ```
 
-## 📝 Code Quality
+## Code Quality
 
 This project enforces strict code quality standards:
 
@@ -197,7 +197,7 @@ cd backend
 npm run lint && npm run type-check
 ```
 
-## 🚀 Deployment
+## Deployment
 
 ### Production Build
 
@@ -215,30 +215,16 @@ npm run build
 # Output: backend/dist/
 ```
 
-### Environment Variables
-Create `.env` files in respective directories:
-
-**Backend `.env`**:
-```env
-PORT=3000
-NODE_ENV=production
-```
-
-**Frontend `.env`** (if needed):
-```env
-VITE_API_URL=http://localhost:3000
-```
-
-## 🔄 CI/CD Pipeline
+## CI/CD Pipeline
 
 The project includes a GitHub Actions workflow ([.github/workflows/pull-request.yml](.github/workflows/pull-request.yml)) that runs on every pull request:
 
-- ✅ **Linting** (ESLint)
-- ✅ **Type checking** (TypeScript)
-- ✅ **Testing** (Jest)
-- ✅ **SonarQube analysis** (Code quality & security)
+-  **Linting** (ESLint)
+-  **Type checking** (TypeScript)
+-  **Testing** (Jest)
+-  **SonarQube analysis** (Code quality & security)
 
-## 🤝 Development Workflow
+## Development Workflow
 
 1. **Create feature branch**: `git checkout -b feature/your-feature-name`
 2. **Make changes** following TypeScript strict guidelines
@@ -250,14 +236,14 @@ The project includes a GitHub Actions workflow ([.github/workflows/pull-request.
 4. **Commit changes**: Follow conventional commit format
 5. **Create pull request**: CI pipeline will run automatically
 
-## 📚 Additional Resources
+## Additional Resources
 
 - [React 19.2.1 Documentation](https://react.dev/)
 - [Vite 7+ Guide](https://vite.dev/)
 - [Express.js Documentation](https://expressjs.com/)
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -275,7 +261,7 @@ The project includes a GitHub Actions workflow ([.github/workflows/pull-request.
    npm run type-check
    ```
 
-## 📄 License
+## License
 
 MIT License - see LICENSE file for details.
 

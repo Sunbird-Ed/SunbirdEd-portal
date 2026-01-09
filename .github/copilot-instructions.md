@@ -31,40 +31,7 @@
 - **Focus management** for interactive elements
 - **Keyboard navigation** support
 
-```tsx
-// ✅ Accessible component example
-import { Dialog, Transition } from '@headlessui/react';
-
-interface ModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  title: string;
-  children: React.ReactNode;
-}
-
-export function Modal({ isOpen, onClose, title, children }: ModalProps) {
-  return (
-    <Transition show={isOpen} as={React.Fragment}>
-      <Dialog
-        onClose={onClose}
-        className="fixed inset-0 z-50 overflow-y-auto"
-        aria-labelledby="modal-title"
-      >
-        <div className="flex min-h-screen items-center justify-center px-4">
-          <Dialog.Panel className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
-            <Dialog.Title id="modal-title" className="text-lg font-semibold">
-              {title}
-            </Dialog.Title>
-            {children}
-          </Dialog.Panel>
-        </div>
-      </Dialog>
-    </Transition>
-  );
-}
-```
-
-## ⚛️ React Guidelines
+## React Guidelines
 
 ### Component Structure
 - **Use functional components** with hooks
@@ -86,39 +53,8 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
 - **RESTful conventions** with proper HTTP methods
 - **Type-safe request/response** interfaces
 - **Error handling** with consistent error responses
-- **Validation** using Zod or similar schema validation
-- **CORS configuration** for frontend integration
 
-### Express.js Patterns
-```typescript
-// ✅ Type-safe Express route
-interface CreateUserRequest {
-  name: string;
-  email: string;
-}
-
-interface UserResponse {
-  id: string;
-  name: string;
-  email: string;
-  createdAt: Date;
-}
-
-app.post('/api/users', async (req: Request<{}, UserResponse, CreateUserRequest>, res: Response<UserResponse>) => {
-  try {
-    // Type-safe request handling
-    const userData = req.body;
-    const user = await createUser(userData);
-    
-    res.status(201).json(user);
-  } catch (error) {
-    handleApiError(error, res);
-  }
-});
-```
-
-
-## 🔧 Development Practices
+## Development Practices
 
 ### Code Style
 - **Prettier** for consistent formatting
@@ -150,7 +86,7 @@ app.post('/api/users', async (req: Request<{}, UserResponse, CreateUserRequest>,
 - **Auto-formatting** with Prettier
 
 
-## 📚 Documentation Standards
+## Documentation Standards
 
 ### Code Documentation
 - **JSDoc comments** for public APIs
@@ -164,7 +100,7 @@ app.post('/api/users', async (req: Request<{}, UserResponse, CreateUserRequest>,
 - **Small, focused commits**
 - **Pull request templates**
 
-## 🔍 Code Review Checklist
+## Code Review Checklist
 
 ### Before Submitting PR
 - [ ] TypeScript strict mode compliance
