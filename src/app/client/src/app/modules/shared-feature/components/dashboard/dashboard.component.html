@@ -1,12 +1,11 @@
 <div class="dashboard-datatable">
-
-  <div *ngIf="columnConfig" role="alert" class="datatable-update">
+  <div class="datatable-update">
     <div *ngIf="lastUpdatedOn">
       <label class="last-update-label px-8"> {{ resourceService?.frmelmnts?.lbl?.lastupdate }} : {{ lastUpdatedOn |
         date:'MMM d, y, h:mm a' }}
       </label>
     </div>
-    <button class="download-csv" (click)="downloadCSV($event)">
+    <button class="download-csv" (click)="downloadCSV()">
       {{ resourceService?.frmelmnts?.lbl?.downloadAsCSV }}
       <img src="assets/images/download-icon.svg" class="download-icon">
     </button>

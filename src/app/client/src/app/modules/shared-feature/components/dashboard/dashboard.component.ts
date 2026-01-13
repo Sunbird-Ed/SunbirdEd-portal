@@ -29,7 +29,6 @@ export class DashboardComponent implements OnInit {
 
   @Output() downloadCsv: EventEmitter<{}> = new EventEmitter();
 
-
   constructor(
     private toasterService: ToasterService,
     public groupService: GroupsService,
@@ -37,7 +36,7 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.columnConfig = { columnConfig: this.dashletData.columns };
+    // this.columnConfig = { columnConfig: this.dashletData.columns };
     this.ngxColumns = this.dashletData.columns.map((c: any) => ({ prop: c.data, name: c.title }));
 
     this.rows = this.dashletData.rows.map(row => {
@@ -56,7 +55,7 @@ export class DashboardComponent implements OnInit {
    *
    * @description- Download CSV file.
    */
-  downloadCSV($event) {
+  downloadCSV() {
     this.downloadCsv.emit();
     try {
       const options = {
@@ -79,8 +78,7 @@ export class DashboardComponent implements OnInit {
         return rowData;
       });
       const csvExporter = new ExportToCsv(options);
-      const csvOutput = csvExporter.generateCsv(csvData || []);
-
+      csvExporter.generateCsv(csvData || []);
 
     } catch (err) {
       this.toasterService.error(this.resourceService.messages.fmsg.m0085);
