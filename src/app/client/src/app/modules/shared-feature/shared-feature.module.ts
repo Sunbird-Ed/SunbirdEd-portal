@@ -22,6 +22,7 @@ import { CommonFormElementsModule } from '@project-sunbird/common-form-elements-
 import { LocationModule } from '../../plugins/location';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { DashletModule } from  '@project-sunbird/sb-dashlet';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { FrameworkCatLabelTranslatePipe } from './pipe/framework-label-translate/framework-label-translate.pipe';
 
 export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
@@ -51,6 +52,7 @@ export const csNotificationServiceFactory = (csLibInitializerService: CsLibIniti
     CommonConsumptionModule,
     CommonFormElementsModule,
     LocationModule,
+    NgxDatatableModule,
     DashletModule.forRoot()
   ],
   providers:  [{ provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] },
