@@ -25,40 +25,44 @@ To get started with the Sunbird portal, please try out our cloud-based demo site
 
 ### Local Installation
 You can also install the Sunbird portal locally on your laptop, please follow the instructions below:
-Have node version 10 and follow the next steps
+Recommended: **Node.js 18 LTS**. Node.js 20+ is supported. However, Node.js 22+ may require Visual Studio Build Tools on Windows to compile optional native addons.
 
 ## Pre Installation Steps
 
-Prerequisities
+Prerequisites
 
-	1. Node > 18x
-	2. Angular 1x
-	3. Yarn
+	1. Node >= 18.x LTS (recommended; 20.x also supported)
+	2. Angular CLI 14.x+
+	3. Yarn (Classic 1.x) — install via `npm install -g yarn` if not present
 
-Sunbird dev has 2 parts 
+### Project Components
 
-		1. Angular client
-		2. Node server
-    
-   ```Go to src/app/helpers/ replace environmentVariablesHelper.js```
-    
-### Installing and running Angular client
+Sunbird development consists of two parts:
+1. Angular client (frontend)
+2. Node server (backend)
 
-## Step 1: Go to src/app/client folder
+### Installing and Running Angular Client (Frontend)
+
+#### Step 1: Go to src/app/client folder
 
     yarn install
-    npm run start
-    # For Developer's local setup Run below command
+    yarn start
+
+#### Alternative Commands (Optional)
+
+    # Optional: run local setup script (for advanced users)
     ./local_setup.sh
-    ng build --watch=true
-    
-### Installing and running Node server
 
-## Step 2: Go to src/app folder
-  
+    # Or for continuous watch mode during development:
+    ng build --watch=true
+
+### Installing and Running Node Server (Backend)
+
+#### Step 2: Go to src/app folder
+
     yarn install
-    npm run server
-    
+    yarn server
+
 
 ## Reporting Issues
 We have an open and active [issue tracker](https://github.com/project-sunbird/sunbird-commons/issues). Please report any issues.
@@ -105,7 +109,7 @@ Installing Sunbird requires two primary software components:
 
 | Software dependencies |  |
 | :--- | ------- |
-| **[Node](https://nodejs.org/en/download/)** | > 16.19.x (Install the latest release of LTS version) |
+| **[Node](https://nodejs.org/en/download/)** | >= 18.x LTS recommended. Node.js 20+ is supported; 22+ may require Visual Studio Build Tools on Windows for optional native addons |
 | **[Angular CLI](https://angular.io/cli#installing-angular-cli)** | > 14.x.x (Install the latest Angular CLI version) |
 | **[yarn](https://classic.yarnpkg.com/en/)** | Latest version of yarn: `npm install --global yarn` |
 | **[nodemon](https://www.npmjs.com/package/nodemon)** | Latest version  of nodemon: `npm install -g nodemon` |
@@ -127,6 +131,10 @@ Installing Sunbird requires two primary software components:
 
         1. $ cd {PROJECT-FOLDER}/src/app/client
         2. $ yarn install
+
+        > **Note:** If `yarn` is not installed, run `npm install -g yarn` first.
+        > On Windows, optional native addons (`iltorb`, `canvas`) may fail to compile — this is safe to ignore.
+        > If `esbuild` is missing after install, run: `npm install esbuild --save-dev --legacy-peer-deps`
 
     2. Sunbird services stack or the backend API interface
 
@@ -166,16 +174,52 @@ Installing Sunbird requires two primary software components:
 
 1. Sunbird portal or web application
 
-    1. Run the following command in the **{PROJECT-FOLDER}/src/app/client** folder
-    2. $ ng build --watch=true
-    3. Wait for the build process to complete before proceeding to the next step
+    Run the following command in the **{PROJECT-FOLDER}/src/app/client** folder:
+
+    **Linux / macOS:**
+    ```bash
+    yarn start
+    ```
+
+    **Windows (PowerShell):** The `npm run start` script uses the Unix `mv` command which is unavailable on Windows. Run the steps manually:
+    ```powershell
+    npx ng build --deploy-url dist/
+    Move-Item -Path "..\dist\index.html" -Destination "..\dist\index.ejs" -Force
+    ```
+
+    > **Note on `caniuse-lite`:** If the build fails with `BrowserslistError: Unknown version X of chrome`, run:
+    > ```bash
+    > npm install caniuse-lite --legacy-peer-deps
+    > ```
+    > This updates the browser compatibility database to recognise newer Chrome versions.
+
+    Wait for the build process to complete before proceeding to the next step.
 
 2. Sunbird services stack or the backend API interface
 
-    1. Run the following command in the **{PROJECT-FOLDER}/src/app** folder
-    2. $ npm run local-server
+    Run the following command in the **{PROJECT-FOLDER}/src/app** folder:
+
+    **Linux / macOS:**
+    ```bash
+    yarn server
+    ```
+
+    **Windows (PowerShell):**
+    ```powershell
+    $env:sunbird_environment = 'local'
+    $env:sunbird_instance = 'sunbird'
+    yarn server
+    ```
 
 3. The local HTTP server is launched at `http://localhost:3000`
+
+---
+
+## For Contributors
+
+For a complete setup guide and troubleshooting steps (including Windows-specific fixes), see [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+---
 
 ### Project Structure
 
