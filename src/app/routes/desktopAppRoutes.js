@@ -4,7 +4,12 @@ const envHelper = require('../helpers/environmentVariablesHelper.js');
 const bodyParser = require('body-parser');
 const { logger } = require('@project-sunbird/logger');
 const path = require('path');
-const StorageService = require('../helpers/cloudStorage/index');
+let StorageService = { CLOUD_CLIENT: null };
+try {
+    StorageService = require('../helpers/cloudStorage/index');
+} catch (e) {
+    console.warn('[desktopAppRoutes] Cloud storage is not configured. Cloud features will be unavailable.');
+}
 
 module.exports = function (app) {
     app.post('/v1/desktop/update', bodyParser.urlencoded({ extended: true }),
@@ -16,10 +21,16 @@ module.exports = function (app) {
     app.post('/v1/desktop/upload-crash-logs',
         (req, res, next) => {
             logger.info({ msg: 'desktop crash upload API ' + req.url + 'called' });
+            if (!StorageService.CLOUD_CLIENT) {
+                return res.status(503).json({ message: 'Cloud storage not configured' });
+            }
             next();
         },
-        StorageService.CLOUD_CLIENT.blockStreamUpload(envHelper.cloud_storage_desktopCrash_bucketname)
+        ...(StorageService.CLOUD_CLIENT
+            ? [StorageService.CLOUD_CLIENT.blockStreamUpload(envHelper.cloud_storage_desktopCrash_bucketname)]
+            : [])
     );
+
 
     /**
      * @param  {Object} req - Request Object
