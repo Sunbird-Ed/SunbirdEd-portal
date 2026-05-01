@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { UploadCertificateService } from '../../services/upload-certificate/upload-certificate.service';
 import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
@@ -20,7 +21,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
   @ViewChild(BrowseImagePopupComponent)
   public browseImage: BrowseImagePopupComponent;
 
-  public unsubscribe$ = new Subject<void>();
+  private destroy$ = new Subject<void>();
   createTemplateForm: UntypedFormGroup;
   selectStateOption: any = [];
   selectLanguageOption: any = [];
@@ -112,7 +113,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
       allowPermission: new UntypedFormControl('', [Validators.required])
     });
     // TODO: Move to a separate component this browse logic;
-    this.createTemplateForm.valueChanges.subscribe(val => {
+    this.createTemplateForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(val => {
       this.validateForm();
     });
   }
@@ -351,5 +352,10 @@ urltoFile(url, filename, mimeType) {
       this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
       this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
     }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
