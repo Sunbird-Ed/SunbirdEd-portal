@@ -113,7 +113,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
       allowPermission: new UntypedFormControl('', [Validators.required])
     });
     // TODO: Move to a separate component this browse logic;
-    this.createTemplateForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(val => {
+    this.createTemplateForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.validateForm();
     });
   }
@@ -354,7 +354,7 @@ urltoFile(url, filename, mimeType) {
     }
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
