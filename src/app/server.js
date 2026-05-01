@@ -62,6 +62,7 @@ const { loadTokenPublicKeys } = require('sb_api_interceptor');
 const { getGeneralisedResourcesBundles } = require('./helpers/resourceBundleHelper.js')
 const { apiWhiteListLogger, isAllowed } = require('./helpers/apiWhiteList');
 const { registerDeviceWithKong } = require('./helpers/kongTokenHelper');
+const errorHandler = require('./middleware/errorHandler');
 
 let keycloak = getKeyCloakClient({
   'realm': envHelper.PORTAL_REALM,
@@ -349,6 +350,7 @@ if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
 }
 async function runApp() {
   await loadTokenPublicKeys(path.join(__dirname, kidTokenPublicKeyBasePath));
+  app.use(errorHandler); // Centralized error handling
   app.all('*', (req, res) => res.redirect('/')) // redirect to home if nothing found
   // start server after building the configuration data and fetch default channel id
 
